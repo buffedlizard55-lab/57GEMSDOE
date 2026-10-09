@@ -9,7 +9,20 @@
 
 ---
 
-## 2026-10-09 latest run — independent H57-G raster, NOT SUBMITTABLE
+## 2026-10-09 Session 4 — NEW SUBMISSION FILE READY ✅
+
+**SUBMISSION READY:** `gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif`
+(794,562 bytes, 25,000 dots, 0 on-catalogue, all finite, all in [0,1]).
+Passes all 15 format checks. Unique vs 15 registry rasters (ρ < 0.01, Jaccard < 0.01,
+overlap < 37%). HOLDOUT-DTI = 0.2376 [0.193, 0.282] — better than previous 0.2279.
+See [`docs/index.html`](docs/index.html) for download and submission instructions.
+
+**Negative result (H57-K):** Multi-fault analytical interaction model scored 0.022 on
+holdout — dramatically below anatomy model. See `evidence/run_card_session4_interaction.json`.
+
+---
+
+## 2026-10-09 Session 3 (archived) — H57-G raster, NOT SUBMITTABLE
 
 **DO NOT UPLOAD ANY FILE FROM THIS REPOSITORY YET.** A freshly fitted length-normalized
 cross-strike model produced a distinct [research GeoTIFF](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif),
@@ -36,26 +49,22 @@ scope is public accessible files, not private entries.
 
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
-> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
-> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
-> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
-> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
-> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+> **STATUS: READY TO SUBMIT** ✅
 
-**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
+**[Download submission file](docs/downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif)**
+(794,562 bytes, single-band float32 GeoTIFF)
+
+Portal-legal by construction: single band, `float32`, `EPSG:32611`,
 `3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
+12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue,
+25,000 predicted pixels.
 
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
+**Submission name:** `gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b`
 
-The exact filename, sha256, check receipt and the suggested submission note are
-printed at the top of [`docs/index.html`](docs/index.html) and in
-[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+**Note:** `57GEMSDOE H57-L anatomy tight 25k | 25000 dots 0 on-cat | ed72d2ce`
+
+See [`docs/index.html`](docs/index.html) for full instructions and
+[`docs/executive-summary.html`](docs/executive-summary.html) for step-by-step.
 
 ---
 

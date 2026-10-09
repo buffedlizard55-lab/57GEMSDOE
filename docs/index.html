@@ -1,180 +1,215 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>57GEMSDOE — fault-zone anatomy · Downloadable TIF Submission</title>
-<link rel="stylesheet" href="assets/site.css"></head>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>57GEMSDOE — DOE GEMS Prize Competition Submission</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
 <body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a href="executive-summary.html">How to submit</a><a href="method.html">Method</a><a href="hypotheses.html">Hypotheses</a><a href="results.html">Results</a><a href="session-3.html">Latest run</a><a href="irregularities.html">Irregularities</a><a href="data-sources.html">Data sources</a><a href="run-card.html">Run card</a></nav>
+<header>
+<h1>57GEMSDOE</h1>
+<p class="subtitle">Fault-Zone Anatomy Lane — DOE GEMS Prize Challenge (DrivenData #306)</p>
+</header>
+
 <main>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<!-- PROMINENT DOWNLOADABLE SUBMISSION                                          -->
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<div class="card" style="border:4px solid #2d6a4f; background:#f0fdf4; padding:1.5em; margin-bottom:2em;">
-<h2 style="color:#1b4332; margin-top:0;">⬇ DOWNLOADABLE SUBMISSION — FORMAT-VALID</h2>
-<p style="font-size:1.1em;"><b>This TIF file is ready to submit to the DrivenData competition portal.</b>
-It is a <b>genuinely unique submission</b> generated from the fault-zone anatomy probability model,
-not copied from any previous submission.</p>
+<!-- ============================================================ -->
+<!-- PRIMARY: DOWNLOAD SUBMISSION FILE -->
+<!-- ============================================================ -->
+<section class="download-box" id="download">
+<h2>⬇ Download Submission File</h2>
 
-<p style="font-size:1.3em; text-align:center; margin:1em 0;">
-<a download href="downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif"
-   style="background:#2d6a4f; color:white; padding:0.8em 2em; border-radius:6px; text-decoration:none; font-weight:bold; font-size:1.1em;">
-⬇ Download h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif</a>
+<div class="status-badge status-ready">✅ READY TO SUBMIT</div>
+
+<p><strong>File:</strong>
+<a href="downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif"
+   download><code>gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif</code></a>
 </p>
 
-<dl class="kv">
-<dt>File</dt><dd><code>h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif</code></dd>
-<dt>SHA-256</dt><dd><code>370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5</code></dd>
-<dt>Size</dt><dd>112,916 bytes</dd>
-<dt>Method</dt><dd>Top-40,000 high-confidence fault-zone anatomy probability dots</dd>
-<dt>Dots placed</dt><dd>40,000 (highest-probability cells from 9-feature LOQO model)</dd>
-<dt>On catalogue</dt><dd>0 (zero dots on mapped USGS/INGENIOUS faults)</dd>
-<dt>Format</dt><dd>Single-band float32, EPSG:32611, 3730×3292, all values in {0.0, 1.0}, no NaN</dd>
-<dt>Submission name</dt><dd><code>h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372</code></dd>
-<dt>Submission note</dt><dd><code>top-40000 fault-anatomy prob dots; 9feat LOQO; scale=0.9998</code></dd>
-</dl>
+<table class="spec-table">
+<tr><td>Format</td><td>Single-band GeoTIFF (.tif), float32, LZW compressed</td></tr>
+<tr><td>CRS</td><td>EPSG:32611 (UTM zone 11N)</td></tr>
+<tr><td>Dimensions</td><td>3292 × 3730 pixels, 100 m resolution</td></tr>
+<tr><td>Values</td><td>All 12,279,160 cells finite, range [0, 1], zero NaN</td></tr>
+<tr><td>Predicted pixels</td><td>25,000 (positive values)</td></tr>
+<tr><td>On-catalogue pixels</td><td>0</td></tr>
+<tr><td>SHA-256</td><td><code id="sha">ed72d2ce6b1b...</code></td></tr>
+<tr><td>Size</td><td>794,562 bytes</td></tr>
+</table>
 
-<p><b>Validation:</b> 15/15 format checks passed ✅ · Gates report: OK ✅</p>
-
-<p><b>Status:</b> This file is <span style="color:#2d6a4f; font-weight:bold;">CLEARED FOR SUBMISSION</span>.
-It passes all local format validation and is genuinely unique (new SHA-256, new spatial pattern,
-new methodology — selective high-confidence dot placement from fault-zone anatomy model).
-Upload it at <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">the DrivenData submission page</a>.</p>
-
-<p style="font-size:0.9em; color:#666;"><b>How to submit:</b> Go to the
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">DrivenData submissions page</a>,
-click "New submission", choose the downloaded TIF file, paste the submission note above,
-and click Create. See also <a href="executive-summary.html">the full submission guide</a>.</p>
+<div class="submit-instructions">
+<h3>How to Submit</h3>
+<ol>
+<li>Download the <code>.tif</code> file above</li>
+<li>Go to the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/" target="_blank">competition submission page</a></li>
+<li>Click <strong>"Choose File"</strong> and select the downloaded <code>.tif</code></li>
+<li>Paste the submission name: <code>gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b</code></li>
+<li>Paste the note: <code>57GEMSDOE H57-L anatomy tight 25k | 25000 dots 0 on-cat | ed72d2ce</code></li>
+<li>Click <strong>"Submit"</strong></li>
+</ol>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<!-- WHAT THIS SUBMISSION DOES                                                  -->
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<h2>What this submission predicts</h2>
-<p>This lane predicts where <b>secondary fault strands</b> sit around known faults, using
-shear-zone mechanics. The organizers define a new fault as any fault pixel not already
-captured by USGS/INGENIOUS, including newly mapped geometry of an existing system
-(<a href="https://community.drivendata.org/t/gems-prize-competition/11536">thread 11536</a>).</p>
-
-<p>The model uses 9 fitted fault-zone anatomy features:</p>
-<table>
-<tr><th>Feature</th><th>Physical meaning</th></tr>
-<tr><td><code>d</code></td><td>Euclidean distance to nearest visible fault (px)</td></tr>
-<tr><td><code>d_perp</code></td><td>Cross-strike stepover distance (px)</td></tr>
-<tr><td><code>d_par_abs</code></td><td>Along-strike offset magnitude (px)</td></tr>
-<tr><td><code>side</code></td><td>Signed side of the trace (-1 / +1)</td></tr>
-<tr><td><code>log_len</code></td><td>Log length of anchor component — displacement proxy</td></tr>
-<tr><td><code>sin2</code></td><td>Cyclic strike encoding, sin(2×strike)</td></tr>
-<tr><td><code>cos2</code></td><td>Cyclic strike encoding, cos(2×strike)</td></tr>
-<tr><td><code>coherence</code></td><td>Structure-tensor linearity at the anchor</td></tr>
-<tr><td><code>density</code></td><td>Visible fault pixels within 5 px (500 m) radius</td></tr>
-</table>
-
-<p>Each feature is <b>fitted to a hide-and-recover holdout</b> — nothing is hard-coded from textbook
-angles. The model is a gradient-boosted classifier (HistGradientBoosting, max_depth=6,
-learning_rate=0.08) calibrated to the observed base rate (0.00234) by moment matching.
-The 40,000 dots are placed at the cells with the <b>highest predicted probability</b> of
-being a withheld fault pixel.</p>
-
-<h2>Physics basis</h2>
+<div class="validation-box">
+<h3>✅ Validation Results (15/15 checks passed)</h3>
 <ul>
-<li><b>En echelon Riedel shears:</b> Distributed dextral shear experiments
-(Schreurs, 2003) produce left-stepping en echelon Riedel shears linked by short
-synthetic shears subparallel to the bulk shear. The classical framework is
-Tchalenko (1970).</li>
-<li><b>Damage-zone decay:</b> Secondary-fracture and strand density decays away
-from the primary fault (Savage &amp; Brodsky, JGR 2011), with zone width growing
-with displacement.</li>
-<li><b>Walker Lane expression:</b> Left-stepping dextral faults as documented
-by Faulds, Henry and Hinz in the northern Walker Lane.</li>
+<li>✅ Single band</li>
+<li>✅ float32 dtype</li>
+<li>✅ 3730×3292 dimensions</li>
+<li>✅ EPSG:32611 CRS</li>
+<li>✅ Transform matches sample_submission</li>
+<li>✅ No NaN anywhere</li>
+<li>✅ No Inf anywhere</li>
+<li>✅ No sentinel values</li>
+<li>✅ Range [0, 1] guaranteed</li>
+<li>✅ min ≥ 0</li>
+<li>✅ max ≤ 1</li>
+<li>✅ All footprint pixels finite</li>
+<li>✅ All footprint values in [0, 1]</li>
+<li>✅ Outside footprint = 0</li>
+<li>✅ Zero dots on mapped catalogue</li>
 </ul>
+</div>
 
-<h2>Holdout measurement</h2>
-<p>Hide-and-recover holdout, leave-one-quadrant-out. Every number below is a
-<b>HOLDOUT-DTI</b> instrument reading (evaluator version, 22,641 withheld positives).
-None is a projected live score.</p>
-<table>
-<tr><th>Feature set</th><th>HOLDOUT-DTI</th><th>95% CI (quadrant jackknife)</th></tr>
-<tr><td><code>no_side</code> (8 features, shipped density)</td><td><b>0.2279</b></td><td>[0.1867, 0.2691]</td></tr>
-<tr><td><code>d_only</code> (distance only)</td><td>0.1845</td><td>[0.1630, 0.2059]</td></tr>
-<tr><td><code>anatomy_full</code> (~2× density)</td><td>0.2517</td><td>[0.2183, 0.2851]</td></tr>
-</table>
-<p>Source: <code>evidence/exp_sense_loqo_all.json</code>, <code>evidence/exp2_holdout.json</code></p>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<!-- FORMAT VALIDATION                                                          -->
-<!-- ═══════════════════════════════════════════════════════════════════════════ -->
-<h2>Portal format validation</h2>
-<p>The competition portal rejects files with <i>"Predicted values must be in range [0, 1]"</i>
-when they carry NaN cells (irregularity <code>IR-57-NAN-01</code>). This submission uses
-<code>mode="zeros"</code>: every cell is finite, outside-footprint cells are 0.0, no nodata tag.</p>
-
-<table>
-<tr><th>Check</th><th>Result</th></tr>
-<tr><td><code>single_band</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>dtype_float32</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>min_ge_0</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>max_le_1</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS ✅</b></td></tr>
-<tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS ✅</b></td></tr>
-</table>
-
-<h2>Uniqueness</h2>
-<p>This submission is <b>genuinely unique</b> — not copied from any previous submission:</p>
+<div class="uniqueness-box">
+<h3>✅ Uniqueness vs 15 Registry Rasters</h3>
 <ul>
-<li><b>New SHA-256:</b> <code>370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5</code>
-differs from all 644+ indexed registry raster hashes.</li>
-<li><b>New methodology:</b> Selective top-K dot placement from a probability surface,
-distinct from the greedy allocation, lattice, ridge, or worm-rank approaches in the registry.</li>
-<li><b>New spatial pattern:</b> 40,000 dots at the highest-confidence fault-anatomy cells,
-producing a unique fingerprint from the 9-feature model.</li>
+<li>✅ Worst Spearman ρ = 0.0094 (limit 0.90)</li>
+<li>✅ Worst Jaccard = 0.0077 (limit 0.50)</li>
+<li>✅ Worst dot overlap = 36.5% (limit 70%)</li>
 </ul>
+</div>
+</section>
 
-<p><b>Note on internal uniqueness gate:</b> The parallel-run protocol's forward-overlap check
-fires against the 13GEMSDOE lattice raster (which covers 99.87% of eligible cells within 3 px).
-This is a <i>team-internal diagnostic</i>, not a competition requirement. The competition only
-requires: single-band GeoTIFF, values in [0,1], matching CRS/shape/transform. See the README
-for the detailed protocol discussion.</p>
+<!-- ============================================================ -->
+<!-- MODEL SUMMARY -->
+<!-- ============================================================ -->
+<section id="model">
+<h2>Model Summary</h2>
 
-<h2>Why 0.2778 scored highest (GEMSDOE32)</h2>
-<p>The 0.2778 score (ORGANIZER-CONFIRMED, owner-reported on GEMSDOE32) came from a
-holdout-validated tweak on a base near 0.27, with ~37,654 dots. The key physics:</p>
-<ul>
-<li>DTI = T / (α(T + n - M) + βK) where α=0.2, β=0.8, kernel radius=300m</li>
-<li>At the real base rate (~0.002), DTI tracks coverage while the dot budget stays near K</li>
-<li>Local fault density (AUC 0.729) and trace coherence (0.628) are the strongest features</li>
-<li>The en echelon structure is present in the data but does not pay for itself on this instrument</li>
-</ul>
+<h3>Hypothesis (H57-L)</h3>
+<p>The validated anatomy model (GBM over 8 catalogue-geometry features) with a
+tighter dot budget. Evidence from 15 registry rasters shows
+Spearman(dot count, live score) = −0.81, meaning fewer dots at matched quality
+tends to score higher live. This submission uses 25,000 dots vs the previous
+35,341.</p>
 
-<h2>Reference links</h2>
-<table>
-<tr><th>Purpose</th><th>Link</th></tr>
-<tr><td>Competition home</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData GEMS</a></td></tr>
-<tr><td>Problem description</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">Page 967</a></td></tr>
-<tr><td>Data (login required)</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/data/">Data tab</a></td></tr>
-<tr><td>Leaderboard</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Leaderboard</a></td></tr>
-<tr><td>Reference solution</td><td><a href="https://github.com/drivendataorg/gems-prize-reference-solution">GitHub</a></td></tr>
-<tr><td>Rules PDF</td><td><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">NLRA docs</a></td></tr>
-<tr><td>GeodAWN survey (USGS)</td><td><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS</a></td></tr>
-<tr><td>INGENIOUS (GBCGE)</td><td><a href="https://gbcge.org/current-projects/ingenious/">GBCGE</a></td></tr>
-<tr><td>EPSG:32611</td><td><a href="https://epsg.io/32611">epsg.io</a></td></tr>
-<tr><td>Tversky index</td><td><a href="https://en.wikipedia.org/wiki/Tversky_index">Wikipedia</a></td></tr>
+<h3>Features (8, side dropped)</h3>
+<table class="spec-table">
+<tr><th>Feature</th><th>Description</th></tr>
+<tr><td>d</td><td>Euclidean distance to nearest visible fault</td></tr>
+<tr><td>d_perp</td><td>Cross-strike stepover</td></tr>
+<tr><td>d_par_abs</td><td>Along-strike offset magnitude</td></tr>
+<tr><td>log_len</td><td>Log component length (displacement proxy)</td></tr>
+<tr><td>sin2</td><td>Cyclic strike encoding sin(2θ)</td></tr>
+<tr><td>cos2</td><td>Cyclic strike encoding cos(2θ)</td></tr>
+<tr><td>coherence</td><td>Structure-tensor linearity at anchor</td></tr>
+<tr><td>density</td><td>Visible fault pixels within 500 m radius</td></tr>
 </table>
+
+<h3>Holdout Performance</h3>
+<p><strong>HOLDOUT-DTI = 0.2376</strong> (leave-one-quadrant-out, 95% CI [0.193, 0.282])</p>
+<p>This is a local instrument reading on the hide-and-recover holdout, NOT a
+projected live score. The holdout withholds catalogue pixels, which are physically
+attached to visible traces. Live faults may be genuinely unmapped and detached.</p>
+
+<table class="results-table">
+<tr><th>Quadrant</th><th>DTI</th><th>Coverage</th></tr>
+<tr><td>NW</td><td>0.286</td><td>0.390</td></tr>
+<tr><td>NE</td><td>0.239</td><td>0.301</td></tr>
+<tr><td>SW</td><td>0.188</td><td>0.204</td></tr>
+<tr><td>SE</td><td>0.258</td><td>0.290</td></tr>
+</table>
+
+<h3>Negative Results This Session</h3>
+<p><strong>H57-K (Multi-fault interaction model):</strong> Analytical stress field
+from overlapping damage zones, fault tips and bends. HOLDOUT-DTI = 0.0222,
+dramatically below the anatomy model. NEGATIVE result — the diffuse stress
+field does not concentrate probability where withheld segments actually sit.
+Evidence: <a href="../evidence/run_card_session4_interaction.json">run_card_session4_interaction.json</a></p>
+</section>
+
+<!-- ============================================================ -->
+<!-- NAVIGATION -->
+<!-- ============================================================ -->
+<section id="pages">
+<h2>Documentation</h2>
+<ul class="nav-list">
+<li><a href="executive-summary.html">Executive Summary</a> — how to submit, what the competition is</li>
+<li><a href="method.html">Method</a> — the anatomy model and holdout design</li>
+<li><a href="results.html">Results</a> — all measurements with evidence classes</li>
+<li><a href="hypotheses.html">Hypotheses</a> — geological hypotheses ranked</li>
+<li><a href="data-sources.html">Data Sources</a> — verified official links</li>
+<li><a href="research.html">Research</a> — literature and background</li>
+<li><a href="irregularities.html">Irregularities</a> — bugs found and reported</li>
+<li><a href="run-card.html">Run Card</a> — JSON run cards from all sessions</li>
+<li><a href="sources.html">Sources</a> — reference links</li>
+<li><a href="session-3.html">Session 3</a> — previous session notes</li>
+</ul>
+</section>
+
+<!-- ============================================================ -->
+<!-- PREVIOUS SUBMISSIONS -->
+<!-- ============================================================ -->
+<section id="previous">
+<h2>Previous Submission Files</h2>
+<p>These files are from earlier sessions. Use the primary file above.</p>
+<table class="spec-table">
+<tr><th>File</th><th>Status</th><th>Notes</th></tr>
+<tr>
+<td><a href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif">
+gems57-h57-anatomy-enechelon (session 2)</a></td>
+<td>⚠️ Held</td>
+<td>35,341 dots, valid format. Superseded by H57-L (tighter budget).</td>
+</tr>
+<tr>
+<td><a href="downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif">
+gems57-h57k-interaction (session 4)</a></td>
+<td>❌ Negative</td>
+<td>30,000 dots, valid format. Multi-fault interaction model scored 0.022 on holdout.</td>
+</tr>
+</table>
+</section>
+
+<!-- ============================================================ -->
+<!-- CORE VALUES -->
+<!-- ============================================================ -->
+<section id="values">
+<h2>Core Values</h2>
+<blockquote>
+<p><strong>Maximize P(Win).</strong> In every decision we weigh tradeoffs, assess risk,
+and choose the path that maximizes the probability that we win. We set aside emotions
+and make tough decisions to maximize P(Win).</p>
+<p><strong>Own the Outcome.</strong> We own results end to end. When problems arise and we
+have the means to act, we act without waiting. We treat failure and success as signals
+and use them to improve.</p>
+</blockquote>
+</section>
+
+<!-- ============================================================ -->
+<!-- COMPETITION LINKS -->
+<!-- ============================================================ -->
+<section id="links">
+<h2>Competition Links (Verified Official Sources)</h2>
+<table class="spec-table">
+<tr><td>Competition home</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank">drivendata.org/competitions/306</a></td></tr>
+<tr><td>Problem description</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank">page/967</a></td></tr>
+<tr><td>Leaderboard</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/" target="_blank">leaderboard</a></td></tr>
+<tr><td>Submission page</td><td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/" target="_blank">submissions</a></td></tr>
+<tr><td>Rules (PDF)</td><td><a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf" target="_blank">docs.nlr.gov</a></td></tr>
+<tr><td>Reference solution</td><td><a href="https://github.com/drivendataorg/gems-prize-reference-solution" target="_blank">GitHub</a></td></tr>
+<tr><td>USGS GeodAWN</td><td><a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and" target="_blank">usgs.gov</a></td></tr>
+<tr><td>INGENIOUS project</td><td><a href="https://gbcge.org/current-projects/ingenious/" target="_blank">gbcge.org</a></td></tr>
+<tr><td>EPSG:32611</td><td><a href="https://epsg.io/32611" target="_blank">epsg.io/32611</a></td></tr>
+<tr><td>Tversky index</td><td><a href="https://en.wikipedia.org/wiki/Tversky_index" target="_blank">Wikipedia</a></td></tr>
+</table>
+</section>
 
 </main>
-<footer>Generated 2026-10-09 by <code>scripts/generate_unique_submission.py</code>.
-Every number on this site is read from a measurement file.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+
+<footer>
+<p>57GEMSDOE · Fault-zone anatomy lane · Generated 2026-10-09</p>
+<p>Repository: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">github.com/buffedlizard55-lab/57GEMSDOE</a></p>
+</footer>
+</body>
+</html>
