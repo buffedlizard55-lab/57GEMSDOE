@@ -39,13 +39,28 @@ from gems57.fitting import (cell_geometry, fit_model, pooled,  # noqa: E402
                             predict_surface, run_cell)
 from gems57.holdout import build_holdout                             # noqa: E402
 from gems57.metric import dti_binary                                 # noqa: E402
+from gems57.submission_writer import write_submission as package_submission  # noqa: E402
 from gems57.uniqueness import compare_to_registry                    # noqa: E402
 from gems57.validate import assert_submittable, validate             # noqa: E402
 from gems57 import anatomy                                           # noqa: E402
 from scipy import ndimage as ndi                                     # noqa: E402
 
+try:
+    from gems57.geo import GEO_FEATURES, load_planes                 # noqa: E402
+except Exception:  # geo stack absent: pure-geometry build still works
+    GEO_FEATURES, load_planes = (), None
+
 EVID = ROOT / "evidence"
 DL = ROOT / "docs" / "downloads"
+
+# named feature presets, resolved against the combined feature order
+PRESETS = {
+    "anatomy_full": lambda: list(FEATURES),
+    "no_side": lambda: [n for n in FEATURES if n != "side"],
+    "geo_only": lambda: list(GEO_FEATURES),
+    "no_side_plus_geo": lambda: [n for n in FEATURES if n != "side"] + list(GEO_FEATURES),
+    "anatomy_plus_geo": lambda: list(FEATURES) + list(GEO_FEATURES),
+}
 
 
 def _truth_crop(cell) -> np.ndarray:
@@ -56,11 +71,12 @@ def _truth_crop(cell) -> np.ndarray:
 
 def score_variant(ctx, cells, clf, scale, exclude_flank_px: int, *,
                   max_dots: int, floor: float,
-                  cols: list[int] | None = None) -> tuple[dict, list[dict]]:
+                  cols: list[int] | None = None,
+                  geo: dict | None = None) -> tuple[dict, list[dict]]:
     """Holdout DTI for one flank-exclusion setting."""
     res = []
     for cell in cells:
-        g = cell_geometry(ctx, cell)
+        g = cell_geometry(ctx, cell, geo=geo)
         p = predict_surface(clf, scale, g, ctx.grid.shape, cols)
         allowed = np.zeros(ctx.grid.shape, bool)
         allowed[cell.bbox] = cell.active
@@ -85,22 +101,47 @@ def main() -> None:
     ap.add_argument("--tag", default="")
     ap.add_argument("--drop-side", action="store_true",
                     help="drop the sense-of-slip `side` feature (measured to earn nothing)")
+    ap.add_argument("--features", default="",
+                    help="preset (no_side, no_side_plus_geo, anatomy_full, geo_only, "
+                         "anatomy_plus_geo) or comma-separated feature names")
     ap.add_argument("--budget-cap", type=int, default=0,
                     help="hard cap on live dots; 0 = use the holdout-optimal budget")
+    ap.add_argument("--flank", type=int, default=-1,
+                    help="skip the flank sweep and use this exclusion (px); -1 = sweep")
     a = ap.parse_args()
 
-    cols = None
-    if a.drop_side:
+    t0 = time.time()
+    g = load_grid()
+    geo = None
+    if load_planes is not None:
+        geo = load_planes(g.footprint)
+        print(f"[{time.time()-t0:5.1f}s] geo planes loaded: {list(geo)}")
+    all_names = tuple(FEATURES) + (tuple(geo) if geo else ())
+    name_idx = {n: i for i, n in enumerate(all_names)}
+
+    if a.features:
+        if a.features in PRESETS:
+            want = PRESETS[a.features]()
+        else:
+            want = [w.strip() for w in a.features.split(",") if w.strip()]
+        unknown = [w for w in want if w not in name_idx]
+        if unknown:
+            raise SystemExit(f"unknown features {unknown}; available: {list(all_names)}")
+        cols = [name_idx[w] for w in want]
+    elif a.drop_side:
         cols = [i for i, n in enumerate(FEATURES) if n != "side"]
         print(f"dropping `side`; using {len(cols)} of {len(FEATURES)} features")
-    t0 = time.time()
+    else:
+        cols = None
+    if cols is not None:
+        print(f"feature set ({len(cols)} of {len(all_names)}): "
+              f"{[all_names[i] for i in cols]}")
 
-    g = load_grid()
     ctx = build_holdout(g)
     cells = ctx.cells_of(a.mode)
     print(f"[{time.time()-t0:5.1f}s] holdout ready ({len(cells)} cells, mode={a.mode})")
 
-    geoms = [cell_geometry(ctx, c) for c in cells]
+    geoms = [cell_geometry(ctx, c, geo=geo) for c in cells]
     clf, scale, base = fit_model(geoms, seed=0, cols=cols)
     geoms.clear(); gc.collect()
     print(f"[{time.time()-t0:5.1f}s] trained on all cells; calibration scale={scale:.4f} "
@@ -108,9 +149,11 @@ def main() -> None:
 
     # ---- 2. flank-exclusion measured on the holdout ------------------------
     variants = {}
-    for flank in (0, 1, 2, 3):
+    flanks = (a.flank,) if a.flank >= 0 else (0, 1, 2, 3)
+    for flank in flanks:
         pl, per = score_variant(ctx, cells, clf, scale, flank,
-                                max_dots=a.max_dots, floor=a.floor, cols=cols)
+                                max_dots=a.max_dots, floor=a.floor, cols=cols,
+                                geo=geo)
         variants[flank] = {"pooled": pl, "per_cell": per}
         print(f"[{time.time()-t0:5.1f}s] flank<={flank}px excluded: HOLDOUT-DTI "
               f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} "
@@ -136,7 +179,8 @@ def main() -> None:
         # capped holdout at ~2x the shipped density.)
         per_cap = budget // 4
         pl, per = score_variant(ctx, cells, clf, scale, best_flank,
-                                max_dots=per_cap, floor=a.floor, cols=cols)
+                                max_dots=per_cap, floor=a.floor, cols=cols,
+                                geo=geo)
         capped_holdout = pl
         print(f"[{time.time()-t0:5.1f}s] at capped budget {budget}: HOLDOUT-DTI "
               f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} dots={pl['n_dots']}")
@@ -144,7 +188,8 @@ def main() -> None:
     # ---- 3. final surface from the full catalogue --------------------------
     from gems57.anatomy import fold_geometry
     dom = g.footprint & ~g.catalogue
-    geom = fold_geometry(g, g.catalogue, np.zeros(g.shape, bool), dom, "live_full_catalogue")
+    geom = fold_geometry(g, g.catalogue, np.zeros(g.shape, bool), dom,
+                         "live_full_catalogue", geo=geo)
     surf = clf.predict_proba(geom.X[:, cols] if cols is not None else geom.X
                              )[:, 1].astype(np.float32) * np.float32(scale)
     np.clip(surf, 0.0, 1.0, out=surf)
@@ -165,7 +210,8 @@ def main() -> None:
     # ---- 4. write ----------------------------------------------------------
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     digest = hashlib.sha256(alloc.emitted.tobytes()).hexdigest()[:12]
-    tag = a.tag or f"h57-faultzone-anatomy-{a.mode}-flank{best_flank}"
+    feat_tag = a.features or ("no_side" if a.drop_side else "anatomy_full")
+    tag = a.tag or f"h57-{feat_tag}-{a.mode}-flank{best_flank}"
     name = f"gems57-{tag}-{stamp}-{digest}"
     # <= 140 characters, enforced below
     note = (f"57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone ({a.mode}, "
@@ -179,9 +225,19 @@ def main() -> None:
     values = alloc.emitted.astype(np.float32)
     zpath = DL / f"{name}-zeros.tif"
     npath = DL / f"{name}-nan.tif"
-    write_submission(zpath, np.where(dom, values, 0.0), mode="zeros")
+    # the zeros variant is packaged by the shared fail-closed writer (tif + zip
+    # + receipt json); the nan variant is diagnostics only and never packaged
+    rec = package_submission(
+        zpath, np.where(dom, values, 0.0).astype(np.float32),
+        ROOT / "data" / "official" / "sample_submission.tif", g.footprint,
+        note=note, name=name,
+        metadata={"lane": "fault-zone anatomy", "mode": a.mode,
+                  "flank_px": best_flank, "feature_set": feat_tag,
+                  "features": [all_names[i] for i in cols] if cols is not None
+                              else list(all_names)})
     write_submission(npath, np.where(dom, values, np.nan), mode="nan")
-    print(f"[{time.time()-t0:5.1f}s] wrote {zpath.name} and {npath.name}")
+    print(f"[{time.time()-t0:5.1f}s] wrote {zpath.name} and {npath.name} "
+          f"(receipt {zpath.with_suffix('.json').name})")
 
     # ---- 5. validate + uniqueness ------------------------------------------
     vz = validate(zpath, g.footprint, g.catalogue)
@@ -206,8 +262,10 @@ def main() -> None:
         "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "lane": "fault-zone anatomy / secondary strands around known faults",
         "withholding_mode": a.mode,
-        "features": [FEATURES[i] for i in cols] if cols is not None else list(FEATURES),
-        "features_dropped": [n for n in FEATURES if cols is None or FEATURES.index(n) not in cols],
+        "feature_set": feat_tag,
+        "features": [all_names[i] for i in cols] if cols is not None else list(all_names),
+        "features_dropped": [n for i, n in enumerate(all_names)
+                             if cols is None or i not in cols],
         "budget_cap": a.budget_cap,
         # IR-57-INSAMPLE-01: the classifier is trained on the same holdout cells it is scored
         # on, so every holdout number in this file is IN-SAMPLE. Do not quote it as HOLDOUT-DTI.
@@ -224,6 +282,7 @@ def main() -> None:
         "submission_name": name,
         "submission_note": note,
         "submission_note_len": len(note),
+        "packaging_receipt": rec,
         "zeros_tif": vz,
         "nan_tif": vn,
         "uniqueness": uniq,

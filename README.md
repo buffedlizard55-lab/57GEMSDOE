@@ -151,37 +151,70 @@ Its operative constraints for this lane:
 Hide-and-recover holdout, leave-one-quadrant-out. **Every number below is a
 `HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
 
-**Shipped density (per-cell cap 10,000, mode `all`, 22,641 withheld positives):**
-
-| Feature set | HOLDOUT-DTI | 95% CI (quadrant jackknife) | coverage |
-| --- | --- | --- | --- |
-| `no_side` (shipped: 8 features) | **0.2279** | [0.1867, 0.2691] | 0.3288 |
-| `no_side_plus_sense` (tested, negative) | 0.2292 | [0.1892, 0.2693] | 0.3308 |
-
-Paired (sense − no sense) per quadrant: NW +0.0038, NE +0.0056, SW +0.0025,
-SE −0.0056. Not significant. A distance-only baseline at shipped density has not
-been measured yet, so the gain over distance-only below is **at 2x density only**.
-
-**About 2x shipped density (earlier run, ~136k dots; not the shipped configuration):**
+**Corrected strike frame (`IR-57-STRIKE-01` fix), run_cv density (~2x shipped):**
+the session-1 table below the fold was measured before the strike-frame fix and is
+retracted (its anisotropy columns are bug artifacts). Re-measured, evaluator
+`gems52-pooled-hide-v1`, mode `all` 22,641 withheld positives; mode `detached` 22,619:
 
 | Feature set | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
 | --- | --- | --- | --- | --- |
-| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] |
-| `d_perp_par` (+ stepover, along-strike) | 0.1867 | [0.1605, 0.2128] | 0.1847 | [0.1665, 0.2029] |
-| `anatomy_full` (all 9 features) | **0.2517** | [0.2183, 0.2851] | 0.2538 | [0.2309, 0.2766] |
-| `no_side` (8 features) | 0.2508 | [0.2164, 0.2852] | **0.2556** | [0.2329, 0.2784] |
+| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] (pre-fix frame, d is strike-free) |
+| `d_perp_par` (+ stepover, along-strike) | 0.3180 | [0.2803, 0.3557] | 0.3255 | [0.2968, 0.3542] |
+| `no_side` (8 anatomy features) — **carries the `log_len` leak** | 0.3270 | [0.2923, 0.3617] | 0.3262 | [0.3041, 0.3483] |
+| `anatomy_full` (incl. `side`) | (tied with `no_side`) | — | 0.3276 | [0.3051, 0.3501] |
+| `geo_only` (H57-G block) | 0.0621 | [0.0478, 0.0764] | — | — |
+| `no_side_plus_geo` | 0.3171 | [0.2711, 0.3631] | — | — |
 
-At 2x density the full model beats distance-only by **+0.0673** (`all`) and
-**+0.0721** (`detached`) with disjoint confidence intervals.
+**Leak notice (`log_len`, found by the parallel session's fix):** the original `log_len`
+was the length of the ≤ 12 px segment *chunk*; cut traces leave short end chunks, so
+`log_len` alone distinguished withheld anchors at AUC **0.90** — a withholding leak
+(chunks of visible geometry are not the displacement proxy the lane wants either). The
+fixed `log_len` is the length of the whole connected mapped component (Savage & Brodsky
+displacement proxy; canary AUC now 0.55). Every `no_side` / `anatomy_full` /
+`no_side_plus_geo` number above was measured with the leaky column and is optimistic;
+`d_only`, `d_perp_par` and `geo_only` never included `log_len` and are unaffected. The
+shipped raster's model (`d, d_perp, d_par_abs`) is therefore clean of both this and the
+strike-frame bug.
 
-**But the gain is not from the Riedel geometry.** Adding stepover and
-along-strike to distance alone buys only **+0.0022** — inside the noise. The
-+0.067 comes from local fault `density` (AUC 0.7289), trace `coherence` (0.6278)
-and `log_len`. The en echelon structure this lane set out to find **is** there in
-the data (joint stepover x along-strike enrichment 0.0326, **13.9x** base rate),
-and it **does not pay for itself on this instrument**. That is recorded as a
-negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
-over.
+**The Riedel geometry IS the gain.** After the fix, adding stepover and along-strike to
+distance alone buys **+0.1335** (it measured +0.0022 on the broken columns), and the
+fixed-frame measurement shows the structure directly: withheld strands peak at **~55x
+base rate** at cross-strike stepover 0–1 px x along-strike 2–4 px. The session-1 finding
+that "the structure does not pay for itself" is **retracted** as a bug artifact. `side`
+is dropped (0.039 log-asymmetry, tied DTI both modes). The geophysical corroboration
+block (H57-G1/G2) is a **validated negative on this instrument** (0.3171 vs 0.3270) and
+is not shipped — recorded in
+[`docs/research/session2_experiments.md`](docs/research/session2_experiments.md).
+Recorded sense of slip (`no_side_plus_sense`) was tested at shipped density and is also
+a negative (paired quadrants +0.0038/+0.0056/+0.0025/−0.0056, not significant;
+`IR-57-SLIP-02`).
+
+**Shipped density (per-cell cap 10,000 = 40,000/4, `IR-57-SHIP-01`/`IR-57-CAP-01`) —
+the only density that describes a 40k-dot raster. Corrected strike frame, leak-free
+`log_len`, leave-one-quadrant-out (`evidence/cv_shipped_density.json`, K = 22,641):**
+
+| Feature set | HOLDOUT-DTI | 95% CI (quadrant jackknife) | dots |
+| --- | --- | --- | --- |
+| `d_only` | 0.2181 | [0.1957, 0.2405] | 80,000 |
+| **`d_perp_par` (shipped lean offset frame)** | **0.3093** | [0.2638, 0.3549] | 75,322 |
+| `no_side` (8 features, leak-free `log_len`) | 0.3078 | [0.2587, 0.3569] | 74,761 |
+
+At the shipped density the lean offset frame is the **point-estimate winner** and is
+statistically tied with the 8-feature set — and it is the uniqueness-clean configuration.
+The parallel session's shipped-density reading of `no_side` (0.2279 [0.1867, 0.2691]) ran
+on the **broken strike frame**; the corrected frame is worth about +0.08 on the same
+instrument. The build-time numbers inside `evidence/submission_build_all.json` are
+**in-sample** (`IR-57-INSAMPLE-01`) and are labelled as such; only LOQO numbers are
+quoted as HOLDOUT-DTI.
+
+>>>>>>> origin/main
+
+The shipped raster uses the lean offset frame `d_perp_par` — the point-estimate winner at
+the shipped density (0.3093 vs 0.3078) and the configuration that passes the uniqueness
+gate against every earlier raster (max 3-px dot overlap 59.0%, limit 70%; the `no_side`
+build measured 71.1% vs this lane's previous ship and was correctly refused). CONSENSUS-PROXY
+(not a score): 27.7% of its dots sit within 3 px of >= 2 of the six live-calibrated top
+rasters vs a 17.7% random baseline — 1.57x enrichment, transfer-plausible.
 
 ### Why 0.2778 scored highest, and whether higher is achievable
 
@@ -214,6 +247,55 @@ hold the two worst scores (0.1922, 0.1894). The correlation is confounded with
 other differences between submissions, so it is evidence, not proof. That is why this lane's
 holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
 costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
+
+**The mechanism, at the level of what h33-h33-2-b2 actually did** (every number
+below is copied from [`evidence/calibrate_registry.json`](evidence/calibrate_registry.json),
+which re-scored the registry rasters on both local instruments; the live scores
+are `ORGANIZER-CONFIRMED` as pasted by the owner, the instrument readings are
+`HOLDOUT-DTI` / `SGMC-PROXY`):
+
+| raster (registry) | dots emitted | live score | catalogue-holdout DTI | SGMC-truth DTI |
+| --- | --- | --- | --- | --- |
+| h33-2-b2 | 37,654 | **0.2778** | 0.0039 | 0.0931 |
+| anderson-pinn | 38,854 | 0.2750 | 0.0040 | 0.0944 |
+| h36-1-rung30 | 37,660 | 0.2710 | 0.0274 | 0.1062 |
+| h27-4-solo | 40,199 | 0.2708 | 0.0282 | 0.1093 |
+| tip-h32-1 | 42,294 | 0.2649 | 0.0565 | 0.1213 |
+| tip-h33d | 41,865 | 0.2632 | 0.0478 | 0.1171 |
+| d15 | 60,069 | 0.2477 | 0.0844 | 0.1410 |
+| h19-5 | 121,131 | 0.1922 | 0.0602 | **0.1450** |
+
+Three readings, straight from that table:
+
+* **h33-2-b2 won on budget discipline and placement precision, not on either
+  local instrument.** It is essentially *invisible* to the catalogue-holdout
+  (0.0039 — it deliberately prunes the near-field where withheld catalogue
+  pixels live) and mediocre on SGMC (0.0931), yet it holds the best live score.
+  What it did: emit **~37.7k dots** — almost certainly near the live `K` —
+  ranked by geophysical evidence and pruned off the known catalogue, so each
+  dot bought maximum live coverage per unit of the 0.2 FP penalty.
+* **The best proxy instrument is anti-informative at the top.** h19-5 has the
+  best SGMC-truth DTI of the set (0.1450) and the *worst* live score of the
+  calibrated eight (0.1922) — because it emitted 121k dots. Any strategy
+  chosen on proxy-DTI alone will over-emit.
+* **Every live score >= 0.263 sits at 37–42k dots.** The live ordering inside
+  that band (0.2632 -> 0.2778) is placement quality — roughly 4% coverage
+  difference. That is exactly the regime where a better *prior* for new-fault
+  geometry can move the number.
+
+**Can we score higher than 0.2778?** The arithmetic says yes: 0.2778 is ~28%
+coverage at matched budget, and nothing in the metric caps coverage there; the
+brief's 0.3774 / 0.3195 numbers prove the live truth is more coverable than
+0.28. The route that maximizes P(Win) is **geophysically-corroborated emission
+inside the fitted zone at a capped ~40k budget** (session-2 hypothesis block
+H57-G1/G2, validated this session): the incumbents' proven off-catalogue
+geophysical signal, restricted to the region where the organizers say new
+faults actually sit (splays and parallel strands of known systems, forum thread
+11536), with FP controlled by the fitted allocation rather than by a hard
+prune. The honest uncertainty is transfer: the holdout-to-live rank correlation
+is weak (rho ~ +0.14), so the final judgment of "higher" requires a live
+submission receipt — which is why this repository generates and validates the
+file but never claims a live score it has not been given.
 
 **Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
 
@@ -434,6 +516,46 @@ different "highest score" values appear in the brief (0.3774 and 0.3195); the
 conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
 this repo claims to beat.
 
+<<<<<<< HEAD
+Sites and scores as pasted in the session prompt of 2026-10-09 (each `....`
+separated group is one sibling site; full list is reproduced verbatim in
+[`BRIEF.md`](BRIEF.md) under "Session prompt — 2026-10-09"):
+
+| Site | Submission | Score |
+| --- | --- | --- |
+| GEMSDOE32 | h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros | **0.2778** (best registered in the family) |
+| GEMSDOE36 | anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros | 0.2750 |
+| GEMSDOE28 | h36-1-rung30-blind-r1-20261003-b531dae0a36f-nan | 0.2710 |
+| GEMSDOE28 / GEMSDOE31 | h27-4-solo-d2-8 / h27-4-r1-solo-d2-8 | 0.2708 |
+| GEMSDOE28 | h32-1-prethin-tip-euler-d2-8 | 0.2649 |
+| GEMSDOE33 | h33d-analog-tip-stepover-r30 | 0.2632 |
+| GEMSDOE25 / GEMSDOE30 | dotted-h19-5-d2-8 / d28-poisson300m-offcat-44090 | 0.2600 |
+| GEMSDOE24 | h25-1-dotted-h19-5-d1-5 | 0.2477 |
+| GEMSDOE49 | gate_ortho_w0.25-40k | 0.2376 |
+| GEMSDOE48 | h59-cover-ds-belief-b2xh33d | 0.2296 |
+| 19GEMSDOE | h19-5-powerlaw-budget-multiline-corroborated | 0.1922 |
+| 19GEMSDOE / GEMSDOE21 | h19-4-multiline / h19-4-reference | 0.1894 |
+| 20GEMSDOE | h20-1-sarnnpu-powerlaw-pi0363-tilt-wingcrack | 0.1890 |
+| 16GEMSDOE | h16-1-topo-geophys-baseline-ridges | 0.1855 |
+| GEMSDOE10 | h28-dotted-ridge | 0.1839 |
+| (all others) | see BRIEF.md | 0.0020 – 0.1589 |
+| GEMSDOE55 / 56 / 57 | (this lane ships for 57GEMSDOE) | pending live receipt |
+
+The two conflicting "highest score" values in the brief (0.3774 and 0.3195) are
+registered as `IR-57-BRIEF-01`; the analysis above shows what it takes to beat
+0.2778 and why the family's best strategies sit in the 37–42k-dot band.
+
+## Session prompt discipline
+
+The full task prompt of every session is appended **verbatim** to
+[`BRIEF.md`](BRIEF.md) ("Session prompt — 2026-10-09"). Re-read it at the start
+of every session; this README is the summary, `BRIEF.md` is the specification.
+Operative order of work each session: (1) re-read the prompt; (2) generate and
+rank new hypotheses before implementing; (3) validate the top candidate on the
+spatially-blocked holdout; (4) only then build the unique GeoTIFF; (5) run card;
+(6) PR and merge. Core values *Maximize P(Win)* and *Own the Outcome* govern
+every tradeoff on this list.
+=======
 
 ## Session 3 pre-experiment hypotheses (2026-10-09; re-read the standing brief above)
 
@@ -447,3 +569,4 @@ Ranked *prospectively*, before code or validation; improvement is an expectation
 | 4 / medium | H57-J bend-dependent strand width; local mapped-trace direction and finite-difference along-trace curvature | fitted widening of damage zone at mapped fault bends, controlling for segment length | Under-mapped splays can branch at bends; unlike the current linearity/coherence feature this uses signed change *along a trace* (without DEM). Road and wash bends are geological false-positive mimics. |
 
 **Falsification gate:** test each new feature alone for leakage AUC; compare the top arm against the existing eight-feature arm with visible-only, whole-segment, buffered spatial-block holdout and pooled DTI. Do not spend a weekly slot. Independently, the strict directed-overlap gate may be **mathematically unsatisfiable** for a near-universal 5-pixel lattice already in the registry; report that as a blocker, not as a waiver.
+>>>>>>> origin/main

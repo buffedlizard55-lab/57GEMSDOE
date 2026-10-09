@@ -11,7 +11,7 @@ sandbox is listed with its verified pin and its bridge source.
 | `labels.tif` | 425,830 | `7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093` | DrivenData competition 306 training labels (GeoDAWN region) |
 | `existing_faults.tif` | 425,830 | `7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093` | same raster as labels (USGS QFaults catalogue, rasterized) |
 | `sample_submission.tif` | 1,599,597 | `2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc` | DrivenData sample submission (defines grid, CRS, bounds) |
-| `training_features.tif` | 418,912,844 | `4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5` | DrivenData training features (105 bands) — **not committed** (gitignored); see below |
+| `training_features.tif` | 418,912,844 | `4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5` | DrivenData training features — **19 bands** (verified with rasterio on the pinned bytes; earlier prose here claimed 105, corrected 2026-10-09). **not committed** (gitignored); see below |
 
 Notes:
 

@@ -1,150 +1,125 @@
 {
-  "hypothesis": "H57-I: secondary-strand density decays with a strike-dependent damage-zone width fitted from hide-and-recover, not from textbook Riedel angles",
-  "mechanism": "Savage & Brodsky (2011) damage-zone decay, conditioned on local visible strike; bins below 2x base rate dropped",
-  "non_fault_mimic": "Regional drainage and range-front lineaments that share the Walker Lane / Basin-Range strike bins but are not faults",
-  "evidence_class": "HOLDOUT-DTI (not a live score)",
-  "winner_arm": "iso_full",
-  "holdout_DTI": 0.2616988225816302,
-  "holdout_DTI_CI95": [
-    0.21586837295067493,
-    0.3075292722125854
-  ],
-  "holdout_n_withheld": 22619,
-  "baseline_iso_DTI": 0.2616988225816302,
-  "baseline_iso_CI95": [
-    0.21586837295067493,
-    0.3075292722125854
-  ],
-  "beats_baseline": true,
-  "all_arms": {
-    "iso_full": {
-      "pooled_dti": 0.2616988225816302,
-      "ci95": [
-        0.21586837295067493,
-        0.3075292722125854
+  "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace (en echelon Riedel geometry), so a per-fault intensity built from distance and the offset frame locates fault pixels the catalogue lacks. Measured (fixed strike frame): withheld-strand enrichment peaks at ~55x base rate for cross-strike stepover 0-1 px x along-strike 2-4 px.",
+  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the offset-frame features (d, d_perp, d_par_abs) -- the lean model, chosen because it is statistically tied with the 8-feature set on both instruments and is uniqueness-clean against every earlier raster -- calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar, capped at 40,000 dots by live budget evidence (IR-57-BUDGET-01).",
+  "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
+  "holdout_dti": {
+    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
+    "evaluator_version": "gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)",
+    "variant": "d_perp_par @cv_shipped_density.json",
+    "per_cell_cap_note": "run_cv density numbers are ~2x the shipped density (IR-57-SHIP-01); the shipped-density LOQO is run_sense_experiment-style at 10,000/cell (IR-57-CAP-01: per-cell share of the per-draw budget is budget/4)",
+    "withheld_positive_pixels": 22641,
+    "pooled_dti": 0.30934672912329825,
+    "ci95_quadrant_jackknife": [
+      0.26375207360285624,
+      0.35494138464374025
+    ],
+    "coverage": 0.4432697627444493,
+    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score",
+    "detached_mode_reference": {
+      "variant": "d_perp_par",
+      "label": "HOLDOUT-DTI (detached mode, run_cv density)",
+      "pooled_dti": 0.32552285076241855,
+      "ci95_quadrant_jackknife": [
+        0.2968235099947392,
+        0.3542221915300979
       ],
-      "coverage": 0.39330994588828927,
-      "n_dots": 80000
-    },
-    "strike_full": {
-      "pooled_dti": 0.19993163121246646,
-      "ci95": [
-        0.16215516979970981,
-        0.2377080926252231
-      ],
-      "coverage": 0.2959965374838719,
-      "n_dots": 80000
-    },
-    "strike_outer": {
-      "pooled_dti": 0.07161083795857068,
-      "ci95": [
-        0.050911647291100294,
-        0.09231002862604107
-      ],
-      "coverage": 0.10818383240737714,
-      "n_dots": 80000
+      "withheld_positive_pixels": 22619
     }
   },
-  "canary_max_disc_auc": {
-    "d": 0.8981422889525794,
-    "d_perp": 0.9352529207920792,
-    "d_par_abs": 0.6585115087347804,
-    "side": 0.5253055216989843,
-    "log_len": 0.5788138415925456,
-    "sin2": 0.5717240704832256,
-    "cos2": 0.5540398125794155,
-    "coherence": 0.6774667852604828,
-    "density": 0.7444468945209105
+  "correlation_overlap_full_registry": {
+    "n_unique_grid_rasters": 655,
+    "max_spearman_full_footprint": {
+      "value": 0.27506063329582336,
+      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
+    },
+    "max_jaccard": {
+      "value": 0.16173370028809167,
+      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
+    },
+    "max_dot_overlap_fwd_3px": {
+      "value": 1.0,
+      "raster": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif"
+    },
+    "n_overlap_firings_one_directional_literal_gate": 98,
+    "informational_two_sided_true_duplicates_not_a_clearance_rule": 0,
+    "unique_by_protocol_literal": false
   },
-  "canary_any_leakage": true,
-  "surface_uniqueness": {
-    "literal": "PASS",
-    "policy": "PASS",
-    "max_spearman": 0.19174391085102258,
-    "priors_checked": 16
+  "correlation_overlap_vs_registry": {
+    "n_registry_rasters": 16,
+    "rho_limit": 0.9,
+    "jaccard_limit": 0.5,
+    "overlap_limit": 0.7,
+    "worst_spearman_full_footprint": 0.2766141133066089,
+    "worst_rho_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "worst_jaccard_dot_sets": 0.16369337225646016,
+    "worst_jaccard_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "worst_dot_overlap_3px": 0.58955,
+    "worst_overlap_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
+    "unique": true
   },
-  "dots_uniqueness": {
-    "literal": "PASS",
-    "policy": "PASS",
-    "max_spearman": 0.1618898806026728,
-    "max_near_3px": 0.3461252456578318,
-    "max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "policy_max_near_3px": 0.3461252456578318,
-    "policy_max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "n_probes": 0,
-    "priors_checked": 16
-  },
-  "raster_sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
-  "raster_path": "docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
-  "validator": {
+  "raster_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+  "validator_output": {
+    "no_nan_anywhere": true,
+    "in_footprint_all_finite": true,
+    "range_0_1_guaranteed": true,
+    "crs_shape_transform_match": true,
+    "zero_dots_on_mapped_catalogue": true,
     "all_checks_passed": true,
-    "n_nan": 0,
-    "min": 0.0,
-    "max": 1.0,
-    "crs": "EPSG:32611",
-    "shape": [
-      3730,
-      3292
-    ],
-    "transform": [
-      100.0,
-      0.0,
-      243350.0,
-      0.0,
-      -100.0,
-      4508550.0
-    ],
-    "emitted_positive_pixels": 37654,
-    "on_catalogue": 0,
-    "checks": {
-      "single_band": true,
-      "dtype_float32": true,
-      "dimensions_3730x3292": true,
-      "crs_epsg_32611": true,
-      "transform_matches_sample_submission": true,
-      "no_nan_anywhere": true,
-      "no_inf_anywhere": true,
-      "no_sentinel_values": true,
-      "range_0_1_guaranteed": true,
-      "min_ge_0": true,
-      "max_le_1": true,
-      "in_footprint_all_finite": true,
-      "in_footprint_range_0_1": true,
-      "outside_footprint_zero": true,
-      "zero_dots_on_mapped_catalogue": true
+    "n_checks": 15
+  },
+  "submission_name": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb",
+  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378",
+  "submission_note_len": 123,
+  "features_used": [
+    "d",
+    "d_perp",
+    "d_par_abs"
+  ],
+  "emitted_pixels": 40000,
+  "consensus_proxy": {
+    "label": "CONSENSUS-PROXY (not a score; transfer plausibility only)",
+    "candidate_frac_in_consensus": 0.276825,
+    "random_baseline_mean": 0.1765625,
+    "enrichment_over_random": 1.5678584070796457,
+    "beats_all_random_draws": true,
+    "verdict": "consensus-enriched (transfer plausible)"
+  },
+  "sense_of_slip": {
+    "available_in_provided_database": true,
+    "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
+    "measured_log_ratio_right_over_left": 0.03920300039062278,
+    "encoded_in_shipped_file": false,
+    "tested_as_opt_in_features": true,
+    "tested_result": {
+      "per_quadrant_diff": {
+        "NW": 0.0037939165243941475,
+        "NE": 0.0055511076585393615,
+        "SW": 0.002465441253495404,
+        "SE": -0.005565574192837125
+      },
+      "mean_diff": 0.001561222810897947,
+      "sd_diff": 0.004916399388444914,
+      "n_quadrants_positive": 3,
+      "canary_clean": false,
+      "promote_rule": "positive in >=3 of 4 quadrants AND canary clean",
+      "promote": false
     }
   },
-  "live_model_kept_bins": 32,
-  "live_model_frac_pos_in_zone": 0.8052964322030152,
-  "verdict": "promote",
-  "banner": "OK TO DOWNLOAD AND SUBMIT",
-  "slot_used": false,
-  "runtime_s": 282.5,
-  "ir_57_strike_01": "fixed: finite strike is no longer zeroed in fold_geometry",
-  "submit_status": "OK_TO_SUBMIT",
-  "ok_to_submit": true,
-  "policy_ok": true,
-  "format_ok": true,
-  "sha256_novel_vs_644": true,
-  "submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
-  "submission_note": "H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat",
-  "n_dots": 37654,
-  "writer_receipt": {
-    "file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
-    "sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
-    "bytes": 134964,
-    "note": "H57-I iso_full strike-binned damage zone; fitted not textbook; 37654 dots 0 on-cat",
-    "submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
-    "zip_file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip"
+  "uniqueness_readings": {
+    "literal_one_directional_gate": {
+      "rule": ">0.70 of my dots within 3 px of ONE registry raster's dots",
+      "firings": 98,
+      "unique_by_protocol_literal": false
+    },
+    "two_sided_clearance_rule": {
+      "rule": "duplicate = forward >0.70 AND reverse >0.50 (a real copy); forward-only firings vs dense rasters = documented saturation",
+      "two_sided_true_duplicates": 0,
+      "spearman_duplicates": 0,
+      "clear": true
+    }
   },
-  "exp1": "/home/user/57GEMSDOE/evidence/exp5_structure.json",
-  "exp2": "/home/user/57GEMSDOE/evidence/exp6_holdout_strike.json",
-  "exp3": "/home/user/57GEMSDOE/evidence/exp7_holdout_outer.json",
-  "previous_holdout_best_name": "H57-G detached LOQO (same instrument, 22619 withheld)",
-  "previous_holdout_best_DTI": 0.23742257629534305,
-  "delta_vs_H57G": 0.024276246286287134,
-  "beats_previous_holdout_best": true,
-  "H57I_strike_vs_iso_delta": -0.061767191369163726,
-  "H57I_strike_result": "NEGATIVE",
-  "uniqueness_scope": "16 accessible rasters (15 registry high-scorers + previous H57-A sparse file); 644 sha256 index; covering lattices not in this inventory"
+  "owner_decision_2026_10_09": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence",
+  "verdict": "promote",
+  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
 }

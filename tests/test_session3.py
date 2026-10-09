@@ -42,7 +42,15 @@ def test_new_research_raster_is_distinct_and_fail_closed():
     assert 'DO NOT SUBMIT' in s3
     assert path.name in s3
     assert 'gems57-faultzone-anatomy-60000px' not in (ROOT/'index.html').read_text()
-    assert json.loads((ROOT/'evidence'/'run_card.json').read_text())['slot_used'] is False
+    # research annex card (session-3 design, merged 2026-10-09): the research
+    # raster's card lives in run_card_session3.json; the primary run_card.json is
+    # the shipped submission's run card (protocol rule 5)
+    card = json.loads((ROOT/'evidence'/'run_card_session3.json').read_text())
+    assert card['raster_sha256'] == ras['sha256']
+    assert card['slot_used'] is False
+    primary = json.loads((ROOT/'evidence'/'run_card.json').read_text())
+    assert primary['raster_sha256'] != ras['sha256']
+    assert primary['submission_name'].startswith('gems57-h57-lean-offset')
 
 
 def test_witnesses_are_exact_indexed_files_and_why_literal_gate_is_blocked():

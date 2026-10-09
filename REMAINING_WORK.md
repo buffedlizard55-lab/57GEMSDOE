@@ -25,6 +25,54 @@ Numbered items with an `IR-57-*` tag are cross-referenced on the
 
 ---
 
+## 0. Session-2 supersessions (2026-10-09) — read this first
+
+**Two shared-template bugs were fixed this session, and the session-1 negative result in
+item 3 is retracted.** (1) `IR-57-STRIKE-01` (this lane): an inverted NaN-fill in
+`fold_geometry` zeroed every finite strike, so `sin2`/`cos2` were constants and
+`d_perp`/`d_par_abs`/`side` were computed in a strike-0 frame. (2) The `log_len` leak
+(the parallel lane): `log_len` was the ≤ 12 px chunk length of the anchor; cut traces
+leave short end chunks, so it distinguished withheld anchors at canary AUC 0.90. It is
+now the whole-component length (displacement proxy, canary 0.55). Regression tests:
+`tests/test_anatomy.py`.
+
+* `d_perp_par` (distance + stepover + along-strike; no `log_len`) scores **0.3093
+  [0.2638, 0.3549]** at the **shipped density** (per-cell cap 10,000, LOQO, K = 22,641;
+  `evidence/cv_shipped_density.json`) — the point-estimate winner — with `d_only` 0.2181
+  and leak-free `no_side` 0.3078 (tied). At run_cv density (~2x): 0.3180 [0.2803, 0.3557]
+  (detached 0.3255). **The en echelon hypothesis is supported on the instrument**; the
+  fixed-frame enrichment peaks at ~55x base rate at stepover 0-1 px x along-strike 2-4 px.
+* The earlier `no_side` numbers (0.3270 at run_cv density) carry the `log_len` leak and
+  are optimistic; the parallel session's shipped-density `no_side` (0.2279) ran on the
+  broken strike frame. Both are superseded by the corrected row above.
+* The shipped raster `gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif`
+  is **clean of both bugs**: its model uses only `d, d_perp, d_par_abs`, fitted after the
+  strike fix. Uniqueness vs the 16-raster registry: unique (worst 3-px dot overlap 59.0%;
+  the `no_side` build measured 71.1% vs this lane's previous ship and was refused). The
+  full 655-raster scan (`evidence/uniqueness_full_shipped-h57-zeros.json`): max Spearman
+  0.275, max Jaccard 0.162, **zero two-sided true duplicates**; the literal one-directional
+  gate fires for 98 dense rasters (saturation). **Owner decision 2026-10-09 (IR-57-UNIQ-03):
+  the two-sided clearance rule is accepted** — a duplicate means a real copy (forward > 0.70
+  AND reverse > 0.50); the literal firings stay logged. Verdict: **promote / OK to submit**.
+
+**Session-2 candidate H57-G1/G2 (zone-gated geophysical corroboration) is a validated
+negative on this instrument**: `geo_only` 0.0621 [0.0478, 0.0764], `no_side_plus_geo` 0.3171
+[0.2711, 0.3631] vs `no_side` 0.3270 — it does not beat the holdout best, so per the brief it
+does not reach a submission slot. Full log:
+[`docs/research/session2_experiments.md`](docs/research/session2_experiments.md); candidates:
+[`docs/research/hypotheses_session2.md`](docs/research/hypotheses_session2.md).
+
+**Data blocker removed.** `training_features.tif` (419 MB, 19 bands) was assembled from the
+sha256-verified 6GEMSDOE bridge parts; `scripts/prepare_data.py` reports *all 8 pins verified*.
+The geophysics hypotheses (G1/G2/G3/G5) are now testable, and were tested (G1 negative above).
+`data/README.md`'s "105 bands" claim and the missing `.gitignore` entry are fixed
+(`IR-57-GEO-01`).
+
+Everything below this line is the session-1 state of knowledge, kept for context; where it
+conflicts with the numbers above, **the numbers above win**.
+
+---
+
 ## 1. The single largest limitation: the holdout does not rank live scores
 
 **This is the limitation that governs everything else.**
@@ -197,6 +245,28 @@ distance-only baseline, and a rebuild of the shipped file under the fixed code. 
 
 ---
 
+<<<<<<< HEAD
+## 9. Session-2 next steps, in order
+
+1. **Spend one submission slot on a live A/B** (limitation 1 is still the governing one): the
+   lean offset-frame raster shipped here is the A-arm; the `no_side` build (archived, 71.1%
+   overlap) is the B-arm candidate for a *differentiated* second slot only if a uniqueness-clean
+   variant can be made. One receipt answers whether the corrected en echelon geometry transfers.
+2. **H57-G4 (tip-lobe splay nucleation)** is now the best untested candidate: the registry's tip
+   lanes hold 0.2632–0.2710 live, and the fixed strike frame makes tip azimuth features
+   meaningful for the first time. Watch the drift gates (registry tip lanes occupy this space).
+3. **H57-D interaction feature** (`|sin(2Δθ)|` gated on distance) is open again now that sin2/cos2
+   carry real variance (see the hypotheses erratum). Cheap: one more CV variant.
+4. **Re-test H57-G1 against a blind-fault instrument.** The catalogue holdout cannot see blind
+   faults — the population geophysics is supposed to find. The CONSENSUS-PROXY (1.57x enriched)
+   hints the geophysical block is not worthless live; a holdout built from SGMC-off-catalogue or
+   INGENIOUS-only strands would be the right instrument.
+5. **Per-fault budget allocation** (lane brief: "per-fault intensity... shrink this lane's dot
+   budget if few withheld positives fall inside the fitted zone") is still global-greedy; a
+   per-component budget split is the last unimplemented clause of the lane paragraph.
+6. **Script smoke tests** (limitation 7) — `build_submission.py` gained two more failure modes
+   this session (unknown preset name; OOM under concurrency) and still has no test.
+=======
 ## Session 3 update (2026-10-09): H57-G and a fail-closed uniqueness blocker
 
 A new, independently inferred, length-normalized stepover **research surface** is in
@@ -239,3 +309,4 @@ slot. If changed, rerun surface and dots on *all* accessible indexed rasters;
 then validate an emitted file and seek an actual submission-page receipt. Before
 model ranking, independently check transfer of catalogue-hidden holdout to truly
 unmapped faults; previous owner-reported live ranks are weakly correlated.
+>>>>>>> origin/main

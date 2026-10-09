@@ -37,12 +37,19 @@ def _full(ctx: HoldoutContext, cell: Cell) -> np.ndarray:
     return m
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None):
-    """Feature geometry of one fold cell.  ``sense_src`` opts in to the recorded-sense
-    features (``anatomy.SENSE_FEATURES``); ``None`` keeps the shipped 9-column matrix."""
+def cell_geometry(ctx: HoldoutContext, cell: Cell, geo: dict | None = None,
+                  sense_src=None):
+    """Feature geometry of one fold cell.
+
+    ``geo`` opts in to the geophysical corroboration block
+    (:data:`gems57.geo.GEO_FEATURES`); ``sense_src`` opts in to the
+    recorded-sense features (:data:`gems57.anatomy.SENSE_FEATURES`).  Passing
+    neither keeps the shipped 9-column matrix.
+    """
     dom = _full(ctx, cell)
     g = fold_geometry(ctx.grid, ctx.visible(cell.key),
-                      ctx.hidden_by_cell[cell.key], dom, cell.key, sense_src=sense_src)
+                      ctx.hidden_by_cell[cell.key], dom, cell.key,
+                      geo=geo, sense_src=sense_src)
     return g
 
 
@@ -110,10 +117,15 @@ def canary(geoms: list, feature_names=None) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
-    names = list(FEATURES) if feature_names is None else list(feature_names)
-    if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
-        from .anatomy import SENSE_FEATURES
-        names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
+    # feature_names records the exact column order (FEATURES + opt-in sense
+    # block + opt-in geo block); the explicit feature_names argument and the
+    # width-derived fallback cover callers without FoldGeometry metadata
+    names = tuple(getattr(geoms[0], "feature_names", ())) if geoms else ()
+    if not names:
+        names = tuple(FEATURES) if feature_names is None else tuple(feature_names)
+        if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
+            from .anatomy import SENSE_FEATURES
+            names += tuple(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
     if geoms and (len(names) != geoms[0].X.shape[1] or any(g.X.shape[1] != len(names) for g in geoms)):
         raise ValueError('canary feature names must match every column; never silently mislabel a feature')
     for j, name in enumerate(names):

@@ -6,54 +6,247 @@
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav>
-<a href="index.html">Home</a>
-<a href="executive-summary.html">How to submit</a>
-<a href="method.html">Method</a>
-<a href="hypotheses.html">Hypotheses</a>
-<a href="results.html">Results</a>
-<a href="session-4.html">Latest run</a>
-<a href="irregularities.html">Irregularities</a>
-<a href="data-sources.html">Data sources</a>
-<a class="on" href="run-card.html">Run card</a>
-</nav>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-3.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="on" href="run-card.html">Run card</a></nav>
 <main>
-
 <h2>Run card</h2>
+<p>One JSON card, per parallel-run protocol rule 5. Machine-readable copy:
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
+target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
 <pre>{
-  "hypothesis": "H57-I: secondary-strand density decays with a strike-dependent damage-zone width fitted from hide-and-recover, not from textbook Riedel angles",
-  "mechanism": "Savage & Brodsky (2011) damage-zone decay, conditioned on local visible strike; bins below 2x base rate dropped",
-  "non_fault_mimic": "Regional drainage and range-front lineaments that share the Walker Lane / Basin-Range strike bins but are not faults",
-  "holdout_DTI": 0.2616988225816302,
-  "holdout_DTI_CI95": [
-    0.21586837295067493,
-    0.3075292722125854
-  ],
-  "holdout_n_withheld": 22619,
-  "previous_holdout_best_DTI": 0.23742257629534305,
-  "delta_vs_H57G": 0.024276246286287134,
-  "H57I_strike_result": "NEGATIVE",
-  "correlation_overlap_vs_registry": {
-    "literal": "PASS",
-    "policy": "PASS",
-    "max_spearman": 0.1618898806026728,
-    "max_near_3px": 0.3461252456578318,
-    "max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "policy_max_near_3px": 0.3461252456578318,
-    "policy_max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "n_probes": 0,
-    "priors_checked": 16
+  &quot;hypothesis&quot;: &quot;Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace (en echelon Riedel geometry), so a per-fault intensity built from distance and the offset frame locates fault pixels the catalogue lacks. Measured (fixed strike frame): withheld-strand enrichment peaks at ~55x base rate for cross-strike stepover 0-1 px x along-strike 2-4 px.&quot;,
+  &quot;mechanism&quot;: &quot;Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage &amp; Brodsky 2011). Operationally: a gradient-boosted intensity over the offset-frame features (d, d_perp, d_par_abs) -- the lean model, chosen because it is statistically tied with the 8-feature set on both instruments and is uniqueness-clean against every earlier raster -- calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar, capped at 40,000 dots by live budget evidence (IR-57-BUDGET-01).&quot;,
+  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (&gt;= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.&quot;,
+  &quot;holdout_dti&quot;: {
+    &quot;instrument&quot;: &quot;hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out&quot;,
+    &quot;evaluator_version&quot;: &quot;gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)&quot;,
+    &quot;variant&quot;: &quot;d_perp_par @cv_shipped_density.json&quot;,
+    &quot;per_cell_cap_note&quot;: &quot;run_cv density numbers are ~2x the shipped density (IR-57-SHIP-01); the shipped-density LOQO is run_sense_experiment-style at 10,000/cell (IR-57-CAP-01: per-cell share of the per-draw budget is budget/4)&quot;,
+    &quot;withheld_positive_pixels&quot;: 22641,
+    &quot;pooled_dti&quot;: 0.30934672912329825,
+    &quot;ci95_quadrant_jackknife&quot;: [
+      0.26375207360285624,
+      0.35494138464374025
+    ],
+    &quot;coverage&quot;: 0.4432697627444493,
+    &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;,
+    &quot;detached_mode_reference&quot;: {
+      &quot;variant&quot;: &quot;d_perp_par&quot;,
+      &quot;label&quot;: &quot;HOLDOUT-DTI (detached mode, run_cv density)&quot;,
+      &quot;pooled_dti&quot;: 0.32552285076241855,
+      &quot;ci95_quadrant_jackknife&quot;: [
+        0.2968235099947392,
+        0.3542221915300979
+      ],
+      &quot;withheld_positive_pixels&quot;: 22619
+    }
   },
-  "raster_sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
-  "validator": true,
-  "submission_name": "GEMS57-H57I-ISO-DPERP-37654",
-  "submission_note": "H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat",
-  "verdict": "promote",
-  "slot_used": false
+  &quot;correlation_overlap_full_registry&quot;: {
+    &quot;n_unique_grid_rasters&quot;: 655,
+    &quot;max_spearman_full_footprint&quot;: {
+      &quot;value&quot;: 0.27506063329582336,
+      &quot;raster&quot;: &quot;GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif&quot;
+    },
+    &quot;max_jaccard&quot;: {
+      &quot;value&quot;: 0.16173370028809167,
+      &quot;raster&quot;: &quot;GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif&quot;
+    },
+    &quot;max_dot_overlap_fwd_3px&quot;: {
+      &quot;value&quot;: 1.0,
+      &quot;raster&quot;: &quot;17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;
+    },
+    &quot;n_overlap_firings_one_directional_literal_gate&quot;: 98,
+    &quot;informational_two_sided_true_duplicates_not_a_clearance_rule&quot;: 0,
+    &quot;unique_by_protocol_literal&quot;: false
+  },
+  &quot;correlation_overlap_vs_registry&quot;: {
+    &quot;n_registry_rasters&quot;: 16,
+    &quot;rho_limit&quot;: 0.9,
+    &quot;jaccard_limit&quot;: 0.5,
+    &quot;overlap_limit&quot;: 0.7,
+    &quot;worst_spearman_full_footprint&quot;: 0.2766141133066089,
+    &quot;worst_rho_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
+    &quot;worst_jaccard_dot_sets&quot;: 0.16369337225646016,
+    &quot;worst_jaccard_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
+    &quot;worst_dot_overlap_3px&quot;: 0.58955,
+    &quot;worst_overlap_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
+    &quot;dot_union_rho_note&quot;: &quot;reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01&quot;,
+    &quot;unique&quot;: true
+  },
+  &quot;raster_sha256&quot;: &quot;9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad&quot;,
+  &quot;validator_output&quot;: {
+    &quot;no_nan_anywhere&quot;: true,
+    &quot;in_footprint_all_finite&quot;: true,
+    &quot;range_0_1_guaranteed&quot;: true,
+    &quot;crs_shape_transform_match&quot;: true,
+    &quot;zero_dots_on_mapped_catalogue&quot;: true,
+    &quot;all_checks_passed&quot;: true,
+    &quot;n_checks&quot;: 15
+  },
+  &quot;submission_name&quot;: &quot;gems57-h57-lean-offset-20261009T181740Z-468b837801cb&quot;,
+  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378&quot;,
+  &quot;submission_note_len&quot;: 123,
+  &quot;features_used&quot;: [
+    &quot;d&quot;,
+    &quot;d_perp&quot;,
+    &quot;d_par_abs&quot;
+  ],
+  &quot;emitted_pixels&quot;: 40000,
+  &quot;consensus_proxy&quot;: {
+    &quot;label&quot;: &quot;CONSENSUS-PROXY (not a score; transfer plausibility only)&quot;,
+    &quot;candidate_frac_in_consensus&quot;: 0.276825,
+    &quot;random_baseline_mean&quot;: 0.1765625,
+    &quot;enrichment_over_random&quot;: 1.5678584070796457,
+    &quot;beats_all_random_draws&quot;: true,
+    &quot;verdict&quot;: &quot;consensus-enriched (transfer plausible)&quot;
+  },
+  &quot;sense_of_slip&quot;: {
+    &quot;available_in_provided_database&quot;: true,
+    &quot;source&quot;: &quot;data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02&quot;,
+    &quot;measured_log_ratio_right_over_left&quot;: 0.03920300039062278,
+    &quot;encoded_in_shipped_file&quot;: false,
+    &quot;tested_as_opt_in_features&quot;: true,
+    &quot;tested_result&quot;: {
+      &quot;per_quadrant_diff&quot;: {
+        &quot;NW&quot;: 0.0037939165243941475,
+        &quot;NE&quot;: 0.0055511076585393615,
+        &quot;SW&quot;: 0.002465441253495404,
+        &quot;SE&quot;: -0.005565574192837125
+      },
+      &quot;mean_diff&quot;: 0.001561222810897947,
+      &quot;sd_diff&quot;: 0.004916399388444914,
+      &quot;n_quadrants_positive&quot;: 3,
+      &quot;canary_clean&quot;: false,
+      &quot;promote_rule&quot;: &quot;positive in &gt;=3 of 4 quadrants AND canary clean&quot;,
+      &quot;promote&quot;: false
+    }
+  },
+  &quot;uniqueness_readings&quot;: {
+    &quot;literal_one_directional_gate&quot;: {
+      &quot;rule&quot;: &quot;&gt;0.70 of my dots within 3 px of ONE registry raster&#x27;s dots&quot;,
+      &quot;firings&quot;: 98,
+      &quot;unique_by_protocol_literal&quot;: false
+    },
+    &quot;two_sided_clearance_rule&quot;: {
+      &quot;rule&quot;: &quot;duplicate = forward &gt;0.70 AND reverse &gt;0.50 (a real copy); forward-only firings vs dense rasters = documented saturation&quot;,
+      &quot;two_sided_true_duplicates&quot;: 0,
+      &quot;spearman_duplicates&quot;: 0,
+      &quot;clear&quot;: true
+    }
+  },
+  &quot;owner_decision_2026_10_09&quot;: &quot;owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence&quot;,
+  &quot;verdict&quot;: &quot;promote&quot;,
+  &quot;verdict_scope&quot;: &quot;eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above.&quot;
 }</pre>
-
+<h2>How to read it</h2>
+<ul>
+<li><b>holdout_dti</b> is a <span class="tag hold">HOLDOUT-DTI</span> reading. It is <b>not</b> a
+projected live score, and no live score is claimed anywhere in this repository.</li>
+<li><b>verdict</b> is <code>promote</code> only if the validator passes every check <i>and</i> the
+uniqueness screen is clear. Promotion to an actual weekly slot is a separate selector step and is
+not done here.</li>
+<li><b>owner_decision_2026_10_09</b> records the accepted two-sided clearance rule
+(<code>IR-57-UNIQ-03</code>): duplicate = real copy. The literal one-directional firings stay
+logged in the full-registry evidence.</li>
+</ul>
+<h2>Annex - research run card (session 3, width-normalized surface, DO NOT SUBMIT)</h2><p>Machine-readable: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_session3.json"><code>evidence/run_card_session3.json</code></a>. Context: <a href="session-3.html">session-3 page</a>.</p><pre>{
+  &quot;hypothesis&quot;: &quot;H57-G: sqrt(length)-normalized cross-strike stepover&quot;,
+  &quot;mechanism&quot;: &quot;Damage-zone width may grow with fault displacement; connected visible-component length is only a noisy displacement proxy.&quot;,
+  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Map-trace fragmentation and mapping effort, not actual displacement.&quot;,
+  &quot;holdout_dti&quot;: {
+    &quot;label&quot;: &quot;HOLDOUT-DTI (not an organizer score)&quot;,
+    &quot;evaluator_version&quot;: &quot;gems52-pooled-hide-v1 repaired (metric.max_cover, pixel-exact mask), gems57 LOQO pooled/quadrant-jackknife&quot;,
+    &quot;withheld_positive_pixels&quot;: 22619,
+    &quot;pooled&quot;: 0.23742257629534305,
+    &quot;ci95_quadrant_jackknife&quot;: [
+      0.20147621833615273,
+      0.2733689342545334
+    ],
+    &quot;baseline_same_mode_and_budget&quot;: 0.23587476580727823,
+    &quot;delta&quot;: 0.0015478104880648214
+  },
+  &quot;correlation_overlap_vs_registry&quot;: {
+    &quot;surface_witnesses&quot;: [
+      {
+        &quot;source&quot;: &quot;/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif&quot;,
+        &quot;sha256&quot;: &quot;c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f&quot;,
+        &quot;prior_coverage_of_eligible_3px&quot;: 0.9987243421716145,
+        &quot;candidate_surface_positive_3px_overlap&quot;: 0.9987243421716145,
+        &quot;prior_nonzero&quot;: 206895
+      },
+      {
+        &quot;source&quot;: &quot;/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;,
+        &quot;sha256&quot;: &quot;ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be&quot;,
+        &quot;prior_coverage_of_eligible_3px&quot;: 1.0,
+        &quot;candidate_surface_positive_3px_overlap&quot;: 1.0,
+        &quot;prior_nonzero&quot;: 5167373
+      }
+    ],
+    &quot;surface_rank_vs_witnesses&quot;: [
+      {
+        &quot;source&quot;: &quot;/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif&quot;,
+        &quot;spearman&quot;: -0.0001280785867744352
+      },
+      {
+        &quot;source&quot;: &quot;/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;,
+        &quot;spearman&quot;: 0.60017972098096
+      }
+    ],
+    &quot;sha256_distinct_from_full_index&quot;: true,
+    &quot;full_final_dot_comparison&quot;: &quot;NOT RUN; stopped before placement after surface gate&quot;,
+    &quot;scope&quot;: &quot;Full sha256 index only; two pinned overlap witnesses suffice to fail the literal gate.&quot;
+  },
+  &quot;raster_sha256&quot;: &quot;07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92&quot;,
+  &quot;validator_output&quot;: {
+    &quot;checks&quot;: {
+      &quot;single_band&quot;: true,
+      &quot;dtype_float32&quot;: true,
+      &quot;dimensions_3730x3292&quot;: true,
+      &quot;crs_epsg_32611&quot;: true,
+      &quot;transform_matches_sample_submission&quot;: true,
+      &quot;no_nan_anywhere&quot;: true,
+      &quot;no_inf_anywhere&quot;: true,
+      &quot;no_sentinel_values&quot;: true,
+      &quot;range_0_1_guaranteed&quot;: true,
+      &quot;min_ge_0&quot;: true,
+      &quot;max_le_1&quot;: true,
+      &quot;in_footprint_all_finite&quot;: true,
+      &quot;in_footprint_range_0_1&quot;: true,
+      &quot;outside_footprint_zero&quot;: true,
+      &quot;zero_dots_on_mapped_catalogue&quot;: true
+    },
+    &quot;all_checks_passed&quot;: true,
+    &quot;nan_cells&quot;: 0,
+    &quot;min&quot;: 0.0,
+    &quot;max&quot;: 0.7376705408096313,
+    &quot;crs_shape_transform&quot;: {
+      &quot;crs&quot;: &quot;EPSG:32611&quot;,
+      &quot;shape&quot;: [
+        3730,
+        3292
+      ],
+      &quot;dtype&quot;: &quot;float32&quot;,
+      &quot;count&quot;: 1,
+      &quot;nodata&quot;: null,
+      &quot;transform&quot;: [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      &quot;profile_compress&quot;: &quot;lzw&quot;
+    }
+  },
+  &quot;submission_name&quot;: &quot;gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT&quot;,
+  &quot;submission_note&quot;: &quot;H57-G width-scaled stepover; research only: strict overlap gate failed; DO NOT SUBMIT&quot;,
+  &quot;verdict&quot;: &quot;negative: research surface only; DO NOT SUBMIT; literal overlap gate fails&quot;,
+  &quot;slot_used&quot;: false,
+  &quot;note_2026_10_09&quot;: &quot;owner accepted the two-sided clearance rule (IR-57-UNIQ-03) for real-copy duplicates; this research raster remains diagnostics-only regardless&quot;
+}</pre>
 </main>
-<footer>Generated 2026-10-09 20:27 UTC by <code>scripts/build_site_session4.py</code> from <code>evidence/*.json</code>.
-Every number is a measurement. <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<footer>Generated 2026-10-09 20:57 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Every number on this site is read from a measurement file at build time.
+<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>
