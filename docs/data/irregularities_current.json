@@ -155,6 +155,18 @@
         "evidence/run_card_legacy_width.json"
       ],
       "remaining": "H57-G has different meanings in historical sessions; use full method descriptions/filenames/hashes. Unmerged PRs are inventoried but not merged or closed by this session."
+    },
+    {
+      "id": "IR-57-SUBMIT-CLAIM-01",
+      "severity": "critical",
+      "status": "withdrawn; historical bytes preserved",
+      "finding": "Concurrent PR #12 advertised H57-I as OK TO SUBMIT using 16 priors, despite the literal dense17 blocker. Its fitted-zone experiment is not the current buffered v2 instrument.",
+      "resolution": "Retain canonical TIFF/ZIP and original raw card for learning. Move SUBMIT-THIS aliases to archive; replace positive banners/cards with current negative card; direct measurement of the historical TIFF gives literal forward overlap 1.0.",
+      "evidence": [
+        "evidence/h57i_clearance_withdrawal.json",
+        "evidence/run_card_legacy_h57i.json"
+      ],
+      "remaining": "No real slot was used here. Corrected-strike historical readings still do not establish improvement on current buffered controls."
     }
   ]
 }

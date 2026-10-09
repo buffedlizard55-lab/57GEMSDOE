@@ -63,6 +63,8 @@ def check(root=ROOT):
     assert card['submission_note_chars']==len(card['submission_note'])
     raster=root/card['file'];archive=root/card['zip_file']
     digest=hashlib.sha256(raster.read_bytes()).hexdigest()
+    for source in (raster, archive, raster.with_suffix('.json')):
+        assert (root/'downloads'/source.name).read_bytes()==source.read_bytes(), 'legacy/root mirror is stale'
     assert digest==card['raster_sha256'],'TIFF changed after its audit'
     receipt=json.loads(raster.with_suffix('.json').read_text())
     assert digest==receipt['sha256'] and receipt['approved_for_weekly_slot'] is False

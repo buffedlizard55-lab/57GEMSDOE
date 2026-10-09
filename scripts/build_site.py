@@ -146,7 +146,7 @@ def build(root=ROOT, make_preview=True):
     for name in PUBLIC:
         shutil.copyfile(root / 'evidence' / f'{name}.json', data / f'{name}.json')
     shutil.copyfile(root / 'evidence/run_card_current.json', data / 'run_card.json')
-    for name in ['feed_refresh_status', 'review_passes', 'sibling_page_reviews', 'browser_qa', 'registry_concurrent_extension', 'registry_open_pr_extension', 'uniqueness_current_review', 'uniqueness_concurrent_extension', 'uniqueness_open_pr_extension']:
+    for name in ['feed_refresh_status', 'review_passes', 'sibling_page_reviews', 'browser_qa', 'registry_concurrent_extension', 'registry_open_pr_extension', 'uniqueness_current_review', 'uniqueness_concurrent_extension', 'uniqueness_open_pr_extension', 'registry_h57i_extension', 'uniqueness_h57i_extension']:
         source = root / 'evidence' / f'{name}.json'
         if source.exists():
             shutil.copyfile(source, data / source.name)
@@ -259,7 +259,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientatio
              'hypotheses.html': ('Hypotheses', hypotheses), 'research.html': ('Research', research),
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
-             'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive)}
+             'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive)}
     for filename, (title, body) in pages.items():
         (docs / filename).write_text(page(title, body, filename, stamp))
     # Preserve the old /docs/index.html URL after switching to artifact-based Pages.
@@ -268,6 +268,14 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientatio
     for filename in pages:
         (aliases / filename).write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../{filename}"><title>57GEMSDOE · moved</title></head><body><p>Research release HOLD; not cleared for submission. <a href="../{filename}">Open current page</a>.</p></body></html>')
     (docs / '.nojekyll').touch()
+    # Mirror this current release only for the existing main-root Pages layout.
+    # Artifact deployment still serves docs/ directly. These are identical delivery
+    # bytes, not new predictions or copied prior submissions.
+    for suffix in ('.tif', '.zip', '.json'):
+        source = (root / card['file']).with_suffix(suffix)
+        target = root / 'downloads' / source.name
+        target.parent.mkdir(exist_ok=True)
+        shutil.copyfile(source, target)
     print(f'Built {len(pages)} evidence-led pages. Download OK; submission HOLD. No model run or slot used.')
     return card
 

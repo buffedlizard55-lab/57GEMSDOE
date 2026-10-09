@@ -346,28 +346,27 @@
     },
     {
       "repo": "57GEMSDOE",
-      "commit": "803052f483923a8f09a7ea04934e76c334d27ac7",
+      "commit": "d6e7675ede4417cfb6cfdedb52620a1b596e6231",
       "website": "https://buffedlizard55-lab.github.io/57GEMSDOE/",
       "review_scope": "Pinned homepage content/link review, NOT code reproduction or organizer score confirmation",
       "status": "retrieved",
       "path": "docs/index.html",
-      "source_url": "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/803052f483923a8f09a7ea04934e76c334d27ac7/docs/index.html",
-      "html_sha256": "f17c434a461ae53e444204eb6dbc8c42230b699b07cb88f51fa34a83ca8889e8",
-      "bytes": 9982,
-      "title": "57GEMSDOE \u2014 DOE GEMS Prize Competition Submission",
+      "source_url": "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/d6e7675ede4417cfb6cfdedb52620a1b596e6231/docs/index.html",
+      "html_sha256": "095ba4a62bbf06e71107e40b7cf2cff5363b21efd054d3f262e7d8417f5e9f4d",
+      "bytes": 6175,
+      "title": "57GEMSDOE \u2014 OK TO SUBMIT \u00b7 57GEMSDOE",
       "headings": [
-        "57GEMSDOE",
-        "\u2b07 Download Submission File",
-        "Model Summary",
-        "Documentation",
-        "Previous Submission Files",
-        "Core Values",
-        "Competition Links (Verified Official Sources)"
+        "57GEMSDOE \u2014 fault-zone-anatomy lane",
+        "OK TO DOWNLOAD AND SUBMIT",
+        "What this file is",
+        "Why 0.2778 scored high, and whether we can beat it",
+        "Validator receipt",
+        "HOLDOUT-DTI (detached, 22,619 withheld positives, evaluator gems52-pooled-hide-v1 repaired)"
       ],
       "linked_rasters_or_zips": [
-        "downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-        "downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif",
-        "downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif"
+        "downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
+        "downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
+        "downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip"
       ],
       "receipt_verified": false
     },
@@ -1739,5 +1738,5 @@
       "receipt_verified": false
     }
   ],
-  "concurrent_main_extension_utc": "2026-10-09T20:41:54.011490+00:00"
+  "concurrent_main_extension_utc": "2026-10-09T21:06:57.362073+00:00"
 }

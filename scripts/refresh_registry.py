@@ -79,9 +79,16 @@ def fetch_blob(record, cache):
 def refresh(root=ROOT, workers=4):
     cache = root / '.cache/registry'
     cache.mkdir(parents=True, exist_ok=True)
-    old_path = root / 'evidence/registry_full_index.json'
-    old = json.loads(old_path.read_text()) if old_path.exists() else {'rasters': []}
-    by_blob = {r['blob']: {**r, 'sources': list(r['sources'])} for r in old['rasters']}
+    by_blob = {}
+    for old_path in (root / 'evidence/registry_full_index.json', root / 'evidence/registry_refreshed.json'):
+        if not old_path.exists():
+            continue
+        for record in json.loads(old_path.read_text()).get('rasters', []):
+            blob = record['blob']
+            if blob in by_blob:
+                by_blob[blob]['sources'] = sorted(set(by_blob[blob]['sources'] + record['sources']))
+            else:
+                by_blob[blob] = {**record, 'sources': list(record['sources'])}
     snapshots, errors, excluded, reviews = [], [], [], []
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(get_tree, r): r for r in REPOS}

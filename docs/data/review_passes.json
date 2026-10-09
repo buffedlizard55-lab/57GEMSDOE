@@ -1,5 +1,5 @@
 {
-  "status": "in progress: final delivery checks pending",
+  "status": "three local implementation/review passes complete",
   "passes": [
     {
       "pass_number": 1,
@@ -13,10 +13,31 @@
     },
     {
       "pass_number": 3,
-      "scope": "Retired legacy bypasses; static/browser/byte delivery checks and CI",
-      "status": "pending"
+      "scope": "Literal gate refactor, 679 exact checks including linked PRs; withdraw partial 16-prior H57-I promotion; retire unsafe generators; full 26-page byte/link QA; Chromium desktop/mobile; original standing request and scientific caveats",
+      "status": "complete",
+      "tests": "72 passed after both concurrent-main integrations"
     }
   ],
   "experiments": 3,
-  "slots_used": 0
+  "slots_used": 0,
+  "completed_utc": "2026-10-09T21:06:57.362073+00:00",
+  "production_final_dots": 0,
+  "final_local_tests": {
+    "passed": 72,
+    "warnings": 9,
+    "junit": "evidence/tests-final.xml"
+  },
+  "static_delivery_checks": {
+    "html_pages": 26,
+    "zip_exactly_one_tiff": true,
+    "local_format": true,
+    "root_and_docs_mirrors_identical": true
+  },
+  "registry_rasters_checked": 679,
+  "github_ci": {
+    "first_run_id": 37989482527,
+    "first_run_conclusion": "success",
+    "final_head_verification": "pending on push"
+  },
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
 }

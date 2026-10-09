@@ -7,8 +7,8 @@
   "rho_limit": 0.9,
   "overlap_limit": 0.7,
   "jaccard_limit": 0.5,
-  "registry_rasters_expected": 678,
-  "registry_rasters_checked": 678,
+  "registry_rasters_expected": 679,
+  "registry_rasters_checked": 679,
   "complete_accessible_scan": true,
   "missing_or_invalid": 0,
   "source_errors": [],
@@ -11548,6 +11548,23 @@
       "duplicate_by_rho": false,
       "duplicate_by_overlap": false,
       "duplicate_by_jaccard": false
+    },
+    {
+      "repo": "57GEMSDOE",
+      "submission": "57GEMSDOE:docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
+      "file": "/home/user/57GEMSDOE/.cache/registry/2a266668251f1f2f1013972329f484886e3b412a.tif",
+      "sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
+      "decoded_sha256": "5e393d50e59acf4d5a225291fa02bfa154888125234d12fc0d9ccaa2ca9e1894",
+      "their_dots": 37654,
+      "my_dots_within_3px_of_theirs": 0.10443701117899767,
+      "their_dots_within_3px_of_mine": 0.8599617570510437,
+      "spearman_full_footprint": 0.06280788088915713,
+      "jaccard_dot_sets": 0.01157300641274655,
+      "identical_bytes": false,
+      "identical_decoded_predictions": false,
+      "duplicate_by_rho": false,
+      "duplicate_by_overlap": false,
+      "duplicate_by_jaccard": false
     }
   ],
   "verdict": "negative",
@@ -11555,7 +11572,7 @@
   "candidate_rank_variation": true,
   "scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.",
   "phase": "surface",
-  "reviewed_utc": "2026-10-09T20:48:35.078230+00:00",
+  "reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
   "submission_slots_used": 0,
-  "aggregation": "Disjoint SHA256-pinned 670-raster full repeat + four concurrent-main files + four open-PR files. All exact shared-gate outputs, no new model/placement."
+  "aggregation": "Disjoint SHA256-pinned 670-raster full repeat + four concurrent-main files + four open-PR files. All exact shared-gate outputs, no new model/placement. + one later H57-I distinct file; submit aliases share its SHA256."
 }

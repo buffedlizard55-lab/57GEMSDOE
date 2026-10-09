@@ -34,7 +34,7 @@ Start with the repaired strike field and whole-component context buffer, recompu
 
 ## 5. Registry/site maintenance
 
-The audited 678-grid-raster union comprises 674 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
+The audited 679-grid-raster union comprises 675 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
 
 The Pages feed updates public-board **context** without submitting. It exposes cached/stale and failed-refresh status. It cannot read authenticated team slots or private scores. Keep metadata/hashes and accessible links tested; update the standing request at the start of each session.
 
@@ -43,3 +43,19 @@ The Pages feed updates public-board **context** without submitting. It exposes c
 Review the [official rules](https://docs.nlr.gov/docs/fy26osti/96647.pdf), entrant eligibility, external-data licenses and required reproducibility materials. The published cap is three submissions per week; only the logged-in page establishes remaining team capacity. AI-assisted code/analysis must be disclosed in finalist narrative materials; authorship and accuracy remain the entrant's responsibility.
 
 **Maximize P(Win):** better evidence, not slot-burning A/B claims or a fabricated forecast. **Own the Outcome:** maintain the complete negative receipt and fix provenance/method gaps before any promotion.
+
+## 7. Pages administration / network limits
+
+The integration can push this working branch and merge its PR, but changing
+Pages settings returned HTTP 403 (repository administration scope). Existing
+Pages uses main-root. Identical current TIFF/ZIP/JSON mirrors at `downloads/`
+and the root-to-docs redirect support both legacy and custom artifact layouts.
+The scheduled workflow refreshes public context on the runner, retaining cache
+on errors; custom deployment is checked separately. GitHub run-log downloads
+redirect to an egress-blocked host; check/run status APIs remain accessible.
+Do not request/store tokens to work around these limits.
+
+The current relative magnetic orientation uses axial cos2, not signed angular
+handedness; normal versus unavailable sense is not fully separated. Testing
+those interactions needs a new declared experiment. No broad rejection of
+fault-zone mechanics is claimed.
