@@ -101,9 +101,10 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
   ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
   * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
   * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
-    literal rule treats this as drift. The file lists only 50 of the 114 firings.
-  * The reverse-overlap reading (below 0.5 for every itemized firing) would clear it,
-    but that exemption is **not in the protocol**. It needs an owner decision.
+    literal rule treats this as drift. The current evidence file lists all 114 firings.
+  * The reverse-overlap reading (below 0.5 for every firing) is informational only;
+    it cannot clear the literal gate. A change to that gate would require an explicit
+    protocol revision, not an inference from this diagnostic.
   * An earlier version of the script called the file UNIQUE using that exemption.
     The verdict has been corrected (`IR-57-UNIQ-02`).
 * **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
