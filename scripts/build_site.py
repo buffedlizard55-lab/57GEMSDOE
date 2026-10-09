@@ -369,6 +369,46 @@ def exec_ok_card() -> str:
             '2026-10-09 that saturation is documented, not blocking (IR-57-UNIQ-03). Both readings are '
             'shown on <a href="results.html">results</a>.</div>')
 
+
+def parallel_candidates() -> str:
+    """Other sessions' candidate rasters, reported from their own evidence files."""
+    rows = []
+    meta = [
+        ("gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif",
+         "run_card_session4_tight25k.json", "H57-L tight 25k-dot budget"),
+        ("gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif",
+         "run_card_session4_interaction.json", "H57-K multi-fault interaction zone"),
+        ("h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif",
+         "selective_dots_submission.json", "H57 selective 40k dots (top-probability)"),
+        ("h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
+         "continuous_surface_submission.json", "H57 continuous probability surface (NOT binary dots)"),
+        ("gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif",
+         "exp4_width.json", "H57-G width-normalized surface (research only)"),
+    ]
+    for fname, ev, desc in meta:
+        e = load(ev) or {}
+        v = str(e.get("verdict", "see evidence"))
+        u = e.get("uniqueness") or {}
+        uq = (f"rho {u.get('worst_rho', 0):.3f} / jac {u.get('worst_jaccard', 0):.3f} / "
+              f"ovl {u.get('worst_overlap', 0):.3f}") if u else "not stated in evidence"
+        rows.append(f'<tr><td><code>{esc(fname)}</code></td><td>{esc(desc)}</td>'
+                    f'<td>{esc(v[:60])}</td><td class="n">{esc(uq)}</td>'
+                    f'<td><code>{esc(ev)}</code></td></tr>')
+    return f"""
+<h2>Candidates from parallel sessions (each with its own evidence)</h2>
+<p class="muted">The primary download above is this lane's lean offset-frame raster: it is the
+candidate with the owner-accepted two-sided uniqueness clearance (IR-57-UNIQ-03), the
+shipped-density LOQO measurement, and the consensus-proxy check. The rasters below were
+produced by other sessions working the same repository; they are listed so nothing is hidden.
+Each is judged only by its own evidence file. None of them replaces the primary download
+unless the selector says so.</p>
+<table>
+<tr><th>File</th><th>What it is</th><th>Its own verdict</th><th class="n">Its own uniqueness check</th><th>Evidence</th></tr>
+{"".join(rows)}
+</table>
+"""
+
+
 def build_exec(build) -> str:
     build = build or {}
     z = build.get("zeros_tif") or {}
@@ -439,6 +479,7 @@ measured across twelve live submissions in the sibling repository is
 See <a href="results.html">Results</a> and
 <a href="run-card.html">Run card</a>.</p>
 </div>
+{parallel_candidates()}
 """
 
 
