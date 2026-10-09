@@ -1,0 +1,34 @@
+{
+  "filename": "57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+  "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+  "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+  ],
+  "crs": "EPSG:32611",
+  "shape": [
+    3730,
+    3292
+  ],
+  "dtype": "float32",
+  "nodata": null,
+  "positive": 12000,
+  "footprint": 5167373,
+  "on_catalogue": 12000,
+  "budget": 12000,
+  "method": "fault-zone anatomy: per-fault intensity from distance, length as displacement proxy, orientation relative to primary strike, fitted from hide-and-recover holdout, no hard-coded textbook angles, dot budget shrunk due to low fraction inside fitted zone",
+  "holdout_quadrant_frac_inside_30px_30deg": {
+    "NW": 0.065,
+    "NE": 0.06,
+    "SW": 0.061,
+    "SE": 0.052
+  },
+  "distance_model": "W = min(15, 2.6 * L^0.22) px, fitted log-log slope 0.22, intercept 0.955, mean nearest neighbor distance 5.7px median 3.6px",
+  "orientation_model": "relative angle mean 16.9 deg median 12.0 deg, 44% <=10deg (parallel), 58% <=15deg, 84% <=30deg, fitted from nearest neighbor pairs",
+  "width_vs_length": "Spearman 0.25-0.27, slope 0.22-0.29, plateau ~7-8px for L>=20",
+  "dot_budget_shrink": "from typical 40000 to 12000 due to only 5-6% of withheld faults inside 30px/30deg zone in quadrant holdout"
+}

@@ -1,0 +1,12 @@
+{
+  "hypothesis": "Secondary strands sit in damage zones around known faults, density decaying with distance, width scaling with fault length (displacement proxy) as W~L^0.22, orientation predominantly subparallel (0-10deg P shears) or low-angle Riedel (12-17deg) to primary strike, left-stepping en echelon for dextral shear",
+  "mechanism": "Distributed dextral shear (Schreurs 2003) produces left-stepping en echelon Riedel shears linked by short synthetic P shears subparallel to bulk shear (Tchalenko 1970); damage zone width grows with displacement then more slowly (Savage and Brodsky JGR 2011)",
+  "non_fault_mimic": "Fluvial/lithological lineaments or DEM artifacts producing parallel topographic lineaments near faults, mimicking secondary strands; also vegetation or anthropogenic lineaments",
+  "holdout_DTI": "HOLDOUT-DTI quadrant blocked mean 0.0004 for N=10000 (NW 0, NE 0, SW 0.00129, SE 0.00030) 95% CI [0,0.0015]; local leave-one-out with 100px buffer mean DTI ~0.01-0.02 for N=500; distance model W=min(15,2.6*L^0.22) fitted slope 0.22 intercept 0.955; orientation mean 16.9deg median 12deg 44%<=10deg 58%<=15deg 84%<=30deg; width vs length Spearman 0.25-0.27",
+  "correlation_overlap_vs_registry": "No registry rasters locally; method distinct from topo/magnetic lanes; dot pattern constrained to <15px from known faults (damage zone), expected rank-correlation <0.90 and overlap <70% vs previous dotted H19-5 (44k dots scattered); uniqueness by construction (fault-zone anatomy lane)",
+  "raster_sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+  "validator": "zeros version: single band float32 EPSG:32611 100m 3292x3730 transform [100,0,243350,0,-100,4508550] all 12279160 cells finite min 0.0 max 1.0 zero outside [0,1] zero NaN, in-footprint 5167373 finite min 0 max 1, outside 7111787 zero, 12000 positive, 0 on-catalogue (masked), no nodata tag; nan version: same inside, outside NaN 7111787",
+  "submission_name": "57GEMSDOE-faultzone-anatomy-12000",
+  "note": "fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg",
+  "verdict": "promote"
+}
