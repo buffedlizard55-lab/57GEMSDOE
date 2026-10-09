@@ -108,7 +108,7 @@ def canary(geoms: list, feature_names=None) -> dict:
         from .anatomy import SENSE_FEATURES
         names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
     if any(g.X.shape[1] != len(names) for g in geoms):
-        raise ValueError('canary requires a name for every feature column')
+        raise ValueError('canary feature names must match every feature column')
     for j, name in enumerate(names):
         aucs = []
         for g in geoms:
@@ -137,7 +137,7 @@ def canary(geoms: list, feature_names=None) -> dict:
 
 def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
              *, max_dots: int = 120_000, floor: float = 0.015,
-             cols: list[int] | None = None, g=None) -> dict:
+             cols: list[int] | None = None, g=None, shared_evaluator: bool = False) -> dict:
     """Predict, allocate and score one fold cell."""
     own_g = g is None
     if own_g:
@@ -151,6 +151,16 @@ def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
     # score on the crop
     res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
                      valid=cell.active)
+    if shared_evaluator:
+        from .evaluate_holdout import evaluate
+        shared, _ = evaluate(emitted_full[cell.bbox].astype(np.float32),
+                             {'region': cell.active, 'truth': _truth_crop(ctx, cell),
+                              'visible': ctx.visible(cell.key)[cell.bbox]},
+                             cell.active, block_side=200)
+        np.testing.assert_allclose([shared['tpw'], shared['fpw'], shared['fnw'], shared['dti']],
+                                   [res['tp'], res['fp'], res['fn'], res['dti']], atol=2e-4, rtol=1e-6)
+        res = dict(dti=shared['dti'], coverage=shared['tpw']/cell.n_truth,
+                   tp=shared['tpw'], fp=shared['fpw'], fn=shared['fnw'])
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
         "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],

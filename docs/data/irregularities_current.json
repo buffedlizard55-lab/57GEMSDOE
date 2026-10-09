@@ -142,6 +142,19 @@
         "evidence/orientation_structure.json"
       ],
       "remaining": "The nonlinear preview is not a probability color calibration or a truth/vent map."
+    },
+    {
+      "id": "IR-57-CONCURRENT-01",
+      "severity": "high",
+      "status": "integrated; later artifacts preserved for learning",
+      "finding": "Four additional distinct TIFFs reached public main during this session and four more were available in linked open PR #6. Current main still had the zero-strike bug; its mechanism claims are not validated by the current instrument.",
+      "resolution": "Merge current main into this fixed working branch without replacing its artifacts. Preserve historical raw cards, retire unsafe legacy generation, add all eight new SHA-pinned priors to the exact gate, keep current card negative and make the generic card current.",
+      "evidence": [
+        "evidence/registry_concurrent_extension.json",
+        "evidence/registry_open_pr_extension.json",
+        "evidence/run_card_legacy_width.json"
+      ],
+      "remaining": "H57-G has different meanings in historical sessions; use full method descriptions/filenames/hashes. Unmerged PRs are inventoried but not merged or closed by this session."
     }
   ]
 }

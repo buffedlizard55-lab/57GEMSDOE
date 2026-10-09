@@ -1,7 +1,7 @@
 {
   "evidence_class": "REGISTRY-CLASSIFICATION",
-  "grid_rasters_checked": 670,
-  "prediction_or_conservative_ambiguous_rasters": 666,
+  "grid_rasters_checked": 678,
+  "prediction_or_conservative_ambiguous_rasters": 674,
   "auxiliary_inputs": 4,
   "auxiliary_records": [
     {
@@ -63,6 +63,6 @@
       "classification": "bridge existing-fault catalogue, not a model prediction"
     }
   ],
-  "audit_semantics": "All 670 grid rasters were checked, conservatively including four grandfathered auxiliary inputs. No known prediction was removed, no candidate threshold was changed; the dense17 universal blocker and 77 duplicate flags still apply. Future audits should label inputs separately, not discard ambiguous predictions by substring.",
-  "scope": "Historical pinned inventory union latest public main trees including this repository; inaccessible/private/unlinked rasters cannot be certified."
+  "audit_semantics": "All 678 grid rasters checked, conservatively including four grandfathered auxiliary inputs; 78 comparisons fire. Eight additional distinct files from concurrent main/open PRs were added without changing thresholds. Dense17 still blocks every nonempty allowed candidate.",
+  "scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified."
 }

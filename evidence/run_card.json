@@ -1,84 +1,150 @@
 {
-  "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.",
-  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the eight shipped catalogue-geometry features (side dropped), calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.",
-  "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
+  "hypothesis": "A candidate magnetic edge\u2019s strike relative to its nearest visible fault, conditioned on distance and host length, predicts missing secondary strands better than a catalogue-only halo.",
+  "mechanism": "Label-independent TMI derivatives supply an axial candidate tangent. Visible-only host geometry and an empirical training-distance zone drive a fitted intensity; textbook shear angles are not imposed.",
+  "named_non_fault_process_that_could_mimic_it": "Magnetized dikes, lithologic contacts and east-west flight-line leveling residuals may form magnetic edges without fault displacement.",
   "holdout_dti": {
-    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out, per-cell cap 10,000 (shipped density), features = shipped 8 (side dropped)",
-    "evaluator_version": "gems57 pooled DTI, scripts/run_sense_experiment.py",
-    "withheld_positive_pixels": 22641,
-    "pooled_dti": 0.2279081739637539,
-    "ci95_quadrant_jackknife": [
-      0.18673527927748879,
-      0.269081068650019
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.023203075374027337,
+    "ci95": [
+      0.018777925030160507,
+      0.02799187291971626
     ],
-    "coverage": 0.3287785538228303,
-    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
+    "withheld_positive_pixels": 11321,
+    "tpw": 259.16790716440863,
+    "fpw": 10304.58136457905,
+    "fnw": 11061.832092835584,
+    "representation": "soft pre-placement surface (matches downloaded TIFF method)",
+    "split_version": "buffered-whole-components-loqo-v2",
+    "canary_clean": true
   },
-  "correlation_overlap_full_registry": {
-    "n_unique_grid_rasters": 644,
-    "max_spearman_full_footprint": {
-      "value": 0.18037159651203355,
-      "raster": "7GEMSDOE:downloads/gems7-strike30x3-v2-2b06d45c5b57.tif"
-    },
-    "max_jaccard": {
-      "value": 0.08303660218779071,
-      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
-    },
-    "max_dot_overlap_fwd_3px": {
-      "value": 1.0,
-      "raster": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif"
-    },
-    "n_overlap_firings_one_directional_literal_gate": 114,
-    "informational_two_sided_true_duplicates_not_a_clearance_rule": 0,
-    "unique_by_protocol_literal": false
+  "holdout_dot_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.10916787041142981,
+    "ci95": [
+      0.09450251109316313,
+      0.12419365163463253
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 1746.1900101871004,
+    "fpw": 32947.09651221608,
+    "fnw": 9574.809989812898,
+    "representation": "holdout binary allocation ONLY; production dots were not generated"
+  },
+  "paired_orientation_minus_anatomy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": -0.0005852603984091292,
+    "ci95": [
+      -0.006179380950003338,
+      0.004966084594639524
+    ],
+    "withheld_positive_pixels": 11321
   },
   "correlation_overlap_vs_registry": {
-    "n_registry_rasters": 15,
-    "rho_limit": 0.9,
-    "jaccard_limit": 0.5,
-    "overlap_limit": 0.7,
-    "worst_spearman_full_footprint": 0.01070177139044915,
-    "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_jaccard_dot_sets": 0.009534650570199256,
-    "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_dot_overlap_3px": 0.35720551201154466,
-    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
-    "unique": true
+    "registry_rasters_expected": 678,
+    "registry_rasters_checked": 678,
+    "complete_accessible_scan": true,
+    "worst_spearman_full_footprint": 0.8212578086422125,
+    "worst_rho_submission": "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
+    "worst_dot_overlap": 1.0,
+    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
+    "duplicate_count": 78,
+    "byte_unique_among_checked": true,
+    "pixel_unique_among_checked": true,
+    "unique": false
   },
-  "raster_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+  "surface_before_placement": {
+    "checked": true,
+    "protocol_pass": false
+  },
+  "final_dots": {
+    "status": "not_generated",
+    "reason": "literal surface gate requires stop",
+    "emitted_pixels": 0
+  },
+  "raster_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
   "validator_output": {
-    "no_nan_anywhere": true,
-    "in_footprint_all_finite": true,
-    "range_0_1_guaranteed": true,
-    "crs_shape_transform_match": true,
-    "zero_dots_on_mapped_catalogue": true,
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "bytes": 10010096,
+    "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 0.7537760734558105,
+    "mean": 0.0007940529612824321,
+    "emitted_positive_pixels": 2714823,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
     "all_checks_passed": true,
-    "n_checks": 15
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 2714823,
+    "footprint_fraction": 0.5253777886752127
   },
-  "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
-  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
-  "sense_of_slip": {
-    "available_in_provided_database": true,
-    "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
-    "measured_log_ratio_right_over_left": 0.03920300039062278,
-    "encoded_in_shipped_file": false,
-    "tested_as_opt_in_features": true,
-    "tested_result": {
-      "per_quadrant_diff": {
-        "NW": 0.0037939165243941475,
-        "NE": 0.0055511076585393615,
-        "SW": 0.002465441253495404,
-        "SE": -0.005565574192837125
-      },
-      "mean_diff": 0.001561222810897947,
-      "sd_diff": 0.004916399388444914,
-      "n_quadrants_positive": 3,
-      "canary_clean": false,
-      "promote_rule": "positive in >=3 of 4 quadrants AND canary clean",
-      "promote": false
+  "submission_name": "gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95",
+  "submission_note": "Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.",
+  "submission_note_chars": 131,
+  "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+  "zip_file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
+  "verdict": "negative",
+  "okay_to_download": true,
+  "okay_to_submit": false,
+  "verdict_reason": "Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.",
+  "recorded_sense": {
+    "tested": true,
+    "retained": false,
+    "paired_difference": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "delta": 0.003580783591493636,
+      "ci95": [
+        -0.005722027160876473,
+        0.014532120997528746
+      ],
+      "withheld_positive_pixels": 11321
     }
   },
-  "verdict": "HOLD (format checks pass; literal uniqueness forward-overlap gate fired; not cleared)",
-  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
+  "experiments_used": 3,
+  "submission_slots_used": 0,
+  "generated_utc": "2026-10-09T20:00:19.209388+00:00",
+  "registry_reviewed_utc": "2026-10-09T20:48:35.078230+00:00",
+  "registry_scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified."
 }

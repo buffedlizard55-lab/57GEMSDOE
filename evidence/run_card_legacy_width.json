@@ -1,0 +1,95 @@
+{
+  "hypothesis": "H57-G: sqrt(length)-normalized cross-strike stepover",
+  "mechanism": "Damage-zone width may grow with fault displacement; connected visible-component length is only a noisy displacement proxy.",
+  "named_non_fault_process_that_could_mimic_it": "Map-trace fragmentation and mapping effort, not actual displacement.",
+  "holdout_dti": {
+    "label": "HOLDOUT-DTI (not an organizer score)",
+    "evaluator_version": "gems52-pooled-hide-v1 repaired (metric.max_cover, pixel-exact mask), gems57 LOQO pooled/quadrant-jackknife",
+    "withheld_positive_pixels": 22619,
+    "pooled": 0.23742257629534305,
+    "ci95_quadrant_jackknife": [
+      0.20147621833615273,
+      0.2733689342545334
+    ],
+    "baseline_same_mode_and_budget": 0.23587476580727823,
+    "delta": 0.0015478104880648214
+  },
+  "correlation_overlap_vs_registry": {
+    "surface_witnesses": [
+      {
+        "source": "/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+        "sha256": "c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f",
+        "prior_coverage_of_eligible_3px": 0.9987243421716145,
+        "candidate_surface_positive_3px_overlap": 0.9987243421716145,
+        "prior_nonzero": 206895
+      },
+      {
+        "source": "/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+        "prior_coverage_of_eligible_3px": 1.0,
+        "candidate_surface_positive_3px_overlap": 1.0,
+        "prior_nonzero": 5167373
+      }
+    ],
+    "surface_rank_vs_witnesses": [
+      {
+        "source": "/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+        "spearman": -0.0001280785867744352
+      },
+      {
+        "source": "/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "spearman": 0.60017972098096
+      }
+    ],
+    "sha256_distinct_from_full_index": true,
+    "full_final_dot_comparison": "NOT RUN; stopped before placement after surface gate",
+    "scope": "Full sha256 index only; two pinned overlap witnesses suffice to fail the literal gate."
+  },
+  "raster_sha256": "07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92",
+  "validator_output": {
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "nan_cells": 0,
+    "min": 0.0,
+    "max": 0.7376705408096313,
+    "crs_shape_transform": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "lzw"
+    }
+  },
+  "submission_name": "gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT",
+  "submission_note": "H57-G width-scaled stepover; research only: strict overlap gate failed; DO NOT SUBMIT",
+  "verdict": "negative: research surface only; DO NOT SUBMIT; literal overlap gate fails",
+  "slot_used": false
+}

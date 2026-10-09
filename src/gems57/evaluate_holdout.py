@@ -42,7 +42,8 @@ def evaluate(prediction, fold, valid, block_side=200):
     fpw = float((p * (1.0 - q)).sum())
     fnw = float(truth.sum()) - tpw
     result = dict(dti=metric.dti_from_components(tpw, fpw, fnw), tpw=tpw, fpw=fpw,
-                  fnw=fnw, n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()))
+                  fnw=fnw, n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
+                  emitted=int((p > 0).sum()))
     h, w = truth.shape
     ncols = (w + block_side - 1) // block_side
     nrows = (h + block_side - 1) // block_side

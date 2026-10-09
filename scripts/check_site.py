@@ -85,9 +85,11 @@ def check(root=ROOT):
     assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
     audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
     assert audit['candidate_file_sha256']==digest
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==670
+    index=json.loads((root/'evidence/registry_refreshed.json').read_text())
+    total=index['n_unique_grid_rasters']
+    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
     assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==670 and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
     canary=json.loads((root/'evidence/orientation_canary.json').read_text())
     assert len(canary['features'])==14

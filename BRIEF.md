@@ -6,7 +6,7 @@ Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of
 
 **New TIFF generated. Download for research: OK. Submit: NO.**
 
-The current [run card](evidence/run_card_current.json) is negative. All 670 accessible pinned grid rasters were checked; literal forward overlap is 1.0, above 0.70. A dense-prior saturation certificate proves every nonempty allowed support is blocked under the inherited `finite > 0` definition. No density or reverse-overlap exemption, no production final dots, no weekly slot.
+The current [run card](evidence/run_card_current.json) is negative. All 678 accessible pinned grid rasters were checked; literal forward overlap is 1.0, above 0.70. A dense-prior saturation certificate proves every nonempty allowed support is blocked under the inherited `finite > 0` definition. No density or reverse-overlap exemption, no production final dots, no weekly slot.
 
 A reversed finite-strike fallback was discovered and repaired. Earlier host-relative mechanism interpretations and the interrupted first attempt are invalid. The corrected repeat tested the **same** three predeclared comparisons; it did not add hypotheses. The new candidate has no demonstrated binary HOLDOUT-DTI gain over recomputed controls.
 

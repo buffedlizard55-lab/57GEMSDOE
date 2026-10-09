@@ -1,0 +1,162 @@
+{
+  "generated_utc": "2026-10-09T20:16:46.736472+00:00",
+  "method": "top-40000 high-confidence fault-zone anatomy dots",
+  "lane": "fault-zone anatomy / secondary strands around known faults",
+  "features": [
+    "d",
+    "d_perp",
+    "d_par_abs",
+    "side",
+    "log_len",
+    "sin2",
+    "cos2",
+    "coherence",
+    "density"
+  ],
+  "calibration": {
+    "scale": 0.9998177516421103,
+    "base_rate": 0.0023385609499261225
+  },
+  "target_dots": 40000,
+  "placed_dots": 40000,
+  "min_dot_probability": 0.03644287958741188,
+  "max_dot_probability": 0.5757598280906677,
+  "submission_name": "h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372",
+  "submission_note": "top-40000 fault-anatomy prob dots; 9feat LOQO; scale=0.9998",
+  "tif_file": "/home/user/57GEMSDOE/docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif",
+  "validation": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif",
+    "bytes": 112916,
+    "sha256": "370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0032575519289821386,
+    "emitted_positive_pixels": 40000,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 40000,
+    "footprint_fraction": 0.007740877231041769
+  },
+  "write_receipt": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif",
+    "bytes": 112916,
+    "sha256": "370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5",
+    "bands": 1,
+    "dtype": "float32",
+    "height": 3730,
+    "width": 3292,
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "res": [
+      100.0,
+      100.0
+    ],
+    "nodata": null,
+    "nodata_repr": "None",
+    "finite_pixels": 12279160,
+    "min": 0.0,
+    "max": 1.0,
+    "positive_pixels": 40000,
+    "nonzero_in_footprint": 40000,
+    "unique_values": 2
+  },
+  "gates_report": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif",
+    "bytes": 112916,
+    "sha256": "370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0032575519289821386,
+    "n_nonzero": 40000,
+    "mass": 40000.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "runtime_s": 116.46243572235107,
+  "verdict": "promote: format-valid, unique dot placement from anatomy model"
+}

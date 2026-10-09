@@ -346,25 +346,28 @@
     },
     {
       "repo": "57GEMSDOE",
-      "commit": "71ff73a84186c49f58d6b399df607635b9abd71a",
+      "commit": "803052f483923a8f09a7ea04934e76c334d27ac7",
       "website": "https://buffedlizard55-lab.github.io/57GEMSDOE/",
       "review_scope": "Pinned homepage content/link review, NOT code reproduction or organizer score confirmation",
       "status": "retrieved",
       "path": "docs/index.html",
-      "source_url": "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/71ff73a84186c49f58d6b399df607635b9abd71a/docs/index.html",
-      "html_sha256": "a7c4ef48cfc491bdc44e9aa463992e737e760275f7589510622bf965f442b8c8",
-      "bytes": 7834,
-      "title": "57GEMSDOE \u2014 fault-zone anatomy \u00b7 57GEMSDOE",
+      "source_url": "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/803052f483923a8f09a7ea04934e76c334d27ac7/docs/index.html",
+      "html_sha256": "f17c434a461ae53e444204eb6dbc8c42230b699b07cb88f51fa34a83ca8889e8",
+      "bytes": 9982,
+      "title": "57GEMSDOE \u2014 DOE GEMS Prize Competition Submission",
       "headings": [
-        "57GEMSDOE \u2014 fault-zone-anatomy lane",
-        "Latest independent H57-G GeoTIFF \u2014 DO NOT SUBMIT",
-        "How a cleared file would be submitted (none is cleared now)",
-        "The exact format the portal expects",
-        "Validator receipt for this file",
-        "What the score means"
+        "57GEMSDOE",
+        "\u2b07 Download Submission File",
+        "Model Summary",
+        "Documentation",
+        "Previous Submission Files",
+        "Core Values",
+        "Competition Links (Verified Official Sources)"
       ],
       "linked_rasters_or_zips": [
-        "downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif"
+        "downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+        "downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif",
+        "downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif"
       ],
       "receipt_verified": false
     },
@@ -1735,5 +1738,6 @@
       ],
       "receipt_verified": false
     }
-  ]
+  ],
+  "concurrent_main_extension_utc": "2026-10-09T20:41:54.011490+00:00"
 }

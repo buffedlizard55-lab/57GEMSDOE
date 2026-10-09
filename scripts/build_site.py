@@ -120,7 +120,7 @@ def download_panel(card):
 <div class="eyebrow">NEW GEOTIFF · GENERATED OCT 9, 2026</div><h1 id="download-title">A new file. An honest verdict.</h1>
 <p class="hero-sub">Learned magnetic-edge orientation around visible faults.<br>Fresh predictions—not a copy of an earlier submission.</p>
 <div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
-<p class="hold-reason"><strong>HOLD:</strong> the mandatory forward-overlap gate failed. No demonstrated binary holdout gain. No production dots placed; no weekly slot used.</p>
+<p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> the mandatory forward-overlap gate failed. No demonstrated binary holdout gain. No production dots placed; no weekly slot used.</p>
 <div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>↓ Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
 <a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
 <details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">{esc(filename)}</p><p class="mono">SHA256 {esc(card['raster_sha256'])}</p>
@@ -146,7 +146,7 @@ def build(root=ROOT, make_preview=True):
     for name in PUBLIC:
         shutil.copyfile(root / 'evidence' / f'{name}.json', data / f'{name}.json')
     shutil.copyfile(root / 'evidence/run_card_current.json', data / 'run_card.json')
-    for name in ['feed_refresh_status', 'review_passes', 'sibling_page_reviews']:
+    for name in ['feed_refresh_status', 'review_passes', 'sibling_page_reviews', 'browser_qa', 'registry_concurrent_extension', 'registry_open_pr_extension', 'uniqueness_current_review', 'uniqueness_concurrent_extension', 'uniqueness_open_pr_extension']:
         source = root / 'evidence' / f'{name}.json'
         if source.exists():
             shutil.copyfile(source, data / source.name)
@@ -206,7 +206,7 @@ def build(root=ROOT, make_preview=True):
 <h2>Soft surfaces do not rescue a negative dot result</h2><p>Relative orientation improves the soft-surface point estimate against distance-only, but its added soft value over anatomy is {number(holdout['raw_surface_holdout']['paired_differences']['anatomy']['delta'])}, 95% CI {interval(holdout['raw_surface_holdout']['paired_differences']['anatomy']['ci95'])}. That includes zero. No unpredeclared representation switch is used to claim promotion.</p>
 <h2>Leakage canaries</h2><p>Every feature alone was tested before trusting the fit. We use <code>max(AUC, 1−AUC)</code> in every fold, so an inverse distance feature cannot hide leakage. Maximum discriminative AUC: {number(max_auc)}; all 14 are below 0.90. Passing this check does not prove all possible leakage absent.</p>{table(['Feature', 'Max discriminative fold AUC (diagnostic)', 'Canary'], canary_rows)}
 <h2>Full-registry gate</h2>{table(['Measurement (not DTI)', 'Result'], [['Accessible grid rasters checked', str(registry['registry_rasters_checked'])], ['Worst full-footprint tied-rank Spearman', number(registry['worst_spearman_full_footprint'])], ['Worst candidate-to-prior ≤3 px forward overlap', number(registry['worst_dot_overlap'])], ['Triggered comparisons', str(registry['duplicate_count'])], ['Byte / decoded-pixel identity', 'Distinct from all checked entries'], ['Literal protocol', '<strong>FAIL → STOP</strong>'], ['Production final dots', 'Not generated: pre-placement gate failed']])}
-<p>The 670-raster audit conservatively includes four historical auxiliary input rasters; 666 are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. Private, unlinked or inaccessible artifacts remain outside scope.</p><p>{link('data/orientation_holdout.json', 'Full HOLDOUT-DTI receipt')} · {link('data/orientation_surface_uniqueness.json', 'Complete registry measurements')} · {link('data/registry_classification.json', 'Input/prediction classification')}</p>'''
+<p>The {registry['registry_rasters_checked']}-raster audit conservatively includes four historical auxiliary input rasters; {registry['registry_rasters_checked'] - 4} are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. Private, unlinked or inaccessible artifacts remain outside scope.</p><p>{link('data/orientation_holdout.json', 'Full HOLDOUT-DTI receipt')} · {link('data/orientation_surface_uniqueness.json', 'Complete registry measurements')} · {link('data/registry_classification.json', 'Input/prediction classification')}</p>'''
 
     structure = evidence['orientation_structure']
     method = f'''<div class="eyebrow">SHARED INSTRUMENT · NO PRIVATE FORKS</div><h1>Measure the anatomy. Don’t assume it.</h1>
@@ -252,12 +252,14 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientatio
 
     runcard = '<div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p>' + link('data/run_card.json', 'Download JSON') + '</p><pre>' + esc(json.dumps(card, indent=2, allow_nan=False)) + '</pre>'
     archive = '''<div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p>'''
+    archived = sorted(path for path in (root / 'docs/downloads').glob('*.tif') if path.name != Path(card['file']).name)
+    archive += '<h2>DO NOT SUBMIT any archived output</h2><ul>' + ''.join('<li>' + link('downloads/' + path.name, path.name) + ' — learning/audit only, not cleared</li>' for path in archived) + '</ul>'
     pages = {'index.html': ('Overview', index), 'executive-summary.html': ('Download & submit', executive),
              'results.html': ('Results', results), 'method.html': ('Method', method),
              'hypotheses.html': ('Hypotheses', hypotheses), 'research.html': ('Research', research),
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
-             'archive.html': ('Archive warning', archive)}
+             'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive)}
     for filename, (title, body) in pages.items():
         (docs / filename).write_text(page(title, body, filename, stamp))
     # Preserve the old /docs/index.html URL after switching to artifact-based Pages.
