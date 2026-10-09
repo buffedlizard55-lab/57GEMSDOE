@@ -38,6 +38,31 @@ deliverable. Next work (ranked): H2 zone-gated geophysical corroboration, H3 tip
 targeting, a 120k-budget variant, H4 slip-rate-weighted width, H5 USGS vector sense join
 (data-blocked).
 
+## Parallel session (PR #1, merged first — same lane)
+
+A parallel session (`arena/a5412310`) ran this same lane and merged first as
+[PR #1](https://github.com/buffedlizard55-lab/57GEMSDOE/pull/1): a synthetic-strand
+generator (P shears + low-angle Riedel shears, width W = min(15, 2.6·L^0.22) px),
+12,000 dots within 15 px of known faults
+(`docs/downloads/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif`, sha256
+`3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb`, their run card at
+`docs/downloads/run_card.json`, audit at `docs/downloads/57GEMSDOE-faultzone-anatomy-audit.json`).
+
+**Drift check (parallel-run protocol), `evidence/uniqueness_parallel.json`:**
+Spearman(this session's surface, their raster) **+0.0321** (limit 0.90); forward dot
+overlap within 3 px **0.0296** (limit 0.70); reverse overlap 0.2273; sha256 distinct →
+**UNIQUE**. The two emissions occupy different parts of the damage zone (this session:
+fitted 60-px halo, dots at 4–10 px, median 5.7 px from known faults; parallel session:
+<15 px synthetic strands, median 2.8 px). Both artifacts are on the site; both are
+validated; neither is a duplicate of the other.
+
+One irregularity in their audit, flagged for review: `57GEMSDOE-faultzone-anatomy-audit.json`
+reports `"on_catalogue": 12000` while their run card claims "0 on-catalogue (masked)".
+Measured on the actual raster: **0 of their 12,000 dots are on the catalogue** (the run
+card is right; the audit field is mislabeled). Their holdout number (0.0004) comes from a
+quadrant-blocked instrument that withholds >100 km regions — not comparable to this
+session's random whole-segment folds with a 300 m buffer (0.0580).
+
 ## Repository layout
 
 ```

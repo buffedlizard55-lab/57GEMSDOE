@@ -33,6 +33,37 @@
   </dl>
 </div>
 
+<div class="card">
+  <h3 style="margin-top:0">Also on this site — the parallel session's artifact (same lane, merged first as PR&nbsp;#1)</h3>
+  <p>A parallel session ran the same lane (<b>fault-zone anatomy</b>) and merged first:
+  a synthetic-strand generator (P shears + low-angle Riedel shears, width
+  W&nbsp;=&nbsp;min(15,&nbsp;2.6·L^0.22)&nbsp;px), 12,000 dots within 15&nbsp;px of known faults.
+  The two emissions are <b>verified distinct</b> (drift check below).</p>
+  <div class="dl">
+    <a class="btn sec" href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif">⬇ Download 57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif</a>
+    <a class="btn sec" href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif">NaN-outside twin</a>
+    <a class="btn sec" href="downloads/57GEMSDOE-faultzone-anatomy-audit.json">audit JSON</a>
+    <a class="btn sec" href="downloads/run_card.json">their run card</a>
+  </div>
+  <dl class="kv" style="margin-top:14px">
+    <dt>File</dt><dd><code>57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif</code></dd>
+    <dt>sha256</dt><dd><code>3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb</code></dd>
+    <dt>Submission name</dt><dd><code>57GEMSDOE-faultzone-anatomy-12000</code></dd>
+    <dt>Methodology note</dt><dd><code>fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg</code></dd>
+    <dt>Dots</dt><dd>12,000 (0 on known faults; median 2.8 px from the catalogue)</dd>
+  </dl>
+</div>
+
+<div class="banner ok">
+  <b>Parallel-run drift check — PASS (both directions).</b> This session's raster vs the
+  parallel session's rasters: Spearman <b>+0.0321</b> (limit 0.90), forward dot overlap
+  within 3 px <b>0.0296</b> (limit 0.70), reverse overlap 0.2273, sha256 distinct →
+  <b>UNIQUE</b>. The two lanes emit in different parts of the damage zone (this session:
+  fitted 60-px halo, dots at 4–10 px / median 5.7 px from known faults; parallel session:
+  &lt;15 px synthetic strands, median 2.8 px). Full record:
+  <code>evidence/uniqueness_parallel.json</code>.
+</div>
+
 <div class="banner">
   <b>Verdict: negative as a standalone score-beater — delivered as a validated, unique,
   non-leaking lane artifact.</b> On the brief's spatially-blocked holdout the lane scores

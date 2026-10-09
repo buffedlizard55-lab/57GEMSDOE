@@ -69,6 +69,23 @@
 </div>
 
 <div class="card">
+  <h3 style="margin-top:0">Parallel-session drift check (PR #1, same lane) — MEASUREMENT</h3>
+  <p>A parallel session ran this same lane and merged first (12k-dot synthetic-strand
+  emission). The registry scan predates that merge, so the two rasters are checked
+  directly in <code>evidence/uniqueness_parallel.json</code>:</p>
+  <table>
+    <tr><th>Check</th><th class="num">Value</th><th class="num">Limit</th></tr>
+    <tr><td>Spearman(this surface, their raster)</td><td class="num">+0.0321</td><td class="num">0.90</td></tr>
+    <tr><td>Forward overlap (my dots within 3 px of theirs)</td><td class="num">0.0296</td><td class="num">0.70</td></tr>
+    <tr><td>Reverse overlap (their dots within 3 px of mine)</td><td class="num">0.2273</td><td class="num">—</td></tr>
+    <tr><td>sha256 identical</td><td class="num">no</td><td class="num">—</td></tr>
+  </table>
+  <p><b>Verdict: UNIQUE</b> — the two emissions occupy different parts of the damage zone
+  (this session: fitted 60-px halo, median 5.7 px from known faults; parallel session:
+  &lt;15 px synthetic strands, median 2.8 px). Both are valid, distinct artifacts.</p>
+</div>
+
+<div class="card">
   <h3 style="margin-top:0">Run card</h3>
   <dl class="kv">
     <dt>Submission</dt><dd><code>GEMSDOE57-FZA-60000px</code> — <code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></dd>

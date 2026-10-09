@@ -18,10 +18,12 @@ EV = ROOT / "evidence"
 receipt = json.loads((DL / "gems57-faultzone-anatomy-60000px-20261009T054251Z.receipt.json").read_text())
 sub = receipt["submission"]
 uniq = json.loads((EV / "uniqueness.json").read_text())
+par = json.loads((EV / "uniqueness_parallel.json").read_text())
 card = json.loads((EV / "run_card.json").read_text())
 exp2 = json.loads((EV / "exp2_holdout.json").read_text())
 cal = json.loads((EV / "calibrate_registry.json").read_text())
 exp3 = json.loads((EV / "exp3_build.json").read_text())
+audit = json.loads((DL / "57GEMSDOE-faultzone-anatomy-audit.json").read_text())
 
 TIF = sub["file"]
 ZIP = sub["zip_file"]
@@ -29,6 +31,13 @@ SHA = sub["sha256"]
 NOTE = sub["note"]
 NAME = sub["name"]
 BYTES = sub["bytes"]
+
+# The parallel session's artifact (PR #1, same lane, merged first)
+P_TIF = "57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif"
+P_SHA = audit["sha256"]
+P_NAME = "57GEMSDOE-faultzone-anatomy-12000"
+P_NOTE = "fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg"
+P_DOTS = audit["positive"]
 
 hold = card["holdout_dti"]
 sg = card["proxy_dti_sgmc_truth"]
@@ -143,6 +152,37 @@ idx = f"""
   </dl>
 </div>
 
+<div class="card">
+  <h3 style="margin-top:0">Also on this site — the parallel session's artifact (same lane, merged first as PR&nbsp;#1)</h3>
+  <p>A parallel session ran the same lane (<b>fault-zone anatomy</b>) and merged first:
+  a synthetic-strand generator (P shears + low-angle Riedel shears, width
+  W&nbsp;=&nbsp;min(15,&nbsp;2.6·L^0.22)&nbsp;px), 12,000 dots within 15&nbsp;px of known faults.
+  The two emissions are <b>verified distinct</b> (drift check below).</p>
+  <div class="dl">
+    <a class="btn sec" href="downloads/{P_TIF}">⬇ Download {P_TIF}</a>
+    <a class="btn sec" href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif">NaN-outside twin</a>
+    <a class="btn sec" href="downloads/57GEMSDOE-faultzone-anatomy-audit.json">audit JSON</a>
+    <a class="btn sec" href="downloads/run_card.json">their run card</a>
+  </div>
+  <dl class="kv" style="margin-top:14px">
+    <dt>File</dt><dd><code>{P_TIF}</code></dd>
+    <dt>sha256</dt><dd><code>{P_SHA}</code></dd>
+    <dt>Submission name</dt><dd><code>{P_NAME}</code></dd>
+    <dt>Methodology note</dt><dd><code>{esc(P_NOTE)}</code></dd>
+    <dt>Dots</dt><dd>{P_DOTS:,} (0 on known faults; median 2.8 px from the catalogue)</dd>
+  </dl>
+</div>
+
+<div class="banner ok">
+  <b>Parallel-run drift check — PASS (both directions).</b> This session's raster vs the
+  parallel session's rasters: Spearman <b>+0.0321</b> (limit 0.90), forward dot overlap
+  within 3 px <b>0.0296</b> (limit 0.70), reverse overlap 0.2273, sha256 distinct →
+  <b>UNIQUE</b>. The two lanes emit in different parts of the damage zone (this session:
+  fitted 60-px halo, dots at 4–10 px / median 5.7 px from known faults; parallel session:
+  &lt;15 px synthetic strands, median 2.8 px). Full record:
+  <code>evidence/uniqueness_parallel.json</code>.
+</div>
+
 <div class="banner">
   <b>Verdict: negative as a standalone score-beater — delivered as a validated, unique,
   non-leaking lane artifact.</b> On the brief's spatially-blocked holdout the lane scores
@@ -222,9 +262,23 @@ exec_body = f"""
 <div class="card">
   <p><b>The whole point of this repository is the one file you upload.</b> This page is the
   shortest path from here to a submitted entry, and what has and has not been verified.</p>
+  <p>Two validated, drift-checked artifacts are on this site (same lane, two sessions —
+  see the <a href="research.html">research page</a> for the drift check). Pick one:</p>
+  <table>
+    <tr><th></th><th>This session (recommended)</th><th>Parallel session (PR #1)</th></tr>
+    <tr><td><b>File</b></td><td><code>{TIF}</code></td><td><code>{P_TIF}</code></td></tr>
+    <tr><td><b>Dots</b></td><td>60,000 (fitted 60-px halo, median 5.7 px from known faults)</td>
+        <td>12,000 (synthetic strands &lt;15 px, median 2.8 px)</td></tr>
+    <tr><td><b>HOLDOUT-DTI</b></td><td><b>0.0580 [0.0507, 0.0663]</b> @ 60k
+        (<code>gems52-pooled-hide-v1</code>, 38,339 withheld px)</td>
+        <td>0.0004 [0, 0.0015] @ 10k (quadrant-blocked instrument, their run card)</td></tr>
+    <tr><td><b>Name</b></td><td><code>{NAME}</code></td><td><code>{P_NAME}</code></td></tr>
+    <tr><td><b>Note</b></td><td><code>{esc(NOTE)}</code></td><td><code>{esc(P_NOTE)}</code></td></tr>
+    <tr><td><b>sha256</b></td><td><code>{SHA[:16]}…</code></td><td><code>{P_SHA[:16]}…</code></td></tr>
+  </table>
   <ol class="steps">
     <li><b>Download</b> the submission GeoTIFF from the button on the
-        <a href="index.html">home page</a> (or <code>docs/downloads/{TIF}</code> in this
+        <a href="index.html">home page</a> (or <code>docs/downloads/</code> in this
         repository). Verify it if you like:
         <pre>sha256sum {TIF}
 # expect {SHA}</pre></li>
@@ -406,6 +460,23 @@ res = f"""
   coverage-saturation artifacts: dense registry emissions (206k–452k dots) whose 3-px-dilated
   coverage saturates the halo, with reverse overlap 0.07–0.10 and rank correlation ≈ 0.
   Flagged for review; full list in <code>evidence/uniqueness.json</code>.</p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">Parallel-session drift check (PR #1, same lane) — MEASUREMENT</h3>
+  <p>A parallel session ran this same lane and merged first (12k-dot synthetic-strand
+  emission). The registry scan predates that merge, so the two rasters are checked
+  directly in <code>evidence/uniqueness_parallel.json</code>:</p>
+  <table>
+    <tr><th>Check</th><th class="num">Value</th><th class="num">Limit</th></tr>
+    <tr><td>Spearman(this surface, their raster)</td><td class="num">+0.0321</td><td class="num">0.90</td></tr>
+    <tr><td>Forward overlap (my dots within 3 px of theirs)</td><td class="num">0.0296</td><td class="num">0.70</td></tr>
+    <tr><td>Reverse overlap (their dots within 3 px of mine)</td><td class="num">0.2273</td><td class="num">—</td></tr>
+    <tr><td>sha256 identical</td><td class="num">no</td><td class="num">—</td></tr>
+  </table>
+  <p><b>Verdict: UNIQUE</b> — the two emissions occupy different parts of the damage zone
+  (this session: fitted 60-px halo, median 5.7 px from known faults; parallel session:
+  &lt;15 px synthetic strands, median 2.8 px). Both are valid, distinct artifacts.</p>
 </div>
 
 <div class="card">

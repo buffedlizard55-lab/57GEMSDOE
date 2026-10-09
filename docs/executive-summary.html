@@ -14,9 +14,23 @@
 <div class="card">
   <p><b>The whole point of this repository is the one file you upload.</b> This page is the
   shortest path from here to a submitted entry, and what has and has not been verified.</p>
+  <p>Two validated, drift-checked artifacts are on this site (same lane, two sessions —
+  see the <a href="research.html">research page</a> for the drift check). Pick one:</p>
+  <table>
+    <tr><th></th><th>This session (recommended)</th><th>Parallel session (PR #1)</th></tr>
+    <tr><td><b>File</b></td><td><code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></td><td><code>57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif</code></td></tr>
+    <tr><td><b>Dots</b></td><td>60,000 (fitted 60-px halo, median 5.7 px from known faults)</td>
+        <td>12,000 (synthetic strands &lt;15 px, median 2.8 px)</td></tr>
+    <tr><td><b>HOLDOUT-DTI</b></td><td><b>0.0580 [0.0507, 0.0663]</b> @ 60k
+        (<code>gems52-pooled-hide-v1</code>, 38,339 withheld px)</td>
+        <td>0.0004 [0, 0.0015] @ 10k (quadrant-blocked instrument, their run card)</td></tr>
+    <tr><td><b>Name</b></td><td><code>GEMSDOE57-FZA-60000px</code></td><td><code>57GEMSDOE-faultzone-anatomy-12000</code></td></tr>
+    <tr><td><b>Note</b></td><td><code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code></td><td><code>fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg</code></td></tr>
+    <tr><td><b>sha256</b></td><td><code>a08650cadb9a1baf…</code></td><td><code>3bddb4b66750aadf…</code></td></tr>
+  </table>
   <ol class="steps">
     <li><b>Download</b> the submission GeoTIFF from the button on the
-        <a href="index.html">home page</a> (or <code>docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code> in this
+        <a href="index.html">home page</a> (or <code>docs/downloads/</code> in this
         repository). Verify it if you like:
         <pre>sha256sum gems57-faultzone-anatomy-60000px-20261009T054251Z.tif
 # expect a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</pre></li>
