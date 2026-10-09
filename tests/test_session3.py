@@ -36,11 +36,11 @@ def test_new_research_raster_is_distinct_and_fail_closed():
     assert e['surface_gate_passes'] is False
     assert any(w['candidate_surface_positive_3px_overlap'] > .70 for w in e['surface_witnesses'])
     assert 'DO NOT SUBMIT' in e['verdict']
-    assert 'DO NOT SUBMIT' in (ROOT/'docs'/'index.html').read_text()
-    assert path.name in (ROOT/'docs'/'index.html').read_text()
+    assert 'DO NOT SUBMIT' in (ROOT/'docs'/'archive.html').read_text()
+    assert path.name in (ROOT/'docs'/'archive.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'index.html').read_text()
     assert 'gems57-faultzone-anatomy-60000px' not in (ROOT/'index.html').read_text()
-    card = json.loads((ROOT/'evidence'/'run_card.json').read_text())
+    card = json.loads((ROOT/'evidence'/'run_card_legacy_width.json').read_text())
     assert card['raster_sha256'] == ras['sha256']
     assert card['slot_used'] is False
 

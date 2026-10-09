@@ -1,4 +1,4 @@
-"""Dot allocation: greedy max-coverage at the exact DTI marginal bar.
+"""Dot allocation: greedy max-coverage under a clipped-convolution surrogate.
 
 Why this allocation rule
 ------------------------
@@ -9,10 +9,11 @@ why the denominator does **not** collapse to ``alpha*n + beta*|G|``)::
     DTI = T / D
 
 where ``T`` is the covered truth credit and ``M`` the total self-credit of the
-emitted dots.  A dot at ``x`` has a **fixed** self-credit
+emitted dots.  The allocation surrogate assigns a dot at ``x`` **fixed** self-credit
 ``k(x) = E[k](x) = sum_g p(g) k(d(x,g))`` -- the convolution of the per-cell
 truth probability with the kernel -- which does not depend on the other dots,
-while its marginal truth credit ``dT(x)`` falls as neighbouring truth cells get
+This clipped convolution is an approximation to unknown-truth max self-credit,
+not its exact expectation; its marginal coverage ``dT(x)`` falls as neighbouring truth cells get
 covered.  The exact acceptance test ``dT > alpha*DTI*(dT + 1 - k)`` therefore
 rearranges to a per-candidate bar::
 
@@ -42,9 +43,10 @@ from .metric import ALPHA, BETA, EPS, OFF_DX, OFF_DY, OFF_K
 def expected_credit(p: np.ndarray) -> np.ndarray:
     """``E[k](x) = sum_g p(g) k(d(x,g))`` -- convolution of ``p`` with the kernel.
 
-    For a candidate dot at ``x`` this is simultaneously the expected marginal
-    truth credit (when nothing nearby is covered yet) and the dot's self-credit
-    ``k(x)``.
+    For a first dot this sums per-cell expected coverage. The greedy surrogate
+    uses its clipped value for self-credit, although expected maximum kernel
+    self-credit is not generally the expectation of this sum. Actual holdout
+    scores are computed by the exact shared evaluator, not by this surrogate.
     """
     p = np.asarray(p, np.float32)
     out = np.zeros(p.shape, np.float32)

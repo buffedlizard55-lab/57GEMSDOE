@@ -192,14 +192,14 @@ def score_cell(cell: Cell, emitted: np.ndarray) -> dict:
     n_emit = int(p.sum())
     n_t = cell.n_truth
     if n_t == 0 or n_emit == 0:
-        return dict(dti=0.0, coverage=0.0, tp=0.0, fp=float(n_emit),
+        return dict(dti=0.0, coverage=0.0, tp=0.0, fp=float(n_emit), fn=float(n_t),
                     n_truth=n_t, n_emitted=n_emit)
     dp = ndi.distance_transform_edt(~p)
     tp = float(kernel(dp[cell.truth_yx]).sum())
     fn = float(n_t) - tp
     fp = float((1.0 - cell.k_dg[p]).sum())
     return dict(dti=float(tp / (tp + ALPHA * fp + BETA * fn + EPS)),
-                coverage=float(tp / n_t), tp=tp, fp=fp,
+                coverage=float(tp / n_t), tp=tp, fp=fp, fn=fn,
                 n_truth=n_t, n_emitted=n_emit)
 
 
@@ -246,3 +246,71 @@ def wilson_ci(k_success_mass: float, n_mass: float, z: float = 1.959963985) -> t
     centre = (p + z * z / (2 * n_mass)) / denom
     half = z * np.sqrt(p * (1 - p) / n_mass + z * z / (4 * n_mass * n_mass)) / denom
     return (float(max(0.0, centre - half)), float(min(1.0, centre + half)))
+
+
+def score(prediction, fold, valid, restrict_to_region=True, extra=False):
+    """Compatibility adapter for the shared template's dictionary-fold callers.
+
+    v2 fixes the missing adapter; official arithmetic remains in metric.py.
+    """
+    from .metric import dti_exact
+    region = fold['region'] if restrict_to_region else np.ones_like(valid, bool)
+    known = fold.get('masked_known', fold['visible'])
+    r = dti_exact(prediction, fold['truth'], valid=np.asarray(valid, bool) & region, known=known)
+    return {**r, 'tpw': r['tp'], 'fpw': r['fp'], 'fnw': r['fn']}
+
+
+def buffered_component_draw(grid, seed=20, hide_frac=0.20, buffer_px=3,
+                            boundary_px=DOMAIN_ERODE):
+    """A repaired label-blind quadrant draw with REAL catalogue context buffering.
+
+    Whole original 8-connected components are withheld (no <=12-pixel chunks).
+    Only components wholly inside a label-blind eroded quadrant are eligible.
+    The same globally hidden draw supplies every outer LOQO model, so a tested
+    component cannot reappear in a training quadrant's catalogue features.
+    Buffer-removal is for FEATURE context, not a truth-shaped evaluation halo.
+    Other catalogue pixels in that context collar remain pixel-exactly masked
+    from scoring; they are not invented negatives or silently clipped truth.
+    """
+    if not 0 < hide_frac < 1 or buffer_px < 0 or boundary_px < buffer_px:
+        raise ValueError('invalid holdout fraction/buffer')
+    cat = np.asarray(grid.catalogue, bool)
+    quad = quadrant_ids(grid.footprint)
+    comp, count = ndi.label(cat, STRUCT3)
+    sizes = np.bincount(comp.ravel(), minlength=count+1)
+    hidden = np.zeros(cat.shape, bool)
+    regions, receipts = [], []
+    for q, name in enumerate(FOLD_NAMES):
+        region = ndi.binary_erosion(quad == q, iterations=boundary_px) if boundary_px else quad == q
+        region &= grid.footprint
+        candidate = np.unique(comp[cat & region])
+        clipped = np.unique(comp[cat & ~region])
+        eligible = np.setdiff1d(candidate[candidate > 0], clipped, assume_unique=True)
+        rng = np.random.default_rng(seed * 10_000 + q)
+        chosen = _pick_segments(rng, sizes, eligible, hide_frac * float((cat & region).sum()))
+        withheld = np.isin(comp, chosen) & cat
+        if (withheld & ~region).any():
+            raise AssertionError('a withheld component was clipped')
+        hidden |= withheld
+        regions.append(region)
+        receipts.append(dict(fold=name, seed=seed, held_components=int(len(chosen)),
+            withheld_positive_pixels=int(withheld.sum()), eligible_components=int(len(eligible)),
+            boundary_buffer_px=boundary_px, feature_buffer_px=buffer_px))
+    if not hidden.any():
+        raise ValueError('no eligible withheld components')
+    collar = ndi.distance_transform_edt(~hidden) <= buffer_px
+    visible = cat & ~collar
+    masked_known = cat & ~hidden
+    if not visible.any():
+        raise ValueError('no visible catalogue context')
+    if (visible & hidden).any() or np.any(visible & collar):
+        raise AssertionError('withheld truth/context buffer reached a feature')
+    minimum = float(ndi.distance_transform_edt(~visible)[hidden].min())
+    if minimum <= buffer_px:
+        raise AssertionError('context buffer was not honored')
+    folds = [dict(fold=i, name=FOLD_NAMES[i], region=regions[i], truth=hidden & regions[i],
+                  visible=visible, masked_known=masked_known, hidden_all=hidden,
+                  receipt={**receipts[i], 'nearest_visible_to_truth_px': minimum,
+                           'split_version': 'buffered-whole-components-loqo-v2',
+                           'evaluation_region_label_blind': True}) for i in range(4)]
+    return folds, quad

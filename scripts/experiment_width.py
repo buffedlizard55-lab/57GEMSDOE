@@ -169,5 +169,7 @@ def main():
     out.write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')
     print('wrote',out, 'surface gate',report['surface_gate_passes'], 'HOLDOUT-DTI', h['pooled_dti'], h['dti_ci95_quadrant_jackknife'],flush=True)
 
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    raise SystemExit("Archived concurrent-session generator: its geometry predates IR-57-STRIKE-01 "
+                     "and/or its validation does not satisfy the current full-registry buffered protocol. "
+                     "No new generation or slot is authorized. See README.md and run_card_current.json.")

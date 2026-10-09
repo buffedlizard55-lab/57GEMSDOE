@@ -78,15 +78,24 @@ FEATURES = (
 
 @dataclass
 class FoldGeometry:
-    """Per-pixel geometry of the active domain of one fold cell, from visible faults only."""
+    """Per-pixel geometry of the active domain of one fold cell, from visible faults only.
+
+    ``X`` has one column per entry of ``feature_names``: the catalogue-geometry
+    block (:data:`FEATURES`), optionally followed by the geophysical
+    corroboration block (:data:`gems57.geo.GEO_FEATURES`) when ``fold_geometry``
+    was called with ``geo`` planes.  Geophysical columns are static raster
+    planes, so they cannot leak the withholding mask, but every column is still
+    passed through the leakage canary.
+    """
     key: str
     rows: np.ndarray
     cols: np.ndarray
-    X: np.ndarray                     # (n, len(FEATURES)) float32
+    X: np.ndarray                     # (n, len(feature_names)) float32
     y: np.ndarray                     # 1 = withheld (hidden) truth pixel
     visible: np.ndarray
     n_hidden: int
     seg: SegmentTable = field(repr=False)
+    feature_names: tuple = FEATURES
 
 
 def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
@@ -98,12 +107,20 @@ def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
                   domain: np.ndarray, key: str,
+                  geo: dict | None = None,
                   sense_src: np.ndarray | None = None) -> FoldGeometry:
     """Build the feature matrix for one fold cell using **visible faults only**.
 
+    Two opt-in blocks may be appended after :data:`FEATURES`, in this order:
+
     ``sense_src`` is the unmasked int8 sense raster (see
     ``faultzone.trace_sense_raster``).  It is restricted to *visible* pixels before
-    any use, so a withheld segment's sense cannot reach a feature (leakage rule).
+    any use, so a withheld segment's sense cannot reach a feature (leakage rule);
+    the appended columns are :data:`SENSE_FEATURES`.
+
+    ``geo`` optionally maps names in :data:`gems57.geo.GEO_FEATURES` to full-grid
+    float32 planes (see :func:`gems57.geo.load_planes`); those columns come last and
+    ``FoldGeometry.feature_names`` records the combined order.
     """
     strike, coh = local_strike(visible, smooth_px=3.0)
     seg, n_seg = segments(visible, max_len_px=12)[:2]
@@ -114,10 +131,14 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
 
     d, iy, ix = nearest_frame(visible)
     active = domain & ~visible
+    names = (tuple(FEATURES)
+             + (SENSE_FEATURES if sense_src is not None else ())
+             + (tuple(geo) if geo else ()))
     ys, xs = np.nonzero(active)
     if ys.size == 0:
-        return FoldGeometry(key, ys, xs, np.zeros((0, len(FEATURES)), np.float32),
-                            np.zeros(0, np.int8), visible, 0, tab)
+        return FoldGeometry(key, ys, xs, np.zeros((0, len(names)), np.float32),
+                            np.zeros(0, np.int8), visible, 0, tab,
+                            feature_names=names)
 
     ay, ax = iy[ys, xs], ix[ys, xs]
     dy = (ys - ay).astype(np.float32)
@@ -128,7 +149,10 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    s = np.where(np.isfinite(s), 0.0, s)
+    # IR-57-STRIKE-01: the old argument order replaced EVERY finite strike
+    # with zero, making sin2 constant 0/cos2 constant 1 and rotating all offsets
+    # onto a global north/south frame. Invalid strike, not valid strike, falls back.
+    s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
     # displacement proxy: size of the whole mapped component, not the 12 px chunk
@@ -150,17 +174,25 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
         src = visible & (sense_src > 0)
         if src.any():
-            _, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
+            distance, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
             code = sense_src[sy[ay, ax], sx[ay, ax]].astype(np.float64)
+            # Do not assign a distant record to an unrelated visible fault.
+            code[distance[ay, ax] > 1.0] = 0
+            del distance, sy, sx
         else:
             code = np.zeros(ay.shape, np.float64)
         sgn = np.where(code == 2, 1.0, np.where(code == 3, -1.0, 0.0))
         cols += [sgn, sgn * side]
+    if geo:
+        # order of insertion in ``geo`` defines the appended column order;
+        # callers pass a dict built from GEO_FEATURES to keep it canonical
+        for gname in geo:
+            cols.append(geo[gname][ys, xs])
     X = np.stack(cols, axis=1).astype(np.float32)
 
     y = hidden[ys, xs].astype(np.int8)
     return FoldGeometry(key=key, rows=ys, cols=xs, X=X, y=y, visible=visible,
-                        n_hidden=int(y.sum()), seg=tab)
+                        n_hidden=int(y.sum()), seg=tab, feature_names=names)
 
 
 # --------------------------------------------------------------------------- #
@@ -273,7 +305,7 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
     if vy.size > 1:
         from scipy.spatial import cKDTree
         tree = cKDTree(np.stack([vy, vx], 1))
-        _d, idx = tree.query(np.stack([vy, vx], 1), k=13)
+        _d, idx = tree.query(np.stack([vy, vx], 1), k=min(13, len(vy)))
         cid = vcomp[vy, vx]
         nbr_cid = vcomp[vy[idx], vx[idx]]
         other = nbr_cid != cid[:, None]

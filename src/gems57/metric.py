@@ -95,30 +95,6 @@ def offsets(radius: float = RADIUS_PX) -> tuple[np.ndarray, np.ndarray, np.ndarr
 OFF_DY, OFF_DX, OFF_K = offsets()
 
 
-def max_cover(prediction, truth):
-    """Shared continuous max-kernel scorer (no summing duplicate predictions).
-
-    Returns truth-cell coverages, per-prediction-cell nearest-truth credit,
-    and the full coverage field, on the same grid. Used by evaluate_holdout;
-    for binary fields this must agree with dti_binary's EDT implementation.
-    """
-    p = np.asarray(prediction, np.float32)
-    t = np.asarray(truth, bool)
-    if p.ndim != 2 or p.shape != t.shape or not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
-        raise ValueError('max_cover requires aligned, finite predictions in [0,1]')
-    H, W = t.shape
-    cover = np.zeros((H, W), np.float32)
-    for dy, dx, k in zip(OFF_DY, OFF_DX, OFF_K):
-        y0, y1 = max(0, dy), min(H, H + dy)
-        x0, x1 = max(0, dx), min(W, W + dx)
-        # target is shifted by (dy,dx) relative to the prediction pixel
-        np.maximum(cover[y0:y1, x0:x1],
-                   p[max(0, -dy):min(H, H - dy), max(0, -dx):min(W, W - dx)] * k,
-                   out=cover[y0:y1, x0:x1])
-    q = kernel(distance_transform_edt(~t)).astype(np.float32) if t.any() else np.zeros_like(p)
-    return cover[t].astype(np.float64), q, cover
-
-
 def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> float:
     """Minimum realised kernel credit ``k`` for one more **non-redundant** dot.
 
@@ -183,6 +159,30 @@ def dti_binary(pred_bool, truth, valid=None, known=None,
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
+def max_cover(pred, truth):
+    """Shared official-kernel primitives for soft predictions.
+
+    Returns credit per truth pixel (row-major), kernel credit per prediction
+    location, and distance-to-truth. Empty truth has zero kernel credit rather
+    than SciPy EDT's distance to the implicit array boundary.
+    """
+    p = np.asarray(pred, np.float64)
+    g = np.asarray(truth, bool)
+    if p.ndim != 2 or p.shape != g.shape:
+        raise ValueError("grid shape mismatch")
+    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
+        raise ValueError("predictions must be finite in [0,1]")
+    yy, xx = np.nonzero(g)
+    credit = np.zeros(len(yy), np.float64)
+    h, w = p.shape
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ny, nx = yy + j, xx + i
+        ok = (ny >= 0) & (ny < h) & (nx >= 0) & (nx < w)
+        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    dg = distance_transform_edt(~g) if len(yy) else np.full(p.shape, np.inf)
+    return credit, kernel(dg), dg
+
+
 def dti_exact(pred, truth, valid=None, known=None,
               alpha: float = ALPHA, beta: float = BETA) -> dict:
     """Exact DTI for arbitrary soft predictions in [0, 1] (max over the kernel)."""
@@ -201,16 +201,10 @@ def dti_exact(pred, truth, valid=None, known=None,
     if n == 0:
         return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0,
                     n_emitted=int((p > 0).sum()), dti=0.0, coverage=0.0)
-    H, W = p.shape
-    credit = np.zeros(n, np.float64)
-    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
-        ny, nx = yy + j, xx + i
-        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
-        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    credit, q, _ = max_cover(p, g)
     tp = float(credit.sum())
     fn = float(n) - tp
-    dg = distance_transform_edt(~g)
-    fp = float((p * (1.0 - kernel(dg))).sum())
+    fp = float((p * (1.0 - q)).sum())
     return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=int((p > 0).sum()),
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 

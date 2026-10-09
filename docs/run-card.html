@@ -1,61 +1,109 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Run card · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-4.html">Session 4</a><a class="" href="session-3.html">Session 3</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="on" href="run-card.html">Run card</a></nav>
-<main><h2>Latest run card — negative</h2><p><b>DO NOT SUBMIT.</b> <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json">JSON</a>. Earlier run: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_session2.json">archived card</a>.</p><pre>{
-  &quot;hypothesis&quot;: &quot;H57-G: sqrt(length)-normalized cross-strike stepover&quot;,
-  &quot;mechanism&quot;: &quot;Damage-zone width may grow with fault displacement; connected visible-component length is only a noisy displacement proxy.&quot;,
-  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Map-trace fragmentation and mapping effort, not actual displacement.&quot;,
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run card · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p><a href="data/run_card.json">Download JSON</a></p><pre>{
+  &quot;hypothesis&quot;: &quot;A candidate magnetic edge\u2019s strike relative to its nearest visible fault, conditioned on distance and host length, predicts missing secondary strands better than a catalogue-only halo.&quot;,
+  &quot;mechanism&quot;: &quot;Label-independent TMI derivatives supply an axial candidate tangent. Visible-only host geometry and an empirical training-distance zone drive a fitted intensity; textbook shear angles are not imposed.&quot;,
+  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Magnetized dikes, lithologic contacts and east-west flight-line leveling residuals may form magnetic edges without fault displacement.&quot;,
   &quot;holdout_dti&quot;: {
-    &quot;label&quot;: &quot;HOLDOUT-DTI (not an organizer score)&quot;,
-    &quot;evaluator_version&quot;: &quot;gems52-pooled-hide-v1 repaired (metric.max_cover, pixel-exact mask), gems57 LOQO pooled/quadrant-jackknife&quot;,
-    &quot;withheld_positive_pixels&quot;: 22619,
-    &quot;pooled&quot;: 0.23742257629534305,
-    &quot;ci95_quadrant_jackknife&quot;: [
-      0.20147621833615273,
-      0.2733689342545334
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;dti&quot;: 0.023203075374027337,
+    &quot;ci95&quot;: [
+      0.018777925030160507,
+      0.02799187291971626
     ],
-    &quot;baseline_same_mode_and_budget&quot;: 0.23587476580727823,
-    &quot;delta&quot;: 0.0015478104880648214
+    &quot;withheld_positive_pixels&quot;: 11321,
+    &quot;tpw&quot;: 259.16790716440863,
+    &quot;fpw&quot;: 10304.58136457905,
+    &quot;fnw&quot;: 11061.832092835584,
+    &quot;representation&quot;: &quot;soft pre-placement surface (matches downloaded TIFF method)&quot;,
+    &quot;split_version&quot;: &quot;buffered-whole-components-loqo-v2&quot;,
+    &quot;canary_clean&quot;: true
+  },
+  &quot;holdout_dot_dti&quot;: {
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;dti&quot;: 0.10916787041142981,
+    &quot;ci95&quot;: [
+      0.09450251109316313,
+      0.12419365163463253
+    ],
+    &quot;withheld_positive_pixels&quot;: 11321,
+    &quot;tpw&quot;: 1746.1900101871004,
+    &quot;fpw&quot;: 32947.09651221608,
+    &quot;fnw&quot;: 9574.809989812898,
+    &quot;representation&quot;: &quot;holdout binary allocation ONLY; production dots were not generated&quot;
+  },
+  &quot;paired_orientation_minus_anatomy&quot;: {
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;delta&quot;: -0.0005852603984091292,
+    &quot;ci95&quot;: [
+      -0.006179380950003338,
+      0.004966084594639524
+    ],
+    &quot;withheld_positive_pixels&quot;: 11321
   },
   &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;surface_witnesses&quot;: [
-      {
-        &quot;source&quot;: &quot;/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif&quot;,
-        &quot;sha256&quot;: &quot;c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f&quot;,
-        &quot;prior_coverage_of_eligible_3px&quot;: 0.9987243421716145,
-        &quot;candidate_surface_positive_3px_overlap&quot;: 0.9987243421716145,
-        &quot;prior_nonzero&quot;: 206895
-      },
-      {
-        &quot;source&quot;: &quot;/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;,
-        &quot;sha256&quot;: &quot;ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be&quot;,
-        &quot;prior_coverage_of_eligible_3px&quot;: 1.0,
-        &quot;candidate_surface_positive_3px_overlap&quot;: 1.0,
-        &quot;prior_nonzero&quot;: 5167373
-      }
-    ],
-    &quot;surface_rank_vs_witnesses&quot;: [
-      {
-        &quot;source&quot;: &quot;/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif&quot;,
-        &quot;spearman&quot;: -0.0001280785867744352
-      },
-      {
-        &quot;source&quot;: &quot;/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;,
-        &quot;spearman&quot;: 0.60017972098096
-      }
-    ],
-    &quot;sha256_distinct_from_full_index&quot;: true,
-    &quot;full_final_dot_comparison&quot;: &quot;NOT RUN; stopped before placement after surface gate&quot;,
-    &quot;scope&quot;: &quot;Full sha256 index only; two pinned overlap witnesses suffice to fail the literal gate.&quot;
+    &quot;registry_rasters_expected&quot;: 679,
+    &quot;registry_rasters_checked&quot;: 679,
+    &quot;complete_accessible_scan&quot;: true,
+    &quot;worst_spearman_full_footprint&quot;: 0.8212578086422125,
+    &quot;worst_rho_submission&quot;: &quot;57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif&quot;,
+    &quot;worst_dot_overlap&quot;: 1.0,
+    &quot;worst_overlap_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
+    &quot;duplicate_count&quot;: 78,
+    &quot;byte_unique_among_checked&quot;: true,
+    &quot;pixel_unique_among_checked&quot;: true,
+    &quot;unique&quot;: false
   },
-  &quot;raster_sha256&quot;: &quot;07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92&quot;,
+  &quot;surface_before_placement&quot;: {
+    &quot;checked&quot;: true,
+    &quot;protocol_pass&quot;: false
+  },
+  &quot;final_dots&quot;: {
+    &quot;status&quot;: &quot;not_generated&quot;,
+    &quot;reason&quot;: &quot;literal surface gate requires stop&quot;,
+    &quot;emitted_pixels&quot;: 0
+  },
+  &quot;raster_sha256&quot;: &quot;f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a&quot;,
   &quot;validator_output&quot;: {
+    &quot;file&quot;: &quot;/home/user/57GEMSDOE/docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
+    &quot;bytes&quot;: 10010096,
+    &quot;sha256&quot;: &quot;f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a&quot;,
+    &quot;meta&quot;: {
+      &quot;crs&quot;: &quot;EPSG:32611&quot;,
+      &quot;shape&quot;: [
+        3730,
+        3292
+      ],
+      &quot;dtype&quot;: &quot;float32&quot;,
+      &quot;count&quot;: 1,
+      &quot;nodata&quot;: null,
+      &quot;transform&quot;: [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      &quot;profile_compress&quot;: &quot;deflate&quot;
+    },
+    &quot;band_description&quot;: [
+      null
+    ],
+    &quot;n_finite&quot;: 12279160,
+    &quot;n_nan&quot;: 0,
+    &quot;min&quot;: 0.0,
+    &quot;max&quot;: 0.7537760734558105,
+    &quot;mean&quot;: 0.0007940529612824321,
+    &quot;emitted_positive_pixels&quot;: 2714823,
     &quot;checks&quot;: {
       &quot;single_band&quot;: true,
       &quot;dtype_float32&quot;: true,
@@ -74,36 +122,39 @@
       &quot;zero_dots_on_mapped_catalogue&quot;: true
     },
     &quot;all_checks_passed&quot;: true,
-    &quot;nan_cells&quot;: 0,
-    &quot;min&quot;: 0.0,
-    &quot;max&quot;: 0.7376705408096313,
-    &quot;crs_shape_transform&quot;: {
-      &quot;crs&quot;: &quot;EPSG:32611&quot;,
-      &quot;shape&quot;: [
-        3730,
-        3292
+    &quot;on_catalogue_positive_pixels&quot;: 0,
+    &quot;in_footprint_positive_pixels&quot;: 2714823,
+    &quot;footprint_fraction&quot;: 0.5253777886752127
+  },
+  &quot;submission_name&quot;: &quot;gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95&quot;,
+  &quot;submission_note&quot;: &quot;Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.&quot;,
+  &quot;submission_note_chars&quot;: 131,
+  &quot;file&quot;: &quot;docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
+  &quot;zip_file&quot;: &quot;docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip&quot;,
+  &quot;verdict&quot;: &quot;negative&quot;,
+  &quot;okay_to_download&quot;: true,
+  &quot;okay_to_submit&quot;: false,
+  &quot;verdict_reason&quot;: &quot;Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.&quot;,
+  &quot;recorded_sense&quot;: {
+    &quot;tested&quot;: true,
+    &quot;retained&quot;: false,
+    &quot;paired_difference&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;delta&quot;: 0.003580783591493636,
+      &quot;ci95&quot;: [
+        -0.005722027160876473,
+        0.014532120997528746
       ],
-      &quot;dtype&quot;: &quot;float32&quot;,
-      &quot;count&quot;: 1,
-      &quot;nodata&quot;: null,
-      &quot;transform&quot;: [
-        100.0,
-        0.0,
-        243350.0,
-        0.0,
-        -100.0,
-        4508550.0
-      ],
-      &quot;profile_compress&quot;: &quot;lzw&quot;
+      &quot;withheld_positive_pixels&quot;: 11321
     }
   },
-  &quot;submission_name&quot;: &quot;gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT&quot;,
-  &quot;submission_note&quot;: &quot;H57-G width-scaled stepover; research only: strict overlap gate failed; DO NOT SUBMIT&quot;,
-  &quot;verdict&quot;: &quot;negative: research surface only; DO NOT SUBMIT; literal overlap gate fails&quot;,
-  &quot;slot_used&quot;: false
+  &quot;experiments_used&quot;: 3,
+  &quot;submission_slots_used&quot;: 0,
+  &quot;generated_utc&quot;: &quot;2026-10-09T20:00:19.209388+00:00&quot;,
+  &quot;registry_reviewed_utc&quot;: &quot;2026-10-09T21:01:12.836328+00:00&quot;,
+  &quot;registry_scope&quot;: &quot;Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.&quot;
 }</pre></main>
-<footer>Generated 2026-10-09 22:09 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-09 21:14 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>
