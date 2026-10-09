@@ -34,6 +34,13 @@ WIDTH = 3292
 TRANSFORM = Affine(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0)
 PIXEL_M = 100.0
 
+# --- names the earlier lanes' modules (gates.py, submission_writer.py) import ---
+# Added at merge time so those modules keep working unchanged rather than being
+# forked. Same six pinned numbers, same measured shape; no second source of truth.
+SHAPE = (HEIGHT, WIDTH)
+CELL_M = PIXEL_M
+CRS_EPSG = f"EPSG:{EPSG}"
+
 SHA256_EXISTING_FAULTS = "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093"
 SHA256_SAMPLE_SUBMISSION = "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc"
 
@@ -114,3 +121,71 @@ def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> 
         dst.write(out, 1)
         dst.set_band_description(1, "predicted_new_fault_probability")
     return {"path": str(path), "mode": mode, "nodata": nodata}
+
+
+def read_geotiff(path: str | Path) -> dict:
+    """Everything a validator can complain about, re-derived from the bytes on disk.
+
+    Kept byte-compatible with the earlier lanes' receipt format so their gates
+    still read what they expect.
+    """
+    import hashlib
+
+    p = Path(path)
+    with rasterio.open(p) as src:
+        a = src.read(1)
+        info = dict(
+            path=str(p), bytes=p.stat().st_size,
+            sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+            bands=src.count, dtype=src.dtypes[0], height=src.height, width=src.width,
+            crs=str(src.crs) if src.crs is not None else None,
+            transform=[float(v) for v in tuple(src.transform)[:6]],
+            res=[float(v) for v in src.res],
+            nodata=src.nodata, nodata_repr=repr(src.nodata),
+        )
+    finite = np.isfinite(a)
+    info.update(
+        finite_pixels=int(finite.sum()),
+        min=float(np.nanmin(a)) if finite.any() else None,
+        max=float(np.nanmax(a)) if finite.any() else None,
+        positive_pixels=int((a > 0).sum()),
+        nonzero_in_footprint=int(((a > 0) & finite).sum()),
+        unique_values=int(len(np.unique(a[finite]))) if finite.any() else 0,
+    )
+    return info
+
+
+def write_geotiff(path: str | Path, arr: np.ndarray, *, nodata: float | None = None) -> dict:
+    """Write a single-band float32 GeoTIFF on the pinned grid and re-read it.
+
+    The re-read is the contract: this returns what the *file* says. Tiled 256 px
+    with deflate + horizontal predictor, matching what this family has shipped.
+    """
+    from rasterio.transform import from_origin
+
+    path = Path(path)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if arr.dtype != np.float32:
+        raise TypeError(f"submission must be float32, got {arr.dtype}")
+    if arr.shape != SHAPE:
+        raise ValueError(f"submission must be {SHAPE}, got {arr.shape}")
+    if not np.isfinite(arr).all():
+        raise ValueError("submission contains NaN/inf; the portal requires finite values")
+    if arr.min() < 0.0 or arr.max() > 1.0:
+        raise ValueError(f"submission out of range: min={arr.min()} max={arr.max()}")
+    tr = Affine(*[float(v) for v in tuple(TRANSFORM)[:6]])
+    west, north, xs, ys = tr.c, tr.f, tr.a, -tr.e
+    check = from_origin(west, north, xs, ys)
+    if tuple(float(v) for v in check)[:6] != tuple(tr)[:6]:
+        raise AssertionError(f"transform drifted: {tuple(check)[:6]} != {tuple(tr)[:6]}")
+    if abs(xs) != CELL_M or abs(ys) != CELL_M:
+        raise AssertionError(f"cell size {xs} x {ys} != {CELL_M} m")
+    profile = dict(driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1,
+                   dtype="float32", crs=CRS_EPSG, transform=tr,
+                   tiled=True, blockxsize=256, blockysize=256,
+                   compress="deflate", predictor=2)
+    if nodata is not None:
+        profile["nodata"] = float(nodata)
+    with rasterio.open(path, "w", **profile) as dst:
+        dst.write(arr, 1)
+    return read_geotiff(path)
