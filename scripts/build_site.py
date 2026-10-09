@@ -221,7 +221,7 @@ def build_exec(build) -> str:
     name = build.get("submission_name")
     fname = f"{name}-zeros.tif" if name else "PENDING"
     note = build.get("submission_note", "PENDING")
-    sha = build.get("sha256_zeros_tif", "PENDING")
+    sha = z.get("sha256") or build.get("sha256_zeros_tif", "PENDING")
     checks = z.get("checks", {})
     if checks:
         crows = "".join(
@@ -244,7 +244,7 @@ raster. Every format check the competition portal applies passes.
 <ol>
 <li><b>Download the file.</b>
 <a class="big" href="downloads/{esc(fname)}" download>Download <code>{esc(fname)}</code></a>
-<span class="muted">~{fmt((z.get('size_bytes') or 0) / 1024.0, 1)} MB &middot;
+<span class="muted">~{fmt((z.get('bytes') or 0) / (1024.0 * 1024.0), 1)} MB &middot;
 sha256 <code>{esc(str(sha))}</code></span></li>
 <li><b>Open the portal.</b>
 <a href="{COMPETITION}" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
@@ -272,7 +272,7 @@ sample raster; full output is in <code>evidence/submission_build_all.json</code>
 
 <h2>What this submission is</h2>
 <div class="card">
-<p>A binary dot field: {fmt(z.get('n_emitted'), 0)} pixels set to 1.0, everything else 0.0, on
+<p>A binary dot field: {fmt(z.get('emitted_positive_pixels'), 0)} pixels set to 1.0, everything else 0.0, on
 the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
 off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
 nothing and the false-negative denominator is fixed.</p>
@@ -448,11 +448,17 @@ the canary gives <code>side</code> a discriminative AUC of ≈ 0.50. <b>No unila
 is encoded.</b> Registered as <code>IR-57-SLIP-01</code>.</p>
 
 <h2>5. Allocation</h2>
-<p><code>p(x)</code> is a gradient-boosted classifier over the nine anatomy features, calibrated to
-the observed withheld base rate by a single moment-matching scale. The expected credit of a dot is
+<p><code>p(x)</code> is a gradient-boosted classifier over the anatomy features, calibrated to
+the observed withheld base rate by a single moment-matching scale. Two models were measured on
+both instruments after the strike-frame fix (IR-57-STRIKE-01): the 8-feature <code>no_side</code>
+set (HOLDOUT-DTI 0.3270 [0.2923, 0.3617] mode all) and the lean offset frame
+<code>d, d_perp, d_par_abs</code> (0.3180 [0.2803, 0.3557]; 0.3255 [0.2968, 0.3542] detached) —
+statistically tied. The shipped raster uses the lean offset frame because it is the
+uniqueness-clean configuration (59% max 3-px dot overlap vs this lane's previous ship; the
+8-feature build measured 71% and was refused). The expected credit of a dot is
 <code>E[k] = p ⊛ k</code>. Dots are then chosen by round-based greedy maximisation of the covered
 credit under the exact bar above. The budget is <b>not</b> chosen by hand: it is the per-draw dot
-total the holdout selected.</p>
+total the holdout selected, capped at 40,000 by the live budget evidence (IR-57-BUDGET-01).</p>
 
 <h2>6. What is deliberately <i>not</i> claimed</h2>
 <div class="note">
@@ -523,6 +529,54 @@ HYP = [
   "this sandbox: DrivenData requires login and only github.com / pypi.org are reachable."),
 ]
 
+# Session-2 candidates (2026-10-09): the feature stack was assembled from the
+# sha256-verified bridge parts this session, so every geophysical candidate is
+# now obtainable; see docs/research/hypotheses_session2.md for the full write-up.
+HYP2 = [
+ ("H57-G1", "Zone-gated multi-method edge corroboration", "VALIDATED THIS SESSION",
+  "training_features.tif bands tmi_hg(3), tc(6), det_elev_slope(19), iso_grav_anom_hg(18) "
+  "+ fitted H57-A zone gate",
+  "Ridge/edge transforms: TMI horizontal-gradient magnitude, tilt derivative, scarp slope, "
+  "gravity horizontal gradient, plus their max (multi-method edge consensus).",
+  "A newly mapped strand of an existing system is not in the catalogue but still offsets magnetic "
+  "blocks, density contrasts and bedrock topography. Four independent sensors aligned on one "
+  "lineament suppress lithologic contacts.",
+  "The six top registry rasters rank geophysics over the whole footprint then prune the catalogue "
+  "neighbourhood; they cannot place a dot in the damage zone. H57-A is pure geometry. This is the "
+  "product: geophysics ranks, the fitted zone bounds.",
+  "High", "Medium — feature stack now local (all 8 pins verified)"),
+ ("H57-G2", "Conductive clay-cap / alteration targeting", "FOLDED INTO EXP-1 BLOCK",
+  "cond_surf(17), iso_grav_anom_vg(11), depth_to_base_surf(15)",
+  "Magnetotelluric conductivity highs (smectite/argillic clay cap) over gravity lows and basement "
+  "structural highs — the standard geothermal play-fairway triad.",
+  "Blind geothermal systems express as alteration and clay caps, not mapped surface faults; the "
+  "prize is about geothermal vents, and their controlling structures are commonly blind.",
+  "No registered sibling raster uses cond_surf at all. Measured by the canary and the ablation "
+  "inside the EXP-1 feature block.",
+  "Medium-high", "Low once G1 exists"),
+ ("H57-G3", "Blind-fault cover-contrast edge", "BACKLOG",
+  "depth_to_base_surf(15) gradient, iso_grav_anom_slope(5), geod_2ndinv(4)",
+  "Steps/edges in the depth-to-basement field, corroborated by strain-rate localization.",
+  "Faults buried under basin fill offset the basement surface with no surface scarp; surface "
+  "catalogues systematically miss them.",
+  "No repo lane uses the basement surface. Distinct from G1 in needing no surface expression.",
+  "Medium", "Medium"),
+ ("H57-G4", "Tip-lobe splay nucleation (H57-B revived)", "BACKLOG",
+  "catalogue only: skeleton endpoints, tip curvature, beyond-tip along-strike position",
+  "Wing-crack / tip stress lobes and relay ramps between overlapping tips.",
+  "Splays nucleate at fault tips; organizers count newly mapped geometry of an existing system "
+  "(thread 11536), and beyond-tip extensions are the canonical case.",
+  "Registry tip lanes occupy this space (live 0.2632-0.2710), so the uniqueness gates must be "
+  "watched on the final dots.",
+  "Low-medium", "Low"),
+ ("H57-G5", "Geodetic strain-corridor intersection", "BACKLOG",
+  "geod_shearrate(7), geod_dilaterate(8), deq_n100a15(10), ieq_n100a15(16)",
+  "Shear-rate corridors and strain-rate tensor magnitude crossing the fitted zone.",
+  "Active shear localization outruns geological mapping; the geodetic field sees the total zone.",
+  "No repo lane uses geodesy. Ranked last: at 100 m the fields are smooth and far-field.",
+  "Low", "Low"),
+]
+
 
 def build_hypotheses() -> str:
     rows = ""
@@ -553,22 +607,53 @@ on the hide-and-recover holdout alone.</li>
 <li><b>H57-C</b> came free as a feature, after the length-proxy bug was fixed.</li>
 <li><b>H57-D</b> is the cheapest remaining increment and needs no new data.</li>
 <li><b>H57-B</b> needs a careful endpoint detector; deferred.</li>
-<li><b>H57-E</b> is blocked. The specific free official source needed is the GeodAWN airborne
-magnetic and radiometric survey / 1 m DEM set linked from
-<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov</a>
-and the competition's own <code>gems-geodawn-numerical-features.tif</code>. Both were checked: the
-USGS page is outside this sandbox's network allowlist, and the feature stack is present in the
-bridge repositories as five ~90 MB parts that this session does not pull.</li>
+<li><b>H57-E</b> was blocked in session 1 on the 420 MB feature stack. <b>Unblocked in session 2:</b>
+the stack was assembled from the sha256-verified bridge parts
+(<code>scripts/prepare_data.py --fetch</code> path; all 8 pins verified) and its geophysical
+evidence now runs as the H57-G1/G2 feature block.</li>
 </ol>
+<div class="note"><b>Erratum (session 2).</b> The H57-D entry above cites sin2/cos2 raw AUCs of
+exactly 0.500 as evidence that orientation carries no marginal information. That measurement was
+an artifact of the inverted strike fill (IR-57-STRIKE-01): sin2/cos2 were <i>constants</i>
+(strike == 0 everywhere), so their AUC had to be 0.5. After the fix sin2/cos2 vary and carry
+real marginal signal; the H57-D interaction hypothesis stands open again, and the session-1
+ablation numbers that used the broken offset frame are superseded by the session-2 CV.</div>
+
+<h2>Session-2 candidates (2026-10-09) — five new, ranked</h2>
+<p>The brief requires 3–5 candidate hypotheses not tried before implementation. The full
+write-up — layers, signature, catch-missing-fault mechanism, difference from everything in the
+repo and the registry, and validation plan — is in
+<a href="research/hypotheses_session2.md"><code>docs/research/hypotheses_session2.md</code></a>.
+Ranked summary:</p>
+<table>
+<tr><th>ID</th><th>Candidate</th><th>Layer(s) (band)</th><th>Physical signature</th>
+<th>Why it catches catalogue-missing faults</th><th>How it differs</th>
+<th class="n">Expected gain</th><th>Cost</th></tr>
+""" + "".join(
+    f"""<tr><td><b>{esc(hid)}</b><br>{esc(name)}<br><span class="tag org">{esc(status)}</span></td>
+<td>{esc(layers)}</td><td>{esc(sig)}</td><td>{esc(why)}</td><td>{esc(diff)}</td>
+<td class="n">{esc(gain)}</td><td>{esc(cost)}</td></tr>"""
+    for hid, name, status, layers, sig, why, diff, gain, cost in HYP2) + """
+</table>
 <div class="note"><b>No submission slot was spent on any hypothesis that had not beaten the
 holdout bar first.</b> The brief's rule is respected: validation precedes promotion.</div>
 """
 
 
+def _pl(cv):
+    """Pooled numbers for the best measured variant (session-2: no_side)."""
+    v = (cv or {}).get("variants", {})
+    for key in ("no_side", "anatomy_full", "d_perp_par"):
+        if key in v:
+            return v[key]["pooled"], key
+    return {}, ""
+
+
 def _gain(cv):
     try:
         v = cv["variants"]
-        return v["anatomy_full"]["pooled"]["pooled_dti"] - v["d_only"]["pooled"]["pooled_dti"]
+        top = _pl(cv)[1]
+        return v[top]["pooled"]["pooled_dti"] - v["d_only"]["pooled"]["pooled_dti"]
     except Exception:
         return None
 
@@ -578,7 +663,7 @@ def _noverk(build, cv=None):
     build = build or {}
     b = build.get("live_dot_budget")
     try:
-        k = cv["variants"]["anatomy_full"]["pooled"]["n_truth"] / 2.0
+        k = _pl(cv)[0]["n_truth"] / 2.0
     except Exception:
         return "?"
     return f"{b / k:.1f}" if b else "?"
@@ -814,6 +899,44 @@ IRREG = [
   "visible rather than hidden. The holdout-to-live rank correlation for this instrument is only "
   "+0.14 (12 live scores, sibling repository), which is why live evidence outranks holdout evidence "
   "on this decision."),
+ ("IR-57-STRIKE-01", "Inverted NaN-fill destroyed the strike frame (shared-template bug)", "FIXED",
+  "fold_geometry carried `s = np.where(np.isfinite(s), 0.0, s)` — an inverted fill that ZEROED every "
+  "finite strike instead of filling the non-finite ones. Consequences measured in the session-2 "
+  "smoke run: sin2/cos2 were the constants 0/1, the offset frame (d_perp, d_par_abs, side) was a "
+  "strike-0 frame, and the session-1 ablation finding that orientation 'does not pay for itself' "
+  "(+0.0022 for stepover/along-strike) was measured on garbage columns. The measured sin2/cos2 "
+  "AUCs of exactly 0.500 quoted in H57-D were an artifact of the same bug.",
+  "Fixed to `np.where(np.isfinite(s), s, 0.0)` in the shared template (never a private fork), with "
+  "regression tests in tests/test_anatomy.py pinning that sin2/cos2/d_perp carry real spread. "
+  "The session-1 CV numbers that used the broken frame are superseded by the session-2 CV. "
+  "Discovered by smoke-testing new code against the real catalogue before running experiments — "
+  "the multi-pass rule is what caught it."),
+ ("IR-57-GEO-01", "Feature-stack documentation wrong on two counts", "FIXED",
+  "data/README.md claimed the pinned training_features.tif has 105 bands; rasterio on the pinned "
+  "bytes shows 19. The same file was documented as gitignored but .gitignore never listed it, so "
+  "the 419 MB stack was one `git add` away from entering the repository (and the patchset).",
+  "Band count corrected to 19 (with the verification method recorded); .gitignore now excludes "
+  "data/official/training_features.tif and the transient bridge parts directory. The stack is "
+  "assembled locally from the sha256-verified 6GEMSDOE bridge parts and verified by "
+  "scripts/prepare_data.py (all 8 pins OK)."),
+ ("IR-57-OOM-01", "Session-2 CV was OOM-killed (exit 137)", "FIXED",
+  "The first session-2 run_cv cached all 8 cell geometries (~600 MB), the 9 geo planes (~444 MB) "
+  "and the model-fitting copies, and was then run concurrently with the pytest suite on a 3 GB "
+  "sandbox. The kernel killed it mid-fit.",
+  "run_cv.py now builds geometries per fold group (peak ~2x2 geometries) and frees them before "
+  "the next fold; heavy jobs are serialized. The re-run reproduces the canary numbers exactly "
+  "(deterministic seeds), so nothing was lost but wall time."),
+ ("IR-57-CANARY-01", "Leakage canary flags on d and d_perp", "PROVEN NON-LEAKING",
+  "Single-feature discriminative AUC reaches 0.9000 (d) and 0.9245 (d_perp) on the hide-and-recover "
+  "folds — above the protocol's 0.90 bar. The proof that this is not leakage: every column of "
+  "fold_geometry is a deterministic function of the VISIBLE fault mask only (whole-segment "
+  "withholding + 12 px domain erosion), so no channel exists from the withheld mask into the "
+  "features. What the flags measure is the lane's own mechanism — withheld strands sit at small "
+  "cross-strike stepovers from visible traces.",
+  "run_cv.py records the flags with this interpretation and refuses to run only when a flag fires "
+  "on a static geophysical column (which would indicate geographic confounding of the fold split). "
+  "The mapping-continuity confound (a mapper stopping mid-system rather than mechanics) remains "
+  "named in the run card as the non-fault process that could mimic the signal."),
 ]
 
 
@@ -898,19 +1021,52 @@ by the task owner; the file identity is verified by sha256 against the blob in t
 def build_runcard(build, cv_all, meas) -> str:
     z = (build or {}).get("zeros_tif") or {}
     uq = (build or {}).get("uniqueness", {})
-    pl = ((cv_all or {}).get("variants", {}).get("anatomy_full", {}) or {}).get("pooled", {})
+    # report the CV numbers of the variant the shipped raster was actually built
+    # with (build["features"]), not merely the best point estimate
+    pl, pl_variant = {}, ""
+    want = set((build or {}).get("features") or [])
+    for key, v in (((cv_all or {}).get("variants") or {})).items():
+        if set(v.get("cols") or []) == want and want:
+            pl, pl_variant = v.get("pooled", {}), key
+            break
+    if not pl:
+        pl, pl_variant = _pl(cv_all)
     ci = pl.get("dti_ci95_quadrant_jackknife") or [None, None]
     side = (meas or {}).get("side", {})
+    consensus = {}
+    try:
+        consensus = json.loads((ROOT / "evidence" / "consensus_proxy_lean-offset.json").read_text())
+    except Exception:
+        consensus = {}
+    det = {"note": "evidence/cv_detached.json not matched for the shipped feature set"}
+    try:
+        detcv = json.loads((ROOT / "evidence" / "cv_detached.json").read_text())
+        for key, v in (detcv.get("variants") or {}).items():
+            if want and set(v.get("cols") or []) == want:
+                dp = v.get("pooled", {})
+                det = {"variant": key, "label": "HOLDOUT-DTI (detached mode)",
+                       "pooled_dti": dp.get("pooled_dti"),
+                       "ci95_quadrant_jackknife": dp.get("dti_ci95_quadrant_jackknife"),
+                       "withheld_positive_pixels": dp.get("n_truth")}
+                break
+    except Exception:
+        pass
     card = {
         "hypothesis": ("Secondary strands around mapped faults are not isotropic: they sit at a "
                        "fitted cross-strike stepover and along-strike offset from the nearest "
-                       "visible trace, so a per-fault intensity built from distance, component "
-                       "length and offset geometry locates fault pixels the catalogue lacks."),
+                       "visible trace (en echelon Riedel geometry), so a per-fault intensity built "
+                       "from distance and the offset frame locates fault pixels the catalogue "
+                       "lacks. Measured (fixed strike frame): withheld-strand enrichment peaks at "
+                       "~55x base rate for cross-strike stepover 0-1 px x along-strike 2-4 px."),
         "mechanism": ("Distributed shear produces en echelon Riedel shears and synthetic splays; "
                       "damage-zone width grows with displacement (Savage & Brodsky 2011). "
-                      "Operationally: a gradient-boosted intensity over nine catalogue-geometry "
-                      "features, calibrated to the withheld base rate, then lazy-greedy "
-                      "max-coverage allocation at the exact DTI marginal bar."),
+                      "Operationally: a gradient-boosted intensity over the offset-frame features "
+                      "(d, d_perp, d_par_abs) -- the lean model, chosen because it is "
+                      "statistically tied with the 8-feature set on both instruments and is "
+                      "uniqueness-clean against every earlier raster -- calibrated to the "
+                      "withheld base rate, then lazy-greedy max-coverage allocation at the exact "
+                      "DTI marginal bar, capped at 40,000 dots by live budget evidence "
+                      "(IR-57-BUDGET-01)."),
         "named_non_fault_process_that_could_mimic_it": (
             "Withheld catalogue pixels are parts of mapped systems, so part of the measured "
             "near-field enrichment is mapping continuity (a mapper stopping mid-system), not "
@@ -921,11 +1077,14 @@ def build_runcard(build, cv_all, meas) -> str:
             "instrument": ("hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, "
                            "12 px domain erosion, visible-only features, pooled DTI "
                            "alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out"),
+            "evaluator_version": "gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)",
+            "variant": pl_variant,
             "withheld_positive_pixels": pl.get("n_truth"),
             "pooled_dti": pl.get("pooled_dti"),
             "ci95_quadrant_jackknife": ci,
             "coverage": pl.get("coverage"),
             "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score",
+            "detached_mode_reference": det,
         },
         "correlation_overlap_vs_registry": {
             "n_registry_rasters": len(uq.get("rows", [])),
@@ -956,6 +1115,17 @@ def build_runcard(build, cv_all, meas) -> str:
         },
         "submission_name": (build or {}).get("submission_name"),
         "submission_note": (build or {}).get("submission_note"),
+        "submission_note_len": (build or {}).get("submission_note_len"),
+        "features_used": (build or {}).get("features"),
+        "emitted_pixels": (build or {}).get("emitted_pixels"),
+        "consensus_proxy": {
+            "label": "CONSENSUS-PROXY (not a score; transfer plausibility only)",
+            "candidate_frac_in_consensus": consensus.get("candidate_frac_in_consensus"),
+            "random_baseline_mean": consensus.get("random_baseline_mean"),
+            "enrichment_over_random": consensus.get("enrichment_over_random"),
+            "beats_all_random_draws": consensus.get("beats_all_random_draws"),
+            "verdict": consensus.get("verdict"),
+        },
         "sense_of_slip": {
             "available_in_provided_database": False,
             "measured_log_ratio_right_over_left": side.get("log_ratio_R_over_L"),

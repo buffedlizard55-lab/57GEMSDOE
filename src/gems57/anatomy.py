@@ -62,15 +62,24 @@ FEATURES = (
 
 @dataclass
 class FoldGeometry:
-    """Per-pixel geometry of the active domain of one fold cell, from visible faults only."""
+    """Per-pixel geometry of the active domain of one fold cell, from visible faults only.
+
+    ``X`` has one column per entry of ``feature_names``: the catalogue-geometry
+    block (:data:`FEATURES`), optionally followed by the geophysical
+    corroboration block (:data:`gems57.geo.GEO_FEATURES`) when ``fold_geometry``
+    was called with ``geo`` planes.  Geophysical columns are static raster
+    planes, so they cannot leak the withholding mask, but every column is still
+    passed through the leakage canary.
+    """
     key: str
     rows: np.ndarray
     cols: np.ndarray
-    X: np.ndarray                     # (n, len(FEATURES)) float32
+    X: np.ndarray                     # (n, len(feature_names)) float32
     y: np.ndarray                     # 1 = withheld (hidden) truth pixel
     visible: np.ndarray
     n_hidden: int
     seg: SegmentTable = field(repr=False)
+    feature_names: tuple = FEATURES
 
 
 def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
@@ -81,8 +90,15 @@ def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
 
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
-                  domain: np.ndarray, key: str) -> FoldGeometry:
-    """Build the feature matrix for one fold cell using **visible faults only**."""
+                  domain: np.ndarray, key: str,
+                  geo: dict | None = None) -> FoldGeometry:
+    """Build the feature matrix for one fold cell using **visible faults only**.
+
+    ``geo`` optionally maps names in :data:`gems57.geo.GEO_FEATURES` to full-grid
+    float32 planes (see :func:`gems57.geo.load_planes`); when given, those columns
+    are appended after the catalogue-geometry block and
+    ``FoldGeometry.feature_names`` records the combined order.
+    """
     strike, coh = local_strike(visible, smooth_px=3.0)
     seg, n_seg = segments(visible, max_len_px=12)[:2]
     tab = segment_table(seg, n_seg)
@@ -92,10 +108,12 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
 
     d, iy, ix = nearest_frame(visible)
     active = domain & ~visible
+    names = tuple(FEATURES) + (tuple(geo) if geo else ())
     ys, xs = np.nonzero(active)
     if ys.size == 0:
-        return FoldGeometry(key, ys, xs, np.zeros((0, len(FEATURES)), np.float32),
-                            np.zeros(0, np.int8), visible, 0, tab)
+        return FoldGeometry(key, ys, xs, np.zeros((0, len(names)), np.float32),
+                            np.zeros(0, np.int8), visible, 0, tab,
+                            feature_names=names)
 
     ay, ax = iy[ys, xs], ix[ys, xs]
     dy = (ys - ay).astype(np.float32)
@@ -106,14 +124,18 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    s = np.where(np.isfinite(s), 0.0, s)
+    # fill only the *remaining* non-finite strikes; the original code had this
+    # condition inverted (``np.where(np.isfinite(s), 0.0, s)``), which zeroed
+    # every finite strike and reduced sin2/cos2 to constants and the offset
+    # frame to a strike-0 frame -- IR-57-STRIKE-01, fixed 2026-10-09.
+    s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
     # displacement proxy: size of the whole mapped component, not the 12 px chunk
     ln = comp_len[np.clip(comp[ay, ax], 0, len(comp_len) - 1)]
 
     th2 = np.radians(2.0 * s)
-    X = np.stack([
+    cols = [
         d[ys, xs],
         d_perp,
         np.abs(d_par),
@@ -123,11 +145,17 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         np.cos(th2),
         coh[ay, ax],
         dens[ys, xs],
-    ], axis=1).astype(np.float32)
+    ]
+    if geo:
+        # order of insertion in ``geo`` defines the appended column order;
+        # callers pass a dict built from GEO_FEATURES to keep it canonical
+        for gname in geo:
+            cols.append(geo[gname][ys, xs])
+    X = np.stack(cols, axis=1).astype(np.float32)
 
     y = hidden[ys, xs].astype(np.int8)
     return FoldGeometry(key=key, rows=ys, cols=xs, X=X, y=y, visible=visible,
-                        n_hidden=int(y.sum()), seg=tab)
+                        n_hidden=int(y.sum()), seg=tab, feature_names=names)
 
 
 # --------------------------------------------------------------------------- #

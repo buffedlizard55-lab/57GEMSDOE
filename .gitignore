@@ -4,3 +4,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 out/
+# the 419 MB pinned feature stack is assembled locally from sha256-verified
+# bridge parts (scripts/prepare_data.py --fetch); it must never enter Git
+data/official/training_features.tif
+data/bridge_parts/

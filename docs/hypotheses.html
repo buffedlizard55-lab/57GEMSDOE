@@ -36,17 +36,44 @@ on the hide-and-recover holdout alone.</li>
 <li><b>H57-C</b> came free as a feature, after the length-proxy bug was fixed.</li>
 <li><b>H57-D</b> is the cheapest remaining increment and needs no new data.</li>
 <li><b>H57-B</b> needs a careful endpoint detector; deferred.</li>
-<li><b>H57-E</b> is blocked. The specific free official source needed is the GeodAWN airborne
-magnetic and radiometric survey / 1 m DEM set linked from
-<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov</a>
-and the competition's own <code>gems-geodawn-numerical-features.tif</code>. Both were checked: the
-USGS page is outside this sandbox's network allowlist, and the feature stack is present in the
-bridge repositories as five ~90 MB parts that this session does not pull.</li>
+<li><b>H57-E</b> was blocked in session 1 on the 420 MB feature stack. <b>Unblocked in session 2:</b>
+the stack was assembled from the sha256-verified bridge parts
+(<code>scripts/prepare_data.py --fetch</code> path; all 8 pins verified) and its geophysical
+evidence now runs as the H57-G1/G2 feature block.</li>
 </ol>
+<div class="note"><b>Erratum (session 2).</b> The H57-D entry above cites sin2/cos2 raw AUCs of
+exactly 0.500 as evidence that orientation carries no marginal information. That measurement was
+an artifact of the inverted strike fill (IR-57-STRIKE-01): sin2/cos2 were <i>constants</i>
+(strike == 0 everywhere), so their AUC had to be 0.5. After the fix sin2/cos2 vary and carry
+real marginal signal; the H57-D interaction hypothesis stands open again, and the session-1
+ablation numbers that used the broken offset frame are superseded by the session-2 CV.</div>
+
+<h2>Session-2 candidates (2026-10-09) — five new, ranked</h2>
+<p>The brief requires 3–5 candidate hypotheses not tried before implementation. The full
+write-up — layers, signature, catch-missing-fault mechanism, difference from everything in the
+repo and the registry, and validation plan — is in
+<a href="research/hypotheses_session2.md"><code>docs/research/hypotheses_session2.md</code></a>.
+Ranked summary:</p>
+<table>
+<tr><th>ID</th><th>Candidate</th><th>Layer(s) (band)</th><th>Physical signature</th>
+<th>Why it catches catalogue-missing faults</th><th>How it differs</th>
+<th class="n">Expected gain</th><th>Cost</th></tr>
+<tr><td><b>H57-G1</b><br>Zone-gated multi-method edge corroboration<br><span class="tag org">VALIDATED THIS SESSION</span></td>
+<td>training_features.tif bands tmi_hg(3), tc(6), det_elev_slope(19), iso_grav_anom_hg(18) + fitted H57-A zone gate</td><td>Ridge/edge transforms: TMI horizontal-gradient magnitude, tilt derivative, scarp slope, gravity horizontal gradient, plus their max (multi-method edge consensus).</td><td>A newly mapped strand of an existing system is not in the catalogue but still offsets magnetic blocks, density contrasts and bedrock topography. Four independent sensors aligned on one lineament suppress lithologic contacts.</td><td>The six top registry rasters rank geophysics over the whole footprint then prune the catalogue neighbourhood; they cannot place a dot in the damage zone. H57-A is pure geometry. This is the product: geophysics ranks, the fitted zone bounds.</td>
+<td class="n">High</td><td>Medium — feature stack now local (all 8 pins verified)</td></tr><tr><td><b>H57-G2</b><br>Conductive clay-cap / alteration targeting<br><span class="tag org">FOLDED INTO EXP-1 BLOCK</span></td>
+<td>cond_surf(17), iso_grav_anom_vg(11), depth_to_base_surf(15)</td><td>Magnetotelluric conductivity highs (smectite/argillic clay cap) over gravity lows and basement structural highs — the standard geothermal play-fairway triad.</td><td>Blind geothermal systems express as alteration and clay caps, not mapped surface faults; the prize is about geothermal vents, and their controlling structures are commonly blind.</td><td>No registered sibling raster uses cond_surf at all. Measured by the canary and the ablation inside the EXP-1 feature block.</td>
+<td class="n">Medium-high</td><td>Low once G1 exists</td></tr><tr><td><b>H57-G3</b><br>Blind-fault cover-contrast edge<br><span class="tag org">BACKLOG</span></td>
+<td>depth_to_base_surf(15) gradient, iso_grav_anom_slope(5), geod_2ndinv(4)</td><td>Steps/edges in the depth-to-basement field, corroborated by strain-rate localization.</td><td>Faults buried under basin fill offset the basement surface with no surface scarp; surface catalogues systematically miss them.</td><td>No repo lane uses the basement surface. Distinct from G1 in needing no surface expression.</td>
+<td class="n">Medium</td><td>Medium</td></tr><tr><td><b>H57-G4</b><br>Tip-lobe splay nucleation (H57-B revived)<br><span class="tag org">BACKLOG</span></td>
+<td>catalogue only: skeleton endpoints, tip curvature, beyond-tip along-strike position</td><td>Wing-crack / tip stress lobes and relay ramps between overlapping tips.</td><td>Splays nucleate at fault tips; organizers count newly mapped geometry of an existing system (thread 11536), and beyond-tip extensions are the canonical case.</td><td>Registry tip lanes occupy this space (live 0.2632-0.2710), so the uniqueness gates must be watched on the final dots.</td>
+<td class="n">Low-medium</td><td>Low</td></tr><tr><td><b>H57-G5</b><br>Geodetic strain-corridor intersection<br><span class="tag org">BACKLOG</span></td>
+<td>geod_shearrate(7), geod_dilaterate(8), deq_n100a15(10), ieq_n100a15(16)</td><td>Shear-rate corridors and strain-rate tensor magnitude crossing the fitted zone.</td><td>Active shear localization outruns geological mapping; the geodetic field sees the total zone.</td><td>No repo lane uses geodesy. Ranked last: at 100 m the fields are smooth and far-field.</td>
+<td class="n">Low</td><td>Low</td></tr>
+</table>
 <div class="note"><b>No submission slot was spent on any hypothesis that had not beaten the
 holdout bar first.</b> The brief's rule is respected: validation precedes promotion.</div>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 18:22 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

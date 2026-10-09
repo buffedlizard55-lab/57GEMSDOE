@@ -9,6 +9,44 @@ Numbered items with an `IR-57-*` tag are cross-referenced on the
 
 ---
 
+## 0. Session-2 supersessions (2026-10-09) — read this first
+
+**The session-1 negative result in item 3 is retracted.** A smoke test of the new geophysical
+code against the real catalogue exposed an inverted NaN-fill in `fold_geometry`
+(`IR-57-STRIKE-01`): every finite strike was zeroed, so `sin2`/`cos2` were constants and
+`d_perp`/`d_par_abs`/`side` were computed in a strike-0 frame. After the fix (shared template,
+with regression tests in `tests/test_anatomy.py`):
+
+* `d_perp_par` (distance + stepover + along-strike) scores **0.3180 [0.2803, 0.3557]** (mode
+  `all`) and **0.3255 [0.2968, 0.3542]** (detached) — **+0.1335** over distance-only, not the
+  +0.0022 measured on the broken columns. The en echelon hypothesis is supported on the
+  instrument; the fixed-frame enrichment peaks at ~55x base rate at stepover 0-1 px x
+  along-strike 2-4 px.
+* `no_side` (8 features) reaches **0.3270 [0.2923, 0.3617]** — the highest HOLDOUT-DTI this
+  lane has measured — and is statistically tied with the lean frame on both instruments.
+* The shipped raster is the **lean `d_perp_par` model**, chosen because the `no_side` build
+  measured 71.1% 3-px dot overlap with this lane's previous ship (limit 70%) and was refused by
+  the uniqueness gate, while the lean build measures 59.0% and passes. Cross-validated numbers
+  for both are above.
+
+**Session-2 candidate H57-G1/G2 (zone-gated geophysical corroboration) is a validated
+negative on this instrument**: `geo_only` 0.0621 [0.0478, 0.0764], `no_side_plus_geo` 0.3171
+[0.2711, 0.3631] vs `no_side` 0.3270 — it does not beat the holdout best, so per the brief it
+does not reach a submission slot. Full log:
+[`docs/research/session2_experiments.md`](docs/research/session2_experiments.md); candidates:
+[`docs/research/hypotheses_session2.md`](docs/research/hypotheses_session2.md).
+
+**Data blocker removed.** `training_features.tif` (419 MB, 19 bands) was assembled from the
+sha256-verified 6GEMSDOE bridge parts; `scripts/prepare_data.py` reports *all 8 pins verified*.
+The geophysics hypotheses (G1/G2/G3/G5) are now testable, and were tested (G1 negative above).
+`data/README.md`'s "105 bands" claim and the missing `.gitignore` entry are fixed
+(`IR-57-GEO-01`).
+
+Everything below this line is the session-1 state of knowledge, kept for context; where it
+conflicts with the numbers above, **the numbers above win**.
+
+---
+
 ## 1. The single largest limitation: the holdout does not rank live scores
 
 **This is the limitation that governs everything else.**
@@ -162,3 +200,26 @@ The cap of 40,000 comes from Spearman(dot count, live score) = **&minus;0.8104**
 4. **Build H57-D's explicit interaction feature** — it is cheap and the 0.5000 marginal AUCs mean
    there is information there that a marginal-only view cannot see.
 5. **Add a script-level smoke test** (limitation 7) before touching the pipeline again.
+
+---
+
+## 9. Session-2 next steps, in order
+
+1. **Spend one submission slot on a live A/B** (limitation 1 is still the governing one): the
+   lean offset-frame raster shipped here is the A-arm; the `no_side` build (archived, 71.1%
+   overlap) is the B-arm candidate for a *differentiated* second slot only if a uniqueness-clean
+   variant can be made. One receipt answers whether the corrected en echelon geometry transfers.
+2. **H57-G4 (tip-lobe splay nucleation)** is now the best untested candidate: the registry's tip
+   lanes hold 0.2632–0.2710 live, and the fixed strike frame makes tip azimuth features
+   meaningful for the first time. Watch the drift gates (registry tip lanes occupy this space).
+3. **H57-D interaction feature** (`|sin(2Δθ)|` gated on distance) is open again now that sin2/cos2
+   carry real variance (see the hypotheses erratum). Cheap: one more CV variant.
+4. **Re-test H57-G1 against a blind-fault instrument.** The catalogue holdout cannot see blind
+   faults — the population geophysics is supposed to find. The CONSENSUS-PROXY (1.57x enriched)
+   hints the geophysical block is not worthless live; a holdout built from SGMC-off-catalogue or
+   INGENIOUS-only strands would be the right instrument.
+5. **Per-fault budget allocation** (lane brief: "per-fault intensity... shrink this lane's dot
+   budget if few withheld positives fall inside the fitted zone") is still global-greedy; a
+   per-component budget split is the last unimplemented clause of the lane paragraph.
+6. **Script smoke tests** (limitation 7) — `build_submission.py` gained two more failure modes
+   this session (unknown preset name; OOM under concurrency) and still has no test.

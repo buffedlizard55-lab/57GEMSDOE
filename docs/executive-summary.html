@@ -21,9 +21,9 @@ raster. Every format check the competition portal applies passes.
 <div class="card">
 <ol>
 <li><b>Download the file.</b>
-<a class="big" href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download>Download <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
-<span class="muted">~0.0 MB &middot;
-sha256 <code>PENDING</code></span></li>
+<a class="big" href="downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif" download>Download <code>gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</code></a>
+<span class="muted">~0.1 MB &middot;
+sha256 <code>9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad</code></span></li>
 <li><b>Open the portal.</b>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
 <i>Participate</i> &rarr; <i>Submissions</i>. You need a DrivenData account joined to the
@@ -37,10 +37,10 @@ rewrite the header and break the grid.</li>
 <h2>The two text fields</h2>
 <div class="card">
 <p><b>Submission name</b> (the portal generates a timestamped filename; use this label):</p>
-<code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357</code>
+<code>gems57-h57-lean-offset-20261009T181740Z-468b837801cb</code>
 <p style="margin-top:10px"><b>Submission note</b> (123 characters, limit 140) &mdash;
 paste this verbatim:</p>
-<code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code>
+<code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378</code>
 </div>
 
 <h2>What the portal checks, and what this file does</h2>
@@ -50,7 +50,7 @@ sample raster; full output is in <code>evidence/submission_build_all.json</code>
 
 <h2>What this submission is</h2>
 <div class="card">
-<p>A binary dot field: PENDING pixels set to 1.0, everything else 0.0, on
+<p>A binary dot field: 40000 pixels set to 1.0, everything else 0.0, on
 the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
 off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
 nothing and the false-negative denominator is fixed.</p>
@@ -62,7 +62,7 @@ See <a href="results.html">Results</a> and
 <a href="run-card.html">Run card</a>.</p>
 </div>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 18:22 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

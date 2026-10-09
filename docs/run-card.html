@@ -13,35 +13,47 @@
 <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
 target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
 <pre>{
-  &quot;hypothesis&quot;: &quot;Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.&quot;,
-  &quot;mechanism&quot;: &quot;Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage &amp; Brodsky 2011). Operationally: a gradient-boosted intensity over nine catalogue-geometry features, calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.&quot;,
+  &quot;hypothesis&quot;: &quot;Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace (en echelon Riedel geometry), so a per-fault intensity built from distance and the offset frame locates fault pixels the catalogue lacks. Measured (fixed strike frame): withheld-strand enrichment peaks at ~55x base rate for cross-strike stepover 0-1 px x along-strike 2-4 px.&quot;,
+  &quot;mechanism&quot;: &quot;Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage &amp; Brodsky 2011). Operationally: a gradient-boosted intensity over the offset-frame features (d, d_perp, d_par_abs) -- the lean model, chosen because it is statistically tied with the 8-feature set on both instruments and is uniqueness-clean against every earlier raster -- calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar, capped at 40,000 dots by live budget evidence (IR-57-BUDGET-01).&quot;,
   &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (&gt;= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.&quot;,
   &quot;holdout_dti&quot;: {
     &quot;instrument&quot;: &quot;hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out&quot;,
+    &quot;evaluator_version&quot;: &quot;gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)&quot;,
+    &quot;variant&quot;: &quot;d_perp_par&quot;,
     &quot;withheld_positive_pixels&quot;: 22641,
-    &quot;pooled_dti&quot;: 0.25172223160856344,
+    &quot;pooled_dti&quot;: 0.3180007961399649,
     &quot;ci95_quadrant_jackknife&quot;: [
-      0.21833561739648347,
-      0.28510884582064344
+      0.28030324167604176,
+      0.35569835060388805
     ],
-    &quot;coverage&quot;: 0.487441073456199,
-    &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;
+    &quot;coverage&quot;: 0.5044198130105738,
+    &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;,
+    &quot;detached_mode_reference&quot;: {
+      &quot;variant&quot;: &quot;d_perp_par&quot;,
+      &quot;label&quot;: &quot;HOLDOUT-DTI (detached mode)&quot;,
+      &quot;pooled_dti&quot;: 0.32552285076241855,
+      &quot;ci95_quadrant_jackknife&quot;: [
+        0.2968235099947392,
+        0.3542221915300979
+      ],
+      &quot;withheld_positive_pixels&quot;: 22619
+    }
   },
   &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;n_registry_rasters&quot;: 15,
+    &quot;n_registry_rasters&quot;: 16,
     &quot;rho_limit&quot;: 0.9,
     &quot;jaccard_limit&quot;: 0.5,
     &quot;overlap_limit&quot;: 0.7,
-    &quot;worst_spearman_full_footprint&quot;: 0.01070177139044915,
-    &quot;worst_rho_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;worst_jaccard_dot_sets&quot;: 0.009534650570199256,
-    &quot;worst_jaccard_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;worst_dot_overlap_3px&quot;: 0.35720551201154466,
-    &quot;worst_overlap_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
+    &quot;worst_spearman_full_footprint&quot;: 0.2766141133066089,
+    &quot;worst_rho_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
+    &quot;worst_jaccard_dot_sets&quot;: 0.16369337225646016,
+    &quot;worst_jaccard_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
+    &quot;worst_dot_overlap_3px&quot;: 0.58955,
+    &quot;worst_overlap_submission&quot;: &quot;h57-anatomy-enechelon (this lane&#x27;s previous ship, HOLDOUT-DTI 0.2517)&quot;,
     &quot;dot_union_rho_note&quot;: &quot;reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01&quot;,
     &quot;unique&quot;: true
   },
-  &quot;raster_sha256&quot;: &quot;8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482&quot;,
+  &quot;raster_sha256&quot;: &quot;9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad&quot;,
   &quot;validator_output&quot;: {
     &quot;no_nan_anywhere&quot;: true,
     &quot;in_footprint_all_finite&quot;: true,
@@ -51,8 +63,23 @@ target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
     &quot;all_checks_passed&quot;: true,
     &quot;n_checks&quot;: 15
   },
-  &quot;submission_name&quot;: &quot;gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357&quot;,
-  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a&quot;,
+  &quot;submission_name&quot;: &quot;gems57-h57-lean-offset-20261009T181740Z-468b837801cb&quot;,
+  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378&quot;,
+  &quot;submission_note_len&quot;: 123,
+  &quot;features_used&quot;: [
+    &quot;d&quot;,
+    &quot;d_perp&quot;,
+    &quot;d_par_abs&quot;
+  ],
+  &quot;emitted_pixels&quot;: 40000,
+  &quot;consensus_proxy&quot;: {
+    &quot;label&quot;: &quot;CONSENSUS-PROXY (not a score; transfer plausibility only)&quot;,
+    &quot;candidate_frac_in_consensus&quot;: 0.276825,
+    &quot;random_baseline_mean&quot;: 0.1765625,
+    &quot;enrichment_over_random&quot;: 1.5678584070796457,
+    &quot;beats_all_random_draws&quot;: true,
+    &quot;verdict&quot;: &quot;consensus-enriched (transfer plausible)&quot;
+  },
   &quot;sense_of_slip&quot;: {
     &quot;available_in_provided_database&quot;: false,
     &quot;measured_log_ratio_right_over_left&quot;: null,
@@ -71,7 +98,7 @@ not done here.</li>
 (<code>IR-57-SLIP-01</code>).</li>
 </ul>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 18:22 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
