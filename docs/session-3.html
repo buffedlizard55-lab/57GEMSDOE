@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Latest run · 57GEMSDOE</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body>
+<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="on" href="session-3.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<main><h2>H57-G — preregistered width-normalized stepover</h2>
+<div class="bad-box" style="border-width:4px">
+<h2 style="margin-top:0">Latest independent H57-G GeoTIFF — DO NOT SUBMIT</h2>
+<p>This is a <b>new model inference</b>, not a copy of an old submission.
+<a download href="downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif">Download the research-only TIF</a> for review.
+It passes 15/15 local format checks;
+sha256 <code>07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92</code>.</p>
+<p><b>Submission verdict: NO.</b> The literal lane overlap gate fired <em>on the surface before dot placement</em>
+(max directed overlap 1.0000 against two pinned public registry witnesses). Therefore there is
+<b>no cleared final dot submission</b> and no weekly slot was used. The TIF is a research surface,
+not an upload recommendation. <a href="session-3.html">Evidence and run card</a>.</p></div>
+<p>The nearest <b>visible</b> fault's cross-strike offset was divided by the square root of one plus
+its visible connected-component size. This tests a displacement/width proxy without imposing any
+textbook strike angle. The hide-and-recover test withholds whole segments; both draws in each held-out
+quadrant were scored with a model fitted on the other three quadrants. The feature is derived from
+visible faults only. Neither model uses an earlier submission as its prediction input.</p>
+<table><tr><th>Arm (detached mode, 10,000-dot cap per fold cell)</th><th>HOLDOUT-DTI</th><th>95% quadrant-jackknife CI</th><th>Withheld positives</th></tr>
+<tr><td>Previous 8 features</td><td>0.2359</td><td>[0.2003, 0.2714]</td><td>22619</td></tr>
+<tr><td>H57-G (+ length-scaled stepover)</td><td>0.2374</td><td>[0.2015, 0.2734]</td><td>22619</td></tr></table>
+<p>HOLDOUT-DTI delta +0.001548; the separate CIs overlap substantially and this is
+<b>not</b> an organizer score or evidence of a live leaderboard improvement.
+Leakage canary (new feature max discriminative AUC): 0.8813
+(threshold 0.90); see the <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/exp4_width.json">raw evidence</a> for each feature.</p>
+<h2>Why even a valid new GeoTIFF cannot be recommended</h2>
+<p>The literal repository checker treats <code>&gt;0</code> as a dot. Two registry witnesses were
+retrieved from the linked public GitHub repositories, their full file hashes checked against
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/registry_full_index.json">the registry index</a>, and their exact 3-pixel
+Euclidean halos compared to the new positive surface <em>before</em> dot placement:</p>
+<table><tr><th>Previous raster</th><th>File sha256</th><th>3px coverage of eligible cells</th><th>Overlap on H57-G surface</th></tr><tr><td><a href="https://github.com/buffedlizard55-lab/13GEMSDOE/tree/main/docs/downloads">13gems_20261001_r13-lattice-s5_v2_zerofill.tif</a></td><td><code>c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f</code></td><td>0.998724</td><td>0.998724</td></tr><tr><td><a href="https://github.com/buffedlizard55-lab/17GEMSDOE/tree/main/docs/downloads">17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif</a></td><td><code>ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be</code></td><td>1.000000</td><td>1.000000</td></tr></table>
+<p>The continuous 17GEMSDOE prior is nonzero at every eligible pixel, so under that specific
+literal support convention <b>no nonempty dot field can pass the 70% rule</b> against it.
+A nonzero continuous probability is not necessarily a predicted <i>dot</i> — if the intended convention
+instead thresholds continuous priors at 0.5, a policy clarification is required. No waiver or
+alternate gate is silently applied here. The 13GEMSDOE <i>binary</i> lattice is an independent,
+near-universal witness. The run stops before dot placement; no final-dots uniqueness claim is made.</p>
+<p>The newly inferred <a href="downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif" download>research-only GeoTIFF</a>
+is locally format-valid (15/15 checks, no NaNs, EPSG:32611,
+3730 × 3292, matching transform, in range [0,1]), with sha256
+<code>07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92</code>. <b>DO NOT UPLOAD.</b> No DrivenData account/submission-page receipt
+is available here; local validation cannot establish portal acceptance.</p>
+<p><b>Verified links:</b> <a href="https://github.com/drivendataorg/gems-prize-reference-solution">official reference code</a>;
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">official problem description (login may be required)</a>;
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">H33-2-B2 owner method</a>
+(reported +0.004870 on its local holdout, 37,654 emitted dots, not an organizer receipt).
+The owner-provided 0.2778 is not independently verified from a submission-page receipt;
+H33-2-B2 removed dots within 2 pixels of mapped faults from a prior 0.2708 base, not a general proof
+that its method transfers to this lane. The task lists both 0.3195 and 0.3774 as leaderboard highs;
+these conflict and neither can be checked through the restricted network here.</p>
+<p><b>Irregularities / next steps:</b> do not spend a weekly slot; request a written interpretation
+of “dots” for dense continuous registry surfaces, use the shared gate consistently, and validate any
+new emission against the full restored registry. Official competition data downloads and live leaderboard
+require DrivenData access. No geophysical dataset was introduced in this catalogue-only experiment.
+View <a href="run-card.html">the latest JSON run card</a>.</p></main>
+<footer>Generated 2026-10-09 19:29 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Every number on this site is read from a measurement file at build time.
+<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
+</body></html>

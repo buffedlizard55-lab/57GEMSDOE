@@ -69,6 +69,7 @@ ALPHA: float = 0.2
 BETA: float = 0.8
 RADIUS_PX: float = 3.0      # 300 m at the 100 m competition grid
 PIXEL_M: float = 100.0
+R_M: float = RADIUS_PX * PIXEL_M
 EPS: float = 1e-12
 
 
@@ -92,6 +93,30 @@ def offsets(radius: float = RADIUS_PX) -> tuple[np.ndarray, np.ndarray, np.ndarr
 
 
 OFF_DY, OFF_DX, OFF_K = offsets()
+
+
+def max_cover(prediction, truth):
+    """Shared continuous max-kernel scorer (no summing duplicate predictions).
+
+    Returns truth-cell coverages, per-prediction-cell nearest-truth credit,
+    and the full coverage field, on the same grid. Used by evaluate_holdout;
+    for binary fields this must agree with dti_binary's EDT implementation.
+    """
+    p = np.asarray(prediction, np.float32)
+    t = np.asarray(truth, bool)
+    if p.ndim != 2 or p.shape != t.shape or not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
+        raise ValueError('max_cover requires aligned, finite predictions in [0,1]')
+    H, W = t.shape
+    cover = np.zeros((H, W), np.float32)
+    for dy, dx, k in zip(OFF_DY, OFF_DX, OFF_K):
+        y0, y1 = max(0, dy), min(H, H + dy)
+        x0, x1 = max(0, dx), min(W, W + dx)
+        # target is shifted by (dy,dx) relative to the prediction pixel
+        np.maximum(cover[y0:y1, x0:x1],
+                   p[max(0, -dy):min(H, H - dy), max(0, -dx):min(W, W - dx)] * k,
+                   out=cover[y0:y1, x0:x1])
+    q = kernel(distance_transform_edt(~t)).astype(np.float32) if t.any() else np.zeros_like(p)
+    return cover[t].astype(np.float64), q, cover
 
 
 def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> float:
