@@ -9,7 +9,9 @@
 <nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="on" href="run-card.html">Run card</a></nav>
 <main>
 <h2>Run card</h2>
-<p>One JSON card, per parallel-run protocol rule 5.</p>
+<p>One JSON card, per parallel-run protocol rule 5. Machine-readable copy:
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
+target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
 <pre>{
   &quot;hypothesis&quot;: &quot;Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.&quot;,
   &quot;mechanism&quot;: &quot;Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage &amp; Brodsky 2011). Operationally: a gradient-boosted intensity over nine catalogue-geometry features, calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.&quot;,
@@ -28,14 +30,18 @@
   &quot;correlation_overlap_vs_registry&quot;: {
     &quot;n_registry_rasters&quot;: 15,
     &quot;rho_limit&quot;: 0.9,
+    &quot;jaccard_limit&quot;: 0.5,
     &quot;overlap_limit&quot;: 0.7,
-    &quot;worst_abs_spearman_dot_union&quot;: null,
+    &quot;worst_spearman_full_footprint&quot;: 0.01070177139044915,
     &quot;worst_rho_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;worst_dot_overlap_3px&quot;: 0.35776653762468563,
+    &quot;worst_jaccard_dot_sets&quot;: 0.009534650570199256,
+    &quot;worst_jaccard_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
+    &quot;worst_dot_overlap_3px&quot;: 0.35720551201154466,
     &quot;worst_overlap_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
+    &quot;dot_union_rho_note&quot;: &quot;reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01&quot;,
     &quot;unique&quot;: true
   },
-  &quot;raster_sha256&quot;: &quot;72055091c70443ced7438f6959631cc42a3e3487d07725ed53e81e66af7ad285&quot;,
+  &quot;raster_sha256&quot;: &quot;8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482&quot;,
   &quot;validator_output&quot;: {
     &quot;no_nan_anywhere&quot;: true,
     &quot;in_footprint_all_finite&quot;: true,
@@ -45,8 +51,8 @@
     &quot;all_checks_passed&quot;: true,
     &quot;n_checks&quot;: 15
   },
-  &quot;submission_name&quot;: &quot;gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7&quot;,
-  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35389 dots, 0 on-catalogue | sha 84032f82&quot;,
+  &quot;submission_name&quot;: &quot;gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357&quot;,
+  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a&quot;,
   &quot;sense_of_slip&quot;: {
     &quot;available_in_provided_database&quot;: false,
     &quot;measured_log_ratio_right_over_left&quot;: null,
@@ -65,7 +71,7 @@ not done here.</li>
 (<code>IR-57-SLIP-01</code>).</li>
 </ul>
 </main>
-<footer>Generated 2026-10-09 06:34 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 07:07 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

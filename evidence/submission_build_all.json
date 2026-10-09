@@ -1,142 +1,200 @@
 {
-  "generated_utc": "2026-10-09T06:19:04.319930+00:00",
+  "generated_utc": "2026-10-09T07:04:47.031619+00:00",
   "lane": "fault-zone anatomy / secondary strands around known faults",
   "withholding_mode": "all",
   "features": [
     "d",
     "d_perp",
     "d_par_abs",
-    "side",
     "log_len",
     "sin2",
     "cos2",
     "coherence",
     "density"
   ],
+  "features_dropped": [
+    "side"
+  ],
+  "budget_cap": 40000,
+  "holdout_at_capped_budget": {
+    "pooled_dti": 0.2793490519890984,
+    "coverage": 0.5243913853238875,
+    "coverage_ci95": [
+      0.5178827138957656,
+      0.5308917812688256
+    ],
+    "dti_ci95_coverage_only": [
+      0.27607325370270236,
+      0.2826161538519675
+    ],
+    "dti_ci95_quadrant_jackknife": [
+      0.24138280875419366,
+      0.3173152952240031
+    ],
+    "jackknife_drop_quadrant": {
+      "foldNE": 0.28469683917575783,
+      "foldNW": 0.27450318709875604,
+      "foldSE": 0.26449141534693094,
+      "foldSW": 0.29443584861476957
+    },
+    "tp": 11872.745355118137,
+    "fp": 110070.60468918184,
+    "fn": 10768.254644881863,
+    "n_truth": 22641,
+    "n_dots": 131585
+  },
   "calibration": {
-    "scale": 0.9998177516421103,
+    "scale": 0.9997820451259384,
     "base_rate": 0.0023385609499261225
   },
   "flank_variants": {
     "0": {
-      "pooled_dti": 0.28327217338935107,
-      "coverage": 0.5527906890168479,
+      "pooled_dti": 0.2808384932440179,
+      "coverage": 0.5474795081771904,
       "coverage_ci95": [
-        0.5463058409606111,
-        0.5592576263044501
+        0.5409885907843013,
+        0.5539543167732122
       ],
       "dti_ci95_coverage_only": [
-        0.2801352598496894,
-        0.2863962732606167
+        0.2776937949294885,
+        0.283971217308099
       ],
       "dti_ci95_quadrant_jackknife": [
-        0.24819941232655285,
-        0.3183449344521493
+        0.24615690200951215,
+        0.31552008447852364
       ],
       "jackknife_drop_quadrant": {
-        "foldNE": 0.28855538281588566,
-        "foldNW": 0.27897796563278926,
-        "foldSE": 0.26960510056586867,
-        "foldSW": 0.2972080800092862
+        "foldNE": 0.28633221068358583,
+        "foldNW": 0.2764953164639117,
+        "foldSE": 0.2672987868288458,
+        "foldSW": 0.2944581661949356
       },
-      "tp": 12515.733990030454,
-      "fp": 117833.84605349659,
-      "fn": 10125.266009969546,
+      "tp": 12395.483544639766,
+      "fp": 117727.5633316132,
+      "fn": 10245.516455360235,
       "n_truth": 22641,
-      "n_dots": 139954
+      "n_dots": 139578
     },
     "1": {
-      "pooled_dti": 0.282530920101018,
-      "coverage": 0.5446454480351705,
+      "pooled_dti": 0.279683122030429,
+      "coverage": 0.5385614065931371,
       "coverage_ci95": [
-        0.5381515969008052,
-        0.5511241519095692
+        0.5320619721303393,
+        0.5450477579830563
       ],
       "dti_ci95_coverage_only": [
-        0.27935048757027703,
-        0.28569966646021644
+        0.2764945148562463,
+        0.28286102161426446
       ],
       "dti_ci95_quadrant_jackknife": [
-        0.24787722745114818,
-        0.31718461275088783
+        0.24609048202734263,
+        0.31327576203351537
       ],
       "jackknife_drop_quadrant": {
-        "foldNE": 0.2880828660885023,
-        "foldNW": 0.27823952402659247,
-        "foldSE": 0.26893217585710805,
-        "foldSW": 0.29605870920113386
+        "foldNE": 0.2855473941461886,
+        "foldNW": 0.2754285150129565,
+        "foldSE": 0.26640494117697144,
+        "foldSW": 0.292457461235485
       },
-      "tp": 12331.317588964293,
-      "fp": 115334.2054762505,
-      "fn": 10309.682411035707,
+      "tp": 12193.568806675217,
+      "fp": 115231.4309969772,
+      "fn": 10447.431193324783,
       "n_truth": 22641,
-      "n_dots": 136152
+      "n_dots": 135779
     },
     "2": {
-      "pooled_dti": 0.28010219045358653,
-      "coverage": 0.5201580312978321,
+      "pooled_dti": 0.27829106081905264,
+      "coverage": 0.5162241681243698,
       "coverage_ci95": [
-        0.5136476196189773,
-        0.5266616037813395
+        0.5097125587407041,
+        0.5227302729895877
       ],
       "dti_ci95_coverage_only": [
-        0.2767904456904644,
-        0.28340582263301806
+        0.27497377048781074,
+        0.28160089815282685
       ],
       "dti_ci95_quadrant_jackknife": [
-        0.24746686310789856,
-        0.3127375177992745
+        0.24666234299458614,
+        0.3099197786435191
       ],
       "jackknife_drop_quadrant": {
-        "foldNE": 0.2851134815675048,
-        "foldNW": 0.27586307171647906,
-        "foldSE": 0.2675314788017236,
-        "foldSW": 0.2930993780791322
+        "foldNE": 0.2836060826971495,
+        "foldNW": 0.2739037163193172,
+        "foldSE": 0.2661556768159145,
+        "foldSW": 0.2906517792589639
       },
-      "tp": 11776.897986614218,
-      "fp": 107884.12680778619,
-      "fn": 10864.102013385782,
+      "tp": 11687.831390503856,
+      "fp": 107741.1047121651,
+      "fn": 10953.168609496144,
       "n_truth": 22641,
-      "n_dots": 125750
+      "n_dots": 125335
     },
     "3": {
-      "pooled_dti": 0.2638083098783658,
-      "coverage": 0.46403120995581865,
+      "pooled_dti": 0.2625482665660047,
+      "coverage": 0.461394429618124,
       "coverage_ci95": [
-        0.4575418954426311,
-        0.4705327279217088
+        0.4549081302328615,
+        0.4678938270601082
       ],
       "dti_ci95_coverage_only": [
-        0.26031111418801406,
-        0.26730691062562456
+        0.25904857879829374,
+        0.2660498427526858
       ],
       "dti_ci95_quadrant_jackknife": [
-        0.23909783735471804,
-        0.2885187824020135
+        0.23780613385776966,
+        0.28729039927423977
       ],
       "jackknife_drop_quadrant": {
-        "foldNE": 0.2667110339647656,
-        "foldNW": 0.25972649089512606,
-        "foldSE": 0.2554023921302775,
-        "foldSW": 0.27460442717940897
+        "foldNE": 0.26575217831362347,
+        "foldNW": 0.25829836981880827,
+        "foldSE": 0.2541284744481682,
+        "foldSW": 0.2732073382641341
       },
-      "tp": 10506.13062460969,
-      "fp": 98054.20002012543,
-      "fn": 12134.869375390312,
+      "tp": 10446.431280983945,
+      "fp": 97932.63198158967,
+      "fn": 12194.568719016055,
       "n_truth": 22641,
-      "n_dots": 111502
+      "n_dots": 111143
     }
   },
   "selected_flank_px": 0,
-  "live_dot_budget": 69623,
-  "emitted_pixels": 35389,
-  "submission_name": "gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7",
-  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35389 dots, 0 on-catalogue | sha 84032f82",
+  "flank_best_holdout": {
+    "pooled_dti": 0.2808384932440179,
+    "coverage": 0.5474795081771904,
+    "coverage_ci95": [
+      0.5409885907843013,
+      0.5539543167732122
+    ],
+    "dti_ci95_coverage_only": [
+      0.2776937949294885,
+      0.283971217308099
+    ],
+    "dti_ci95_quadrant_jackknife": [
+      0.24615690200951215,
+      0.31552008447852364
+    ],
+    "jackknife_drop_quadrant": {
+      "foldNE": 0.28633221068358583,
+      "foldNW": 0.2764953164639117,
+      "foldSE": 0.2672987868288458,
+      "foldSW": 0.2944581661949356
+    },
+    "tp": 12395.483544639766,
+    "fp": 117727.5633316132,
+    "fn": 10245.516455360235,
+    "n_truth": 22641,
+    "n_dots": 139578
+  },
+  "holdout_dot_budget": 69133,
+  "live_dot_budget": 40000,
+  "emitted_pixels": 35341,
+  "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
+  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
   "submission_note_len": 123,
   "zeros_tif": {
-    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7-zeros.tif",
-    "bytes": 808438,
-    "sha256": "72055091c70443ced7438f6959631cc42a3e3487d07725ed53e81e66af7ad285",
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+    "bytes": 808408,
+    "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
     "meta": {
       "crs": "EPSG:32611",
       "shape": [
@@ -163,8 +221,8 @@
     "n_nan": 0,
     "min": 0.0,
     "max": 1.0,
-    "mean": 0.0028820375446230173,
-    "emitted_positive_pixels": 35389,
+    "mean": 0.0028781285509467125,
+    "emitted_positive_pixels": 35341,
     "checks": {
       "single_band": true,
       "dtype_float32": true,
@@ -184,13 +242,13 @@
     },
     "all_checks_passed": true,
     "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 35389,
-    "footprint_fraction": 0.006848547608233429
+    "in_footprint_positive_pixels": 35341,
+    "footprint_fraction": 0.006839258555556179
   },
   "nan_tif": {
-    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7-nan.tif",
-    "bytes": 1671884,
-    "sha256": "37ee46145462f7872b9889c1639aa0ad9ad288a947579ab5e779ec2e9b931bee",
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-nan.tif",
+    "bytes": 1672068,
+    "sha256": "b8b25eacb38de8845b2d841e26f837884628b045459397c98e940f5cc8ec2f64",
     "meta": {
       "crs": "EPSG:32611",
       "shape": [
@@ -217,8 +275,8 @@
     "n_nan": 7172775,
     "min": 0.0,
     "max": 1.0,
-    "mean": 0.006930342875421047,
-    "emitted_positive_pixels": 35389,
+    "mean": 0.006920943036675453,
+    "emitted_positive_pixels": 35341,
     "checks": {
       "single_band": true,
       "dtype_float32": true,
@@ -238,20 +296,20 @@
     },
     "all_checks_passed": false,
     "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 35389,
-    "footprint_fraction": 0.006848547608233429
+    "in_footprint_positive_pixels": 35341,
+    "footprint_fraction": 0.006839258555556179
   },
   "uniqueness": {
-    "my_file": "docs/downloads/gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7-zeros.tif",
-    "my_dots": 35389,
+    "my_file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+    "my_dots": 35341,
     "rho_limit": 0.9,
     "overlap_limit": 0.7,
-    "worst_spearman_full_footprint": 0.010855562359231971,
+    "worst_spearman_full_footprint": 0.01070177139044915,
     "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
     "jaccard_limit": 0.5,
-    "worst_jaccard_dot_sets": 0.009614180132782162,
+    "worst_jaccard_dot_sets": 0.009534650570199256,
     "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_dot_overlap": 0.35776653762468563,
+    "worst_dot_overlap": 0.35720551201154466,
     "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
     "unique": true,
     "rows": [
@@ -260,12 +318,12 @@
         "submission": "h33-h33-2-b2 (best known, 0.2778)",
         "owner_reported_score": 0.2778,
         "their_dots": 37654,
-        "my_dots_within_3px_of_theirs": 0.20418774195371442,
-        "their_dots_within_3px_of_mine": 0.04666170924735752,
-        "spearman_on_dot_union": -0.9910925286337179,
-        "n_dot_union": 72718,
-        "jaccard_dot_sets": 0.004469319838279381,
-        "spearman_full_footprint": 0.0018519258843696727,
+        "my_dots_within_3px_of_theirs": 0.2021165218867604,
+        "their_dots_within_3px_of_mine": 0.04623678759228767,
+        "spearman_on_dot_union": -0.9914976940556909,
+        "n_dot_union": 72685,
+        "jaccard_dot_sets": 0.004264979019054826,
+        "spearman_full_footprint": 0.00144871234823916,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -275,12 +333,12 @@
         "submission": "h27-4-r1-solo-d2-8",
         "owner_reported_score": 0.2708,
         "their_dots": 40199,
-        "my_dots_within_3px_of_theirs": 0.23843567210150046,
-        "their_dots_within_3px_of_mine": 0.0533097838254683,
-        "spearman_on_dot_union": -0.9880712132554891,
-        "n_dot_union": 75139,
-        "jaccard_dot_sets": 0.005975591903006428,
-        "spearman_full_footprint": 0.00463910572596792,
+        "my_dots_within_3px_of_theirs": 0.23621289720155061,
+        "their_dots_within_3px_of_mine": 0.052712754048608174,
+        "spearman_on_dot_union": -0.9886740982985969,
+        "n_dot_union": 75114,
+        "jaccard_dot_sets": 0.005671379503155204,
+        "spearman_full_footprint": 0.004037508025876037,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -290,12 +348,12 @@
         "submission": "h36-1-rung30-blind-r1",
         "owner_reported_score": 0.271,
         "their_dots": 37660,
-        "my_dots_within_3px_of_theirs": 0.23159738901918675,
-        "their_dots_within_3px_of_mine": 0.053053637812002126,
-        "spearman_on_dot_union": -0.9888733592010085,
-        "n_dot_union": 72643,
-        "jaccard_dot_sets": 0.005588976226202112,
-        "spearman_full_footprint": 0.004085202380120616,
+        "my_dots_within_3px_of_theirs": 0.2287994114484593,
+        "their_dots_within_3px_of_mine": 0.052124269782262346,
+        "spearman_on_dot_union": -0.989660886488799,
+        "n_dot_union": 72624,
+        "jaccard_dot_sets": 0.005191121392377176,
+        "spearman_full_footprint": 0.0032970479822846473,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -305,12 +363,12 @@
         "submission": "h38-1-hf-euler-r30-r1",
         "owner_reported_score": 0.2707,
         "their_dots": 37860,
-        "my_dots_within_3px_of_theirs": 0.23481872898358247,
-        "their_dots_within_3px_of_mine": 0.05359218172213418,
-        "spearman_on_dot_union": -0.9888198171619094,
-        "n_dot_union": 72840,
-        "jaccard_dot_sets": 0.005615046677649643,
-        "spearman_full_footprint": 0.0041193341750763715,
+        "my_dots_within_3px_of_theirs": 0.23177046489912567,
+        "their_dots_within_3px_of_mine": 0.05258848388800845,
+        "spearman_on_dot_union": -0.9896326089889913,
+        "n_dot_union": 72822,
+        "jaccard_dot_sets": 0.005204471176292878,
+        "spearman_full_footprint": 0.003305797121687636,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -320,12 +378,12 @@
         "submission": "h32-1-prethin-tip-euler-d2-8",
         "owner_reported_score": 0.2649,
         "their_dots": 42294,
-        "my_dots_within_3px_of_theirs": 0.2653084291729068,
-        "their_dots_within_3px_of_mine": 0.06111978058353431,
-        "spearman_on_dot_union": -0.9867125389518075,
-        "n_dot_union": 77171,
-        "jaccard_dot_sets": 0.006634616630599577,
-        "spearman_full_footprint": 0.005790761272058632,
+        "my_dots_within_3px_of_theirs": 0.2630372654989955,
+        "their_dots_within_3px_of_mine": 0.060812408379439166,
+        "spearman_on_dot_union": -0.9872221551240226,
+        "n_dot_union": 77143,
+        "jaccard_dot_sets": 0.006377765967100061,
+        "spearman_full_footprint": 0.005283678091837157,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -335,12 +393,12 @@
         "submission": "anderson-geothermal-pinn-38854",
         "owner_reported_score": 0.275,
         "their_dots": 38854,
-        "my_dots_within_3px_of_theirs": 0.20882195032354686,
-        "their_dots_within_3px_of_mine": 0.046430225974159675,
-        "spearman_on_dot_union": -0.9909287925837873,
-        "n_dot_union": 73907,
-        "jaccard_dot_sets": 0.004546254076068573,
-        "spearman_full_footprint": 0.0018988773752646418,
+        "my_dots_within_3px_of_theirs": 0.2070399818907218,
+        "their_dots_within_3px_of_mine": 0.046095640088536574,
+        "spearman_on_dot_union": -0.9913275987225727,
+        "n_dot_union": 73874,
+        "jaccard_dot_sets": 0.004345236483742589,
+        "spearman_full_footprint": 0.0015022467613595755,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -350,12 +408,12 @@
         "submission": "h33d-analog-tip-stepover-r30",
         "owner_reported_score": 0.2632,
         "their_dots": 41865,
-        "my_dots_within_3px_of_theirs": 0.2643759360253186,
-        "their_dots_within_3px_of_mine": 0.061077272184402245,
-        "spearman_on_dot_union": -0.9872502943899454,
-        "n_dot_union": 76765,
-        "jaccard_dot_sets": 0.006370090536051586,
-        "spearman_full_footprint": 0.005294974632591818,
+        "my_dots_within_3px_of_theirs": 0.26182054837157975,
+        "their_dots_within_3px_of_mine": 0.06067120506389585,
+        "spearman_on_dot_union": -0.9879454217456992,
+        "n_dot_union": 76744,
+        "jaccard_dot_sets": 0.006020014593974774,
+        "spearman_full_footprint": 0.004601509154588327,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -365,12 +423,12 @@
         "submission": "d28-poisson300m-offcat-44090",
         "owner_reported_score": 0.26,
         "their_dots": 44090,
-        "my_dots_within_3px_of_theirs": 0.27076210121789257,
-        "their_dots_within_3px_of_mine": 0.060943524608754816,
-        "spearman_on_dot_union": -0.9871625612331097,
-        "n_dot_union": 78975,
-        "jaccard_dot_sets": 0.006381766381766382,
-        "spearman_full_footprint": 0.005154687663787076,
+        "my_dots_within_3px_of_theirs": 0.26847004895164256,
+        "their_dots_within_3px_of_mine": 0.06042186436833749,
+        "spearman_on_dot_union": -0.9876372293243473,
+        "n_dot_union": 78946,
+        "jaccard_dot_sets": 0.00614343981962354,
+        "spearman_full_footprint": 0.0046835589991355685,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -380,12 +438,12 @@
         "submission": "wormrank-d28",
         "owner_reported_score": 0.256,
         "their_dots": 41338,
-        "my_dots_within_3px_of_theirs": 0.26827545282432397,
-        "their_dots_within_3px_of_mine": 0.06052542454884126,
-        "spearman_on_dot_union": -0.9881987347257749,
-        "n_dot_union": 76277,
-        "jaccard_dot_sets": 0.005899550323164257,
-        "spearman_full_footprint": 0.004396126207155449,
+        "my_dots_within_3px_of_theirs": 0.26583854446676664,
+        "their_dots_within_3px_of_mine": 0.06042866128017804,
+        "spearman_on_dot_union": -0.9885312787913622,
+        "n_dot_union": 76242,
+        "jaccard_dot_sets": 0.005731748904803127,
+        "spearman_full_footprint": 0.004066551319492688,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -395,12 +453,12 @@
         "submission": "dotted-h19-5-d2-8",
         "owner_reported_score": 0.26,
         "their_dots": 44090,
-        "my_dots_within_3px_of_theirs": 0.27076210121789257,
-        "their_dots_within_3px_of_mine": 0.060943524608754816,
-        "spearman_on_dot_union": -0.9871625612331097,
-        "n_dot_union": 78975,
-        "jaccard_dot_sets": 0.006381766381766382,
-        "spearman_full_footprint": 0.005154687663787076,
+        "my_dots_within_3px_of_theirs": 0.26847004895164256,
+        "their_dots_within_3px_of_mine": 0.06042186436833749,
+        "spearman_on_dot_union": -0.9876372293243473,
+        "n_dot_union": 78946,
+        "jaccard_dot_sets": 0.00614343981962354,
+        "spearman_full_footprint": 0.0046835589991355685,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -410,12 +468,12 @@
         "submission": "h25-1-dotted-h19-5-d1-5",
         "owner_reported_score": 0.2477,
         "their_dots": 60069,
-        "my_dots_within_3px_of_theirs": 0.2848060131679335,
-        "their_dots_within_3px_of_mine": 0.060963225623865885,
-        "spearman_on_dot_union": -0.9844547124766718,
-        "n_dot_union": 94766,
-        "jaccard_dot_sets": 0.0073021969904818185,
-        "spearman_full_footprint": 0.006143024072808875,
+        "my_dots_within_3px_of_theirs": 0.2825047395376475,
+        "their_dots_within_3px_of_mine": 0.06029732474321197,
+        "spearman_on_dot_union": -0.984643838503895,
+        "n_dot_union": 94727,
+        "jaccard_dot_sets": 0.0072101935034361905,
+        "spearman_full_footprint": 0.005962234152619021,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -425,12 +483,12 @@
         "submission": "topo-gap-closure-t-v2-on-d1-5",
         "owner_reported_score": 0.2449,
         "their_dots": 61328,
-        "my_dots_within_3px_of_theirs": 0.35776653762468563,
-        "their_dots_within_3px_of_mine": 0.06872880250456562,
-        "spearman_on_dot_union": -0.9794632140065768,
-        "n_dot_union": 95796,
-        "jaccard_dot_sets": 0.009614180132782162,
-        "spearman_full_footprint": 0.010855562359231971,
+        "my_dots_within_3px_of_theirs": 0.35720551201154466,
+        "their_dots_within_3px_of_mine": 0.06804396034437778,
+        "spearman_on_dot_union": -0.9796241187334127,
+        "n_dot_union": 95756,
+        "jaccard_dot_sets": 0.009534650570199256,
+        "spearman_full_footprint": 0.01070177139044915,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -440,12 +498,12 @@
         "submission": "gate_ortho_w0.25-40k",
         "owner_reported_score": 0.2376,
         "their_dots": 40000,
-        "my_dots_within_3px_of_theirs": 0.16683150131396762,
-        "their_dots_within_3px_of_mine": 0.037825,
-        "spearman_on_dot_union": -0.9924107164914767,
-        "n_dot_union": 75104,
-        "jaccard_dot_sets": 0.003794737963357478,
-        "spearman_full_footprint": 0.0002960710273376821,
+        "my_dots_within_3px_of_theirs": 0.16872754025070033,
+        "their_dots_within_3px_of_mine": 0.037375,
+        "spearman_on_dot_union": -0.9922187042416886,
+        "n_dot_union": 75049,
+        "jaccard_dot_sets": 0.003890791349651561,
+        "spearman_full_footprint": 0.0004937709504269795,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -455,12 +513,12 @@
         "submission": "h19-5-powerlaw-budget-multiline",
         "owner_reported_score": 0.1922,
         "their_dots": 121131,
-        "my_dots_within_3px_of_theirs": 0.30727062081437734,
-        "their_dots_within_3px_of_mine": 0.062106314651080234,
-        "spearman_on_dot_union": -0.9735305858731118,
-        "n_dot_union": 155076,
-        "jaccard_dot_sets": 0.009311563362480332,
-        "spearman_full_footprint": 0.009529118759917396,
+        "my_dots_within_3px_of_theirs": 0.30548088622280073,
+        "their_dots_within_3px_of_mine": 0.061255995575038594,
+        "spearman_on_dot_union": -0.9740367868529195,
+        "n_dot_union": 155057,
+        "jaccard_dot_sets": 0.009125676364175755,
+        "spearman_full_footprint": 0.009102943778832875,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -470,18 +528,18 @@
         "submission": "h19-4-multiline-corroborated",
         "owner_reported_score": 0.1894,
         "their_dots": 123779,
-        "my_dots_within_3px_of_theirs": 0.3073836502868123,
-        "their_dots_within_3px_of_mine": 0.060753439597993196,
-        "spearman_on_dot_union": -0.9734180286721819,
-        "n_dot_union": 157711,
-        "jaccard_dot_sets": 0.009238417104704175,
-        "spearman_full_footprint": 0.009350312146709672,
+        "my_dots_within_3px_of_theirs": 0.3061599841543816,
+        "their_dots_within_3px_of_mine": 0.059929390284297016,
+        "spearman_on_dot_union": -0.9738298284405793,
+        "n_dot_union": 157687,
+        "jaccard_dot_sets": 0.009087622949260243,
+        "spearman_full_footprint": 0.009005716815983852,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
       }
-    ],
-    "screen_version": "signed-rho-full-footprint + jaccard + overlap"
+    ]
   },
-  "runtime_s": 887.6200313568115
+  "promote": true,
+  "runtime_s": 1072.9367468357086
 }

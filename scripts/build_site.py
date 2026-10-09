@@ -964,10 +964,14 @@ def build_runcard(build, cv_all, meas) -> str:
         "verdict": "PENDING" if not build else (
             "promote" if (z.get("all_checks_passed") and uq.get("unique")) else "negative"),
     }
+    card_txt = json.dumps(card, indent=2)
+    (ROOT / "evidence" / "run_card.json").write_text(card_txt + "\n", encoding="utf-8")
     return f"""
 <h2>Run card</h2>
-<p>One JSON card, per parallel-run protocol rule 5.</p>
-<pre>{esc(json.dumps(card, indent=2))}</pre>
+<p>One JSON card, per parallel-run protocol rule 5. Machine-readable copy:
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
+target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
+<pre>{esc(card_txt)}</pre>
 <h2>How to read it</h2>
 <ul>
 <li><b>holdout_dti</b> is a <span class="tag hold">HOLDOUT-DTI</span> reading. It is <b>not</b> a

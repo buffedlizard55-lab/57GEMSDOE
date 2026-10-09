@@ -26,11 +26,11 @@ narrower and more optimistic. <b>Report the jackknife one.</b></p>
 <p>Whether to exclude the pixels immediately adjacent to a mapped trace was decided by measurement,
 not by hand. The holdout selected <b>0 px</b>.</p>
 <table><tr><th class="n">Excluded flank</th><th class="n">Pooled DTI</th>
-<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td class="n">0 px</td><td class="n">0.2833</td><td class="n">0.5528</td><td class="n">139954</td></tr><tr><td class="n">1 px</td><td class="n">0.2825</td><td class="n">0.5446</td><td class="n">136152</td></tr><tr><td class="n">2 px</td><td class="n">0.2801</td><td class="n">0.5202</td><td class="n">125750</td></tr><tr><td class="n">3 px</td><td class="n">0.2638</td><td class="n">0.4640</td><td class="n">111502</td></tr></table>
+<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td class="n">0 px</td><td class="n">0.2808</td><td class="n">0.5475</td><td class="n">139578</td></tr><tr><td class="n">1 px</td><td class="n">0.2797</td><td class="n">0.5386</td><td class="n">135779</td></tr><tr><td class="n">2 px</td><td class="n">0.2783</td><td class="n">0.5162</td><td class="n">125335</td></tr><tr><td class="n">3 px</td><td class="n">0.2625</td><td class="n">0.4614</td><td class="n">111143</td></tr></table>
 
 <h2>The dot budget, and why the holdout's own optimum was overruled</h2>
-<p>The allocator's unconstrained holdout optimum is <b>PENDING</b>
-dots per draw, about 6.2x the withheld truth count per draw. That was <b>not</b> shipped.</p>
+<p>The allocator's unconstrained holdout optimum is <b>69133</b>
+dots per draw, about 3.5x the withheld truth count per draw. That was <b>not</b> shipped.</p>
 <p>Across the 15 registry rasters with an organizer-confirmed score,
 <b>Spearman(dot count, live score) = -0.8104</b>
 (p = 0.00025). The relationship is strongly negative, and it is live evidence rather
@@ -42,10 +42,10 @@ than a holdout proxy.</p>
 <tr><td>&ge; 50,000</td><td class="n">4</td><td class="n">0.2186</td><td class="n">0.2477</td></tr></table>
 <p class="small">The two rasters above 120,000 dots hold the two worst live scores in the registry
 (0.1922, 0.1894).</p>
-<p>The cap shipped is <b>69623</b>, inside the band every
+<p>The cap shipped is <b>40000</b>, inside the band every
 top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
-unconstrained PENDING vs
-capped PENDING. The cap is
+unconstrained 0.2808 vs
+capped 0.2793. The cap is
 bought with measured holdout DTI because the live evidence says the holdout is wrong here
 (&rho; = +0.14, IR-57-BUDGET-01).</p>
 
@@ -78,7 +78,7 @@ pixels</i>, which cling to visible traces. Whether that transfers to genuinely u
 is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
 does. No projected live score is claimed anywhere on this site.</p>
 </main>
-<footer>Generated 2026-10-09 06:34 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 07:07 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
