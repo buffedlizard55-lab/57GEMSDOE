@@ -32,6 +32,10 @@ at the start of every session.
 H57-I (strike-binned width) is a **negative** result: 0.1999 vs isotropic 0.2617.
 `IR-57-STRIKE-01`: finite strike was previously zeroed (`sin2/cos2` AUC 0.5000).
 
+A parallel session on `main` also wrote `gems57-h57L-anatomy-tight25k-…tif`
+(25,000 dots, HOLDOUT-DTI 0.2376). Submit **one** file; this branch recommends
+the 37,654-dot H57-I iso candidate (HOLDOUT-DTI 0.2617).
+
 Historical session-3 research surface (**DO NOT SUBMIT**):
 [`gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif`](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif).
 That run stopped on the surface-overlap gate against covering lattices. Session 4
@@ -47,16 +51,14 @@ priors. Covering lattices remain a documented saturating-probe class (`IR-57-S3-
 > best. This is not an organizer score. This repository did not spend a weekly
 > slot; uploading is a separate selector action.
 
-**The submission file is the session-4 `-zeros.tif` in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
-`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
+**The submission file is**
+[`docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif`](docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif)
+(or the alias [`SUBMIT-THIS-gems57-h57i-iso-zeros.tif`](docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif)).
+Portal-legal: single band, `float32`, `EPSG:32611`, `3730 × 3292`, transform
+`(100, 0, 243350, 0, -100, 4508550)`, every one of the 12,279,160 cells finite
+and in `[0, 1]`, zero dots on the mapped catalogue, **37,654** predicted pixels.
 
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
+**Submission name:** `GEMS57-H57I-ISO-DPERP-37654`
 
 The exact filename, sha256, check receipt and the suggested submission note are
 printed at the top of [`docs/index.html`](docs/index.html) and in
