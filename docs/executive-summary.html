@@ -1,137 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Executive Summary — 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css">
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How to submit · 57GEMSDOE</title>
+<link rel="stylesheet" href="assets/site.css"></head>
 <body>
-<header>
-<h1>Executive Summary</h1>
-<p><a href="index.html">← Back to download page</a></p>
-</header>
-
+<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
+<nav>
+<a href="index.html">Home</a>
+<a class="on" href="executive-summary.html">How to submit</a>
+<a href="method.html">Method</a>
+<a href="hypotheses.html">Hypotheses</a>
+<a href="results.html">Results</a>
+<a href="session-4.html">Latest run</a>
+<a href="irregularities.html">Irregularities</a>
+<a href="data-sources.html">Data sources</a>
+<a href="run-card.html">Run card</a>
+</nav>
 <main>
 
-<section>
-<h2>What Is This Competition?</h2>
-<p>The <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/" target="_blank">DOE GEMS Prize Challenge</a>
-(DrivenData #306) asks participants to discover geothermal-indicative faults in
-the GeoDAWN study area (northwestern Nevada, Great Basin) that are <strong>not</strong>
-already in the USGS/INGENIOUS fault catalogue. Submissions are single-band
-GeoTIFF files with per-pixel predicted probabilities, scored by the
-Distance-weighted Tversky Index (DTI).</p>
-
-<p>The metric (from the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank">problem description</a>):</p>
-<ul>
-<li><strong>DTI = TP_w / (TP_w + 0.2·FP_w + 0.8·FN_w)</strong></li>
-<li>Triangular kernel, R = 300 m (3 pixels at 100 m resolution)</li>
-<li>TP_w: sum over truth pixels of max kernel-weighted prediction within 3 px</li>
-<li>FP_w: sum over predicted pixels of p(x) × (1 − max kernel weight to truth)</li>
-<li>FN_w: |truth pixels| − TP_w</li>
-</ul>
-</section>
-
-<section>
-<h2>How to Submit (Step by Step)</h2>
-
-<ol>
-<li><strong>Download the submission file</strong> from the <a href="index.html#download">main page</a>.
-The file is <code>gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif</code>
-(794,562 bytes).</li>
-
-<li><strong>Go to the submission page:</strong>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/" target="_blank">
-drivendata.org/competitions/306/competition-doe-gems/submissions/</a></li>
-
-<li><strong>Click "New submission"</strong></li>
-
-<li><strong>Upload the file:</strong> Click "Choose File" and select the downloaded
-<code>.tif</code> file. You may also submit a <code>.zip</code> containing the single GeoTIFF.</li>
-
-<li><strong>Paste the submission name</strong> (optional but recommended):<br>
-<code>gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b</code></li>
-
-<li><strong>Paste the note</strong> (optional):<br>
-<code>57GEMSDOE H57-L anatomy tight 25k | 25000 dots 0 on-cat | ed72d2ce</code></li>
-
-<li><strong>Click "Submit"</strong></li>
-</ol>
-
-<div class="warning-box">
-<h3>⚠️ Common Error: "Predicted values must be in range [0, 1]"</h3>
-<p>This error occurs when the file contains NaN values or values outside [0, 1].
-Our submission file has been validated: <strong>all 12,279,160 cells are finite and in
-[0, 1]</strong>, with zero NaN values. The competition's own
-<code>sample_submission.tif</code> has 7,111,787 NaN cells, but our file uses
-zeros instead of NaN outside the footprint.</p>
+<div class="dl">
+<h2>OK TO DOWNLOAD AND SUBMIT</h2>
+<p>Use <b>only</b> the zeros GeoTIFF below. Never a <code>-nan</code> file.</p>
+<p><a class="btn" download href="downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif">Download gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</a>
+<a class="btn" download href="downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip">Download .zip</a></p>
 </div>
-</section>
 
-<section>
-<h2>What Our Model Does</h2>
-<p>We use a "fault-zone anatomy" approach: predicting where secondary fault strands
-(splays, parallel strands, en echelon arrays) sit around known mapped faults,
-based on shear-zone mechanics.</p>
+<h2>Exact steps</h2>
+<div class="card">
+<ol>
+<li><b>Download the file above.</b> Do not open it in an image editor. Do not re-export it.</li>
+<li>Go to
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
+drivendata.org/competitions/306/…/submissions/</a>
+and click <i>New submission</i>.</li>
+<li>Choose the downloaded <code>.tif</code> (or the <code>.zip</code> that contains only that one GeoTIFF).</li>
+<li>Paste the name and note:</li>
+</ol>
+<dl class="kv">
+<dt>Name</dt><dd>GEMS57-H57I-ISO-DPERP-37654</dd>
+<dt>Note</dt><dd>H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat</dd>
+</dl>
+</div>
 
-<p>The model is a gradient-boosted classifier trained on 8 geometric features of
-each pixel relative to the nearest visible fault: distance, cross-strike offset,
-along-strike offset, fault length, strike orientation, structural coherence, and
-local fault density. All parameters are fitted from a hide-and-recover holdout,
-not taken from textbooks.</p>
+<h2>Why the previous download was rejected</h2>
+<div class="bad-box">
+<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>.
+<code>NaN</code> fails that check. This file has <b>zero NaN cells</b>, no nodata tag,
+every one of 12,279,160 cells a finite float in [0, 1]. See <code>IR-57-NAN-01</code>.</p>
+</div>
 
-<p>Our submission places 25,000 prediction pixels at the locations where the model
-assigns the highest probability of undiscovered fault strands. The tighter budget
-(vs the previous 35,000-40,000) is motivated by live-score evidence: across 15
-registry rasters, Spearman(dot count, live score) = −0.81, meaning fewer dots
-at matched quality tends to score higher.</p>
-</section>
-
-<section>
-<h2>Evidence and Validation</h2>
-<ul>
-<li><strong>Format validation:</strong> 15/15 portal checks passed</li>
-<li><strong>Uniqueness:</strong> Unique vs all 15 prior submission rasters (ρ &lt; 0.01, Jaccard &lt; 0.01, overlap &lt; 37%)</li>
-<li><strong>Holdout DTI:</strong> 0.2376 (95% CI [0.193, 0.282]) on hide-and-recover spatial-blocked instrument</li>
-<li><strong>No submission slot spent:</strong> This file has not been submitted yet</li>
-</ul>
-
-<p><strong>Important:</strong> The HOLDOUT-DTI is a local instrument reading, not a
-projected live score. The holdout withholds catalogue pixels (which are physically
-near mapped faults), while live scoring tests for genuinely undiscovered faults
-that may be far from any mapped trace. The transfer from holdout to live is
-unknown (ρ = 0.14 from sibling calibration).</p>
-</section>
-
-<section>
-<h2>What Makes This Submission Unique</h2>
-<table class="spec-table">
-<tr><th>Aspect</th><th>This submission (H57-L)</th><th>Previous (H57 session 2)</th></tr>
-<tr><td>Dot budget</td><td>25,000</td><td>35,341</td></tr>
-<tr><td>Model seed</td><td>42</td><td>0</td></tr>
-<tr><td>SHA-256</td><td>ed72d2ce...</td><td>8ba5a982...</td></tr>
-<tr><td>Features</td><td>8 (side dropped)</td><td>8 (side dropped)</td></tr>
-<tr><td>Holdout DTI</td><td>0.2376</td><td>0.2279</td></tr>
-</table>
-</section>
-
-<section>
-<h2>Limitations</h2>
-<ul>
-<li>No DrivenData credentials → cannot download the 420 MB geophysical feature stack</li>
-<li>No DEM data → cannot test scarp curvature or geomorphic lineament hypotheses</li>
-<li>The holdout instrument correlates weakly with live scores (ρ = 0.14)</li>
-<li>Sense of slip tested and found NEGATIVE (not used)</li>
-<li>The file has not been submitted; the live score is unknown</li>
-</ul>
-</section>
+<h2>Format the portal expects</h2>
+<dl class="kv">
+<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N) · <a href="https://epsg.io/32611">epsg.io/32611</a></dd>
+<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
+<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, −100.0, 4508550.0) — 100 m pixels</dd>
+<dt>Bands / dtype</dt><dd>1 band, float32</dd>
+<dt>Value range</dt><dd>[0, 1] on every cell, finite everywhere</dd>
+<dt>sha256</dt><dd>0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22</dd>
+<dt>Positive pixels</dt><dd>37654</dd>
+<dt>On mapped catalogue</dt><dd>0</dd>
+</dl>
+<p>Competition:
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">problem description</a> ·
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/">about</a> ·
+<a href="https://docs.nlr.gov/docs/fy26osti/96647.pdf">rules PDF</a>.</p>
 
 </main>
-
-<footer>
-<p><a href="index.html">← Back to download page</a></p>
-<p>57GEMSDOE · 2026-10-09</p>
-</footer>
-</body>
-</html>
+<footer>Generated 2026-10-09 20:27 UTC by <code>scripts/build_site_session4.py</code> from <code>evidence/*.json</code>.
+Every number is a measurement. <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
+</body></html>
