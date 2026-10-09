@@ -93,13 +93,17 @@ def main() -> int:
         "n_duplicate_by_jaccard": n_jac,
         "n_overlap_firings_one_directional": len(firings),
         "n_overlap_firings_two_sided_true_duplicates": n_true_dup,
-        "overlap_firings": firings[:50],
+        "overlap_firings": firings,   # complete list (an earlier version truncated to 50; IR-57-UNIQ-02)
         "top5_by_spearman": [{"submission": r["submission"], "repo": r["repo"],
                               "spearman": r["spearman_full_footprint"],
                               "fwd_overlap": r["my_dots_within_3px_of_theirs"]} for r in top],
-        "unique_by_protocol": bool(n_rho == 0 and n_jac == 0 and n_true_dup == 0),
-        "verdict": ("UNIQUE vs every accessible GEMSDOE raster" if (n_rho == 0 and n_jac == 0 and n_true_dup == 0)
-                    else "DUPLICATE/DRIFT - see firings; do not promote"),
+        # LITERAL protocol: any forward overlap > 0.70 (one registry raster) is drift -> log and stop.
+        "unique_by_protocol": bool(n_rho == 0 and n_jac == 0 and len(firings) == 0),
+        # informational only: the two-sided reading (reverse overlap < 0.5 called "mechanical").
+        # It is NOT a clearance rule in the protocol and must not be used as one without a user decision.
+        "informational_two_sided_true_duplicates": n_true_dup,
+        "verdict": ("UNIQUE vs every accessible GEMSDOE raster (literal gates)" if (n_rho == 0 and n_jac == 0 and len(firings) == 0)
+                    else f"DRIFT-FLAGGED by the literal forward-overlap gate ({len(firings)} registry rasters > 0.70): log and stop; NOT cleared for submission"),
     }
     out_path = a.out or (ROOT / "evidence" / f"uniqueness_full_{a.label}.json")
     out_path.write_text(json.dumps(out, indent=2, default=float) + "\n")

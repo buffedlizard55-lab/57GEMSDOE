@@ -11,7 +11,13 @@
 
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
-**The file to submit is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
+> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
+> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
+> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
+> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
+> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+
+**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
 It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
 `3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
 12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
@@ -91,9 +97,15 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
 * **Shipped file re-validated against its receipt**: sha256 `8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482`,
   808,408 B, 15/15 checks, 0 on-catalogue dots, 35,341 dots. Identical to
   `docs/downloads/checks-…-zeros.tif.json`.
-* **Full-registry uniqueness gate** (644 rasters, both directions, see
-  [`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
-  result in the table at the top of [`docs/results.html`](docs/results.html).
+* **Full-registry uniqueness gate — NOT CLEARED (HOLD).** 644 rasters, both directions
+  ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
+  * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
+  * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
+    literal rule treats this as drift. The file lists only 50 of the 114 firings.
+  * The reverse-overlap reading (below 0.5 for every itemized firing) would clear it,
+    but that exemption is **not in the protocol**. It needs an owner decision.
+  * An earlier version of the script called the file UNIQUE using that exemption.
+    The verdict has been corrected (`IR-57-UNIQ-02`).
 * **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
 * **Labels corrected:** the 15-raster budget correlation uses *owner-reported*
   scores, not organizer receipts (`IR-57-LABEL-01`). The build's holdout numbers are

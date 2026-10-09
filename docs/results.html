@@ -103,9 +103,25 @@ the pre-existing IR-57-CANARY-02 and is not a sense result. Not promoted; no sub
 <h3>Leakage canary, single features, this run</h3>
 <table><tr><th>Feature</th><th class="n">max discriminative AUC</th><th>below 0.90</th></tr><tr><td><code>d</code></td><td class="n">0.9000</td><td><b class="bad">FAIL</b></td></tr><tr><td><code>d_perp</code></td><td class="n">0.9013</td><td><b class="bad">FAIL</b></td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.7759</td><td><b class="ok">PASS</b></td></tr><tr><td><code>side</code></td><td class="n">0.5125</td><td><b class="ok">PASS</b></td></tr><tr><td><code>log_len</code></td><td class="n">0.5787</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td><b class="ok">PASS</b></td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td><b class="ok">PASS</b></td></tr><tr><td><code>coherence</code></td><td class="n">0.6665</td><td><b class="ok">PASS</b></td></tr><tr><td><code>density</code></td><td class="n">0.7511</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sense_sgn</code></td><td class="n">0.5399</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sense_side</code></td><td class="n">0.5120</td><td><b class="ok">PASS</b></td></tr></table>
 
-<p>PENDING: full-registry uniqueness scan not finished.</p>
+
+<h3>Uniqueness against every accessible GEMSDOE raster</h3>
+<p>Candidate <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> (sha256 <code>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</code>,
+35341 dots) against <b>644</b> unique grid-shaped
+rasters from <b>56</b> GEMSDOE repositories (scan of
+<code>evidence/registry_full_index.json</code>).</p>
+<table>
+<tr><th>Gate (parallel-run protocol)</th><th class="n">limit</th><th class="n">worst observed</th><th>vs</th></tr>
+<tr><td>full-footprint Spearman</td><td class="n">0.90</td><td class="n">0.1804</td><td>7GEMSDOE:downloads/gems7-strike30x3-v2-2b06d45c5b57.tif</td></tr>
+<tr><td>Jaccard of dot sets</td><td class="n">0.50</td><td class="n">0.0830</td><td>GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif</td></tr>
+<tr><td>dots within 3 px (forward)</td><td class="n">0.70</td><td class="n">1.0000</td><td>17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif</td></tr>
+</table>
+<p>Forward-overlap firings under the literal gate: <b>114</b>
+(the first 50 are itemized in the JSON). Informational only, not a clearance rule: firings with reverse overlap
+below 0.5: 0. Literal verdict: <b>DRIFT-FLAGGED by the literal forward-overlap gate (114 registry rasters &gt; 0.70): log and stop; NOT cleared for submission</b>.
+The file is <b>not cleared</b> (see IR-57-UNIQ-03).</p>
+
 </main>
-<footer>Generated 2026-10-09 16:47 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

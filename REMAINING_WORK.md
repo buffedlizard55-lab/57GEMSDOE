@@ -164,6 +164,10 @@ distance-only baseline, and a rebuild of the shipped file under the fixed code. 
 0. **Distance-only baseline at shipped density** (`d_only`, same LOQO harness). Without it, the
    gain of the anatomy model over distance cannot be claimed at the shipped density. Cheap: one run.
 0b. **Replace the in-sample holdout** in `scripts/build_submission.py` with LOQO (IR-57-INSAMPLE-01).
+00. **OWNER DECISION (blocks submission): IR-57-UNIQ-03.** The literal forward-overlap gate fired for
+    114 of 644 registry rasters. Either accept a reverse-overlap clearance rule (a protocol change,
+    owner's call) or generate a different candidate. Also itemize the 64 unlisted firings (rerun
+    `scripts/check_uniqueness_full.py`, about 1 hour single-threaded).
 0c. **Rebuild the shipped file** under the fixed code and check that the features are unchanged
     (the edits are default-off, but the rebuild is the only proof).
 1. **Spend two slots on the transfer question** (limitation 1). Without that observation nothing

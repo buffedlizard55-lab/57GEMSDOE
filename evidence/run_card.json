@@ -15,12 +15,22 @@
     "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
   },
   "correlation_overlap_full_registry": {
-    "n_unique_grid_rasters": null,
-    "max_spearman_full_footprint": null,
-    "max_jaccard": null,
-    "max_dot_overlap_fwd_3px": null,
-    "n_overlap_firings_two_sided_true_duplicates": null,
-    "unique_by_protocol": null
+    "n_unique_grid_rasters": 644,
+    "max_spearman_full_footprint": {
+      "value": 0.18037159651203355,
+      "raster": "7GEMSDOE:downloads/gems7-strike30x3-v2-2b06d45c5b57.tif"
+    },
+    "max_jaccard": {
+      "value": 0.08303660218779071,
+      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
+    },
+    "max_dot_overlap_fwd_3px": {
+      "value": 1.0,
+      "raster": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif"
+    },
+    "n_overlap_firings_one_directional_literal_gate": 114,
+    "informational_two_sided_true_duplicates_not_a_clearance_rule": 0,
+    "unique_by_protocol_literal": false
   },
   "correlation_overlap_vs_registry": {
     "n_registry_rasters": 15,
@@ -51,7 +61,7 @@
   "sense_of_slip": {
     "available_in_provided_database": true,
     "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
-    "measured_log_ratio_right_over_left": null,
+    "measured_log_ratio_right_over_left": 0.03920300039062278,
     "encoded_in_shipped_file": false,
     "tested_as_opt_in_features": true,
     "tested_result": {
@@ -69,6 +79,6 @@
       "promote": false
     }
   },
-  "verdict": "negative",
+  "verdict": "HOLD (format checks pass; literal uniqueness forward-overlap gate fired; not cleared)",
   "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
 }
