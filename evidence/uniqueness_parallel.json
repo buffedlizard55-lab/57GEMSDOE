@@ -1,0 +1,53 @@
+{
+ "evidence_class": "MEASUREMENT (drift check vs the parallel session's rasters on main)",
+ "context": "PR #1 (arena/a5412310) merged the same lane (fault-zone anatomy, 12k dots, synthetic P/Riedel strands within 15 px of known faults) while this session (arena/af16d287) built a fitted-density 60k-dot halo at 4-10 px. The registry scan predates their merge, so they are checked here.",
+ "candidate": {
+  "file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+  "dots": 60000,
+  "dots_on_catalogue": 0,
+  "my_dots_d_to_catalogue_px": {
+   "median": 5.656854249492381
+  }
+ },
+ "limits": {
+  "spearman": 0.9,
+  "dot_overlap": 0.7
+ },
+ "parallel_rasters": [
+  {
+   "raster": "57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+   "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+   "dots": 12000,
+   "dots_on_catalogue": 0,
+   "their_dots_d_to_catalogue_px": {
+    "median": 2.8284271247461903,
+    "frac_le_3px": 0.5678333333333333,
+    "frac_le_15px": 0.9751666666666666
+   },
+   "spearman_my_surface_vs_their_raster": 0.032142889001201894,
+   "forward_overlap_my_dots_within_3px_of_theirs": 0.029583333333333333,
+   "reverse_overlap_their_dots_within_3px_of_mine": 0.22725,
+   "duplicate_by_correlation": false,
+   "duplicate_by_overlap": false
+  },
+  {
+   "raster": "57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
+   "sha256": "20e6e869a2206c27961b0eb20ad7ed09d68ed9e8c5456ccbaa4755d4331cc544",
+   "dots": 12000,
+   "dots_on_catalogue": 0,
+   "their_dots_d_to_catalogue_px": {
+    "median": 2.8284271247461903,
+    "frac_le_3px": 0.5678333333333333,
+    "frac_le_15px": 0.9751666666666666
+   },
+   "spearman_my_surface_vs_their_raster": 0.032142889001201894,
+   "forward_overlap_my_dots_within_3px_of_theirs": 0.029583333333333333,
+   "reverse_overlap_their_dots_within_3px_of_mine": 0.22725,
+   "duplicate_by_correlation": false,
+   "duplicate_by_overlap": false
+  }
+ ],
+ "verdict": "UNIQUE - distinct from the parallel session's rasters (rank correlation ~0, forward overlap <= 0.03, reverse <= 0.23)",
+ "runtime_s": 3.9672045707702637
+}
