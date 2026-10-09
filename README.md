@@ -682,4 +682,98 @@ Do not stop after the first pass. Each pass must build on the previous one. Befo
 
 Go ahead and create a pull request and then merge the pull request onto the main. Make suggestions for what work still needs to be done and any limitations that is in the way of a successful project.  It should be worked on in this next session or the next session.  Work line by line verify everything no hallucinations.
 
+
+## Session addendum — H57-K candidate (2026-10-09, this session)
+
+A separate lane run, merged on top of the release above. It produced a second
+file, and reached the **same blocker by an independent route**.
+
+### What was built
+
+- **The official 19-band GeoDAWN feature stack is now local and sha256-verified**
+  (`scripts/download_features.sh`, fails closed unless the bytes and hash match
+  the pin). This closes the gap recorded in `REMAINING_WORK.md` §6: no earlier
+  session of this repository had it.
+- **A live-anchored credit instrument** (`scripts/live_credit_shells.py`)
+  converts nine OWNER-REPORTED scores into pooled credit using the
+  GEMSDOE48-corrected identity `DTI = T / (0.2T + 0.2n − 0.2Q + 0.8G)`, fixing
+  the hidden-truth mass **G = 14,089** from one nested owner-reported pair. It
+  measures the ≤ 2 px proximal band at **0.0024** credit per dot against
+  **0.1387** for the dots the 0.2778 submission kept, and falsifies
+  distance-to-catalogue alone: two dot fields with nearly identical distance
+  distributions differ **6×** in measured credit.
+- **H57-K** adds *strand expression* — whether a pixel inside a damage zone
+  actually carries the geophysical signature of a fault — to the lane geometry
+  the prompt asks for. No angle is hard-coded; every weight is fitted on the
+  hide-and-recover holdout. HOLDOUT-DTI, 8 detached cells, **22,619** withheld
+  positives, α = 0.2 β = 0.8, 300 m kernel:
+
+  | Arm | Features | HOLDOUT-DTI | 95 % CI (quadrant jackknife) |
+  |---|---|---|---|
+  | `d_only` | 1 | 0.0507 | [0.0358, 0.0655] |
+  | `lane8` | 8 | 0.1024 | [0.0840, 0.1209] |
+  | `lane8_geophys` | 48 | **0.1103** | [0.0917, 0.1290] |
+
+  The geophysical term's +0.008 sits inside the intervals, so it is reported as
+  measured, **not** as a win.
+
+### A defect found and fixed in the shared template
+
+`gems57.emit.allocate_by_marginal_bar` visits candidates once in descending
+`E[k]` order and **breaks** at the first candidate failing the two-sided DTI
+test. Marginal credit `dT` depends on *local kernel saturation*, not on rank, so
+on a surface with flat plateaus of near-equal `E[k]` the next candidate in
+row-major order can sit on a dot already placed, return `dT = 0`, and end the
+pass early: measured here, **3,405** dots instead of **62,872**, surrogate DTI
+0.0832 instead of 0.2927. Fixed once, in the template, as
+`gems57.emit.allocate_patient` — identical accept/reject test, but it stops only
+after `patience` consecutive rejections. Six regression tests in
+`tests/test_allocator_nonredundant.py`; the original function is retained for
+callers and comparison. No private fork.
+
+### The file, and why it is still not cleared
+
+`docs/downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif`
+(854,692 B, sha256 `749fdffc…d30f9d6`), plus a single-TIFF `.zip`.
+**15/15 local format checks pass.** 62,872 dots, none on the mapped catalogue.
+Byte identity checked against the **full 655-raster registry index**: **0**
+exact matches, so it is provably not a copy of any earlier raster. Worst
+Spearman over the full footprint **0.0246** (limit 0.90); worst dot-set Jaccard
+**0.0198** (limit 0.50).
+
+**It still fails protocol rule 1 exactly as written, and this run does not claim
+an exemption.** 99.8 % of its dots fall within 3 px of `r13-lattice-s5`, whose
+3 px halo covers 0.9987 of the footprint. That clause was measured before being
+relied on: it also fires for the family's own OWNER-REPORTED 0.2778 submission
+at 0.999 against the same lattice, so it cannot be passed by *any* nonempty dot
+set. This is the **same obstruction the release above certifies**, found
+independently from a different witness raster. The remedy recorded by the
+earlier session stands: an **owner protocol revision**, not a redefinition of
+support, not an exemption for dense maps, not a reverse-overlap condition, and
+not choosing another raster after STOP.
+
+Run card `evidence/h57k_run_card.json`: **verdict `negative`**,
+`okay_to_submit: false`, `promotion_ready: false`. The scientific result is
+positive; the submission candidate is blocked. Page: `docs/h57k.html`.
+
+### The dominant open risk
+
+The two calibrated instruments disagree about *where* dots belong. The
+live-anchored instrument says the ≤ 2 px band is dead and every raster in this
+family that has ever scored sits at median **19.6 px** from the catalogue. The
+holdout model — trained on withheld *catalogue* pixels — puts essentially all
+its mass within a few pixels of it: sweeping the proximal exclusion from 2 px to
+20 px collapses modelled credit from 6,057 to 179. Only the ≤ 2 px exclusion is
+a measurement, so only that was imposed, and the emission sits at median
+**3.6 px**. Unresolved; `IR-57-PROX-01`.
+
+### Scope limit of the uniqueness screen
+
+The correlation/overlap screen ran against the **16** registry rasters present
+in this sandbox. The full index has **655**; the other 639 live in sibling
+repositories and were not re-downloaded. Byte identity *was* checked against all
+655. That asymmetry is disclosed rather than papered over.
+
+---
+
 <!-- END PRESERVED STANDING REQUEST -->

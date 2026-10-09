@@ -185,3 +185,158 @@ def greedy_allocate(p: np.ndarray, allowed: np.ndarray, k_truth: float, *,
 def dilate_zone(mask: np.ndarray, px: int) -> np.ndarray:
     """Dilate a mask by ``px`` pixels (square structuring element)."""
     return ndi.binary_dilation(np.asarray(mask, bool), iterations=int(px))
+
+
+def allocate_by_marginal_bar(p: np.ndarray, allowed: np.ndarray, k_truth: float, *,
+                             floor: float = 0.0, max_dots: int = 200_000,
+                             candidate_cap: int = 600_000,
+                             chunk: int = 50_000) -> Allocation:
+    """Select dots in descending ``E[k]`` order while each one raises the DTI.
+
+    Same decision rule as :func:`greedy_allocate` -- the exact two-sided test
+
+        (T + dT) / D1  >  T / D0,     D = alpha*(T + n - M) + beta*K
+
+    -- but evaluated once per candidate in a single descending pass instead of
+    by repeated round scans.  Under the (stated) approximation that a candidate's
+    marginal truth credit ``dT`` is non-increasing as better-ranked candidates
+    are accepted first, the single pass is the same greedy solution; it costs
+    ``O(n_cand * |kernel|)`` instead of ``O(n_dots * n_cand)``, which is what
+    makes a whole-footprint allocation (millions of candidates) tractable.
+
+    Candidates are visited in decreasing ``E[k] = p (*) k`` order and the loop
+    stops at the first candidate whose marginal credit no longer pays the bar,
+    which is where the greedy optimum sits.
+    """
+    p = np.asarray(p, np.float32)
+    H, W = p.shape
+    ek = expected_credit(p)
+    cand = allowed & (ek >= floor)
+    ys, xs = np.nonzero(cand)
+    if ys.size == 0:
+        return Allocation(np.zeros(p.shape, bool), 0)
+    order = np.argsort(-ek[ys, xs], kind="stable")
+    if order.size > candidate_cap:
+        order = order[:candidate_cap]
+    ys, xs = ys[order], xs[order]
+    kself = np.minimum(ek[ys, xs].astype(np.float64), 1.0)
+
+    cover = np.zeros(p.shape, np.float32)
+    emitted = np.zeros(p.shape, bool)
+    T = M = 0.0
+    n_dots = 0
+    K = float(k_truth)
+    stop_at = None
+    for start in range(0, ys.size, chunk):
+        if n_dots >= max_dots:
+            break
+        cy, cx, ksl = ys[start:start + chunk], xs[start:start + chunk], kself[start:start + chunk]
+        for i in range(cy.size):
+            if n_dots >= max_dots:
+                break
+            y, x = int(cy[i]), int(cx[i])
+            ny = y + OFF_DY
+            nx = x + OFF_DX
+            ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
+            nyv, nxv, kw = ny[ok], nx[ok], OFF_K[ok]
+            pv = p[nyv, nxv].astype(np.float64)
+            cv = cover[nyv, nxv].astype(np.float64)
+            dT = float((pv * np.maximum(kw - cv, 0.0)).sum())
+            if n_dots == 0:
+                if dT <= 0.0:
+                    continue
+            else:
+                D0 = ALPHA * (T + n_dots - M) + BETA * K + EPS
+                D1 = ALPHA * (T + dT + (n_dots + 1) - (M + kself[i])) + BETA * K + EPS
+                if not ((T + dT) / D1 > T / D0):
+                    stop_at = start + i
+                    break
+            emitted[y, x] = True
+            n_dots += 1
+            T += dT
+            M += float(ksl[i])
+            np.maximum.at(cover, (nyv, nxv), kw.astype(np.float32))
+        if stop_at is not None:
+            break
+    D = ALPHA * (T + n_dots - M) + BETA * K + EPS
+    return Allocation(emitted=emitted, n_dots=n_dots, expected_covered_credit=T,
+                      expected_self_credit=M, rounds=1, surrogate_dti=float(T / D))
+
+
+def allocate_patient(p: np.ndarray, allowed: np.ndarray, k_truth: float, *,
+                    floor: float = 0.0, max_dots: int = 200_000,
+                    candidate_cap: int = 4_000_000,
+                    patience: int = 100_000) -> Allocation:
+    """Greedy allocation that skips failing candidates instead of stopping.
+
+    :func:`allocate_by_marginal_bar` visits candidates once in descending
+    ``E[k] = p (*) k`` order and **breaks** at the first candidate that fails
+    the two-sided DTI test.  That single pass is only the greedy solution while
+    a candidate's marginal credit ``dT`` is non-increasing in rank -- and it is
+    not, because ``dT`` depends on *local* kernel saturation, not on rank.  On
+    a surface with large flat plateaus of near-equal ``E[k]`` (a tight cluster
+    of high-probability cells) the next candidate in row-major order can sit on
+    top of a dot already placed, return ``dT = 0``, and end the pass thousands
+    of dots early.  Measured on the session-4 surface: it stopped at 3,405 dots
+    where the same bar supports roughly ten times as many.
+
+    This variant keeps the identical accept/reject test but only stops after
+    ``patience`` consecutive rejections, since a rejected candidate says
+    nothing about one ranked below it.  Every decision the single pass made is
+    reproduced, so the result is never worse; the extra cost is scanning the
+    tail of the ranking.
+
+    ``n_skipped`` and ``n_scanned`` are returned on ``trace`` for diagnostics.
+    """
+    p = np.asarray(p, np.float32)
+    H, W = p.shape
+    ek = expected_credit(p)
+    cand = allowed & (ek >= floor)
+    ys, xs = np.nonzero(cand)
+    if ys.size == 0:
+        return Allocation(np.zeros(p.shape, bool), 0)
+    order = np.argsort(-ek[ys, xs], kind="stable")
+    if order.size > candidate_cap:
+        order = order[:candidate_cap]
+    ys, xs = ys[order], xs[order]
+    kself = np.minimum(ek[ys, xs].astype(np.float64), 1.0)
+
+    cover = np.zeros(p.shape, np.float32)
+    emitted = np.zeros(p.shape, bool)
+    T = M = 0.0
+    n_dots = 0
+    n_skipped = 0
+    n_fail = 0
+    K = float(k_truth)
+    for i in range(ys.size):
+        if n_dots >= max_dots or n_fail >= patience:
+            break
+        y, x = int(ys[i]), int(xs[i])
+        ny = y + OFF_DY
+        nx = x + OFF_DX
+        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
+        nyv, nxv, kw = ny[ok], nx[ok], OFF_K[ok]
+        pv = p[nyv, nxv].astype(np.float64)
+        cv = cover[nyv, nxv].astype(np.float64)
+        dT = float((pv * np.maximum(kw - cv, 0.0)).sum())
+        if n_dots == 0:
+            if dT <= 0.0:
+                n_skipped += 1
+                continue
+        else:
+            D0 = ALPHA * (T + n_dots - M) + BETA * K + EPS
+            D1 = ALPHA * (T + dT + (n_dots + 1) - (M + kself[i])) + BETA * K + EPS
+            if not ((T + dT) / D1 > T / D0):
+                n_fail += 1
+                n_skipped += 1
+                continue
+        emitted[y, x] = True
+        n_dots += 1
+        n_fail = 0
+        T += dT
+        M += float(kself[i])
+        np.maximum.at(cover, (nyv, nxv), kw.astype(np.float32))
+    D = ALPHA * (T + n_dots - M) + BETA * K + EPS
+    return Allocation(emitted=emitted, n_dots=n_dots, expected_covered_credit=T,
+                      expected_self_credit=M, rounds=1, surrogate_dti=float(T / D),
+                      trace=[("n_skipped", n_skipped), ("n_scanned", int(i) + 1)])
