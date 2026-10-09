@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Results · 57GEMSDOE</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body>
+<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<main>
+<h2>Holdout results</h2>
+<h3>Withholding mode <code>all</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
+<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
+<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
+<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>d_only</code></td><td class="n">0.1845</td><td class="n">[0.1630, 0.2059]</td><td class="n">0.5036</td><td class="n">[0.4971, 0.5101]</td><td class="n">220010</td><td class="n">22641</td><td class="n">11402.5</td></tr><tr><td><code>d_perp_par</code></td><td class="n">0.1867</td><td class="n">[0.1605, 0.2128]</td><td class="n">0.5066</td><td class="n">[0.5001, 0.5131]</td><td class="n">220183</td><td class="n">22641</td><td class="n">11469.8</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.2517</td><td class="n">[0.2183, 0.2851]</td><td class="n">0.4874</td><td class="n">[0.4809, 0.4940]</td><td class="n">136467</td><td class="n">22641</td><td class="n">11036.2</td></tr><tr><td><code>no_side</code></td><td class="n">0.2508</td><td class="n">[0.2164, 0.2852]</td><td class="n">0.4852</td><td class="n">[0.4787, 0.4918]</td><td class="n">136293</td><td class="n">22641</td><td class="n">10986.5</td></tr></table>
+<h3>detached</h3><p>PENDING</p>
+<p class="small">Leave-one-quadrant-out: the model applied to a quadrant is trained only on the
+other three. The quadrant-jackknife CI is the one that respects the spatial blocking; the Wilson
+interval only propagates binomial noise on the coverage and ignores spatial heterogeneity, so it is
+narrower and more optimistic. <b>Report the jackknife one.</b></p>
+
+<h2>Catalogue-flank exclusion, measured</h2>
+<p>Whether to exclude the pixels immediately adjacent to a mapped trace was decided by measurement,
+not by hand. The holdout selected <b>PENDING px</b>.</p>
+<table><tr><th class="n">Excluded flank</th><th class="n">Pooled DTI</th>
+<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td colspan="4">PENDING</td></tr></table>
+
+<h2>Budget</h2>
+<p>The dot budget is the per-draw total the holdout selected: <b>PENDING</b>.
+One draw of four quadrant cells covers the footprint once, so that total transfers directly.
+No projected live score is attached to it.</p>
+</main>
+<footer>Generated 2026-10-09 05:46 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Every number on this site is read from a measurement file at build time.
+<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
+</body></html>
