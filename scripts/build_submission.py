@@ -174,7 +174,10 @@ def main() -> None:
     #          has its own measured number rather than the unconstrained optimum
     capped_holdout = None
     if a.budget_cap > 0:
-        per_cap = budget // 2                      # 8 cells = 2 draws
+        # the live budget is the per-DRAW total over the 4 quadrant cells, so each cell
+        # gets one quarter.  (IR-57-CAP-01: this was budget // 2, which measured the
+        # capped holdout at ~2x the shipped density.)
+        per_cap = budget // 4
         pl, per = score_variant(ctx, cells, clf, scale, best_flank,
                                 max_dots=per_cap, floor=a.floor, cols=cols,
                                 geo=geo)
@@ -264,6 +267,10 @@ def main() -> None:
         "features_dropped": [n for i, n in enumerate(all_names)
                              if cols is None or i not in cols],
         "budget_cap": a.budget_cap,
+        # IR-57-INSAMPLE-01: the classifier is trained on the same holdout cells it is scored
+        # on, so every holdout number in this file is IN-SAMPLE. Do not quote it as HOLDOUT-DTI.
+        # The leave-one-quadrant-out reading is evidence/exp_sense_loqo_all.json (variant no_side).
+        "holdout_is_in_sample": True,
         "holdout_at_capped_budget": capped_holdout,
         "calibration": {"scale": scale, "base_rate": base},
         "flank_variants": {str(k): v["pooled"] for k, v in variants.items()},

@@ -1,0 +1,275 @@
+{
+  "evidence_class": "HOLDOUT-DTI (local instrument reading, NOT a projected live score)",
+  "evaluator": "gems57 pooled DTI alpha=0.2 beta=0.8 R=3px, leave-one-quadrant-out, mode=all",
+  "per_cell_cap": 10000,
+  "shipped_density_note": "35,341 dots shipped over the whole footprint (~10,000 per quadrant cell)",
+  "floor": 0.015,
+  "features_no_side": [
+    "d",
+    "d_perp",
+    "d_par_abs",
+    "log_len",
+    "sin2",
+    "cos2",
+    "coherence",
+    "density"
+  ],
+  "canary": {
+    "d": {
+      "auc_per_fold": [
+        0.09998210519480517,
+        0.11428550741525424,
+        0.1240044265873016,
+        0.12056905010759299
+      ],
+      "auc_mean": 0.11471027232623851,
+      "auc_min": 0.09998210519480517,
+      "auc_max": 0.1240044265873016,
+      "discriminative_auc_mean": 0.8852897276737615,
+      "discriminative_auc_max": 0.9000178948051948,
+      "leakage_threshold": 0.9,
+      "leakage_flag": true
+    },
+    "d_perp": {
+      "auc_per_fold": [
+        0.09865504155844156,
+        0.1182655222457627,
+        0.1568431970899471,
+        0.11450078696587769
+      ],
+      "auc_mean": 0.12206613696500726,
+      "auc_min": 0.09865504155844156,
+      "auc_max": 0.1568431970899471,
+      "discriminative_auc_mean": 0.8779338630349927,
+      "discriminative_auc_max": 0.9013449584415585,
+      "leakage_threshold": 0.9,
+      "leakage_flag": true
+    },
+    "d_par_abs": {
+      "auc_per_fold": [
+        0.24179795194805195,
+        0.24363392372881357,
+        0.22411546296296295,
+        0.2599175245926837
+      ],
+      "auc_mean": 0.24236621580812803,
+      "auc_min": 0.22411546296296295,
+      "auc_max": 0.2599175245926837,
+      "discriminative_auc_mean": 0.757633784191872,
+      "discriminative_auc_max": 0.7758845370370371,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "side": {
+      "auc_per_fold": [
+        0.505579774025974,
+        0.4878017690677966,
+        0.5028868201058201,
+        0.5124831985859207
+      ],
+      "auc_mean": 0.5021878904463778,
+      "auc_min": 0.4878017690677966,
+      "auc_max": 0.5124831985859207,
+      "discriminative_auc_mean": 0.5082870059124796,
+      "discriminative_auc_max": 0.5124831985859207,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "log_len": {
+      "auc_per_fold": [
+        0.43621699610389614,
+        0.4212844290254237,
+        0.45722793518518523,
+        0.47442038426068245
+      ],
+      "auc_mean": 0.4472874361437969,
+      "auc_min": 0.4212844290254237,
+      "auc_max": 0.47442038426068245,
+      "discriminative_auc_mean": 0.5527125638562032,
+      "discriminative_auc_max": 0.5787155709745764,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sin2": {
+      "auc_per_fold": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "auc_mean": 0.5,
+      "auc_min": 0.5,
+      "auc_max": 0.5,
+      "discriminative_auc_mean": 0.5,
+      "discriminative_auc_max": 0.5,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "cos2": {
+      "auc_per_fold": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "auc_mean": 0.5,
+      "auc_min": 0.5,
+      "auc_max": 0.5,
+      "discriminative_auc_mean": 0.5,
+      "discriminative_auc_max": 0.5,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "coherence": {
+      "auc_per_fold": [
+        0.35046143766233767,
+        0.33350996398305083,
+        0.4226537037037037,
+        0.38223812096526283
+      ],
+      "auc_mean": 0.37221580657858877,
+      "auc_min": 0.33350996398305083,
+      "auc_max": 0.4226537037037037,
+      "discriminative_auc_mean": 0.6277841934214112,
+      "discriminative_auc_max": 0.6664900360169492,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "density": {
+      "auc_per_fold": [
+        0.7291671675324676,
+        0.6869908262711864,
+        0.7511370899470899,
+        0.7484809153089456
+      ],
+      "auc_mean": 0.7289439997649223,
+      "auc_min": 0.6869908262711864,
+      "auc_max": 0.7511370899470899,
+      "discriminative_auc_mean": 0.7289439997649223,
+      "discriminative_auc_max": 0.7511370899470899,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_sgn": {
+      "auc_per_fold": [
+        0.4977418155844156,
+        0.5,
+        0.4642923710317461,
+        0.5399354664924686
+      ],
+      "auc_mean": 0.5004924132771575,
+      "auc_min": 0.4642923710317461,
+      "auc_max": 0.5399354664924686,
+      "discriminative_auc_mean": 0.5194753199690767,
+      "discriminative_auc_max": 0.5399354664924686,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_side": {
+      "auc_per_fold": [
+        0.5107776818181817,
+        0.5,
+        0.491758119047619,
+        0.5120476398708884
+      ],
+      "auc_mean": 0.5036458601841722,
+      "auc_min": 0.491758119047619,
+      "auc_max": 0.5120476398708884,
+      "discriminative_auc_mean": 0.5077668006603628,
+      "discriminative_auc_max": 0.5120476398708884,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    }
+  },
+  "variants": {
+    "no_side": {
+      "pooled": {
+        "pooled_dti": 0.2279081739637539,
+        "coverage": 0.3287785538228303,
+        "coverage_ci95": [
+          0.32268898659895995,
+          0.3349262128762428
+        ],
+        "dti_ci95_coverage_only": [
+          0.22387591471414453,
+          0.2319719988659957
+        ],
+        "dti_ci95_quadrant_jackknife": [
+          0.18673527927748879,
+          0.269081068650019
+        ],
+        "jackknife_drop_quadrant": {
+          "foldNE": 0.2286614126455512,
+          "foldNW": 0.21557947694176727,
+          "foldSE": 0.22140144120177618,
+          "foldSW": 0.24776454109350438
+        },
+        "tp": 7443.8752371027,
+        "fp": 65300.774637968476,
+        "fn": 15197.1247628973,
+        "n_truth": 22641,
+        "n_dots": 80000
+      },
+      "per_quadrant_dti": {
+        "NW": 0.27532779977801486,
+        "NE": 0.22535866093981147,
+        "SW": 0.1808795249270494,
+        "SE": 0.2456153299746288
+      },
+      "withheld_positive_pixels": 22641,
+      "label": "HOLDOUT-DTI"
+    },
+    "no_side_plus_sense": {
+      "pooled": {
+        "pooled_dti": 0.2292365705348677,
+        "coverage": 0.3308033657501573,
+        "coverage_ci95": [
+          0.32470390887454537,
+          0.33696022747928145
+        ],
+        "dti_ci95_coverage_only": [
+          0.22520020666416096,
+          0.23330400752252362
+        ],
+        "dti_ci95_quadrant_jackknife": [
+          0.18919608081272335,
+          0.26927706025701204
+        ],
+        "jackknife_drop_quadrant": {
+          "foldNE": 0.22874193772689014,
+          "foldNW": 0.2162607735291844,
+          "foldSE": 0.22525212436491238,
+          "foldSW": 0.2485455603934362
+        },
+        "tp": 7489.719003949311,
+        "fp": 65308.50078659011,
+        "fn": 15151.28099605069,
+        "n_truth": 22641,
+        "n_dots": 80000
+      },
+      "per_quadrant_dti": {
+        "NW": 0.279121716302409,
+        "NE": 0.23090976859835083,
+        "SW": 0.1833449661805448,
+        "SE": 0.24004975578179166
+      },
+      "withheld_positive_pixels": 22641,
+      "label": "HOLDOUT-DTI"
+    }
+  },
+  "paired_no_side_plus_sense_minus_no_side": {
+    "per_quadrant_diff": {
+      "NW": 0.0037939165243941475,
+      "NE": 0.0055511076585393615,
+      "SW": 0.002465441253495404,
+      "SE": -0.005565574192837125
+    },
+    "mean_diff": 0.001561222810897947,
+    "sd_diff": 0.004916399388444914,
+    "n_quadrants_positive": 3,
+    "canary_clean": false,
+    "promote_rule": "positive in >=3 of 4 quadrants AND canary clean",
+    "promote": false
+  },
+  "runtime_s": 539.9
+}

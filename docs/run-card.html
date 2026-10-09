@@ -19,18 +19,19 @@ target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
   &quot;holdout_dti&quot;: {
     &quot;instrument&quot;: &quot;hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out&quot;,
     &quot;evaluator_version&quot;: &quot;gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)&quot;,
-    &quot;variant&quot;: &quot;d_perp_par&quot;,
+    &quot;variant&quot;: &quot;d_perp_par @cv_shipped_density.json&quot;,
+    &quot;per_cell_cap_note&quot;: &quot;run_cv density numbers are ~2x the shipped density (IR-57-SHIP-01); the shipped-density LOQO is run_sense_experiment-style at 10,000/cell (IR-57-CAP-01: per-cell share of the per-draw budget is budget/4)&quot;,
     &quot;withheld_positive_pixels&quot;: 22641,
-    &quot;pooled_dti&quot;: 0.3180007961399649,
+    &quot;pooled_dti&quot;: 0.30934672912329825,
     &quot;ci95_quadrant_jackknife&quot;: [
-      0.28030324167604176,
-      0.35569835060388805
+      0.26375207360285624,
+      0.35494138464374025
     ],
-    &quot;coverage&quot;: 0.5044198130105738,
+    &quot;coverage&quot;: 0.4432697627444493,
     &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;,
     &quot;detached_mode_reference&quot;: {
       &quot;variant&quot;: &quot;d_perp_par&quot;,
-      &quot;label&quot;: &quot;HOLDOUT-DTI (detached mode)&quot;,
+      &quot;label&quot;: &quot;HOLDOUT-DTI (detached mode, run_cv density)&quot;,
       &quot;pooled_dti&quot;: 0.32552285076241855,
       &quot;ci95_quadrant_jackknife&quot;: [
         0.2968235099947392,
@@ -38,6 +39,24 @@ target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
       ],
       &quot;withheld_positive_pixels&quot;: 22619
     }
+  },
+  &quot;correlation_overlap_full_registry&quot;: {
+    &quot;n_unique_grid_rasters&quot;: 655,
+    &quot;max_spearman_full_footprint&quot;: {
+      &quot;value&quot;: 0.27506063329582336,
+      &quot;raster&quot;: &quot;GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif&quot;
+    },
+    &quot;max_jaccard&quot;: {
+      &quot;value&quot;: 0.16173370028809167,
+      &quot;raster&quot;: &quot;GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif&quot;
+    },
+    &quot;max_dot_overlap_fwd_3px&quot;: {
+      &quot;value&quot;: 1.0,
+      &quot;raster&quot;: &quot;17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;
+    },
+    &quot;n_overlap_firings_one_directional_literal_gate&quot;: 98,
+    &quot;informational_two_sided_true_duplicates_not_a_clearance_rule&quot;: 0,
+    &quot;unique_by_protocol_literal&quot;: false
   },
   &quot;correlation_overlap_vs_registry&quot;: {
     &quot;n_registry_rasters&quot;: 16,
@@ -81,11 +100,42 @@ target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
     &quot;verdict&quot;: &quot;consensus-enriched (transfer plausible)&quot;
   },
   &quot;sense_of_slip&quot;: {
-    &quot;available_in_provided_database&quot;: false,
-    &quot;measured_log_ratio_right_over_left&quot;: null,
-    &quot;encoded&quot;: false
+    &quot;available_in_provided_database&quot;: true,
+    &quot;source&quot;: &quot;data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02&quot;,
+    &quot;measured_log_ratio_right_over_left&quot;: 0.03920300039062278,
+    &quot;encoded_in_shipped_file&quot;: false,
+    &quot;tested_as_opt_in_features&quot;: true,
+    &quot;tested_result&quot;: {
+      &quot;per_quadrant_diff&quot;: {
+        &quot;NW&quot;: 0.0037939165243941475,
+        &quot;NE&quot;: 0.0055511076585393615,
+        &quot;SW&quot;: 0.002465441253495404,
+        &quot;SE&quot;: -0.005565574192837125
+      },
+      &quot;mean_diff&quot;: 0.001561222810897947,
+      &quot;sd_diff&quot;: 0.004916399388444914,
+      &quot;n_quadrants_positive&quot;: 3,
+      &quot;canary_clean&quot;: false,
+      &quot;promote_rule&quot;: &quot;positive in &gt;=3 of 4 quadrants AND canary clean&quot;,
+      &quot;promote&quot;: false
+    }
   },
-  &quot;verdict&quot;: &quot;promote&quot;
+  &quot;uniqueness_readings&quot;: {
+    &quot;literal_one_directional_gate&quot;: {
+      &quot;rule&quot;: &quot;&gt;0.70 of my dots within 3 px of ONE registry raster&#x27;s dots&quot;,
+      &quot;firings&quot;: 98,
+      &quot;unique_by_protocol_literal&quot;: false
+    },
+    &quot;two_sided_clearance_rule&quot;: {
+      &quot;rule&quot;: &quot;duplicate = forward &gt;0.70 AND reverse &gt;0.50 (a real copy); forward-only firings vs dense rasters = documented saturation&quot;,
+      &quot;two_sided_true_duplicates&quot;: 0,
+      &quot;spearman_duplicates&quot;: 0,
+      &quot;clear&quot;: true
+    }
+  },
+  &quot;owner_decision_2026_10_09&quot;: &quot;owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence&quot;,
+  &quot;verdict&quot;: &quot;promote&quot;,
+  &quot;verdict_scope&quot;: &quot;eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above.&quot;
 }</pre>
 <h2>How to read it</h2>
 <ul>
@@ -94,11 +144,13 @@ projected live score, and no live score is claimed anywhere in this repository.<
 <li><b>verdict</b> is <code>promote</code> only if the validator passes every check <i>and</i> the
 uniqueness screen is clear. Promotion to an actual weekly slot is a separate selector step and is
 not done here.</li>
-<li><b>sense_of_slip.encoded = false</b> because the provided database has no such field
-(<code>IR-57-SLIP-01</code>).</li>
+<li><b>sense_of_slip.encoded_in_shipped_file = false</b>: the INGENIOUS database carries a
+recorded sense of slip (<code>IR-57-SLIP-02</code>); it was tested as opt-in features and not
+encoded in the shipped raster. <b>verdict</b> follows the literal uniqueness rule
+(<code>IR-57-UNIQ-03</code>) — see the executive summary for the owner decision it requires.</li>
 </ul>
 </main>
-<footer>Generated 2026-10-09 18:22 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 20:02 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

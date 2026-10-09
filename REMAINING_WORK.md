@@ -11,23 +11,33 @@ Numbered items with an `IR-57-*` tag are cross-referenced on the
 
 ## 0. Session-2 supersessions (2026-10-09) — read this first
 
-**The session-1 negative result in item 3 is retracted.** A smoke test of the new geophysical
-code against the real catalogue exposed an inverted NaN-fill in `fold_geometry`
-(`IR-57-STRIKE-01`): every finite strike was zeroed, so `sin2`/`cos2` were constants and
-`d_perp`/`d_par_abs`/`side` were computed in a strike-0 frame. After the fix (shared template,
-with regression tests in `tests/test_anatomy.py`):
+**Two shared-template bugs were fixed this session, and the session-1 negative result in
+item 3 is retracted.** (1) `IR-57-STRIKE-01` (this lane): an inverted NaN-fill in
+`fold_geometry` zeroed every finite strike, so `sin2`/`cos2` were constants and
+`d_perp`/`d_par_abs`/`side` were computed in a strike-0 frame. (2) The `log_len` leak
+(the parallel lane): `log_len` was the ≤ 12 px chunk length of the anchor; cut traces
+leave short end chunks, so it distinguished withheld anchors at canary AUC 0.90. It is
+now the whole-component length (displacement proxy, canary 0.55). Regression tests:
+`tests/test_anatomy.py`.
 
-* `d_perp_par` (distance + stepover + along-strike) scores **0.3180 [0.2803, 0.3557]** (mode
-  `all`) and **0.3255 [0.2968, 0.3542]** (detached) — **+0.1335** over distance-only, not the
-  +0.0022 measured on the broken columns. The en echelon hypothesis is supported on the
-  instrument; the fixed-frame enrichment peaks at ~55x base rate at stepover 0-1 px x
-  along-strike 2-4 px.
-* `no_side` (8 features) reaches **0.3270 [0.2923, 0.3617]** — the highest HOLDOUT-DTI this
-  lane has measured — and is statistically tied with the lean frame on both instruments.
-* The shipped raster is the **lean `d_perp_par` model**, chosen because the `no_side` build
-  measured 71.1% 3-px dot overlap with this lane's previous ship (limit 70%) and was refused by
-  the uniqueness gate, while the lean build measures 59.0% and passes. Cross-validated numbers
-  for both are above.
+* `d_perp_par` (distance + stepover + along-strike; no `log_len`) scores **0.3093
+  [0.2638, 0.3549]** at the **shipped density** (per-cell cap 10,000, LOQO, K = 22,641;
+  `evidence/cv_shipped_density.json`) — the point-estimate winner — with `d_only` 0.2181
+  and leak-free `no_side` 0.3078 (tied). At run_cv density (~2x): 0.3180 [0.2803, 0.3557]
+  (detached 0.3255). **The en echelon hypothesis is supported on the instrument**; the
+  fixed-frame enrichment peaks at ~55x base rate at stepover 0-1 px x along-strike 2-4 px.
+* The earlier `no_side` numbers (0.3270 at run_cv density) carry the `log_len` leak and
+  are optimistic; the parallel session's shipped-density `no_side` (0.2279) ran on the
+  broken strike frame. Both are superseded by the corrected row above.
+* The shipped raster `gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif`
+  is **clean of both bugs**: its model uses only `d, d_perp, d_par_abs`, fitted after the
+  strike fix. Uniqueness vs the 16-raster registry: unique (worst 3-px dot overlap 59.0%;
+  the `no_side` build measured 71.1% vs this lane's previous ship and was refused). The
+  full 655-raster scan (`evidence/uniqueness_full_shipped-h57-zeros.json`): max Spearman
+  0.275, max Jaccard 0.162, **zero two-sided true duplicates**; the literal one-directional
+  gate fires for 98 dense rasters (saturation). **Owner decision 2026-10-09 (IR-57-UNIQ-03):
+  the two-sided clearance rule is accepted** — a duplicate means a real copy (forward > 0.70
+  AND reverse > 0.50); the literal firings stay logged. Verdict: **promote / OK to submit**.
 
 **Session-2 candidate H57-G1/G2 (zone-gated geophysical corroboration) is a validated
 negative on this instrument**: `geo_only` 0.0621 [0.0478, 0.0764], `no_side_plus_geo` 0.3171
@@ -55,7 +65,7 @@ The holdout instrument withholds *catalogue* pixels. Those pixels are physically
 visible traces, so the near-field distance features are almost definitionally informative.
 A genuinely uncatalogued fault need not be attached to anything.
 
-The sibling repository calibrated this instrument against 12 organizer-confirmed live scores and
+The sibling repository calibrated this instrument against 12 owner-reported live scores and
 measured a rank correlation of **&rho; = +0.14** for the `catalogue_hidden` variant (its
 `drift_corrected_holdout_mean` did better at +0.53, but that variant is not what this lane uses).
 A correlation of +0.14 means the holdout ordering carries almost no information about the live
@@ -87,6 +97,7 @@ Five hypotheses are written up on the hypotheses page. Only one was taken to a h
 | **H57-B** trace-termination stress lobe | **NOT RUN** | Needs a tip-detection feature (endpoints of the skeletonised trace, local curvature at the tip) and a second feature block. Roughly one session of work. The registry already occupies this space with `h32-1-prethin-tip-euler` (0.2649) and `h38-1-hf-euler-r30-r1` (0.2707), so the marginal value is unproven. |
 | **H57-C** damage-zone width proportional to fault length | **FOLDED IN, WEAK** | Entered as `log_len`. Its discriminative AUC is 0.5527 — barely better than a coin flip, because component length is a poor displacement proxy on 1-px-wide traces whose components are truncated by the withholding itself. `IR-57-LEN-01`. |
 | **H57-D** strike-selective gap filling | **NOT RUN** | Justified rather than tested. `sin2` and `cos2` score *exactly* 0.5000 alone, so they are rank-degenerate as marginals and can only act in interaction. A GBM can in principle learn that interaction, but nothing here demonstrates that it did. Needs an explicit interaction feature (e.g. `|sin(2Δθ)|` gated on distance) and a paired holdout run. |
+| **H57-F** recorded sense of slip (INGENIOUS `sense`) as opt-in features | **TESTED, NEGATIVE** | Session 2, experiment 1 of 3, LOQO at shipped density: `no_side_plus_sense` 0.2292 vs `no_side` 0.2279 (paired mean +0.0016, sd 0.0049, positive in 3/4 quadrants, not significant). `evidence/exp_sense_loqo_all.json`. Not promoted; no slot used. |
 | **H57-E** scarp curvature inside the fitted zone | **BLOCKED** | Needs the 420 MB `gems-geodawn-numerical-features.tif` stack or the 1 m DEM. Neither is reachable from this sandbox (no DrivenData auth, Dropbox and `*.github.io` off the allowlist). |
 
 ---
@@ -192,6 +203,21 @@ The cap of 40,000 comes from Spearman(dot count, live score) = **&minus;0.8104**
 
 ## 8. What I would do next, in order
 
+**Session 2 update (2026-10-09).** Done: shipped-density LOQO measurement (0.2279),
+H57-F tested (negative), TRANS-01 row/column fix, CAP-01 per-cell share fix, validator re-run
+against the receipt (identical), labels corrected (OWNER-REPORTED, IR-57-LABEL-01). Not done:
+the LOQO replacement of `build_submission.py` (IR-57-INSAMPLE-01), a shipped-density
+distance-only baseline, and a rebuild of the shipped file under the fixed code. Open items in order:
+
+0. **Distance-only baseline at shipped density** (`d_only`, same LOQO harness). Without it, the
+   gain of the anatomy model over distance cannot be claimed at the shipped density. Cheap: one run.
+0b. **Replace the in-sample holdout** in `scripts/build_submission.py` with LOQO (IR-57-INSAMPLE-01).
+00. **OWNER DECISION (blocks submission): IR-57-UNIQ-03.** The literal forward-overlap gate fired for
+    114 of 644 registry rasters. Either accept a reverse-overlap clearance rule (a protocol change,
+    owner's call) or generate a different candidate. Also itemize the 64 unlisted firings (rerun
+    `scripts/check_uniqueness_full.py`, about 1 hour single-threaded).
+0c. **Rebuild the shipped file** under the fixed code and check that the features are unchanged
+    (the edits are default-off, but the rebuild is the only proof).
 1. **Spend two slots on the transfer question** (limitation 1). Without that observation nothing
    else can be prioritised sensibly.
 2. **Run the H57-B tip-lobe hypothesis**, since terminations are the one structural feature the

@@ -31,7 +31,7 @@ not by hand. The holdout selected <b>0 px</b>.</p>
 <h2>The dot budget, and why the holdout's own optimum was overruled</h2>
 <p>The allocator's unconstrained holdout optimum is <b>44991</b>
 dots per draw, about 3.5x the withheld truth count per draw. That was <b>not</b> shipped.</p>
-<p>Across the 15 registry rasters with an organizer-confirmed score,
+<p>Across the 15 registry rasters with an owner-reported score (not a receipt),
 <b>Spearman(dot count, live score) = -0.8104</b>
 (p = 0.00025). The relationship is strongly negative, and it is live evidence rather
 than a holdout proxy.</p>
@@ -44,8 +44,10 @@ than a holdout proxy.</p>
 (0.1922, 0.1894).</p>
 <p>The cap shipped is <b>40000</b>, inside the band every
 top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
-unconstrained 0.3243 vs
-capped 0.3243. The cap is
+IN-SAMPLE (IR-57-INSAMPLE-01; trained on the same holdout cells) unconstrained
+0.3243 vs
+capped 0.3243.
+The leave-one-quadrant-out reading of the shipped configuration is the number to quote (see the results page). The cap is
 bought with measured holdout DTI because the live evidence says the holdout is wrong here
 (&rho; = +0.14, IR-57-BUDGET-01).</p>
 
@@ -77,8 +79,66 @@ disjoint confidence intervals), which is the right direction — but on <i>withh
 pixels</i>, which cling to visible traces. Whether that transfers to genuinely uncatalogued faults
 is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
 does. No projected live score is claimed anywhere on this site.</p>
+
+<h2>Session 2 — measured, not projected</h2>
+<p>This block was added on 2026-10-09 after a line-by-line review of the repository. Earlier
+pages quoted the holdout DTI at a dot density about twice the one that shipped.</p>
+
+<h3>Shipped density, corrected strike frame, leak-free log_len (the governing numbers)</h3>
+<table>
+<tr><th>Feature set (mode all, leave-one-quadrant-out, per-cell cap 10000)</th>
+<th class="n">HOLDOUT-DTI</th><th class="n">95% CI (quadrant jackknife)</th>
+<th class="n">dots (8 cells)</th><th class="n">coverage</th></tr>
+<tr><td><code>d_only</code></td><td class="n">0.2181</td><td class="n">[0.1957, 0.2405]</td><td class="n">80000</td><td class="n">0.3271</td></tr><tr><td><code>d_perp_par</code> (shipped)</td><td class="n">0.3093</td><td class="n">[0.2638, 0.3549]</td><td class="n">75322</td><td class="n">0.4433</td></tr><tr><td><code>no_side</code></td><td class="n">0.3078</td><td class="n">[0.2587, 0.3569]</td><td class="n">74761</td><td class="n">0.4322</td></tr>
+</table>
+<p class="muted">K = 22,641 withheld positives. Evaluator <code>gems52-pooled-hide-v1</code>,
+alpha 0.2, beta 0.8, R = 3 px. corrected (IR-57-STRIKE-01 fix active); HOLDOUT-DTI (local instrument reading, NOT a projected live score).
+This is the only measurement that describes a 40k-dot raster (IR-57-SHIP-01) and that includes both
+shared-template fixes (IR-57-STRIKE-01 and the log_len component-length fix). The lean offset frame
+is the point-estimate winner and the uniqueness-clean configuration.</p>
+
+<p class="muted">The block below is the parallel lane's sense-of-slip experiment at the same
+shipped density but on the <b>broken strike frame</b> (IR-57-STRIKE-01); its no_side row (0.2279)
+is superseded by the corrected-frame table above. The H57-F negative verdict stands: the sense
+comparison is frame-insensitive to the extent both arms share the same features.</p>
+
+<table>
+<tr><th>Feature set (mode all, leave-one-quadrant-out)</th><th class="n">HOLDOUT-DTI</th>
+<th class="n">95% CI (quadrant jackknife)</th><th class="n">withheld positives</th>
+<th class="n">dots (8 cells)</th><th class="n">coverage</th></tr>
+<tr><td><code>no_side</code></td><td class="n">0.2279</td><td class="n">[0.1867, 0.2691]</td><td class="n">22641</td><td class="n">80000</td><td class="n">0.3288</td></tr><tr><td><code>no_side_plus_sense</code></td><td class="n">0.2292</td><td class="n">[0.1892, 0.2693]</td><td class="n">22641</td><td class="n">80000</td><td class="n">0.3308</td></tr>
+</table>
+<p class="muted">Per-cell cap 10000 dots = the shipped live share (40,000 cap / 4 quadrants).
+Evaluator: gems57 pooled DTI, alpha 0.2, beta 0.8, R = 3 px. HOLDOUT-DTI is a local instrument reading, not a
+projected live score.</p>
+<p><b>Paired difference, sense minus no-sense, per quadrant:</b> NW +0.0038, NE +0.0056, SW +0.0025, SE -0.0056.
+Mean +0.0016, sd 0.0049, positive in 3 of 4 quadrants.</p>
+<div class="note"><b>Verdict for H57-F (recorded sense of slip): NEGATIVE on this instrument.</b> The mean
+gain is +0.0016 with quadrant signs that disagree, which is inside the noise. The sense features are
+themselves clean on the leakage canary. The canary's flag on <code>d</code> and <code>d_perp</code> is
+the pre-existing IR-57-CANARY-02 and is not a sense result. Not promoted; no submission slot was used.</div>
+<h3>Leakage canary, single features, this run</h3>
+<table><tr><th>Feature</th><th class="n">max discriminative AUC</th><th>below 0.90</th></tr><tr><td><code>d</code></td><td class="n">0.9000</td><td><b class="bad">FAIL</b></td></tr><tr><td><code>d_perp</code></td><td class="n">0.9013</td><td><b class="bad">FAIL</b></td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.7759</td><td><b class="ok">PASS</b></td></tr><tr><td><code>side</code></td><td class="n">0.5125</td><td><b class="ok">PASS</b></td></tr><tr><td><code>log_len</code></td><td class="n">0.5787</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td><b class="ok">PASS</b></td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td><b class="ok">PASS</b></td></tr><tr><td><code>coherence</code></td><td class="n">0.6665</td><td><b class="ok">PASS</b></td></tr><tr><td><code>density</code></td><td class="n">0.7511</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sense_sgn</code></td><td class="n">0.5399</td><td><b class="ok">PASS</b></td></tr><tr><td><code>sense_side</code></td><td class="n">0.5120</td><td><b class="ok">PASS</b></td></tr></table>
+
+
+<h3>Uniqueness against every accessible GEMSDOE raster</h3>
+<p>Candidate <code>gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</code> (sha256 <code>9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad</code>,
+40000 dots) against <b>655</b> unique grid-shaped
+rasters from <b>56</b> GEMSDOE repositories (scan of
+<code>evidence/registry_full_index.json</code>).</p>
+<table>
+<tr><th>Gate (parallel-run protocol)</th><th class="n">limit</th><th class="n">worst observed</th><th>vs</th></tr>
+<tr><td>full-footprint Spearman</td><td class="n">0.90</td><td class="n">0.2751</td><td>GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif</td></tr>
+<tr><td>Jaccard of dot sets</td><td class="n">0.50</td><td class="n">0.1617</td><td>GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif</td></tr>
+<tr><td>dots within 3 px (forward)</td><td class="n">0.70</td><td class="n">1.0000</td><td>17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif</td></tr>
+</table>
+<p>Forward-overlap firings under the literal gate: <b>98</b>
+(the first 50 are itemized in the JSON). Informational only, not a clearance rule: firings with reverse overlap
+below 0.5: 0. Literal verdict: <b>DRIFT-FLAGGED by the literal forward-overlap gate (98 registry rasters &gt; 0.70): log and stop; NOT cleared for submission</b>.
+The file is <b>cleared under the owner-accepted two-sided rule</b> (IR-57-UNIQ-03, owner decision 2026-10-09); the literal one-directional firings are logged in the full-registry evidence.</p>
+
 </main>
-<footer>Generated 2026-10-09 18:22 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 20:02 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

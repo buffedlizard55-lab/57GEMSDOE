@@ -5,18 +5,19 @@
   "holdout_dti": {
     "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
     "evaluator_version": "gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)",
-    "variant": "d_perp_par",
+    "variant": "d_perp_par @cv_shipped_density.json",
+    "per_cell_cap_note": "run_cv density numbers are ~2x the shipped density (IR-57-SHIP-01); the shipped-density LOQO is run_sense_experiment-style at 10,000/cell (IR-57-CAP-01: per-cell share of the per-draw budget is budget/4)",
     "withheld_positive_pixels": 22641,
-    "pooled_dti": 0.3180007961399649,
+    "pooled_dti": 0.30934672912329825,
     "ci95_quadrant_jackknife": [
-      0.28030324167604176,
-      0.35569835060388805
+      0.26375207360285624,
+      0.35494138464374025
     ],
-    "coverage": 0.5044198130105738,
+    "coverage": 0.4432697627444493,
     "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score",
     "detached_mode_reference": {
       "variant": "d_perp_par",
-      "label": "HOLDOUT-DTI (detached mode)",
+      "label": "HOLDOUT-DTI (detached mode, run_cv density)",
       "pooled_dti": 0.32552285076241855,
       "ci95_quadrant_jackknife": [
         0.2968235099947392,
@@ -24,6 +25,24 @@
       ],
       "withheld_positive_pixels": 22619
     }
+  },
+  "correlation_overlap_full_registry": {
+    "n_unique_grid_rasters": 655,
+    "max_spearman_full_footprint": {
+      "value": 0.27506063329582336,
+      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
+    },
+    "max_jaccard": {
+      "value": 0.16173370028809167,
+      "raster": "GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif"
+    },
+    "max_dot_overlap_fwd_3px": {
+      "value": 1.0,
+      "raster": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif"
+    },
+    "n_overlap_firings_one_directional_literal_gate": 98,
+    "informational_two_sided_true_duplicates_not_a_clearance_rule": 0,
+    "unique_by_protocol_literal": false
   },
   "correlation_overlap_vs_registry": {
     "n_registry_rasters": 16,
@@ -67,9 +86,40 @@
     "verdict": "consensus-enriched (transfer plausible)"
   },
   "sense_of_slip": {
-    "available_in_provided_database": false,
-    "measured_log_ratio_right_over_left": null,
-    "encoded": false
+    "available_in_provided_database": true,
+    "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
+    "measured_log_ratio_right_over_left": 0.03920300039062278,
+    "encoded_in_shipped_file": false,
+    "tested_as_opt_in_features": true,
+    "tested_result": {
+      "per_quadrant_diff": {
+        "NW": 0.0037939165243941475,
+        "NE": 0.0055511076585393615,
+        "SW": 0.002465441253495404,
+        "SE": -0.005565574192837125
+      },
+      "mean_diff": 0.001561222810897947,
+      "sd_diff": 0.004916399388444914,
+      "n_quadrants_positive": 3,
+      "canary_clean": false,
+      "promote_rule": "positive in >=3 of 4 quadrants AND canary clean",
+      "promote": false
+    }
   },
-  "verdict": "promote"
+  "uniqueness_readings": {
+    "literal_one_directional_gate": {
+      "rule": ">0.70 of my dots within 3 px of ONE registry raster's dots",
+      "firings": 98,
+      "unique_by_protocol_literal": false
+    },
+    "two_sided_clearance_rule": {
+      "rule": "duplicate = forward >0.70 AND reverse >0.50 (a real copy); forward-only firings vs dense rasters = documented saturation",
+      "two_sided_true_duplicates": 0,
+      "spearman_duplicates": 0,
+      "clear": true
+    }
+  },
+  "owner_decision_2026_10_09": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence",
+  "verdict": "promote",
+  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
 }

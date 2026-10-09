@@ -11,7 +11,13 @@
 
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
-**The file to submit is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
+> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
+> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
+> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
+> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
+> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+
+**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
 It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
 `3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
 12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
@@ -76,48 +82,106 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
 
 ---
 
+## Session 2 status (2026-10-09) — what is measured now
+
+* **Shipped configuration, measured at its own density** (per-cell cap 10,000;
+  LOQO, mode `all`; 22,641 withheld positives): `no_side` HOLDOUT-DTI **0.2279**,
+  95% CI [0.1867, 0.2691]. This is the number to quote for the shipped file.
+  Source: [`evidence/exp_sense_loqo_all.json`](evidence/exp_sense_loqo_all.json).
+* **The 0.2508 / 0.2517 figures earlier in this README were measured at about 2x
+  shipped density (~136k dots).** They are kept below, labelled as such. They are
+  not the shipped configuration (`IR-57-SHIP-01`).
+* **Recorded sense of slip was tested and is NEGATIVE** (experiment 1 of 3, H57-F):
+  `no_side_plus_sense` 0.2292 vs 0.2279; paired difference +0.0016 mean, positive in
+  3 of 4 quadrants, not significant. Sense is not in the shipped file.
+* **Shipped file re-validated against its receipt**: sha256 `8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482`,
+  808,408 B, 15/15 checks, 0 on-catalogue dots, 35,341 dots. Identical to
+  `docs/downloads/checks-…-zeros.tif.json`.
+* **Full-registry uniqueness gate — NOT CLEARED (HOLD).** 644 rasters, both directions
+  ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
+  * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
+  * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
+    literal rule treats this as drift. The file lists only 50 of the 114 firings.
+  * The reverse-overlap reading (below 0.5 for every itemized firing) would clear it,
+    but that exemption is **not in the protocol**. It needs an owner decision.
+  * An earlier version of the script called the file UNIQUE using that exemption.
+    The verdict has been corrected (`IR-57-UNIQ-02`).
+* **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
+* **Labels corrected:** the 15-raster budget correlation uses *owner-reported*
+  scores, not organizer receipts (`IR-57-LABEL-01`). The build's holdout numbers are
+  *in-sample* (`IR-57-INSAMPLE-01`).
+
 ## Headline result
 
-Measured with the hide-and-recover holdout, leave-one-quadrant-out, 8 cells
-(4 quadrants x draws 20/21), 22,641 withheld positives. **Every number below is a
+Hide-and-recover holdout, leave-one-quadrant-out. **Every number below is a
 `HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
 
-**Session-2 update (2026-10-09): the table below was re-measured after the
-strike-frame bug fix (`IR-57-STRIKE-01`), which invalidated the session-1
-anisotropy columns.** The corrected numbers, same instrument (evaluator
-`gems52-pooled-hide-v1`, mode `all` 22,641 withheld positives; mode `detached`
-22,619):
+**Corrected strike frame (`IR-57-STRIKE-01` fix), run_cv density (~2x shipped):**
+the session-1 table below the fold was measured before the strike-frame fix and is
+retracted (its anisotropy columns are bug artifacts). Re-measured, evaluator
+`gems52-pooled-hide-v1`, mode `all` 22,641 withheld positives; mode `detached` 22,619:
 
 | Feature set | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
 | --- | --- | --- | --- | --- |
-| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] (session 1) |
-| `d_perp_par` (+ stepover, along-strike) — **shipped** | 0.3180 | [0.2803, 0.3557] | 0.3255 | [0.2968, 0.3542] |
-| `no_side` (8 anatomy features) | **0.3270** | [0.2923, 0.3617] | 0.3262 | [0.3041, 0.3483] |
+| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] (pre-fix frame, d is strike-free) |
+| `d_perp_par` (+ stepover, along-strike) | 0.3180 | [0.2803, 0.3557] | 0.3255 | [0.2968, 0.3542] |
+| `no_side` (8 anatomy features) — **carries the `log_len` leak** | 0.3270 | [0.2923, 0.3617] | 0.3262 | [0.3041, 0.3483] |
 | `anatomy_full` (incl. `side`) | (tied with `no_side`) | — | 0.3276 | [0.3051, 0.3501] |
 | `geo_only` (H57-G block) | 0.0621 | [0.0478, 0.0764] | — | — |
 | `no_side_plus_geo` | 0.3171 | [0.2711, 0.3631] | — | — |
 
-**The Riedel geometry IS the gain.** After the strike-frame fix, adding stepover
-and along-strike to distance alone buys **+0.1335** (was +0.0022 on the broken
-columns) with disjoint confidence intervals, and the fixed-frame measurement
-shows the en echelon structure directly: withheld strands peak at **~55x base
-rate** at cross-strike stepover 0–1 px x along-strike 2–4 px. The session-1
-finding that "the structure does not pay for itself" is **retracted** as a bug
-artifact. `side` remains dropped (0.039 log-asymmetry, tied DTI both modes), and
-the geophysical corroboration block (H57-G1/G2) is a **validated negative on
-this instrument** (0.3171 vs 0.3270; protocol: no slot for an idea that has not
-beaten the holdout best) — recorded in
+**Leak notice (`log_len`, found by the parallel session's fix):** the original `log_len`
+was the length of the ≤ 12 px segment *chunk*; cut traces leave short end chunks, so
+`log_len` alone distinguished withheld anchors at AUC **0.90** — a withholding leak
+(chunks of visible geometry are not the displacement proxy the lane wants either). The
+fixed `log_len` is the length of the whole connected mapped component (Savage & Brodsky
+displacement proxy; canary AUC now 0.55). Every `no_side` / `anatomy_full` /
+`no_side_plus_geo` number above was measured with the leaky column and is optimistic;
+`d_only`, `d_perp_par` and `geo_only` never included `log_len` and are unaffected. The
+shipped raster's model (`d, d_perp, d_par_abs`) is therefore clean of both this and the
+strike-frame bug.
+
+**The Riedel geometry IS the gain.** After the fix, adding stepover and along-strike to
+distance alone buys **+0.1335** (it measured +0.0022 on the broken columns), and the
+fixed-frame measurement shows the structure directly: withheld strands peak at **~55x
+base rate** at cross-strike stepover 0–1 px x along-strike 2–4 px. The session-1 finding
+that "the structure does not pay for itself" is **retracted** as a bug artifact. `side`
+is dropped (0.039 log-asymmetry, tied DTI both modes). The geophysical corroboration
+block (H57-G1/G2) is a **validated negative on this instrument** (0.3171 vs 0.3270) and
+is not shipped — recorded in
 [`docs/research/session2_experiments.md`](docs/research/session2_experiments.md).
+Recorded sense of slip (`no_side_plus_sense`) was tested at shipped density and is also
+a negative (paired quadrants +0.0038/+0.0056/+0.0025/−0.0056, not significant;
+`IR-57-SLIP-02`).
 
-The shipped raster uses the lean offset frame `d_perp_par` — statistically tied
-with `no_side` on both instruments, and the configuration that passes the
-uniqueness gate against every earlier raster (max 3-px dot overlap 59.0%, limit
-70%; the `no_side` build measured 71.1% vs this lane's previous ship and was
-correctly refused). CONSENSUS-PROXY (not a score): 27.7% of its dots sit within
-3 px of >= 2 of the six live-calibrated top rasters vs a 17.7% random baseline —
-1.57x enrichment, transfer-plausible.
+**Shipped density (per-cell cap 10,000 = 40,000/4, `IR-57-SHIP-01`/`IR-57-CAP-01`) —
+the only density that describes a 40k-dot raster. Corrected strike frame, leak-free
+`log_len`, leave-one-quadrant-out (`evidence/cv_shipped_density.json`, K = 22,641):**
 
-### Why 0.2778 won, and whether higher is achievable
+| Feature set | HOLDOUT-DTI | 95% CI (quadrant jackknife) | dots |
+| --- | --- | --- | --- |
+| `d_only` | 0.2181 | [0.1957, 0.2405] | 80,000 |
+| **`d_perp_par` (shipped lean offset frame)** | **0.3093** | [0.2638, 0.3549] | 75,322 |
+| `no_side` (8 features, leak-free `log_len`) | 0.3078 | [0.2587, 0.3569] | 74,761 |
+
+At the shipped density the lean offset frame is the **point-estimate winner** and is
+statistically tied with the 8-feature set — and it is the uniqueness-clean configuration.
+The parallel session's shipped-density reading of `no_side` (0.2279 [0.1867, 0.2691]) ran
+on the **broken strike frame**; the corrected frame is worth about +0.08 on the same
+instrument. The build-time numbers inside `evidence/submission_build_all.json` are
+**in-sample** (`IR-57-INSAMPLE-01`) and are labelled as such; only LOQO numbers are
+quoted as HOLDOUT-DTI.
+
+>>>>>>> origin/main
+
+The shipped raster uses the lean offset frame `d_perp_par` — the point-estimate winner at
+the shipped density (0.3093 vs 0.3078) and the configuration that passes the uniqueness
+gate against every earlier raster (max 3-px dot overlap 59.0%, limit 70%; the `no_side`
+build measured 71.1% vs this lane's previous ship and was correctly refused). CONSENSUS-PROXY
+(not a score): 27.7% of its dots sit within 3 px of >= 2 of the six live-calibrated top
+rasters vs a 17.7% random baseline — 1.57x enrichment, transfer-plausible.
+
+### Why 0.2778 scored highest, and whether higher is achievable
 
 `DTI = T / (0.2(T + n - M) + 0.8K)`. Two consequences, both verified against the
 brute-force implementation:
@@ -131,12 +195,21 @@ brute-force implementation:
    metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
    **0.1809** at `n/K = 6`.
 
-So 0.2778 is roughly **28% coverage of the live truth at a near-matched budget**,
-and 0.3774 implies about 40%. Higher is achievable and the route is arithmetic:
-raise coverage while holding `n <~ 2K`. The registry confirms the budget half of
-this with live evidence — **Spearman(dot count, organizer-confirmed live score) =
--0.8104** (p = 0.00025) over 15 rasters, and the two rasters above 120,000 dots
-hold the two worst live scores (0.1922, 0.1894). That is why this lane's
+What the repos document for the 0.2778 file (`GEMSDOE32`, H33-2-B2, 37,654 dots,
+verified in its `README.md`): a **local** holdout gain of **+0.004870** over a 0.2708
+base (4/4 quadrants), and a **projected** live score of 0.2747 (the repo's own
+projection, not a measurement). The live 0.2778 was owner-reported after that.
+So the 0.2778 score comes from a small holdout-validated tweak on a base near
+0.27, with a dot count in the 37–42k band.
+
+*Inference, not a measurement:* the 0.3774 high would need roughly 40% coverage
+at a matched budget by the same arithmetic. That is a projection, not a score.
+The repo does not demonstrate a higher score. The budget half of the argument is
+supported by **owner-reported** scores (`IR-57-LABEL-01`): Spearman(dot count,
+owner-reported live score) = **−0.8104** (p = 0.00025, n = 15, re-derived in this
+session from `registry/registry_index.json`), and the two rasters above 120,000 dots
+hold the two worst scores (0.1922, 0.1894). The correlation is confounded with
+other differences between submissions, so it is evidence, not proof. That is why this lane's
 holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
 costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
 
@@ -246,9 +319,12 @@ hide-and-recover design.
   `gems-geodawn-numerical-features.tif` feature stack is present in the bridge
   repos as five parts but is not pulled here; this lane is catalogue-geometry
   only and does not need it.
-* **No sense-of-slip field exists.** `existing_faults.tif` has exactly three
-  values, `{-1, 0, 1}`. The lane brief asks to condition on recorded sense of
-  slip "where the database has it" — it does not. `IR-57-SLIP-01`.
+* **Sense of slip is available only in the INGENIOUS and Q-fault vectors, not in the
+  competition raster.** `existing_faults.tif` has exactly three values, `{-1, 0, 1}`,
+  and carries no sense. `data/external/trace_segments_utm11.csv` has a `sense`
+  column (N 66,861 / RL 8,448 / LL 7,628 / blank 1,394 segments) and
+  `qfault_attributes.csv` has `SLIPSENSE`. Tested as opt-in features: **negative**
+  (`IR-57-SLIP-02`, H57-F). The shipped file does not use it.
 * **No external SGMC-derived fault raster**, so the secondary off-catalogue
   instrument used by the shared template cannot be reproduced here.
 * **The holdout truth is withheld *catalogue* pixels**, which by construction
@@ -398,7 +474,9 @@ repository is built against; the README summarises it, this file *is* it.
 
 ## Owner-reported scores quoted in the brief
 
-These are **ORGANIZER-CONFIRMED** numbers as pasted by the task owner. Two
+These are **OWNER-REPORTED** numbers as pasted by the task owner. None is backed by a
+submission-page receipt, so none is ORGANIZER-CONFIRMED in this repo's label scheme
+(`IR-57-LABEL-01`). Two
 different "highest score" values appear in the brief (0.3774 and 0.3195); the
 conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
 this repo claims to beat.

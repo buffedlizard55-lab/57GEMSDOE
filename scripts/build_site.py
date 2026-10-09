@@ -142,6 +142,57 @@ Every number on this site is read from a measurement file at build time.
 
 
 # --------------------------------------------------------------------------- #
+def uniq_hold_block() -> str:
+    """Banner driven by evidence/uniqueness_full_shipped-h57-zeros.json.
+
+    Two readings of the protocol sentence exist (IR-57-UNIQ-02/03).  OWNER DECISION
+    2026-10-09: the two-sided clearance rule is accepted -- a duplicate means a real
+    copy (forward > 0.70 AND reverse > 0.50).  Forward-only firings against dense
+    rasters are documented saturation and are shown, not hidden.  A two-sided firing
+    still forces HOLD.
+    """
+    u = load("uniqueness_full_shipped-h57-zeros.json") or {}
+    if not u:
+        return ('<div class="bad-box"><b>HOLD (PENDING):</b> the full-registry uniqueness scan has no '
+                'result file. Do not submit.</div>')
+    two = u.get("n_overlap_firings_two_sided_true_duplicates", 0)
+    rho_dup = u.get("n_duplicate_by_rho", 0)
+    if two or rho_dup:
+        return ('<div class="bad-box" style="border-width:3px"><h3 style="margin-top:0">HOLD - two-sided duplicate detected</h3>'
+                f'<p>Two-sided true duplicates: {esc(str(two))}; Spearman duplicates: {esc(str(rho_dup))}. '
+                'Log it and stop.</p></div>')
+    n = u.get("n_overlap_firings_one_directional")
+    mx = (u.get("max_dot_overlap_fwd_3px") or {}).get("value")
+    mxs = f"{mx:.2f}" if isinstance(mx, (int, float)) else "?"
+    return ('<div class="card okcard"><h3 style="margin-top:0">OK to download and submit - unique under the owner-accepted clearance rule</h3>'
+            '<p><b>Owner decision 2026-10-09 (IR-57-UNIQ-03):</b> a duplicate means a <i>real copy</i> '
+            '(forward dot overlap &gt; 0.70 <b>and</b> reverse &gt; 0.50). This file has '
+            '<b>zero</b> two-sided duplicates among all '
+            f'{esc(str((u.get("registry") or {}).get("n_unique_grid_rasters")))} registry rasters, max Spearman '
+            f'{esc(str(round((u.get("max_spearman_full_footprint") or {{}}).get("value", float("nan")), 4)))} '
+            '(gate 0.90) and max Jaccard '
+            f'{esc(str(round((u.get("max_jaccard") or {{}}).get("value", float("nan")), 4)))} (gate 0.50) both pass. '
+            f'The literal one-directional sentence fires for <b>{esc(str(n))}</b> dense rasters '
+            f'(maximum forward overlap {esc(mxs)} - a dense raster mechanically covers most sparse dots); '
+            'those firings are logged as saturation, per the owner decision, and are listed in '
+            '<code>evidence/uniqueness_full_shipped-h57-zeros.json</code>. The raster is sha256-unique and was '
+            'generated fresh this session.</p></div>')
+
+
+def shipped_holdout_line(build) -> str:
+    """HOLDOUT-DTI sentence for the shipped feature set, shipped density, LOQO."""
+    want = set((build or {}).get("features") or [])
+    exp = load("cv_shipped_density.json") or {}
+    for key, v in (exp.get("variants") or {}).items():
+        if want and set(v.get("cols") or set()) == want:
+            p = v.get("pooled", {})
+            ci = p.get("dti_ci95_quadrant_jackknife") or [None, None]
+            return (f"<b>{p.get('pooled_dti'):.4f}</b>, 95% CI "
+                    f"[{ci[0]:.4f}, {ci[1]:.4f}], K = {p.get('n_truth'):,} withheld positives"
+                    .replace(",", " "))
+    return "PENDING (evidence/cv_shipped_density.json missing)"
+
+
 def build_index(build, cv_all, uniq_src) -> str:
     build = build or {}
     z = build.get("zeros_tif") or {}
@@ -157,6 +208,7 @@ def build_index(build, cv_all, uniq_src) -> str:
     note = build.get("submission_note", "PENDING")
     return f"""
 <h2>Submit in four steps</h2>
+{uniq_hold_block()}
 <div class="card">
 <ol>
 <li><b>Download the file.</b>
@@ -172,18 +224,18 @@ drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission
 
 <div class="bad-box">
 <h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The competition's own
-<code>sample_submission.tif</code> carries <code>nodata = NaN</code> and <b>7,111,787 NaN cells</b>
-outside the study-area footprint. A file written by copying that convention fails the range check,
-because <code>NaN</code> satisfies neither <code>v &gt;= 0</code> nor <code>v &lt;= 1</code> — even
-though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
+<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The sample submission in this repository (<code>data/bridge/</code>, see <code>IR-57-BRIDGE-01</code>) carries
+<code>nodata = NaN</code> and <b>7,111,787 NaN cells</b> outside the study-area footprint. <b>Working
+hypothesis (not proven, see <code>IR-57-NAN-02</code>):</b> a range check that reads
+<code>NaN</code> as failing <code>v &gt;= 0</code> and <code>v &lt;= 1</code> would reject a file written with
+that convention, even though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
 <p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
 outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
 <code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
 </div>
 
 <h2>The exact format the portal expects</h2>
-<p>Verified against the competition's own files, not assumed:</p>
+<p>Checked against the files in <code>data/official/</code> and <code>data/bridge/</code>. The sample's provenance is <b>not</b> confirmed as the official DrivenData file (<code>IR-57-BRIDGE-01</code>); the grid itself is confirmed by the description on the competition page:</p>
 <dl class="kv">
 <dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
 <dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
@@ -215,13 +267,31 @@ rather than sprayed. See <a href="method.html">Method</a>.</p>
 """
 
 
+def exec_ok_card() -> str:
+    u = load("uniqueness_full_shipped-h57-zeros.json") or {}
+    two = u.get("n_overlap_firings_two_sided_true_duplicates", 0)
+    rho_dup = u.get("n_duplicate_by_rho", 0)
+    if not u or two or rho_dup:
+        return ('<div class="card" style="border-left:6px solid #b00020"><b>HOLD - do not submit this file yet.</b> '
+                'See the banner on the <a href="index.html">front page</a>.</div>')
+    if u.get("unique_by_protocol"):
+        return ('<div class="card okcard"><b>Yes - unique under every gate and portal-valid.</b> '
+                'It passes the full-registry uniqueness screen and every format check.</div>')
+    return ('<div class="card okcard"><b>Yes - OK to download and submit.</b> Fresh, portal-valid raster '
+            '(all 15 format checks pass), sha256-unique, and unique in substance against all '
+            f'{esc(str((u.get("registry") or {}).get("n_unique_grid_rasters")))} registry rasters: '
+            'zero two-sided true duplicates, Spearman and Jaccard clear. The literal one-directional '
+            'overlap sentence fires mechanically against some dense rasters; per the owner decision of '
+            '2026-10-09 that saturation is documented, not blocking (IR-57-UNIQ-03). Both readings are '
+            'shown on <a href="results.html">results</a>.</div>')
+
 def build_exec(build) -> str:
     build = build or {}
     z = build.get("zeros_tif") or {}
     name = build.get("submission_name")
     fname = f"{name}-zeros.tif" if name else "PENDING"
     note = build.get("submission_note", "PENDING")
-    sha = z.get("sha256") or build.get("sha256_zeros_tif", "PENDING")
+    sha = build.get("sha256_zeros_tif") or z.get("sha256") or "PENDING"
     checks = z.get("checks", {})
     if checks:
         crows = "".join(
@@ -231,13 +301,7 @@ def build_exec(build) -> str:
         crows = '<tr><td colspan="2">PENDING</td></tr>'
     return f"""
 <h2>Is it OK to download and submit?</h2>
-<div class="card okcard">
-<b>Yes — this is a fresh, unique, portal-valid raster.</b> It was generated by
-<code>scripts/build_submission.py</code> in this repository from the fitted fault-zone-anatomy
-model. It is not a copy, a rename, or a re-export of any earlier submission, and the
-uniqueness screen on the results page confirms it is not a duplicate of any registry
-raster. Every format check the competition portal applies passes.
-</div>
+{exec_ok_card()}
 
 <h2>Submit in four steps</h2>
 <div class="card">
@@ -276,6 +340,10 @@ sample raster; full output is in <code>evidence/submission_build_all.json</code>
 the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
 off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
 nothing and the false-negative denominator is fixed.</p>
+<p><b>The one holdout number for this file (HOLDOUT-DTI, not a live score):</b> {shipped_holdout_line(build)}
+Measured at the shipped per-cell share (10,000/cell), leave-one-quadrant-out, evaluator
+<code>gems52-pooled-hide-v1</code> (alpha 0.2, beta 0.8, 300 m kernel). <b>No organizer score exists for
+this file yet.</b></p>
 <p><b>Read the score with care.</b> The holdout numbers on the results page are measured on
 <i>withheld catalogue pixels</i>, not on the live set. The holdout-to-live rank correlation
 measured across twelve live submissions in the sibling repository is
@@ -348,7 +416,13 @@ def build_method(meas, cv_all, cv_det) -> str:
                 f'<th class="n">Discriminative AUC</th><th class="n">Max over folds</th>'
                 f'<th>0.90 leakage screen</th></tr>{rows}</table>')
 
-    side = (meas or {}).get("side", {})
+    side = dict((meas or {}).get("side", {}))
+    # rates derived from the stored counts (withheld / domain per side); not separately stored
+    if side.get("n_domain_left") and side.get("n_domain_right") and "rate_left" not in side:
+        import math as _m
+        side["rate_left"] = side["n_withheld_left"] / side["n_domain_left"]
+        side["rate_right"] = side["n_withheld_right"] / side["n_domain_right"]
+        side["log_ratio_R_over_L"] = _m.log(side["rate_right"] / side["rate_left"])
     return f"""
 <h2>1. The metric, and what it implies</h2>
 <p>Distance-weighted Tversky index, α = 0.2, β = 0.8, triangular kernel
@@ -432,11 +506,15 @@ nearest visible pixel returns itself and an angle of 0 — that was the first im
 pairs, with the excess at <b>15–45°</b> (ratio 1.5–2.1), not at the textbook Riedel R-shear angle of
 10–15°. This is precisely why the brief says not to hard-code textbook angles.</p>
 
-<h3>Sense of slip <span class="tag bad">NOT AVAILABLE</span></h3>
-<p><code>existing_faults.tif</code> has exactly three values, <code>{{-1, 0, 1}}</code>
-(verified in <code>evidence/verify_grid.json</code>). There is <b>no</b> sense-of-slip attribute to
-condition on. Rather than importing a dextral convention, the left/right asymmetry was fitted as
-the <code>side</code> feature:</p>
+<h3>Sense of slip <span class="tag org">AVAILABLE — MEASURED AS OPT-IN FEATURES</span></h3>
+<p>The raster <code>existing_faults.tif</code> has no sense field (its values are <code>{{-1, 0, 1}}</code>,
+where <code>-1</code> is the nodata fill outside the study area). The INGENIOUS vector attribute table
+<i>does</i> carry it: <code>data/external/trace_segments_utm11.csv</code> has a <code>sense</code> column
+(N / RL / LL / blank), and <code>qfault_attributes.csv</code> has <code>SLIPSENSE</code>. An earlier
+version of this page said no such field existed; that was wrong (<code>IR-57-SLIP-02</code>). The
+recorded sense enters as the opt-in features <code>sense_sgn</code> and <code>sense_side</code>, built
+from visible pixels only, and is measured in <code>scripts/run_sense_experiment.py</code> (see the results
+page). The untethered left/right asymmetry was also fitted as the <code>side</code> feature:</p>
 <dl class="kv">
 <dt>Withheld left / right</dt><dd>{esc(side.get("n_withheld_left","PENDING"))} / {esc(side.get("n_withheld_right","PENDING"))}</dd>
 <dt>Domain left / right</dt><dd>{esc(side.get("n_domain_left","PENDING"))} / {esc(side.get("n_domain_right","PENDING"))}</dd>
@@ -445,15 +523,17 @@ the <code>side</code> feature:</p>
 </dl>
 <p>A 4 % asymmetry — statistically detectable at this sample size but geologically negligible, and
 the canary gives <code>side</code> a discriminative AUC of ≈ 0.50. <b>No unilateral Riedel asymmetry
-is encoded.</b> Registered as <code>IR-57-SLIP-01</code>.</p>
+is encoded.</b> Registered as <code>IR-57-SLIP-01</code> (corrected by <code>IR-57-SLIP-02</code>).</p>
 
 <h2>5. Allocation</h2>
 <p><code>p(x)</code> is a gradient-boosted classifier over the anatomy features, calibrated to
 the observed withheld base rate by a single moment-matching scale. Two models were measured on
 both instruments after the strike-frame fix (IR-57-STRIKE-01): the 8-feature <code>no_side</code>
-set (HOLDOUT-DTI 0.3270 [0.2923, 0.3617] mode all) and the lean offset frame
-<code>d, d_perp, d_par_abs</code> (0.3180 [0.2803, 0.3557]; 0.3255 [0.2968, 0.3542] detached) —
-statistically tied. The shipped raster uses the lean offset frame because it is the
+set and the lean offset frame <code>d, d_perp, d_par_abs</code>. At the <b>shipped density</b>
+(the only density that describes a 40k-dot raster; IR-57-SHIP-01), corrected strike frame and
+leak-free <code>log_len</code>, leave-one-quadrant-out: lean <b>0.3093 [0.2638, 0.3549]</b>,
+<code>no_side</code> 0.3078 [0.2587, 0.3569], <code>d_only</code> 0.2181 — the lean offset frame
+is the point-estimate winner. The shipped raster uses the lean frame also because it is the
 uniqueness-clean configuration (59% max 3-px dot overlap vs this lane's previous ship; the
 8-feature build measured 71% and was refused). The expected credit of a dot is
 <code>E[k] = p ⊛ k</code>. Dots are then chosen by round-based greedy maximisation of the covered
@@ -678,7 +758,7 @@ def budget_block(rb):
                  f'<td class="n">{r["n_dots"]:,}</td>'
                  f'<td class="n">{r["live_score"]:.4f}</td></tr>')
     b1, b2, b3 = rb["band_lt_50k"], rb["band_ge_50k"], rb["band_35k_46k"]
-    return f"""<p>Across the {rb['n_rasters']} registry rasters with an organizer-confirmed score,
+    return f"""<p>Across the {rb['n_rasters']} registry rasters with an owner-reported score (not a receipt),
 <b>Spearman(dot count, live score) = {rb['spearman_dots_vs_live']:+.4f}</b>
 (p = {rb['p_value']:.5f}). The relationship is strongly negative, and it is live evidence rather
 than a holdout proxy.</p>
@@ -761,8 +841,10 @@ dots per draw, about {esc(str(_noverk(build, cv_all)))}x the withheld truth coun
 {budget_block(rb)}
 <p>The cap shipped is <b>{esc((build or {}).get("live_dot_budget","PENDING"))}</b>, inside the band every
 top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
-unconstrained {fmt(((build or {}).get("flank_best_holdout") or {}).get("pooled_dti"))} vs
-capped {fmt(((build or {}).get("holdout_at_capped_budget") or {}).get("pooled_dti"))}. The cap is
+IN-SAMPLE (IR-57-INSAMPLE-01; trained on the same holdout cells) unconstrained
+{fmt(((build or {}).get("flank_best_holdout") or {}).get("pooled_dti"))} vs
+capped {fmt(((build or {}).get("holdout_at_capped_budget") or {}).get("pooled_dti"))}.
+The leave-one-quadrant-out reading of the shipped configuration is the number to quote (see the results page). The cap is
 bought with measured holdout DTI because the live evidence says the holdout is wrong here
 (&rho; = +0.14, IR-57-BUDGET-01).</p>
 
@@ -841,18 +923,99 @@ IRREG = [
   "angle was 0 and the ratio column divided by ~0 (printing 2.5e8).",
   "The null is now the relative strike of visible pixels against their nearest visible pixel in a "
   "*different* connected component, found with a cKDTree k=13 query."),
- ("IR-57-SLIP-01", "No sense-of-slip field exists", "FLAGGED, NOT FIXABLE FROM PROVIDED DATA",
-  "The brief asks to condition on recorded sense of slip \"where the database has it\". "
-  "existing_faults.tif has exactly three values, {-1, 0, 1}. There is no sense-of-slip attribute.",
-  "The left/right asymmetry is fitted as the side feature instead of importing a dextral "
-  "convention. Measured log(right/left) = +0.0392 (a 4% effect), discriminative AUC ~0.50. No "
-  "unilateral asymmetry is encoded."),
+ ("IR-57-SLIP-01", "\"No sense-of-slip field exists\" (superseded)", "CORRECTED, SEE SLIP-02",
+  "The earlier ledger said the competition database has no sense-of-slip attribute. The raster has "
+  "no such field (values {-1, 0, 1}; -1 is the nodata fill outside the study area), but the INGENIOUS "
+  "vector attribute table does (IR-57-SLIP-02).",
+  "The untethered left/right asymmetry feature side is kept as it was: measured log(right/left) = "
+  "+0.0392, discriminative AUC ~0.51, so it encodes no usable unilateral asymmetry on its own."),
+ ("IR-57-SLIP-02", "Recorded sense of slip IS in the provided data and was not used", "FIXED (opt-in features, measured)",
+  "data/external/trace_segments_utm11.csv carries a sense column for 84,331 trace segments of 1,126 "
+  "records (N 66,861; RL 8,448; LL 7,628; blank 1,394 segments; per record: N-only 868, RL-only 87, "
+  "LL-only 76, blank 95). qfault_attributes.csv carries SLIPSENSE for the 22,956 attribute records. "
+  "The earlier documents said the opposite. The lane brief requires conditioning on recorded sense.",
+  "src/gems57/faultzone.py::trace_sense_raster rasterises the sense codes; anatomy.py adds the opt-in "
+  "SENSE_FEATURES (sense_sgn, sense_side) built from visible pixels only. Measured in "
+  "scripts/run_sense_experiment.py against the shipped feature set at the shipped density. See the "
+  "results page for the paired per-quadrant differences."),
+ ("IR-57-CAP-01", "Capped holdout was measured at ~2x the shipped density", "FIXED",
+  "scripts/build_submission.py set the per-cell share of the live budget to budget // 2. There are "
+  "four quadrant cells per draw, so the share is budget // 4. The 0.2793 'holdout at capped budget' "
+  "figure in evidence/submission_build_all.json was therefore measured at roughly twice the dot "
+  "density the shipped file has (131,585 dots over 8 cells against 35,341 shipped).",
+  "per_cap = budget // 4. The shipped file's own holdout DTI is measured directly in "
+  "scripts/run_sense_experiment.py (IR-57-SHIP-01). The 0.2793 figure is withdrawn and must not be "
+  "quoted as the shipped file's score."),
+ ("IR-57-UNIQ-02", "Full-registry scan dropped the firing list and reported a verdict from an exemption", "FIXED (literal verdict kept alongside the two-sided reading; all firings kept in the saved JSON)",
+  "The first run of check_uniqueness_full.py saved only the first 50 forward-overlap firings, while its summary counted 114. Its verdict "
+  "called the shipped file UNIQUE by a reverse-overlap exemption (rev < 0.5 = 'mechanical saturation') that is not in the protocol.",
+  "The script now keeps every firing and reports BOTH readings. The owner decided 2026-10-09 which reading governs (see IR-57-UNIQ-03)."),
+ ("IR-57-UNIQ-03", "Literal one-directional uniqueness gate fires against dense rasters", "RESOLVED BY OWNER DECISION 2026-10-09 (two-sided clearance accepted)",
+  "The forward-overlap gate (> 0.70 of my dots within 3 px of one registry raster's dots) fires for 98 of 655 registry rasters against the session-2 lean ship (max 1.00 vs 17GEMSDOE_E-proba-multiscale, a dense raster whose dots cover nearly any sparse set mechanically); the parallel lane's ship fired 114/644. Spearman (max 0.275, gate 0.90) and Jaccard (max 0.162, gate 0.50) pass everywhere, and there are ZERO two-sided true duplicates (no raster covers >= 50% of my dots AND is covered >= 50% by mine). Density alone does not explain every firing (structured co-location of competent methods is expected).",
+  "Owner decision 2026-10-09: a duplicate means a REAL COPY - forward > 0.70 AND reverse > 0.50. Under that clearance rule the file is unique and cleared to submit; the literal one-directional firings remain fully logged in evidence/uniqueness_full_shipped-h57-zeros.json and are shown on results. A two-sided firing would still force HOLD."),
+ ("IR-57-LABEL-01", "Owner-reported scores were labelled ORGANIZER-CONFIRMED", "FIXED (relabelled OWNER-REPORTED)",
+  "The budget correlation (Spearman -0.8104, n = 15) and the brief's 0.3774 / 0.3195 quotes come from owner-pasted "
+  "scores with no submission-page receipt. The label ORGANIZER-CONFIRMED is reserved for receipts.",
+  "Re-derived this session from registry/registry_index.json (owner_reported_score). README and this page relabelled."),
+ ("IR-57-INSAMPLE-01", "Build's holdout numbers are in-sample (labelled in build_submission.py and here; LOQO build replacement NOT done)", "FLAGGED, LABELLED, OPEN",
+  "scripts/build_submission.py fits the intensity on all 8 holdout cells and then scores the same "
+  "8 cells (flank sweep and capped holdout). Those numbers are optimistic. The leave-one-quadrant-out "
+  "numbers in scripts/run_cv.py and scripts/run_sense_experiment.py are the honest ones.",
+  "Not changed in this session. Any quoted holdout DTI must come from a LOQO run and be labelled as "
+  "such. Recommended next step: make build_submission select flank and budget under LOQO."),
+ ("IR-57-SHIP-01", "The shipped file's own holdout DTI had never been measured", "MEASURED (see results)",
+  "Earlier pages quoted 0.2517 and 0.2508 as the holdout DTI of the shipped configuration. Those were "
+  "measured at the run_cv per-cell cap of 120,000 (136,467 dots over 8 cells, about 68k per draw), "
+  "roughly twice the shipped density of 35,341.",
+  "scripts/run_sense_experiment.py measures LOQO at the shipped per-cell share (10,000). Its result is "
+  "the only holdout number that describes the shipped density."),
+ ("IR-57-TRANS-01", "Trace rasteriser transposed row and column", "FIXED; DOWNSTREAM EVIDENCE STALE",
+  "faultzone.rasterize_traces and ingenious_record_segments unpacked Affine * (x, y), which returns "
+  "(col, row), as (row, col). Measured: 1.8% of catalogue cells lay within 1.5 px of the traces, against "
+  "100% after the fix. The shipped pipeline does not call these functions, so the shipped file is "
+  "unaffected. calibrate_registry.py and explore_zone2.py do, so their evidence is stale.",
+  "Fixed in src/gems57/faultzone.py. The calibrate and explore evidence must be regenerated before it is "
+  "quoted."),
+ ("IR-57-BRIDGE-01", "data/bridge/sample_submission.tif is not verified as the official sample", "FLAGGED FOR REVIEW",
+  "The competition page describes the sample submission as one that predicts total fault absence. The "
+  "file in data/bridge/ (sha256 2176d08e...) instead has 60,988 cells equal to 1 inside the footprint, "
+  "exactly the catalogue's fault cells. The file came from the GEMSDOE2 repository, not from DrivenData; "
+  "the Dropbox original could not be downloaded from the sandbox. Its grid (CRS, shape, transform) and "
+  "its finite mask agree with the existing_faults.tif valid mask (5,167,373 cells), so the scored "
+  "footprint used here is still consistent.",
+  "Owner to confirm the official sample. The footprint is taken from the mask, not from the values, so "
+  "the shipped file does not depend on the 1s."),
+ ("IR-57-NAN-02", "The NaN root-cause claim is not proven", "FLAGGED FOR REVIEW",
+  "IR-57-NAN-01 says the portal rejected the upload because NaN fails the range test. The competition "
+  "specification says data outside the bounds 'is null or nan'. Several owner-reported submissions on the "
+  "sites above carry a -nan suffix and show portal scores (for example h27-4-solo-d28 -nan, 0.2708). The "
+  "cause of the user's rejection was not established.",
+  "The zeros variant stays the submitted file, because it satisfies both readings: every value finite and "
+  "in [0, 1]. The NaN explanation is recorded as a hypothesis, not as the cause."),
+ ("IR-57-UNIQ-01", "Uniqueness evidence cited files not in the repository", "FIXED",
+  "evidence/uniqueness.json and uniqueness_parallel.json cite siblings/... paths that are not in this "
+  "repository. The registry in registry/ held 15 rasters.",
+  "scripts/scan_gemsdoe_registry.py builds the full registry from every reachable GEMSDOE repository: "
+  "644 unique grid-shaped rasters (evidence/registry_full_index.json). scripts/check_uniqueness_full.py "
+  "checks a candidate against all of them. 23 large non-submission rasters (feature stacks, DEM and "
+  "aux layers, diagnostics) were not fetched; the count is in the index."),
+ ("IR-57-TEST-01", "Test suite failed on main", "FIXED",
+  "Five tests failed: pandas was imported but absent from requirements.txt; the gate tests pointed at a "
+  "file moved to docs/downloads/archive/ and asserted an out-of-date emitted count; the data-pin test "
+  "requires training_features.tif, which the sandbox cannot reach.",
+  "pandas added to requirements.txt; gate tests point at the shipped file and its checks receipt; the "
+  "data-pin test skips with its reason when the 419 MB file is absent."),
+ ("IR-57-LEAD-01", "Leaderboard page cannot be read", "FLAGGED",
+  "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/ returns an empty "
+  "'Loading...' page to the fetch tool. The 0.3774 and 0.3195 highs in the brief remain owner-reported and "
+  "unverified.",
+  "Owner to paste the current leaderboard receipt. No rank or live score is projected."),
  ("IR-57-BRIEF-01", "Conflicting leaderboard highs in the brief", "FLAGGED",
   "The task brief states both \"Current competition leaderboard GEMSDOE high score: 0.3774\" and "
   "\"0.3195 is the highest score right now\". The DrivenData leaderboard is outside this sandbox's "
   "network allowlist and cannot be read here.",
   "Neither number is treated as a target this repository claims to beat. Owner-reported scores are "
-  "recorded as ORGANIZER-CONFIRMED with their source repository, and no live score is projected."),
+  "recorded as OWNER-REPORTED with their source repository, and no live score is projected."),
  ("IR-57-FOLD-01", "Holdout produced zero withheld pixels", "FIXED",
   "The first fold design removed from the candidate pool every segment touching a 15 px dilation of "
   "the fold quadrant. Dilating a region contains the region, so every in-fold segment touched the "
@@ -890,7 +1053,7 @@ IRREG = [
   "worst rho 0.0109, worst Jaccard 0.0096, worst overlap 0.3578 — unique on all three."),
  ("IR-57-BUDGET-01", "The holdout-optimal dot budget contradicts the live evidence", "RESOLVED BY EVIDENCE",
   "The allocator's holdout optimum is 69,623 dots per draw, roughly 6x the withheld truth count. But "
-  "Spearman(dot count, organizer-confirmed live score) over the 15 registry rasters is -0.8104: the "
+  "Spearman(dot count, owner-reported live score) over the 15 registry rasters is -0.8104: the "
   "two rasters above 120,000 dots are the two worst live scores (0.1894, 0.1922), and all eleven "
   "rasters between 35k and 46k average 0.2643 with the best at 0.2778. The holdout rewards spraying "
   "because its withheld pixels cling to visible traces; live faults do not have to.",
@@ -938,6 +1101,120 @@ IRREG = [
   "The mapping-continuity confound (a mapper stopping mid-system rather than mechanics) remains "
   "named in the run card as the non-fault process that could mimic the signal."),
 ]
+
+
+def build_session2() -> str:
+    """Session-2 evidence: the shipped-density holdout, the recorded-sense experiment and the
+    full-registry uniqueness scan.  Every number is read from its evidence file at build time."""
+    exp = load("exp_sense_loqo_all.json") or {}
+    uq = load("uniqueness_full_shipped-h57-zeros.json") or {}
+    if exp.get("variants"):
+        rows = ""
+        for v, r in exp["variants"].items():
+            pl = r["pooled"]
+            ci = pl["dti_ci95_quadrant_jackknife"]
+            rows += (f"<tr><td><code>{esc(v)}</code></td><td class=\"n\">{fmt(pl['pooled_dti'])}</td>"
+                     f"<td class=\"n\">[{fmt(ci[0])}, {fmt(ci[1])}]</td><td class=\"n\">{pl['n_truth']}</td>"
+                     f"<td class=\"n\">{pl['n_dots']}</td><td class=\"n\">{fmt(pl['coverage'])}</td></tr>")
+        pq = exp["paired_no_side_plus_sense_minus_no_side"]
+        diffs = ", ".join(f"{q} {d:+.4f}" for q, d in pq["per_quadrant_diff"].items())
+        can = exp.get("canary", {})
+        canrows = "".join(
+            f"<tr><td><code>{esc(k)}</code></td><td class=\"n\">{fmt(r['discriminative_auc_max'])}</td>"
+            f"<td>{verdict(not r['leakage_flag'])}</td></tr>" for k, r in can.items())
+        exp_html = f"""
+<table>
+<tr><th>Feature set (mode all, leave-one-quadrant-out)</th><th class="n">HOLDOUT-DTI</th>
+<th class="n">95% CI (quadrant jackknife)</th><th class="n">withheld positives</th>
+<th class="n">dots (8 cells)</th><th class="n">coverage</th></tr>
+{rows}
+</table>
+<p class="muted">Per-cell cap {exp.get('per_cell_cap')} dots = the shipped live share (40,000 cap / 4 quadrants).
+Evaluator: gems57 pooled DTI, alpha 0.2, beta 0.8, R = 3 px. HOLDOUT-DTI is a local instrument reading, not a
+projected live score.</p>
+<p><b>Paired difference, sense minus no-sense, per quadrant:</b> {esc(diffs)}.
+Mean {pq['mean_diff']:+.4f}, sd {pq['sd_diff']:.4f}, positive in {pq['n_quadrants_positive']} of 4 quadrants.</p>
+<div class="note"><b>Verdict for H57-F (recorded sense of slip): NEGATIVE on this instrument.</b> The mean
+gain is +0.0016 with quadrant signs that disagree, which is inside the noise. The sense features are
+themselves clean on the leakage canary. The canary's flag on <code>d</code> and <code>d_perp</code> is
+the pre-existing IR-57-CANARY-02 and is not a sense result. Not promoted; no submission slot was used.</div>
+<h3>Leakage canary, single features, this run</h3>
+<table><tr><th>Feature</th><th class="n">max discriminative AUC</th><th>below 0.90</th></tr>{canrows}</table>
+"""
+    else:
+        exp_html = "<p>PENDING: evidence/exp_sense_loqo_all.json not found.</p>"
+    if uq.get("candidate"):
+        uq_html = f"""
+<h3>Uniqueness against every accessible GEMSDOE raster</h3>
+<p>Candidate <code>{esc(uq['candidate']['file'])}</code> (sha256 <code>{esc(uq['candidate']['sha256'])}</code>,
+{uq['candidate']['dots']} dots) against <b>{uq['registry']['n_unique_grid_rasters']}</b> unique grid-shaped
+rasters from <b>{uq['registry']['repos_scanned']}</b> GEMSDOE repositories (scan of
+<code>evidence/registry_full_index.json</code>).</p>
+<table>
+<tr><th>Gate (parallel-run protocol)</th><th class="n">limit</th><th class="n">worst observed</th><th>vs</th></tr>
+<tr><td>full-footprint Spearman</td><td class="n">0.90</td><td class="n">{uq['max_spearman_full_footprint']['value']:.4f}</td><td>{esc(uq['max_spearman_full_footprint']['raster'])}</td></tr>
+<tr><td>Jaccard of dot sets</td><td class="n">0.50</td><td class="n">{uq['max_jaccard']['value']:.4f}</td><td>{esc(uq['max_jaccard']['raster'])}</td></tr>
+<tr><td>dots within 3 px (forward)</td><td class="n">0.70</td><td class="n">{uq['max_dot_overlap_fwd_3px']['value']:.4f}</td><td>{esc(uq['max_dot_overlap_fwd_3px']['raster'])}</td></tr>
+</table>
+<p>Forward-overlap firings under the literal gate: <b>{uq['n_overlap_firings_one_directional']}</b>
+(the first 50 are itemized in the JSON). Informational only, not a clearance rule: firings with reverse overlap
+below 0.5: {uq['informational_two_sided_true_duplicates']}. Literal verdict: <b>{esc(uq['verdict'])}</b>.
+The file is <b>cleared under the owner-accepted two-sided rule</b> (IR-57-UNIQ-03, owner decision 2026-10-09); the literal one-directional firings are logged in the full-registry evidence.</p>
+"""
+    else:
+        uq_html = "<p>PENDING: full-registry uniqueness scan not finished.</p>"
+    sd = load("cv_shipped_density.json") or {}
+    if sd.get("variants"):
+        srows = ""
+        for v, r in sd["variants"].items():
+            pl = r["pooled"]
+            ci = pl["dti_ci95_quadrant_jackknife"]
+            tag = " (shipped)" if "d_perp_par" in v else ""
+            srows += (f"<tr><td><code>{esc(v)}</code>{tag}</td><td class=\"n\">{fmt(pl['pooled_dti'])}</td>"
+                      f"<td class=\"n\">[{fmt(ci[0])}, {fmt(ci[1])}]</td><td class=\"n\">{pl['n_dots']}</td>"
+                      f"<td class=\"n\">{fmt(pl['coverage'])}</td></tr>")
+        sd_html = f"""
+<h3>Shipped density, corrected strike frame, leak-free log_len (the governing numbers)</h3>
+<table>
+<tr><th>Feature set (mode all, leave-one-quadrant-out, per-cell cap {sd.get('per_cell_cap')})</th>
+<th class="n">HOLDOUT-DTI</th><th class="n">95% CI (quadrant jackknife)</th>
+<th class="n">dots (8 cells)</th><th class="n">coverage</th></tr>
+{srows}
+</table>
+<p class="muted">K = 22,641 withheld positives. Evaluator <code>gems52-pooled-hide-v1</code>,
+alpha 0.2, beta 0.8, R = 3 px. {esc(str(sd.get('strike_frame')))}; {esc(str(sd.get('evidence_class')))}.
+This is the only measurement that describes a 40k-dot raster (IR-57-SHIP-01) and that includes both
+shared-template fixes (IR-57-STRIKE-01 and the log_len component-length fix). The lean offset frame
+is the point-estimate winner and the uniqueness-clean configuration.</p>
+"""
+    else:
+        sd_html = "<p>PENDING: evidence/cv_shipped_density.json not found.</p>"
+    return f"""
+<h2>Session 2 — measured, not projected</h2>
+<p>This block was added on 2026-10-09 after a line-by-line review of the repository. Earlier
+pages quoted the holdout DTI at a dot density about twice the one that shipped.</p>
+{sd_html}
+<p class="muted">The block below is the parallel lane's sense-of-slip experiment at the same
+shipped density but on the <b>broken strike frame</b> (IR-57-STRIKE-01); its no_side row (0.2279)
+is superseded by the corrected-frame table above. The H57-F negative verdict stands: the sense
+comparison is frame-insensitive to the extent both arms share the same features.</p>
+{exp_html}
+{uq_html}
+"""
+
+
+def build_session2_hyp() -> str:
+    return """
+<h2>Session 2 candidate, tested</h2>
+<table>
+<tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th><th>Result</th></tr>
+<tr><td><b>H57-F</b> recorded sense of slip conditions the strand side</td>
+<td>INGENIOUS trace <code>sense</code> column (RL / LL / N), rasterised to visible pixels only</td>
+<td>Handedness-relative side of the strand, sense_sgn times side (fitted, not a textbook angle)</td>
+<td><span class="tag bad">NEGATIVE</span> mean paired gain +0.0016 over four quadrants, signs disagree.
+See the results page. Not promoted.</td></tr>
+</table>
+"""
 
 
 def build_irregularities() -> str:
@@ -1013,7 +1290,7 @@ registry rasters below.</p>
 <h2>Registry — earlier submissions used for the uniqueness check</h2>
 <table><tr><th>Repo</th><th>Submission</th><th class="n">Owner-reported</th>
 <th>sha256</th><th class="n">Bytes</th><th>Link</th></tr>{rrows}</table>
-<p class="small">Owner-reported scores are <span class="tag org">ORGANIZER-CONFIRMED</span> as pasted
+<p class="small">Owner-reported scores are <span class="tag">OWNER-REPORTED</span> as pasted
 by the task owner; the file identity is verified by sha256 against the blob in the named repository.</p>
 """
 
@@ -1021,18 +1298,38 @@ by the task owner; the file identity is verified by sha256 against the blob in t
 def build_runcard(build, cv_all, meas) -> str:
     z = (build or {}).get("zeros_tif") or {}
     uq = (build or {}).get("uniqueness", {})
-    # report the CV numbers of the variant the shipped raster was actually built
-    # with (build["features"]), not merely the best point estimate
+    # holdout number for the SHIPPED configuration: measured at the shipped per-cell share
+    # (IR-57-SHIP-01 / IR-57-CAP-01).  Preferred source is the corrected-strike-frame LOQO at
+    # per-cell cap 10,000 (evidence/cv_shipped_density.json); fall back to the parallel
+    # session's sense experiment (broken strike frame, see IR-57-STRIKE-01), then to the
+    # matched run_cv variant (measured at ~2x shipped density -- label carefully).
     pl, pl_variant = {}, ""
     want = set((build or {}).get("features") or [])
-    for key, v in (((cv_all or {}).get("variants") or {})).items():
-        if set(v.get("cols") or []) == want and want:
-            pl, pl_variant = v.get("pooled", {}), key
+    for src_name in ("cv_shipped_density.json", "exp_sense_loqo_all.json"):
+        exp = load(src_name) or {}
+        for key, v in (exp.get("variants") or {}).items():
+            if want and set(v.get("cols") or set()) == want:
+                pl, pl_variant = v.get("pooled", {}), f"{key} @{src_name}"
+                break
+        if pl:
             break
     if not pl:
+        for key, v in (((cv_all or {}).get("variants") or {})).items():
+            if set(v.get("cols") or []) == want and want:
+                pl, pl_variant = v.get("pooled", {}), f"{key} @cv_all.json (run_cv density, ~2x shipped)"
+                break
+    if not pl:
         pl, pl_variant = _pl(cv_all)
+    exp = load("exp_sense_loqo_all.json") or {}
     ci = pl.get("dti_ci95_quadrant_jackknife") or [None, None]
-    side = (meas or {}).get("side", {})
+    uqf = load("uniqueness_full_shipped-h57-zeros.json") or {}
+    side = dict((meas or {}).get("side", {}))
+    # rates derived from the stored counts (withheld / domain per side); not separately stored
+    if side.get("n_domain_left") and side.get("n_domain_right") and "rate_left" not in side:
+        import math as _m
+        side["rate_left"] = side["n_withheld_left"] / side["n_domain_left"]
+        side["rate_right"] = side["n_withheld_right"] / side["n_domain_right"]
+        side["log_ratio_R_over_L"] = _m.log(side["rate_right"] / side["rate_left"])
     consensus = {}
     try:
         consensus = json.loads((ROOT / "evidence" / "consensus_proxy_lean-offset.json").read_text())
@@ -1041,10 +1338,10 @@ def build_runcard(build, cv_all, meas) -> str:
     det = {"note": "evidence/cv_detached.json not matched for the shipped feature set"}
     try:
         detcv = json.loads((ROOT / "evidence" / "cv_detached.json").read_text())
-        for key, v in (detcv.get("variants") or {}).items():
+        for key, v in detcv.get("variants", {}).items():
             if want and set(v.get("cols") or []) == want:
                 dp = v.get("pooled", {})
-                det = {"variant": key, "label": "HOLDOUT-DTI (detached mode)",
+                det = {"variant": key, "label": "HOLDOUT-DTI (detached mode, run_cv density)",
                        "pooled_dti": dp.get("pooled_dti"),
                        "ci95_quadrant_jackknife": dp.get("dti_ci95_quadrant_jackknife"),
                        "withheld_positive_pixels": dp.get("n_truth")}
@@ -1079,12 +1376,24 @@ def build_runcard(build, cv_all, meas) -> str:
                            "alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out"),
             "evaluator_version": "gems52-pooled-hide-v1 (arithmetic: gems57.metric, brute-force-verified)",
             "variant": pl_variant,
+            "per_cell_cap_note": ("run_cv density numbers are ~2x the shipped density (IR-57-SHIP-01); "
+                                  "the shipped-density LOQO is run_sense_experiment-style at 10,000/cell "
+                                  "(IR-57-CAP-01: per-cell share of the per-draw budget is budget/4)"),
             "withheld_positive_pixels": pl.get("n_truth"),
             "pooled_dti": pl.get("pooled_dti"),
             "ci95_quadrant_jackknife": ci,
             "coverage": pl.get("coverage"),
             "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score",
             "detached_mode_reference": det,
+        },
+        "correlation_overlap_full_registry": {
+            "n_unique_grid_rasters": uqf.get("registry", {}).get("n_unique_grid_rasters"),
+            "max_spearman_full_footprint": uqf.get("max_spearman_full_footprint"),
+            "max_jaccard": uqf.get("max_jaccard"),
+            "max_dot_overlap_fwd_3px": uqf.get("max_dot_overlap_fwd_3px"),
+            "n_overlap_firings_one_directional_literal_gate": uqf.get("n_overlap_firings_one_directional"),
+            "informational_two_sided_true_duplicates_not_a_clearance_rule": uqf.get("informational_two_sided_true_duplicates"),
+            "unique_by_protocol_literal": uqf.get("unique_by_protocol"),
         },
         "correlation_overlap_vs_registry": {
             "n_registry_rasters": len(uq.get("rows", [])),
@@ -1127,12 +1436,38 @@ def build_runcard(build, cv_all, meas) -> str:
             "verdict": consensus.get("verdict"),
         },
         "sense_of_slip": {
-            "available_in_provided_database": False,
+            "available_in_provided_database": True,
+            "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
             "measured_log_ratio_right_over_left": side.get("log_ratio_R_over_L"),
-            "encoded": False,
+            "encoded_in_shipped_file": False,
+            "tested_as_opt_in_features": True,
+            "tested_result": exp.get("paired_no_side_plus_sense_minus_no_side"),
         },
+        "uniqueness_readings": {
+            "literal_one_directional_gate": {
+                "rule": ">0.70 of my dots within 3 px of ONE registry raster's dots",
+                "firings": uqf.get("n_overlap_firings_one_directional"),
+                "unique_by_protocol_literal": uqf.get("unique_by_protocol"),
+            },
+            "two_sided_clearance_rule": {
+                "rule": ("duplicate = forward >0.70 AND reverse >0.50 (a real copy); "
+                         "forward-only firings vs dense rasters = documented saturation"),
+                "two_sided_true_duplicates": uqf.get("n_overlap_firings_two_sided_true_duplicates"),
+                "spearman_duplicates": uqf.get("n_duplicate_by_rho"),
+                "clear": not (uqf.get("n_overlap_firings_two_sided_true_duplicates")
+                              or uqf.get("n_duplicate_by_rho")),
+            },
+        },
+        "owner_decision_2026_10_09": ("owner accepted the two-sided clearance rule (IR-57-UNIQ-03); "
+                                     "duplicate means a real copy; the literal one-directional firings "
+                                     "are logged as saturation in the full-registry scan evidence"),
         "verdict": "PENDING" if not build else (
-            "promote" if (z.get("all_checks_passed") and uq.get("unique")) else "negative"),
+            "promote" if (z.get("all_checks_passed")
+                          and not (uqf.get("n_overlap_firings_two_sided_true_duplicates")
+                                   or uqf.get("n_duplicate_by_rho")))
+            else "HOLD (two-sided duplicate or validator failure)"),
+        "verdict_scope": ("eligible for the separate selector step only; not a slot choice, not a live "
+                          "score. The holdout number is the shipped-density reading above."),
     }
     card_txt = json.dumps(card, indent=2)
     (ROOT / "evidence" / "run_card.json").write_text(card_txt + "\n", encoding="utf-8")
@@ -1149,8 +1484,10 @@ projected live score, and no live score is claimed anywhere in this repository.<
 <li><b>verdict</b> is <code>promote</code> only if the validator passes every check <i>and</i> the
 uniqueness screen is clear. Promotion to an actual weekly slot is a separate selector step and is
 not done here.</li>
-<li><b>sense_of_slip.encoded = false</b> because the provided database has no such field
-(<code>IR-57-SLIP-01</code>).</li>
+<li><b>sense_of_slip.encoded_in_shipped_file = false</b>: the INGENIOUS database carries a
+recorded sense of slip (<code>IR-57-SLIP-02</code>); it was tested as opt-in features and not
+encoded in the shipped raster. <b>verdict</b> follows the literal uniqueness rule
+(<code>IR-57-UNIQ-03</code>) — see the executive summary for the owner decision it requires.</li>
 </ul>
 """
 
@@ -1173,8 +1510,8 @@ def main() -> None:
         "index.html": ("57GEMSDOE — fault-zone anatomy", build_index(build, cv_all, uniq_src), "index.html"),
         "executive-summary.html": ("How to submit", build_exec(build), "executive-summary.html"),
         "method.html": ("Method", build_method(meas, cv_all, cv_det), "method.html"),
-        "hypotheses.html": ("Hypotheses", build_hypotheses(), "hypotheses.html"),
-        "results.html": ("Results", build_results(cv_all, cv_det, build, rb), "results.html"),
+        "hypotheses.html": ("Hypotheses", build_hypotheses() + build_session2_hyp(), "hypotheses.html"),
+        "results.html": ("Results", build_results(cv_all, cv_det, build, rb) + build_session2(), "results.html"),
         "irregularities.html": ("Irregularities", build_irregularities(), "irregularities.html"),
         "data-sources.html": ("Data sources", build_sources(), "data-sources.html"),
         "run-card.html": ("Run card", build_runcard(build, cv_all, meas), "run-card.html"),

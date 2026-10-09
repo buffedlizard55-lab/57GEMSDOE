@@ -37,10 +37,19 @@ def _full(ctx: HoldoutContext, cell: Cell) -> np.ndarray:
     return m
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, geo: dict | None = None):
+def cell_geometry(ctx: HoldoutContext, cell: Cell, geo: dict | None = None,
+                  sense_src=None):
+    """Feature geometry of one fold cell.
+
+    ``geo`` opts in to the geophysical corroboration block
+    (:data:`gems57.geo.GEO_FEATURES`); ``sense_src`` opts in to the
+    recorded-sense features (:data:`gems57.anatomy.SENSE_FEATURES`).  Passing
+    neither keeps the shipped 9-column matrix.
+    """
     dom = _full(ctx, cell)
     g = fold_geometry(ctx.grid, ctx.visible(cell.key),
-                      ctx.hidden_by_cell[cell.key], dom, cell.key, geo=geo)
+                      ctx.hidden_by_cell[cell.key], dom, cell.key,
+                      geo=geo, sense_src=sense_src)
     return g
 
 
@@ -108,6 +117,8 @@ def canary(geoms: list) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
+    # feature_names records the exact column order (FEATURES + opt-in sense
+    # block + opt-in geo block); fall back to width-derived names if absent
     names = tuple(getattr(geoms[0], "feature_names", FEATURES)) if geoms else FEATURES
     for j, name in enumerate(names):
         aucs = []

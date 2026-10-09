@@ -20,12 +20,19 @@ visible fault.  Features that the data does not support are dropped.
 
 Sense of slip
 -------------
+Sense of slip
+-------------
 The protocol asks to condition on recorded sense of slip "where the database
-has it".  The competition's fault database is a binary int8 raster with values
-``{-1 (nodata), 0, 1}`` only (verified in ``scripts/verify_grid.py``): there is
-**no** sense-of-slip attribute to condition on.  Rather than importing a
-textbook dextral convention, the left/right asymmetry is fitted as the ``side``
-feature and reported with its own significance test (``IR-57-SLIP-01``).
+has it".  The raster catalogue (``existing_faults.tif``) carries no sense field:
+its values are ``{-1 (nodata, outside the study area), 0, 1}``.  The INGENIOUS
+**vector** attribute table does carry it: ``data/external/trace_segments_utm11.csv``
+has a ``sense`` column (N 66,861 / RL 8,448 / LL 7,628 / blank 1,394 segments)
+and ``qfault_attributes.csv`` has ``SLIPSENSE``.  The first version of this module
+said no such field existed; that was wrong (``IR-57-SLIP-02``).  The recorded
+sense enters as the opt-in ``SENSE_FEATURES`` (``sense_sgn``, ``sense_side``),
+which is measured against the shipped 8-feature set in
+``scripts/run_sense_experiment.py``.  The untethered ``side`` feature (fitted
+left/right asymmetry, no recorded sense) is kept as it was (``IR-57-SLIP-01``).
 """
 
 from __future__ import annotations
@@ -38,6 +45,15 @@ from scipy import ndimage as ndi
 from .grid import Grid
 from .network import (STRUCT3, SegmentTable, local_strike, nearest_frame,
                       offset_components, segment_table, segments)
+
+# Opt-in recorded-sense features (lane brief: "conditioned on recorded sense of
+# slip where the database has it").  Appended to X only when ``sense_src`` is
+# passed to ``fold_geometry``; the default feature matrix is unchanged, so the
+# shipped pipeline and every earlier measurement are unaffected.
+SENSE_FEATURES = (
+    "sense_sgn",    # +1 nearest visible strike-slip record RL, -1 LL, 0 otherwise (N / blank)
+    "sense_side",   # sense_sgn * side: handedness-relative side of the strand (fitted, not assumed)
+)
 
 FEATURES = (
     "d",            # Euclidean distance to nearest visible fault (px)
@@ -91,12 +107,19 @@ def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
                   domain: np.ndarray, key: str,
-                  geo: dict | None = None) -> FoldGeometry:
+                  geo: dict | None = None,
+                  sense_src: np.ndarray | None = None) -> FoldGeometry:
     """Build the feature matrix for one fold cell using **visible faults only**.
 
+    Two opt-in blocks may be appended after :data:`FEATURES`, in this order:
+
+    ``sense_src`` is the unmasked int8 sense raster (see
+    ``faultzone.trace_sense_raster``).  It is restricted to *visible* pixels before
+    any use, so a withheld segment's sense cannot reach a feature (leakage rule);
+    the appended columns are :data:`SENSE_FEATURES`.
+
     ``geo`` optionally maps names in :data:`gems57.geo.GEO_FEATURES` to full-grid
-    float32 planes (see :func:`gems57.geo.load_planes`); when given, those columns
-    are appended after the catalogue-geometry block and
+    float32 planes (see :func:`gems57.geo.load_planes`); those columns come last and
     ``FoldGeometry.feature_names`` records the combined order.
     """
     strike, coh = local_strike(visible, smooth_px=3.0)
@@ -108,7 +131,9 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
 
     d, iy, ix = nearest_frame(visible)
     active = domain & ~visible
-    names = tuple(FEATURES) + (tuple(geo) if geo else ())
+    names = (tuple(FEATURES)
+             + (SENSE_FEATURES if sense_src is not None else ())
+             + (tuple(geo) if geo else ()))
     ys, xs = np.nonzero(active)
     if ys.size == 0:
         return FoldGeometry(key, ys, xs, np.zeros((0, len(names)), np.float32),
@@ -146,6 +171,16 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         coh[ay, ax],
         dens[ys, xs],
     ]
+    if sense_src is not None:
+        # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
+        src = visible & (sense_src > 0)
+        if src.any():
+            _, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
+            code = sense_src[sy[ay, ax], sx[ay, ax]].astype(np.float64)
+        else:
+            code = np.zeros(ay.shape, np.float64)
+        sgn = np.where(code == 2, 1.0, np.where(code == 3, -1.0, 0.0))
+        cols += [sgn, sgn * side]
     if geo:
         # order of insertion in ``geo`` defines the appended column order;
         # callers pass a dict built from GEO_FEATURES to keep it canonical

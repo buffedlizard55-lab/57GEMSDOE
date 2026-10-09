@@ -1,7 +1,7 @@
 """Study-area grid: CRS, shape, geotransform and the scored footprint.
 
 Every constant here is read from the two competition files committed in
-``data/bridge/`` and re-verified at load time by ``scripts/verify_grid.py``:
+``data/bridge/`` and re-verified by ``scripts/run_lane.py verify`` (writes ``evidence/verify_grid.json``):
 
 * ``existing_faults.tif``  sha256 ``7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093``
   (byte-identical to the ``labels.tif`` recorded in
