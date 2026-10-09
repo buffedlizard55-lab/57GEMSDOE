@@ -1,0 +1,10 @@
+[run] predeclared three experiments; no weekly slot will be used
+[run] visible-only geometry ready: 4840798 examples, 11321 positives
+[run] feature canary maxima: {'d': 0.7935, 'd_perp': 0.7837, 'd_par_abs': 0.674, 'side': 0.5235, 'log_len': 0.6573, 'sin2': 0.5, 'cos2': 0.5, 'coherence': 0.6373, 'density': 0.5785, 'sense_sgn': 0.5522, 'sense_side': 0.5204, 'mag_relative_cos2': 0.5331, 'mag_log_gradient': 0.5555, 'mag_coherence': 0.5226}
+[run] NW distance_only: HOLDOUT-DTI 0.11578; soft 0.00615; dots 9001
+[run] NW anatomy: HOLDOUT-DTI 0.10423; soft 0.01693; dots 9001
+[run] NW orientation: HOLDOUT-DTI 0.10456; soft 0.01868; dots 9001
+[run] NW orientation_sense: HOLDOUT-DTI 0.10596; soft 0.01838; dots 9001
+[run] NE distance_only: HOLDOUT-DTI 0.10100; soft 0.00601; dots 8999
+[run] NE anatomy: HOLDOUT-DTI 0.09103; soft 0.01913; dots 8999
+[run] NE orientation: HOLDOUT-DTI 0.09056; soft 0.01921; dots 8999

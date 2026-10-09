@@ -328,4 +328,6 @@ a{{color:#075c4a}}.ok{{padding:16px;border-left:5px solid #0b6e4f;background:#ee
 <p><a href="docs/index.html">Open the evidence and download page</a>. Redirecting now.</p>
 </body></html>
 """)
-print("site written", TIF, SHA[:16], "note_len", len(NOTE))
+print("site written", TIF, SHA[:16], "note_len", len(NOTE))if __name__ == "__main__":
+    raise SystemExit("Historical site generator retired: it advertised an uncertified submission. "
+                     "Use scripts/build_site.py, which publishes the current negative card.")

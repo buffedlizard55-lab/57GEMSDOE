@@ -1,18 +1,17 @@
 """Shared pooled hide-and-recover evaluator, not a new/private metric implementation.
 
-Uses the shared metric.max_cover for exact triangular max-coverage and masks
-visible pixels in both truth and predictions. Spatial block terms are
-bookkeeping for a conditional bootstrap, not a new scoring rule. The inherited
-holdout.score reference did not exist in this checkout; fixed in this module
-and tested against independent binary EDT scoring (IR-57-EVAL-01). No translated synthetic truth.
+Delegates official-formula arithmetic to metric.max_cover / dti_from_components.
+The inherited holdout.score API was replaced elsewhere while this file still
+called it; v2 repairs that shared interface rather than adding a private metric. Spatial block terms are bookkeeping for a
+conditional bootstrap, not a new scoring rule. No translated synthetic truth.
 """
 from __future__ import annotations
 import hashlib
 from pathlib import Path
 import numpy as np
-from . import metric
+from . import holdout, metric
 
-VERSION = 'gems52-pooled-hide-v1'
+VERSION = 'gems57-pooled-hide-v2'
 
 
 def implementation_hashes():
@@ -27,19 +26,23 @@ def evaluate(prediction, fold, valid, block_side=200):
     p = np.asarray(prediction)
     if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
         raise ValueError('predictions must be finite in [0,1] before masking')
-    # The imported historical evaluator called holdout.score, which does not
-    # exist in this repository. Fix the SHARED evaluator here, not in a lane
-    # fork. Visible faults are masked pixel-exactly in both arrays.
-    p = np.where(valid & fold['region'] & ~fold['visible'], p, 0).astype(np.float32)
-    truth = valid & fold['region'] & fold['truth'] & ~fold['visible']
+    valid = np.asarray(valid, bool)
+    region = np.asarray(fold['region'], bool)
+    known = np.asarray(fold.get('masked_known', fold['visible']), bool)
+    truth_all = np.asarray(fold['truth'], bool)
+    if p.ndim != 2 or any(a.shape != p.shape for a in (valid, region, known, truth_all)):
+        raise ValueError('fold/prediction grid shape mismatch')
+    active = valid & region & ~known
+    p = np.where(active, p, 0).astype(np.float64)
+    truth = active & truth_all
     if not truth.any():
         raise ValueError('a holdout fold must contain positives')
     covers, q, _ = metric.max_cover(p, truth)
-    tpw = float(covers.sum(dtype=np.float64))
-    fpw = float((p * (1. - q)).sum(dtype=np.float64))
+    tpw = float(covers.sum())
+    fpw = float((p * (1.0 - q)).sum())
     fnw = float(truth.sum()) - tpw
-    result = dict(dti=metric.dti_from_components(tpw, fpw, fnw),
-                  tpw=tpw, fpw=fpw, fnw=fnw, n_truth=int(truth.sum()),
+    result = dict(dti=metric.dti_from_components(tpw, fpw, fnw), tpw=tpw, fpw=fpw,
+                  fnw=fnw, n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
                   emitted=int((p > 0).sum()))
     h, w = truth.shape
     ncols = (w + block_side - 1) // block_side

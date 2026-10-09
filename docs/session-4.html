@@ -1,54 +1,11 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Session 4 · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav>
-<a href="index.html">Home</a>
-<a href="executive-summary.html">How to submit</a>
-<a href="method.html">Method</a>
-<a href="hypotheses.html">Hypotheses</a>
-<a href="results.html">Results</a>
-<a class="on" href="session-4.html">Latest run</a>
-<a href="irregularities.html">Irregularities</a>
-<a href="data-sources.html">Data sources</a>
-<a href="run-card.html">Run card</a>
-</nav>
-<main>
-
-<h2>Session 4 — H57-I and the strike bug</h2>
-<p><span class="tag org">OK TO SUBMIT</span> file
-<code>gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</code>, sha256 <code>0025ec29647e3778…</code>.</p>
-<ol>
-<li><b>IR-57-STRIKE-01.</b> <code>fold_geometry</code> had
-<code>s = np.where(np.isfinite(s), 0.0, s)</code>, which zeroed every finite strike.
-<code>sin2/cos2</code> were constant (AUC exactly 0.5000) and <code>d_perp</code> was
-computed in a north-south frame for every fault. That is why Riedel geometry appeared
-to add nothing. Fixed to <code>np.where(np.isfinite(s), s, 0.0)</code>. After the fix,
-sin2 discriminative AUC = 0.5717.</li>
-<li><b>Experiment 1.</b> Measured (d_perp, strike) enrichment. 30 of 104 strike×distance
-bins kept at ≥2× base rate; 78.8% of withheld positives fall inside the fitted zone.</li>
-<li><b>Experiment 2.</b> LOQO HOLDOUT-DTI, detached, 22,619 withheld positives.
-Isotropic fitted zone <b>0.2617</b> [0.2159, 0.3075] vs strike-binned <b>0.1999</b>
-[0.1622, 0.2377]. H57-I strike interaction is <b>NEGATIVE</b>.</li>
-<li><b>Experiment 3.</b> Strike-binned with 0–2 px flank removed: 0.0716. Negative on
-this instrument (detached truth sits far; the live 0.2778 file’s B=2 prune is a different
-population).</li>
-<li><b>Emission.</b> Winner = iso_full. 37,654 binary dots, zeros mode.
-Surface Spearman vs 16 priors max 0.19. Dot 3-px overlap max 0.35 (own previous file);
-vs GEMSDOE32 0.2778 file = 0.1897. SHA novel vs 644. Format 15/15.</li>
-</ol>
-<p>Run card: <a href="run-card.html">run-card.html</a>. Evidence:
-<code>evidence/exp5_structure.json</code>,
-<code>evidence/exp6_holdout_strike.json</code>,
-<code>evidence/exp7_holdout_outer.json</code>,
-<code>evidence/run_card_session4.json</code>.</p>
-
-</main>
-<footer>Generated 2026-10-09 20:27 UTC by <code>scripts/build_site_session4.py</code> from <code>evidence/*.json</code>.
-Every number is a measurement. <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archived H57-I · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p><h2>DO NOT SUBMIT any archived output</h2><ul><li><a href="downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif">gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif">gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif">gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif">gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif">gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif">h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif</a> — learning/audit only, not cleared</li><li><a href="downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif">h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif</a> — learning/audit only, not cleared</li></ul></main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-09 21:14 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

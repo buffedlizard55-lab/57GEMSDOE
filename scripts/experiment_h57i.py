@@ -478,4 +478,5 @@ def _write_card(card: dict) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Archived H57-I generator: prior clearance used only 16 priors. Literal dense17 "
+                     "overlap blocks this file. No new generation/slot is authorized. Read current README.")

@@ -202,4 +202,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Archived concurrent-session generator: its geometry predates IR-57-STRIKE-01 "
+                     "and/or its validation does not satisfy the current full-registry buffered protocol. "
+                     "No new generation or slot is authorized. See README.md and run_card_current.json.")

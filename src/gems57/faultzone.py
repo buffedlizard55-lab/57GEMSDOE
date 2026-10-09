@@ -160,6 +160,8 @@ def link_segments(mask: np.ndarray, max_gap_px: float = 4.0,
         members = uniq[sid - 1]
         frag_ids = np.flatnonzero(roots[1:] == members) + 1
         ys, xs = pix_lists[sid - 1]
+        if not ys.size:
+            continue
         yy = ys.astype(np.float64); xx = xs.astype(np.float64)
         cy, cx = yy.mean(), xx.mean()
         v = _principal_axis(yy - cy, xx - cx)
@@ -208,55 +210,74 @@ def pixel_features(visible: np.ndarray, seg_lab: np.ndarray,
         out.update(phi=np.zeros_like(d), u=np.full_like(d, np.nan),
                    L=np.zeros_like(d))
         return out
-    phi = np.full(d.shape, np.nan)
-    u = np.full(d.shape, np.nan)
-    L = np.zeros(d.shape)
-    on = visible
+    # Lookup tables replace an O(number_of_segments * number_of_pixels) scan.
+    # Keep the original array-coordinate convention here for compatibility;
+    # this phi is an OFFSET angle, not a candidate strand's geological strike.
+    n = max(seg_stats) + 1
+    strike = np.full(n, np.nan)
+    vr = np.zeros(n); vc = np.zeros(n)
+    cy = np.zeros(n); cx = np.zeros(n); span = np.ones(n)
+    length = np.zeros(n)
     for sid, s in seg_stats.items():
-        sel = seg_at_nearest == sid
-        if not sel.any():
-            continue
-        v = s["axis"]
-        # phi: angle of (p - nearest) relative to the segment strike axis
-        az = np.degrees(np.arctan2(dx[sel], dy[sel])) % 180.0
-        st = s["strike"]
-        rel = (az - st) % 180.0
-        rel = np.minimum(rel, 180.0 - rel)      # 0 = along strike, 90 = across
-        phi[sel] = rel
-        # u: projection of (p - centroid) on the axis, normalised by span
-        span = max(s["span_px"], 1e-9)
-        proj = v[0] * (np.nonzero(sel)[0] - s["centroid"][0]) + \
-               v[1] * (np.nonzero(sel)[1] - s["centroid"][1])
-        mid = 0.0  # centroid is the origin of proj
-        u[sel] = (proj - mid) / span + 0.5     # 0..1 inside the segment
-        L[sel] = s["length_px"]
-    out.update(phi=phi, u=u, L=L)
-    out["_on_fault"] = on
+        strike[sid] = s['strike']
+        vr[sid], vc[sid] = s['axis']
+        cy[sid], cx[sid] = s['centroid']
+        span[sid] = max(s['span_px'], 1e-9)
+        length[sid] = s['length_px']
+    if seg_at_nearest.max() >= n:
+        raise ValueError('segment labels have no matching segment statistics')
+    sid = seg_at_nearest
+    phi = np.empty(d.shape, np.float64)
+    u = np.empty(d.shape, np.float64)
+    # Row chunks keep temporary arrays bounded on the competition grid.
+    for y in range(0, d.shape[0], 128):
+        sl = slice(y, min(y + 128, d.shape[0]))
+        s = sid[sl]
+        az = np.degrees(np.arctan2(dx[sl], dy[sl])) % 180.0
+        rel = (az - strike[s]) % 180.0
+        phi[sl] = np.minimum(rel, 180.0 - rel)
+        rr = np.arange(y, sl.stop)[:, None]
+        cc = np.arange(d.shape[1])[None, :]
+        u[sl] = (vr[s] * (rr - cy[s]) + vc[s] * (cc - cx[s])) / span[s] + 0.5
+        u[sl][s == 0] = np.nan
+    out.update(phi=phi, u=u, L=length[sid])
+    out['_on_fault'] = visible
     return out
 
 
 # ------------------------------------------------------------- sense of slip ---
 
-def rasterize_traces(csv_path, shape, transform) -> tuple[np.ndarray, "object"]:
-    """Rasterize INGENIOUS UTM-11 trace segments; return mask + dataframe."""
+def _csv_pixels(csv_path, shape, transform):
+    """CSV row -> pixel indices, using endpoint DELTAS and floor at boundaries."""
     import pandas as pd
     tr = pd.read_csv(csv_path)
     inv = ~transform
-    H, W = shape
-    mask = np.zeros((H, W), bool)
-    # ``Affine * (x, y)`` returns (col, row), NOT (row, col).  Named accordingly.
-    # (IR-57-TRANS-01: the earlier version swapped the two and rasterised traces
-    # transposed -- 1.8 % of catalogue cells near its traces instead of 100 %.)
-    c0, r0 = (inv * (tr.x0.values, tr.y0.values))
-    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
-    r0 = np.asarray(r0).astype(int); c0 = np.asarray(c0).astype(int)
-    r1 = np.asarray(r1).astype(int); c1 = np.asarray(c1).astype(int)
-    for a, b, cc, d in zip(c0, r0, c1, r1):
-        npts = max(abs(b - a), abs(d - cc)) + 1
-        rr = np.linspace(b, d, npts).astype(int)     # rows
-        ccc = np.linspace(a, cc, npts).astype(int)   # cols
-        ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
-        mask[rr[ok], ccc[ok]] = True
+    h, w = shape
+    c0, r0 = inv * (tr.x0.values, tr.y0.values)
+    c1, r1 = inv * (tr.x1.values, tr.y1.values)
+    points = []
+    for a, b, c, d in zip(c0, r0, c1, r1):
+        if not np.isfinite([a, b, c, d]).all():
+            raise ValueError('nonfinite trace coordinates')
+        a, b, c, d = (int(np.floor(v)) for v in (a, b, c, d))
+        npts = max(abs(d - b), abs(c - a)) + 1
+        rr = np.floor(np.linspace(b, d, npts)).astype(np.int32)
+        cc = np.floor(np.linspace(a, c, npts)).astype(np.int32)
+        ok = (rr >= 0) & (rr < h) & (cc >= 0) & (cc < w)
+        points.append((rr[ok], cc[ok]))
+    return tr, points
+
+
+def rasterize_traces(csv_path, shape, transform):
+    """Rasterize INGENIOUS UTM-11 traces; return mask + dataframe.
+
+    Source precision/provenance remain those of the supplied bridge CSV. This
+    is not a claim of pixel identity to the organizer's unavailable rasterizer.
+    """
+    tr, points = _csv_pixels(csv_path, shape, transform)
+    mask = np.zeros(shape, bool)
+    for rr, cc in points:
+        mask[rr, cc] = True
     return mask, tr
 
 
@@ -272,24 +293,13 @@ def trace_sense_raster(csv_path, shape, transform) -> np.ndarray:
     ones the sense-of-slip feature needs).  Same convention as
     ``rasterize_traces`` (``Affine * (x, y)`` -> (col, row)).
     """
-    import pandas as pd
-    tr = pd.read_csv(csv_path)
-    inv = ~transform
-    H, W = shape
-    out = np.zeros((H, W), np.int8)
-    c0, r0 = (inv * (tr.x0.values, tr.y0.values))
-    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
-    codes = tr["sense"].map(SENSE_CODE).fillna(0).astype(np.int8).values
-    for a, b, cc, d, code in zip(np.asarray(c0).astype(np.int64), np.asarray(r0).astype(np.int64),
-                                 np.asarray(c1).astype(np.int64), np.asarray(r1).astype(np.int64),
-                                 codes):
-        if code == 0:
-            continue
-        npts = max(abs(b - d), abs(a - cc)) + 1
-        rr = np.linspace(b, d, npts).astype(np.int64)
-        ccc = np.linspace(a, cc, npts).astype(np.int64)
-        ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
-        out[rr[ok], ccc[ok]] = code
+    tr, points = _csv_pixels(csv_path, shape, transform)
+    out = np.zeros(shape, np.int8)
+    codes = tr['sense'].map(SENSE_CODE).fillna(0).astype(np.int8).values
+    for (rr, cc), code in zip(points, codes):
+        if code:
+            out[rr, cc] = code
+
     return out
 
 
@@ -306,32 +316,22 @@ def ingenious_record_segments(csv_path, shape, transform):
     record-segment ids offset by ``base_id``.
     """
     import pandas as pd
-    tr = pd.read_csv(csv_path)
-    inv = ~transform
-    H, W = shape
-    tmap = np.zeros((H, W), dtype=np.int32)
-    c0, r0 = (inv * (tr.x0.values, tr.y0.values))   # (col, row), see rasterize_traces
-    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
-    pix_rows = []
-    for i, (a, b, cc, d) in enumerate(zip(np.asarray(c0).astype(np.int64), np.asarray(r0).astype(np.int64),
-                                         np.asarray(c1).astype(np.int64), np.asarray(r1).astype(np.int64)),
-                                       start=1):
-        npts = max(abs(b - a), abs(d - cc)) + 1
-        rr = np.linspace(b, d, npts).astype(np.int64)    # rows
-        ccc = np.linspace(a, cc, npts).astype(np.int64)  # cols
-        ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
-        rr = rr[ok]; ccc = ccc[ok]
-        tmap[rr, ccc] = i
-        pix_rows.append((rr.astype(np.int32), ccc.astype(np.int32)))
-    trace_sense = np.array(["unk"] + [str(s) for s in tr.sense], dtype=object)
+    tr, pix_rows = _csv_pixels(csv_path, shape, transform)
+    tmap = np.zeros(shape, np.int32)
+    for i, (rr, cc) in enumerate(pix_rows, start=1):
+        tmap[rr, cc] = i
+    senses_by_row = tr.sense.fillna('unk').astype(str).values
+    trace_sense = np.array(['unk'] + senses_by_row.tolist(), dtype=object)
     rec_ids = tr.record_id.values
     uniq = pd.unique(rec_ids)
     seg_stats = {}
     seg_pix = {}
     for new_id, rec in enumerate(uniq, start=1):
         rows = np.flatnonzero(rec_ids == rec)
-        ys = np.concatenate([pix_rows[r - 1][0] for r in rows])
-        xs = np.concatenate([pix_rows[r - 1][1] for r in rows])
+        ys = np.concatenate([pix_rows[r][0] for r in rows])
+        xs = np.concatenate([pix_rows[r][1] for r in rows])
+        if not ys.size:
+            continue
         yy = ys.astype(np.float64); xx = xs.astype(np.float64)
         cy, cx = yy.mean(), xx.mean()
         v = _principal_axis(yy - cy, xx - cx)
@@ -344,7 +344,7 @@ def ingenious_record_segments(csv_path, shape, transform):
         x0 = tr.x0.values[rows]; y0 = tr.y0.values[rows]
         x1 = tr.x1.values[rows]; y1 = tr.y1.values[rows]
         vec_len_px = float(np.sum(np.hypot(x1 - x0, y1 - y0)) / 100.0)
-        senses = [str(trace_sense[r]) for r in rows]
+        senses = [str(senses_by_row[r]) for r in rows]
         sense = Counter(senses).most_common(1)[0][0]
         seg_stats[new_id] = dict(
             size=int(yy.size), length_px=vec_len_px,

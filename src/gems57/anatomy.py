@@ -149,12 +149,9 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    # IR-57-STRIKE-01: the previous line was
-    #     s = np.where(np.isfinite(s), 0.0, s)
-    # which ZEROED every finite strike and left NaNs in place.  That made
-    # sin2/cos2 constant (AUC exactly 0.5000) and computed d_perp/d_par in a
-    # north-south frame for every fault, which is why the Riedel geometry
-    # appeared to add nothing.  Fill only the remaining NaNs.
+    # IR-57-STRIKE-01: the old argument order replaced EVERY finite strike
+    # with zero, making sin2 constant 0/cos2 constant 1 and rotating all offsets
+    # onto a global north/south frame. Invalid strike, not valid strike, falls back.
     s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
@@ -177,8 +174,11 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
         src = visible & (sense_src > 0)
         if src.any():
-            _, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
+            distance, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
             code = sense_src[sy[ay, ax], sx[ay, ax]].astype(np.float64)
+            # Do not assign a distant record to an unrelated visible fault.
+            code[distance[ay, ax] > 1.0] = 0
+            del distance, sy, sx
         else:
             code = np.zeros(ay.shape, np.float64)
         sgn = np.where(code == 2, 1.0, np.where(code == 3, -1.0, 0.0))
@@ -305,7 +305,7 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
     if vy.size > 1:
         from scipy.spatial import cKDTree
         tree = cKDTree(np.stack([vy, vx], 1))
-        _d, idx = tree.query(np.stack([vy, vx], 1), k=13)
+        _d, idx = tree.query(np.stack([vy, vx], 1), k=min(13, len(vy)))
         cid = vcomp[vy, vx]
         nbr_cid = vcomp[vy[idx], vx[idx]]
         other = nbr_cid != cid[:, None]
