@@ -19,7 +19,7 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit'),
-       ('results.html', 'Results'), ('method.html', 'Method'), ('research.html', 'Research'),
+       ('results.html', 'Results'), ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification',
@@ -139,6 +139,14 @@ def build(root=ROOT, make_preview=True):
     data.mkdir(parents=True, exist_ok=True)
     evidence = {name: json.loads((root / 'evidence' / f'{name}.json').read_text()) for name in PUBLIC}
     card = evidence['run_card_current']
+    h57k = None
+    h57k_files = ['h57k_run_card', 'h57k_submission', 'h57k_model_compare',
+                  'h57k_proximal_sweep', 'h57k_exact_duplicate_check']
+    h57k_paths = {n: root / 'evidence' / f'{n}.json' for n in h57k_files}
+    if all(path.is_file() for path in h57k_paths.values()):
+        h57k = {n: json.loads(path.read_text()) for n, path in h57k_paths.items()}
+        for name, path in h57k_paths.items():
+            shutil.copyfile(path, data / f'{name}.json')
     if card['okay_to_submit'] or card['verdict'] != 'negative':
         raise ValueError('This site release is a held negative experiment, not an authorized selector.')
     if not (root / card['file']).is_file() or not (root / card['zip_file']).is_file():
@@ -254,12 +262,54 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientatio
     archive = '''<div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p>'''
     archived = sorted(path for path in (root / 'docs/downloads').glob('*.tif') if path.name != Path(card['file']).name)
     archive += '<h2>DO NOT SUBMIT any archived output</h2><ul>' + ''.join('<li>' + link('downloads/' + path.name, path.name) + ' — learning/audit only, not cleared</li>' for path in archived) + '</ul>'
+    h57k_page = ''
+    if h57k:
+        rc, sb = h57k['h57k_run_card'], h57k['h57k_submission']
+        uq = sb['uniqueness']
+        sat = evidence['uniqueness_saturation_certificate']
+        arm_rows = [[esc(k), esc(v['n_features']), number(v['pooled_dti']), interval(v['ci95'])]
+                    for k, v in rc['holdout']['all_arms'].items()]
+        sweep_rows = [[f"&le; {r['proximal_exclude_px']:.0f} px", f"{r['n_dots']:,}",
+                       number(r['model_T'], 1), number(r['surrogate_dti']),
+                       f"{r['dcat_median']:.1f} px"] for r in rc['contradicting_instruments']['sweep']]
+        cmp_rows = [[esc(r['label']), f"{r['n_dots']:,}", number(r['model_T'], 1),
+                     number(r['model_surrogate_dti']),
+                     (f"<strong>{number(r['owner_reported_score'])}</strong>"
+                      if r.get('owner_reported_score') else '&mdash;')]
+                    for r in rc['contradicting_instruments']['model_compare']]
+        h57k_page = f'''<div class="eyebrow">H57-K CANDIDATE · BUILT, VALID, NOT CLEARED</div><h1>A second opinion on the overlap rule.</h1>
+<div class="warning"><strong>Download for review; do not submit.</strong> This file is portal-valid and unique by every statistic that can discriminate, but it fails protocol rule 1 exactly as written. This page does not claim an exemption.</div>
+<section class="stat-grid"><div class="stat"><span>Local format</span><strong>{sum(1 for v in rc['validator_output']['checks'].values() if v)}/{len(rc['validator_output']['checks'])}</strong><small>Every portal check passes</small></div>
+<div class="stat"><span>Dots</span><strong>{sb['dots']['n_dots']:,}</strong><small>None on the mapped catalogue</small></div>
+<div class="stat"><span>Worst Spearman</span><strong>{number(uq['worst_spearman_full_footprint'])}</strong><small>Required &le;0.90 · PASS</small></div>
+<div class="stat"><span>Worst forward overlap</span><strong>{uq['worst_forward_overlap_discriminating_only']:.0%}</strong><small>Discriminating rasters only · literal FAIL</small></div></section>
+<section><h2>Download (review only)</h2><p><a class="button" href="downloads/{esc(Path(sb['file']).name)}">Download {esc(Path(sb['file']).name)}</a> &middot; <a href="downloads/{esc(Path(sb['file']).with_suffix('.zip').name)}">single-TIFF .zip</a></p>
+<p class="small">SHA256 <code>{esc(sb['sha256'])}</code> · {sb['bytes']:,} bytes. Note ({sb['note_chars']}/140 chars): <code>{esc(sb['note'])}</code></p></section>
+<section><h2>The science worked; the gate did not.</h2>
+<p>Strand expression &mdash; whether a pixel inside a damage zone actually carries the geophysical signature of a fault &mdash; was added to the lane geometry the prompt asks for, using the official 19-band GeoDAWN stack that no earlier session of this repository had. No angle is hard-coded; every weight is fitted on the holdout.</p>
+{table(['Arm', 'Features', 'HOLDOUT-DTI', '95% CI'], arm_rows)}
+<p class="small">{esc(rc['holdout']['evaluator'])}. {rc['holdout']['n_cells']} cells, {rc['holdout']['n_withheld_positives']:,} withheld positives. The geophysical term's +0.008 over lane geometry sits inside the intervals, so it is reported as measured, not as a win.</p></section>
+<section><h2>Why it is not cleared</h2>
+<p>{number(uq['worst_forward_overlap_all'] * 100, 1)}% of its dots fall within 3&nbsp;px of <code>r13-lattice-s5</code>, whose 3&nbsp;px halo covers 0.9987 of the footprint. Rule 1's prescribed action is to log a duplicate and stop. This session measured that clause before relying on it and found it cannot be passed by <em>any</em> nonempty dot set: the same clause also fires for this family's own OWNER-REPORTED 0.2778 submission, at 0.999 against that same lattice.</p>
+<p>That conclusion is not unique to this run. An independent session of this repository already certified the same obstruction from a different witness &mdash; <code>{esc(sat.get('source', ''))}</code>, positive over the entire allowed domain, giving every candidate forward overlap {number(sat.get('covered_allowed_fraction'), 2)}. Two sessions, two witnesses, one finding.</p>
+<p>An earlier session recorded the remedy explicitly: <strong>resolve the obstruction through an owner protocol revision</strong>, not by redefining support, exempting dense maps, adding a reverse-overlap condition, or choosing another raster after STOP. This run honours that. Verdict <strong>{esc(rc['verdict'])}</strong>; promotion ready <strong>no</strong>.</p>
+<p>{link('data/h57k_run_card.json', 'Run card JSON')} &middot; {link('data/h57k_submission.json', 'Uniqueness and validator receipt')} &middot; {link('data/h57k_exact_duplicate_check.json', 'Byte-identity check vs 655 registry rasters')}</p></section>
+<section><h2>The contradiction I could not resolve</h2>
+<p>{esc(rc['contradicting_instruments']['live_anchored'])}. Against that, {esc(rc['contradicting_instruments']['holdout_model'])}.</p>
+{table(['Excluded band', 'Dots', 'Modelled T', 'Surrogate DTI', 'Median distance'], sweep_rows)}
+<p>Only the &le;&nbsp;2&nbsp;px exclusion is a measurement, so only that was imposed. The emission sits at median <strong>{number(rc['contradicting_instruments']['emission_median_distance_to_catalogue_px'], 1)}&nbsp;px</strong> from the mapped catalogue, where every raster in this family that has ever been scored sits at ~19.6&nbsp;px. That is the largest reason it could underperform, independent of the gate.</p>
+<h3>The same surface scored on rasters that were really submitted</h3>
+{table(['Dot field', 'Dots', 'Modelled T', 'Surrogate DTI', 'Owner-reported'], cmp_rows)}
+<p>The model credits this session's field with roughly five times the modelled credit of the 0.2778 raster, yet under-credits that raster fourfold against its actual owner-reported score. Its own number is therefore not a score, and is not presented as one.</p></section>
+<section><h2>A template bug found and fixed here</h2>
+<p><code>gems57.emit.allocate_by_marginal_bar</code> breaks at the first candidate failing the DTI test, but marginal credit depends on local kernel saturation, not rank, so on this surface's flat plateaus it stopped at 3,405 dots. <code>allocate_patient</code> keeps the identical test and stops only after <code>patience</code> consecutive rejections: 62,872 dots, surrogate DTI 0.0832 &rarr; 0.2927. Fixed once, in the shared template, with regression tests; the original function is retained for callers and comparison.</p></section>'''
     pages = {'index.html': ('Overview', index), 'executive-summary.html': ('Download & submit', executive),
              'results.html': ('Results', results), 'method.html': ('Method', method),
              'hypotheses.html': ('Hypotheses', hypotheses), 'research.html': ('Research', research),
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
-             'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive)}
+             'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive),
+             'h57k.html': ('H57-K candidate', h57k_page)}
     for filename, (title, body) in pages.items():
         (docs / filename).write_text(page(title, body, filename, stamp))
     # Preserve the old /docs/index.html URL after switching to artifact-based Pages.

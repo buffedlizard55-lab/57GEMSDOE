@@ -1,0 +1,8 @@
+{
+ "schema": "gems57.exact-duplicate-check.v1",
+ "raster": "gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif",
+ "sha256": "749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6",
+ "registry_size": 655,
+ "exact_matches": [],
+ "verdict": "no byte-identical raster in the registry"
+}
