@@ -50,7 +50,20 @@ unmapped splay.</li>
 <p>Each feature alone, per fold, no fitting involved. The screen is applied to the
 <b>discriminative</b> AUC <code>max(auc, 1 − auc)</code>, because an AUC of 0.11 is exactly as
 informative as 0.89 — it only means the feature is inversely ranked.</p>
+<h3>Withholding mode <code>all</code> (primary instrument)</h3>
 <table><tr><th>Feature</th><th class="n">Raw AUC</th><th class="n">Discriminative AUC</th><th class="n">Max over folds</th><th>0.90 leakage screen</th></tr><tr><td><code>d</code></td><td class="n">0.1147</td><td class="n">0.8853</td><td class="n">0.9000</td><td><b style="color:#a3341f">FLAG</b></td></tr><tr><td><code>d_perp</code></td><td class="n">0.1221</td><td class="n">0.8779</td><td class="n">0.9013</td><td><b style="color:#a3341f">FLAG</b></td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.2424</td><td class="n">0.7576</td><td class="n">0.7759</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>side</code></td><td class="n">0.5022</td><td class="n">0.5083</td><td class="n">0.5125</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>log_len</code></td><td class="n">0.4473</td><td class="n">0.5527</td><td class="n">0.5787</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td class="n">0.5000</td><td class="n">0.5000</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td class="n">0.5000</td><td class="n">0.5000</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>coherence</code></td><td class="n">0.3722</td><td class="n">0.6278</td><td class="n">0.6665</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>density</code></td><td class="n">0.7289</td><td class="n">0.7289</td><td class="n">0.7511</td><td><span style="color:#0b6e4f">clear</span></td></tr></table>
+<h3>Withholding mode <code>detached</code> (only components &ge; 4 px from any other)</h3>
+<table><tr><th>Feature</th><th class="n">Raw AUC</th><th class="n">Discriminative AUC</th><th class="n">Max over folds</th><th>0.90 leakage screen</th></tr><tr><td><code>d</code></td><td class="n">0.1211</td><td class="n">0.8789</td><td class="n">0.8981</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>d_perp</code></td><td class="n">0.1295</td><td class="n">0.8705</td><td class="n">0.8965</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.2479</td><td class="n">0.7521</td><td class="n">0.7710</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>side</code></td><td class="n">0.5115</td><td class="n">0.5130</td><td class="n">0.5352</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>log_len</code></td><td class="n">0.4423</td><td class="n">0.5577</td><td class="n">0.5788</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td class="n">0.5000</td><td class="n">0.5000</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td class="n">0.5000</td><td class="n">0.5000</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>coherence</code></td><td class="n">0.3687</td><td class="n">0.6313</td><td class="n">0.6775</td><td><span style="color:#0b6e4f">clear</span></td></tr><tr><td><code>density</code></td><td class="n">0.7161</td><td class="n">0.7161</td><td class="n">0.7444</td><td><span style="color:#0b6e4f">clear</span></td></tr></table>
+<div class="card">
+<b>The canary fires on <code>d</code> and <code>d_perp</code> in mode <code>all</code>, and rule 4
+requires that to be treated as leakage until proven otherwise.</b> It is not label leakage — the
+features are computed from visible traces only and the labels are genuinely hidden pixels. It
+<i>is</i> an external-validity problem: withheld catalogue segments are physically attached to
+visible traces, so near-field distance is almost definitionally informative, whereas a genuinely
+uncatalogued splay need not be. The <code>detached</code> table above is the disproof experiment —
+it withholds only whole components sitting at least 4 px from every other component, breaking that
+attachment. See <code>IR-57-CANARY-02</code> on the irregularities page.
+</div>
 
 <h2>4. What the data actually shows</h2>
 <h3>Distance to the nearest visible fault <span class="tag hold">HOLDOUT-DTI</span></h3>
@@ -109,7 +122,7 @@ probably wider. The <code>detached</code> mode is the conservative reading of th
 No live score is projected from any number on this page.</p>
 </div>
 </main>
-<footer>Generated 2026-10-09 05:46 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 06:34 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

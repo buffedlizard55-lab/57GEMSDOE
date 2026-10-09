@@ -35,7 +35,8 @@ from gems57 import grid as gridmod                                   # noqa: E40
 from gems57 import load_grid, write_submission                       # noqa: E402
 from gems57.anatomy import FEATURES                                  # noqa: E402
 from gems57.emit import expected_credit, greedy_allocate             # noqa: E402
-from gems57.fitting import cell_geometry, fit_model, pooled, run_cell  # noqa: E402
+from gems57.fitting import (cell_geometry, fit_model, pooled,  # noqa: E402
+                            predict_surface, run_cell)
 from gems57.holdout import build_holdout                             # noqa: E402
 from gems57.metric import dti_binary                                 # noqa: E402
 from gems57.uniqueness import compare_to_registry                    # noqa: E402
@@ -54,15 +55,13 @@ def _truth_crop(cell) -> np.ndarray:
 
 
 def score_variant(ctx, cells, clf, scale, exclude_flank_px: int, *,
-                  max_dots: int, floor: float) -> tuple[dict, list[dict]]:
+                  max_dots: int, floor: float,
+                  cols: list[int] | None = None) -> tuple[dict, list[dict]]:
     """Holdout DTI for one flank-exclusion setting."""
     res = []
     for cell in cells:
         g = cell_geometry(ctx, cell)
-        p = np.zeros(ctx.grid.shape, np.float32)
-        surf = clf.predict_proba(g.X)[:, 1].astype(np.float32) * np.float32(scale)
-        np.clip(surf, 0.0, 1.0, out=surf)
-        p[g.rows, g.cols] = surf
+        p = predict_surface(clf, scale, g, ctx.grid.shape, cols)
         allowed = np.zeros(ctx.grid.shape, bool)
         allowed[cell.bbox] = cell.active
         if exclude_flank_px > 0:
@@ -73,7 +72,7 @@ def score_variant(ctx, cells, clf, scale, exclude_flank_px: int, *,
         r = dti_binary(alloc.emitted[cell.bbox], _truth_crop(cell), valid=cell.active)
         res.append({"key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
                     "n_dots": alloc.n_dots, **r})
-        del p, allowed, alloc, surf, g
+        del p, allowed, alloc, g
         gc.collect()
     return pooled(res), res
 
@@ -84,7 +83,16 @@ def main() -> None:
     ap.add_argument("--max-dots", type=int, default=200_000)
     ap.add_argument("--floor", type=float, default=0.015)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--drop-side", action="store_true",
+                    help="drop the sense-of-slip `side` feature (measured to earn nothing)")
+    ap.add_argument("--budget-cap", type=int, default=0,
+                    help="hard cap on live dots; 0 = use the holdout-optimal budget")
     a = ap.parse_args()
+
+    cols = None
+    if a.drop_side:
+        cols = [i for i, n in enumerate(FEATURES) if n != "side"]
+        print(f"dropping `side`; using {len(cols)} of {len(FEATURES)} features")
     t0 = time.time()
 
     g = load_grid()
@@ -93,7 +101,7 @@ def main() -> None:
     print(f"[{time.time()-t0:5.1f}s] holdout ready ({len(cells)} cells, mode={a.mode})")
 
     geoms = [cell_geometry(ctx, c) for c in cells]
-    clf, scale, base = fit_model(geoms, seed=0)
+    clf, scale, base = fit_model(geoms, seed=0, cols=cols)
     geoms.clear(); gc.collect()
     print(f"[{time.time()-t0:5.1f}s] trained on all cells; calibration scale={scale:.4f} "
           f"base_rate={base:.6f}")
@@ -102,7 +110,7 @@ def main() -> None:
     variants = {}
     for flank in (0, 1, 2, 3):
         pl, per = score_variant(ctx, cells, clf, scale, flank,
-                                max_dots=a.max_dots, floor=a.floor)
+                                max_dots=a.max_dots, floor=a.floor, cols=cols)
         variants[flank] = {"pooled": pl, "per_cell": per}
         print(f"[{time.time()-t0:5.1f}s] flank<={flank}px excluded: HOLDOUT-DTI "
               f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} "
@@ -115,12 +123,27 @@ def main() -> None:
     draw0 = [r for r in variants[best_flank]["per_cell"] if r["key"].startswith("draw20")]
     budget = int(sum(r["n_dots"] for r in draw0))
     print(f"  -> live dot budget from holdout = {budget}")
+    if a.budget_cap > 0:
+        print(f"  -> capped to --budget-cap = {a.budget_cap}")
+        budget = min(budget, a.budget_cap)
+
+    # ---- 2b. holdout DTI *at the capped budget*, so the shipped configuration
+    #          has its own measured number rather than the unconstrained optimum
+    capped_holdout = None
+    if a.budget_cap > 0:
+        per_cap = budget // 2                      # 8 cells = 2 draws
+        pl, per = score_variant(ctx, cells, clf, scale, best_flank,
+                                max_dots=per_cap, floor=a.floor, cols=cols)
+        capped_holdout = pl
+        print(f"[{time.time()-t0:5.1f}s] at capped budget {budget}: HOLDOUT-DTI "
+              f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} dots={pl['n_dots']}")
 
     # ---- 3. final surface from the full catalogue --------------------------
     from gems57.anatomy import fold_geometry
     dom = g.footprint & ~g.catalogue
     geom = fold_geometry(g, g.catalogue, np.zeros(g.shape, bool), dom, "live_full_catalogue")
-    surf = clf.predict_proba(geom.X)[:, 1].astype(np.float32) * np.float32(scale)
+    surf = clf.predict_proba(geom.X[:, cols] if cols is not None else geom.X
+                             )[:, 1].astype(np.float32) * np.float32(scale)
     np.clip(surf, 0.0, 1.0, out=surf)
     p = np.zeros(g.shape, np.float32)
     p[geom.rows, geom.cols] = surf
@@ -167,19 +190,28 @@ def main() -> None:
           f"(NOT submittable: n_nan={vn['n_nan']}) -- diagnostics only")
 
     uniq = compare_to_registry(zpath, ROOT / "registry" / "registry_index.json", g.footprint)
-    print(f"[{time.time()-t0:5.1f}s] uniqueness: {uniq['unique']} | worst |rho|="
-          f"{uniq['worst_abs_spearman_dot_union']:.4f} vs {uniq['worst_rho_submission']} | "
-          f"worst dot overlap={uniq['worst_dot_overlap']*100:.1f}% vs "
-          f"{uniq['worst_overlap_submission']}")
+    print(f"[{time.time()-t0:5.1f}s] uniqueness: {uniq['unique']} | worst rho_full="
+          f"{uniq['worst_spearman_full_footprint']:.4f} (limit {uniq['rho_limit']}) | "
+          f"worst jaccard={uniq['worst_jaccard_dot_sets']:.4f} "
+          f"(limit {uniq['jaccard_limit']}) vs {uniq['worst_jaccard_submission']} | "
+          f"worst dot overlap={uniq['worst_dot_overlap']*100:.1f}% "
+          f"(limit {uniq['overlap_limit']*100:.0f}%) vs {uniq['worst_overlap_submission']}")
+    if not uniq["unique"]:
+        print("REFUSING TO PROMOTE: the parallel-run protocol declares this a duplicate.")
 
     audit = {
         "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "lane": "fault-zone anatomy / secondary strands around known faults",
         "withholding_mode": a.mode,
-        "features": list(FEATURES),
+        "features": [FEATURES[i] for i in cols] if cols is not None else list(FEATURES),
+        "features_dropped": [n for n in FEATURES if cols is None or FEATURES.index(n) not in cols],
+        "budget_cap": a.budget_cap,
+        "holdout_at_capped_budget": capped_holdout,
         "calibration": {"scale": scale, "base_rate": base},
         "flank_variants": {str(k): v["pooled"] for k, v in variants.items()},
         "selected_flank_px": best_flank,
+        "flank_best_holdout": variants[best_flank]["pooled"],
+        "holdout_dot_budget": int(sum(r["n_dots"] for r in draw0)),
         "live_dot_budget": budget,
         "emitted_pixels": int(alloc.n_dots),
         "submission_name": name,
@@ -188,6 +220,7 @@ def main() -> None:
         "zeros_tif": vz,
         "nan_tif": vn,
         "uniqueness": uniq,
+        "promote": bool(uniq["unique"] and vz["all_checks_passed"]),
         "runtime_s": time.time() - t0,
     }
     EVID.mkdir(exist_ok=True)

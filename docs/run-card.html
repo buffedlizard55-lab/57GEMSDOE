@@ -26,33 +26,33 @@
     &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;
   },
   &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;n_registry_rasters&quot;: 0,
-    &quot;rho_limit&quot;: null,
-    &quot;overlap_limit&quot;: null,
+    &quot;n_registry_rasters&quot;: 15,
+    &quot;rho_limit&quot;: 0.9,
+    &quot;overlap_limit&quot;: 0.7,
     &quot;worst_abs_spearman_dot_union&quot;: null,
-    &quot;worst_rho_submission&quot;: null,
-    &quot;worst_dot_overlap_3px&quot;: null,
-    &quot;worst_overlap_submission&quot;: null,
-    &quot;unique&quot;: null
+    &quot;worst_rho_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
+    &quot;worst_dot_overlap_3px&quot;: 0.35776653762468563,
+    &quot;worst_overlap_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
+    &quot;unique&quot;: true
   },
-  &quot;raster_sha256&quot;: null,
+  &quot;raster_sha256&quot;: &quot;72055091c70443ced7438f6959631cc42a3e3487d07725ed53e81e66af7ad285&quot;,
   &quot;validator_output&quot;: {
-    &quot;no_nan_anywhere&quot;: null,
-    &quot;in_footprint_all_finite&quot;: null,
-    &quot;range_0_1_guaranteed&quot;: null,
-    &quot;crs_shape_transform_match&quot;: false,
-    &quot;zero_dots_on_mapped_catalogue&quot;: null,
-    &quot;all_checks_passed&quot;: null,
-    &quot;n_checks&quot;: 0
+    &quot;no_nan_anywhere&quot;: true,
+    &quot;in_footprint_all_finite&quot;: true,
+    &quot;range_0_1_guaranteed&quot;: true,
+    &quot;crs_shape_transform_match&quot;: true,
+    &quot;zero_dots_on_mapped_catalogue&quot;: true,
+    &quot;all_checks_passed&quot;: true,
+    &quot;n_checks&quot;: 15
   },
-  &quot;submission_name&quot;: null,
-  &quot;submission_note&quot;: null,
+  &quot;submission_name&quot;: &quot;gems57-h57-faultzone-anatomy-all-flank0-20261009T061833Z-84032f82aca7&quot;,
+  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35389 dots, 0 on-catalogue | sha 84032f82&quot;,
   &quot;sense_of_slip&quot;: {
     &quot;available_in_provided_database&quot;: false,
     &quot;measured_log_ratio_right_over_left&quot;: null,
     &quot;encoded&quot;: false
   },
-  &quot;verdict&quot;: &quot;PENDING&quot;
+  &quot;verdict&quot;: &quot;promote&quot;
 }</pre>
 <h2>How to read it</h2>
 <ul>
@@ -65,7 +65,7 @@ not done here.</li>
 (<code>IR-57-SLIP-01</code>).</li>
 </ul>
 </main>
-<footer>Generated 2026-10-09 05:46 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 06:34 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

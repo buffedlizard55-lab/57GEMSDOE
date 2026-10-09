@@ -103,6 +103,22 @@ def fmt(x, nd=4):
     return esc(x)
 
 
+def verdict(v) -> str:
+    return '<b class="ok">PASS</b>' if v else '<b class="bad">FAIL</b>'
+
+
+def kv(pairs) -> str:
+    return "".join(f"<tr><th>{esc(k)}</th><td>{v}</td></tr>" for k, v in pairs)
+
+
+def kv_rows(d, empty: str = "PENDING") -> str:
+    if not d:
+        return f'<tr><td colspan="2">{esc(empty)}</td></tr>'
+    return "".join(f'<tr><th>{esc(str(k))}</th>'
+                   f'<td><code class="ok">{esc(str(v))}</code></td></tr>'
+                   for k, v in d.items())
+
+
 def page(title: str, body: str, active: str) -> str:
     nav = "".join(
         f'<a class="{"on" if f == active else ""}" href="{f}">{esc(n)}</a>' for f, n in NAV)
@@ -376,7 +392,20 @@ unmapped splay.</li>
 <p>Each feature alone, per fold, no fitting involved. The screen is applied to the
 <b>discriminative</b> AUC <code>max(auc, 1 − auc)</code>, because an AUC of 0.11 is exactly as
 informative as 0.89 — it only means the feature is inversely ranked.</p>
+<h3>Withholding mode <code>all</code> (primary instrument)</h3>
 {canary_table(cv_all)}
+<h3>Withholding mode <code>detached</code> (only components &ge; 4 px from any other)</h3>
+{canary_table(cv_det)}
+<div class="card">
+<b>The canary fires on <code>d</code> and <code>d_perp</code> in mode <code>all</code>, and rule 4
+requires that to be treated as leakage until proven otherwise.</b> It is not label leakage — the
+features are computed from visible traces only and the labels are genuinely hidden pixels. It
+<i>is</i> an external-validity problem: withheld catalogue segments are physically attached to
+visible traces, so near-field distance is almost definitionally informative, whereas a genuinely
+uncatalogued splay need not be. The <code>detached</code> table above is the disproof experiment —
+it withholds only whole components sitting at least 4 px from every other component, breaking that
+attachment. See <code>IR-57-CANARY-02</code> on the irregularities page.
+</div>
 
 <h2>4. What the data actually shows</h2>
 <h3>Distance to the nearest visible fault <span class="tag hold">HOLDOUT-DTI</span></h3>
@@ -536,7 +565,66 @@ holdout bar first.</b> The brief's rule is respected: validation precedes promot
 """
 
 
-def build_results(cv_all, cv_det, build) -> str:
+def _gain(cv):
+    try:
+        v = cv["variants"]
+        return v["anatomy_full"]["pooled"]["pooled_dti"] - v["d_only"]["pooled"]["pooled_dti"]
+    except Exception:
+        return None
+
+
+def _noverk(build, cv=None):
+    """Live dot budget divided by the withheld truth count per draw."""
+    build = build or {}
+    b = build.get("live_dot_budget")
+    try:
+        k = cv["variants"]["anatomy_full"]["pooled"]["n_truth"] / 2.0
+    except Exception:
+        return "?"
+    return f"{b / k:.1f}" if b else "?"
+
+
+def budget_block(rb):
+    if not rb:
+        return "<p>PENDING</p>"
+    rows = ""
+    for r in rb.get("rows", []):
+        rows += (f'<tr><td>{esc(r["submission"])}</td>'
+                 f'<td class="n">{r["n_dots"]:,}</td>'
+                 f'<td class="n">{r["live_score"]:.4f}</td></tr>')
+    b1, b2, b3 = rb["band_lt_50k"], rb["band_ge_50k"], rb["band_35k_46k"]
+    return f"""<p>Across the {rb['n_rasters']} registry rasters with an organizer-confirmed score,
+<b>Spearman(dot count, live score) = {rb['spearman_dots_vs_live']:+.4f}</b>
+(p = {rb['p_value']:.5f}). The relationship is strongly negative, and it is live evidence rather
+than a holdout proxy.</p>
+<table><tr><th>Registry submission</th><th class="n">Dots</th><th class="n">Live score</th></tr>{rows}</table>
+<table><tr><th>Dot band</th><th class="n">n</th><th class="n">Mean live</th><th class="n">Best</th></tr>
+<tr><td>&lt; 50,000</td><td class="n">{b1['n']}</td><td class="n">{b1['mean_live']:.4f}</td><td class="n">{b1['best']:.4f}</td></tr>
+<tr><td>35,000&ndash;46,000</td><td class="n">{b3['n']}</td><td class="n">{b3['mean_live']:.4f}</td><td class="n">&mdash;</td></tr>
+<tr><td>&ge; 50,000</td><td class="n">{b2['n']}</td><td class="n">{b2['mean_live']:.4f}</td><td class="n">{b2['best']:.4f}</td></tr></table>
+<p class="small">The two rasters above 120,000 dots hold the two worst live scores in the registry
+(0.1922, 0.1894).</p>"""
+
+
+def curve_block(rb):
+    if not rb:
+        return "<p>PENDING</p>"
+    nrs = sorted({c["n_over_K"] for c in rb["dti_vs_coverage_curve"]})
+    covs = sorted({c["coverage"] for c in rb["dti_vs_coverage_curve"]})
+    lut = {(c["coverage"], c["n_over_K"]): c["dti"] for c in rb["dti_vs_coverage_curve"]}
+    head = "".join(f'<th class="n">n/K = {nr:g}</th>' for nr in nrs)
+    body = ""
+    for cv in covs:
+        cells = "".join(f'<td class="n">{lut[(cv, nr)]:.4f}</td>' for nr in nrs)
+        body += f'<tr><td class="n">{cv:.3f}</td>{cells}</tr>'
+    return (f'<table><tr><th class="n">Coverage of truth</th>{head}</tr>{body}</table>'
+            f'<p class="small">Exact metric, synthetic fields at the measured base rate '
+            f'{rb["base_rate"]} with sum(k) = {rb["sum_kernel"]}. A perfect prediction scores '
+            f'{rb["perfect_prediction_dti"]}.</p>')
+
+
+def build_results(cv_all, cv_det, build, rb=None) -> str:
+    build = build or {}
     def block(cv, label):
         if not cv:
             return f"<h3>{label}</h3><p>PENDING</p>"
@@ -582,10 +670,45 @@ not by hand. The holdout selected <b>{esc(sel)} px</b>.</p>
 <table><tr><th class="n">Excluded flank</th><th class="n">Pooled DTI</th>
 <th class="n">Coverage</th><th class="n">Dots</th></tr>{frows or '<tr><td colspan="4">PENDING</td></tr>'}</table>
 
-<h2>Budget</h2>
-<p>The dot budget is the per-draw total the holdout selected: <b>{esc((build or {}).get("live_dot_budget","PENDING"))}</b>.
-One draw of four quadrant cells covers the footprint once, so that total transfers directly.
-No projected live score is attached to it.</p>
+<h2>The dot budget, and why the holdout's own optimum was overruled</h2>
+<p>The allocator's unconstrained holdout optimum is <b>{esc((build or {}).get("holdout_dot_budget","PENDING"))}</b>
+dots per draw, about {esc(str(_noverk(build, cv_all)))}x the withheld truth count per draw. That was <b>not</b> shipped.</p>
+{budget_block(rb)}
+<p>The cap shipped is <b>{esc((build or {}).get("live_dot_budget","PENDING"))}</b>, inside the band every
+top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
+unconstrained {fmt(((build or {}).get("flank_best_holdout") or {}).get("pooled_dti"))} vs
+capped {fmt(((build or {}).get("holdout_at_capped_budget") or {}).get("pooled_dti"))}. The cap is
+bought with measured holdout DTI because the live evidence says the holdout is wrong here
+(&rho; = +0.14, IR-57-BUDGET-01).</p>
+
+<h2>Why 0.2778 won, and whether higher is achievable</h2>
+<p>Substituting the binary algebra, <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>, where
+<code>T</code> is covered truth credit, <code>n</code> the dot count, <code>M</code> the dots' total
+self-credit and <code>K</code> the number of true new-fault pixels. Two things follow.</p>
+<p><b>1. The ceiling is 1.0, not 0.5556.</b> A perfect prediction has <code>n = M = T = K</code>, so
+<code>D = 0.2K + 0.8K = K</code> and <code>DTI = 1</code>. Verified against the brute-force
+implementation. (0.05556 is a different number: it is the marginal acceptance bar
+<code>alpha * DTI</code> at DTI = 0.2778.)</p>
+<p><b>2. At the real base rate, DTI is close to the covered fraction of the truth — but only while
+the dot budget stays comparable to <code>K</code>.</b> The grid is sparse: with ~5,660 true pixels in
+~2.56 M cells the base rate is 0.00221, and a <i>random</i> pixel lands within 3 px of a true one
+only {esc(str(round((rb or {}).get("random_hit_prob", 0.021), 4)))} of the time. Measured with the exact
+metric on synthetic fields at that density:</p>
+{curve_block(rb)}
+<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3162</b> at half the truth count
+in dots and only <b>0.1809</b> at six times it. That is the whole story of 0.2778. It is roughly
+<b>28% coverage of the live truth set achieved at a near-matched dot budget</b> — and the reason
+nothing sprayed more dots beat it is that beyond <code>n &asymp; 2K</code> every extra dot costs
+0.2 in the denominator while returning far less than 0.2 in credit.</p>
+<p><b>Is higher achievable?</b> Yes, and the route is arithmetic rather than clever: DTI tracks
+coverage roughly one-for-one while <code>n &lesssim; 2K</code>, so the 0.3774 high-water mark implies
+about 40% coverage at a matched budget. Beating 0.2778 therefore needs roughly ten points more
+coverage at the same budget. This lane measured a real coverage gain over distance-only
+({fmt(_gain(cv_all))} DTI, mode <code>all</code>; {fmt(_gain(cv_det))} mode <code>detached</code>, with
+disjoint confidence intervals), which is the right direction — but on <i>withheld catalogue
+pixels</i>, which cling to visible traces. Whether that transfers to genuinely uncatalogued faults
+is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
+does. No projected live score is claimed anywhere on this site.</p>
 """
 
 
@@ -655,8 +778,42 @@ IRREG = [
  ("IR-57-CANARY-01", "Naive AUC screen would pass an inverse predictor", "FIXED",
   "Rule 4 screens on 'AUC above 0.90'. Distance has a raw AUC of 0.1147 — highly predictive, but "
   "inversely ranked, so a naive > 0.90 test reads it as uninformative.",
-  "The screen is applied to max(AUC, 1 - AUC). Distance scores 0.8853, below the 0.90 threshold, so "
-  "the canary passes honestly rather than by accident."),
+  "The screen is applied to max(AUC, 1 - AUC)."),
+ ("IR-57-CANARY-02", "The canary DOES fire on distance, and the flag is justified", "OPEN, MITIGATED",
+  "On the discriminative screen, d scores 0.9000 and d_perp 0.9013 — at or above the 0.90 bar. By "
+  "rule 4 that is leakage until proven otherwise. It is not label leakage (the feature is computed "
+  "from visible traces only, the labels are genuinely hidden pixels), but it IS an external-validity "
+  "problem: withheld catalogue segments are physically attached to visible traces, so near-field "
+  "distance is almost definitionally informative. Genuinely uncatalogued faults need not be.",
+  "Measured the disproof: the detached mode withholds only whole components sitting >= 4 px from any "
+  "other component, breaking that attachment. Distance's discriminative AUC falls there, and the "
+  "anatomy model's gain over distance-only persists (0.2538 vs 0.1816 detached; 0.2517 vs 0.1845 "
+  "all). See the canary table on the method page for both modes side by side."),
+ ("IR-57-RHO-01", "The uniqueness screen's rank statistic was degenerate and flagged everything",
+  "FIXED",
+  "The first build reported unique=False with |rho| = 0.9924 vs gate_ortho_w0.25-40k. The statistic "
+  "was Spearman over the union of two dot supports, taken in absolute value. On a union both arrays "
+  "are 0/1 indicators of near-disjoint sets, so the correlation is the phi coefficient of two "
+  "NEGATIVELY associated indicators and sits near -1 for every pair. Measured over the registry "
+  "itself, gate_ortho and h19-4-multiline — different lanes, live 0.2376 vs 0.1894, Jaccard 0.022 — "
+  "give rho = -0.9408. abs() therefore flags all 15 registry rasters as duplicates of each other. "
+  "It is also NaN whenever one support contains the other, so it cannot detect an exact re-export.",
+  "The operative rank statistic is now Spearman over the full footprint, signed: +1.0000 for an exact "
+  "copy and 0.0003-0.0109 for all 15 distinct registry rasters, so the 0.90 bar separates cleanly. "
+  "Set agreement is carried by Jaccard (limit 0.50; a 90% copy scores 0.8198) and by 3 px dot "
+  "overlap (limit 0.70). The dot-union rho is still reported, never thresholded. Shipped raster: "
+  "worst rho 0.0109, worst Jaccard 0.0096, worst overlap 0.3578 — unique on all three."),
+ ("IR-57-BUDGET-01", "The holdout-optimal dot budget contradicts the live evidence", "RESOLVED BY EVIDENCE",
+  "The allocator's holdout optimum is 69,623 dots per draw, roughly 6x the withheld truth count. But "
+  "Spearman(dot count, organizer-confirmed live score) over the 15 registry rasters is -0.8104: the "
+  "two rasters above 120,000 dots are the two worst live scores (0.1894, 0.1922), and all eleven "
+  "rasters between 35k and 46k average 0.2643 with the best at 0.2778. The holdout rewards spraying "
+  "because its withheld pixels cling to visible traces; live faults do not have to.",
+  "Capped the live budget at 40,000, inside the band every top performer occupies, and reported the "
+  "holdout DTI at that capped budget alongside the unconstrained optimum so the cost of the cap is "
+  "visible rather than hidden. The holdout-to-live rank correlation for this instrument is only "
+  "+0.14 (12 live scores, sibling repository), which is why live evidence outranks holdout evidence "
+  "on this decision."),
 ]
 
 
@@ -772,11 +929,17 @@ def build_runcard(build, cv_all, meas) -> str:
         },
         "correlation_overlap_vs_registry": {
             "n_registry_rasters": len(uq.get("rows", [])),
-            "rho_limit": uq.get("rho_limit"), "overlap_limit": uq.get("overlap_limit"),
-            "worst_abs_spearman_dot_union": uq.get("worst_abs_spearman_dot_union"),
+            "rho_limit": uq.get("rho_limit"),
+            "jaccard_limit": uq.get("jaccard_limit"),
+            "overlap_limit": uq.get("overlap_limit"),
+            "worst_spearman_full_footprint": uq.get("worst_spearman_full_footprint"),
             "worst_rho_submission": uq.get("worst_rho_submission"),
+            "worst_jaccard_dot_sets": uq.get("worst_jaccard_dot_sets"),
+            "worst_jaccard_submission": uq.get("worst_jaccard_submission"),
             "worst_dot_overlap_3px": uq.get("worst_dot_overlap"),
             "worst_overlap_submission": uq.get("worst_overlap_submission"),
+            "dot_union_rho_note": ("reported but NOT thresholded: structurally near -1 for "
+                                   "any two sparse binary rasters, see IR-57-RHO-01"),
             "unique": uq.get("unique"),
         },
         "raster_sha256": z.get("sha256"),
@@ -821,7 +984,8 @@ not done here.</li>
 def main() -> None:
     build = load("submission_build_all.json")
     cv_all = load("cv_all.json")
-    cv_det = load("cv_det.json")
+    rb = load("registry_budget.json")
+    cv_det = load("cv_detached.json") or load("cv_det.json")
     meas = load("withheld_structure.json")
     reg = (ROOT / "registry" / "registry_index.json")
     uniq_src = json.loads(reg.read_text()) if reg.exists() else []
@@ -836,7 +1000,7 @@ def main() -> None:
         "executive-summary.html": ("How to submit", build_exec(build), "executive-summary.html"),
         "method.html": ("Method", build_method(meas, cv_all, cv_det), "method.html"),
         "hypotheses.html": ("Hypotheses", build_hypotheses(), "hypotheses.html"),
-        "results.html": ("Results", build_results(cv_all, cv_det, build), "results.html"),
+        "results.html": ("Results", build_results(cv_all, cv_det, build, rb), "results.html"),
         "irregularities.html": ("Irregularities", build_irregularities(), "irregularities.html"),
         "data-sources.html": ("Data sources", build_sources(), "data-sources.html"),
         "run-card.html": ("Run card", build_runcard(build, cv_all, meas), "run-card.html"),
