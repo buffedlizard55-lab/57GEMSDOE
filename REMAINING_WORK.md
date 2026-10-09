@@ -17,7 +17,7 @@ The holdout instrument withholds *catalogue* pixels. Those pixels are physically
 visible traces, so the near-field distance features are almost definitionally informative.
 A genuinely uncatalogued fault need not be attached to anything.
 
-The sibling repository calibrated this instrument against 12 organizer-confirmed live scores and
+The sibling repository calibrated this instrument against 12 owner-reported live scores and
 measured a rank correlation of **&rho; = +0.14** for the `catalogue_hidden` variant (its
 `drift_corrected_holdout_mean` did better at +0.53, but that variant is not what this lane uses).
 A correlation of +0.14 means the holdout ordering carries almost no information about the live
@@ -49,6 +49,7 @@ Five hypotheses are written up on the hypotheses page. Only one was taken to a h
 | **H57-B** trace-termination stress lobe | **NOT RUN** | Needs a tip-detection feature (endpoints of the skeletonised trace, local curvature at the tip) and a second feature block. Roughly one session of work. The registry already occupies this space with `h32-1-prethin-tip-euler` (0.2649) and `h38-1-hf-euler-r30-r1` (0.2707), so the marginal value is unproven. |
 | **H57-C** damage-zone width proportional to fault length | **FOLDED IN, WEAK** | Entered as `log_len`. Its discriminative AUC is 0.5527 — barely better than a coin flip, because component length is a poor displacement proxy on 1-px-wide traces whose components are truncated by the withholding itself. `IR-57-LEN-01`. |
 | **H57-D** strike-selective gap filling | **NOT RUN** | Justified rather than tested. `sin2` and `cos2` score *exactly* 0.5000 alone, so they are rank-degenerate as marginals and can only act in interaction. A GBM can in principle learn that interaction, but nothing here demonstrates that it did. Needs an explicit interaction feature (e.g. `|sin(2Δθ)|` gated on distance) and a paired holdout run. |
+| **H57-F** recorded sense of slip (INGENIOUS `sense`) as opt-in features | **TESTED, NEGATIVE** | Session 2, experiment 1 of 3, LOQO at shipped density: `no_side_plus_sense` 0.2292 vs `no_side` 0.2279 (paired mean +0.0016, sd 0.0049, positive in 3/4 quadrants, not significant). `evidence/exp_sense_loqo_all.json`. Not promoted; no slot used. |
 | **H57-E** scarp curvature inside the fitted zone | **BLOCKED** | Needs the 420 MB `gems-geodawn-numerical-features.tif` stack or the 1 m DEM. Neither is reachable from this sandbox (no DrivenData auth, Dropbox and `*.github.io` off the allowlist). |
 
 ---
@@ -154,6 +155,21 @@ The cap of 40,000 comes from Spearman(dot count, live score) = **&minus;0.8104**
 
 ## 8. What I would do next, in order
 
+**Session 2 update (2026-10-09).** Done: shipped-density LOQO measurement (0.2279),
+H57-F tested (negative), TRANS-01 row/column fix, CAP-01 per-cell share fix, validator re-run
+against the receipt (identical), labels corrected (OWNER-REPORTED, IR-57-LABEL-01). Not done:
+the LOQO replacement of `build_submission.py` (IR-57-INSAMPLE-01), a shipped-density
+distance-only baseline, and a rebuild of the shipped file under the fixed code. Open items in order:
+
+0. **Distance-only baseline at shipped density** (`d_only`, same LOQO harness). Without it, the
+   gain of the anatomy model over distance cannot be claimed at the shipped density. Cheap: one run.
+0b. **Replace the in-sample holdout** in `scripts/build_submission.py` with LOQO (IR-57-INSAMPLE-01).
+00. **OWNER DECISION (blocks submission): IR-57-UNIQ-03.** The literal forward-overlap gate fired for
+    114 of 644 registry rasters. Either accept a reverse-overlap clearance rule (a protocol change,
+    owner's call) or generate a different candidate. Also itemize the 64 unlisted firings (rerun
+    `scripts/check_uniqueness_full.py`, about 1 hour single-threaded).
+0c. **Rebuild the shipped file** under the fixed code and check that the features are unchanged
+    (the edits are default-off, but the rebuild is the only proof).
 1. **Spend two slots on the transfer question** (limitation 1). Without that observation nothing
    else can be prioritised sensibly.
 2. **Run the H57-B tip-lobe hypothesis**, since terminations are the one structural feature the

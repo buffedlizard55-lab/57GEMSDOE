@@ -244,17 +244,53 @@ def rasterize_traces(csv_path, shape, transform) -> tuple[np.ndarray, "object"]:
     inv = ~transform
     H, W = shape
     mask = np.zeros((H, W), bool)
-    r0, c0 = (inv * (tr.x0.values, tr.y0.values))
-    r1, c1 = (inv * (tr.x1.values, tr.y1.values))
+    # ``Affine * (x, y)`` returns (col, row), NOT (row, col).  Named accordingly.
+    # (IR-57-TRANS-01: the earlier version swapped the two and rasterised traces
+    # transposed -- 1.8 % of catalogue cells near its traces instead of 100 %.)
+    c0, r0 = (inv * (tr.x0.values, tr.y0.values))
+    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
     r0 = np.asarray(r0).astype(int); c0 = np.asarray(c0).astype(int)
     r1 = np.asarray(r1).astype(int); c1 = np.asarray(c1).astype(int)
-    for a, b, cc, d in zip(r0, c0, r1, c1):
+    for a, b, cc, d in zip(c0, r0, c1, r1):
         npts = max(abs(b - a), abs(d - cc)) + 1
-        rr = np.linspace(a, b, npts).astype(int)
-        ccc = np.linspace(cc, d, npts).astype(int)
+        rr = np.linspace(b, d, npts).astype(int)     # rows
+        ccc = np.linspace(a, cc, npts).astype(int)   # cols
         ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
         mask[rr[ok], ccc[ok]] = True
     return mask, tr
+
+
+SENSE_CODE = {"N": 1, "RL": 2, "LL": 3}   # 0 = no recorded sense (or no trace)
+
+
+def trace_sense_raster(csv_path, shape, transform) -> np.ndarray:
+    """int8 raster of recorded sense of slip on the INGENIOUS trace grid.
+
+    0 = no trace / no recorded sense, 1 = N (normal), 2 = RL, 3 = LL.  Built from
+    the ``sense`` column of ``data/external/trace_segments_utm11.csv`` (1,126
+    records; RL 87, LL 76, N 868, blank 95 -- the strike-slip records are the
+    ones the sense-of-slip feature needs).  Same convention as
+    ``rasterize_traces`` (``Affine * (x, y)`` -> (col, row)).
+    """
+    import pandas as pd
+    tr = pd.read_csv(csv_path)
+    inv = ~transform
+    H, W = shape
+    out = np.zeros((H, W), np.int8)
+    c0, r0 = (inv * (tr.x0.values, tr.y0.values))
+    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
+    codes = tr["sense"].map(SENSE_CODE).fillna(0).astype(np.int8).values
+    for a, b, cc, d, code in zip(np.asarray(c0).astype(np.int64), np.asarray(r0).astype(np.int64),
+                                 np.asarray(c1).astype(np.int64), np.asarray(r1).astype(np.int64),
+                                 codes):
+        if code == 0:
+            continue
+        npts = max(abs(b - d), abs(a - cc)) + 1
+        rr = np.linspace(b, d, npts).astype(np.int64)
+        ccc = np.linspace(a, cc, npts).astype(np.int64)
+        ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
+        out[rr[ok], ccc[ok]] = code
+    return out
 
 
 SENSE_CLASSES = ("RL", "LL", "N", "unk")
@@ -274,15 +310,15 @@ def ingenious_record_segments(csv_path, shape, transform):
     inv = ~transform
     H, W = shape
     tmap = np.zeros((H, W), dtype=np.int32)
-    r0, c0 = (inv * (tr.x0.values, tr.y0.values))
-    r1, c1 = (inv * (tr.x1.values, tr.y1.values))
+    c0, r0 = (inv * (tr.x0.values, tr.y0.values))   # (col, row), see rasterize_traces
+    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
     pix_rows = []
-    for i, (a, b, cc, d) in enumerate(zip(np.asarray(r0).astype(np.int64), np.asarray(c0).astype(np.int64),
-                                         np.asarray(r1).astype(np.int64), np.asarray(c1).astype(np.int64)),
+    for i, (a, b, cc, d) in enumerate(zip(np.asarray(c0).astype(np.int64), np.asarray(r0).astype(np.int64),
+                                         np.asarray(c1).astype(np.int64), np.asarray(r1).astype(np.int64)),
                                        start=1):
         npts = max(abs(b - a), abs(d - cc)) + 1
-        rr = np.linspace(a, b, npts).astype(np.int64)
-        ccc = np.linspace(cc, d, npts).astype(np.int64)
+        rr = np.linspace(b, d, npts).astype(np.int64)    # rows
+        ccc = np.linspace(a, cc, npts).astype(np.int64)  # cols
         ok = (rr >= 0) & (rr < H) & (ccc >= 0) & (ccc < W)
         rr = rr[ok]; ccc = ccc[ok]
         tmap[rr, ccc] = i
