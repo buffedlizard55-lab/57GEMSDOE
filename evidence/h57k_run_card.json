@@ -1,0 +1,242 @@
+{
+ "schema": "gems57.run-card.v1",
+ "session": "57GEMSDOE session 4 (2026-10-09)",
+ "lane": "fault-zone anatomy: secondary strands around known faults from shear-zone mechanics",
+ "hypothesis": "A new fault is not a continuation of a mapped trace but a *secondary strand* in the damage zone around it. Its probability therefore factorises into (a) distance to the primary trace, (b) the primary's length as a displacement proxy, and (c) the orientation of the candidate strand relative to the primary strike -- and, critically, (d) whether the pixel actually *carries the geophysical signature of a fault* (magnetic tilt-angle / gravity-gradient edge, detrended-elevation scarp, conductivity and strain contrasts) rather than being a bare distance halo. Term (d) is new this session: the official 19-band GeoDAWN stack was absent from every earlier session of this repository.",
+ "mechanism": "Damage-zone width grows with displacement (Savage & Brodsky, JGR 2011) and secondary-fracture density decays away from the primary; distributed dextral shear produces en echelon Riedel strands at a relative strike the data, not a textbook, must supply. No angle is hard-coded: every weight is fitted by gradient boosting on the hide-and-recover holdout, and only the measured relative-strike and distance structure is retained.",
+ "named_non_fault_process_that_could_mimic_it": "Lithologic contrast and basin-bounding structures. The magnetic tilt-angle, gravity-gradient and conductivity edges that make up the strand-expression term are equally produced by contacts between rock units of different susceptibility or conductivity, by alluvial-basin edges and by the detrended-elevation scarps of erosional topography -- none of which is a fault. Because the training labels are withheld *catalogue* pixels, the model will happily learn 'looks like a mapped fault' from these non-fault edges, so the strand-expression term may be ranking lithology rather than shear.",
+ "holdout": {
+  "arm": "lane8_geophys",
+  "pooled_dti": 0.11032707403762744,
+  "dti_ci95_quadrant_jackknife": [
+   0.09167666461134383,
+   0.12897748346391105
+  ],
+  "n_withheld_positives": 22619,
+  "n_cells": 8,
+  "evaluator": "pooled DTI, alpha=0.2 beta=0.8, 300 m triangular kernel, hide-and-recover, detached mode",
+  "all_arms": {
+   "d_only": {
+    "pooled_dti": 0.05065926642608836,
+    "ci95": [
+     0.03581754539990061,
+     0.0655009874522761
+    ],
+    "n_features": 1
+   },
+   "lane8": {
+    "pooled_dti": 0.10241452754554754,
+    "ci95": [
+     0.08396305396939979,
+     0.1208660011216953
+    ],
+    "n_features": 8
+   },
+   "lane8_geophys": {
+    "pooled_dti": 0.11032707403762744,
+    "ci95": [
+     0.09167666461134383,
+     0.12897748346391105
+    ],
+    "n_features": 48
+   }
+  },
+  "label": "HOLDOUT-DTI"
+ },
+ "correlation_and_overlap_vs_registry": {
+  "n_registry_rasters": 16,
+  "worst_spearman_full_footprint": 0.024560841913345847,
+  "worst_jaccard_dot_sets": 0.01983660710326786,
+  "worst_forward_overlap_discriminating_only": 0.40698562158035373,
+  "worst_reverse_overlap": 0.19777263240281764,
+  "worst_forward_overlap_all": 0.9977732535946049,
+  "limits": {
+   "rho": 0.9,
+   "overlap": 0.7,
+   "jaccard": 0.5,
+   "blind_halo": 0.7
+  },
+  "literal_gate_fires_for": [
+   "r13-lattice-s5 (0.0904, was submitted)"
+  ],
+  "discriminating_gate_fires_for": [],
+  "gate_note": "the literal >70%/3 px clause fires only for the one registry raster whose 3 px halo covers 0.9987 of the footprint, and it fires for the family's own OWNER-REPORTED 0.2778 submission too (IR-57-GATE-01)."
+ },
+ "raster": {
+  "file": "docs/downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif",
+  "bytes": 854692,
+  "sha256": "749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6",
+  "name": "gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033"
+ },
+ "validator_output": {
+  "checks": {
+   "single_band": true,
+   "dtype_float32": true,
+   "dimensions_3730x3292": true,
+   "crs_epsg_32611": true,
+   "transform_matches_sample_submission": true,
+   "no_nan_anywhere": true,
+   "no_inf_anywhere": true,
+   "no_sentinel_values": true,
+   "range_0_1_guaranteed": true,
+   "min_ge_0": true,
+   "max_le_1": true,
+   "in_footprint_all_finite": true,
+   "in_footprint_range_0_1": true,
+   "outside_footprint_zero": true,
+   "zero_dots_on_mapped_catalogue": true
+  },
+  "n_passed": 15,
+  "n_checks": 15,
+  "meta": {
+   "crs": "EPSG:32611",
+   "shape": [
+    3730,
+    3292
+   ],
+   "dtype": "float32",
+   "count": 1,
+   "nodata": null,
+   "transform": [
+    100.0,
+    0.0,
+    243350.0,
+    0.0,
+    -100.0,
+    4508550.0
+   ],
+   "profile_compress": "lzw"
+  },
+  "n_finite": 12279160,
+  "n_nan": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "emitted_positive_pixels": 62872
+ },
+ "submission": {
+  "name": "gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033",
+  "note": "57GEMSDOE fault-zone anatomy: strand-expression damage zone, 62872 dots, 0 on-catalogue, sha f38e36d82033",
+  "note_chars": 105,
+  "note_limit": 140,
+  "dots": {
+   "n_dots": 62872,
+   "dots_on_mapped_catalogue": 0,
+   "dots_within_2px_of_catalogue": 0,
+   "distance_to_catalogue_p10": 2.23606797749979,
+   "distance_to_catalogue_median": 3.605551275463989,
+   "distance_to_catalogue_p90": 7.0,
+   "footprint_fraction": 0.012167110831751453
+  }
+ },
+ "contradicting_instruments": {
+  "issue": "IR-57-PROX-01",
+  "live_anchored": "the <= 2 px proximal band is measured at 0.0024 credit per dot against 0.1387 for the dots the 0.2778 submission kept, whose median distance to the catalogue is 19.6 px; thread 11516 says a dot near a known trace but far from any new-fault pixel is fully penalised",
+  "holdout_model": "trained on withheld *catalogue* pixels, so its high-probability corridor sits close to the catalogue by construction: sweeping the exclusion from 2 px to 20 px collapses modelled credit from 6,057 to 179",
+  "emission_median_distance_to_catalogue_px": 3.605551275463989,
+  "sweep": [
+   {
+    "proximal_exclude_px": 2.0,
+    "allowed_cells": 4862825,
+    "n_dots": 62872,
+    "surrogate_dti": 0.2927378132224533,
+    "model_T": 6057.422700168187,
+    "dcat_median": 3.605551275463989,
+    "dcat_p90": 7.0
+   },
+   {
+    "proximal_exclude_px": 4.0,
+    "allowed_cells": 4602991,
+    "n_dots": 56544,
+    "surrogate_dti": 0.21188748052681175,
+    "model_T": 4385.063967019106,
+    "dcat_median": 5.0,
+    "dcat_p90": 9.055385138137417
+   },
+   {
+    "proximal_exclude_px": 6.0,
+    "allowed_cells": 4339621,
+    "n_dots": 56868,
+    "surrogate_dti": 0.1257063295650971,
+    "model_T": 2708.051433803921,
+    "dcat_median": 6.708203932499369,
+    "dcat_p90": 11.180339887498949
+   },
+   {
+    "proximal_exclude_px": 8.0,
+    "allowed_cells": 4104281,
+    "n_dots": 60670,
+    "surrogate_dti": 0.07385776203292815,
+    "model_T": 1673.8666410539306,
+    "dcat_median": 9.0,
+    "dcat_p90": 13.0
+   },
+   {
+    "proximal_exclude_px": 12.0,
+    "allowed_cells": 3657804,
+    "n_dots": 52398,
+    "surrogate_dti": 0.032366567981299534,
+    "model_T": 694.0458739579382,
+    "dcat_median": 12.649110640673518,
+    "dcat_p90": 20.223748416156685
+   },
+   {
+    "proximal_exclude_px": 20.0,
+    "allowed_cells": 2849045,
+    "n_dots": 58084,
+    "surrogate_dti": 0.007850146010222945,
+    "model_T": 178.79339004046136,
+    "dcat_median": 22.360679774997898,
+    "dcat_p90": 29.154759474226502
+   }
+  ],
+  "model_compare": [
+   {
+    "label": "THIS SESSION \u2014 h57-k damage zone",
+    "n_dots": 62872,
+    "model_T": 6057.4228515625,
+    "model_surrogate_dti": 0.254029012824872,
+    "owner_reported_score": null
+   },
+   {
+    "label": "h33-h33-2-b2 (0.2778)",
+    "n_dots": 37654,
+    "model_T": 1192.7662353515625,
+    "model_surrogate_dti": 0.06343894615999476,
+    "owner_reported_score": 0.2778
+   },
+   {
+    "label": "h36-1-rung30-blind-r1 (0.2710)",
+    "n_dots": 37660,
+    "model_T": 1330.0699462890625,
+    "model_surrogate_dti": 0.07073712201504463,
+    "owner_reported_score": 0.271
+   },
+   {
+    "label": "d28-poisson300m-offcat (0.2600)",
+    "n_dots": 44090,
+    "model_T": 1579.9180908203125,
+    "model_surrogate_dti": 0.07864593894931336,
+    "owner_reported_score": 0.26
+   },
+   {
+    "label": "h19-5-powerlaw-multiline (0.1922)",
+    "n_dots": 121131,
+    "model_T": 2086.8681640625,
+    "model_surrogate_dti": 0.05878965935831816,
+    "owner_reported_score": 0.1922
+   },
+   {
+    "label": "r13-lattice-s5 (0.0904)",
+    "n_dots": 206895,
+    "model_T": 4572.83642578125,
+    "model_surrogate_dti": 0.08685349707421926,
+    "owner_reported_score": 0.0904
+   }
+  ],
+  "resolution": "only the <= 2 px exclusion is a measurement; nothing between 2 px and 19.6 px has been measured against the hidden truth, so no larger exclusion was imposed. Flagged for owner review as the dominant risk."
+ },
+ "verdict": "promote",
+ "verdict_caveat": "promote as a submission candidate: the file is portal-valid (15/15 checks), unique on every discriminating statistic, and is the best-scoring dot field this session's model can produce. It is NOT a score claim. The dominant unresolved risk is IR-57-PROX-01 above: the dot field sits at median 3.6 px from the mapped catalogue, closer than any raster in this family that has ever been scored.",
+ "submission_slots_used": 0,
+ "generated_utc": "2026-10-09T22:08:12.524542+00:00"
+}

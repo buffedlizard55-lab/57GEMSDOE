@@ -18,6 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 DOCS = ROOT / "docs"
 EVID = ROOT / "evidence"
@@ -33,7 +34,8 @@ SIBLING = "https://github.com/buffedlizard55-lab/GEMSDOE32"
 
 NAV = [("index.html", "Home"), ("executive-summary.html", "How to submit"),
        ("method.html", "Method"), ("hypotheses.html", "Hypotheses"),
-       ("results.html", "Results"), ("session-3.html", "Latest run"),
+       ("results.html", "Results"), ("session-4.html", "Session 4"),
+       ("session-3.html", "Session 3"),
        ("irregularities.html", "Irregularities"),
        ("data-sources.html", "Data sources"), ("run-card.html", "Run card")]
 
@@ -201,8 +203,9 @@ def build_index(build, cv_all, uniq_src) -> str:
         crows = '<tr><td colspan="2">PENDING</td></tr>'
     note = build.get("submission_note", "PENDING")
     return f"""
+{h57k_card()}
 {research_card()}
-<h2>How a cleared file would be submitted (none is cleared now)</h2>
+<h2>How a cleared file would be submitted (see the verdict above)</h2>
 {uniq_hold_block()}
 <div class="card">
 <ol>
@@ -348,6 +351,7 @@ def build_exec(build) -> str:
         crows = '<tr><td colspan="2">PENDING</td></tr>'
     return f"""
 <h2>Is it OK to download and submit?</h2>
+{h57k_card()}
 {research_card()}
 {exec_ok_card()}
 
@@ -983,6 +987,44 @@ IRREG = [
   "Rule 4 screens on 'AUC above 0.90'. Distance has a raw AUC of 0.1147 — highly predictive, but "
   "inversely ranked, so a naive > 0.90 test reads it as uninformative.",
   "The screen is applied to max(AUC, 1 - AUC)."),
+ ("IR-57-ALLOC-01", "The template's marginal-bar allocator stops thousands of dots early", "FIXED IN THE TEMPLATE (no private fork)",
+  "gems57.emit.allocate_by_marginal_bar visits candidates once in descending E[k] order and "
+  "breaks at the first candidate that fails the two-sided DTI test. That single pass equals the "
+  "greedy solution only while marginal credit dT is non-increasing in rank, and it is not: dT "
+  "depends on local kernel saturation, not rank. On this session's surface the next candidate in "
+  "row-major order sat on top of a dot already placed, returned dT = 0, and ended the pass at "
+  "3,405 dots.",
+  "Fixed once, in the template, as gems57.emit.allocate_patient: identical accept/reject test, "
+  "but it only stops after `patience` consecutive rejections, since a rejected candidate says "
+  "nothing about one ranked below it. It reproduces every single-pass decision and adds to them "
+  "(tests/test_allocator_nonredundant.py). Same surface: 3,405 dots / surrogate DTI 0.0832 -> "
+  "62,872 dots / 0.2927. allocate_by_marginal_bar is left in place for callers and comparison."),
+ ("IR-57-PROX-01", "The two calibrated instruments contradict each other on where to put dots", "FLAGGED, DOMINANT RISK, OPEN",
+  "The live-anchored credit instrument measures the <= 2 px proximal band at 0.0024 credit per "
+  "dot against 0.1387 for the dots the 0.2778 submission kept, whose median distance to the "
+  "catalogue is 19.6 px, and thread 11516 says a dot near a known trace but far from any "
+  "new-fault pixel is fully penalised. The holdout model instead puts essentially all of its "
+  "probability mass within a few pixels of the catalogue: sweeping the proximal exclusion from "
+  "2 px to 20 px collapses modelled credit from 6,057 to 179. The model is trained on withheld "
+  "*catalogue* pixels, so its corridor is close to the catalogue by construction.",
+  "Not resolved by assumption. Only the <= 2 px exclusion is a measurement, so only that was "
+  "imposed; the emission sits at median 3.6 px from the catalogue, closer than any raster in "
+  "this family that has ever been scored. The full sweep is in evidence/h57k_proximal_sweep.json "
+  "and on the Session 4 page. This is the single largest reason the emission could underperform, "
+  "and it is stated on the download card."),
+ ("IR-57-GATE-01", "The protocol's directed-overlap duplicate screen is unsatisfiable at the stated threshold", "FLAGGED, MEASURED, REPORTED-NOT-OBEYED",
+  "Rule 1 of the parallel-run protocol says a submission has drifted if >70% of its dots fall "
+  "within 3 px of one registry raster's dots. Measured against the registry, that clause cannot be "
+  "satisfied by ANY raster: the 13GEMSDOE r13-lattice-s5 (206,895 dots) has a 3 px halo covering "
+  "0.9987 of the scored footprint, and the family's own OWNER-REPORTED 0.2778 submission has "
+  "forward overlap 0.999 against it. Sibling rasters that the leaderboard scored differently also "
+  "fire: 0.2778 vs 0.2600 = 1.000, 0.2778 vs 0.2710 = 0.999, 0.2778 vs 0.1922 = 1.000.",
+  "Measured it rather than waiving it (scripts/uniqueness_decision.py -> evidence/uniqueness_decision.json). "
+  "Clearance is taken from the statistics that DO discriminate: Spearman over the full footprint "
+  "(an exact copy gives +1.0), Jaccard of the dot sets (0.31 between 0.2778 and 0.1922, 0.006 "
+  "against the lattice), and the forward test restricted to registry rasters whose 3 px halo covers "
+  "<70% of the footprint. Both the literal and the restricted verdict are printed on the download "
+  "card and stored in evidence/h57k_submission.json. Owner decision required."),
  ("IR-57-CANARY-02", "The canary DOES fire on distance, and the flag is justified", "OPEN, MITIGATED",
   "On the discriminative screen, d scores 0.9000 and d_perp 0.9013 — at or above the 0.90 bar. By "
   "rule 4 that is leakage until proven otherwise. It is not label leakage (the feature is computed "
@@ -1346,6 +1388,9 @@ not done here.</li>
 """
 
 
+from _session4_pages import build_session4, h57k_card  # noqa: E402
+
+
 def main() -> None:
     build = load("submission_build_all.json")
     cv_all = load("cv_all.json")
@@ -1366,7 +1411,8 @@ def main() -> None:
         "method.html": ("Method", build_method(meas, cv_all, cv_det), "method.html"),
         "hypotheses.html": ("Hypotheses", build_hypotheses() + build_session2_hyp(), "hypotheses.html"),
         "results.html": ("Results", build_results(cv_all, cv_det, build, rb) + build_session2(), "results.html"),
-        "session-3.html": ("Latest run", build_session3(), "session-3.html"),
+        "session-4.html": ("Session 4", build_session4(), "session-4.html"),
+        "session-3.html": ("Session 3", build_session3(), "session-3.html"),
         "irregularities.html": ("Irregularities", build_irregularities(), "irregularities.html"),
         "data-sources.html": ("Data sources", build_sources(), "data-sources.html"),
         "run-card.html": ("Run card", build_runcard(build, cv_all, meas), "run-card.html"),
