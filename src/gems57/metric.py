@@ -1,159 +1,216 @@
-"""Distance-weighted Tversky index -- literal transcription of the published metric.
+"""Distance-Weighted Tversky Index (DTI) for the DOE GEMS Prize Challenge.
 
-Source of truth (read 2026-10-06, agent fetch):
-    https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/#performance-metric
+Metric definition transcribed from the official problem description
+(DrivenData competition 306, page 967) and cross-checked against the shared
+template implementation in ``GEMSDOE32/src/gems32/metric.py`` (cloned from
+https://github.com/buffedlizard55-lab/GEMSDOE32, commit-verified locally).
 
-Published definitions, with R = 300 m, alpha = 0.2, beta = 0.8:
+Definitions
+-----------
+Triangular kernel, radius R = 300 m = 3 px at the 100 m grid::
 
-    k(d)  = max(1 - d/R, 0)                                   (triangular kernel)
-    TPw   = sum_{g in G} max_{x : d(x,g) <= R} p(x) k(d(x,g))
-    FPw   = sum_{x : p(x) > 0} p(x) [ 1 - max_{g in G} k(d(x,g)) ]
-    FNw   = sum_{g in G} [ 1 - max_{x : d(x,g) <= R} p(x) k(d(x,g)) ]
-    DTI   = TPw / (TPw + alpha*FPw + beta*FNw + eps)
+    k(d) = max(1 - d / R, 0)
 
-Algebraic consequences (checked against brute force, not a model of hidden labels):
+Components (G = truth pixels, P = predicted pixels, p(x) = predicted value)::
 
-    (i)  FNw == |G| - TPw identically, hence with T = TPw, S = sum_x p(x),
-         M = sum_x p(x) max_g k(d(x,g))  and  FPw = S - M:
+    TP_w = sum_{g in G} max_{x : d(x,g) <= R} p(x) * k(d(x,g))
+    FP_w = sum_{x : p(x) > 0} p(x) * [1 - max_{g in G} k(d(x,g))]
+    FN_w = |G| - TP_w
+    DTI  = TP_w / (TP_w + alpha*FP_w + beta*FN_w)      alpha = 0.2, beta = 0.8
 
-             DTI = T / ( 0.2*(T + S - M) + 0.8*|G| )
+Binary-dot algebra (used for the emission decision)
+---------------------------------------------------
+For a binary dot field of n dots, write
 
-    (ii) For general incremental credit c and false-positive increment f, an addition helps iff
+* ``T = TP_w = sum_{g in G} max_{x in P} k(d(x,g))``  -- a sum over **truth** cells
+* ``M = sum_{x in P} max_{g in G} k(d(x,g))``         -- a sum over **dots**
 
-             c * (1 - 0.2*DTI) > 0.2*DTI*f.
+so that ``FP_w = n - M`` and the denominator is::
 
-         Only in the special case of one previously uncovered truth pixel, with c=w and f=1-w,
-         does this reduce to w > 0.2*DTI. Max-cover competition between nearby predictions means
-         c is not generally the nearest-truth kernel weight. Calibration and placement still matter.
-         Uniform scaling of a fixed support is monotone, but that one-parameter argument alone is
-         not a proof of global binary optimality or of optimal expected DTI under uncertain truth.
+    D = alpha*(T + n - M) + beta*|G|
 
-The organiser's published worked example (TPw 3.00, FPw 1.89, FNw 2.00) evaluates to
-0.6026516673...; the page rounds it to 0.60.  ``tests/test_metric.py`` pins that number so a
-future edit cannot silently change the metric.
+``T`` and ``M`` are **not** the same quantity: ``T`` saturates at 1 per truth
+cell while ``M`` saturates at 1 per dot, so a cluster of dots around one truth
+cell has ``M > T``.  Collapsing ``D`` to ``alpha*n + beta*|G|`` is only valid
+when ``T == M`` (a near-bijection between dots and truth cells) -- an error
+carried by the shared template's prose and corrected here; the template's own
+:func:`dti_algebra` keeps ``T``, ``S`` and ``M`` separate and is right.
+
+Adding one dot with self-credit ``k = max_g k(d(x,g))`` and marginal truth credit
+``dT`` (``dT <= k``, with equality when the dot covers only truth cells no
+earlier dot already covered) gives ``dD = alpha*(dT + 1 - k)`` and, writing
+``DTI = T / D``,
+
+    new DTI = (T + dT) / (D + alpha*(dT + 1 - k))
+    dDTI > 0  <=>  (T + dT)*D > T*(D + alpha*(dT + 1 - k))
+              <=>  dT > alpha * DTI * (dT + 1 - k)
+
+For a non-redundant dot (``dT == k``) this reduces to the simple bar
+``k > alpha * DTI``, which is the form quoted in the competition literature.
+
+.. warning:: an earlier revision of this module tested ``dT * D > DTI * alpha *
+   (dT + 1 - k)``, which is the same inequality multiplied through by ``D`` on
+   the wrong side only.  Because ``D`` is of order ``beta*K`` (tens of
+   thousands), that form makes the bar smaller by a factor of ``D`` and the
+   greedy allocation never terminates -- it ran to its hard cap and emitted
+   960,000 dots for a HOLDOUT-DTI of 0.0797.  Caught by the DTI-vs-brute-force
+   test suite; see irregularity ``IR-57-BAR-01``.
+:func:`gems57.emit.greedy_allocate` uses the **exact** two-sided test above,
+tracking both ``T`` and ``M``.  All of it is verified against
+:func:`dti_bruteforce` by ``tests/test_metric.py``.
 """
 
 from __future__ import annotations
 
 import numpy as np
-from scipy import ndimage
+from scipy.ndimage import distance_transform_edt
 
-ALPHA = 0.2
-BETA = 0.8
-R_M = 300.0
-PIXEL_M = 100.0
-R_PX = R_M / PIXEL_M          # exactly 3.0 px at 100 m
-EPS = 0.0                      # published eps unquantified; empty denominator explicitly returns zero
-
-
-def kernel(d_m) -> np.ndarray:
-    """Triangular kernel k(d) = max(1 - d/R, 0), distances in metres."""
-    return np.maximum(1.0 - np.asarray(d_m, dtype=np.float64) / R_M, 0.0)
+ALPHA: float = 0.2
+BETA: float = 0.8
+RADIUS_PX: float = 3.0      # 300 m at the 100 m competition grid
+PIXEL_M: float = 100.0
+EPS: float = 1e-12
 
 
-def _offsets() -> list[tuple[int, int, float]]:
-    """All lattice offsets with |offset| <= R, as (dy, dx, k). Enumerated, never approximated."""
-    out = []
-    for dy in range(-3, 4):
-        for dx in range(-3, 4):
-            d = float(np.hypot(dy, dx))
-            if d <= R_PX + 1e-12:
-                out.append((dy, dx, 1.0 - d / R_PX))
-    return out
+def kernel(d, radius: float = RADIUS_PX) -> np.ndarray:
+    """Triangular kernel ``max(1 - d/R, 0)``; ``d`` in pixels."""
+    return np.maximum(1.0 - np.asarray(d, dtype=np.float64) / radius, 0.0)
 
 
-OFFSETS = _offsets()
+def offsets(radius: float = RADIUS_PX) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """All lattice offsets with non-zero kernel weight, and their weights."""
+    r = int(np.ceil(radius))
+    dy, dx, kw = [], [], []
+    for j in range(-r, r + 1):
+        for i in range(-r, r + 1):
+            k = float(kernel(np.hypot(j, i), radius))
+            if k > 0.0:
+                dy.append(j)
+                dx.append(i)
+                kw.append(k)
+    return (np.array(dy, np.int64), np.array(dx, np.int64), np.array(kw, np.float64))
 
 
-def max_cover(p: np.ndarray, g: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Per-truth-pixel best cover m(g), per-pixel best truth weight q(x), and diagnostics.
+OFF_DY, OFF_DX, OFF_K = offsets()
 
-    m     = 1-D, in row-major order over the truth pixels: m[i] = max over emitted x within R of
-            p(x)*k(d(x, g_i))                 (used by TPw and FNw)
-    q[x] = max over truth g of k(d(x,g))                       (used by FPw)
 
-    ``m`` is computed by enumerating the exact lattice offsets inside the kernel disc (no
-    interpolation, no separable approximation), which is what makes it a literal transcription.
-    ``q`` is the kernel applied to the exact Euclidean distance transform, i.e.
-    max_g k(d) = k(min_g d) because k is non-increasing.
+def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> float:
+    """Minimum realised kernel credit ``k`` for one more **non-redundant** dot.
+
+    ``dDTI > 0 <=> k > alpha * DTI`` when the dot's marginal truth credit equals
+    its self-credit.  For a redundant dot use :func:`marginal_accept`, which
+    applies the exact two-sided test.
     """
-    w = np.where(p > 0, p, 0.0).astype(np.float64)
-    # zero-padded shifts, never np.roll: a wrapped edge would invent cover across the grid
-    wp = np.pad(w, 3, mode="constant", constant_values=0.0)
-    idx = g > 0
-    gy, gx = np.nonzero(idx)
-    m = np.zeros(gy.size, dtype=np.float64)
-    for dy, dx, kk in OFFSETS:
-        # Gather truth coordinates before multiplication: 60k values, not a
-        # 12.28M-cell temporary for every offset. Sign is immaterial to the
-        # symmetric kernel but the zero padding is essential.
-        m = np.maximum(m, wp[gy + 3 - dy, gx + 3 - dx] * kk)
-    ed = ndimage.distance_transform_edt(~idx, sampling=PIXEL_M)
-    q = np.maximum(1.0 - ed / R_M, 0.0)
-    return m, q, ed
+    return alpha * float(current_dti)
 
 
-def dti(p: np.ndarray, g: np.ndarray, alpha: float = ALPHA, beta: float = BETA,
-        eps: float = EPS) -> dict:
-    """Exact DTI of prediction ``p`` against truth mask ``g`` (both 2-D, same grid)."""
-    p = np.asarray(p, dtype=np.float64)
-    g = np.asarray(g)
-    if p.shape != g.shape or p.ndim != 2:
-        raise ValueError(f"2D shape mismatch {p.shape} vs {g.shape}")
-    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
-        raise ValueError("predictions must be finite and within [0,1]")
-    if not np.isfinite([alpha, beta, eps]).all() or alpha < 0 or beta < 0 or eps < 0:
-        raise ValueError("metric coefficients and epsilon must be finite and nonnegative")
-    ng = int((g > 0).sum())
-    if ng == 0:
-        return dict(dti=0.0, tpw=0.0, fpw=float(np.nansum(p)), fnw=0.0, n_truth=0,
-                    mass=float(np.nansum(p)), m_covers=0.0, reduced=None)
-    m, q, _ = max_cover(p, g)
-    tpw = float(m.sum())
-    mass = float(p[p > 0].sum())
-    m_cover = float((p * q)[p > 0].sum())
-    fpw = mass - m_cover
-    fnw = ng - tpw
-    num = tpw
-    den = tpw + alpha * fpw + beta * fnw + eps
-    reduced_den = (1 - beta) * tpw + alpha * (mass - m_cover) + beta * ng + eps
-    reduced = tpw / reduced_den if reduced_den > 0 else 0.0
-    return dict(dti=num / den if den > 0 else 0.0, tpw=tpw, fpw=fpw, fnw=fnw, n_truth=ng,
-                mass=mass, m_covers=m_cover, reduced=float(reduced))
+def marginal_accept(dT: float, k_self: float, T: float, M: float, n: int,
+                    K: float, alpha: float = ALPHA, beta: float = BETA) -> bool:
+    """Exact test: does adding one dot raise DTI?
+
+    ``dT`` is the increase in ``TP_w``; ``k_self`` is the dot's own
+    ``max_g k(d(x,g))``; ``T``/``M``/``n`` are the current totals; ``K = |G|``.
+
+    Implemented by recomputing DTI before and after rather than by algebra, so
+    the test cannot drift from the metric.
+    """
+    D0 = alpha * (T + n - M) + beta * K + EPS
+    D1 = alpha * (T + dT + (n + 1) - (M + k_self)) + beta * K + EPS
+    return (T + dT) / D1 > T / D0
 
 
-def dti_bruteforce(p: np.ndarray, g: np.ndarray, alpha: float = ALPHA,
-                   beta: float = BETA) -> float:
-    """Loop-for-loop transcription over the positive sets only. Reference implementation for tests."""
-    pi = np.argwhere(np.asarray(p) > 0)
-    gi = np.argwhere(np.asarray(g) > 0)
-    if len(gi) == 0:
-        return 0.0
-    pv = p[pi[:, 0], pi[:, 1]].astype(np.float64)
-    tpw = 0.0
-    for gxy in gi:
-        if len(pi):
-            d = np.hypot(pi[:, 0] - gxy[0], pi[:, 1] - gxy[1]) * PIXEL_M
-            kk = np.maximum(1.0 - d / R_M, 0.0)
-            best = float(np.max(pv * kk)) if kk.size else 0.0
-            sel = d <= R_M + 1e-9
-            best = float(np.max((pv * kk)[sel])) if sel.any() else 0.0
-        else:
-            best = 0.0
-        tpw += best
-    fpw = 0.0
-    for x in pi:
-        d = np.hypot(gi[:, 0] - x[0], gi[:, 1] - x[1]) * PIXEL_M
-        fpw += float(p[x[0], x[1]]) * (1.0 - (np.max(np.maximum(1.0 - d / R_M, 0.0)) if len(gi) else 0.0))
-    fnw = len(gi) - tpw
-    return tpw / (tpw + alpha * fpw + beta * fnw)
+def dti_from_components(tp: float, fp: float, fn: float,
+                        alpha: float = ALPHA, beta: float = BETA) -> float:
+    return float(tp / (tp + alpha * fp + beta * fn + EPS))
 
 
-def credit_bar(dti_value: float, alpha: float = ALPHA) -> float:
-    """Realised kernel weight a marginal emitted pixel must beat to raise DTI (see module docstring)."""
-    return alpha * dti_value
+def dti_binary(pred_bool, truth, valid=None, known=None,
+               alpha: float = ALPHA, beta: float = BETA) -> dict:
+    """Exact DTI for a binary prediction field via Euclidean distance transforms.
+
+    ``valid`` restricts the scored domain (the study-area footprint); ``known``
+    removes pixels that the organiser masks out of scoring (mapped catalogue
+    faults -- see organiser thread 11516).
+    """
+    pred_bool = np.asarray(pred_bool, bool)
+    truth = np.asarray(truth, bool)
+    valid_ = np.ones(pred_bool.shape, bool) if valid is None else np.asarray(valid, bool)
+    known_ = np.zeros(pred_bool.shape, bool) if known is None else np.asarray(known, bool)
+    if pred_bool.shape != truth.shape or pred_bool.shape != valid_.shape:
+        raise ValueError("grid shape mismatch")
+    active = valid_ & ~known_
+    p = pred_bool & active
+    g = truth & active
+    n = int(g.sum())
+    n_emit = int(p.sum())
+    if n == 0:
+        return dict(tp=0.0, fp=float(n_emit), fn=0.0, n_truth=0, n_emitted=n_emit,
+                    dti=0.0, coverage=0.0)
+    if n_emit == 0:
+        return dict(tp=0.0, fp=0.0, fn=float(n), n_truth=n, n_emitted=0,
+                    dti=0.0, coverage=0.0)
+    dp = distance_transform_edt(~p)
+    tp = float(kernel(dp[g]).sum())
+    fn = float(n) - tp
+    dg = distance_transform_edt(~g)
+    fp = float((1.0 - kernel(dg[p])).sum())
+    return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=n_emit,
+                dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
-def bar_to_max_distance_px(bar: float) -> float:
-    """Kernel weight bar -> the largest lattice distance (px) that still clears it, for p = 1."""
-    return float(R_PX * max(0.0, 1.0 - bar))
+def dti_exact(pred, truth, valid=None, known=None,
+              alpha: float = ALPHA, beta: float = BETA) -> dict:
+    """Exact DTI for arbitrary soft predictions in [0, 1] (max over the kernel)."""
+    pred = np.asarray(pred, np.float64)
+    truth = np.asarray(truth, bool)
+    valid_ = np.ones(pred.shape, bool) if valid is None else np.asarray(valid, bool)
+    known_ = np.zeros(pred.shape, bool) if known is None else np.asarray(known, bool)
+    active = valid_ & ~known_
+    vals = pred[active]
+    if not np.isfinite(vals).all() or (vals < 0).any() or (vals > 1).any():
+        raise ValueError("predictions inside the scored domain must be finite and in [0, 1]")
+    p = np.where(active, pred, 0.0)
+    g = active & truth
+    yy, xx = np.nonzero(g)
+    n = int(yy.size)
+    if n == 0:
+        return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0,
+                    n_emitted=int((p > 0).sum()), dti=0.0, coverage=0.0)
+    H, W = p.shape
+    credit = np.zeros(n, np.float64)
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ny, nx = yy + j, xx + i
+        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
+        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    tp = float(credit.sum())
+    fn = float(n) - tp
+    dg = distance_transform_edt(~g)
+    fp = float((p * (1.0 - kernel(dg))).sum())
+    return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=int((p > 0).sum()),
+                dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
+
+
+def dti_bruteforce(pred, truth, alpha: float = ALPHA, beta: float = BETA,
+                   radius: float = RADIUS_PX) -> dict:
+    """Literal O(|G|*|P|) transcription of the published equations (unit-test oracle)."""
+    pred = np.asarray(pred, float)
+    truth = np.asarray(truth, bool)
+    gs = np.argwhere(truth)
+    xs = np.argwhere(pred > 0)
+    tp = fn = 0.0
+    for g in gs:
+        best = 0.0
+        for x in xs:
+            d = float(np.hypot(*(x - g)))
+            if d <= radius:
+                best = max(best, pred[tuple(x)] * max(1.0 - d / radius, 0.0))
+        tp += best
+        fn += 1.0 - best
+    fp = 0.0
+    for x in xs:
+        kmax = 0.0
+        for g in gs:
+            kmax = max(kmax, max(1.0 - float(np.hypot(*(x - g))) / radius, 0.0))
+        fp += pred[tuple(x)] * (1.0 - kmax)
+    return dict(tp=tp, fp=fp, fn=fn,
+                dti=dti_from_components(tp, fp, fn, alpha, beta))

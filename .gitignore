@@ -1,27 +1,6 @@
-# ---------------------------------------------------------------------------
-# Large official raster (418,912,844 B). Not committed: it exceeds any sensible
-# git budget and is reproducible. scripts/prepare_data.py places it and
-# re-verifies its sha256 against the pin in data/README.md.
-# ---------------------------------------------------------------------------
-data/official/training_features.tif
-
-# ---------------------------------------------------------------------------
-# Derived artifacts. evidence/*.npz are rebuilt by the scripts that wrote them
-# (scripts/explore_zone.py, explore_zone2.py, build_submission.py); the 27 MB
-# final_surface.npz especially is a build product, not an audit trail. The
-# evidence JSONs and the shipped submission file ARE committed: they are the
-# audit trail the site renders, and they are small.
-# ---------------------------------------------------------------------------
-evidence/*.npz
-
-# Python / tooling noise
 __pycache__/
 *.pyc
-*.pyo
+.cache/
 .pytest_cache/
-*.egg-info/
 .venv/
-build/
-dist/
-logs/
-*.log
+out/

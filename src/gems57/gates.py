@@ -67,8 +67,10 @@ def format_report(path, sample, epsg=32611, cell=100.0, footprint=None):
         if ref.shape == SHAPE:
             if src.crs is None or src.crs.to_epsg() != epsg:
                 problems.append(f"CRS must be EPSG:{epsg}")
-            if tuple(src.transform)[:6] != TRANSFORM:
-                problems.append(f"transform differs from pinned competition transform {TRANSFORM}")
+            # TRANSFORM is an affine.Affine (9 elements), so compare six-to-six.
+            if tuple(src.transform)[:6] != tuple(TRANSFORM)[:6]:
+                problems.append("transform differs from pinned competition transform "
+                                f"{tuple(TRANSFORM)[:6]}")
             if tuple(src.res) != (cell, cell):
                 problems.append(f"resolution {src.res} != {(cell, cell)}")
         finite = np.isfinite(a)

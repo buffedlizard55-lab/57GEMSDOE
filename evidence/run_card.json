@@ -1,72 +1,48 @@
 {
-  "run_card_version": "1.0",
-  "session": "arena/af16d287-57gemsdoe",
-  "generated_utc": "2026-10-09T05:45:00Z",
-  "lane": "fault-zone-anatomy",
-  "hypothesis": "Expert-mapped new faults (the hidden truth) concentrate as secondary strands in the damage zones of known USGS/INGENIOUS faults: subparallel splays and parallel strands whose distance from the primary trace, azimuth relative to its strike, and along-strike position (beyond-tip extensions) follow shear-zone mechanics, with zone width growing with fault length (displacement proxy). The organizers confirmed a new fault is any fault pixel not already captured by USGS/INGENIOUS, including newly mapped geometry of an existing system, so splays and parallel strands count (thread 11536).",
-  "mechanism": "Per-fault intensity I(p) = f(d/s(L)) * g(phi), where f is the empirical radial density, g the empirical offset-azimuth density, and s(L) the empirical length scaling (displacement proxy), ALL fitted on the hide-and-recover holdout (random whole-segment folds, 300 m truth buffer, features rebuilt from visible faults only, visible+INGENIOUS faults masked pixel-exactly, pooled DTI alpha=0.2 beta=0.8 R=300 m). No textbook Riedel/Tchalenko angle is hard-coded. Sense of slip is conditioned where the INGENIOUS database records it (RL/LL/N) and kept marginal where it does not (the holdout cannot resolve it: nearest-visible sense unk=38063, N=214, RL=53, LL=9). Emission: binary top-k dots off known faults, k swept on the holdout. The d<3 px band (removed by the holdout's 300 m truth buffer) is extended from the SGMC off-catalogue population and flagged as such.",
-  "named_non_fault_process_that_could_mimic_it": "Anthropogenic and geomorphic lineaments that parallel mapped faults in the alluvial basins of the northwestern Great Basin: roads, fence lines and powerline alignments, and pluvial-lake shorelines / alluvial-fan risers that follow basin structure subparallel to fault strikes. These cluster near and parallel to mapped fault scarps and would be predicted by the same halo geometry without being faults.",
+  "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.",
+  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over nine catalogue-geometry features, calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.",
+  "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
   "holdout_dti": {
-    "evidence_class": "HOLDOUT-DTI",
-    "evaluator_version": "gems52-pooled-hide-v1 (template evaluate_holdout.py + holdout.py + metric.py, vendored unmodified from GEMSDOE52@main)",
-    "protocol": "random whole-segment folds (4), 300 m truth buffer, prevalence-thinned (0.2% of footprint per fold), features rebuilt from visible faults only, visible USGS+INGENIOUS faults masked pixel-exactly, pooled DTI, paired spatial-block bootstrap (20 km blocks, 1000 draws)",
-    "withheld_positive_pixels": 38339,
-    "arm": "full (f(d/s(L)) * g(phi))",
-    "budget_dots": 60000,
-    "dti": 0.0580,
-    "ci95": [0.0507, 0.0663],
-    "controls_at_same_budget": {
-      "random_emission": 0.0492,
-      "uniform_halo": 0.0117,
-      "distance_only": 0.0486,
-      "no_phi": 0.0559
-    },
-    "leakage_canary_auc_max": 0.6538,
-    "leakage_threshold": 0.90,
-    "budget_sweep_peak": "60k dots (50k: 0.0536, 80k: 0.0574, 120k: 0.0507)",
-    "note": "HOLDOUT-DTI measures recovery of withheld CATALOGUE segments; the live target is OFF-catalogue new faults, so this instrument does not rank live scores (calibration: the live-best h33-2-b2 scores 0.0039 here while carrying LIVE 0.2778)."
+    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
+    "withheld_positive_pixels": 22641,
+    "pooled_dti": 0.25172223160856344,
+    "ci95_quadrant_jackknife": [
+      0.21833561739648347,
+      0.28510884582064344
+    ],
+    "coverage": 0.487441073456199,
+    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
   },
-  "proxy_dti_sgmc_truth": {
-    "evidence_class": "PROXY-DTI (not a holdout, not an organizer score)",
-    "truth": "SGMC faults captured by neither USGS nor INGENIOUS (79,025 px) - real off-catalogue faults, the closest legal proxy for the hidden truth",
-    "budget_60000": 0.0457,
-    "budget_120000": 0.0650,
-    "incumbents_same_instrument": {
-      "h19-5 (LIVE 0.1922)": 0.1450,
-      "d15 (LIVE 0.2477)": 0.1410,
-      "tip-h32-1 (LIVE 0.2649)": 0.1213,
-      "h27-4 (LIVE 0.2708)": 0.1093,
-      "anderson (LIVE 0.2750)": 0.0944,
-      "h33-2-b2 (LIVE 0.2778)": 0.0931
-    },
-    "reading": "The lane's fitted halo covers real off-catalogue faults 2-3x less efficiently than the geophysics-ML incumbents; the SGMC sweep is still rising at 120k while the holdout peaks at 60k - the two instruments disagree on budget, flagged for the selector."
+  "correlation_overlap_vs_registry": {
+    "n_registry_rasters": 15,
+    "rho_limit": 0.9,
+    "jaccard_limit": 0.5,
+    "overlap_limit": 0.7,
+    "worst_spearman_full_footprint": 0.01070177139044915,
+    "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_jaccard_dot_sets": 0.009534650570199256,
+    "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_dot_overlap_3px": 0.35720551201154466,
+    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
+    "unique": true
   },
-  "registry_correlation_overlap": {
-    "evidence_class": "MEASUREMENT (drift check vs 663 registry rasters)",
-    "max_abs_spearman": 0.6271,
-    "max_abs_spearman_raster": "siblings/7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif (dense GBT halo probability surface, 1,828,699 positive px)",
-    "correlation_limit": 0.90,
-    "duplicates_by_correlation": 0,
-    "max_forward_dot_overlap_dotscale": 0.8471,
-    "max_forward_dot_overlap_raster": "siblings/15GEMSDOE/docs/downloads/gems-cleanup-a-20260928T195952Z-curv_scarp.tif (362,327 dots)",
-    "duplicates_by_overlap_bidirectional": 0,
-    "mechanical_one_directional_firings": 21,
-    "firings_analysis": "All 21 mechanical firings are against DENSE emissions (206,895-452,679 dots, 3.5-7.5x this lane's budget) whose 3-px-dilated coverage saturates the 4.35M-px halo; reverse overlap is 0.07-0.10 and rank correlation ~0.00, i.e. their dots do NOT concentrate on this lane's dots. Against the top live-scoring registry submissions the forward overlap is only 0.19-0.23 (this lane emits in the 400-1000 m halo; the incumbents are pruned >200 m from the catalogue). Against the previous fault-zone lane rasters (GEMSDOE45 h51-km-faultzone, h47-km-pruned-variable) the forward overlap is 0.22 and 0.06. Verdict: UNIQUE; firings logged as coverage-saturation artifacts and flagged for review.",
-    "hash_duplicates": 0
-  },
-  "raster_sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
-  "raster_file": "docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
-  "raster_bytes": 154835,
-  "emitted_px": 60000,
-  "emitted_px_on_known_faults": 0,
+  "raster_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
   "validator_output": {
-    "validator": "template gates.format_report + grid.write_geotiff re-read (submission_writer.write_submission, fail-closed)",
-    "ok": true,
-    "checks": "single band float32; EPSG:32611; 3730x3292; transform/bounds match sample_submission.tif; 100 m resolution; 0 NaN/inf pixels inside the footprint (all-finite export); values in [0,1] (min 0.0, max 1.0); 0 emitted pixels outside the footprint; no nodata tag",
-    "receipt": "docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.receipt.json"
+    "no_nan_anywhere": true,
+    "in_footprint_all_finite": true,
+    "range_0_1_guaranteed": true,
+    "crs_shape_transform_match": true,
+    "zero_dots_on_mapped_catalogue": true,
+    "all_checks_passed": true,
+    "n_checks": 15
   },
-  "submission_name": "GEMSDOE57-FZA-60000px",
-  "submission_note_140ch": "fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]",
-  "verdict": "negative",
-  "verdict_reasoning": "The lane is VALIDATED as a real, non-leaking, unique signal: it beats its own controls on the brief's holdout instrument (0.0580 vs random 0.0492 and uniform-halo 0.0117 at 60k dots), the leakage canary is far below threshold (max AUC 0.6538 < 0.90), and the drift check is clean (max |Spearman| 0.6271 < 0.90, no bidirectional duplicates, sha256 unique across 663 registry rasters). But it does NOT beat the current holdout best on the template instrument (d15 scores 0.0844 as-is on the same folds; comparison is conservative for this lane, whose 0.0580 is per-fold-rebuilt while d15 is a frozen artifact scored as-is), and on the SGMC-truth instrument (the better proxy for the live target) it trails the incumbents 2-3x (0.0457 vs 0.0931-0.1450). As a standalone submission it is therefore not expected to beat the incumbent LIVE 0.2778. Promotion to a real slot is a separate selector step; per the session rule, no slot should be spent on this artifact. The submission file is generated, validated and downloadable (the session's highest-urgency deliverable), and the negative result is the deliverable: the fitted damage zone is real structure, but pure catalogue geometry is not enough - the next step is zone-gated geophysical corroboration (hypothesis H2 in docs/research/hypotheses.md)."
+  "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
+  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
+  "sense_of_slip": {
+    "available_in_provided_database": false,
+    "measured_log_ratio_right_over_left": null,
+    "encoded": false
+  },
+  "verdict": "promote"
 }

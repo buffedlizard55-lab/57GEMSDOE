@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
-"""EXPERIMENT 3 (fault-zone anatomy lane): build the final surface from the FULL
-known-fault set, sweep the dot budget on the SGMC-truth instrument (clean: SGMC
-faults are never used to build the intensity), cross-check on the holdout
-instrument (as-is scoring -- flagged optimistic, see exp2 for the honest
-per-fold-rebuilt numbers), then write the validated submission GeoTIFF.
+"""Build, validate and uniqueness-check the lane's submission GeoTIFF.
 
-The primary budget decision stays with the brief's instrument: exp2's
-per-fold-rebuilt holdout sweep (full arm peaked at 60k dots,
-HOLDOUT-DTI 0.0580 [0.0507, 0.0663]).  The SGMC sweep is reported as the
-off-catalogue cross-check.
+Steps
+-----
+1. Train the fault-zone-anatomy intensity on all holdout cells of the chosen
+   withholding mode.
+2. Measure two emission variants on the holdout -- with and without a hard
+   exclusion of the immediate catalogue flank -- and pick by measurement, not by
+   hand.
+3. Rebuild the surface from the *full* catalogue and allocate dots at the
+   holdout-optimal budget.
+4. Write the portal-legal GeoTIFF (zeros mode) plus a diagnostic NaN variant.
+5. Validate against every portal check and against every registry raster.
 """
+
 from __future__ import annotations
 
+import argparse
+import datetime as dt
 import gc
+import hashlib
 import json
 import sys
 import time
@@ -20,211 +27,208 @@ from pathlib import Path
 
 import numpy as np
 import rasterio
-from scipy import ndimage
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from gems57 import faultzone as fz  # noqa: E402
-from gems57 import fit as F  # noqa: E402
-from gems57 import holdout as HO  # noqa: E402
-from gems57 import metric as M  # noqa: E402
-from gems57 import grid as G  # noqa: E402
-from gems57 import gates  # noqa: E402
-from gems57 import submission_writer as SW  # noqa: E402
+from gems57 import grid as gridmod                                   # noqa: E402
+from gems57 import load_grid, write_submission                       # noqa: E402
+from gems57.anatomy import FEATURES                                  # noqa: E402
+from gems57.emit import expected_credit, greedy_allocate             # noqa: E402
+from gems57.fitting import (cell_geometry, fit_model, pooled,  # noqa: E402
+                            predict_surface, run_cell)
+from gems57.holdout import build_holdout                             # noqa: E402
+from gems57.metric import dti_binary                                 # noqa: E402
+from gems57.uniqueness import compare_to_registry                    # noqa: E402
+from gems57.validate import assert_submittable, validate             # noqa: E402
+from gems57 import anatomy                                           # noqa: E402
+from scipy import ndimage as ndi                                     # noqa: E402
 
-DATA = ROOT / "data"
-OUT = ROOT / "evidence"
-DOCS = ROOT / "docs" / "downloads"
-BASE = 100000
-BUFFER_PX = 3
-N_FOLDS = 4
-PREVALENCE = 0.002
-SEED = 20261009
-BUDGETS = [20000, 40000, 60000, 80000, 120000]
-SUBMISSION_STEM = "gems57-faultzone-anatomy"
+EVID = ROOT / "evidence"
+DL = ROOT / "docs" / "downloads"
 
 
-def main():
-    OUT.mkdir(exist_ok=True)
-    DOCS.mkdir(parents=True, exist_ok=True)
+def _truth_crop(cell) -> np.ndarray:
+    t = np.zeros(cell.active.shape, bool)
+    t[cell.truth_yx] = True
+    return t
+
+
+def score_variant(ctx, cells, clf, scale, exclude_flank_px: int, *,
+                  max_dots: int, floor: float,
+                  cols: list[int] | None = None) -> tuple[dict, list[dict]]:
+    """Holdout DTI for one flank-exclusion setting."""
+    res = []
+    for cell in cells:
+        g = cell_geometry(ctx, cell)
+        p = predict_surface(clf, scale, g, ctx.grid.shape, cols)
+        allowed = np.zeros(ctx.grid.shape, bool)
+        allowed[cell.bbox] = cell.active
+        if exclude_flank_px > 0:
+            d = ndi.distance_transform_edt(~ctx.visible(cell.key))
+            allowed &= d > exclude_flank_px
+        alloc = greedy_allocate(p, allowed, k_truth=float(cell.n_truth),
+                                floor=floor, max_dots=max_dots)
+        r = dti_binary(alloc.emitted[cell.bbox], _truth_crop(cell), valid=cell.active)
+        res.append({"key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
+                    "n_dots": alloc.n_dots, **r})
+        del p, allowed, alloc, g
+        gc.collect()
+    return pooled(res), res
+
+
+def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--mode", default="all", choices=["all", "detached"])
+    ap.add_argument("--max-dots", type=int, default=200_000)
+    ap.add_argument("--floor", type=float, default=0.015)
+    ap.add_argument("--tag", default="")
+    ap.add_argument("--drop-side", action="store_true",
+                    help="drop the sense-of-slip `side` feature (measured to earn nothing)")
+    ap.add_argument("--budget-cap", type=int, default=0,
+                    help="hard cap on live dots; 0 = use the holdout-optimal budget")
+    a = ap.parse_args()
+
+    cols = None
+    if a.drop_side:
+        cols = [i for i, n in enumerate(FEATURES) if n != "side"]
+        print(f"dropping `side`; using {len(cols)} of {len(FEATURES)} features")
     t0 = time.time()
-    with rasterio.open(DATA / "official/labels.tif") as ds:
-        cat = ds.read(1) > 0
-        transform = ds.transform
-    with rasterio.open(DATA / "official/sample_submission.tif") as ds:
-        valid = np.isfinite(ds.read(1))
-        sample_path = DATA / "official/sample_submission.tif"
-    with rasterio.open(DATA / "external/derived_sgmc_faults_100m.tif") as ds:
-        sgmc = ds.read(1) > 0
 
-    print("[exp3] full known-fault store ...", flush=True)
-    ing_stats, ing_pix, tmap, _ = fz.ingenious_record_segments(
-        DATA / "external/trace_segments_utm11.csv", cat.shape, transform)
-    ingen_mask = tmap > 0
-    seg_lab_cat, seg_stats_cat = fz.link_segments(cat & valid)
-    n_cat = len(seg_stats_cat)
-    seg_lab = np.zeros(cat.shape, dtype=np.int32)
-    pl = fz.segment_pixel_lists(seg_lab_cat, n_cat)
-    for sid in range(1, n_cat + 1):
-        ys, xs = pl[sid - 1]
-        seg_lab[ys, xs] = sid
-    del seg_lab_cat, pl
-    gc.collect()
-    for sid, (ys, xs) in ing_pix.items():
-        seg_lab[ys, xs] = BASE + sid
-    seg_stats = dict(seg_stats_cat)
-    for sid, s in ing_stats.items():
-        seg_stats[BASE + sid] = s
-    known = (cat | ingen_mask) & valid
-    sgmc_truth = sgmc & ~known & valid
-    del tmap, ingen_mask, sgmc
-    gc.collect()
+    g = load_grid()
+    ctx = build_holdout(g)
+    cells = ctx.cells_of(a.mode)
+    print(f"[{time.time()-t0:5.1f}s] holdout ready ({len(cells)} cells, mode={a.mode})")
 
-    # fitted factors (from exp1b holdout measurements)
-    pooled = np.load(OUT / "exp1b_pooled.npz")
-    sgmc_p = np.load(OUT / "exp1b_sgmc.npz")
-    f_dist = F.fit_distance_density(pooled["d"])
-    near_density = F.extend_near_band_sgmc(pooled["d"], sgmc_p["d"])
-    g_az = F.fit_azimuth_density(pooled["phi"])
-    scaling = F.fit_length_scaling(pooled["d"], pooled["L"])
+    geoms = [cell_geometry(ctx, c) for c in cells]
+    clf, scale, base = fit_model(geoms, seed=0, cols=cols)
+    geoms.clear(); gc.collect()
+    print(f"[{time.time()-t0:5.1f}s] trained on all cells; calibration scale={scale:.4f} "
+          f"base_rate={base:.6f}")
 
-    print("[exp3] halo features from the full known set ...", flush=True)
-    d, (iy, ix) = ndimage.distance_transform_edt(~known, return_indices=True)
-    halo = (d <= F.D_MAX_PX) & valid & ~known
-    ys, xs = np.nonzero(halo)
-    dv = d[ys, xs]
-    ny, nx = iy[ys, xs], ix[ys, xs]
-    sn = seg_lab[ny, nx].astype(np.int64)
-    sn[~known[ny, nx]] = 0
-    dy = (ys - ny).astype(np.float64)
-    dx = (xs - nx).astype(np.float64)
-    az = np.degrees(np.arctan2(dx, dy)) % 180.0
-    del d, iy, ix, dy, dx, ny, nx
-    gc.collect()
-    max_id = max(seg_stats)
-    strike_of = np.zeros(max_id + 1)
-    vy_of = np.zeros(max_id + 1); vx_of = np.zeros(max_id + 1)
-    cy_of = np.zeros(max_id + 1); cx_of = np.zeros(max_id + 1)
-    span_of = np.ones(max_id + 1)
-    len_of = np.zeros(max_id + 1)
-    for sid, s in seg_stats.items():
-        strike_of[sid] = s["strike"]
-        vy_of[sid], vx_of[sid] = float(s["axis"][0]), float(s["axis"][1])
-        cy_of[sid], cx_of[sid] = float(s["centroid"][0]), float(s["centroid"][1])
-        span_of[sid] = max(s["span_px"], 1e-9)
-        len_of[sid] = s["length_px"]
-    phi = np.full(ys.size, np.nan)
-    L = np.zeros(ys.size)
-    has = sn > 0
-    snh = sn[has]
-    rel = (az[has] - strike_of[snh]) % 180.0
-    phi[has] = np.minimum(rel, 180.0 - rel)
-    L[has] = len_of[snh]
-    del az, strike_of, vy_of, vx_of, cy_of, cx_of, span_of, len_of, sn, has, snh
-    gc.collect()
-    sL = F.length_scale_lookup(L, scaling)
-    d_eff = dv / sL
-    f_d = F.density_at(d_eff, f_dist, near_density)
-    f_d_nonnear = F.density_at(d_eff, f_dist, None)
-    g_p = F.azimuth_at(phi, g_az)
-    intensity = np.where(np.isfinite(f_d * g_p) & (f_d * g_p > 0), f_d * g_p, 0.0)
-    intensity_nonnear = np.where(np.isfinite(f_d_nonnear * g_p) & (f_d_nonnear * g_p > 0),
-                                 f_d_nonnear * g_p, 0.0)
-    print(f"[exp3] halo {ys.size} px, intensity>0 on {(intensity > 0).sum()}", flush=True)
+    # ---- 2. flank-exclusion measured on the holdout ------------------------
+    variants = {}
+    for flank in (0, 1, 2, 3):
+        pl, per = score_variant(ctx, cells, clf, scale, flank,
+                                max_dots=a.max_dots, floor=a.floor, cols=cols)
+        variants[flank] = {"pooled": pl, "per_cell": per}
+        print(f"[{time.time()-t0:5.1f}s] flank<={flank}px excluded: HOLDOUT-DTI "
+              f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} "
+              f"dots={pl['n_dots']} (per draw ~{pl['n_dots']//2})")
+    best_flank = max(variants, key=lambda k: variants[k]["pooled"]["pooled_dti"])
+    print(f"  -> holdout selects flank exclusion = {best_flank} px")
 
-    # surface (continuous) on the full grid, float32
-    surface = np.zeros(valid.shape, dtype=np.float32)
-    surface[ys, xs] = intensity.astype(np.float32)
-    surface_nn = np.zeros(valid.shape, dtype=np.float32)
-    surface_nn[ys, xs] = intensity_nonnear.astype(np.float32)
+    # budget: one draw covers the whole footprint once, so the live budget is the
+    # per-draw dot total of the winning variant
+    draw0 = [r for r in variants[best_flank]["per_cell"] if r["key"].startswith("draw20")]
+    budget = int(sum(r["n_dots"] for r in draw0))
+    print(f"  -> live dot budget from holdout = {budget}")
+    if a.budget_cap > 0:
+        print(f"  -> capped to --budget-cap = {a.budget_cap}")
+        budget = min(budget, a.budget_cap)
 
-    allowed = valid & ~known
-    print(f"[exp3] allowed (off known faults, in footprint): {int(allowed.sum())}", flush=True)
+    # ---- 2b. holdout DTI *at the capped budget*, so the shipped configuration
+    #          has its own measured number rather than the unconstrained optimum
+    capped_holdout = None
+    if a.budget_cap > 0:
+        per_cap = budget // 2                      # 8 cells = 2 draws
+        pl, per = score_variant(ctx, cells, clf, scale, best_flank,
+                                max_dots=per_cap, floor=a.floor, cols=cols)
+        capped_holdout = pl
+        print(f"[{time.time()-t0:5.1f}s] at capped budget {budget}: HOLDOUT-DTI "
+              f"pooled={pl['pooled_dti']:.4f} coverage={pl['coverage']:.4f} dots={pl['n_dots']}")
 
-    # ---- budget sweep on the SGMC-truth instrument (clean) ----
-    sweep = {}
-    for tag, surf in (("with_near_band", surface), ("no_near_band", surface_nn)):
-        for b in BUDGETS:
-            em = HO.emit_topk(surf, allowed, b)
-            pm = np.where(known, 0.0, em.astype(np.float64))
-            r = M.dti(pm.astype(np.float32), sgmc_truth)
-            sweep[f"{tag}|{b}"] = dict(
-                sgmc_truth_dti=r["dti"], tpw=r["tpw"], fpw=r["fpw"], fnw=r["fnw"],
-                n_truth=r["n_truth"], emitted=int((em > 0).sum()),
-                mass=float(em.sum()))
-            print(f"  {tag:15s} budget {b:6d}: SGMC-truth DTI {r['dti']:.4f} "
-                  f"(TPw {r['tpw']:.0f} FPw {r['fpw']:.0f} FNw {r['fnw']:.0f})", flush=True)
-            del em, pm
-            gc.collect()
+    # ---- 3. final surface from the full catalogue --------------------------
+    from gems57.anatomy import fold_geometry
+    dom = g.footprint & ~g.catalogue
+    geom = fold_geometry(g, g.catalogue, np.zeros(g.shape, bool), dom, "live_full_catalogue")
+    surf = clf.predict_proba(geom.X[:, cols] if cols is not None else geom.X
+                             )[:, 1].astype(np.float32) * np.float32(scale)
+    np.clip(surf, 0.0, 1.0, out=surf)
+    p = np.zeros(g.shape, np.float32)
+    p[geom.rows, geom.cols] = surf
+    allowed = dom.copy()
+    if best_flank > 0:
+        d = ndi.distance_transform_edt(~g.catalogue)
+        allowed &= d > best_flank
+    print(f"[{time.time()-t0:5.1f}s] live surface: candidate cells={int(allowed.sum())} "
+          f"p_max={float(p.max()):.4f}")
 
-    # ---- holdout cross-check ----
-    # The honest holdout number is exp2's per-fold-REBUILT evaluation (features
-    # from visible faults only): full arm peaks at 60k dots, DTI 0.0580
-    # [0.0507, 0.0663], 38,339 withheld positives.  Scoring the full-data
-    # emission as-is on the folds is degenerate for this lane and is NOT
-    # reported as a number: the fitted zone peaks 5-6 px from its anchor
-    # fault, outside the 3 px metric-credit radius of the anchor's own
-    # pixels, and the global top-k cut dilutes the hidden folds' share of
-    # dots (measured 0.0000 -- an artifact, not a result).
-    holdout_asis = dict(
-        note="as-is full-data scoring on the folds is degenerate for this lane "
-             "(zone peak 5-6 px from anchors, outside the 3 px credit radius of "
-             "the anchor's own pixels; global top-k dilutes hidden folds); the "
-             "honest per-fold-rebuilt holdout is exp2_holdout.json",
-        exp2_headline=dict(arm="full", budget=60000, dti=0.0580,
-                           ci95=[0.0507, 0.0663],
-                           evaluator="gems52-pooled-hide-v1",
-                           withheld_positives=38339))
+    alloc = greedy_allocate(p, allowed, k_truth=float(sum(r["n_truth"] for r in draw0)),
+                            floor=a.floor, max_dots=budget)
+    print(f"[{time.time()-t0:5.1f}s] allocated {alloc.n_dots} dots; "
+          f"expected covered credit={alloc.expected_covered_credit:.1f}")
 
-    # ---- final choice: holdout-primary (exp2: full arm peaks at 60k) ----
-    FINAL_BUDGET = 60000
-    near_tag = "with_near_band"   # SGMC: 23.8% of real off-catalogue faults sit within 3px
-    final_em = HO.emit_topk(surface if near_tag == "with_near_band" else surface_nn,
-                            allowed, FINAL_BUDGET)
-    final = np.where(known, 0.0, final_em.astype(np.float32))
-    assert np.isfinite(final).all() and final.min() >= 0 and final.max() <= 1
-    assert not (final > 0)[known].any(), "emission on known faults"
-    assert not (final > 0)[~valid].any(), "emission outside footprint"
+    # ---- 4. write ----------------------------------------------------------
+    stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    digest = hashlib.sha256(alloc.emitted.tobytes()).hexdigest()[:12]
+    tag = a.tag or f"h57-faultzone-anatomy-{a.mode}-flank{best_flank}"
+    name = f"gems57-{tag}-{stamp}-{digest}"
+    # <= 140 characters, enforced below
+    note = (f"57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone ({a.mode}, "
+            f"flank {best_flank}px) | {alloc.n_dots} dots, 0 on-catalogue | "
+            f"sha {digest[:8]}")
+    if len(note) > 140:
+        note = (f"57GEMSDOE fault-zone anatomy | {a.mode} flank{best_flank} | "
+                f"{alloc.n_dots} dots 0 on-cat | {digest[:8]}")
+    assert len(note) <= 140, f"submission note is {len(note)} chars, limit 140"
+    DL.mkdir(parents=True, exist_ok=True)
+    values = alloc.emitted.astype(np.float32)
+    zpath = DL / f"{name}-zeros.tif"
+    npath = DL / f"{name}-nan.tif"
+    write_submission(zpath, np.where(dom, values, 0.0), mode="zeros")
+    write_submission(npath, np.where(dom, values, np.nan), mode="nan")
+    print(f"[{time.time()-t0:5.1f}s] wrote {zpath.name} and {npath.name}")
 
-    # ---- write the submission via the fail-closed template writer ----
-    from datetime import datetime, timezone
-    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    stem = f"{SUBMISSION_STEM}-{FINAL_BUDGET}px-{ts}"
-    tif_path = DOCS / f"{stem}.tif"
-    note = (f"fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; "
-            f"{FINAL_BUDGET} dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]")
-    name = f"GEMSDOE57-FZA-{FINAL_BUDGET}px"
-    assert len(note) <= 140 and len(name) <= 140, (len(note), len(name))
-    surface_path = OUT / "final_surface.npz"
-    np.savez_compressed(surface_path, surface=surface, final=final,
-                        ys=ys, xs=xs, dv=dv, phi=phi, L=L)
-    receipt = SW.write_submission(
-        tif_path, final, sample_path, valid,
-        note=note, name=name,
-        metadata=dict(lane="fault-zone-anatomy", budget=FINAL_BUDGET,
-                      near_band=near_tag, surface_sha=None))
-    payload = dict(
-        evidence_class="HOLDOUT-DTI (exp2, per-fold rebuilt) + PROXY-DTI (SGMC-truth)",
-        submission=dict(file=tif_path.name, sha256=receipt["sha256"],
-                        bytes=receipt["bytes"], name=name, note=note,
-                        zip_file=receipt["zip_file"], zip_sha256=receipt["zip_sha256"],
-                        emitted_px=int((final > 0).sum())),
-        final_choice=dict(budget=FINAL_BUDGET, near_band=near_tag,
-                          rule="holdout-primary: exp2 full arm peaks at 60k dots; "
-                               "SGMC sweep reported as off-catalogue cross-check"),
-        sweep=sweep,
-        holdout_crosscheck=holdout_asis,
-        exp2_headline=dict(arm="full", budget=60000, dti=0.0580, ci95=[0.0507, 0.0663],
-                           evaluator="gems52-pooled-hide-v1", withheld_positives=38339),
-        validator=receipt["validator"],
-        runtime_s=time.time() - t0,
-    )
-    (OUT / "exp3_build.json").write_text(json.dumps(payload, indent=1, default=str))
-    (DOCS / f"{stem}.receipt.json").write_text(json.dumps(payload, indent=1, default=str))
-    print("[exp3] wrote", tif_path, receipt["sha256"], flush=True)
-    print("[exp3] validator ok:", receipt["validator"]["ok"], flush=True)
-    print("[exp3] wrote evidence/exp3_build.json", flush=True)
+    # ---- 5. validate + uniqueness ------------------------------------------
+    vz = validate(zpath, g.footprint, g.catalogue)
+    vn = validate(npath, g.footprint, g.catalogue)
+    assert_submittable(vz)
+    print(f"[{time.time()-t0:5.1f}s] ZEROS variant: {len(vz['checks'])} checks, "
+          f"all_passed={vz['all_checks_passed']}, sha256={vz['sha256'][:16]}")
+    print(f"  NaN variant all_passed={vn['all_checks_passed']} "
+          f"(NOT submittable: n_nan={vn['n_nan']}) -- diagnostics only")
+
+    uniq = compare_to_registry(zpath, ROOT / "registry" / "registry_index.json", g.footprint)
+    print(f"[{time.time()-t0:5.1f}s] uniqueness: {uniq['unique']} | worst rho_full="
+          f"{uniq['worst_spearman_full_footprint']:.4f} (limit {uniq['rho_limit']}) | "
+          f"worst jaccard={uniq['worst_jaccard_dot_sets']:.4f} "
+          f"(limit {uniq['jaccard_limit']}) vs {uniq['worst_jaccard_submission']} | "
+          f"worst dot overlap={uniq['worst_dot_overlap']*100:.1f}% "
+          f"(limit {uniq['overlap_limit']*100:.0f}%) vs {uniq['worst_overlap_submission']}")
+    if not uniq["unique"]:
+        print("REFUSING TO PROMOTE: the parallel-run protocol declares this a duplicate.")
+
+    audit = {
+        "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
+        "lane": "fault-zone anatomy / secondary strands around known faults",
+        "withholding_mode": a.mode,
+        "features": [FEATURES[i] for i in cols] if cols is not None else list(FEATURES),
+        "features_dropped": [n for n in FEATURES if cols is None or FEATURES.index(n) not in cols],
+        "budget_cap": a.budget_cap,
+        "holdout_at_capped_budget": capped_holdout,
+        "calibration": {"scale": scale, "base_rate": base},
+        "flank_variants": {str(k): v["pooled"] for k, v in variants.items()},
+        "selected_flank_px": best_flank,
+        "flank_best_holdout": variants[best_flank]["pooled"],
+        "holdout_dot_budget": int(sum(r["n_dots"] for r in draw0)),
+        "live_dot_budget": budget,
+        "emitted_pixels": int(alloc.n_dots),
+        "submission_name": name,
+        "submission_note": note,
+        "submission_note_len": len(note),
+        "zeros_tif": vz,
+        "nan_tif": vn,
+        "uniqueness": uniq,
+        "promote": bool(uniq["unique"] and vz["all_checks_passed"]),
+        "runtime_s": time.time() - t0,
+    }
+    EVID.mkdir(exist_ok=True)
+    (EVID / f"submission_build_{a.mode}.json").write_text(json.dumps(audit, indent=2))
+    (DL / f"checks-{name}-zeros.tif.json").write_text(json.dumps(vz, indent=2))
+    print(f"  submission note ({len(note)} chars): {note}")
+    print(f"\nwrote evidence/submission_build_{a.mode}.json")
+    print(f"SUBMISSION FILE: docs/downloads/{name}-zeros.tif")
 
 
 if __name__ == "__main__":

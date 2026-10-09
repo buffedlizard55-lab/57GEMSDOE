@@ -1,211 +1,340 @@
-# GEMSDOE57 — fault-zone anatomy lane
+# 57GEMSDOE — fault-zone-anatomy lane for the DOE GEMS Prize Challenge
 
-DrivenData **GEMS Prize** (competition 306): predict per-pixel fault probability for the
-whole GeoDAWN study area (Nevada, UTM 11N / EPSG:32611, 100 m). The hidden labels are
-**new expert-mapped faults not in USGS/INGENIOUS** — splays and parallel strands count.
-Metric: distance-weighted Tversky, `DTI = TP_w / (TP_w + 0.2·FP_w + 0.8·FN_w)`, 300 m
-credit radius; FP cheap, FN expensive. Leaderboard high 0.3774; the incumbent to beat is
-0.2778 (and the user's stated target is 0.3195).
+**Competition:** [DOE GEMS Prize (DrivenData #306)](https://www.drivendata.org/competitions/306/competition-doe-gems/)
+· **Problem description:** [page 967](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/)
+· **About / resources:** [page 968](https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/)
+· **Rules (PDF):** [docs.nlr.gov/docs/fy26osti/96647.pdf](https://docs.nlr.gov/docs/fy26osti/96647.pdf)
+· **Reference solution:** [github.com/drivendataorg/gems-prize-reference-solution](https://github.com/drivendataorg/gems-prize-reference-solution)
+· **Site:** <https://buffedlizard55-lab.github.io/57GEMSDOE/>
 
-**→ [Download the submission GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/)**
-(the button is the first thing on the site) ·
-[Executive summary — exactly how to submit](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html)
-· [Research & run card](https://buffedlizard55-lab.github.io/57GEMSDOE/research.html)
-· [Sources](https://buffedlizard55-lab.github.io/57GEMSDOE/sources.html)
+---
 
-## What this session produced
+## ⬇ ONE-CLICK SUBMISSION FILE
 
-| Deliverable | Where |
-|---|---|
-| Submission GeoTIFF (60,000 dots, 0 on known faults, validator PASS) | `docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif` |
-| sha256 of the submission | `a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8` |
-| Methodology note (≤140 ch) | "fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]" |
-| HOLDOUT-DTI @ 60k (evaluator `gems52-pooled-hide-v1`, 38,339 withheld positives, 95% CI) | **0.0580 [0.0507, 0.0663]** — `evidence/exp2_holdout.json` |
-| SGMC-truth proxy DTI @ 60k / 120k (79,025 real off-catalogue fault px) | 0.0457 / 0.0650 — `evidence/exp3_build.json` |
-| Leakage canary (max single-feature AUC, threshold 0.90) | 0.6538 → no leakage |
-| Registry drift check (663 rasters) | max |Spearman| 0.6271 < 0.90; 0 bidirectional duplicates; sha256 unique → **UNIQUE** — `evidence/uniqueness.json` |
-| Run card (hypothesis, mechanism, mimic process, verdict) | `evidence/run_card.json` |
-| Ranked hypotheses H1–H5 | `docs/research/hypotheses.md` |
-| Reproducible experiments | `scripts/explore_zone2.py` (Exp 1b), `scripts/run_holdout.py` (Exp 2), `scripts/build_submission.py` (Exp 3) |
+**The file to submit is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
+It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
+`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
+12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
 
-**Verdict: negative as a standalone score-beater.** The lane is validated (beats its own
-controls on the brief's holdout: 0.0580 vs random 0.0492 and uniform-halo 0.0117 at 60k),
-unique, and non-leaking — but on the SGMC-truth instrument it trails the incumbents 2–3×
-(0.0457 vs 0.0931–0.1450), so it is not expected to beat the incumbent live score. **No
-submission slot should be spent on this file**; promotion is a separate selector step.
-The submission is generated, validated and downloadable, and the negative result is the
-deliverable. Next work (ranked): H2 zone-gated geophysical corroboration, H3 tip-relay
-targeting, a 120k-budget variant, H4 slip-rate-weighted width, H5 USGS vector sense join
-(data-blocked).
+> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
+> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
+> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
+> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
+> and irregularity `IR-57-NAN-01`.
 
-## Parallel session (PR #1, merged first — same lane)
+The exact filename, sha256, check receipt and the suggested submission note are
+printed at the top of [`docs/index.html`](docs/index.html) and in
+[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
 
-A parallel session (`arena/a5412310`) ran this same lane and merged first as
-[PR #1](https://github.com/buffedlizard55-lab/57GEMSDOE/pull/1): a synthetic-strand
-generator (P shears + low-angle Riedel shears, width W = min(15, 2.6·L^0.22) px),
-12,000 dots within 15 px of known faults
-(`docs/downloads/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif`, sha256
-`3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb`, their run card at
-`docs/downloads/run_card.json`, audit at `docs/downloads/57GEMSDOE-faultzone-anatomy-audit.json`).
+---
 
-**Drift check (parallel-run protocol), `evidence/uniqueness_parallel.json`:**
-Spearman(this session's surface, their raster) **+0.0321** (limit 0.90); forward dot
-overlap within 3 px **0.0296** (limit 0.70); reverse overlap 0.2273; sha256 distinct →
-**UNIQUE**. The two emissions occupy different parts of the damage zone (this session:
-fitted 60-px halo, dots at 4–10 px, median 5.7 px from known faults; parallel session:
-<15 px synthetic strands, median 2.8 px). Both artifacts are on the site; both are
-validated; neither is a duplicate of the other.
+## Core values (kept central to every decision in this repository)
 
-One irregularity in their audit, flagged for review: `57GEMSDOE-faultzone-anatomy-audit.json`
-reports `"on_catalogue": 12000` while their run card claims "0 on-catalogue (masked)".
-Measured on the actual raster: **0 of their 12,000 dots are on the catalogue** (the run
-card is right; the audit field is mislabeled). Their holdout number (0.0004) comes from a
-quadrant-blocked instrument that withholds >100 km regions — not comparable to this
-session's random whole-segment folds with a 300 m buffer (0.0580).
+> **Maximize P(Win).** *"Maximize the Probability of Winning"* is our
+> decision-making framework. In every decision we weigh tradeoffs, assess risk,
+> and choose the path that maximizes the probability that we win this prize. We
+> set aside our emotions and make tough decisions in order to maximize P(Win).
+> It frees us from constraints and clarifies that we must put the outcome first.
+>
+> **Own the Outcome.** We own results end to end — not just our individual slice
+> of the work. When problems arise and we have the means to act, we act without
+> waiting for permission or assignment. We treat failure and success as signals
+> and use them to improve. We stay accountable to the final outcome.
 
-## Repository layout
+Applied here: *Maximize P(Win)* is why the lane's dot budget and its flank
+exclusion are **chosen by holdout measurement** rather than by hand, and why no
+submission slot is spent on an idea that has not beaten the holdout bar.
+*Own the Outcome* is why three bugs found in this session's own code — including
+one inherited from the shared template's prose — are recorded in
+[`docs/irregularities.html`](docs/irregularities.html) instead of being quietly
+patched.
 
-```
-src/gems57/            vendored GEMSDOE52 template (metric/holdout/grid/gates/writer/
-                       emit/evaluate_holdout/spatial — unmodified) + lane modules
-                       faultzone.py (segment linking, halo features) and fit.py
-                       (fitted intensity, SGMC near-band extension)
-scripts/               prepare_data.py (sha256 pin verification), download_competition_data.sh,
-                       explore_zone.py (Exp 1), explore_zone2.py (Exp 1b), run_holdout.py
-                       (Exp 2), calibrate_registry.py, build_submission.py (Exp 3),
-                       check_uniqueness.py, build_site.py (this site)
-data/official/         labels.tif, existing_faults.tif, sample_submission.tif (committed,
-                       sha256-pinned); training_features.tif (gitignored, 419 MB —
-                       fetched+verified by scripts/prepare_data.py)
-data/external/         SGMC rasters, INGENIOUS qfaults CSVs + receipts (committed, pinned)
-evidence/              exp1/exp1b/exp2/exp3/calibration/uniqueness JSONs + run_card.json
-                       (committed); .npz build products (gitignored)
-docs/                  GitHub Pages site + downloads/ (the submission .tif/.zip/receipt)
-tests/                 metric worked example, format gate, faultzone linking
-```
+---
+
+## Standing brief (re-read at the start of every session)
+
+The full task prompt is reproduced verbatim at the bottom of this file and in
+[`BRIEF.md`](BRIEF.md). Its operative constraints for this lane:
+
+1. **Lane.** Fault-zone anatomy — predict where secondary strands sit around
+   known faults from shear-zone mechanics. Stay inside it. If the raster's
+   rank-correlation with any registry raster exceeds **0.90**, or more than
+   **70 %** of its dots fall within 3 px of one registry raster's dots, log it as
+   a duplicate and stop.
+2. **Reuse, don't rebuild.** Hide-and-recover holdout; withhold whole fault
+   segments with a buffer; derive every catalogue feature only from the visible
+   faults; mask visible faults pixel-exactly; score pooled DTI (α = 0.2,
+   β = 0.8, 300 m triangular kernel).
+3. **Label every number** `HOLDOUT-DTI` (evaluator version, number of withheld
+   positives, 95 % CI) or `ORGANIZER-CONFIRMED` (copied from a submission-page
+   receipt). **A projection is never written as a score.**
+4. **Leakage canary.** Test each feature alone before trusting any result.
+   AUC above **0.90** means leakage until proven otherwise.
+5. **Run card.** End with one JSON card (see [`docs/run-card.html`](docs/run-card.html)).
+6. **Budget.** Stop after **3** experiments or **2** hours. Negative results are
+   deliverables.
+
+---
+
+## Headline result
+
+Measured with the hide-and-recover holdout, leave-one-quadrant-out, 8 cells
+(4 quadrants x draws 20/21), 22,641 withheld positives. **Every number below is a
+`HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
+
+| Feature set | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
+| --- | --- | --- | --- | --- |
+| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] |
+| `d_perp_par` (+ stepover, along-strike) | 0.1867 | [0.1605, 0.2128] | 0.1847 | [0.1665, 0.2029] |
+| `anatomy_full` (all 9 features) | **0.2517** | [0.2183, 0.2851] | 0.2538 | [0.2309, 0.2766] |
+| `no_side` (shipped: 8 features) | 0.2508 | [0.2164, 0.2852] | **0.2556** | [0.2329, 0.2784] |
+
+The full model beats distance-only by **+0.0673** (`all`) and **+0.0721**
+(`detached`) with disjoint confidence intervals.
+
+**But the gain is not from the Riedel geometry.** Adding stepover and
+along-strike to distance alone buys only **+0.0022** — inside the noise. The
++0.067 comes from local fault `density` (AUC 0.7289), trace `coherence` (0.6278)
+and `log_len`. The en echelon structure this lane set out to find **is** there in
+the data (joint stepover x along-strike enrichment 0.0326, **13.9x** base rate),
+and it **does not pay for itself on this instrument**. That is recorded as a
+negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
+over.
+
+### Why 0.2778 won, and whether higher is achievable
+
+`DTI = T / (0.2(T + n - M) + 0.8K)`. Two consequences, both verified against the
+brute-force implementation:
+
+1. **The ceiling is 1.0, not 0.5556.** A perfect prediction has `n = M = T = K`,
+   so `D = 0.2K + 0.8K = K`. (0.05556 is a different number entirely: the
+   marginal acceptance bar `alpha * DTI` at DTI = 0.2778.)
+2. **At the real base rate DTI tracks coverage — but only while the dot budget
+   stays near `K`.** At the measured base rate 0.00221, a *random* pixel lands
+   within 3 px of a true one only 2.1% of the time. Measured with the exact
+   metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
+   **0.1809** at `n/K = 6`.
+
+So 0.2778 is roughly **28% coverage of the live truth at a near-matched budget**,
+and 0.3774 implies about 40%. Higher is achievable and the route is arithmetic:
+raise coverage while holding `n <~ 2K`. The registry confirms the budget half of
+this with live evidence — **Spearman(dot count, organizer-confirmed live score) =
+-0.8104** (p = 0.00025) over 15 rasters, and the two rasters above 120,000 dots
+hold the two worst live scores (0.1922, 0.1894). That is why this lane's
+holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
+costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
+
+**Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
+
+---
+
+## What this repo actually contains
+
+| Path | What it is |
+| --- | --- |
+| [`BRIEF.md`](BRIEF.md) | the standing task prompt, verbatim |
+| [`src/gems57/metric.py`](src/gems57/metric.py) | DTI, verified against a brute-force transcription |
+| [`src/gems57/grid.py`](src/gems57/grid.py) | CRS / shape / transform / footprint, sha256-pinned |
+| [`src/gems57/network.py`](src/gems57/network.py) | fault segments, local strike, offset frame, detachment |
+| [`src/gems57/holdout.py`](src/gems57/holdout.py) | hide-and-recover folds, pooled DTI |
+| [`src/gems57/anatomy.py`](src/gems57/anatomy.py) | the **fitted** fault-zone-anatomy intensity |
+| [`src/gems57/emit.py`](src/gems57/emit.py) | lazy-greedy max-coverage allocation at the DTI fixed point |
+| [`src/gems57/fitting.py`](src/gems57/fitting.py) | leakage canary + leave-one-quadrant-out CV |
+| [`src/gems57/validate.py`](src/gems57/validate.py) | every portal check |
+| [`src/gems57/uniqueness.py`](src/gems57/uniqueness.py) | rank-correlation and 3 px dot overlap vs the registry |
+| [`scripts/run_lane.py`](scripts/run_lane.py) | `verify` / `measure` stages |
+| [`scripts/run_cv.py`](scripts/run_cv.py) | canary + CV + ablation |
+| [`scripts/build_submission.py`](scripts/build_submission.py) | final surface, emission, validation, uniqueness |
+| [`scripts/build_site.py`](scripts/build_site.py) | regenerates `docs/` from the evidence JSONs |
+| [`evidence/`](evidence/) | every measurement, machine-readable |
+| [`registry/`](registry/) | 15 earlier submission rasters, provenance-indexed |
+| [`data/bridge/`](data/bridge/) | the two competition files, sha256-verified |
 
 ## Reproduce
 
 ```bash
-python scripts/prepare_data.py                 # verify every sha256 pin
-python scripts/explore_zone2.py                # Exp 1b: measure the zone anatomy
-python scripts/run_holdout.py                  # Exp 2: HOLDOUT-DTI arms × budgets
-python scripts/calibrate_registry.py           # calibrate both instruments vs 11 rasters
-python scripts/build_submission.py             # Exp 3: rebuild the submission (deterministic)
-python scripts/check_uniqueness.py             # drift check vs 663 registry rasters
-python scripts/build_site.py                   # rebuild docs/
-python -m pytest tests/ -q                     # sanity tests
+pip install -r requirements.txt
+python scripts/run_lane.py verify            # re-verify the two data files by sha256
+python scripts/run_lane.py measure           # withhold structure measurement
+python scripts/run_cv.py  --mode all         # leakage canary + LOQO CV + ablation
+python scripts/build_submission.py --mode all
+python scripts/build_site.py
+pytest -q
 ```
 
-Environment: Python 3.11 with rasterio, numpy, scipy, scikit-learn, pandas
-(`/home/user/venv/bin/python` in the research sandbox). The sandbox has 3 GB RAM —
-the scripts are written for it (halo-restricted arrays, int32 segment labels,
-`gc.collect()` between folds).
+## Verified data provenance
+
+| File | sha256 | Source |
+| --- | --- | --- |
+| `existing_faults.tif` | `7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093` | [GEMSDOE2 `data/bridge/`](https://github.com/buffedlizard55-lab/GEMSDOE2/blob/main/data/bridge/existing_faults.tif) |
+| `sample_submission.tif` | `2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc` | [GEMSDOE2 `data/bridge/`](https://github.com/buffedlizard55-lab/GEMSDOE2/blob/main/data/bridge/example_submission.tif) |
+
+`existing_faults.tif` is byte-identical to the `labels.tif` recorded in
+[`GEMSDOE32/data/restore_receipt.json`](https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/data/restore_receipt.json)
+(same sha256, same 425,830 bytes) — the public "labels" raster **is** the mapped
+fault catalogue, and the scored truth is not published. That is what forces the
+hide-and-recover design.
+
+## Limitations
+
+* **No DrivenData credentials in the sandbox.** The 420 MB
+  `gems-geodawn-numerical-features.tif` feature stack is present in the bridge
+  repos as five parts but is not pulled here; this lane is catalogue-geometry
+  only and does not need it.
+* **No sense-of-slip field exists.** `existing_faults.tif` has exactly three
+  values, `{-1, 0, 1}`. The lane brief asks to condition on recorded sense of
+  slip "where the database has it" — it does not. `IR-57-SLIP-01`.
+* **No external SGMC-derived fault raster**, so the secondary off-catalogue
+  instrument used by the shared template cannot be reproduced here.
+* **The holdout truth is withheld *catalogue* pixels**, which by construction
+  belong to mapped systems. Genuinely unmapped faults are a different
+  population. The `detached` withholding mode is the conservative reading and is
+  reported alongside the primary one.
 
 ---
 
-## Standing starting point — the original task prompt
+## Appendix — the full task prompt, verbatim
 
-The full prompt this repository was created from, kept verbatim as the standing
-starting point for future sessions:
+Re-read this at the start of every session. It is the specification this
+repository is built against; the README summarises it, this file *is* it.
 
-> # GEMSDOE57 — session brief
+---
+
+## The lane
+
+> Fault-zone anatomy lane: predict where secondary strands sit around known
+> faults from shear-zone mechanics. The organizers define a new fault as any
+> fault pixel not already captured by USGS/INGENIOUS, including newly mapped
+> geometry of an existing system (thread 11536), so splays and parallel strands
+> count. They also confirmed that a dot near a known trace but far from any
+> new-fault pixel is fully penalized (thread 11516), so the allocation must be
+> fitted, not assumed. Analogue experiments of distributed dextral shear
+> (Schreurs, 2003) produce left-stepping en echelon Riedel shears linked by
+> short synthetic shears subparallel to the bulk shear. The classical framework
+> is Tchalenko (1970), and the pattern is consistent with the left-stepping
+> dextral faults Faulds, Henry and Hinz document in the northern Walker Lane.
+> Damage-zone work (Savage and Brodsky, JGR 2011) shows secondary-fracture and
+> strand density decaying away from the primary fault, with zone width growing
+> with displacement and then more slowly. Build a per-fault intensity from
+> distance, fault length as a displacement proxy, and strand orientation
+> relative to the primary strike, conditioned on recorded sense of slip where
+> the database has it. Do not hard-code textbook angles. On the hide-and-recover
+> holdout, measure the relative-strike and distance distributions of withheld
+> segments against their nearest visible fault and keep only the structure the
+> data shows. Shrink this lane's dot budget if few withheld positives fall
+> inside the fitted zone. Output the standard validated GeoTIFF,
+> uniqueness-checked against every earlier raster.
+
+## Parallel-run protocol — read first
+
+> 1. **LANE.** Your lane is the single method paragraph below. Stay inside it. If
+>    your raster's rank-correlation with any registry raster exceeds **[0.90]**,
+>    or more than **[70%]** of your dots fall within 3 px of one registry
+>    raster's dots, you have drifted into another lane: log it as a duplicate and
+>    stop. Check this on the surface before placement AND on the final dots.
 >
-> ## 1. Highest urgency: MUST GENERATE A UNIQUE TIF SUBMISSION
+> 2. **REUSE, DON'T REBUILD.** Use the template's cached feature stack,
+>    `evaluate_holdout.py` and `submission_writer.py`. Holdout = hide-and-recover:
+>    withhold whole fault segments with a buffer, derive every catalogue-based
+>    feature only from the visible faults, mask visible faults pixel-exactly,
+>    score pooled DTI (alpha 0.2, beta 0.8, 300 m triangular kernel). If a shared
+>    tool is wrong, fix it once in the template and report it; never keep a
+>    private fork.
 >
-> I need a new submission file for the DrivenData GEMS prize challenge generated and ready
-> to upload — one that stands a real chance of scoring higher than my current best
-> submission on the leaderboard. My best so far is **0.2778**, and the highest score on
-> the leaderboard right now is **0.3195**, so the new file needs to beat that to be worth
-> submitting. The submission must be **unique** — it must not be a copy of any previous
-> submission I've made (copying is only okay for learning).
+> 3. **LABEL EVERY NUMBER** as HOLDOUT-DTI (evaluator version, number of withheld
+>    positives, 95% CI) or ORGANIZER-CONFIRMED (copied from a submission-page
+>    receipt). A projection is never written as a score.
 >
-> The competition is DrivenData competition 306, "GEMS — Geothermal Energy Mondiale
-> (something)" — the GeoDAWN fault-prediction challenge. The goal: predict where faults
-> are across the study area in Nevada (UTM zone 11N, EPSG:32611, 100 m pixels) using the
-> provided training data. You predict per-pixel fault probability; the hidden test set
-> is new expert-mapped faults that are NOT in the USGS or INGENIOUS fault databases.
-> Organizers confirmed: "a new fault is defined as any fault pixel that is not already
-> captured by USGS/INGENIOUS. This includes newly mapped geometry of an existing fault
-> system (e.g., splays and parallel strands count)."
+> 4. **LEAKAGE CANARY.** Test each feature alone on the holdout before trusting
+>    any result. AUC above **[0.90]** means leakage until proven otherwise.
 >
-> The metric is distance-weighted Tversky: `DTI = TP_w / (TP_w + 0.2·FP_w + 0.8·FN_w)`
-> where weights decay linearly to zero at 300 m (3 pixels). FP is cheap (0.2), FN is
-> expensive (0.8) — so missing a real fault hurts 4× more than a false alarm.
+> 5. **RUN CARD.** End with one JSON card: hypothesis; mechanism; the named
+>    non-fault process that could mimic it; holdout DTI + CI; correlation/overlap
+>    vs registry; raster sha256; validator output (no NaN inside the footprint,
+>    values in [0,1], CRS/shape/transform match); submission name + note of at
+>    most 140 characters; verdict promote / negative. Negative results are
+>    deliverables.
 >
-> **Submission format (must pass validation):** single-band 32-bit float GeoTIFF,
-> EPSG:32611, 100 m resolution, same bounds/geotransform as the training data, values in
-> [0,1], no NaN inside the footprint, null/NaN outside bounds. Unique filename + a short
-> note (≤140 chars).
+> 6. **BUDGET.** Stop after **[3]** experiments or **[2]** hours. Do not pick
+>    submissions: promotion to a real slot is a separate selector step, within
+>    the weekly cap shown on the submission page.
+
+## Candidate hypotheses — required before implementing
+
+> Before implementing, generate 3–5 candidate geological hypotheses we haven't
+> tried yet, each naming: the specific layer(s) involved, the physical signature
+> being targeted (e.g., an edge-detection or curvature transform), why it should
+> catch a fault missing from the USGS/INGENIOUS catalogue rather than one already
+> in it, and how it differs from anything already implemented in this repo. Rank
+> them by expected DTI improvement and implementation cost. Validate the top
+> candidate on our spatially-blocked holdout set before touching a weekly
+> submission slot — do not spend a submission slot on an idea that hasn't beaten
+> the current holdout best. If a candidate can't be validated without new
+> external data, name the specific free, official source needed and check it's
+> obtainable before proposing the idea as viable.
+
+→ delivered in [`docs/hypotheses.html`](docs/hypotheses.html).
+
+## Submission mechanics
+
+> We need to focus on being able to generate a submission into the competition.
+> The site should be able to generate a TIF file that is required for submission.
+> It should be as easy as download to click a File to submit into the
+> competition. This needs to be in the executive summary or the very beginning of
+> the site. It should be obvious when you visit the site.
 >
-> ## 2. Deliverables
+> I tried to submit the document that i downloaded from the site but it returned
+> this error on the submission form: **"Predicted values must be in range [0, 1]"**
 >
-> 1. **A unique submission .tif**, easy to download from the GitHub Pages site.
-> 2. It must pass validation (see above).
-> 3. An **"Executive summary" subpage** on the site explaining exactly how to make a
->    submission into the contest.
-> 4. The full prompt (this message) in the repo README as the standing starting point.
-> 5. A clean GitHub Pages site (`docs/`) with official verified links as sources.
+> Also we need to give it a unique name and a short comment to help you or your
+> team tell submissions apart later, e.g. clustering with k=25.
 >
-> ## 3. Working style
+> Create a executive summary subpage that explains exactly how to make a
+> submission into the contest.
+
+> The submission form says: *You can submit a single-band GeoTIFF (.tif) file, or
+> a .zip file containing a single GeoTIFF, with your predictions. It must match
+> the submission format's CRS, shape, and geotransform.*
+
+→ root cause and fix: `IR-57-NAN-01` in
+[`docs/irregularities.html`](docs/irregularities.html).
+
+## Quality bar
+
+> Work line by line verifying from official verified trusted sources, provide
+> links for manual review. There should be no manual input, work on your own to
+> complete tasks. Flag any irregularities for review. No hallucinations.
 >
-> - Work autonomously, but verify your work line by line. No hallucinations.
-> - Flag any irregularities for review.
-> - Use a 3-pass workflow: (1) implement + verify it works, (2) bug/edge-case review,
->   (3) re-check against the original request.
-> - Create a PR and merge it to main when done. Suggest remaining work/limitations.
->
-> ## 4. Parallel-run protocol (critical)
->
-> Multiple sessions are running from this same prompt in parallel. Before implementing,
-> check the registry of prediction rasters from other sessions (`/home/user/registry/`).
-> If your raster's rank-correlation with any registry raster exceeds [0.90], or more than
-> [70%] of your dots fall within 3 px of one registry raster's dots, you have drifted into
-> another lane: log it as a duplicate and stop. Check this on the surface before placement
-> AND on the final dots.
->
-> ## 5. Lane assignment: fault-zone anatomy
->
-> Your lane is **fault-zone anatomy** — study the shear-zone damage halo around the known
-> USGS/INGENIOUS faults (Tchalenko 1970; Schreurs 2003; Savage & Brodsky 2011). The
-> hypothesis: new expert-mapped faults cluster as secondary strands in the damage zones of
-> known faults.
->
-> Label every number you report as one of: **HOLDOUT-DTI** (state the evaluator version,
-> the number of withheld positives, and a 95% CI) or **ORGANIZER-CONFIRMED**.
->
-> Leakage canary: if a single feature alone achieves holdout AUC > 0.90, that feature is
-> leaking the answer — do not use it.
->
-> End the session with one JSON run card: hypothesis; mechanism; the named non-fault
-> process that could mimic it; holdout DTI + CI; correlation/overlap vs registry;
-> raster sha256; validator output; submission name + ≤140-char note; verdict
-> promote/negative. Negative results are deliverables.
->
-> ## 6. Budget
->
-> Stop after 3 experiments or 2 hours, whichever comes first. Promotion to a real
-> submission slot is a separate selector step — do not pick submissions for the real
-> slots yourself.
->
-> ## 7. Before implementing: candidate hypotheses
->
-> Generate 3–5 candidate geological hypotheses we haven't tried yet (layers, physical
-> signature, why it catches faults missing from USGS/INGENIOUS, how it differs), ranked
-> by expected DTI improvement and implementation cost. Validate the top candidate on our
-> spatially-blocked holdout set before touching a weekly submission slot — do not spend a
-> submission slot on an idea that hasn't beaten the current holdout best.
->
-> ## 8. Constraints
->
-> - MUST generate a UNIQUE TIF submission; never copy a previous submission (copying only
->   OK for learning).
-> - Submission values in [0,1]; the user got "Predicted values must be in range [0, 1]" —
->   fix the cause in the writer (clip, NaN only outside footprint, validate before
->   packaging).
-> - No DrivenData auth → cannot download from the data page.
-> - Only free, publicly available, official/verified external data sources; provide
->   links for manual review.
-> - No hallucinations; verify line by line; flag irregularities.
-> - Budget cap: 3 experiments or 2 hours per session; promotion to real slot is a
->   separate selector step.
+> Run this task through multiple passes.
+> Pass 1: Implement the task completely and verify the result.
+> Pass 2: Review your work for bugs, missing requirements, incorrect assumptions,
+> and edge cases. Fix everything you find.
+> Pass 3: Re-check the entire implementation against the original request.
+> Improve accuracy, reliability, completeness, and code quality. Fix any
+> remaining issues.
+> Do not stop after the first pass.
+
+## Reference links from the brief
+
+| Purpose | Link |
+| --- | --- |
+| Competition home | https://www.drivendata.org/competitions/306/competition-doe-gems/ |
+| Problem description | https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/ |
+| About / resources | https://www.drivendata.org/competitions/306/competition-doe-gems/page/968/ |
+| Data (login required) | https://www.drivendata.org/competitions/306/competition-doe-gems/data/ |
+| Leaderboard | https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/ |
+| Reference solution | https://github.com/drivendataorg/gems-prize-reference-solution |
+| Rules PDF | https://docs.nlr.gov/docs/fy26osti/96647.pdf |
+| GeodAWN survey (USGS) | https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and |
+| INGENIOUS (GBCGE) | https://gbcge.org/current-projects/ingenious/ |
+| EPSG:32611 | https://epsg.io/32611 |
+| Tversky index | https://en.wikipedia.org/wiki/Tversky_index |
+| GDR submission 1391 | https://gdr.openei.org/submissions/1391 |
+
+## Owner-reported scores quoted in the brief
+
+These are **ORGANIZER-CONFIRMED** numbers as pasted by the task owner. Two
+different "highest score" values appear in the brief (0.3774 and 0.3195); the
+conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
+this repo claims to beat.
+

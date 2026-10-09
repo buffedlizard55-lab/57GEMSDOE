@@ -1,142 +1,185 @@
-"""Triangular-kernel, metric-aware prediction placement.
+"""Dot allocation: greedy max-coverage at the exact DTI marginal bar.
 
-For a known truth set, adding a binary pixel changes TP by c (incremental
-max-cover) and FP by f = 1 - max_g k(d). With alpha=.2, beta=.8, improvement
-is exactly c*(1-.2*DTI) > .2*DTI*f. Distance alone does NOT decide this:
-a dot can cover several truth pixels or only duplicate existing coverage.
+Why this allocation rule
+------------------------
+For a binary dot field (see :mod:`gems57.metric` for the derivation, including
+why the denominator does **not** collapse to ``alpha*n + beta*|G|``)::
 
-At inference the truth is unknown. We greedily maximize SUM rho_g*max_x k(d)
-under a fixed dot budget, where rho is a model-derived proxy truth density.
-This is a coverage surrogate, not E[DTI] and not a guaranteed improvement in
-DTI. A full-pool cardinality greedy has the usual submodular-coverage bound;
-that bound does not extend to the DTI ratio or to an arbitrary restricted pool.
-For a nonzero stopping target, FP discounts below use an explicitly approximate
-independent-Bernoulli model. Nearby fault pixels are not in fact independent.
+    D   = alpha*(T + n - M) + beta*|G|
+    DTI = T / D
 
-R2 repairs two inherited bugs: reversed zero-padding at grid edges; and wx=1
-for EVERY candidate (because the code included its own lattice offset without
-asking whether a truth pixel existed there), which disabled the cost gate.
+where ``T`` is the covered truth credit and ``M`` the total self-credit of the
+emitted dots.  A dot at ``x`` has a **fixed** self-credit
+``k(x) = E[k](x) = sum_g p(g) k(d(x,g))`` -- the convolution of the per-cell
+truth probability with the kernel -- which does not depend on the other dots,
+while its marginal truth credit ``dT(x)`` falls as neighbouring truth cells get
+covered.  The exact acceptance test ``dT > alpha*DTI*(dT + 1 - k)`` therefore
+rearranges to a per-candidate bar::
+
+    dT > c * (1 - k(x)),     c = alpha*DTI / (1 - alpha*DTI)
+
+which is what the loop below applies.  Candidates are processed in rounds in
+decreasing ``E[k]`` order with the bar frozen inside a round; a candidate is only
+re-evaluated when a nearby acceptance could have changed its ``dT``.  ``dT`` is
+non-increasing and the bar rises while DTI rises, so the loop terminates when a
+round accepts nothing.
+
+Nothing about the *shape* of the emission is assumed here -- the spatial
+structure comes entirely from ``p``, which :mod:`gems57.anatomy` fits to the
+hide-and-recover holdout.
 """
+
 from __future__ import annotations
 
-import heapq
+from dataclasses import dataclass, field
+
 import numpy as np
+from scipy import ndimage as ndi
 
-R_PX = 3
-OFFSETS = [(dy, dx, 1.0 - np.hypot(dy, dx) / R_PX)
-           for dy in range(-R_PX, R_PX + 1) for dx in range(-R_PX, R_PX + 1)
-           if np.hypot(dy, dx) < R_PX]
+from .metric import ALPHA, BETA, EPS, OFF_DX, OFF_DY, OFF_K
 
 
-def accept_bar(dti: float, alpha: float = 0.2) -> float:
-    if not 0 <= dti <= 1 or not 0 <= alpha < 1:
-        raise ValueError("DTI and alpha must be in their valid ranges")
-    return float(alpha * dti / (1 - alpha * dti))
+def expected_credit(p: np.ndarray) -> np.ndarray:
+    """``E[k](x) = sum_g p(g) k(d(x,g))`` -- convolution of ``p`` with the kernel.
 
-
-def _neighbour_tables(cands, shape):
-    h, w = shape
-    r, c = cands // w, cands % w
-    nb = np.full((len(cands), len(OFFSETS)), -1, np.int64)
-    kk = np.zeros(nb.shape, np.float32)
-    for j, (dy, dx, k) in enumerate(OFFSETS):
-        yy, xx = r + dy, c + dx
-        ok = (yy >= 0) & (yy < h) & (xx >= 0) & (xx < w)
-        nb[ok, j] = yy[ok] * w + xx[ok]
-        kk[ok, j] = k
-    return nb, kk
-
-
-def gain_field(density, shape):
-    """Exact zero-padded convolution of rho with the triangular lattice kernel."""
-    h, w = shape
-    d = np.asarray(density, np.float32).reshape(h, w)
-    out = np.zeros((h, w), np.float32)
-    for dy, dx, k in OFFSETS:
-        y0, y1 = max(0, -dy), min(h, h - dy)
-        x0, x1 = max(0, -dx), min(w, w - dx)
-        if y1 > y0 and x1 > x0:
-            out[y0:y1, x0:x1] += d[y0 + dy:y1 + dy, x0 + dx:x1 + dx] * k
+    For a candidate dot at ``x`` this is simultaneously the expected marginal
+    truth credit (when nothing nearby is covered yet) and the dot's self-credit
+    ``k(x)``.
+    """
+    p = np.asarray(p, np.float32)
+    out = np.zeros(p.shape, np.float32)
+    H, W = p.shape
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ys0, ys1 = max(0, j), min(H, H + j)
+        xs0, xs1 = max(0, i), min(W, W + i)
+        out[ys0:ys1, xs0:xs1] += p[max(0, -j):min(H, H - j),
+                                   max(0, -i):min(W, W - i)] * np.float32(k)
     return out
 
 
-def expected_nearest_discount(rho_nb, weights):
-    """E[max k among occupied neighbours], under independent Bernoulli rho.
+@dataclass
+class Allocation:
+    emitted: np.ndarray
+    n_dots: int
+    expected_covered_credit: float = 0.0   # running T under the surrogate p
+    expected_self_credit: float = 0.0      # running M under the surrogate p
+    rounds: int = 0
+    surrogate_dti: float = 0.0
+    trace: list = field(default_factory=list)
 
-    NOT max of lattice weights (the inherited, always-one bug). This is only a
-    surrogate for a spatially correlated geological truth, stated in receipts.
+
+def greedy_allocate(p: np.ndarray, allowed: np.ndarray, k_truth: float, *,
+                    floor: float = 0.02, max_dots: int = 200_000,
+                    candidate_cap: int = 400_000, per_round: int = 20_000,
+                    max_rounds: int = 400, trace_every: int = 0) -> Allocation:
+    """Select dots while each one provably raises the surrogate DTI.
+
+    Parameters
+    ----------
+    p
+        Per-cell probability of being a hidden truth cell, in [0, 1].
+    allowed
+        Boolean mask of cells that may carry a dot (footprint, catalogue removed).
+    k_truth
+        ``|G|``, the number of hidden truth cells, which sets the bar.
+    floor
+        Cells with ``E[k] < floor`` are never considered.  Pure speed-up: with
+        ``alpha = 0.2`` the bar is ``c*(1-k) >= 0`` and any candidate accepted at
+        a realistic score has ``E[k]`` well above this.
     """
-    survival = np.ones(rho_nb.shape[0], np.float64)
-    discount = np.zeros_like(survival)
-    order = np.argsort([-k for _, _, k in OFFSETS], kind="stable")
-    for j in order:
-        p = np.clip(rho_nb[:, j], 0, 1)
-        discount += survival * p * weights[:, j]
-        survival *= 1 - p
-    return discount
+    p = np.asarray(p, np.float32)
+    H, W = p.shape
+    ek = expected_credit(p)
+    cand = allowed & (ek >= floor)
+    ys, xs = np.nonzero(cand)
+    if ys.size == 0:
+        return Allocation(np.zeros(p.shape, bool), 0)
+    order = np.argsort(-ek[ys, xs], kind="stable")
+    if order.size > candidate_cap:
+        order = order[:candidate_cap]
+    ys, xs = ys[order], xs[order]
+    ekc = ek[ys, xs].astype(np.float64)
+    # ``E[k]`` is a *sum* of p*k over the neighbourhood and can exceed 1, but the
+    # metric's per-dot self-credit is ``max_g k(d(x,g))``, which cannot.  Using
+    # the unclipped sum makes ``1 - k`` negative, which flips the bar negative and
+    # lets zero-credit dots through -- that bug produced 7,987 duplicate
+    # acceptances on a synthetic field (``IR-57-KCLIP-01``).
+    kself = np.minimum(ekc, 1.0)
+    ncand = ys.size
+
+    cover = np.zeros(p.shape, np.float32)
+    emitted = np.zeros(p.shape, bool)
+    upper = ekc.copy()            # non-increasing upper bound on each candidate's dT
+    dirty = np.ones(ncand, bool)  # needs (re-)evaluation
+    T = M = 0.0
+    n_dots = 0
+    rounds = 0
+    trace: list[dict] = []
+
+    while n_dots < max_dots and rounds < max_rounds:
+        rounds += 1
+        def _c() -> float | None:
+            D_ = ALPHA * (T + n_dots - M) + BETA * k_truth + EPS
+            a_ = ALPHA * (T / D_)
+            return None if a_ >= 1.0 else a_ / (1.0 - a_)
+
+        c = _c()
+        if c is None:
+            break
+        # the bar is recomputed after every acceptance: DTI moves inside a round,
+        # and freezing it lets marginal acceptances slip through that would
+        # actually lower DTI (the surrogate DTI was non-monotone before this fix)
+        eligible = dirty & (upper > c * (1.0 - kself))
+        if not eligible.any():
+            break
+        idxs = np.flatnonzero(eligible)
+        if idxs.size > per_round:
+            idxs = idxs[:per_round]
+        accepted = 0
+        for i in idxs:
+            if n_dots >= max_dots:
+                break
+            if c is None:
+                break
+            y, x = int(ys[i]), int(xs[i])
+            if emitted[y, x]:
+                dirty[i] = False
+                continue
+            ny = y + OFF_DY
+            nx = x + OFF_DX
+            ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
+            nyv, nxv, kw = ny[ok], nx[ok], OFF_K[ok]
+            pv = p[nyv, nxv].astype(np.float64)
+            cv = cover[nyv, nxv].astype(np.float64)
+            dT = float((pv * np.maximum(kw - cv, 0.0)).sum())
+            upper[i] = dT
+            dirty[i] = False
+            if dT <= c * (1.0 - kself[i]):
+                continue
+            emitted[y, x] = True
+            n_dots += 1
+            T += dT
+            M += float(kself[i])
+            np.maximum.at(cover, (nyv, nxv), kw.astype(np.float32))
+            accepted += 1
+            c = _c()
+            # candidates within 6 px can have a changed dT (3 px kernel, twice)
+            m = (ys >= y - 6) & (ys <= y + 6) & (xs >= x - 6) & (xs <= x + 6)
+            dirty[m] = True
+            dirty[i] = False
+            if trace_every and n_dots % trace_every == 0:
+                D2 = ALPHA * (T + n_dots - M) + BETA * k_truth + EPS
+                trace.append({"n_dots": n_dots, "T": T, "M": M,
+                              "dti_est": T / D2, "last_dT": dT})
+        if accepted == 0:
+            break
+
+    D = ALPHA * (T + n_dots - M) + BETA * k_truth + EPS
+    return Allocation(emitted=emitted, n_dots=n_dots,
+                      expected_covered_credit=T, expected_self_credit=M,
+                      rounds=rounds, surrogate_dti=float(T / D), trace=trace)
 
 
-def greedy_emit(density, allowed, dti_projected, budget, pool=400_000, hard_max=None, log=print):
-    """Deterministic lazy greedy of expected incremental kernel coverage.
-
-    R2 validation uses dti_projected=0 to enforce exactly the same density/budget
-    for all arms; the nonzero cost gate is available and tested, not claimed to
-    optimize an unknown official score. No truth labels enter this function.
-    """
-    allowed = np.asarray(allowed, bool)
-    if allowed.ndim != 2:
-        raise ValueError("allowed must be a 2D grid")
-    dens = np.asarray(density, np.float32).reshape(allowed.shape).ravel()
-    if not np.isfinite(dens).all() or (dens < 0).any():
-        raise ValueError("density must be finite and nonnegative")
-    budget = int(min(max(0, budget), hard_max if hard_max is not None else max(0, budget)))
-    g0 = gain_field(dens, allowed.shape).ravel()
-    candidates = np.flatnonzero(allowed.ravel() & (g0 > 0))
-    total_candidates = len(candidates)
-    count = min(int(pool), total_candidates)
-    if count <= 0 or budget == 0:
-        return np.zeros(allowed.shape, np.float32), dict(emitted=0, reason="zero budget or no positive-gain candidates")
-    # Stable cutoff: do not let argpartition randomly pick a different plateau.
-    vals = g0[candidates]
-    if len(candidates) > count:
-        cutoff = np.partition(vals, len(vals) - count)[len(vals) - count]
-        high = candidates[vals > cutoff]
-        tie = candidates[vals == cutoff]
-        candidates = np.concatenate([high, tie[:count - len(high)]])
-    order = np.lexsort((candidates, -g0[candidates]))
-    cand = candidates[order]
-    nb, kk = _neighbour_tables(cand, allowed.shape)
-    rho_nb = dens[np.maximum(nb, 0)] * (nb >= 0)
-    discount = expected_nearest_discount(rho_nb, kk) if dti_projected else np.zeros(len(cand))
-    bar = accept_bar(dti_projected)
-    cover = np.zeros(dens.shape, np.float32)
-    heap = [(-float(g0[c]), int(c), i) for i, c in enumerate(cand)]
-    heapq.heapify(heap)
-    chosen, gains, rejected, updates = [], [], 0, 0
-    while heap and len(chosen) < budget:
-        _, pixel, i = heapq.heappop(heap)
-        good = nb[i] >= 0
-        neighbors = nb[i][good]
-        gain = float(np.sum(rho_nb[i][good] * np.maximum(kk[i][good] - cover[neighbors], 0)))
-        # Recompute stale upper bounds until this candidate really is the best.
-        if heap and gain < -heap[0][0] - 1e-10:
-            heapq.heappush(heap, (-gain, pixel, i))
-            updates += 1
-            continue
-        if gain <= 0 or gain <= bar * (1 - discount[i]) + 1e-12:
-            rejected += 1
-            continue
-        chosen.append(pixel)
-        gains.append(gain)
-        cover[neighbors] = np.maximum(cover[neighbors], kk[i][good])
-        if len(chosen) % 5000 == 0:
-            log(f"    placed {len(chosen)}; marginal expected cover {gain:.5g}")
-    out = np.zeros(dens.shape, np.float32)
-    out[chosen] = 1.0
-    stats = dict(emitted=len(chosen), requested_budget=budget, pool=len(cand), pool_restricted=len(cand) < total_candidates,
-                 bar=bar, dti_projected=dti_projected, marginal_first=gains[0] if gains else None,
-                 marginal_last=gains[-1] if gains else None, total_expected_credit=float(sum(gains)),
-                 rejects_at_stop=rejected, lazy_updates=updates, density_sum=float(dens.sum()),
-                 false_positive_discount="independent-Bernoulli approximation" if dti_projected else "unused: fixed matched budget",
-                 objective="expected triangular max-coverage surrogate; not expected DTI")
-    return out.reshape(allowed.shape), stats
+def dilate_zone(mask: np.ndarray, px: int) -> np.ndarray:
+    """Dilate a mask by ``px`` pixels (square structuring element)."""
+    return ndi.binary_dilation(np.asarray(mask, bool), iterations=int(px))

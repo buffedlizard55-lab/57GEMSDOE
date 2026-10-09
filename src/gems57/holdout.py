@@ -1,295 +1,248 @@
-"""Spatially-blocked, whole-segment, prevalence-matched validation, in two instruments.
+"""Hide-and-recover spatially-blocked holdout.
 
-Both instruments obey the three rules that matter here, and both are reported:
-
-* **Whole segments.** Held-out truth is a set of complete 8-connected catalogue components.  If a
-  trace were cut by a fold boundary the model would be shown half of it and asked to continue the
-  other half, which is not discovery.  Components go to the fold owning most of their pixels.
-* **The visible catalogue is masked exactly as the organiser masks it.** DrivenData staff, thread
-  11516 post #2: "Pixels corresponding to known USGS/INGENIOUS faults are masked / excluded from
-  evaluation, so they do not count towards penalty terms", and post #4 that the mask is
-  *pixel-exact* with no buffer.  So mass sitting on a visible catalogue pixel is deleted before
-  scoring (``mask_visible``), while mass one pixel off the trace is fully penalised.
-* **Prevalence matching.** The hidden set is bracketed at 0.112-0.294 % of the footprint by the
-  organiser's own published scores (``knowledge/01``); folds are thinned to that bracket because
-  the optimal emission density moves with prevalence, and an unmatched fold selects the wrong budget.
-
-Instruments
------------
-``mode="hide"``  -- hide-and-recover: remove whole components from the *labels*, train everywhere
-                    else, score everywhere.  Measures recovery of structure the model was never
-                    told about, and is the comparison the brief asks for against a single view.
-``mode="block"`` -- quadrant-blocked: train on other quadrants only (minus a boundary buffer),
-                    score inside the held quadrant.  Removes the "the neighbouring block gives it
-                    away" leak and is the conservative read.
+Design (parallel-run protocol rule 2)
+-------------------------------------
+* The mapped catalogue is split into **whole segments** (branches between
+  intersections, cut into <= 12 px chunks -- see :func:`gems57.network.segments`).
+* The footprint is split into four spatial quadrants (NW, NE, SW, SE) at the
+  median footprint row/col.  Fold *k* withholds segments inside quadrant *k*,
+  and ``DOMAIN_ERODE`` (12 px = 1.2 km) keeps the scored domain away from the
+  fold boundary, which is what provides the spatial separation between the
+  withheld strands and the catalogue context used to build the features.
+* Only segments lying wholly inside the scored domain are eligible for
+  withholding, so truth is never clipped by the domain edge.
+* Every catalogue-derived feature is computed from the **visible** mask only.
+* Visible fault pixels are masked out of scoring pixel-exactly (``known``),
+  matching the organiser's statement that a dot near a known trace but far from
+  any new-fault pixel is fully penalised (forum thread 11516).
+* Score: pooled DTI, alpha = 0.2, beta = 0.8, 300 m (3 px) triangular kernel.
 """
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+from pathlib import Path
+
 import numpy as np
-from scipy import ndimage
+from scipy import ndimage as ndi
 
-from . import emit as E
-from . import metric as M
+from .grid import Grid
+from .metric import ALPHA, BETA, EPS, kernel
+from .network import STRUCT3, component_detached, segments
 
-PREVALENCE_TARGETS = (0.00112, 0.00200, 0.00294)     # |G| bracket / footprint
-DISC = [(dy, dx) for dy in range(-3, 4) for dx in range(-3, 4) if dy * dy + dx * dx <= 9]
-
-
-def block_ids(shape: tuple[int, int], valid: np.ndarray, n: int = 4) -> np.ndarray:
-    """Contiguous rectangular block ids, -1 outside the footprint.  n x n blocks."""
-    h, w = shape
-    rs = np.linspace(0, h, n + 1).astype(int)
-    cs = np.linspace(0, w, n + 1).astype(int)
-    lab = np.full(shape, -1, dtype=np.int16)
-    k = 0
-    for i in range(n):
-        for j in range(n):
-            blk = np.zeros(shape, dtype=bool)
-            blk[rs[i]:rs[i + 1], cs[j]:cs[j + 1]] = True
-            lab[blk & valid] = k
-            k += 1
-    return lab
+FOLD_NAMES = ("NW", "NE", "SW", "SE")
+DOMAIN_ERODE = 12     # 1.2 km boundary erosion; withheld segments must lie wholly inside
+DETACH_PX = 4         # 400 m separation defining the conservative "detached" subset
+HIDE_FRAC = 0.20      # fraction of the fold's catalogue pixels withheld
+MAX_SEG_PX = 12
 
 
-def fold_of_components(cat: np.ndarray, valid: np.ndarray, n_folds: int = 4) -> np.ndarray:
-    """Per-pixel fold id for catalogue pixels: whole components, majority block wins."""
-    lab = block_ids(cat.shape, valid, n=n_folds)
-    fid = np.where(lab >= 0, lab % n_folds, -1).astype(np.int16)
-    comp, ncomp = ndimage.label(cat & valid, structure=np.ones((3, 3), dtype=bool))
-    fold = np.full(cat.shape, -1, dtype=np.int16)
-    if ncomp == 0:
-        return fold
-    ids = comp.ravel()
-    f = fid.ravel()
-    votes = np.zeros((ncomp + 1, n_folds), dtype=np.int64)
-    ok = ids > 0
-    np.add.at(votes, (ids[ok], f[ok]), 1)
-    best = votes.argmax(axis=1).astype(np.int16)
-    fold[comp > 0] = best[ids[ids > 0]]
-    return fold, fid
+@dataclass
+class Cell:
+    """One fold cell.  ``active`` and ``k_dg`` are cropped to ``bbox`` to keep the
+    whole context resident in memory; the bbox carries 6 px of padding so the
+    3 px kernel sees the same neighbourhood it would on the full grid."""
+    key: str
+    fold: int
+    seed: int
+    mode: str
+    bbox: tuple[slice, slice]
+    active: np.ndarray                  # bool, scored domain minus visible faults (cropped)
+    truth_yx: tuple[np.ndarray, np.ndarray]   # indices *within the crop*
+    k_dg: np.ndarray                    # float32 kernel(distance to truth) (cropped)
+    n_truth: int
 
 
-def boundary(valid: np.ndarray, n_folds: int, buffer_px: int) -> np.ndarray:
-    """Pixels within ``buffer_px`` of a fold boundary or of the footprint edge."""
-    lab = block_ids(valid.shape, valid, n=n_folds)
-    fid = np.where(lab >= 0, lab % n_folds, -1).astype(np.int16)
-    border = np.zeros(valid.shape, dtype=bool)
-    for dy, dx in ((0, 1), (1, 0), (-1, 0), (0, -1)):
-        sh = np.roll(fid, (-dy, -dx), axis=(0, 1))
-        border |= (sh != fid) & (sh >= 0) & (fid >= 0)
-    border = ndimage.binary_dilation(border, iterations=buffer_px) & valid
-    edge = ndimage.binary_dilation(~valid, iterations=buffer_px)
-    return border | edge
+@dataclass
+class HoldoutContext:
+    grid: Grid
+    quad: np.ndarray
+    cells: list[Cell]
+    hidden_by_cell: dict                # key -> full-grid bool mask of withheld pixels
+
+    def visible(self, key: str) -> np.ndarray:
+        """Visible catalogue for a cell: everything mapped except what is withheld."""
+        return self.grid.catalogue & ~self.hidden_by_cell[key]
+
+    def cell(self, key: str) -> Cell:
+        for c in self.cells:
+            if c.key == key:
+                return c
+        raise KeyError(key)
+
+    def cells_of(self, mode: str) -> list[Cell]:
+        return [c for c in self.cells if c.mode == mode]
 
 
-def _thin_to_prevalence(held: np.ndarray, target_px: float, rng) -> np.ndarray:
-    """Keep whole components of ``held`` (shuffled) until the target pixel count is reached."""
-    comp, ncomp = ndimage.label(held, structure=np.ones((3, 3), dtype=bool))
-    keep = np.zeros(held.shape, dtype=bool)
-    if ncomp == 0:
-        return keep
-    ids = np.arange(1, ncomp + 1)
-    sizes = np.bincount(comp.ravel(), minlength=ncomp + 1)[1:]
-    order = rng.permutation(ids.size)
-    tot = 0.0
-    for k in order:
-        if tot >= target_px:
-            break
-        keep |= comp == ids[k]
-        tot += float(sizes[k])
-    return keep
-
-
-def tips_of(comp_mask: np.ndarray, frac: float = 0.3) -> np.ndarray:
-    """The two along-strike ends of every trace in ``comp_mask``: the outer ``frac`` of each
-    component's pixels by projection on its own principal axis.
-
-    This is the object of the *truncation* instrument.  The competition's new-fault truth includes
-    corrections and extensions of mapped traces (staff, thread 11516 post #4), and a mapped trace
-    that stops because mapping stopped is the single most reliable place to find one.  Removing whole
-    components cannot measure that at all - only 0.5 % of a hidden component's pixels lie within 5 px
-    of a still-visible trace, because the neighbours of a trace belong to the same component - so a
-    fold set built that way is structurally blind to near-trace mass and must not be used to judge it.
-    """
-    from scipy import ndimage
-    lab, n = ndimage.label(comp_mask, structure=np.ones((3, 3), bool))
-    out = np.zeros(comp_mask.shape, dtype=bool)
-    if n == 0:
-        return out
-    ys, xs = np.nonzero(lab)
-    ids = lab[ys, xs]
-    order = np.argsort(ids, kind="stable")
-    ys, xs, ids = ys[order], xs[order], ids[order]
-    starts = np.searchsorted(ids, np.arange(1, n + 1))
-    ends = np.append(starts[1:], ids.size)
-    for k in range(n):
-        a, b = starts[k], ends[k]
-        if b - a < 3:
-            continue
-        yy = ys[a:b].astype(np.float64)
-        xx = xs[a:b].astype(np.float64)
-        u, s_, vt = np.linalg.svd(np.stack([yy - yy.mean(), xx - xx.mean()]), full_matrices=False)
-        proj = (vt[0] * (yy - yy.mean()) + vt[1] * (xx - xx.mean()))
-        lim = np.quantile(np.abs(proj), 1.0 - frac)
-        keep = np.abs(proj) >= lim
-        out[yy[keep].astype(int), xx[keep].astype(int)] = True
-    return out
-
-
-def make_folds(cat: np.ndarray, valid: np.ndarray, n_folds: int = 4, buffer_px: int = 4,
-               prevalence: float = 0.002, seed: int = 0, mode: str = "hide",
-               tip_frac: float = 0.3) -> list[dict]:
-    """List of fold dicts with keys truth / visible / fit / region / boundary / n_truth.
-
-    ``mode``: ``hide`` removes whole catalogue components; ``block`` additionally restricts fitting
-    and scoring to a quadrant; ``tip`` removes only the along-strike ends of components, which is the
-    instrument that can see near-trace mass (see :func:`tips_of`).
-    """
-    if mode not in ("hide", "block", "tip"):
-        raise ValueError(mode)
-    fold_of, fid = fold_of_components(cat, valid, n_folds)
-    bnd = boundary(valid, n_folds, buffer_px)
-    rng = np.random.default_rng(seed)
-    target = prevalence * float(valid.sum())
-    out = []
-    for f in range(n_folds):
-        held_cat = (fold_of == f) & valid                       # complete components of this fold
-        if mode == "tip":
-            held_cat = tips_of(cat & (fold_of == f) & valid, frac=tip_frac)
-        # Prevalence-matched truth, whole components, identical rule in both instruments.
-        truth = _thin_to_prevalence(held_cat, target, rng)
-        visible = (cat & ~held_cat) & valid                     # what the model may still use
-        # Region the model is allowed to emit in, and the area the model is fitted on.
-        #   hide : labels removed for these components only; predictions scored grid-wide, so the
-        #          model must recover a hidden trace from physics alone, with no help from the
-        #          catalogue on either side of it.
-        #   block: the model never sees the quadrant's own labels at fit time and is scored inside
-        #          the quadrant, with a boundary buffer on both sides of the cut.
-        region = valid if mode in ("hide", "tip") else (fid == f) & valid
-        if mode == "hide":
-            # the model must not be trained on *any* pixel of a hidden segment, or it is being shown
-            # the trace it is then graded on recovering
-            fit = valid & ~bnd & ~_grow(held_cat, buffer_px)
-        elif mode == "tip":
-            fit = valid & ~bnd & ~_grow(truth, buffer_px)
-        else:
-            fit = valid & (fid != f) & ~bnd
-        out.append(dict(fold=f, mode=mode, truth=truth, visible=visible, fit=fit, region=region,
-                        boundary=bnd, n_truth=int((truth & region).sum()),
-                        n_held=int(held_cat.sum())))
-    return out
-
-
-def _grow(mask: np.ndarray, px: int) -> np.ndarray:
-    return ndimage.binary_dilation(mask, iterations=px) if px > 0 else mask
-
-
-def mask_visible(p: np.ndarray, visible_cat: np.ndarray) -> np.ndarray:
-    """Delete predicted mass sitting exactly on the visible catalogue, as the organiser's mask does."""
-    q = np.array(p, copy=True)
-    q[visible_cat] = 0.0
+def quadrant_ids(footprint: np.ndarray) -> np.ndarray:
+    fp = np.asarray(footprint, bool)
+    yy, xx = np.nonzero(fp)
+    ym, xm = int(np.median(yy)), int(np.median(xx))
+    gy, gx = np.ogrid[: fp.shape[0], : fp.shape[1]]
+    q = np.full(fp.shape, -1, np.int8)
+    q[(gy < ym) & (gx < xm) & fp] = 0
+    q[(gy < ym) & (gx >= xm) & fp] = 1
+    q[(gy >= ym) & (gx < xm) & fp] = 2
+    q[(gy >= ym) & (gx >= xm) & fp] = 3
     return q
 
 
-def score(p: np.ndarray, fold: dict, valid: np.ndarray, restrict_to_region: bool = True,
-          extra: bool = True) -> dict:
-    """Official DTI of one emission on one fold."""
-    pp = np.where(valid, p, 0.0)
-    if restrict_to_region:
-        pp = np.where(fold["region"], pp, 0.0)
-    pp = mask_visible(pp, fold["visible"] & valid)
-    r = M.dti(pp, fold["truth"] & fold["region"] & valid)
-    r["emitted"] = int((pp > 0).sum())
-    if extra:      # the two extras cost an EDT and a full-grid mask each; the hot sweep skips them
-        r["in_region_emitted"] = int(((pp > 0) & fold["region"]).sum())
-        r["recall_within_3px"] = recall_within(pp > 0, fold["truth"] & fold["region"] & valid, valid)
-    return r
+def _pick_segments(rng, sizes: np.ndarray, ids: np.ndarray, target_px: float) -> np.ndarray:
+    """Random whole segments until their cumulative size reaches ``target_px``."""
+    if ids.size == 0:
+        return ids
+    perm = rng.permutation(ids)
+    cum = np.cumsum(sizes[perm])
+    k = int(np.searchsorted(cum, target_px)) + 1
+    return perm[: min(k, perm.size)]
 
 
-def recall_within(emitted: np.ndarray, truth: np.ndarray, valid: np.ndarray,
-                  radius_px: float = 3.0) -> float:
-    """Fraction of truth pixels with an emitted pixel within ``radius_px`` (the recovery read)."""
-    t = truth & valid
-    if not t.any():
-        return float("nan")
-    ed = ndimage.distance_transform_edt(~emitted)
-    return float((ed[t] <= radius_px + 1e-9).mean())
+def build_holdout(grid: Grid, hide_frac: float = HIDE_FRAC,
+                  seeds: tuple[int, ...] = (20, 21),
+                  modes: tuple[str, ...] = ("all", "detached"),
+                  detach_px: int = DETACH_PX) -> HoldoutContext:
+    """Build the fold cells once; re-usable for any number of candidates.
 
-
-def emit_topk(field: np.ndarray, allowed: np.ndarray, k: int) -> np.ndarray:
-    """Binary emission of the k highest-valued allowed pixels.  {0,1} is not a simplification: at a
-    fixed support the metric is linear in the mass and a single uncovered truth pixel gives
-    ``DTI = k_lambda * lambda / (0.2 k_lambda lambda + 0.8)``, increasing in ``lambda``, so the
-    optimum is ``lambda = 1`` (pinned in tests/test_metric.py)."""
-    f = np.where(allowed, np.nan_to_num(field, nan=0.0, neginf=0.0, posinf=0.0), -np.inf)
-    n = f.size
-    k = int(min(max(k, 0), n))
-    out = np.zeros(n, dtype=np.float32)
-    if k == 0:
-        return out.reshape(field.shape)
-    flat = f.ravel()
-    cand = np.argpartition(-flat, k - 1)[:k]
-    cand = cand[flat[cand] > -np.inf]
-    out[cand] = 1.0
-    return out.reshape(field.shape)
-
-
-def arm_scores(prefs: dict, fold: dict, valid: np.ndarray, budgets=(8000, 15000, 25000, 37654),
-               dti_projected: float = 0.28, emit: str = "topk", as_is: tuple[str, ...] = ()) -> dict:
-    """Score every arm of every round on one fold, at every budget.
-
-    ``prefs`` maps arm-key -> float32 grid of that arm's *field* (already combined, unmasked).  The
-    visible catalogue is deleted from the allowed set *and* from the score, exactly as the organiser
-    does, so an arm cannot win by rediscovering a known trace.
+    ``mode="all"``      -- every segment lying wholly inside the fold domain is
+                           eligible for withholding.  Visible context is the
+                           whole remaining catalogue, including traces that are
+                           continuous with a withheld one.  This is the primary
+                           instrument.
+    ``mode="detached"`` -- only segments that lie at least ``detach_px`` from
+                           every other segment are eligible.  These are the
+                           withheld strands whose recovery does *not* benefit
+                           from a visible trace running into them, so this is the
+                           conservative reading and the closer analogue to a
+                           genuinely unmapped splay.
     """
-    allowed0 = valid & ~fold["visible"] & fold["region"]
-    res = {}
-    for mode, field in prefs.items():
-        if mode in as_is:
-            # a previously submitted raster is scored as it stands: cutting it to a budget would
-            # compare an arbitrary tie-broken subset of it against our whole emission
-            em = (np.nan_to_num(np.asarray(field, dtype=np.float32), nan=0.0) > 0).astype(np.float32)
-            sc = score(em, fold, valid, extra=False)
-            res[f"{mode}|full"] = {k: (round(v, 5) if isinstance(v, float) else v)
-                                   for k, v in sc.items()}
-            continue
-        for b in budgets:
-            if emit == "topk":
-                em = emit_topk(field, allowed0, b)
-                st = {"emitted": int((em > 0).sum())}
+    cat = grid.catalogue
+    quad = quadrant_ids(grid.footprint)
+    seg, n_seg = segments(cat, max_len_px=MAX_SEG_PX)[:2]
+    sizes = np.bincount(seg.ravel(), minlength=n_seg + 1)
+    all_ids = np.arange(1, n_seg + 1)
+
+    hidden_by_cell: dict[str, np.ndarray] = {}
+    cells: list[Cell] = []
+
+    for seed in seeds:
+        for fold, qname in enumerate(FOLD_NAMES):
+            q = quad == fold
+            rows = np.flatnonzero(q.any(axis=1))
+            cols = np.flatnonzero(q.any(axis=0))
+            # pad the bbox by 6 px so the 3-px kernel sees the same neighbourhood
+            # it would on the full grid
+            sl = (slice(max(0, rows[0] - 6), min(grid.height, rows[-1] + 7)),
+                  slice(max(0, cols[0] - 6), min(grid.width, cols[-1] + 7)))
+            domain = ndi.binary_erosion(q, iterations=DOMAIN_ERODE) & grid.footprint
+            # only segments wholly inside the domain can be withheld, so that
+            # truth is never clipped by the domain boundary
+            clipped = np.isin(all_ids, np.unique(seg[~domain & cat]))
+            eligible_base = all_ids[~clipped]
+
+            if "detached" in modes:
+                # "detached" = the segment belongs to a connected fault component
+                # lying at least ``detach_px`` away from every other component.
+                # Such strands are not simply the continuation of a visible
+                # trace, so recovering them is the harder, live-analogue problem.
+                comp, is_det = component_detached(cat, detach_px)
+                detached_ids = np.isin(all_ids, np.unique(seg[comp[is_det[comp]]]))
+                del comp, is_det
             else:
-                em, st = emission_from_field(field, allowed0, dti_projected, b,
-                                             calibrate_to=None, log=lambda *a: None)
-            sc = score(em, fold, valid, extra=False)
-            sc["emit"] = emit
-            sc["arm"] = mode
-            sc["budget"] = int(b)
-            sc.update({k2: v for k2, v in st.items() if k2 == "rejects_at_stop"})
-            res[f"{mode}|{b}"] = {k2: (round(v, 5) if isinstance(v, float) else v)
-                                  for k2, v in sc.items()}
-    return res
+                detached_ids = None
+
+            for mode in modes:
+                pool = eligible_base if mode == "all" else eligible_base[detached_ids[eligible_base]]
+                rng = np.random.default_rng(10_000 * (seed + 1) + 7 * fold + (0 if mode == "all" else 1))
+                target = hide_frac * float((cat & q & domain).sum())
+                hidden_ids = _pick_segments(rng, sizes, pool, target)
+                hidden = np.isin(seg, hidden_ids) & grid.footprint
+                visible = cat & ~hidden
+
+                key = f"draw{seed}_fold{qname}_{mode}"
+                hidden_by_cell[key] = hidden
+
+                active = domain & ~visible
+                truth = hidden & domain & active
+                tyx_full = np.nonzero(truth)
+                k_full = kernel(ndi.distance_transform_edt(~truth))
+                # crop to the padded quadrant bbox
+                a_sub = active[sl].copy()
+                k_sub = k_full[sl].astype(np.float32)
+                t_sub = truth[sl]
+                tyx = np.nonzero(t_sub)
+                cells.append(Cell(key=key, fold=fold, seed=seed, mode=mode, bbox=sl,
+                                  active=a_sub, truth_yx=tyx, k_dg=k_sub,
+                                  n_truth=int(tyx[0].size)))
+                del hidden, visible, active, truth, tyx_full, k_full, a_sub, k_sub, t_sub
+
+    return HoldoutContext(grid=grid, quad=quad, cells=cells,
+                          hidden_by_cell=hidden_by_cell)
 
 
-def emission_from_field(field: np.ndarray, allowed: np.ndarray, dti_projected: float,
-                        budget: int, calibrate_to: float | None = None,
-                        pool: int = 400_000, log=lambda *a: None) -> tuple[np.ndarray, dict]:
-    """Rank field -> emission: calibrate the density, then greedy-cover it under the metric's rule.
+def score_cell(cell: Cell, emitted: np.ndarray) -> dict:
+    """Exact DTI of a binary emission inside one fold cell.
 
-    ``calibrate_to`` renormalises the field so that its total mass equals the |G| estimate.  That
-    single choice is what makes the greedy gains commensurable with the credit bar: without it
-    "gain > bar" is a comparison between a number in units of expected truth pixels and a number in
-    units of DTI credit, i.e. meaningless.
+    ``emitted`` may be either the full grid or an array already cropped to
+    ``cell.bbox``.
     """
-    # A density must be non-negative: the locally-centred field is signed by construction (it is a
-    # contrast against a regional mean), so negatives are "below background", i.e. no expected mass.
-    f = np.where(allowed, np.nan_to_num(field, nan=0.0, neginf=0.0, posinf=0.0), 0.0).astype(np.float32)
-    f = np.maximum(f, 0.0)
-    tot = float(f.sum())
-    if tot <= 0:
-        return np.zeros_like(f, dtype=np.float32), {"emitted": 0, "reason": "empty field"}
-    dens = f * (calibrate_to / tot) if calibrate_to else f
-    em, st = E.greedy_emit(dens.ravel(), allowed, dti_projected, budget, pool=pool, log=log)
-    st["field_sum"] = tot
-    st["calibrated_to"] = float(calibrate_to) if calibrate_to else None
-    return em, st
+    if emitted.shape == cell.active.shape:
+        p = emitted & cell.active
+    else:
+        p = emitted[cell.bbox] & cell.active
+    n_emit = int(p.sum())
+    n_t = cell.n_truth
+    if n_t == 0 or n_emit == 0:
+        return dict(dti=0.0, coverage=0.0, tp=0.0, fp=float(n_emit),
+                    n_truth=n_t, n_emitted=n_emit)
+    dp = ndi.distance_transform_edt(~p)
+    tp = float(kernel(dp[cell.truth_yx]).sum())
+    fn = float(n_t) - tp
+    fp = float((1.0 - cell.k_dg[p]).sum())
+    return dict(dti=float(tp / (tp + ALPHA * fp + BETA * fn + EPS)),
+                coverage=float(tp / n_t), tp=tp, fp=fp,
+                n_truth=n_t, n_emitted=n_emit)
+
+
+def evaluate(emitted: np.ndarray, ctx: HoldoutContext, cell_mode: str = "") -> dict:
+    """Per-fold and pooled DTI for a binary emission mask."""
+    emitted = np.asarray(emitted, bool) & ctx.grid.footprint
+    per_fold = {}
+    tp = fp = fn = n_truth = n_emit = 0.0
+    for cell in ctx.cells:
+        if cell_mode and cell.mode != cell_mode:
+            continue
+        r = score_cell(cell, emitted)
+        per_fold[cell.key] = r
+        tp += r["tp"]; fp += r["fp"]; fn += r["fn"]
+        n_truth += r["n_truth"]; n_emit += r["n_emitted"]
+    pooled = float(tp / (tp + ALPHA * fp + BETA * fn + EPS)) if (tp + fp + fn) > 0 else 0.0
+    by_draw: dict[str, list[float]] = {}
+    by_quad: dict[str, list[float]] = {}
+    for k, r in per_fold.items():
+        d, q, _m = k.split("_")
+        by_draw.setdefault(d, []).append(r["dti"])
+        by_quad.setdefault(q, []).append(r["dti"])
+    return {
+        "emitted_pixels": int(emitted.sum()),
+        "on_visible_catalogue": int((emitted & ctx.grid.catalogue).sum()),
+        "pooled_dti": pooled,
+        "pooled_coverage": float(tp / n_truth) if n_truth else 0.0,
+        "pooled_tp": tp, "pooled_fp": fp, "pooled_fn": fn, "pooled_n_truth": int(n_truth),
+        "mean_fold_dti": float(np.mean([r["dti"] for r in per_fold.values()])),
+        "std_fold_dti": float(np.std([r["dti"] for r in per_fold.values()])),
+        "per_fold_dti": {k: r["dti"] for k, r in per_fold.items()},
+        "per_draw_dti": {k: float(np.mean(v)) for k, v in sorted(by_draw.items())},
+        "per_quadrant_dti": {k: float(np.mean(v)) for k, v in sorted(by_quad.items())},
+        "folds": per_fold,
+    }
+
+
+def wilson_ci(k_success_mass: float, n_mass: float, z: float = 1.959963985) -> tuple[float, float]:
+    """Wilson score interval for a binomial proportion (used for coverage CIs)."""
+    if n_mass <= 0:
+        return (0.0, 0.0)
+    p = k_success_mass / n_mass
+    denom = 1.0 + z * z / n_mass
+    centre = (p + z * z / (2 * n_mass)) / denom
+    half = z * np.sqrt(p * (1 - p) / n_mass + z * z / (4 * n_mass * n_mass)) / denom
+    return (float(max(0.0, centre - half)), float(min(1.0, centre + half)))
