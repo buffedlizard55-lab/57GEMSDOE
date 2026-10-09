@@ -1,0 +1,28 @@
+{
+  "generated_utc": "2026-10-09T19:47:19.505008+00:00",
+  "maximum_experiments": 3,
+  "experiments": [
+    {
+      "id": "E1",
+      "hypothesis": "distance-only vs anatomy at fixed density"
+    },
+    {
+      "id": "E2",
+      "hypothesis": "candidate-edge relative strike inside fitted damage zone"
+    },
+    {
+      "id": "E3",
+      "hypothesis": "recorded slip sense conditions E2"
+    }
+  ],
+  "per_quadrant_cap": 10000,
+  "seed": 20,
+  "split": "buffered-whole-components-loqo-v2",
+  "evaluator": "gems57-pooled-hide-v2",
+  "no_textbook_angle": true,
+  "submission_slots_used": 0,
+  "candidate_predeclared": "orientation",
+  "sense_retention_rule": "paired CI lower bound > 0 against orientation",
+  "emission": "existing greedy allocation; truth-count estimate from training base rate, never test labels",
+  "zone": "90th percentile of TRAINING withheld-positive distances; cap shrunk by TRAINING fraction inside zone"
+}

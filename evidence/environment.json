@@ -1,0 +1,16 @@
+{
+  "python": "3.11.2 (main, Apr  8 2026, 01:58:00) [GCC 12.2.0]",
+  "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+  "packages": {
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "scikit-learn": "1.9.1",
+    "rasterio": "1.4.4",
+    "pandas": "3.0.6",
+    "pytest": "9.1.1",
+    "joblib": "1.6.0",
+    "threadpoolctl": "3.7.0"
+  },
+  "experiment_threads": 2,
+  "requirements_lock": "requirements-lock.txt"
+}

@@ -1,0 +1,41 @@
+{
+  "evidence_class": "ORGANIZER-PUBLISHED public leaderboard, NOT a submission-page receipt",
+  "source_url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "retrieved_utc": "2026-10-09T20:25:32.925859+00:00",
+  "retrieved_date_utc": "2026-10-09",
+  "timestamp_precision": "audit recorded immediately after public page retrieval, not a leaderboard publication timestamp",
+  "retrieval_method": "page-retrieval tool; selected rows of the public organizer table rechecked in final source review",
+  "top_public_dti": 0.3774,
+  "rows": [
+    {
+      "rank": 1,
+      "participant_display": "xiaofanhu",
+      "public_dti": 0.3774
+    },
+    {
+      "rank": 2,
+      "participant_display": "alexoktaba",
+      "public_dti": 0.3361
+    },
+    {
+      "rank": 3,
+      "participant_display": "nchuzhoy",
+      "public_dti": 0.3262
+    },
+    {
+      "rank": 7,
+      "participant_display": "DARD",
+      "public_dti": 0.3195
+    },
+    {
+      "rank": 17,
+      "participant_display": "extradr19",
+      "public_dti": 0.2778
+    }
+  ],
+  "scope": "Selected rows from the retrieved public board; not a full receipt list and not file-to-score attribution",
+  "organizer_confirmed_submission_score": null,
+  "private_score": null,
+  "weekly_slots_remaining": null,
+  "receipt_attribution_available": false
+}

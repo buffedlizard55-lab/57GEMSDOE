@@ -1,13 +1,8 @@
-"""Portal validation for a GEMS submission GeoTIFF.
+"""Conservative local GeoTIFF validator, not organizer upload acceptance.
 
-Reproduces every check the DrivenData submission form applies, plus the ones
-that this project has previously been bitten by.  The check that matters most
-is ``range_0_1``: the portal rejects a file with the message
-*"Predicted values must be in range [0, 1]"*, and ``NaN`` satisfies neither
-``v >= 0`` nor ``v <= 1``.  The competition's own ``sample_submission.tif``
-carries 7,111,787 NaN cells (``nodata = NaN``), so a submission written by
-copying that convention fails the check even though every in-footprint value is
-a legal 0 or 1.  Registered as ``IR-57-NAN-01``.
+Validates raw values, the pinned bridged grid and the supplied footprint.
+The organizer permits outside-bounds null/NaN; all-finite zero-fill is our
+precaution. The cause of the owner's rejected file is not established.
 """
 
 from __future__ import annotations
@@ -33,7 +28,7 @@ def sha256(p: Path) -> str:
 
 def validate(path: Path, footprint: np.ndarray | None = None,
              catalogue: np.ndarray | None = None) -> dict:
-    """Run every portal check against one GeoTIFF.  Returns a receipt dict."""
+    """Run local template/range checks. Returns a local receipt, not portal acceptance."""
     path = Path(path)
     with rasterio.open(path) as ds:
         a = ds.read(1)

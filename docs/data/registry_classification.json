@@ -1,0 +1,68 @@
+{
+  "evidence_class": "REGISTRY-CLASSIFICATION",
+  "grid_rasters_checked": 670,
+  "prediction_or_conservative_ambiguous_rasters": 666,
+  "auxiliary_inputs": 4,
+  "auxiliary_records": [
+    {
+      "sha256": "1729f3571ebf25668e84c08cb5e8c4fed375ae0910e5037e95bddcca7f0253a2",
+      "sources": [
+        "GEMSDOE2:data/evidence/seghold/eval_labels.tif"
+      ],
+      "classification": "withheld evaluation labels, not predictions"
+    },
+    {
+      "sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+      "sources": [
+        "GEMSDOE:data/bridge/example_submission.tif",
+        "GEMSDOE2:data/bridge/example_submission.tif",
+        "GEMSDOE3:legacy/data/bridge/example_submission.tif",
+        "GEMSDOE4:data/bridge/example_submission.tif",
+        "5GEMSDOE:data/bridge/example_submission.tif",
+        "6GEMSDOE:data/bridge/example_submission.tif",
+        "6GEMSDOE:data/sample_submission.tif",
+        "GEMSDOE10:data/sample_submission.tif",
+        "GEMSDOE24:data/bridge/sample_submission.tif",
+        "GEMSDOE40:data/sample_submission.tif",
+        "GEMSDOE48:data/raw/sample_submission_template.tif",
+        "GEMSDOE50:data/grid/sample_submission.tif",
+        "GEMSDOE51:data/sample_submission.tif",
+        "GEMSDOE54:data/grid/MIRROR_sample_submission_template.tif"
+      ],
+      "classification": "bridge example/template, not a model prediction"
+    },
+    {
+      "sha256": "50c27c52fcd6b475e01c7ca3f343fad2537ae3158c25a2411232481407f5b279",
+      "sources": [
+        "GEMSDOE2:data/evidence/seghold/train_labels.tif"
+      ],
+      "classification": "training labels, not predictions"
+    },
+    {
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "sources": [
+        "GEMSDOE:data/bridge/existing_faults.tif",
+        "GEMSDOE2:data/bridge/existing_faults.tif",
+        "GEMSDOE3:legacy/data/bridge/existing_faults.tif",
+        "GEMSDOE4:data/bridge/existing_faults.tif",
+        "5GEMSDOE:data/bridge/existing_faults.tif",
+        "6GEMSDOE:data/bridge/existing_faults.tif",
+        "6GEMSDOE:data/labels.tif",
+        "GEMSDOE10:data/labels.tif",
+        "GEMSDOE24:data/bridge/existing_faults.tif",
+        "GEMSDOE24:data/bridge/labels.tif",
+        "GEMSDOE40:data/labels.tif",
+        "GEMSDOE48:data/official/existing_faults.tif",
+        "GEMSDOE48:data/official/labels.tif",
+        "GEMSDOE48:data/raw/labels_catalogue.tif",
+        "GEMSDOE50:data/grid/labels.tif",
+        "GEMSDOE51:data/existing_faults.tif",
+        "GEMSDOE51:data/labels.tif",
+        "GEMSDOE54:data/grid/labels.tif"
+      ],
+      "classification": "bridge existing-fault catalogue, not a model prediction"
+    }
+  ],
+  "audit_semantics": "All 670 grid rasters were checked, conservatively including four grandfathered auxiliary inputs. No known prediction was removed, no candidate threshold was changed; the dense17 universal blocker and 77 duplicate flags still apply. Future audits should label inputs separately, not discard ambiguous predictions by substring.",
+  "scope": "Historical pinned inventory union latest public main trees including this repository; inaccessible/private/unlinked rasters cannot be certified."
+}

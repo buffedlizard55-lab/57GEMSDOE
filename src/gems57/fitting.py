@@ -1,17 +1,10 @@
-"""Fitting, leakage canary and leave-one-quadrant-out evaluation.
+"""Shared weighted intensity fitting, named feature canaries and prediction.
 
-The intensity model is a gradient-boosted classifier over the nine
-fault-zone-anatomy features in :data:`gems57.anatomy.FEATURES`.  Nothing about
-the shape of the response is assumed: the distance decay, the stepover/along-
-strike coupling, the length scaling and the orientation selectivity are all
-learned.  The model is calibrated to the observed withheld-pixel base rate by a
-single moment-matching scale factor, because the emission bar
-(``alpha * DTI``) is an *absolute* threshold on expected kernel credit.
-
-Evaluation is leave-one-quadrant-out: the model for quadrant *q* is trained on
-the six cells of the other three quadrants (both draws) and applied to the two
-cells of *q*.  Quadrants are spatially disjoint, so this is a spatially blocked
-estimate, not a random split.
+fit_model accepts explicit feature subsets, including the current 14-column
+relative-magnetic/sense matrix. The caller owns the spatial split; the current
+harness uses three training quadrants and one test quadrant. Moment matching
+uses weighted TRAINING prevalence only. This is catalogue-hide intensity,
+not independently calibrated live-new-fault probability or a live score.
 """
 
 from __future__ import annotations
@@ -95,7 +88,7 @@ def predict_surface(clf, scale: float, g, shape: tuple[int, int],
     return full
 
 
-def canary(geoms: list) -> dict:
+def canary(geoms: list, feature_names=None) -> dict:
     """Single-feature AUC per fold (no fitting, so no fitting-induced leakage).
 
     A feature whose AUC exceeds 0.90 is treated as leakage until proven
@@ -110,10 +103,12 @@ def canary(geoms: list) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
-    names = list(FEATURES)
-    if geoms and geoms[0].X.shape[1] > len(FEATURES):
+    names = list(feature_names) if feature_names is not None else list(FEATURES)
+    if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
         from .anatomy import SENSE_FEATURES
         names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
+    if any(g.X.shape[1] != len(names) for g in geoms):
+        raise ValueError('canary requires a name for every feature column')
     for j, name in enumerate(names):
         aucs = []
         for g in geoms:

@@ -1,0 +1,22 @@
+{
+  "status": "in progress: final delivery checks pending",
+  "passes": [
+    {
+      "pass_number": 1,
+      "scope": "Original suite + data placement + shared-tool implementation",
+      "tests": "37 passed; initial geometry interpretation later rejected"
+    },
+    {
+      "pass_number": 2,
+      "scope": "Strike/empty-visible regressions, corrected repeat and full suite",
+      "tests": "48 passed, 9 warnings; new site preview and quantile errors caught and fixed"
+    },
+    {
+      "pass_number": 3,
+      "scope": "Retired legacy bypasses; static/browser/byte delivery checks and CI",
+      "status": "pending"
+    }
+  ],
+  "experiments": 3,
+  "slots_used": 0
+}

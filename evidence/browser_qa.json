@@ -1,0 +1,50 @@
+{
+  "checked_utc": "2026-10-09T20:27:37.473Z",
+  "results": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 1080
+      },
+      "errors": [],
+      "download": {
+        "href": "downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+        "text": "↓ Download GeoTIFF 10.01 MB",
+        "box": {
+          "x": 230,
+          "y": 539.3125,
+          "width": 242.265625,
+          "height": 48,
+          "top": 539.3125,
+          "right": 472.265625,
+          "bottom": 587.3125,
+          "left": 230
+        }
+      },
+      "page_overflow": false
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "errors": [],
+      "download": {
+        "href": "downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+        "text": "↓ Download GeoTIFF 10.01 MB",
+        "box": {
+          "x": 42,
+          "y": 661.359375,
+          "width": 306,
+          "height": 48,
+          "top": 661.359375,
+          "right": 348,
+          "bottom": 709.359375,
+          "left": 42
+        }
+      },
+      "page_overflow": false
+    }
+  ],
+  "scope": "Headless Chromium desktop/mobile render, primary TIFF button in first viewport, guide HOLD, all main pages, no script errors or page-width overflow"
+}
