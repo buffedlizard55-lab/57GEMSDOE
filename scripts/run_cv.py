@@ -32,6 +32,7 @@ from gems57.anatomy import FEATURES                              # noqa: E402
 from gems57.fitting import (canary, cell_geometry, fit_model,    # noqa: E402
                             pooled, run_cell, sample_train)
 from gems57.holdout import FOLD_NAMES, build_holdout             # noqa: E402
+from gems57 import evaluate_holdout as EH                         # noqa: E402
 
 EVID = ROOT / "evidence"
 IDX = {n: i for i, n in enumerate(FEATURES)}
@@ -78,7 +79,10 @@ def main() -> None:
         return
 
     # ---- 2. leave-one-quadrant-out CV --------------------------------------
-    out = {"mode": a.mode, "n_cells": len(cells), "canary": can, "variants": {}}
+    out = {"mode": a.mode, "n_cells": len(cells), "canary": can, "variants": {},
+           "evaluator_version": EH.VERSION,
+           "evaluator_implementation_hashes": EH.implementation_hashes(),
+           "ci_method": "four-quadrant leave-one-out jackknife over pooled DTI terms"}
     for vname, cols in VARIANTS.items():
         t1 = time.time()
         results = []

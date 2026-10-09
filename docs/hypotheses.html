@@ -6,48 +6,22 @@
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="on" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">Download status</a><a class="" href="method.html">Method</a><a class="on" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
-<h2>Five candidate hypotheses, ranked</h2>
-<p>Ranked by expected DTI improvement over implementation cost, per the brief. "Differs from"
-is assessed against the 15 sibling submissions pulled into
-<a href="../registry/registry_index.json"><code>registry/</code></a> as well as this repository.</p>
-<table>
-<tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th>
-<th>Why it catches a fault the catalogue lacks</th><th>How it differs from existing work</th>
-<th class="n">Expected gain</th><th>Cost</th></tr>
-<tr><td><b>H57-A</b><br>En echelon stepover anatomy<br><span class="tag org">SHIPPED</span></td>
-<td>existing_faults.tif catalogue geometry only (no external layer)</td><td>Joint fitted density of cross-strike stepover × along-strike offset of withheld strands, relative to the local strike of the nearest visible trace.</td><td>A splay is the geometric continuation of a mapped system at a small stepover. The catalogue stops where the mapper stopped — in alluvium, under cover, at a survey boundary — not where the structure stops. The continuation is therefore predictable from the mapped trace&#x27;s own geometry.</td><td>Every sibling lane in the registry allocates as a function of distance alone (isotropic dilation, Poisson discs, ridge ranking). None carries an along-strike/stepover structure, so none can express an en echelon array. Verified by the uniqueness check: worst |rho| and worst 3-px dot overlap are reported on the run card.</td>
-<td class="n">High</td><td>Low — catalogue only, no external data</td></tr><tr><td><b>H57-B</b><br>Trace-termination stress lobe<br><span class="tag hold">NOT RUN</span></td>
-<td>Catalogue segment endpoints; optionally the 100 m numerical feature stack</td><td>Second-derivative / curvature transform at mapped trace terminations, then an intensity lobe oriented on the fitted tip azimuth.</td><td>A mapped trace terminates where the mapper lost it. The stress lobe at a tip is where a relay or stepover strand nucleates, so terminations are enriched in unmapped continuations relative to trace midpoints.</td><td>GEMSDOE33&#x27;s h33d-analog-tip-stepover used a fixed cone angle. Here the tip azimuth and lobe width would be fitted the same way as H57-A, and the tip set would be defined on visible faults only, per fold.</td>
-<td class="n">Medium</td><td>Medium — needs a reliable endpoint detector on a 1-px raster</td></tr><tr><td><b>H57-C</b><br>Damage-zone width scaling with mapped length<br><span class="tag">FOLDED IN</span></td>
-<td>Catalogue connected-component size as a displacement proxy</td><td>Per-fault zone width w(L) fitted from component length, instead of one global distance kernel.</td><td>Savage &amp; Brodsky (JGR 2011) show damage-zone width growing with displacement and then more slowly. A single global width under-weights long, mature faults and over-weights short ones.</td><td>No sibling lane scales its kernel per fault. Implemented here as the log_len feature; note the first implementation used the 12-px segment chunk length, which is a constant and carries no information at all (IR-57-LEN-01).</td>
-<td class="n">Medium</td><td>Very low — already in the feature set</td></tr><tr><td><b>H57-D</b><br>Strike-selective gap filling on the regional fabric<br><span class="tag hold">NOT RUN</span></td>
-<td>Catalogue local strike field (structure tensor)</td><td>Gate the intensity on the local orientation of the mapped fabric so gaps are filled along the regional sets rather than isotropically.</td><td>The catalogue strike histogram is bimodal, peaking at 0-15 deg and 135-180 deg — the two regional sets of the northern Walker Lane / Basin Range boundary. An unmapped fault in this province almost certainly belongs to one of them.</td><td>Isotropic gap-filling lanes (e.g. GEMSDOE27 topo-gap-closure) cannot express this. H57-A already carries strike as sin2/cos2, but the canary shows those two features have a raw AUC of exactly 0.500 alone, so the orientation selectivity is only usable in interaction — which is what makes an explicit gated variant a distinct hypothesis.</td>
-<td class="n">Medium</td><td>Low</td></tr><tr><td><b>H57-E</b><br>Scarp curvature corroboration inside the fitted zone<br><span class="tag bad">BLOCKED</span></td>
-<td>10 m / 1 m DEM derivatives (profile curvature, slope break) restricted to the H57-A zone</td><td>Edge / curvature transform, but ranked only inside the mechanically fitted zone rather than globally.</td><td>A splay that is geomorphically expressed as a linear scarp is a real strand; one that is not may be a mapping artefact. Conditioning scarp evidence on the mechanical zone suppresses the false positives that sank the global scarp lanes.</td><td>GEMSDOE46/47 rank scarp pixels globally and score 0.16 / 0.04. Restricting the same evidence to the H57-A zone is a different estimator, not a different layer.</td>
-<td class="n">Potentially high</td><td>BLOCKED — needs the 420 MB gems-geodawn-numerical-features.tif stack (present in the bridge repos as five parts) or the 1 m DEM links. Neither is obtainable in this sandbox: DrivenData requires login and only github.com / pypi.org are reachable.</td></tr>
-</table>
-<h2>Order of work</h2>
-<ol>
-<li><b>H57-A</b> was built and validated first, because it needs no external data and its central
-claim — that secondary strands sit at a measurable stepover and along-strike offset — is testable
-on the hide-and-recover holdout alone.</li>
-<li><b>H57-C</b> came free as a feature, after the length-proxy bug was fixed.</li>
-<li><b>H57-D</b> is the cheapest remaining increment and needs no new data.</li>
-<li><b>H57-B</b> needs a careful endpoint detector; deferred.</li>
-<li><b>H57-E</b> is blocked. The specific free official source needed is the GeodAWN airborne
-magnetic and radiometric survey / 1 m DEM set linked from
-<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov</a>
-and the competition's own <code>gems-geodawn-numerical-features.tif</code>. Both were checked: the
-USGS page is outside this sandbox's network allowlist, and the feature stack is present in the
-bridge repositories as five ~90 MB parts that this session does not pull.</li>
-</ol>
-<div class="note"><b>No submission slot was spent on any hypothesis that had not beaten the
-holdout bar first.</b> The brief's rule is respected: validation precedes promotion.</div>
+<h2>Active H57 hypotheses — ranked backlog</h2>
+<div class="bad-box"><b>No new hypothesis has been validated in this turn.</b> The current H57
+candidate remains research-only because its cap-matched OOF score, leakage flags, and slip-sense
+conditioning are unresolved. Expected gains below are qualitative hypotheses, not scores.</div>
+<table><tr><th>Rank</th><th>Hypothesis</th><th>Expected DTI gain</th><th>Cost</th><th>Verified data status</th></tr><tr><td>1</td><td><b>Sense-conditioned Riedel side and relative azimuth</b></td><td>Moderate</td><td>Medium</td><td>local INGENIOUS sense fields; coverage overlap not measured</td></tr><tr><td>2</td><td><b>Slip-rate-scaled damage-zone width</b></td><td>Small–moderate</td><td>Low–medium</td><td>local slip-rate fields; join coverage not measured</td></tr><tr><td>3</td><td><b>Along-strike tip relay</b></td><td>Moderate</td><td>Medium</td><td>local vector endpoints; visible-only extraction required</td></tr><tr><td>4</td><td><b>Junction and stepover context</b></td><td>Small–moderate</td><td>Low</td><td>local official raster and vectors</td></tr><tr><td>5</td><td><b>Within-zone geophysical corroboration</b></td><td>Potentially high</td><td>High / blocked</td><td>official training raster is pinned but absent from this checkout</td></tr></table>
+<p>Each item is within the fault-zone-anatomy lane and the active document names the layers,
+physical target, differentiation from H57, source links, and validation cost:</p>
+<p><a href="research/hypotheses_h57.md"><b>Read the active H57 hypotheses and source/availability checks.</b></a></p>
+<p>The historical H1/H52-era slate is archived separately at
+<a href="research/hypotheses.md">docs/research/hypotheses.md</a>; its measurements are not the
+current H57 result.</p>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated 2026-10-09 19:01 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Run-specific measurements come from checked-in evidence; fixed protocol constants and grid metadata come from source code and pinned data.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

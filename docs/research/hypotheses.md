@@ -1,4 +1,10 @@
-# Candidate geological hypotheses — ranked by expected DTI improvement and cost
+# ARCHIVED: H1/H52-era candidate hypotheses (historical record only)
+
+> **Do not use this file as the active H57 plan or cite its numbers as the current candidate result.** It records an earlier H1/H52-era analysis and has not been reconciled with the active H57 `cv_all.json`, current evaluator repair, or current evidence provenance. In particular, its `gems52-pooled-hide-v1`, 0.0580, 0.0844, and 663-raster statements are historical claims from that earlier snapshot. The active H57 hypothesis slate is [`hypotheses_h57.md`](hypotheses_h57.md); the current candidate/run card is [`../../evidence/run_card.json`](../../evidence/run_card.json).
+
+---
+
+# Historical candidate geological hypotheses — ranked by expected DTI improvement and cost
 
 Scope: the hidden truth is **new expert-mapped faults NOT in USGS/INGENIOUS** — including
 splays and parallel strands of existing systems (organizer thread 11536) — and pixels of

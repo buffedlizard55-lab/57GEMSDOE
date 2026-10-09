@@ -94,6 +94,38 @@ def offsets(radius: float = RADIUS_PX) -> tuple[np.ndarray, np.ndarray, np.ndarr
 OFF_DY, OFF_DX, OFF_K = offsets()
 
 
+def max_cover(pred, truth, radius: float = RADIUS_PX):
+    """Return the maximum distance-weighted prediction at each truth cell.
+
+    This is the shared primitive used by :mod:`gems57.evaluate_holdout`.  The
+    first return value is a one-dimensional array in ``np.nonzero(truth)`` order;
+    the second is the per-pixel self-credit of the nearest truth cell, used for
+    weighted false positives; the third is the truth coordinate pair.
+    """
+    p = np.asarray(pred, dtype=np.float64)
+    g = np.asarray(truth, dtype=bool)
+    if not np.isfinite(radius) or radius <= 0:
+        raise ValueError("radius must be finite and positive")
+    if p.ndim != 2 or p.shape != g.shape:
+        raise ValueError("prediction and truth must be same-shape 2D arrays")
+    if not np.isfinite(p).all() or (p < 0.0).any() or (p > 1.0).any():
+        raise ValueError("predictions must be finite and in [0, 1]")
+
+    yy, xx = np.nonzero(g)
+    credit = np.zeros(yy.size, dtype=np.float64)
+    dy, dx, weights = offsets(radius)
+    height, width = p.shape
+    for off_y, off_x, weight in zip(dy, dx, weights):
+        py = yy + off_y
+        px = xx + off_x
+        inside = (py >= 0) & (py < height) & (px >= 0) & (px < width)
+        if inside.any():
+            credit[inside] = np.maximum(
+                credit[inside], p[py[inside], px[inside]] * weight)
+    self_credit = kernel(distance_transform_edt(~g), radius)
+    return credit, self_credit, (yy, xx)
+
+
 def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> float:
     """Minimum realised kernel credit ``k`` for one more **non-redundant** dot.
 

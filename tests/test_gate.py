@@ -5,6 +5,7 @@ NaN anywhere, positive mass outside the footprint, and over-long names/notes —
 no silent repair (the earlier "Predicted values must be in range [0, 1]"
 organizer rejection is why callers must normalize before packaging).
 """
+import json
 import numpy as np
 import pytest
 import rasterio
@@ -15,7 +16,8 @@ from gems57.submission_writer import write_submission
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SUB = ROOT / "docs" / "downloads" / "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif"
+BUILD = json.loads((ROOT / "evidence" / "submission_build_all.json").read_text())
+SUB = ROOT / "docs" / "downloads" / f"{BUILD['submission_name']}-zeros.tif"
 SAMPLE = ROOT / "data" / "official" / "sample_submission.tif"
 
 
@@ -31,7 +33,7 @@ def test_shipped_submission_passes_format_gate():
     assert rep["n_nan"] == 0
     assert rep["min"] >= 0.0 and rep["max"] <= 1.0
     assert rep["mass_outside_footprint"] == 0
-    assert rep["n_nonzero"] == 60000
+    assert rep["n_nonzero"] == BUILD["emitted_pixels"]
     with rasterio.open(SUB) as ds:
         vals = np.unique(ds.read(1))
     assert set(vals) <= {0.0, 1.0}
@@ -45,14 +47,14 @@ def test_shipped_submission_has_no_dots_on_known_faults():
     assert float(p[cat > 0].sum()) == 0.0
 
 
-def test_shipped_submission_sha256_matches_receipt():
+def test_shipped_submission_sha256_matches_build_evidence():
     import hashlib
-    import json
-    rec = json.loads(SUB.with_suffix(".json").read_text())
     got = hashlib.sha256(SUB.read_bytes()).hexdigest()
-    assert got == rec["sha256"] == rec["validator"]["sha256"]
-    assert rec["note_chars"] <= 140
-    assert rec["promoted"] is False
+    assert got == BUILD["zeros_tif"]["sha256"]
+    assert BUILD["submission_note_len"] <= 140
+    assert BUILD["submission_name"] in BUILD["submission_note"] or BUILD["submission_note"].startswith("57GEMSDOE")
+    # The build evidence is local format validation only; it is not an organizer receipt.
+    assert BUILD.get("promote") is False
 
 
 def _valid_footprint():

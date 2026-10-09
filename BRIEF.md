@@ -1,4 +1,4 @@
-# Standing brief — the task prompt, verbatim
+# Standing brief — task prompt and provenance notes
 
 Re-read this at the start of every session. It is the specification this
 repository is built against; the README summarises it, this file *is* it.
@@ -138,7 +138,9 @@ repository is built against; the README summarises it, this file *is* it.
 
 ## Owner-reported scores quoted in the brief
 
-These are **ORGANIZER-CONFIRMED** numbers as pasted by the task owner. Two
-different "highest score" values appear in the brief (0.3774 and 0.3195); the
-conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
-this repo claims to beat.
+These are score values attributed to the task owner in prior project notes.
+No corresponding submission-page receipt is present in this checkout, so they
+are **not independently verified or ORGANIZER-CONFIRMED here** under the rule
+above. Two different "highest score" values appear in the brief (0.3774 and
+0.3195); the conflict is registered as `IR-57-BRIEF-01`, and neither is treated
+as a target this repo claims to beat.

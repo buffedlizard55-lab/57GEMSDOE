@@ -23,7 +23,7 @@ from sklearn.metrics import roc_auc_score
 from .anatomy import FEATURES, fold_geometry
 from .emit import expected_credit, greedy_allocate
 from .holdout import Cell, HoldoutContext
-from .metric import dti_binary
+from . import evaluate_holdout as EH
 
 NEG_PER_CELL = 60_000
 GBM_KW = dict(max_depth=6, max_iter=220, learning_rate=0.08,
@@ -147,13 +147,21 @@ def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
     alloc = greedy_allocate(p, allowed, k_truth=float(cell.n_truth),
                             floor=floor, max_dots=max_dots)
     emitted_full = alloc.emitted
-    # score on the crop
-    res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
-                     valid=cell.active)
+    # Score on the crop through the shared holdout evaluator.  The crop's active
+    # mask has already excluded visible catalogue pixels exactly.
+    truth = _truth_crop(ctx, cell)
+    fold = {"truth": truth, "visible": np.zeros_like(cell.active),
+            "region": cell.active}
+    res, _block_terms = EH.evaluate(
+        emitted_full[cell.bbox].astype(np.float32), fold, cell.active,
+        block_side=200,
+        origin=(cell.bbox[0].start, cell.bbox[1].start),
+        global_shape=ctx.grid.shape)
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
         "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],
-        "tp": res["tp"], "fp": res["fp"], "fn": res["fn"],
+        "tp": res["tpw"], "fp": res["fpw"], "fn": res["fnw"],
+        "evaluator_version": res["evaluator_version"],
         "expected_covered_credit": alloc.expected_covered_credit,
         "p_mean": float(p[allowed].mean()), "p_max": float(p.max()),
     }

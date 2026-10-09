@@ -1,48 +1,143 @@
 {
-  "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.",
-  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over nine catalogue-geometry features, calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.",
-  "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
+  "schema_version": "gems57-run-card-v2",
+  "hypothesis": "New mapped strands are enriched in the damage zone of mapped faults, with cross-strike offset, along-strike position, orientation and host-system scale carrying information beyond distance alone. This is a testable spatial association, not proof of a tectonic mechanism.",
+  "mechanism": "H57 uses a gradient-boosted model over catalogue-derived distance, cross-strike and along-strike geometry, orientation, component scale, coherence and local density. Features are rebuilt from the visible catalogue for each holdout fold; visible catalogue pixels are masked exactly. The final model then allocates binary dots with the alpha=0.2, beta=0.8, 300 m triangular-kernel DTI marginal rule. Recorded slip-sense is available in the local INGENIOUS vector data but was not encoded in this candidate.",
+  "named_non_fault_process_that_could_mimic_it": "Incomplete mapping or mapper stopping mid-system can make withheld catalogue pixels appear near visible traces without representing undiscovered structure. Linear dry washes/alluvial channels, roads and ridge crests can also align with regional structural trends and mimic mapped lineaments.",
   "holdout_dti": {
-    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
+    "evidence_class": "HOLDOUT-DTI",
+    "pooled_dti": 0.2507996751585896,
     "withheld_positive_pixels": 22641,
-    "pooled_dti": 0.25172223160856344,
-    "ci95_quadrant_jackknife": [
-      0.21833561739648347,
-      0.28510884582064344
+    "ci95": [
+      0.2164329914998474,
+      0.28516635881733177
     ],
-    "coverage": 0.487441073456199,
-    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
+    "ci_method": "leave-one-quadrant-out jackknife over four spatial quadrants; not a pixel-binomial interval",
+    "evaluator_version": "gems57 H57 OOF result from evidence/cv_all.json; canonical dti_binary + fitting.pooled; saved before shared-evaluator adapter v2 repair",
+    "instrument": "mode=all; four spatial quadrants; whole fault segments withheld; seeds 20/21; 12 px domain erosion; 20% target hide fraction; features from visible faults only; exact visible-pixel score mask; alpha=0.2, beta=0.8, triangular radius=3 px (300 m)",
+    "feature_variant": "no_side (the geometric left/right feature was dropped; this is not a recorded slip-sense feature)",
+    "dots_across_two_spatial_draws": 136293,
+    "approx_dots_per_full_map": 68146.5,
+    "candidate_budget": 40000,
+    "budget_matched_to_candidate": false,
+    "single_feature_leakage_canary": {
+      "rule": "discriminative AUC > 0.90 is a leakage flag until explained",
+      "flags": [
+        {
+          "feature": "d",
+          "discriminative_auc_max": 0.9000178948051948,
+          "status": "FLAGGED_UNEXPLAINED"
+        },
+        {
+          "feature": "d_perp",
+          "discriminative_auc_max": 0.9013449584415585,
+          "status": "FLAGGED_UNEXPLAINED"
+        }
+      ],
+      "other_features_max_discriminative_auc_below_threshold": true,
+      "source": "evidence/cv_all.json"
+    },
+    "promotion_eligible": false,
+    "limitations": [
+      "the saved OOF result is not cap-matched to the 40,000-dot candidate",
+      "two single-feature leakage canaries exceed 0.90 and remain unexplained",
+      "this is an internal hide-and-recover measurement, not a live or organizer-confirmed score"
+    ]
   },
-  "correlation_overlap_vs_registry": {
-    "n_registry_rasters": 15,
-    "rho_limit": 0.9,
-    "jaccard_limit": 0.5,
-    "overlap_limit": 0.7,
+  "invalid_historical_builder_reading": {
+    "evidence_class": "HOLDOUT-DTI diagnostic only; INVALID FOR PROMOTION",
+    "pooled_dti": 0.2793490519890984,
+    "withheld_positive_pixels": 22641,
+    "ci95_quadrant_jackknife": [
+      0.24138280875419366,
+      0.3173152952240031
+    ],
+    "source": "evidence/submission_build_all.json holdout_at_capped_budget",
+    "reason": "the final model was fit on the same holdout cells it scored, so this is in-sample; additionally, the code divided the 40,000 map cap by two draws although each draw has four quadrants, so this was not cap-matched",
+    "status": "SUPERSEDED; do not cite as candidate HOLDOUT-DTI"
+  },
+  "registry_correlation_overlap": {
+    "audit_phase_completed": "final-dot comparison only",
+    "preplacement_surface_correlation": "NOT RUN for this artifact; final_surface.npz is absent",
+    "n_owner_repository_rasters": 15,
+    "n_local_archived_prior_rasters": 3,
+    "n_rasters_checked": 18,
+    "audit_complete_within_local_inventory": true,
     "worst_spearman_full_footprint": 0.01070177139044915,
     "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "rho_stop_threshold": 0.9,
+    "worst_candidate_dot_fraction_within_3px": 0.35720551201154466,
+    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "dot_overlap_stop_threshold": 0.7,
     "worst_jaccard_dot_sets": 0.009534650570199256,
     "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_dot_overlap_3px": 0.35720551201154466,
-    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
-    "unique": true
+    "unique_within_checked_18_raster_inventory": true,
+    "registry_wide_uniqueness_claim": false,
+    "scope": "15 owner-repository main-tree rasters plus 3 local archived rasters; the owner-repository registry scores are not backed by submission receipts here. Private, unlinked, externally stored, and otherwise inaccessible competition artifacts are not covered.",
+    "evidence_file": "evidence/uniqueness_review.json"
   },
   "raster_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
-  "validator_output": {
+  "raster_path": "docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+  "raster_validation": {
+    "classification": "local format/geometry/range validation only; not organizer acceptance",
     "no_nan_anywhere": true,
-    "in_footprint_all_finite": true,
-    "range_0_1_guaranteed": true,
-    "crs_shape_transform_match": true,
+    "finite_values_in_footprint": true,
+    "range_within_0_1": true,
+    "crs_shape_transform_match_sample": true,
     "zero_dots_on_mapped_catalogue": true,
-    "all_checks_passed": true,
-    "n_checks": 15
+    "positive_pixels_outside_footprint": 0,
+    "emitted_pixels": 35341,
+    "validation_checks_passed": 15,
+    "all_checks_passed": true
   },
   "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
   "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
+  "submission_note_length": 123,
+  "submission_note_limit": 140,
+  "submission_status": "RESEARCH-ONLY; no upload or organizer receipt is evidenced",
   "sense_of_slip": {
-    "available_in_provided_database": false,
-    "measured_log_ratio_right_over_left": null,
-    "encoded": false
+    "available_in_local_vector_data": true,
+    "sources": [
+      "data/external/trace_segments_utm11.csv field sense",
+      "data/external/qfault_attributes.csv field SLIPSENSE"
+    ],
+    "present_in_official_binary_fault_raster": false,
+    "encoded_in_this_candidate": false,
+    "lane_acceptance_criterion_met": false
   },
-  "verdict": "promote"
+  "verdict": "negative",
+  "promote": false,
+  "negative_findings": [
+    "the only cap-matched reading was in-sample and had incorrect cap accounting; it is invalid as holdout evidence",
+    "the saved spatial OOF baseline is above the historical H1 measurement but is not cap-matched and has two unexplained leakage flags",
+    "recorded sense-of-slip data exists locally but is not used by this H57 model",
+    "the candidate lacks a pre-placement surface-correlation audit",
+    "the final-dot audit passes only within a finite 18-raster inventory, not registry-wide",
+    "no organizer receipt or live score is present"
+  ],
+  "promotion_blockers": [
+    "explain or redesign the d and d_perp leakage canaries, running each feature alone",
+    "use recorded INGENIOUS slip-sense only where visible vector support overlaps visible catalogue faults; then run a fresh spatially blocked validation",
+    "run cap-matched OOF DTI with a documented 40,000-dot full-map budget and CI",
+    "run the pre-placement surface audit and final-dot overlap audit against the published inventory, then disclose its finite scope",
+    "obtain a submission-page receipt before saying ORGANIZER-CONFIRMED"
+  ],
+  "implementation_provenance": {
+    "shared_evaluator": {
+      "previous_defect": "evaluate_holdout.py called missing holdout.score and metric.max_cover",
+      "repair": "evaluate_holdout.py now delegates to metric.dti_exact; metric.max_cover added; per-block sums are asserted against exact totals",
+      "active_code_path": "fitting.run_cell and future build_submission holdout helper use evaluate_holdout.evaluate",
+      "saved_cv_evidence_recomputed_after_repair": false,
+      "saved_cv_metric": "the saved OOF CV used metric.dti_binary plus fitting.pooled; equation is canonical but result was not rerun through adapter v2"
+    },
+    "shared_submission_writer": {
+      "integrated_in_current_build_script": true,
+      "current_tif_created_before_writer_integration": true,
+      "current_tif_checked_by": "local validate.py plus independent hash/format check"
+    },
+    "cached_feature_stack": {
+      "used": false,
+      "availability": "official 418,912,844-byte training_features.tif is absent; H57 is geometry-only and recomputes fold features",
+      "scope": "no feature-stack/cache claim is made"
+    }
+  }
 }

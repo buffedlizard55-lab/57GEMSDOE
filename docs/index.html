@@ -6,67 +6,36 @@
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">Download status</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
-<h2>Submit in four steps</h2>
-<div class="card">
-<ol>
-<li><b>Download the file.</b>
-<a href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download><code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
-— the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
-<li><b>Go to the submission page:</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
-drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
-<li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></li>
-</ol>
+<div class="dl">
+<h2>H57 fault-zone anatomy — research artifact</h2>
+<p><b>Download:</b> a locally format-validated GeoTIFF. It is <b>not cleared for competition submission</b>.
+Do not upload it while the holdout, leakage, slip-sense, and surface-audit blockers below remain.</p>
+<a class="btn" href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download>Download research GeoTIFF</a>
+<p>File: <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> · 35341 emitted dots · SHA256 <code>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</code></p>
 </div>
-
-<div class="bad-box">
-<h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The competition's own
-<code>sample_submission.tif</code> carries <code>nodata = NaN</code> and <b>7,111,787 NaN cells</b>
-outside the study-area footprint. A file written by copying that convention fails the range check,
-because <code>NaN</code> satisfies neither <code>v &gt;= 0</code> nor <code>v &lt;= 1</code> — even
-though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
-<p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
-outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
-<code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
-</div>
-
-<h2>The exact format the portal expects</h2>
-<p>Verified against the competition's own files, not assumed:</p>
+<div class="bad-box"><b>Promotion verdict: NEGATIVE / DO NOT SUBMIT.</b>
+The saved OOF comparator is not budget-matched to this 40,000-dot map; `d` and `d_perp`
+canaries exceed 0.90 pending explanation; local INGENIOUS slip-sense is not encoded; and the
+required pre-placement surface-correlation audit was not preserved for this artifact. The final-dot
+audit covers 18 local rasters only, not the complete competition registry. No upload receipt exists.</div>
+<h2>What did pass locally</h2>
+<table><tr><th>Format check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
 <dl class="kv">
-<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
-<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
-<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0) — 100 m pixels</dd>
-<dt>Bounds</dt><dd>left 243350, bottom 4135550, right 572550, top 4508550</dd>
-<dt>Bands / dtype</dt><dd>1 band, float32</dd>
-<dt>Footprint</dt><dd>5,167,373 finite cells of 12,279,160 (the sample submission's finite mask)</dd>
-<dt>Value range</dt><dd>[0, 1] on <b>every</b> cell, finite everywhere</dd>
+<dt>CRS / shape / transform</dt><dd>EPSG:32611 · 3730 × 3292 · matches sample_submission.tif</dd>
+<dt>Value range</dt><dd>finite float32 values in [0, 1]</dd>
+<dt>Catalogue overlap</dt><dd>0 positive pixels on the mapped catalogue</dd>
+<dt>Artifact SHA256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
+<dt>Candidate note (123/140 chars; do not use until cleared)</dt><dd><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></dd>
 </dl>
-
-<h2>Validator receipt for this file</h2>
-<table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<dl class="kv">
-<dt>File</dt><dd>/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>sha256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Bytes</dt><dd>808408</dd>
-<dt>Positive pixels</dt><dd>35341</dd>
-<dt>Min / max</dt><dd>0.0 / 1.0</dd>
-<dt>NaN cells</dt><dd>0</dd>
-<dt>On mapped catalogue</dt><dd>0</dd>
-</dl>
-
-<h2>What the score means</h2>
-<p>The metric is the <b>distance-weighted Tversky index</b> with α = 0.2 (false positives),
-β = 0.8 (false negatives) and a 300 m triangular kernel. False negatives are weighted four times
-more heavily than false positives, so the metric rewards covering real fault pixels over being
-conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
-rather than sprayed. See <a href="method.html">Method</a>.</p>
+<p>Local format validation proves only that the raster matches the checked-in grid and range gates.
+It does not prove portal acceptance, uniqueness against unavailable submissions, live performance, or
+organizer approval. See the <a href="run-card.html">run card</a>, <a href="results.html">results</a>,
+and <a href="irregularities.html">irregularities</a>.</p>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated 2026-10-09 19:01 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Run-specific measurements come from checked-in evidence; fixed protocol constants and grid metadata come from source code and pinned data.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

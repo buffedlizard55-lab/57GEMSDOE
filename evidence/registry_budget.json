@@ -7,91 +7,136 @@
       "submission": "h33-h33-2-b2 (best known, 0.2778)",
       "n_dots": 37654,
       "live_score": 0.2778,
-      "repo": "GEMSDOE32"
+      "repo": "GEMSDOE32",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h36-1-rung30-blind-r1",
       "n_dots": 37660,
       "live_score": 0.271,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h38-1-hf-euler-r30-r1",
       "n_dots": 37860,
       "live_score": 0.2707,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "anderson-geothermal-pinn-38854",
       "n_dots": 38854,
       "live_score": 0.275,
-      "repo": "GEMSDOE36"
+      "repo": "GEMSDOE36",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "gate_ortho_w0.25-40k",
       "n_dots": 40000,
       "live_score": 0.2376,
-      "repo": "GEMSDOE49"
+      "repo": "GEMSDOE49",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h27-4-r1-solo-d2-8",
       "n_dots": 40199,
       "live_score": 0.2708,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "wormrank-d28",
       "n_dots": 41338,
       "live_score": 0.256,
-      "repo": "GEMSDOE29"
+      "repo": "GEMSDOE29",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h33d-analog-tip-stepover-r30",
       "n_dots": 41865,
       "live_score": 0.2632,
-      "repo": "GEMSDOE33"
+      "repo": "GEMSDOE33",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h32-1-prethin-tip-euler-d2-8",
       "n_dots": 42294,
       "live_score": 0.2649,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "d28-poisson300m-offcat-44090",
       "n_dots": 44090,
       "live_score": 0.26,
-      "repo": "GEMSDOE30"
+      "repo": "GEMSDOE30",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "dotted-h19-5-d2-8",
       "n_dots": 44090,
       "live_score": 0.26,
-      "repo": "GEMSDOE25"
+      "repo": "GEMSDOE25",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h25-1-dotted-h19-5-d1-5",
       "n_dots": 60069,
       "live_score": 0.2477,
-      "repo": "GEMSDOE24"
+      "repo": "GEMSDOE24",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "topo-gap-closure-t-v2-on-d1-5",
       "n_dots": 61328,
       "live_score": 0.2449,
-      "repo": "GEMSDOE27"
+      "repo": "GEMSDOE27",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h19-5-powerlaw-budget-multiline",
       "n_dots": 121131,
       "live_score": 0.1922,
-      "repo": "19GEMSDOE"
+      "repo": "19GEMSDOE",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     },
     {
       "submission": "h19-4-multiline-corroborated",
       "n_dots": 123779,
       "live_score": 0.1894,
-      "repo": "19GEMSDOE"
+      "repo": "19GEMSDOE",
+      "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
+      "receipt_present": false,
+      "source_note": "local owner-repository registry record; no submission-page receipt verified"
     }
   ],
   "band_lt_50k": {
@@ -315,5 +360,13 @@
       "dti": 0.5063
     }
   ],
-  "perfect_prediction_dti": 1.0
+  "perfect_prediction_dti": 1.0,
+  "evidence_class": "OWNER-REPORTED / UNVERIFIED",
+  "score_provenance": {
+    "receipt_status": "no submission-page receipts are present in this checkout",
+    "method": "statistics computed from owner-reported registry values and raster dot counts",
+    "organizer_confirmed": false,
+    "leaderboard_snapshot_checked": false,
+    "use_limit": "do not call these scores ORGANIZER-CONFIRMED and do not compare them directly with HOLDOUT-DTI"
+  }
 }

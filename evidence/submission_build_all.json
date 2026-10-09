@@ -257,7 +257,7 @@
       ],
       "dtype": "float32",
       "count": 1,
-      "nodata": NaN,
+      "nodata": null,
       "transform": [
         100.0,
         0.0,
@@ -540,6 +540,57 @@
       }
     ]
   },
-  "promote": true,
-  "runtime_s": 1072.9367468357086
+  "promote": false,
+  "runtime_s": 1072.9367468357086,
+  "holdout_at_capped_budget_valid_for_promotion": false,
+  "holdout_at_capped_budget_status": "INVALID AS HOLDOUT EVIDENCE: final model was fitted on all scored holdout cells; the reported 40,000 cap was divided by two draws rather than four quadrants, so the per-map holdout emission exceeded the advertised candidate cap. Retained only as historical diagnostic output.",
+  "integrity_review": {
+    "previous_promote_claim_revoked": true,
+    "reasons": [
+      "holdout_at_capped_budget is in-sample: the final model was fit on the same cells that were scored",
+      "budget accounting used budget//2 per cell despite four spatial quadrants per draw; not cap-matched",
+      "pre-placement surface-to-registry comparison was not recorded",
+      "saved single-feature canary flags d and d_perp above the 0.90 discriminative-AUC threshold pending explanation",
+      "recorded slip-sense exists in local INGENIOUS vector data but is not encoded in this H57 model",
+      "uniqueness scope is the checked-in 15-row owner-repository inventory, not a complete competition-wide registry",
+      "no organizer upload receipt is present; local format validation is not acceptance"
+    ],
+    "valid_oof_comparator": {
+      "source": "evidence/cv_all.json",
+      "variant": "no_side",
+      "evidence_class": "HOLDOUT-DTI",
+      "pooled_dti": 0.2507996751585896,
+      "ci95_quadrant_jackknife": [
+        0.2164329914998474,
+        0.28516635881733177
+      ],
+      "withheld_positive_pixels": 22641,
+      "dots_across_two_draws": 136293,
+      "approx_dots_per_full_map": 68146.5,
+      "budget_matched_to_40000_candidate": false,
+      "leakage_canary_flags": [
+        "d",
+        "d_perp"
+      ],
+      "eligible_for_promotion": false
+    },
+    "replacement_verdict": "negative; do not promote or submit"
+  },
+  "surface_uniqueness": {
+    "phase": "surface-before-placement",
+    "status": "NOT RUN for this artifact",
+    "reason": "the prior build ran final-dot registry comparisons only; the builder is now changed to enforce surface check before allocation",
+    "registry_scope": "15 local owner-repository rasters only; incomplete relative to private/unlinked/external competition artifacts"
+  },
+  "recorded_sense_of_slip": {
+    "present_in_local_external_database": true,
+    "field": "sense in data/external/trace_segments_utm11.csv; qfault_attributes.csv also carries SLIPSENSE",
+    "present_in_official_fault_raster": false,
+    "encoded_in_h57_candidate": false,
+    "promotion_blocker": true
+  },
+  "organizer_receipt": {
+    "present": false,
+    "status": "not uploaded / no organizer-confirmed result"
+  }
 }

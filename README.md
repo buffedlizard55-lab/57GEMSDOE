@@ -9,22 +9,26 @@
 
 ---
 
-## ⬇ ONE-CLICK SUBMISSION FILE
+## ⬇ DOWNLOADABLE RESEARCH CANDIDATE — NOT CLEARED FOR SUBMISSION
 
-**The file to submit is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
-`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
+[Download the current H57 GeoTIFF](docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif) (`35,341` binary dots; SHA256 `8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482`).
+It passes the **local format/geometry/range checks**: one `float32` band,
+`EPSG:32611`, `3730 × 3292`, competition transform, finite values in `[0,1]`,
+and no dots on the mapped catalogue.
 
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
+**Status: research-only; do not submit yet.** The valid out-of-fold score is not
+matched to the candidate's 40,000-dot budget, two single-feature leakage canaries
+are above 0.90 pending explanation, recorded INGENIOUS slip-sense is not encoded,
+and this artifact has no pre-placement surface-correlation audit. A final-dot
+comparison passed against 18 available local rasters only; this is not a complete
+competition-wide uniqueness claim. No upload or organizer receipt is evidenced.
+See [`evidence/run_card.json`](evidence/run_card.json) for the exact blockers and
+[`evidence/uniqueness_review.json`](evidence/uniqueness_review.json) for the
+finite local audit scope.
 
-The exact filename, sha256, check receipt and the suggested submission note are
-printed at the top of [`docs/index.html`](docs/index.html) and in
-[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+The current zeros TIFF is a valid **file-format** choice. The NaN diagnostic
+variants in the archive are not submission files. Local validation must not be
+confused with portal acceptance.
 
 ---
 
@@ -41,20 +45,19 @@ printed at the top of [`docs/index.html`](docs/index.html) and in
 > waiting for permission or assignment. We treat failure and success as signals
 > and use them to improve. We stay accountable to the final outcome.
 
-Applied here: *Maximize P(Win)* is why the lane's dot budget and its flank
-exclusion are **chosen by holdout measurement** rather than by hand, and why no
-submission slot is spent on an idea that has not beaten the holdout bar.
-*Own the Outcome* is why three bugs found in this session's own code — including
-one inherited from the shared template's prose — are recorded in
-[`docs/irregularities.html`](docs/irregularities.html) instead of being quietly
-patched.
+Applied here: *Maximize P(Win)* means no slot is spent on this candidate while
+its cap-matched OOF evidence, leakage flags, sense-conditioning requirement, and
+pre-placement uniqueness check are unresolved. *Own the Outcome* means the
+historical in-sample `0.279349` builder reading and its incorrect cap accounting
+are explicitly revoked as promotion evidence rather than quietly retained as a
+headline.
 
 ---
 
 ## Standing brief (re-read at the start of every session)
 
-The full task prompt is reproduced verbatim at the bottom of this file and in
-[`BRIEF.md`](BRIEF.md). Its operative constraints for this lane:
+The full task prompt and its provenance notes are retained at the bottom of
+this file and in [`BRIEF.md`](BRIEF.md). Its operative constraints for this lane:
 
 1. **Lane.** Fault-zone anatomy — predict where secondary strands sit around
    known faults from shear-zone mechanics. Stay inside it. If the raster's
@@ -76,55 +79,46 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
 
 ---
 
-## Headline result
+## Current validation and what the reported high score means
 
-Measured with the hide-and-recover holdout, leave-one-quadrant-out, 8 cells
-(4 quadrants x draws 20/21), 22,641 withheld positives. **Every number below is a
-`HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
+The strongest honest internal comparator for the current **no-side H57 variant** is
+from saved leave-one-quadrant-out evaluation in [`evidence/cv_all.json`](evidence/cv_all.json):
 
-| Feature set | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
-| --- | --- | --- | --- | --- |
-| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] |
-| `d_perp_par` (+ stepover, along-strike) | 0.1867 | [0.1605, 0.2128] | 0.1847 | [0.1665, 0.2029] |
-| `anatomy_full` (all 9 features) | **0.2517** | [0.2183, 0.2851] | 0.2538 | [0.2309, 0.2766] |
-| `no_side` (shipped: 8 features) | 0.2508 | [0.2164, 0.2852] | **0.2556** | [0.2329, 0.2784] |
+| Evidence | Value | Interpretation |
+| --- | ---: | --- |
+| `HOLDOUT-DTI` | **0.250800** | local hide-and-recover OOF measurement, not a live score |
+| Withheld positives | 22,641 | whole-segment positives across draws 20/21 |
+| 95% CI | [0.216433, 0.285166] | four-quadrant jackknife, not a pixel-binomial interval |
+| Emissions in saved CV | 136,293 across two draws | about 68,147 dots per full-map equivalent; **not** matched to the 40,000-dot candidate |
+| Candidate output | 35,341 dots | format-valid local artifact; no budget-matched OOF score |
 
-The full model beats distance-only by **+0.0673** (`all`) and **+0.0721**
-(`detached`) with disjoint confidence intervals.
+The saved single-feature canary also flags `d` (maximum discriminative AUC
+0.900018) and `d_perp` (0.901345). Under the brief these remain leakage flags
+until explained. The historical `0.279349` value in the earlier builder evidence
+is **revoked as holdout evidence**: that builder trained and scored the same
+fold cells, and divided its nominal budget across two draws instead of four
+quadrants. It is retained only as a historical diagnostic; see the exact audit
+in [`evidence/submission_build_all.json`](evidence/submission_build_all.json).
 
-**But the gain is not from the Riedel geometry.** Adding stepover and
-along-strike to distance alone buys only **+0.0022** — inside the noise. The
-+0.067 comes from local fault `density` (AUC 0.7289), trace `coherence` (0.6278)
-and `log_len`. The en echelon structure this lane set out to find **is** there in
-the data (joint stepover x along-strike enrichment 0.0326, **13.9x** base rate),
-and it **does not pay for itself on this instrument**. That is recorded as a
-negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
-over.
+### The cited high score and improvement plausibility
 
-### Why 0.2778 won, and whether higher is achievable
+The prompt contains conflicting high-score references (`0.2778`, `0.3195`,
+`0.3774`). The checked-in 15-row registry has owner-reported values but no
+submission-page receipts, and no live leaderboard was checked in this review.
+Therefore I cannot identify which raster earned a specific cited value, explain
+its performance, or compare the local `HOLDOUT-DTI` directly with it. Do not
+call any of those values `ORGANIZER-CONFIRMED` without a receipt.
 
-`DTI = T / (0.2(T + n - M) + 0.8K)`. Two consequences, both verified against the
-brute-force implementation:
+Improvement is **plausible but unproven**: the DTI denominator penalizes false
+positive mass at weight 0.2 and missed truth at weight 0.8, and H57's local
+spatial holdout shows that catalogue geometry contains predictive signal. That
+does not establish live generalization to genuinely unmapped faults. A valid
+next comparison needs the same spatial folds, a 40,000-dot full-map budget,
+leakage-canary resolution, slip-sense conditioning where visible vector support
+exists, and a saved 95% CI. No projected live score is reported.
 
-1. **The ceiling is 1.0, not 0.5556.** A perfect prediction has `n = M = T = K`,
-   so `D = 0.2K + 0.8K = K`. (0.05556 is a different number entirely: the
-   marginal acceptance bar `alpha * DTI` at DTI = 0.2778.)
-2. **At the real base rate DTI tracks coverage — but only while the dot budget
-   stays near `K`.** At the measured base rate 0.00221, a *random* pixel lands
-   within 3 px of a true one only 2.1% of the time. Measured with the exact
-   metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
-   **0.1809** at `n/K = 6`.
-
-So 0.2778 is roughly **28% coverage of the live truth at a near-matched budget**,
-and 0.3774 implies about 40%. Higher is achievable and the route is arithmetic:
-raise coverage while holding `n <~ 2K`. The registry confirms the budget half of
-this with live evidence — **Spearman(dot count, organizer-confirmed live score) =
--0.8104** (p = 0.00025) over 15 rasters, and the two rasters above 120,000 dots
-hold the two worst live scores (0.1922, 0.1894). That is why this lane's
-holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
-costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
-
-**Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
+The three-to-five ranked geology hypotheses and their expected gain/cost
+trade-offs are in [`docs/research/hypotheses_h57.md`](docs/research/hypotheses_h57.md).
 
 ---
 
@@ -132,22 +126,26 @@ costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
 
 | Path | What it is |
 | --- | --- |
-| [`BRIEF.md`](BRIEF.md) | the standing task prompt, verbatim |
+| [`BRIEF.md`](BRIEF.md) | standing task prompt with score-provenance notes |
 | [`src/gems57/metric.py`](src/gems57/metric.py) | DTI, verified against a brute-force transcription |
 | [`src/gems57/grid.py`](src/gems57/grid.py) | CRS / shape / transform / footprint, sha256-pinned |
 | [`src/gems57/network.py`](src/gems57/network.py) | fault segments, local strike, offset frame, detachment |
 | [`src/gems57/holdout.py`](src/gems57/holdout.py) | hide-and-recover folds, pooled DTI |
-| [`src/gems57/anatomy.py`](src/gems57/anatomy.py) | the **fitted** fault-zone-anatomy intensity |
+| [`src/gems57/anatomy.py`](src/gems57/anatomy.py) | the active **fitted** H57 fault-zone-anatomy feature stack |
+| [`src/gems57/faultzone.py`](src/gems57/faultzone.py) | legacy H1/H52 geometry helpers; sense is retained at record level but not propagated into pixel features, and this is not the active H57 path |
 | [`src/gems57/emit.py`](src/gems57/emit.py) | lazy-greedy max-coverage allocation at the DTI fixed point |
-| [`src/gems57/fitting.py`](src/gems57/fitting.py) | leakage canary + leave-one-quadrant-out CV |
-| [`src/gems57/validate.py`](src/gems57/validate.py) | every portal check |
-| [`src/gems57/uniqueness.py`](src/gems57/uniqueness.py) | rank-correlation and 3 px dot overlap vs the registry |
+| [`src/gems57/fitting.py`](src/gems57/fitting.py) | single-feature leakage canary + leave-one-quadrant-out CV |
+| [`src/gems57/evaluate_holdout.py`](src/gems57/evaluate_holdout.py) | repaired shared DTI evaluator and spatial block terms |
+| [`src/gems57/submission_writer.py`](src/gems57/submission_writer.py) | fail-closed packaging, format gate, one-TIFF ZIP and local receipt |
+| [`src/gems57/validate.py`](src/gems57/validate.py) | local portal-format checks (not organizer acceptance) |
+| [`src/gems57/uniqueness.py`](src/gems57/uniqueness.py) | pre-placement surface rank check and final-dot overlap against supplied inventory |
 | [`scripts/run_lane.py`](scripts/run_lane.py) | `verify` / `measure` stages |
 | [`scripts/run_cv.py`](scripts/run_cv.py) | canary + CV + ablation |
 | [`scripts/build_submission.py`](scripts/build_submission.py) | final surface, emission, validation, uniqueness |
 | [`scripts/build_site.py`](scripts/build_site.py) | regenerates `docs/` from the evidence JSONs |
-| [`evidence/`](evidence/) | every measurement, machine-readable |
-| [`registry/`](registry/) | 15 earlier submission rasters, provenance-indexed |
+| [`evidence/`](evidence/) | measurements and the single machine-readable run card |
+| [`registry/`](registry/) | 15 owner-repository rasters plus 3 archived local rasters in the 18-row audit index; finite scope only |
+| [`docs/review_passes.md`](docs/review_passes.md) | the three review passes and current stop flags |
 | [`data/bridge/`](data/bridge/) | the two competition files, sha256-verified |
 
 ## Reproduce
@@ -175,28 +173,47 @@ pytest -q
 fault catalogue, and the scored truth is not published. That is what forces the
 hide-and-recover design.
 
-## Limitations
+## Limitations and irregularities
 
-* **No DrivenData credentials in the sandbox.** The 420 MB
-  `gems-geodawn-numerical-features.tif` feature stack is present in the bridge
-  repos as five parts but is not pulled here; this lane is catalogue-geometry
-  only and does not need it.
-* **No sense-of-slip field exists.** `existing_faults.tif` has exactly three
-  values, `{-1, 0, 1}`. The lane brief asks to condition on recorded sense of
-  slip "where the database has it" — it does not. `IR-57-SLIP-01`.
-* **No external SGMC-derived fault raster**, so the secondary off-catalogue
-  instrument used by the shared template cannot be reproduced here.
-* **The holdout truth is withheld *catalogue* pixels**, which by construction
-  belong to mapped systems. Genuinely unmapped faults are a different
-  population. The `detached` withholding mode is the conservative reading and is
-  reported alongside the primary one.
+* **No organizer upload or result receipt.** The repository has local format
+  checks and owner-reported registry values, not organizer-confirmed acceptance.
+* **The large training feature raster is absent from this checkout.**
+  `data/official/training_features.tif` is gitignored and approximately 419 MB;
+  the data-preparation test now reports this as an expected skip/absence rather
+  than pretending all pins were verified. It is not used by the geometry-only
+  H57 candidate, and no cached feature-stack claim is made.
+* **The present TIFF predates the shared-helper repair.** The active CV path and
+  future builder now use the repaired `evaluate_holdout.py` and fail-closed
+  `submission_writer.py`, but the saved CV evidence was not recalculated through
+  the adapter and the existing TIFF was not regenerated. Provenance is recorded
+  in the run card.
+* **Sense-of-slip availability is split by source.** The official binary fault
+  raster has no slip-sense band, but the local INGENIOUS vector file includes
+  `sense` and `qfault_attributes.csv` includes `SLIPSENSE`. The current H57
+  model does **not** encode it; that is a promotion blocker, not evidence that
+  the field is unavailable.
+* **The off-catalogue SGMC proxy files are present** in `data/external/`, but
+  are not official hidden truth and are not used to build the candidate.
+* **The holdout truth is withheld mapped-catalogue pixels**, which by
+  construction belong to mapped systems. Genuinely unmapped faults are a
+  different population. `all` and `detached` modes are local instruments, not
+  proof of live performance.
+* **Uniqueness coverage is finite.** Final dots were compared with 18 local
+  rasters (15 owner-repository main-tree files and 3 archived local files).
+  The public owner-repository manifests themselves exclude some private,
+  unlinked or externally stored material. Pre-placement surface correlation was
+  not recorded for the present artifact.
+* **Canary irregularity:** the OOF evidence flags `d` and `d_perp` above the
+  0.90 discriminative-AUC limit. The reason has not been established; treat the
+  result as non-promotable pending an explanation or redesigned instrument.
 
 ---
 
-## Appendix — the full task prompt, verbatim
+## Appendix — retained task prompt and provenance notes
 
 Re-read this at the start of every session. It is the specification this
-repository is built against; the README summarises it, this file *is* it.
+repository is built against; the README summarises it, this file retains it and
+records the evidence limits on owner-reported score references.
 
 ---
 
@@ -273,7 +290,7 @@ repository is built against; the README summarises it, this file *is* it.
 > external data, name the specific free, official source needed and check it's
 > obtainable before proposing the idea as viable.
 
-→ delivered in [`docs/hypotheses.html`](docs/hypotheses.html).
+→ active ranked plan: [`docs/research/hypotheses_h57.md`](docs/research/hypotheses_h57.md). The archived H1 hypotheses are marked historical in [`docs/research/hypotheses.md`](docs/research/hypotheses.md).
 
 ## Submission mechanics
 
@@ -333,8 +350,9 @@ repository is built against; the README summarises it, this file *is* it.
 
 ## Owner-reported scores quoted in the brief
 
-These are **ORGANIZER-CONFIRMED** numbers as pasted by the task owner. Two
-different "highest score" values appear in the brief (0.3774 and 0.3195); the
-conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
-this repo claims to beat.
+These are owner-provided values quoted in the retained task brief; this checkout
+contains no submission-page receipts for them, so they are **not independently
+verified or organizer-confirmed here**. The prompt has conflicting high-score
+references (0.2778, 0.3195, 0.3774). The conflict is logged as `IR-57-BRIEF-01`;
+none is used as a measured target or compared directly to local HOLDOUT-DTI.
 

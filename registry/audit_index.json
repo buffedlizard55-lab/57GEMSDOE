@@ -208,5 +208,44 @@
     "score_evidence_class": "OWNER-REPORTED / UNVERIFIED",
     "score_receipt_status": "no submission-page receipt present in this checkout",
     "score_provenance": "value copied from local owner-repository registry record; not independently verified"
+  },
+  {
+    "repo": "57GEMSDOE-local-archive",
+    "submission": "57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
+    "owner_reported_score": null,
+    "mode": "archive-only",
+    "blob_sha": null,
+    "path": "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
+    "file": "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
+    "bytes": 117242,
+    "sha256": "20e6e869a2206c27961b0eb20ad7ed09d68ed9e8c5456ccbaa4755d4331cc544",
+    "score_evidence_class": "NOT APPLICABLE",
+    "score_receipt_status": "no score recorded"
+  },
+  {
+    "repo": "57GEMSDOE-local-archive",
+    "submission": "57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+    "owner_reported_score": null,
+    "mode": "archive-only",
+    "blob_sha": null,
+    "path": "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+    "file": "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+    "bytes": 75896,
+    "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+    "score_evidence_class": "NOT APPLICABLE",
+    "score_receipt_status": "no score recorded"
+  },
+  {
+    "repo": "57GEMSDOE-local-archive",
+    "submission": "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+    "owner_reported_score": null,
+    "mode": "archive-only",
+    "blob_sha": null,
+    "path": "docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+    "file": "docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+    "bytes": 154835,
+    "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+    "score_evidence_class": "NOT APPLICABLE",
+    "score_receipt_status": "no score recorded"
   }
 ]

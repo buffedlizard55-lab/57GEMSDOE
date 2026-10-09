@@ -1,9 +1,11 @@
-"""Uniqueness check against every earlier raster in the registry.
+"""Uniqueness checks against every raster in the supplied local inventory.
 
-Parallel-run protocol rule 1: a submission has drifted into another lane if its
-rank-correlation with any registry raster exceeds 0.90, or if more than 70 % of
-its dots fall within 3 px of one registry raster's dots.  Both statistics are
-computed here, on the emission surface *before* placement and on the final dots.
+Inventory scope must be disclosed; this cannot certify uniqueness against
+private, unlinked, externally stored, or otherwise unavailable submissions.
+Parallel-run protocol rule 1: stop if positive full-footprint rank correlation
+with any supplied raster exceeds 0.90, or if more than 70% of candidate dots
+fall within 3 px of one supplied raster's dots. Check the surface before
+placement and the final dots after allocation.
 """
 
 from __future__ import annotations
@@ -87,10 +89,79 @@ def surface_rho(mine: np.ndarray, theirs: np.ndarray, valid: np.ndarray) -> dict
     return out
 
 
-def compare_to_registry(mine_path: Path, registry_index: Path,
+def compare_surface_to_registry(candidate: np.ndarray, registry_index: Path,
+                                 footprint: np.ndarray) -> dict:
+    """Pre-placement rank check against every row in a pinned local registry.
+
+    Any unreadable, missing, or misaligned prior makes the audit incomplete and
+    therefore fails closed. This is intentionally separate from the final-dot
+    proximity comparison below.
+    """
+    mine = np.asarray(candidate, dtype=np.float32)
+    fp = np.asarray(footprint, dtype=bool)
+    if (mine.ndim != 2 or mine.shape != fp.shape or not np.isfinite(mine).all()
+            or (mine < 0).any() or (mine > 1).any() or not fp.any()):
+        raise ValueError("candidate surface and footprint must be matching finite 2D [0,1] arrays")
+    if np.ptp(mine[fp]) == 0:
+        raise ValueError("constant candidate surface has no rank-uniqueness evidence")
+    index_path = Path(registry_index).resolve()
+    root = index_path.parent.parent if index_path.parent.name == "registry" else index_path.parent
+    idx = json.loads(index_path.read_text())
+    rows = []
+    for rec in idx:
+        path = Path(rec["file"])
+        if not path.is_absolute():
+            path = root / path
+        try:
+            with rasterio.open(path) as src:
+                if src.count != 1 or src.shape != mine.shape:
+                    raise ValueError(f"not aligned single-band raster ({src.count} bands, {src.shape})")
+                theirs = src.read(1)
+            theirs = np.where(np.isfinite(theirs), theirs, 0.0).astype(np.float32)
+            rho = surface_rho(mine, theirs, fp)
+            value = rho["spearman_full_footprint"]
+            rows.append({"repo": rec.get("repo"), "submission": rec.get("submission"),
+                         "path": str(path), **rho,
+                         "duplicate_by_rho": bool(np.isfinite(value) and value > RHO_LIMIT),
+                         "rho_defined": bool(np.isfinite(value))})
+        except Exception as exc:
+            rows.append({"repo": rec.get("repo"), "submission": rec.get("submission"),
+                         "path": str(path), "error": f"{type(exc).__name__}: {str(exc)[:180]}"})
+    complete = (bool(idx) and len(rows) == len(idx)
+                and not any("error" in r or not r.get("rho_defined", False) for r in rows))
+    duplicate = any(r.get("duplicate_by_rho", False) for r in rows)
+    vals = [r["spearman_full_footprint"] for r in rows
+            if np.isfinite(r.get("spearman_full_footprint", np.nan))]
+    worst = max(vals) if vals else float("nan")
+    worst_row = next((r for r in rows if r.get("spearman_full_footprint") == worst), {})
+    return {"phase": "surface-before-placement", "registry_index": str(registry_index),
+            "n_registry_rows": len(idx), "n_checked": sum("error" not in r for r in rows),
+            "complete": complete, "rho_limit": RHO_LIMIT,
+            "worst_spearman_full_footprint": float(worst),
+            "worst_submission": worst_row.get("submission"),
+            "duplicate": bool(duplicate), "unique_within_inventory": bool(complete and not duplicate),
+            "scope": "only rows in the supplied local registry index; not a complete competition-wide inventory",
+            "rows": rows}
+
+
+def compare_to_registry(mine_path: Path | np.ndarray, registry_index: Path,
                         footprint: np.ndarray) -> dict:
-    mine = rasterio.open(mine_path).read(1)
-    idx = json.loads(Path(registry_index).read_text())
+    if isinstance(mine_path, (str, Path)):
+        with rasterio.open(mine_path) as src:
+            if src.count != 1:
+                raise ValueError(f"candidate has {src.count} bands, expected one")
+            mine = src.read(1)
+        mine_label = str(mine_path)
+    else:
+        mine = np.asarray(mine_path, dtype=np.float32)
+        mine_label = "in-memory candidate"
+    fp = np.asarray(footprint, dtype=bool)
+    if (mine.shape != fp.shape or not np.isfinite(mine).all()
+            or (mine < 0).any() or (mine > 1).any() or not fp.any() or not (mine > 0).any()):
+        raise ValueError("candidate must be nonempty finite [0,1] and match the footprint shape")
+    index_path = Path(registry_index).resolve()
+    root = index_path.parent.parent if index_path.parent.name == "registry" else index_path.parent
+    idx = json.loads(index_path.read_text())
     rows = []
     worst_rho = -2.0
     worst_overlap = 0.0
@@ -98,23 +169,32 @@ def compare_to_registry(mine_path: Path, registry_index: Path,
     worst_rho_name = worst_overlap_name = worst_jaccard_name = ""
     for rec in idx:
         p = Path(rec["file"])
-        if not p.exists():
-            rows.append({**rec, "error": "missing file"})
+        if not p.is_absolute():
+            p = root / p
+        try:
+            with rasterio.open(p) as src:
+                if src.count != 1 or src.shape != mine.shape:
+                    raise ValueError(f"not aligned single-band raster ({src.count} bands, {src.shape})")
+                theirs = src.read(1)
+        except Exception as exc:
+            rows.append({**rec, "file": str(p),
+                         "error": f"{type(exc).__name__}: {str(exc)[:180]}"})
             continue
-        theirs = rasterio.open(p).read(1)
         theirs = np.where(np.isfinite(theirs), theirs, 0.0)
         rho = surface_rho(mine, theirs, footprint)
         ov = dot_overlap(mine, theirs)
         ov_rev = dot_overlap(theirs, mine)
+        rho_value = rho["spearman_full_footprint"]
         rows.append({
             "repo": rec["repo"], "submission": rec["submission"],
-            "owner_reported_score": rec["owner_reported_score"],
+            "owner_reported_score": rec.get("owner_reported_score"),
             "their_dots": int((theirs > 0).sum()),
             "my_dots_within_3px_of_theirs": ov,
             "their_dots_within_3px_of_mine": ov_rev,
             **rho,
+            "rho_defined": bool(np.isfinite(rho_value)),
             # the protocol's rank test: POSITIVE agreement over the footprint
-            "duplicate_by_rho": bool(rho["spearman_full_footprint"] > RHO_LIMIT),
+            "duplicate_by_rho": bool(np.isfinite(rho_value) and rho_value > RHO_LIMIT),
             "duplicate_by_jaccard": bool(rho["jaccard_dot_sets"] > JACCARD_LIMIT),
             "duplicate_by_overlap": bool(ov > OVERLAP_LIMIT),
         })
@@ -125,11 +205,14 @@ def compare_to_registry(mine_path: Path, registry_index: Path,
             worst_jaccard = rho["jaccard_dot_sets"]; worst_jaccard_name = rec["submission"]
         if ov > worst_overlap:
             worst_overlap = ov; worst_overlap_name = rec["submission"]
-    unique = not any(r.get("duplicate_by_rho") or r.get("duplicate_by_overlap")
-                     or r.get("duplicate_by_jaccard")
-                     for r in rows if "error" not in r)
+    audit_complete = (bool(idx) and len(rows) == len(idx)
+                      and not any("error" in r or not r.get("rho_defined", False)
+                                  for r in rows))
+    unique = audit_complete and not any(
+        r.get("duplicate_by_rho") or r.get("duplicate_by_overlap")
+        or r.get("duplicate_by_jaccard") for r in rows)
     return {
-        "my_file": str(mine_path),
+        "my_file": mine_label,
         "my_dots": int((mine > 0).sum()),
         "rho_limit": RHO_LIMIT, "overlap_limit": OVERLAP_LIMIT,
         "worst_spearman_full_footprint": worst_rho, "worst_rho_submission": worst_rho_name,
@@ -137,5 +220,9 @@ def compare_to_registry(mine_path: Path, registry_index: Path,
         "worst_jaccard_dot_sets": worst_jaccard, "worst_jaccard_submission": worst_jaccard_name,
         "worst_dot_overlap": worst_overlap, "worst_overlap_submission": worst_overlap_name,
         "unique": bool(unique),
+        "audit_complete": bool(audit_complete),
+        "n_registry_rows": len(idx),
+        "n_checked": sum("error" not in r for r in rows),
+        "scope": "only rows in the supplied local registry index; not a complete competition-wide inventory",
         "rows": rows,
     }

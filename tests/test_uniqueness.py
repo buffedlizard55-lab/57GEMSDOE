@@ -1,8 +1,13 @@
 """Regression tests for the parallel-run uniqueness screen (IR-57-RHO-01)."""
+import json
+
 import numpy as np
 import pytest
+import rasterio
+from rasterio.transform import from_origin
 
 from gems57.uniqueness import (JACCARD_LIMIT, OVERLAP_LIMIT, RHO_LIMIT,
+                               compare_surface_to_registry, compare_to_registry,
                                dot_overlap, surface_rho)
 
 SHAPE = (400, 400)
@@ -74,3 +79,59 @@ def test_full_footprint_rho_is_the_degenerate_one():
     b = _sparse(8, 3000).astype(np.float32)
     r = surface_rho(a, b, np.ones(SHAPE, bool))
     assert abs(r["spearman_full_footprint"]) < 0.05
+
+
+def _write_small_raster(path, values):
+    values = np.asarray(values, np.float32)
+    with rasterio.open(path, "w", driver="GTiff", height=values.shape[0],
+                       width=values.shape[1], count=1, dtype="float32",
+                       crs="EPSG:32611", transform=from_origin(0, values.shape[0], 1, 1)) as dst:
+        dst.write(values, 1)
+
+
+def test_surface_audit_stops_on_exact_registry_copy(tmp_path):
+    candidate = np.zeros((32, 32), np.float32)
+    candidate[4:28, 4:28] = np.linspace(0.01, 0.9, 24 * 24).reshape(24, 24)
+    prior = tmp_path / "prior.tif"
+    _write_small_raster(prior, candidate)
+    index = tmp_path / "index.json"
+    index.write_text(json.dumps([{"repo": "test", "submission": "copy",
+                                  "file": str(prior)}]))
+
+    report = compare_surface_to_registry(candidate, index, np.ones(candidate.shape, bool))
+    assert report["complete"]
+    assert report["duplicate"]
+    assert not report["unique_within_inventory"]
+    assert report["worst_spearman_full_footprint"] == pytest.approx(1.0)
+
+
+def test_final_dot_audit_stops_on_exact_prior_copy(tmp_path):
+    candidate = np.zeros((32, 32), np.float32)
+    candidate[8:12, 8:12] = 1.0
+    prior = tmp_path / "prior-dots.tif"
+    _write_small_raster(prior, candidate)
+    index = tmp_path / "index.json"
+    index.write_text(json.dumps([{"repo": "test", "submission": "copy",
+                                  "file": str(prior)}]))
+
+    report = compare_to_registry(candidate, index, np.ones(candidate.shape, bool))
+    row = report["rows"][0]
+    assert report["audit_complete"]
+    assert not report["unique"]
+    assert row["duplicate_by_rho"]
+    assert row["duplicate_by_overlap"]
+    assert row["my_dots_within_3px_of_theirs"] == pytest.approx(1.0)
+
+
+def test_final_dot_audit_fails_closed_on_missing_prior(tmp_path):
+    candidate = np.zeros((32, 32), np.float32)
+    candidate[10, 10] = 1.0
+    index = tmp_path / "index.json"
+    index.write_text(json.dumps([{"repo": "test", "submission": "missing",
+                                  "file": str(tmp_path / "absent.tif")}]))
+
+    report = compare_to_registry(candidate, index, np.ones(candidate.shape, bool))
+    assert not report["audit_complete"]
+    assert not report["unique"]
+    assert report["n_checked"] == 0
+    assert report["rows"][0]["error"].startswith("RasterioIOError")
