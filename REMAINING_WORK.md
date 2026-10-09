@@ -1,5 +1,21 @@
 # Remaining work and limitations
 
+## Session 4 update (2026-10-09)
+
+**Shipped:** `docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif`
+(sha256 `0025ec29…`, 37,654 dots). **OK TO SUBMIT.** Uniqueness PASS vs 16 accessible
+dotted priors (max 3-px overlap 0.35). HOLDOUT-DTI 0.2617 vs H57-G 0.2374 on the
+same detached instrument. H57-I strike-binned arm is NEGATIVE (0.1999).
+`IR-57-STRIKE-01` fixed (finite strike was zeroed). No weekly slot used.
+
+Still open: holdout↔live transfer (limitation 1); covering-lattice uniqueness if
+those rasters are added to the inventory (H61 policy classifies them as probes);
+H57-K/L not run; DrivenData auth still missing.
+
+---
+
+# Remaining work and limitations (historical)
+
 Everything on this page is a gap I know about and did **not** close. It is written so that the
 next session can pick it up without re-deriving anything, and so that no reader mistakes an open
 item for a finished one.

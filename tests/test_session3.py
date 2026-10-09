@@ -36,9 +36,11 @@ def test_new_research_raster_is_distinct_and_fail_closed():
     assert e['surface_gate_passes'] is False
     assert any(w['candidate_surface_positive_3px_overlap'] > .70 for w in e['surface_witnesses'])
     assert 'DO NOT SUBMIT' in e['verdict']
-    assert 'DO NOT SUBMIT' in (ROOT/'docs'/'index.html').read_text()
-    assert path.name in (ROOT/'docs'/'index.html').read_text()
-    assert 'DO NOT SUBMIT' in (ROOT/'index.html').read_text()
+    # Historical session-3 pages keep the fail-closed banner. Session 4's
+    # index.html is a different, uniqueness-cleared candidate.
+    s3 = (ROOT/'docs'/'session-3.html').read_text()
+    assert 'DO NOT SUBMIT' in s3
+    assert path.name in s3
     assert 'gems57-faultzone-anatomy-60000px' not in (ROOT/'index.html').read_text()
     # research annex card (session-3 design, merged 2026-10-09): the research
     # raster's card lives in run_card_session3.json; the primary run_card.json is

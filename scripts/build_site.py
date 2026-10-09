@@ -384,6 +384,9 @@ def parallel_candidates() -> str:
          "continuous_surface_submission.json", "H57 continuous probability surface (NOT binary dots)"),
         ("gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif",
          "exp4_width.json", "H57-G width-normalized surface (research only)"),
+        ("gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
+         "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.json",
+         "H57-I isolated-fault anatomy, 37,654 dots (session 12; also as SUBMIT-THIS alias)"),
     ]
     for fname, ev, desc in meta:
         e = load(ev) or {}
