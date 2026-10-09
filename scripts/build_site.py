@@ -33,7 +33,8 @@ SIBLING = "https://github.com/buffedlizard55-lab/GEMSDOE32"
 
 NAV = [("index.html", "Home"), ("executive-summary.html", "How to submit"),
        ("method.html", "Method"), ("hypotheses.html", "Hypotheses"),
-       ("results.html", "Results"), ("irregularities.html", "Irregularities"),
+       ("results.html", "Results"), ("session-3.html", "Latest run"),
+       ("irregularities.html", "Irregularities"),
        ("data-sources.html", "Data sources"), ("run-card.html", "Run card")]
 
 CSS = """
@@ -164,6 +165,28 @@ def uniq_hold_block() -> str:
             '<a href="results.html">results</a> and <code>IR-57-UNIQ-03</code>.</p></div>')
 
 
+def research_card() -> str:
+    """Latest candidate status from on-disk evidence. Never imply organizer acceptance."""
+    exp = load('exp4_width.json') or {}
+    r = exp.get('research_raster', {})
+    if not r:
+        return ''
+    fp = esc(Path(r['path']).name)
+    v = r.get('validator', {})
+    w = exp.get('surface_witnesses', [])
+    overlap = max((x['candidate_surface_positive_3px_overlap'] for x in w), default=None)
+    return f'''<div class="bad-box" style="border-width:4px">
+<h2 style="margin-top:0">Latest independent H57-G GeoTIFF — DO NOT SUBMIT</h2>
+<p>This is a <b>new model inference</b>, not a copy of an old submission.
+<a download href="downloads/{fp}">Download the research-only TIF</a> for review.
+It passes {sum(v.get('checks', {}).values())}/{len(v.get('checks', {}))} local format checks;
+sha256 <code>{esc(r.get('sha256'))}</code>.</p>
+<p><b>Submission verdict: NO.</b> The literal lane overlap gate fired <em>on the surface before dot placement</em>
+(max directed overlap {fmt(overlap)} against two pinned public registry witnesses). Therefore there is
+<b>no cleared final dot submission</b> and no weekly slot was used. The TIF is a research surface,
+not an upload recommendation. <a href="session-3.html">Evidence and run card</a>.</p></div>'''
+
+
 def build_index(build, cv_all, uniq_src) -> str:
     build = build or {}
     z = build.get("zeros_tif") or {}
@@ -178,18 +201,19 @@ def build_index(build, cv_all, uniq_src) -> str:
         crows = '<tr><td colspan="2">PENDING</td></tr>'
     note = build.get("submission_note", "PENDING")
     return f"""
-<h2>Submit in four steps</h2>
+{research_card()}
+<h2>How a cleared file would be submitted (none is cleared now)</h2>
 {uniq_hold_block()}
 <div class="card">
 <ol>
-<li><b>Download the file.</b>
-<a href="downloads/{esc(fname)}" download><code>{esc(fname)}</code></a>
-— the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
+<li><b>First require a positive selector clearance, which does not exist yet.</b>
+The previous file <code>{esc(fname)}</code> is an archived, blocked example, not an upload.
+Never use a <code>-nan.tif</code> diagnostic.</li>
 <li><b>Go to the submission page:</b>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
 drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
 <li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>{esc((build or {}).get("submission_note","PENDING"))}</code></li>
+<li><b>Only after the separate selector explicitly clears a future file,</b> paste its receipt note and submit. The archived file above is <b>NOT</b> cleared:<br><code>{esc((build or {}).get("submission_note","PENDING"))}</code></li>
 </ol>
 </div>
 
@@ -220,7 +244,7 @@ outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. Tha
 <h2>Validator receipt for this file</h2>
 <table><tr><th>Check</th><th>Result</th></tr>{crows}</table>
 <dl class="kv">
-<dt>File</dt><dd>{esc(z.get("file","PENDING"))}</dd>
+<dt>Archived file</dt><dd>{esc(Path(z.get('file','PENDING')).name)}</dd>
 <dt>sha256</dt><dd>{esc(z.get("sha256","PENDING"))}</dd>
 <dt>Bytes</dt><dd>{esc(z.get("bytes","PENDING"))}</dd>
 <dt>Positive pixels</dt><dd>{esc(z.get("emitted_positive_pixels","PENDING"))}</dd>
@@ -236,6 +260,64 @@ more heavily than false positives, so the metric rewards covering real fault pix
 conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
 rather than sprayed. See <a href="method.html">Method</a>.</p>
 """
+
+
+def build_session3() -> str:
+    e = load('exp4_width.json') or {}
+    if not e:
+        return '<h2>Latest run</h2><p>Experiment pending. No submission is cleared.</p>'
+    b, h = e['baseline'], e['H57-G']
+    ci_b, ci_h = b['dti_ci95_quadrant_jackknife'], h['dti_ci95_quadrant_jackknife']
+    ws = e['surface_witnesses']
+    rows = ''.join(f'<tr><td><a href="https://github.com/buffedlizard55-lab/{"13GEMSDOE" if "gems13" in x["source"] else "17GEMSDOE"}/tree/main/docs/downloads">'
+                   f'{esc(Path(x["source"]).name)}</a></td><td><code>{esc(x["sha256"])}</code></td>'
+                   f'<td>{fmt(x["prior_coverage_of_eligible_3px"], 6)}</td>'
+                   f'<td>{fmt(x["candidate_surface_positive_3px_overlap"], 6)}</td></tr>' for x in ws)
+    r = e['research_raster']; v = r['validator']
+    return f'''<h2>H57-G — preregistered width-normalized stepover</h2>
+{research_card()}
+<p>The nearest <b>visible</b> fault's cross-strike offset was divided by the square root of one plus
+its visible connected-component size. This tests a displacement/width proxy without imposing any
+textbook strike angle. The hide-and-recover test withholds whole segments; both draws in each held-out
+quadrant were scored with a model fitted on the other three quadrants. The feature is derived from
+visible faults only. Neither model uses an earlier submission as its prediction input.</p>
+<table><tr><th>Arm (detached mode, 10,000-dot cap per fold cell)</th><th>HOLDOUT-DTI</th><th>95% quadrant-jackknife CI</th><th>Withheld positives</th></tr>
+<tr><td>Previous 8 features</td><td>{fmt(b['pooled_dti'])}</td><td>[{fmt(ci_b[0])}, {fmt(ci_b[1])}]</td><td>{b['n_truth']}</td></tr>
+<tr><td>H57-G (+ length-scaled stepover)</td><td>{fmt(h['pooled_dti'])}</td><td>[{fmt(ci_h[0])}, {fmt(ci_h[1])}]</td><td>{h['n_truth']}</td></tr></table>
+<p>HOLDOUT-DTI delta {e['paired_delta']:+.6f}; the separate CIs overlap substantially and this is
+<b>not</b> an organizer score or evidence of a live leaderboard improvement.
+Leakage canary (new feature max discriminative AUC): {fmt(e['canary']['width']['discriminative_auc_max'])}
+(threshold 0.90); see the <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/exp4_width.json">raw evidence</a> for each feature.</p>
+<h2>Why even a valid new GeoTIFF cannot be recommended</h2>
+<p>The literal repository checker treats <code>&gt;0</code> as a dot. Two registry witnesses were
+retrieved from the linked public GitHub repositories, their full file hashes checked against
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/registry_full_index.json">the registry index</a>, and their exact 3-pixel
+Euclidean halos compared to the new positive surface <em>before</em> dot placement:</p>
+<table><tr><th>Previous raster</th><th>File sha256</th><th>3px coverage of eligible cells</th><th>Overlap on H57-G surface</th></tr>{rows}</table>
+<p>The continuous 17GEMSDOE prior is nonzero at every eligible pixel, so under that specific
+literal support convention <b>no nonempty dot field can pass the 70% rule</b> against it.
+A nonzero continuous probability is not necessarily a predicted <i>dot</i> — if the intended convention
+instead thresholds continuous priors at 0.5, a policy clarification is required. No waiver or
+alternate gate is silently applied here. The 13GEMSDOE <i>binary</i> lattice is an independent,
+near-universal witness. The run stops before dot placement; no final-dots uniqueness claim is made.</p>
+<p>The newly inferred <a href="downloads/{esc(Path(r['path']).name)}" download>research-only GeoTIFF</a>
+is locally format-valid ({sum(v['checks'].values())}/{len(v['checks'])} checks, no NaNs, EPSG:32611,
+3730 × 3292, matching transform, in range [0,1]), with sha256
+<code>{esc(r['sha256'])}</code>. <b>DO NOT UPLOAD.</b> No DrivenData account/submission-page receipt
+is available here; local validation cannot establish portal acceptance.</p>
+<p><b>Verified links:</b> <a href="https://github.com/drivendataorg/gems-prize-reference-solution">official reference code</a>;
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">official problem description (login may be required)</a>;
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">H33-2-B2 owner method</a>
+(reported +0.004870 on its local holdout, 37,654 emitted dots, not an organizer receipt).
+The owner-provided 0.2778 is not independently verified from a submission-page receipt;
+H33-2-B2 removed dots within 2 pixels of mapped faults from a prior 0.2708 base, not a general proof
+that its method transfers to this lane. The task lists both 0.3195 and 0.3774 as leaderboard highs;
+these conflict and neither can be checked through the restricted network here.</p>
+<p><b>Irregularities / next steps:</b> do not spend a weekly slot; request a written interpretation
+of “dots” for dense continuous registry surfaces, use the shared gate consistently, and validate any
+new emission against the full restored registry. Official competition data downloads and live leaderboard
+require DrivenData access. No geophysical dataset was introduced in this catalogue-only experiment.
+View <a href="run-card.html">the latest JSON run card</a>.</p>'''
 
 
 def exec_ok_card() -> str:
@@ -266,22 +348,21 @@ def build_exec(build) -> str:
         crows = '<tr><td colspan="2">PENDING</td></tr>'
     return f"""
 <h2>Is it OK to download and submit?</h2>
+{research_card()}
 {exec_ok_card()}
 
-<h2>Submit in four steps</h2>
+<h2>Submission instructions for a future cleared file — no file is cleared yet</h2>
 <div class="card">
 <ol>
-<li><b>Download the file.</b>
-<a class="big" href="downloads/{esc(fname)}" download>Download <code>{esc(fname)}</code></a>
-<span class="muted">~{fmt((z.get('size_bytes') or 0) / 1024.0, 1)} MB &middot;
-sha256 <code>{esc(str(sha))}</code></span></li>
+<li><b>Require written clearance before downloading for submission.</b>
+The older archived <code>{esc(fname)}</code> failed the gate (sha256 <code>{esc(str(sha))}</code>).
+Neither it nor the research surface is a cleared upload.</li>
 <li><b>Open the portal.</b>
 <a href="{COMPETITION}" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
 <i>Participate</i> &rarr; <i>Submissions</i>. You need a DrivenData account joined to the
 competition.</li>
-<li><b>Upload that exact file.</b> Do not re-save it in another program; re-saving can
-rewrite the header and break the grid.</li>
-<li><b>Fill in the name and note</b> (below), then submit.</li>
+<li><b>Only if a future candidate passes both holdout and the literal uniqueness gate:</b> upload its exact file. Do not re-save it in another program.</li>
+<li><b>Use the cleared candidate's name and note</b> and then submit. Neither file linked here has clearance; <b>DO NOT upload either one.</b></li>
 </ol>
 </div>
 
@@ -505,17 +586,16 @@ No live score is projected from any number on this page.</p>
 
 
 HYP = [
- ("H57-A", "En echelon stepover anatomy", "SHIPPED",
+ ("H57-A", "En echelon stepover anatomy", "BUILT, HELD",
   "existing_faults.tif catalogue geometry only (no external layer)",
   "Joint fitted density of cross-strike stepover × along-strike offset of withheld strands, "
   "relative to the local strike of the nearest visible trace.",
   "A splay is the geometric continuation of a mapped system at a small stepover. The catalogue "
   "stops where the mapper stopped — in alluvium, under cover, at a survey boundary — not where the "
   "structure stops. The continuation is therefore predictable from the mapped trace's own geometry.",
-  "Every sibling lane in the registry allocates as a function of distance alone (isotropic "
-  "dilation, Poisson discs, ridge ranking). None carries an along-strike/stepover structure, so "
-  "none can express an en echelon array. Verified by the uniqueness check: worst |rho| and worst "
-  "3-px dot overlap are reported on the run card.",
+  "Some sibling lanes also use tips and stepovers (e.g. GEMSDOE33); this is not a novel "
+  "geological mechanism. Here the distance and relative offsets were measured on visible-only "
+  "hide-and-recover folds. The previous raster's literal overlap gate still failed.",
   "High", "Low — catalogue only, no external data"),
  ("H57-B", "Trace-termination stress lobe", "NOT RUN",
   "Catalogue segment endpoints; optionally the 100 m numerical feature stack",
@@ -533,7 +613,8 @@ HYP = [
   "Per-fault zone width w(L) fitted from component length, instead of one global distance kernel.",
   "Savage & Brodsky (JGR 2011) show damage-zone width growing with displacement and then more "
   "slowly. A single global width under-weights long, mature faults and over-weights short ones.",
-  "No sibling lane scales its kernel per fault. Implemented here as the log_len feature; note the "
+  "The length proxy entered the prior model as log_len, not as an explicitly normalized "
+  "stepover. Session 3 tests that distinct interaction; note the "
   "first implementation used the 12-px segment chunk length, which is a constant and carries no "
   "information at all (IR-57-LEN-01).",
   "Medium", "Very low — already in the feature set"),
@@ -542,8 +623,8 @@ HYP = [
   "Gate the intensity on the local orientation of the mapped fabric so gaps are filled along the "
   "regional sets rather than isotropically.",
   "The catalogue strike histogram is bimodal, peaking at 0-15 deg and 135-180 deg — the two "
-  "regional sets of the northern Walker Lane / Basin Range boundary. An unmapped fault in this "
-  "province almost certainly belongs to one of them.",
+  "regional sets of the northern Walker Lane / Basin Range boundary. It is a testable "
+  "hypothesis, not a guarantee, that an unmapped fault might follow one of them.",
   "Isotropic gap-filling lanes (e.g. GEMSDOE27 topo-gap-closure) cannot express this. H57-A "
   "already carries strike as sin2/cos2, but the canary shows those two features have a raw AUC of "
   "exactly 0.500 alone, so the orientation selectivity is only usable in interaction — which is "
@@ -567,7 +648,7 @@ HYP = [
 def build_hypotheses() -> str:
     rows = ""
     for hid, name, status, layers, sig, why, diff, gain, cost in HYP:
-        badge = {"SHIPPED": '<span class="tag org">SHIPPED</span>',
+        badge = {"BUILT, HELD": '<span class="tag bad">BUILT, HELD</span>',
                  "FOLDED INTO H57-A": '<span class="tag">FOLDED IN</span>',
                  "NOT RUN": '<span class="tag hold">NOT RUN</span>',
                  "BLOCKED ON DATA": '<span class="tag bad">BLOCKED</span>'}[status]
@@ -578,7 +659,7 @@ def build_hypotheses() -> str:
 <h2>Five candidate hypotheses, ranked</h2>
 <p>Ranked by expected DTI improvement over implementation cost, per the brief. "Differs from"
 is assessed against the 15 sibling submissions pulled into
-<a href="../registry/registry_index.json"><code>registry/</code></a> as well as this repository.</p>
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/registry/registry_index.json"><code>registry/</code></a> as well as this repository. Four additional, prospectively ranked session-3 hypotheses (H57-G to J) are in <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/README.md">README.md</a>; H57-G's measured result is <a href="session-3.html">here</a>.</p>
 <table>
 <tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th>
 <th>Why it catches a fault the catalogue lacks</th><th>How it differs from existing work</th>
@@ -937,6 +1018,19 @@ IRREG = [
   "visible rather than hidden. The holdout-to-live rank correlation for this instrument is only "
   "+0.14 (12 live scores, sibling repository), which is why live evidence outranks holdout evidence "
   "on this decision."),
+ ("IR-57-EVAL-01", "Shared evaluator referenced missing functions", "FIXED, REGRESSION TESTED",
+  "The inherited evaluate_holdout.evaluate called nonexistent holdout.score and metric.max_cover; "
+  "pooled_summary also needed missing metric.R_M. Historical exp2 evidence pinned a different "
+  "implementation hash and cannot be claimed as reproduced by today's module.",
+  "Implemented the continuous triangular max kernel and pixel-exact visible masking in the shared "
+  "src/gems57 evaluator/metric; the H57-G experiment uses it for every fold, asserting agreement "
+  "with independent binary EDT scoring. Tests cover continuous max-vs-sum and known-fault masking."),
+ ("IR-57-S3-GATE", "Literal overlap gate is blocked by saturated registry priors", "NEGATIVE / NO SLOT",
+  "The restored 13GEMSDOE lattice covers 99.8724% of eligible cells within 3 px. The 17GEMSDOE "
+  "continuous prior is >0 on every eligible cell; the current checker treats all >0 as dots, "
+  "making its directed overlap 100% for any nonempty candidate.",
+  "Stop on the surface before dot placement, label the new valid TIF research-only, and disclose "
+  "that a >=0.5 threshold for continuous priors would be a protocol change, not an assumed waiver."),
 ]
 
 
@@ -1103,6 +1197,38 @@ by the task owner; the file identity is verified by sha256 against the blob in t
 
 
 def build_runcard(build, cv_all, meas) -> str:
+    latest = load('exp4_width.json')
+    if latest:
+        r = latest['research_raster']
+        card = {
+            'hypothesis': latest['hypothesis'],
+            'mechanism': latest['mechanism'],
+            'named_non_fault_process_that_could_mimic_it': latest['non_fault_mimic'],
+            'holdout_dti': {'label': 'HOLDOUT-DTI (not an organizer score)',
+                            'evaluator_version': latest['evaluator_version'],
+                            'withheld_positive_pixels': latest['withheld_positive_pixels'],
+                            'pooled': latest['H57-G']['pooled_dti'],
+                            'ci95_quadrant_jackknife': latest['H57-G']['dti_ci95_quadrant_jackknife'],
+                            'baseline_same_mode_and_budget': latest['baseline']['pooled_dti'],
+                            'delta': latest['paired_delta']},
+            'correlation_overlap_vs_registry': {
+                'surface_witnesses': latest['surface_witnesses'],
+                'surface_rank_vs_witnesses': latest.get('surface_rank_vs_witnesses'),
+                'sha256_distinct_from_full_index': latest.get('sha256_distinct_from_all_644_indexed_rasters'),
+                'full_final_dot_comparison': 'NOT RUN; stopped before placement after surface gate',
+                'scope': latest.get('index_scope_note')},
+            'raster_sha256': r['sha256'],
+            'validator_output': {'checks':r['validator']['checks'], 'all_checks_passed':r['validator']['all_checks_passed'],
+                                 'nan_cells':r['validator']['n_nan'], 'min':r['validator']['min'],
+                                 'max':r['validator']['max'], 'crs_shape_transform':r['validator']['meta']},
+            'submission_name': latest['submission_name'],
+            'submission_note': latest['submission_note'],
+            'verdict':'negative: research surface only; DO NOT SUBMIT; literal overlap gate fails',
+            'slot_used':False,
+        }
+        txt = json.dumps(card, indent=2)
+        (EVID/'run_card.json').write_text(txt+'\n')
+        return f'<h2>Latest run card — negative</h2><p><b>DO NOT SUBMIT.</b> <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json">JSON</a>. Earlier run: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_session2.json">archived card</a>.</p><pre>{esc(txt)}</pre>'
     z = (build or {}).get("zeros_tif") or {}
     uq = (build or {}).get("uniqueness", {})
     # holdout number for the SHIPPED configuration: measured at the shipped per-cell share
@@ -1240,6 +1366,7 @@ def main() -> None:
         "method.html": ("Method", build_method(meas, cv_all, cv_det), "method.html"),
         "hypotheses.html": ("Hypotheses", build_hypotheses() + build_session2_hyp(), "hypotheses.html"),
         "results.html": ("Results", build_results(cv_all, cv_det, build, rb) + build_session2(), "results.html"),
+        "session-3.html": ("Latest run", build_session3(), "session-3.html"),
         "irregularities.html": ("Irregularities", build_irregularities(), "irregularities.html"),
         "data-sources.html": ("Data sources", build_sources(), "data-sources.html"),
         "run-card.html": ("Run card", build_runcard(build, cv_all, meas), "run-card.html"),

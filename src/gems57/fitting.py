@@ -95,7 +95,7 @@ def predict_surface(clf, scale: float, g, shape: tuple[int, int],
     return full
 
 
-def canary(geoms: list) -> dict:
+def canary(geoms: list, feature_names=None) -> dict:
     """Single-feature AUC per fold (no fitting, so no fitting-induced leakage).
 
     A feature whose AUC exceeds 0.90 is treated as leakage until proven
@@ -110,10 +110,12 @@ def canary(geoms: list) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
-    names = list(FEATURES)
-    if geoms and geoms[0].X.shape[1] > len(FEATURES):
+    names = list(FEATURES) if feature_names is None else list(feature_names)
+    if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
         from .anatomy import SENSE_FEATURES
         names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
+    if geoms and (len(names) != geoms[0].X.shape[1] or any(g.X.shape[1] != len(names) for g in geoms)):
+        raise ValueError('canary feature names must match every column; never silently mislabel a feature')
     for j, name in enumerate(names):
         aucs = []
         for g in geoms:
@@ -142,7 +144,8 @@ def canary(geoms: list) -> dict:
 
 def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
              *, max_dots: int = 120_000, floor: float = 0.015,
-             cols: list[int] | None = None, g=None) -> dict:
+             cols: list[int] | None = None, g=None,
+             shared_evaluator: bool = False) -> dict:
     """Predict, allocate and score one fold cell."""
     own_g = g is None
     if own_g:
@@ -156,6 +159,18 @@ def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
     # score on the crop
     res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
                      valid=cell.active)
+    if shared_evaluator:
+        from .evaluate_holdout import evaluate
+        # Same pixel-exact active domain; the second implementation catches
+        # scoring drift and supplies the requested shared-template evaluation.
+        shared, _ = evaluate(emitted_full[cell.bbox].astype(np.float32),
+                             {'region': cell.active, 'truth': _truth_crop(ctx, cell),
+                              'visible': ctx.visible(cell.key)[cell.bbox]},
+                             cell.active, block_side=200)
+        np.testing.assert_allclose([shared['tpw'], shared['fpw'], shared['fnw'], shared['dti']],
+                                   [res['tp'], res['fp'], res['fn'], res['dti']], atol=2e-4, rtol=1e-6)
+        res = dict(dti=shared['dti'], coverage=shared['tpw']/cell.n_truth,
+                   tp=shared['tpw'], fp=shared['fpw'], fn=shared['fnw'])
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
         "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],
