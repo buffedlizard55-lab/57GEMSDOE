@@ -167,6 +167,18 @@
         "evidence/run_card_legacy_h57i.json"
       ],
       "remaining": "No real slot was used here. Corrected-strike historical readings still do not establish improvement on current buffered controls."
+    },
+    {
+      "id": "IR-57-OWNER-CONTEXT-01",
+      "severity": "high",
+      "status": "preserved; not adopted as a protocol revision in this session",
+      "finding": "Concurrent PR #6 records an owner decision to exempt broad/soft priors in that other session. Its four new TIFFs were already audited here before it merged.",
+      "resolution": "Preserve raw owner-context card/brief and compatible geophysical APIs, but continue the explicit literal >0 support/forward rule required in this conversation. No changed threshold or real slot here.",
+      "evidence": [
+        "evidence/run_card_other_session_owner_context.json",
+        "BRIEF_legacy_owner_context.md"
+      ],
+      "remaining": "Any policy change for this run needs an explicit revision in this conversation, not inferred from repository text."
     }
   ]
 }

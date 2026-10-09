@@ -30,12 +30,12 @@ def _full(ctx: HoldoutContext, cell: Cell) -> np.ndarray:
     return m
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None):
+def cell_geometry(ctx: HoldoutContext, cell: Cell, geo=None, sense_src=None):
     """Feature geometry of one fold cell.  ``sense_src`` opts in to the recorded-sense
     features (``anatomy.SENSE_FEATURES``); ``None`` keeps the shipped 9-column matrix."""
     dom = _full(ctx, cell)
     g = fold_geometry(ctx.grid, ctx.visible(cell.key),
-                      ctx.hidden_by_cell[cell.key], dom, cell.key, sense_src=sense_src)
+                      ctx.hidden_by_cell[cell.key], dom, cell.key, geo=geo, sense_src=sense_src)
     return g
 
 
@@ -103,8 +103,9 @@ def canary(geoms: list, feature_names=None) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
-    names = list(feature_names) if feature_names is not None else list(FEATURES)
-    if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
+    metadata = getattr(geoms[0], 'feature_names', None) if geoms else None
+    names = list(feature_names) if feature_names is not None else list(metadata or FEATURES)
+    if feature_names is None and not metadata and geoms and geoms[0].X.shape[1] > len(FEATURES):
         from .anatomy import SENSE_FEATURES
         names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
     if any(g.X.shape[1] != len(names) for g in geoms):
