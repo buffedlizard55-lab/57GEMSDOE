@@ -1,17 +1,26 @@
 {
   "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.",
-  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over nine catalogue-geometry features, calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.",
+  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the eight shipped catalogue-geometry features (side dropped), calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.",
   "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
   "holdout_dti": {
-    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
+    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out, per-cell cap 10,000 (shipped density), features = shipped 8 (side dropped)",
+    "evaluator_version": "gems57 pooled DTI, scripts/run_sense_experiment.py",
     "withheld_positive_pixels": 22641,
-    "pooled_dti": 0.25172223160856344,
+    "pooled_dti": 0.2279081739637539,
     "ci95_quadrant_jackknife": [
-      0.21833561739648347,
-      0.28510884582064344
+      0.18673527927748879,
+      0.269081068650019
     ],
-    "coverage": 0.487441073456199,
+    "coverage": 0.3287785538228303,
     "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
+  },
+  "correlation_overlap_full_registry": {
+    "n_unique_grid_rasters": null,
+    "max_spearman_full_footprint": null,
+    "max_jaccard": null,
+    "max_dot_overlap_fwd_3px": null,
+    "n_overlap_firings_two_sided_true_duplicates": null,
+    "unique_by_protocol": null
   },
   "correlation_overlap_vs_registry": {
     "n_registry_rasters": 15,
@@ -40,9 +49,26 @@
   "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
   "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
   "sense_of_slip": {
-    "available_in_provided_database": false,
+    "available_in_provided_database": true,
+    "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
     "measured_log_ratio_right_over_left": null,
-    "encoded": false
+    "encoded_in_shipped_file": false,
+    "tested_as_opt_in_features": true,
+    "tested_result": {
+      "per_quadrant_diff": {
+        "NW": 0.0037939165243941475,
+        "NE": 0.0055511076585393615,
+        "SW": 0.002465441253495404,
+        "SE": -0.005565574192837125
+      },
+      "mean_diff": 0.001561222810897947,
+      "sd_diff": 0.004916399388444914,
+      "n_quadrants_positive": 3,
+      "canary_clean": false,
+      "promote_rule": "positive in >=3 of 4 quadrants AND canary clean",
+      "promote": false
+    }
   },
-  "verdict": "promote"
+  "verdict": "negative",
+  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
 }

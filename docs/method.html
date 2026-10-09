@@ -92,11 +92,15 @@ nearest visible pixel returns itself and an angle of 0 — that was the first im
 pairs, with the excess at <b>15–45°</b> (ratio 1.5–2.1), not at the textbook Riedel R-shear angle of
 10–15°. This is precisely why the brief says not to hard-code textbook angles.</p>
 
-<h3>Sense of slip <span class="tag bad">NOT AVAILABLE</span></h3>
-<p><code>existing_faults.tif</code> has exactly three values, <code>{-1, 0, 1}</code>
-(verified in <code>evidence/verify_grid.json</code>). There is <b>no</b> sense-of-slip attribute to
-condition on. Rather than importing a dextral convention, the left/right asymmetry was fitted as
-the <code>side</code> feature:</p>
+<h3>Sense of slip <span class="tag org">AVAILABLE — MEASURED AS OPT-IN FEATURES</span></h3>
+<p>The raster <code>existing_faults.tif</code> has no sense field (its values are <code>{-1, 0, 1}</code>,
+where <code>-1</code> is the nodata fill outside the study area). The INGENIOUS vector attribute table
+<i>does</i> carry it: <code>data/external/trace_segments_utm11.csv</code> has a <code>sense</code> column
+(N / RL / LL / blank), and <code>qfault_attributes.csv</code> has <code>SLIPSENSE</code>. An earlier
+version of this page said no such field existed; that was wrong (<code>IR-57-SLIP-02</code>). The
+recorded sense enters as the opt-in features <code>sense_sgn</code> and <code>sense_side</code>, built
+from visible pixels only, and is measured in <code>scripts/run_sense_experiment.py</code> (see the results
+page). The untethered left/right asymmetry was also fitted as the <code>side</code> feature:</p>
 <dl class="kv">
 <dt>Withheld left / right</dt><dd>19199 / 18626</dd>
 <dt>Domain left / right</dt><dd>9752046 / 9097270</dd>
@@ -105,7 +109,7 @@ the <code>side</code> feature:</p>
 </dl>
 <p>A 4 % asymmetry — statistically detectable at this sample size but geologically negligible, and
 the canary gives <code>side</code> a discriminative AUC of ≈ 0.50. <b>No unilateral Riedel asymmetry
-is encoded.</b> Registered as <code>IR-57-SLIP-01</code>.</p>
+is encoded.</b> Registered as <code>IR-57-SLIP-01</code> (corrected by <code>IR-57-SLIP-02</code>).</p>
 
 <h2>5. Allocation</h2>
 <p><code>p(x)</code> is a gradient-boosted classifier over the nine anatomy features, calibrated to
@@ -122,7 +126,7 @@ probably wider. The <code>detached</code> mode is the conservative reading of th
 No live score is projected from any number on this page.</p>
 </div>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 16:47 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

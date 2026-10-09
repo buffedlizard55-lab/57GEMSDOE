@@ -15,7 +15,8 @@ from gems57.submission_writer import write_submission
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SUB = ROOT / "docs" / "downloads" / "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif"
+SUB = ROOT / "docs" / "downloads" / "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif"
+RECEIPT = ROOT / "docs" / "downloads" / "checks-gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif.json"
 SAMPLE = ROOT / "data" / "official" / "sample_submission.tif"
 
 
@@ -31,7 +32,7 @@ def test_shipped_submission_passes_format_gate():
     assert rep["n_nan"] == 0
     assert rep["min"] >= 0.0 and rep["max"] <= 1.0
     assert rep["mass_outside_footprint"] == 0
-    assert rep["n_nonzero"] == 60000
+    assert rep["n_nonzero"] == 35341  # emitted positives in the shipped file (see evidence/submission_build_all.json)
     with rasterio.open(SUB) as ds:
         vals = np.unique(ds.read(1))
     assert set(vals) <= {0.0, 1.0}
@@ -48,11 +49,12 @@ def test_shipped_submission_has_no_dots_on_known_faults():
 def test_shipped_submission_sha256_matches_receipt():
     import hashlib
     import json
-    rec = json.loads(SUB.with_suffix(".json").read_text())
+    rec = json.loads(RECEIPT.read_text())
     got = hashlib.sha256(SUB.read_bytes()).hexdigest()
-    assert got == rec["sha256"] == rec["validator"]["sha256"]
-    assert rec["note_chars"] <= 140
-    assert rec["promoted"] is False
+    assert got == rec["sha256"] == "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482"
+    assert rec["all_checks_passed"] is True
+    note = json.loads((ROOT / "evidence" / "submission_build_all.json").read_text())["submission_note"]
+    assert len(note) <= 140
 
 
 def _valid_footprint():
