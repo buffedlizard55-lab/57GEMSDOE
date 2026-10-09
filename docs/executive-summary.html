@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Executive Summary — How to Submit — 57GEMSDOE</title>
+<style>
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; margin:0; padding:0; line-height:1.6; color:#111}
+header{background:#0b3d91; color:white; padding:2rem 1rem}
+.wrap{max-width:900px; margin:0 auto; padding:1rem}
+.btn{display:inline-block; background:#0b3d91; color:white; padding:0.8rem 1.2rem; text-decoration:none; border-radius:6px; margin:0.5rem 0.2rem}
+.btn.alt{background:#eee; color:#111; border:1px solid #ccc}
+.card{border:1px solid #ddd; border-radius:8px; padding:1rem; margin:1rem 0}
+.mut{color:#666; font-size:0.9em}
+code{background:#f5f5f5; padding:0.2em 0.4em; border-radius:3px}
+.warn{background:#fff3cd; border:1px solid #ffeaa7; padding:1rem; border-radius:6px}
+ol li{margin:0.5rem 0}
+</style>
+</head>
+<body>
+<header>
+<div class="wrap">
+<h1>Executive Summary — How to Submit</h1>
+<p><a href="index.html" style="color:white;">← Back to Home</a></p>
+</div>
+</header>
+<div class="wrap">
+
+<div class="card" style="border:2px solid #0b3d91;">
+<h2>⬇ ONE-CLICK SUBMISSION FILE</h2>
+<p><strong>It is OK to download and submit the generated TIF submission below.</strong></p>
+<p>
+<a class="btn" href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif">⬇ Download submission GeoTIFF (zeros, all-finite)</a>
+<a class="btn alt" href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif">NaN-outside twin</a>
+</p>
+<p><strong>File:</strong> <code>57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif</code><br>
+<strong>Sha256:</strong> <code>3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb</code><br>
+<strong>Submission name:</strong> <code>57GEMSDOE-faultzone-anatomy-12000</code><br>
+<strong>Note (99 chars):</strong> <code>fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg</code></p>
+</div>
+
+<h2>Step-by-step: How to submit to DrivenData</h2>
+<ol>
+<li>Download the GeoTIFF above (zeros version recommended to avoid <code>"Predicted values must be in range [0, 1]"</code> error). The file is single-band float32, EPSG:32611, 100 m, 3292×3730, all 12,279,160 cells finite, values in [0,1], 12,000 positive pixels, 0 on-catalogue.</li>
+<li>Go to competition submission page: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/</a> (requires login and enrollment).</li>
+<li>Click "New submission".</li>
+<li>In "File to submit", choose the downloaded <code>.tif</code> file. You can also submit the <code>.zip</code> containing single GeoTIFF if you prefer (we provide .tif directly).</li>
+<li>In "Note (optional)" field, paste: <code>fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg</code></li>
+<li>Click Create. The portal will validate: single band, float32, EPSG:32611, 100 m, 3292×3730, values in [0,1], no NaN inside footprint (zeros version has 0 outside, all finite). If you use nan version, outside is NaN (also valid per competition format, but zeros version is belt-and-braces for validator that rejects NaN sentinel).</li>
+<li>Wait for scoring. Leaderboard updates with DTI score (distance-weighted Tversky index, alpha 0.2 beta 0.8, 300 m triangular kernel). Our file is unique, fault-zone anatomy lane, not copying previous submissions.</li>
+</ol>
+
+<h2>Why zeros version fixes the portal error</h2>
+<p>DrivenData rejects submissions whose values fall outside [0,1], and also rejects rasters whose nodata tag is large negative sentinel -3.4028234663852886e+38 (used in training_features.tif, 7,113,308 cells, 3,061 inside footprint). Two failures produce same message:</p>
+<ul>
+<li>Mechanism 1: float32 sentinel outside [0,1]</li>
+<li>Mechanism 2: NaN sentinel with nodata=NaN — legitimate competition format but one validator change away from rejection.</li>
+</ul>
+<p><strong>Fix:</strong> Every GeoTIFF here is single-band float32, EPSG:32611, 100 m, 3730×3292, every one of 12,279,160 cells finite, min 0.0 max 1.0, zero cells outside [0,1], zero NaN, no nodata tag (zeros version) or nodata=NaN with NaN outside but finite inside (nan version). Verified by re-reading written bytes.</p>
+
+<h2>Validation receipt</h2>
+<pre>
+zeros validation: shape (3730, 3292), dtype float32, crs EPSG:32611, transform [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0], finite 12279160/12279160, min 0.0 max 1.0, positive 12000, in-footprint 5167373 finite min 0 max 1, outside 7111787 zero
+nan validation: finite inside 5167373, nan outside 7111787, positive 12000
+</pre>
+
+<h2>What makes this submission unique</h2>
+<ul>
+<li>Fault-zone anatomy lane only: per-fault intensity from distance, fault length as displacement proxy, strand orientation relative to primary strike, conditioned on sense of slip where database has it.</li>
+<li>No hard-coded textbook angles: fitted from hide-and-recover holdout — relative angle mean 16.9° median 12°, 44% ≤10°, 58% ≤15°, 84% ≤30°; distance mean 5.7 px median 3.6 px; width vs length slope 0.22-0.29.</li>
+<li>Dot budget shrunk: only 5-6% of withheld faults inside 30 px/30° zone in quadrant holdout, so budget from typical 40k to 12k.</li>
+<li>Unique pattern: 12k dots constrained to <15 px from known faults (damage zone), left-stepping en echelon Riedel (12°) + parallel P shears (0°), not seen in previous registry.</li>
+</ul>
+
+<h2>Files</h2>
+<ul>
+<li><a href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif">57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif</a> (219 kB, sha256 3bddb4b...)</li>
+<li><a href="downloads/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif">57GEMSDOE-faultzone-anatomy-12000dots-nan.tif</a> (nan outside)</li>
+<li><a href="downloads/57GEMSDOE-faultzone-anatomy-audit.json">audit JSON</a></li>
+</ul>
+
+</div>
+</body>
+</html>
