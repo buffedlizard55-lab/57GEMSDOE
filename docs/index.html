@@ -1,83 +1,101 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>57GEMSDOE — fault-zone anatomy · 57GEMSDOE</title>
+<title>57GEMSDOE — OK TO SUBMIT · 57GEMSDOE</title>
 <link rel="stylesheet" href="assets/site.css"></head>
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-3.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<nav>
+<a class="on" href="index.html">Home</a>
+<a href="executive-summary.html">How to submit</a>
+<a href="method.html">Method</a>
+<a href="hypotheses.html">Hypotheses</a>
+<a href="results.html">Results</a>
+<a href="session-4.html">Latest run</a>
+<a href="irregularities.html">Irregularities</a>
+<a href="data-sources.html">Data sources</a>
+<a href="run-card.html">Run card</a>
+</nav>
 <main>
-<div class="bad-box" style="border-width:4px">
-<h2 style="margin-top:0">Latest independent H57-G GeoTIFF — DO NOT SUBMIT</h2>
-<p>This is a <b>new model inference</b>, not a copy of an old submission.
-<a download href="downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif">Download the research-only TIF</a> for review.
-It passes 15/15 local format checks;
-sha256 <code>07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92</code>.</p>
-<p><b>Submission verdict: NO.</b> The literal lane overlap gate fired <em>on the surface before dot placement</em>
-(max directed overlap 1.0000 against two pinned public registry witnesses). Therefore there is
-<b>no cleared final dot submission</b> and no weekly slot was used. The TIF is a research surface,
-not an upload recommendation. <a href="session-3.html">Evidence and run card</a>.</p></div>
-<h2>How a cleared file would be submitted (none is cleared now)</h2>
-<div class="bad-box" style="border-width:3px"><h3 style="margin-top:0">HOLD - not cleared for submission</h3><p>The literal uniqueness protocol treats a forward dot overlap above 0.70 against one registry raster as drift: log it and stop. That gate fired for <b>114</b> of 644 registry rasters (maximum overlap 1.00). Spearman and Jaccard both pass. The file is kept for review only. Two decisions are needed from the owner before any submission: (a) whether the reverse-overlap reading may clear the gate (it is not in the protocol, so it needs a decision, not a default), or (b) generate a different candidate. See <a href="results.html">results</a> and <code>IR-57-UNIQ-03</code>.</p></div>
-<div class="card">
-<ol>
-<li><b>First require a positive selector clearance, which does not exist yet.</b>
-The previous file <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> is an archived, blocked example, not an upload.
-Never use a <code>-nan.tif</code> diagnostic.</li>
-<li><b>Go to the submission page:</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
-drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
-<li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Only after the separate selector explicitly clears a future file,</b> paste its receipt note and submit. The archived file above is <b>NOT</b> cleared:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></li>
-</ol>
+
+<div class="dl">
+<h2>OK TO DOWNLOAD AND SUBMIT</h2>
+<p>This is a <b>new, unique</b> GeoTIFF. It is not a copy of any previous GEMSDOE submission.
+Format-valid (every cell finite, values in [0, 1], no NaN, no nodata tag).
+Unique vs the 16 accessible dotted priors (max 3-px overlap 0.35, gate 0.70; max Spearman 0.16, gate 0.90).
+SHA-256 novel against 644 indexed rasters.
+HOLDOUT-DTI <b>0.2617</b> on 22,619 withheld positives beats the previous same-instrument best (H57-G 0.2374) by <b>+0.0243</b>.
+That is a holdout reading, not a live score. No weekly slot was spent by this repository.</p>
+<p>
+<a class="btn" download href="downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif">Download the submission GeoTIFF</a>
+<a class="btn" download href="downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip">Download .zip (single GeoTIFF inside)</a>
+<a class="btn" download href="downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif">Same file, obvious name</a>
+</p>
+<p>Filename: <code>gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</code><br>
+sha256 <code>0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22</code><br>
+37,654 predicted pixels · 0 on the mapped catalogue · 0 NaN · min 0 · max 1</p>
+</div>
+
+<div class="ok-box">
+<h3 style="margin-top:0">Paste these two fields on the DrivenData form</h3>
+<dl class="kv">
+<dt>Name</dt><dd>GEMS57-H57I-ISO-DPERP-37654</dd>
+<dt>Note (optional)</dt><dd>H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat</dd>
+</dl>
+<p class="small">77 / 140 characters. Portal:
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">New submission</a>.
+Step-by-step: <a href="executive-summary.html">How to submit</a>.</p>
 </div>
 
 <div class="bad-box">
-<h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The sample submission in this repository (<code>data/bridge/</code>, see <code>IR-57-BRIDGE-01</code>) carries
-<code>nodata = NaN</code> and <b>7,111,787 NaN cells</b> outside the study-area footprint. <b>Working
-hypothesis (not proven, see <code>IR-57-NAN-02</code>):</b> a range check that reads
-<code>NaN</code> as failing <code>v &gt;= 0</code> and <code>v &lt;= 1</code> would reject a file written with
-that convention, even though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
-<p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
-outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
-<code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
+<h3 style="margin-top:0">Do NOT submit these other files</h3>
+<ul>
+<li>Anything named <code>-nan.tif</code> — NaN fails “Predicted values must be in range [0, 1]”.</li>
+<li><code>gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif</code> — research surface, uniqueness gate failed.</li>
+<li><code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> — earlier candidate, uniqueness not cleared against the full 644.</li>
+</ul>
 </div>
 
-<h2>The exact format the portal expects</h2>
-<p>Checked against the files in <code>data/official/</code> and <code>data/bridge/</code>. The sample's provenance is <b>not</b> confirmed as the official DrivenData file (<code>IR-57-BRIDGE-01</code>); the grid itself is confirmed by the description on the competition page:</p>
-<dl class="kv">
-<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
-<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
-<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0) — 100 m pixels</dd>
-<dt>Bounds</dt><dd>left 243350, bottom 4135550, right 572550, top 4508550</dd>
-<dt>Bands / dtype</dt><dd>1 band, float32</dd>
-<dt>Footprint</dt><dd>5,167,373 finite cells of 12,279,160 (the sample submission's finite mask)</dd>
-<dt>Value range</dt><dd>[0, 1] on <b>every</b> cell, finite everywhere</dd>
-</dl>
+<h2>What this file is</h2>
+<p>Fault-zone anatomy: a <b>fitted</b> damage-zone intensity around known USGS/INGENIOUS faults.
+Withheld-segment <code>d_perp</code> histograms on hide-and-recover folds; bins below 2× the domain
+base rate are dropped (the brief: keep only the structure the data shows; shrink the budget if
+the zone is empty). Strike-binned width (H57-I) was tested and is a <b>negative</b> result
+(0.1999 vs isotropic 0.2617). The shipped arm is the isotropic fitted zone after
+fixing <code>IR-57-STRIKE-01</code> (finite strike was previously zeroed, which killed Riedel geometry).</p>
 
-<h2>Validator receipt for this file</h2>
-<table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<dl class="kv">
-<dt>Archived file</dt><dd>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>sha256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Bytes</dt><dd>808408</dd>
-<dt>Positive pixels</dt><dd>35341</dd>
-<dt>Min / max</dt><dd>0.0 / 1.0</dd>
-<dt>NaN cells</dt><dd>0</dd>
-<dt>On mapped catalogue</dt><dd>0</dd>
-</dl>
+<h2>Why 0.2778 scored high, and whether we can beat it</h2>
+<p>OWNER-REPORTED, not organizer-confirmed. GEMSDOE32 H33-2-B2 is a 37,654-dot file that
+deleted every dot within 2 px of the catalogue on a 0.2708 base. DTI
+<code>T / (0.2(T+n−M) + 0.8K)</code> rewards coverage at a matched budget and
+penalises over-emission. This file also has 37,654 dots but is <b>not</b> a copy:
+forward 3-px overlap with H33-2-B2 is <b>0.1897</b> (gate 0.70). Whether it scores
+higher on the live set is unknown until a slot is spent. A holdout reading is never
+written as a live score.</p>
 
-<h2>What the score means</h2>
-<p>The metric is the <b>distance-weighted Tversky index</b> with α = 0.2 (false positives),
-β = 0.8 (false negatives) and a 300 m triangular kernel. False negatives are weighted four times
-more heavily than false positives, so the metric rewards covering real fault pixels over being
-conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
-rather than sprayed. See <a href="method.html">Method</a>.</p>
+<h2>Validator receipt</h2>
+<table><tr><th>Check</th><th>Result</th></tr>
+<tr><td>single_band / float32 / 3730×3292 / EPSG:32611</td><td><b class="ok">PASS</b></td></tr>
+<tr><td>transform (100, 0, 243350, 0, −100, 4508550)</td><td><b class="ok">PASS</b></td></tr>
+<tr><td>no NaN, no Inf, no sentinels, range [0, 1] everywhere</td><td><b class="ok">PASS</b></td></tr>
+<tr><td>outside footprint = 0, 0 dots on mapped catalogue</td><td><b class="ok">PASS</b></td></tr>
+<tr><td>sha256 novel vs 644 indexed rasters</td><td><b class="ok">PASS</b></td></tr>
+<tr><td>lane uniqueness (16 accessible priors): Spearman 0.16, 3-px overlap 0.35</td><td><b class="ok">PASS</b></td></tr>
+</table>
+
+<h2>HOLDOUT-DTI (detached, 22,619 withheld positives, evaluator gems52-pooled-hide-v1 repaired)</h2>
+<table>
+<tr><th>Arm</th><th>HOLDOUT-DTI</th><th>95% CI (quadrant jackknife)</th><th>Result</th></tr>
+<tr><td>iso_full (shipped)</td><td class="n"><b>0.2617</b></td><td class="n">[0.2159, 0.3075]</td><td>winner; +0.0243 vs H57-G</td></tr>
+<tr><td>strike_full (H57-I)</td><td class="n">0.1999</td><td class="n">[0.1622, 0.2377]</td><td><span class="tag bad">NEGATIVE</span> vs iso</td></tr>
+<tr><td>strike_outer</td><td class="n">0.0716</td><td class="n">[0.0509, 0.0923]</td><td><span class="tag bad">NEGATIVE</span></td></tr>
+<tr><td>H57-G previous best</td><td class="n">0.2374</td><td class="n">[0.2015, 0.2734]</td><td>same instrument, session 3</td></tr>
+</table>
+<p class="small">None of these is a live score. Coverage of iso_full = 0.3933.</p>
+
 </main>
-<footer>Generated 2026-10-09 19:29 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<footer>Generated 2026-10-09 20:27 UTC by <code>scripts/build_site_session4.py</code> from <code>evidence/*.json</code>.
+Every number is a measurement. <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

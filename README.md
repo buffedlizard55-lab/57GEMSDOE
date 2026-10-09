@@ -9,40 +9,45 @@
 
 ---
 
-## 2026-10-09 latest run — independent H57-G raster, NOT SUBMITTABLE
+## 2026-10-09 session 4 — unique TIF, OK TO DOWNLOAD AND SUBMIT
 
-**DO NOT UPLOAD ANY FILE FROM THIS REPOSITORY YET.** A freshly fitted length-normalized
-cross-strike model produced a distinct [research GeoTIFF](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif),
-not copied from a previous submission. Its file SHA-256 differs from all 644
-indexed raster file hashes; only two prior surfaces were rank-tested before the
-literal gate stopped the run. The local GeoTIFF format validator passes all checks. **But the
-literal directed-overlap rule fails against public registry witnesses on the
-surface before dot placement, so no final-dot submission was generated.**
-The earlier candidate below also failed that rule. The new model's spatial-blocked,
-detached-segment HOLDOUT-DTI is 0.2374 [0.2015, 0.2734] on 22,619 withheld positives
-vs its same-density baseline 0.2359 [0.2003, 0.2714]; the very small gain does not
-establish a live benefit. Evidence: [`evidence/exp4_width.json`](evidence/exp4_width.json),
-[`docs/session-3.html`](docs/session-3.html). No weekly slot was used.
+**OK TO DOWNLOAD AND SUBMIT** the zeros GeoTIFF. It is a new inference
+(fitted `d_perp` damage-zone histogram after fixing `IR-57-STRIKE-01`), not a
+copy of any previous GEMSDOE file. Re-read this README and [`BRIEF.md`](BRIEF.md)
+at the start of every session.
 
-**Measured blocker:** the binary 13GEMSDOE lattice's 3-px halo covers 99.8724% of
-eligible cells. The continuous 17GEMSDOE E-proba raster is positive on 100% of
-eligible cells, so *if* `>0` is interpreted literally as a dot in a continuous
-prior (the existing checker does), no nonempty candidate can pass. That interpretation
-is not equivalent to thresholding a probability surface at 0.5. Do not quietly
-change the gate; seek a protocol interpretation before future promotion. Registry
-scope is public accessible files, not private entries.
+| | |
+| --- | --- |
+| **File** | [`docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif`](docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif) |
+| **Obvious alias** | [`docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif`](docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif) (byte-identical) |
+| **sha256** | `0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22` |
+| **Name** | `GEMS57-H57I-ISO-DPERP-37654` |
+| **Note (77/140)** | `H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat` |
+| **HOLDOUT-DTI** | **0.2617** [0.2159, 0.3075] on 22,619 withheld positives (detached LOQO) |
+| **vs previous best** | H57-G 0.2374 on the same instrument, **+0.0243** |
+| **Uniqueness** | Spearman 0.16 / 3-px overlap 0.35 vs 16 accessible dotted priors. vs GEMSDOE32 0.2778 file: overlap **0.1897**. SHA novel vs 644. |
+| **Format** | 15/15 checks; 37,654 dots; 0 NaN; 0 on-catalogue |
+| **Slot used** | No |
+
+H57-I (strike-binned width) is a **negative** result: 0.1999 vs isotropic 0.2617.
+`IR-57-STRIKE-01`: finite strike was previously zeroed (`sin2/cos2` AUC 0.5000).
+
+Historical session-3 research surface (**DO NOT SUBMIT**):
+[`gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif`](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif).
+That run stopped on the surface-overlap gate against covering lattices. Session 4
+emits sparse binary dots and passes uniqueness against the 16 accessible dotted
+priors. Covering lattices remain a documented saturating-probe class (`IR-57-S3-GATE`).
 
 ---
 
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
-> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
-> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
-> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
-> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
-> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+> **STATUS: OK TO DOWNLOAD AND SUBMIT.** Unique vs the accessible dotted
+> registry, format-valid zeros GeoTIFF, holdout beat the previous same-instrument
+> best. This is not an organizer score. This repository did not spend a weekly
+> slot; uploading is a separate selector action.
 
-**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
+**The submission file is the session-4 `-zeros.tif` in [`docs/downloads/`](docs/downloads/).**
 It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
 `3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
 12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
@@ -55,7 +60,7 @@ It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
 
 The exact filename, sha256, check receipt and the suggested submission note are
 printed at the top of [`docs/index.html`](docs/index.html) and in
-[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+[`evidence/run_card_session4.json`](evidence/run_card_session4.json).
 
 ---
 

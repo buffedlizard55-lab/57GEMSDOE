@@ -8,6 +8,17 @@
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
 <nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-3.html">Latest run</a><a class="on" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
+<h2>Session 4 additions</h2>
+<table><tr><th>ID</th><th>Title</th><th>What was wrong</th><th>Resolution</th></tr>
+<tr><td><code>IR-57-STRIKE-01</code><br><span class="tag org">FIXED</span></td>
+<td><b>Finite strike was zeroed in fold_geometry</b></td>
+<td><code>s = np.where(np.isfinite(s), 0.0, s)</code> replaced every finite strike with 0 and left NaNs in place. <code>sin2/cos2</code> were constant (AUC exactly 0.5000) and <code>d_perp</code>/<code>d_par</code> were computed in a north-south frame for every fault. That is why the Riedel geometry appeared to add nothing.</td>
+<td>Fill only remaining NaNs: <code>s = np.where(np.isfinite(s), s, 0.0)</code>. Pinned by <code>tests/test_strike_fix.py</code>. After the fix, sin2 disc. AUC = 0.5717. H57-I re-tested with real strike and is still negative vs isotropic.</td></tr>
+<tr><td><code>IR-57-CANARY-02b</code><br><span class="tag">REPORTED</span></td>
+<td><b>True d_perp exceeds 0.90 discriminative AUC on detached folds</b></td>
+<td>After the strike fix, d_perp disc. AUC = 0.935 (raw 0.086). Protocol rule 4: leakage until proven otherwise.</td>
+<td>Proven not leakage: X is a function of the visible mask only; permuting y cannot change X. The high inverse AUC is the detached design (hidden strands sit far from visible traces). Non-distance features all stay below 0.90.</td></tr>
+</table>
 <h2>Irregularity ledger</h2>
 <p>Everything found wrong during this session — in the competition data, in the shared template,
 and in this repository's own code. Five of these are bugs in code written during this session and

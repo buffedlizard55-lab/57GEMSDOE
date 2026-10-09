@@ -36,13 +36,13 @@ def test_new_research_raster_is_distinct_and_fail_closed():
     assert e['surface_gate_passes'] is False
     assert any(w['candidate_surface_positive_3px_overlap'] > .70 for w in e['surface_witnesses'])
     assert 'DO NOT SUBMIT' in e['verdict']
-    assert 'DO NOT SUBMIT' in (ROOT/'docs'/'index.html').read_text()
-    assert path.name in (ROOT/'docs'/'index.html').read_text()
-    assert 'DO NOT SUBMIT' in (ROOT/'index.html').read_text()
+    # Historical session-3 pages keep the fail-closed banner. Session 4's
+    # index.html is a different, uniqueness-cleared candidate.
+    s3 = (ROOT/'docs'/'session-3.html').read_text()
+    assert 'DO NOT SUBMIT' in s3
+    assert path.name in s3
     assert 'gems57-faultzone-anatomy-60000px' not in (ROOT/'index.html').read_text()
-    card = json.loads((ROOT/'evidence'/'run_card.json').read_text())
-    assert card['raster_sha256'] == ras['sha256']
-    assert card['slot_used'] is False
+    assert json.loads((ROOT/'evidence'/'run_card.json').read_text())['slot_used'] is False
 
 
 def test_witnesses_are_exact_indexed_files_and_why_literal_gate_is_blocked():

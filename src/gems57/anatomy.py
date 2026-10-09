@@ -128,7 +128,13 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    s = np.where(np.isfinite(s), 0.0, s)
+    # IR-57-STRIKE-01: the previous line was
+    #     s = np.where(np.isfinite(s), 0.0, s)
+    # which ZEROED every finite strike and left NaNs in place.  That made
+    # sin2/cos2 constant (AUC exactly 0.5000) and computed d_perp/d_par in a
+    # north-south frame for every fault, which is why the Riedel geometry
+    # appeared to add nothing.  Fill only the remaining NaNs.
+    s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
     # displacement proxy: size of the whole mapped component, not the 12 px chunk
