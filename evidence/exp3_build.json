@@ -1,0 +1,185 @@
+{
+ "evidence_class": "HOLDOUT-DTI (exp2, per-fold rebuilt) + PROXY-DTI (SGMC-truth)",
+ "submission": {
+  "file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+  "bytes": 154835,
+  "name": "GEMSDOE57-FZA-60000px",
+  "note": "fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]",
+  "zip_file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.zip",
+  "zip_sha256": "b13d1b6ded0109e435c3b361eac2a34f182319840982636869c34f2f28a870c6",
+  "emitted_px": 60000
+ },
+ "final_choice": {
+  "budget": 60000,
+  "near_band": "with_near_band",
+  "rule": "holdout-primary: exp2 full arm peaks at 60k dots; SGMC sweep reported as off-catalogue cross-check"
+ },
+ "sweep": {
+  "with_near_band|20000": {
+   "sgmc_truth_dti": 0.019598849949976363,
+   "tpw": 1318.4829541071017,
+   "fpw": 18948.946122692327,
+   "fnw": 77706.51704589289,
+   "n_truth": 79025,
+   "emitted": 20000,
+   "mass": 20000.0
+  },
+  "with_near_band|40000": {
+   "sgmc_truth_dti": 0.033631020631357575,
+   "tpw": 2397.439987014847,
+   "fpw": 37935.39226242825,
+   "fnw": 76627.56001298515,
+   "n_truth": 79025,
+   "emitted": 40000,
+   "mass": 40000.0
+  },
+  "with_near_band|60000": {
+   "sgmc_truth_dti": 0.045654279990861496,
+   "tpw": 3437.9751916450896,
+   "fpw": 56984.794670595715,
+   "fnw": 75587.02480835491,
+   "n_truth": 79025,
+   "emitted": 60000,
+   "mass": 60000.0
+  },
+  "with_near_band|80000": {
+   "sgmc_truth_dti": 0.05419139409372836,
+   "tpw": 4296.340148595537,
+   "fpw": 76007.94326628324,
+   "fnw": 74728.65985140446,
+   "n_truth": 79025,
+   "emitted": 80000,
+   "mass": 80000.0
+  },
+  "with_near_band|120000": {
+   "sgmc_truth_dti": 0.06495938518412686,
+   "tpw": 5656.165231474766,
+   "fpw": 113605.50078817813,
+   "fnw": 73368.83476852524,
+   "n_truth": 79025,
+   "emitted": 120000,
+   "mass": 120000.0
+  },
+  "no_near_band|20000": {
+   "sgmc_truth_dti": 0.017148054107724478,
+   "tpw": 1153.2231899671424,
+   "fpw": 19001.602786953383,
+   "fnw": 77871.77681003285,
+   "n_truth": 79025,
+   "emitted": 20000,
+   "mass": 20000.0
+  },
+  "no_near_band|40000": {
+   "sgmc_truth_dti": 0.03194028390715429,
+   "tpw": 2276.2703740753323,
+   "fpw": 37955.937049646396,
+   "fnw": 76748.72962592467,
+   "n_truth": 79025,
+   "emitted": 40000,
+   "mass": 40000.0
+  },
+  "no_near_band|60000": {
+   "sgmc_truth_dti": 0.04382847229452887,
+   "tpw": 3299.585285003522,
+   "fpw": 57020.70867712605,
+   "fnw": 75725.41471499648,
+   "n_truth": 79025,
+   "emitted": 60000,
+   "mass": 60000.0
+  },
+  "no_near_band|80000": {
+   "sgmc_truth_dti": 0.05386810566849247,
+   "tpw": 4270.474666104719,
+   "fpw": 76012.00557048227,
+   "fnw": 74754.52533389528,
+   "n_truth": 79025,
+   "emitted": 80000,
+   "mass": 80000.0
+  },
+  "no_near_band|120000": {
+   "sgmc_truth_dti": 0.06471066827153649,
+   "tpw": 5633.503374276257,
+   "fpw": 113550.47102675764,
+   "fnw": 73391.49662572374,
+   "n_truth": 79025,
+   "emitted": 120000,
+   "mass": 120000.0
+  }
+ },
+ "holdout_crosscheck": {
+  "note": "as-is full-data scoring on the folds is degenerate for this lane (zone peak 5-6 px from anchors, outside the 3 px credit radius of the anchor's own pixels; global top-k dilutes hidden folds); the honest per-fold-rebuilt holdout is exp2_holdout.json",
+  "exp2_headline": {
+   "arm": "full",
+   "budget": 60000,
+   "dti": 0.058,
+   "ci95": [
+    0.0507,
+    0.0663
+   ],
+   "evaluator": "gems52-pooled-hide-v1",
+   "withheld_positives": 38339
+  }
+ },
+ "exp2_headline": {
+  "arm": "full",
+  "budget": 60000,
+  "dti": 0.058,
+  "ci95": [
+   0.0507,
+   0.0663
+  ],
+  "evaluator": "gems52-pooled-hide-v1",
+  "withheld_positives": 38339
+ },
+ "validator": {
+  "path": "/home/user/57GEMSDOE/docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+  "bytes": 154835,
+  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+  "bands": 1,
+  "dtype": "float32",
+  "crs": "EPSG:32611",
+  "width": 3292,
+  "height": 3730,
+  "bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "ref_bounds": [
+   243350.0,
+   4135550.0,
+   572550.0,
+   4508550.0
+  ],
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "nodata": null,
+  "blocksize": [
+   256,
+   256
+  ],
+  "fixture_grid": false,
+  "has_validity_mask": false,
+  "nan_pixels": 0,
+  "infinity_pixels": 0,
+  "n_nan": 0,
+  "min": 0.0,
+  "max": 1.0,
+  "mean": 0.004886327777057886,
+  "n_nonzero": 60000,
+  "mass": 60000.0,
+  "mass_outside_footprint": 0,
+  "problems": [],
+  "ok": true,
+  "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+ },
+ "runtime_s": 28.91382908821106
+}

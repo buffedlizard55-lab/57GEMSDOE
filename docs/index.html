@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download the submission — GEMSDOE57</title>
+<link rel="stylesheet" href="assets/style.css"></head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>GEMSDOE57 <small>fault-zone anatomy · DrivenData GEMS prize, competition 306</small></h1>
+  <nav><a href="index.html" class="on">Download</a><a href="executive-summary.html">Executive summary</a><a href="research.html">Research & run card</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<div class="card">
+  <h2 style="margin-top:0">Download the submission</h2>
+  <p>This is the competition submission: a single-band float32 GeoTIFF of per-pixel
+  fault probability for the whole GeoDAWN study area (EPSG:32611, 100 m, 3730×3292),
+  produced by the <b>fault-zone-anatomy</b> lane: a fitted damage-zone halo around the
+  known USGS + INGENIOUS faults, emitted as 60,000 binary dots, none on a known fault.</p>
+  <div class="dl">
+    <a class="btn" href="downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif">⬇ Download gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</a>
+    <a class="btn sec" href="downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.zip">zip (same raster)</a>
+    <a class="btn sec" href="executive-summary.html">How to submit →</a>
+  </div>
+  <dl class="kv" style="margin-top:14px">
+    <dt>File</dt><dd><code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></dd>
+    <dt>Size</dt><dd>154,835 bytes</dd>
+    <dt>sha256</dt><dd><code>a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</code></dd>
+    <dt>Submission name</dt><dd><code>GEMSDOE57-FZA-60000px</code></dd>
+    <dt>Methodology note (≤140 ch)</dt><dd><code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code></dd>
+    <dt>Validator</dt><dd><b>PASS</b> — single band float32, EPSG:32611, bounds/transform match
+    the training grid, values in [0,1], 0 NaN inside the footprint, 60,000 emitted pixels,
+    0 on known faults, 0 outside the footprint.</dd>
+  </dl>
+</div>
+
+<div class="banner">
+  <b>Verdict: negative as a standalone score-beater — delivered as a validated, unique,
+  non-leaking lane artifact.</b> On the brief's spatially-blocked holdout the lane scores
+  <span class="tag hold">HOLDOUT-DTI</span> <b>0.0580</b>
+  [0.0507, 0.0663] at 60,000 dots and beats its own controls
+  (random 0.0492,
+  uniform-halo 0.0117); the leakage canary
+  is far below threshold (max AUC 0.6538 &lt; 0.90); and the
+  drift check against all 663 registry rasters is clean (max |Spearman|
+  0.6271 &lt; 0.90, no bidirectional duplicates, sha256 unique).
+  But on the SGMC-truth instrument — real off-catalogue faults, the closest legal proxy for
+  the hidden test set — the lane scores <span class="tag prox">PROXY-DTI</span>
+  <b>0.0457</b> at 60k dots against 0.0931–0.1450
+  for the incumbents, so it is <b>not</b> expected to beat the incumbent live score
+  (0.2778). No submission slot should be spent on this file; promotion is a separate
+  selector step. See <a href="research.html">research &amp; run card</a>.
+</div>
+
+<h2>What this file is</h2>
+<div class="card">
+  <p>The organizers' hidden labels are <b>new expert-mapped faults not in
+  USGS/INGENIOUS</b>, including splays and parallel strands of existing systems. The lane
+  fits the <i>anatomy</i> of those secondary strands — radial distance from the host fault,
+  azimuth relative to its strike, along-strike position, host length — measured on a
+  hide-and-recover holdout (withheld catalogue segments, 300 m truth buffer, features
+  rebuilt from the visible faults only), then emits the top 60,000 pixels of the fitted
+  intensity, off every known USGS/INGENIOUS fault pixel.</p>
+  <table>
+    <tr><th>Property</th><th class="num">Value</th></tr>
+    <tr><td>Emitted pixels (dots)</td><td class="num">60,000</td></tr>
+    <tr><td>Dots on known USGS/INGENIOUS faults</td><td class="num">0</td></tr>
+    <tr><td>Dots outside the valid footprint</td><td class="num">0</td></tr>
+    <tr><td>Median distance of dots to nearest known fault</td><td class="num">5.7 px (570 m)</td></tr>
+    <tr><td>Distinct values</td><td class="num">0.0 and 1.0 (binary top-k)</td></tr>
+    <tr><td>Grid</td><td class="num">3730 × 3292, EPSG:32611, 100 m</td></tr>
+    <tr><td>Bounds</td><td class="num">243350, 4135550 – 572550, 4508550 (matches training data)</td></tr>
+  </table>
+</div>
+
+<h2>Measured evidence (all numbers labeled)</h2>
+<div class="card">
+  <table>
+    <tr><th>Number</th><th class="num">Value</th><th>Class</th></tr>
+    <tr><td>HOLDOUT-DTI @ 60k dots (full arm, per-fold rebuilt, 38,339 withheld positives, 95% CI)</td>
+        <td class="num"><b>0.0580 [0.0507, 0.0663]</b></td>
+        <td><span class="tag hold">HOLDOUT-DTI</span></td></tr>
+    <tr><td>Same budget: random control / uniform-halo control</td>
+        <td class="num">0.0492 / 0.0117</td>
+        <td><span class="tag hold">HOLDOUT-DTI</span></td></tr>
+    <tr><td>Leakage canary (max single-feature AUC on withheld px; threshold 0.90)</td>
+        <td class="num">0.6538</td>
+        <td><span class="tag hold">HOLDOUT-DTI</span></td></tr>
+    <tr><td>SGMC-truth DTI @ 60k / @ 120k dots (79,025 real off-catalogue fault px)</td>
+        <td class="num">0.0457 / 0.0650</td>
+        <td><span class="tag prox">PROXY-DTI</span></td></tr>
+    <tr><td>Incumbents, same SGMC instrument (h19-5 → h33-2-b2)</td>
+        <td class="num">0.0931 – 0.1450</td>
+        <td><span class="tag prox">PROXY-DTI</span></td></tr>
+    <tr><td>Registry drift: max |Spearman| vs 663 rasters</td>
+        <td class="num">0.6271 (limit 0.90)</td>
+        <td>MEASUREMENT</td></tr>
+    <tr><td>Registry drift: bidirectional dot duplicates / sha256 duplicates</td>
+        <td class="num">0 / 0</td><td>MEASUREMENT</td></tr>
+  </table>
+  <p style="color:var(--mut);font-size:13px">HOLDOUT-DTI is measured with the template
+  evaluator (<code>gems52-pooled-hide-v1</code>, vendored unmodified from GEMSDOE52) on
+  spatially blocked folds; it measures recovery of withheld <i>catalogue</i> segments and
+  does not rank live scores. PROXY-DTI uses SGMC faults captured by neither USGS nor
+  INGENIOUS — real off-catalogue faults, but not the organizer's test set. No number on
+  this site is an organizer-confirmed live score.</p>
+</div>
+
+</main>
+<footer><div class="wrap" style="padding:0">
+GEMSDOE57 · branch <code>arena/af16d287-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
+local template validation only — not organizer upload acceptance.
+</div></footer>
+</body></html>

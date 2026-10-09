@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive summary — GEMSDOE57</title>
+<link rel="stylesheet" href="assets/style.css"></head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>GEMSDOE57 <small>fault-zone anatomy · DrivenData GEMS prize, competition 306</small></h1>
+  <nav><a href="index.html">Download</a><a href="executive-summary.html" class="on">Executive summary</a><a href="research.html">Research & run card</a><a href="sources.html">Sources</a></nav>
+</div></header>
+<main class="wrap">
+
+<h2 style="margin-top:0">Executive summary — how to make a submission</h2>
+<div class="card">
+  <p><b>The whole point of this repository is the one file you upload.</b> This page is the
+  shortest path from here to a submitted entry, and what has and has not been verified.</p>
+  <ol class="steps">
+    <li><b>Download</b> the submission GeoTIFF from the button on the
+        <a href="index.html">home page</a> (or <code>docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code> in this
+        repository). Verify it if you like:
+        <pre>sha256sum gems57-faultzone-anatomy-60000px-20261009T054251Z.tif
+# expect a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</pre></li>
+    <li><b>Sign in</b> to DrivenData and open the competition:
+        <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">https://www.drivendata.org/competitions/306/competition-doe-gems/</a></li>
+    <li>Click <b>Submit</b> → <b>Make new submission</b> (the competition home page documents
+        this exact flow under “How to compete”).</li>
+    <li><b>Upload the file</b> and paste the methodology note shown on the home page
+        (<code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code>, 139 characters). The file name is
+        content-addressed, so it can be told apart from earlier attempts later.</li>
+    <li>Optionally select it as your <b>single final submission</b> for both prize rounds.
+        Only one selection is allowed, and it must be made without knowing private scores.</li>
+  </ol>
+  <div class="banner">
+    <b>Budget note.</b> Each entity gets up to three scored submissions per week and exactly
+    one final submission across both rounds. <b>Do not spend a slot on this file</b> until it
+    has beaten the current holdout best on the brief's instrument — this session's run card
+    says it has not (verdict: negative). Slot promotion is a separate selector step.
+  </div>
+</div>
+
+<h2>What the file must satisfy (rules quoted from the official pages)</h2>
+<div class="card">
+  <table>
+    <tr><th>Rule</th><th>Requirement</th><th>Source</th></tr>
+    <tr><td>CRS</td><td>same projected CRS as the training data — UTM 11N, EPSG:32611</td><td>problem description, “Submission format”</td></tr>
+    <tr><td>Resolution</td><td>100 m</td><td>same</td></tr>
+    <tr><td>Bounds</td><td>same bounds as the training data; outside the bounds is null or NaN</td><td>same</td></tr>
+    <tr><td>Layers</td><td>a single layer</td><td>same</td></tr>
+    <tr><td>Datatype</td><td>32-bit float</td><td>same</td></tr>
+    <tr><td>Values</td><td>between 0 and 1, higher = higher fault probability</td><td>same</td></tr>
+    <tr><td>Size</td><td>one GeoTIFF for the whole GeoDAWN study area</td><td>rules §3.2</td></tr>
+  </table>
+  <p>The shipped file passes all of these locally (validator <b>PASS</b>, receipt:
+  <code>docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.receipt.json</code>). Local validation is a template
+  check, <b>not</b> organizer upload acceptance.</p>
+</div>
+
+<h2>What the shipped file measured</h2>
+<div class="card">
+  <table>
+    <tr><th>Property</th><th class="num">Value</th></tr>
+    <tr><td>File</td><td class="num"><code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></td></tr>
+    <tr><td>sha256</td><td class="num"><code>a08650cadb9a1baf…</code></td></tr>
+    <tr><td>Gate</td><td class="num"><b>PASS</b> (13/13 template checks)</td></tr>
+    <tr><td>Values</td><td class="num">exactly two: 0.0 and 1.0</td></tr>
+    <tr><td>Predicted pixels</td><td class="num">60,000</td></tr>
+    <tr><td>Training signal</td><td class="num">USGS QFaults raster + INGENIOUS vectors (2,588 linked catalogue segments + 1,126 record segments)</td></tr>
+    <tr><td>Model</td><td class="num">fitted damage-zone intensity I(p) = f(d/s(L))·g(φ), binary top-k</td></tr>
+    <tr><td>HOLDOUT-DTI @ 60k</td><td class="num"><b>0.0580 [0.0507, 0.0663]</b></td></tr>
+    <tr><td>SGMC-truth DTI @ 60k (proxy)</td><td class="num">0.0457</td></tr>
+  </table>
+</div>
+
+<h2>Why this file rather than a previous one</h2>
+<div class="card">
+  <p>Measured on the same spatially blocked, buffered folds (same training budget, same
+  evaluation code — <code>scripts/run_holdout.py</code>), not asserted:</p>
+  <table>
+    <tr><th>Arm @ 60k dots</th><th class="num">HOLDOUT-DTI</th></tr>
+    <tr><td><b>full (f(d/s(L))·g(φ)) — shipped shape</b></td><td class="num"><b>0.0580</b></td></tr>
+    <tr><td>no_phi (distance × length only)</td><td class="num">0.0559</td></tr>
+    <tr><td>distance_only</td><td class="num">0.0486</td></tr>
+    <tr><td>uniform_halo (geometry control)</td><td class="num">0.0117</td></tr>
+    <tr><td>random (control)</td><td class="num">0.0492</td></tr>
+  </table>
+  <p>The fitted azimuth and length factors are worth +0.009–+0.046 over the controls at
+  60k dots, and the budget sweep peaks at 60k (50k: 0.0536, 80k: 0.0574, 120k: 0.0507).</p>
+</div>
+
+</main>
+<footer><div class="wrap" style="padding:0">
+GEMSDOE57 · branch <code>arena/af16d287-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
+local template validation only — not organizer upload acceptance.
+</div></footer>
+</body></html>

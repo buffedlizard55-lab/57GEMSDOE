@@ -1,0 +1,69 @@
+{
+  "file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+  "bytes": 154835,
+  "submission_name": "GEMSDOE57-FZA-60000px",
+  "note": "fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]",
+  "note_chars": 139,
+  "validator": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+    "bytes": 154835,
+    "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.004886327777057886,
+    "n_nonzero": 60000,
+    "mass": 60000.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.zip",
+  "zip_sha256": "b13d1b6ded0109e435c3b361eac2a34f182319840982636869c34f2f28a870c6",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "research-only; local format validation is not organizer acceptance",
+  "metadata": {
+    "lane": "fault-zone-anatomy",
+    "budget": 60000,
+    "near_band": "with_near_band",
+    "surface_sha": null
+  }
+}
