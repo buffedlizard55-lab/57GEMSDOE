@@ -9,6 +9,31 @@
 
 ---
 
+## 2026-10-09 latest run — independent H57-G raster, NOT SUBMITTABLE
+
+**DO NOT UPLOAD ANY FILE FROM THIS REPOSITORY YET.** A freshly fitted length-normalized
+cross-strike model produced a distinct [research GeoTIFF](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif),
+not copied from a previous submission. Its file SHA-256 differs from all 644
+indexed raster file hashes; only two prior surfaces were rank-tested before the
+literal gate stopped the run. The local GeoTIFF format validator passes all checks. **But the
+literal directed-overlap rule fails against public registry witnesses on the
+surface before dot placement, so no final-dot submission was generated.**
+The earlier candidate below also failed that rule. The new model's spatial-blocked,
+detached-segment HOLDOUT-DTI is 0.2374 [0.2015, 0.2734] on 22,619 withheld positives
+vs its same-density baseline 0.2359 [0.2003, 0.2714]; the very small gain does not
+establish a live benefit. Evidence: [`evidence/exp4_width.json`](evidence/exp4_width.json),
+[`docs/session-3.html`](docs/session-3.html). No weekly slot was used.
+
+**Measured blocker:** the binary 13GEMSDOE lattice's 3-px halo covers 99.8724% of
+eligible cells. The continuous 17GEMSDOE E-proba raster is positive on 100% of
+eligible cells, so *if* `>0` is interpreted literally as a dot in a continuous
+prior (the existing checker does), no nonempty candidate can pass. That interpretation
+is not equivalent to thresholding a probability surface at 0.5. Do not quietly
+change the gate; seek a protocol interpretation before future promotion. Registry
+scope is public accessible files, not private entries.
+
+---
+
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
 > **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
@@ -59,8 +84,10 @@ patched.
 
 ## Standing brief (re-read at the start of every session)
 
-The full task prompt is reproduced verbatim at the bottom of this file and in
-[`BRIEF.md`](BRIEF.md). Its operative constraints for this lane:
+The *operative excerpts* of the task prompt are reproduced in this file and in
+[`BRIEF.md`](BRIEF.md); the long owner-supplied site-score list is summarized, not
+reproduced verbatim. Re-read the standing brief and this README at every session.
+Its operative constraints for this lane:
 
 1. **Lane.** Fault-zone anatomy — predict where secondary strands sit around
    known faults from shear-zone mechanics. Stay inside it. If the raster's
@@ -101,9 +128,10 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
   ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
   * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
   * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
-    literal rule treats this as drift. The file lists only 50 of the 114 firings.
-  * The reverse-overlap reading (below 0.5 for every itemized firing) would clear it,
-    but that exemption is **not in the protocol**. It needs an owner decision.
+    literal rule treats this as drift. The current evidence file lists all 114 firings.
+  * The reverse-overlap reading (below 0.5 for every firing) is informational only;
+    it cannot clear the literal gate. A change to that gate would require an explicit
+    protocol revision, not an inference from this diagnostic.
   * An earlier version of the script called the file UNIQUE using that exemption.
     The verdict has been corrected (`IR-57-UNIQ-02`).
 * **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
@@ -481,6 +509,7 @@ different "highest score" values appear in the brief (0.3774 and 0.3195); the
 conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
 this repo claims to beat.
 
+<<<<<<< HEAD
 Sites and scores as pasted in the session prompt of 2026-10-09 (each `....`
 separated group is one sibling site; full list is reproduced verbatim in
 [`BRIEF.md`](BRIEF.md) under "Session prompt — 2026-10-09"):
@@ -519,3 +548,18 @@ rank new hypotheses before implementing; (3) validate the top candidate on the
 spatially-blocked holdout; (4) only then build the unique GeoTIFF; (5) run card;
 (6) PR and merge. Core values *Maximize P(Win)* and *Own the Outcome* govern
 every tradeoff on this list.
+=======
+
+## Session 3 pre-experiment hypotheses (2026-10-09; re-read the standing brief above)
+
+Ranked *prospectively*, before code or validation; improvement is an expectation, not a score. All use the pinned mapped-fault raster and require no new external data. The physics is an analogy, **not** proof that withheld catalogue traces represent unknown faults. These are different from the existing raw `d`, `d_perp`, `d_par_abs`, `log_len`, density/coherence features; no new textbook angles are specified.
+
+| Rank / cost | New hypothesis / layer | Fitted physical signature | Why off-catalogue pixels might respond / novelty relative to this repo |
+|---|---|---|---|
+| 1 / low | H57-G length-normalized transverse displacement; `existing_faults.tif` visible-only component length and nearest-trace frame | `d_perp / sqrt(1 + L)` conditioned on proximity; estimate response in leave-one-quadrant-out folds | A longer mapped fault is a *proxy* for displacement and a wider secondary-strand zone; scale invariance may retrieve an unmapped parallel trace. Previous model gave `d_perp` and `log_len` separately, not this explicit interaction. |
+| 2 / medium | H57-H relay asymmetry at isolated tip pairs; visible fault segment endpoints and orientation | angle and separation of two *visible* facing trace tips, fitted jointly with side | A blind relay inside a mapped gap could be missed where catalogue ends; unlike the existing nearest-single-anchor along-strike offset, this requires two independent anchors. Related tip lanes in sibling repos mean uniqueness is uncertain. |
+| 3 / low | H57-I orientation-dependent width; local strike/coherence + mapped-fault distance | fit distance decay separately by visible local strike bin; bins learned, not geologic angles imposed | Fault-strand density may vary with regional stress fabric; extends the global-distance field with a conditional interaction rather than the existing marginal `sin2/cos2`. |
+| 4 / medium | H57-J bend-dependent strand width; local mapped-trace direction and finite-difference along-trace curvature | fitted widening of damage zone at mapped fault bends, controlling for segment length | Under-mapped splays can branch at bends; unlike the current linearity/coherence feature this uses signed change *along a trace* (without DEM). Road and wash bends are geological false-positive mimics. |
+
+**Falsification gate:** test each new feature alone for leakage AUC; compare the top arm against the existing eight-feature arm with visible-only, whole-segment, buffered spatial-block holdout and pooled DTI. Do not spend a weekly slot. Independently, the strict directed-overlap gate may be **mathematically unsatisfiable** for a near-universal 5-pixel lattice already in the registry; report that as a blocker, not as a waiver.
+>>>>>>> origin/main

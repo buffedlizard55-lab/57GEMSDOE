@@ -229,6 +229,7 @@ distance-only baseline, and a rebuild of the shipped file under the fixed code. 
 
 ---
 
+<<<<<<< HEAD
 ## 9. Session-2 next steps, in order
 
 1. **Spend one submission slot on a live A/B** (limitation 1 is still the governing one): the
@@ -249,3 +250,47 @@ distance-only baseline, and a rebuild of the shipped file under the fixed code. 
    per-component budget split is the last unimplemented clause of the lane paragraph.
 6. **Script smoke tests** (limitation 7) — `build_submission.py` gained two more failure modes
    this session (unknown preset name; OOM under concurrency) and still has no test.
+=======
+## Session 3 update (2026-10-09): H57-G and a fail-closed uniqueness blocker
+
+A new, independently inferred, length-normalized stepover **research surface** is in
+`docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif`.
+It is not a final dot emission and is NOT cleared for portal upload. On the spatially
+blocked detached-segment instrument (10,000 per cell; 22,619 withheld positives),
+H57-G HOLDOUT-DTI = **0.2374226** (quadrant-jackknife CI [0.2014762, 0.2733689]);
+the paired control = **0.2358748** ([0.2003443, 0.2714053]). Tiny gain, no live
+score inference. Feature canary max discriminative AUC 0.8813. The all-mode
+instrument's old `d` and `d_perp` canaries actually exceed 0.90 (~0.9000 and
+0.9013); this run deliberately used detached mode, whose canaries all pass.
+
+**Hard protocol blocker:** the 13GEMSDOE binary lattice covers 99.8724% of eligible
+pixels within 3 px. A second public, continuous registry raster (17GEMSDOE E-proba)
+is >0 on *every* eligible pixel; under the existing literal `>0 == dot`
+checker any nonempty output will have 100% directed overlap. The rank check against
+the two witnesses passes (max rho 0.6002) but the support-overlap gate fails.
+Placement stopped. The independent TIF passes format validation but is explicitly
+not a cleared submission. A numerical probability >0 need not mean a predicted
+dot: this is a protocol interpretation problem, not permission to waive the gate.
+No weekly slot used. The full registry index has 644 previously scanned public
+raster hashes, but the /tmp raster cache does not survive this environment;
+only two pinned witnesses were restored (sufficient to falsify uniqueness),
+so **do not claim a fresh all-raster surface or final-dot scan**.
+
+**IR-57-EVAL-01 (shared-tool repair):** The inherited `evaluate_holdout.evaluate`
+referenced nonexistent `holdout.score`, nonexistent `metric.max_cover`, and
+undefined `metric.R_M`. Fixed in shared `src/gems57/` evaluator and metric, with
+binary-vs-independent-EDT and continuous-kernel tests; the new experiment calls
+that evaluator on every fold and asserts agreement with the independent EDT
+implementation. This source change means historical `evidence/exp2_holdout.json`
+implementation hashes do not describe the *current* module; do not silently
+interpret them as evidence reproduced under the repaired evaluator. A subsequent
+docstring-only edit changes the evaluator hash after the H57-G run; the code path
+and test result are unaffected, but the H57-G JSON records the executed hash.
+
+**Next:** obtain an explicit written interpretation of continuous registry
+probabilities vs dot supports (or an amended gate). Until then, do not spend a
+slot. If changed, rerun surface and dots on *all* accessible indexed rasters;
+then validate an emitted file and seek an actual submission-page receipt. Before
+model ranking, independently check transfer of catalogue-hidden holdout to truly
+unmapped faults; previous owner-reported live ranks are weakly correlated.
+>>>>>>> origin/main

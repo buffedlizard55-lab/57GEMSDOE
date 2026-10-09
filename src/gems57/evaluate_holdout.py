@@ -1,14 +1,16 @@
 """Shared pooled hide-and-recover evaluator, not a new/private metric implementation.
 
-Delegates official-formula arithmetic and visible-pixel masking to the template's
-holdout.score / metric.max_cover. Spatial block terms are bookkeeping for a
-conditional bootstrap, not a new scoring rule. No translated synthetic truth.
+Uses the shared metric.max_cover for exact triangular max-coverage and masks
+visible pixels in both truth and predictions. Spatial block terms are
+bookkeeping for a conditional bootstrap, not a new scoring rule. The inherited
+holdout.score reference did not exist in this checkout; fixed in this module
+and tested against independent binary EDT scoring (IR-57-EVAL-01). No translated synthetic truth.
 """
 from __future__ import annotations
 import hashlib
 from pathlib import Path
 import numpy as np
-from . import holdout, metric
+from . import metric
 
 VERSION = 'gems52-pooled-hide-v1'
 
@@ -25,12 +27,20 @@ def evaluate(prediction, fold, valid, block_side=200):
     p = np.asarray(prediction)
     if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
         raise ValueError('predictions must be finite in [0,1] before masking')
-    result = holdout.score(p, fold, valid, restrict_to_region=True, extra=False)
+    # The imported historical evaluator called holdout.score, which does not
+    # exist in this repository. Fix the SHARED evaluator here, not in a lane
+    # fork. Visible faults are masked pixel-exactly in both arrays.
     p = np.where(valid & fold['region'] & ~fold['visible'], p, 0).astype(np.float32)
-    truth = valid & fold['region'] & fold['truth']
+    truth = valid & fold['region'] & fold['truth'] & ~fold['visible']
     if not truth.any():
         raise ValueError('a holdout fold must contain positives')
     covers, q, _ = metric.max_cover(p, truth)
+    tpw = float(covers.sum(dtype=np.float64))
+    fpw = float((p * (1. - q)).sum(dtype=np.float64))
+    fnw = float(truth.sum()) - tpw
+    result = dict(dti=metric.dti_from_components(tpw, fpw, fnw),
+                  tpw=tpw, fpw=fpw, fnw=fnw, n_truth=int(truth.sum()),
+                  emitted=int((p > 0).sum()))
     h, w = truth.shape
     ncols = (w + block_side - 1) // block_side
     nrows = (h + block_side - 1) // block_side

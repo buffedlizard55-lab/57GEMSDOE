@@ -6,20 +6,32 @@
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-3.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
-<h2>Submit in four steps</h2>
+<div class="bad-box" style="border-width:4px">
+<h2 style="margin-top:0">Latest independent H57-G GeoTIFF — DO NOT SUBMIT</h2>
+<p>This is a <b>new model inference</b>, not a copy of an old submission.
+<a download href="downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif">Download the research-only TIF</a> for review.
+It passes 15/15 local format checks;
+sha256 <code>07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92</code>.</p>
+<p><b>Submission verdict for THIS research raster: NO.</b> The literal lane overlap gate fired <em>on the surface before dot placement</em>
+(max directed overlap 1.0000 against two pinned public registry witnesses). It is a research surface,
+not an upload recommendation. <a href="session-3.html">Evidence and run card</a>.
+(The owner-accepted two-sided clearance rule of 2026-10-09, IR-57-UNIQ-03, clears a
+different file — the lane's lean offset-frame raster — for submission; see the green card
+below. This research raster stays diagnostics-only either way.)</p></div>
+<h2>How a cleared file would be submitted (none is cleared now)</h2>
 <div class="card okcard"><h3 style="margin-top:0">OK to download and submit - unique under the owner-accepted clearance rule</h3><p><b>Owner decision 2026-10-09 (IR-57-UNIQ-03):</b> a duplicate means a <i>real copy</i> (forward dot overlap &gt; 0.70 <b>and</b> reverse &gt; 0.50). This file has <b>zero</b> two-sided duplicates among all 655 registry rasters, max Spearman 0.2751 (gate 0.90) and max Jaccard 0.1617 (gate 0.50) both pass. The literal one-directional sentence fires for <b>98</b> dense rasters (maximum forward overlap 1.00 - a dense raster mechanically covers most sparse dots); those firings are logged as saturation, per the owner decision, and are listed in <code>evidence/uniqueness_full_shipped-h57-zeros.json</code>. The raster is sha256-unique and was generated fresh this session.</p></div>
 <div class="card">
 <ol>
-<li><b>Download the file.</b>
-<a href="downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif" download><code>gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</code></a>
-— the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
+<li><b>First require a positive selector clearance, which does not exist yet.</b>
+The previous file <code>gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</code> is an archived, blocked example, not an upload.
+Never use a <code>-nan.tif</code> diagnostic.</li>
 <li><b>Go to the submission page:</b>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
 drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
 <li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378</code></li>
+<li><b>Only after the separate selector explicitly clears a future file,</b> paste its receipt note and submit. The archived file above is <b>NOT</b> cleared:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378</code></li>
 </ol>
 </div>
 
@@ -50,7 +62,7 @@ outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. Tha
 <h2>Validator receipt for this file</h2>
 <table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
 <dl class="kv">
-<dt>File</dt><dd>/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</dd>
+<dt>Archived file</dt><dd>gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif</dd>
 <dt>sha256</dt><dd>9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad</dd>
 <dt>Bytes</dt><dd>118108</dd>
 <dt>Positive pixels</dt><dd>40000</dd>
@@ -66,7 +78,7 @@ more heavily than false positives, so the metric rewards covering real fault pix
 conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
 rather than sprayed. See <a href="method.html">Method</a>.</p>
 </main>
-<footer>Generated 2026-10-09 20:02 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 20:19 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
