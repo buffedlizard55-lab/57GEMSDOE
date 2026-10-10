@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Session 6 verification · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A retained GeoTIFF is not authorized for download or submission pending an owner decision.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main">
+<div class="eyebrow">SESSION 6 · 2026-10-10 · VERIFICATION ONLY</div>
+<h1>Session 6: registry re-verification, gate rerun, and the 0.2778 question.</h1>
+<p><b>Status unchanged: HOLD.</b> Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Owner-reported scores are not organizer-confirmed.</p>
+<h2>1 · Registry (current 696-raster index)</h2>
+<div class="table-scroll"><table><thead><tr><th scope="col">Measure</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Indexed rasters (current index, 20:01Z)</td><td>696</td></tr><tr><td>Fetched and verified (blob SHA1 + pinned SHA256 + grid)</td><td>696</td></tr><tr><td>Errors / SHA256 pin mismatches / git-blob mismatches</td><td>0 / 0 / 0</td></tr><tr><td>Dense rasters (≥50% of footprint positive)</td><td>53</td></tr><tr><td>Rasters with positives outside footprint / values outside [0,1]</td><td>14 / 11</td></tr></tbody></table></div>
+<p>Index: <code>evidence/registry_refreshed_20261010T2001.json</code>. Verification script: <code>scripts/session6_registry_audit.py</code>. Profile: <code>evidence/registry_profile_session6.json</code>.</p>
+<h2>2 · Literal gate on the offered TIFF (696 index)</h2>
+<p>Candidate: <code>gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif</code>, SHA256 <code>cf7b903d…9489648</code>. Measured by <code>scripts/check_uniqueness_full.py --phase surface</code>.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Gate measure</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Rasters checked</td><td>696</td></tr><tr><td>Forward-overlap / literal duplicate firings</td><td>80</td></tr><tr><td>Worst forward 3-px overlap (limit 0.70)</td><td>1.0000</td></tr><tr><td>Worst full-footprint Spearman (limit 0.90)</td><td>0.8181</td></tr><tr><td>Unique under the literal rule?</td><td>False</td></tr></tbody></table></div>
+<p>The literal rule <b>fails</b>. This page does not treat that as clearance, and it does not reinterpret the rule. The owner must decide the dot definition for soft registry rasters (IR-S6-01).</p>
+<h2>3 · Universal blocker</h2>
+<p>17GEMSDOE <code>E-proba-multiscale</code> (SHA256 <code>ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be</code>) covers 1.0000 of the allowed footprint cells. Its overlap with any nonempty candidate is therefore 1.0, so the 0.70 rule cannot be cleared while it is in scope. Universal blocker: True.</p>
+<h2>4 · What the 0.2778 raster is (and is not)</h2>
+<p>The owner-reported 0.2708 file (GEMSDOE28) and the 0.2778 file (GEMSDOE32) are <b>file-measured</b> as nested: the 0.2778 raster adds nothing and removes 2545 of the 40199 base dots. Every removed dot lies within 1.41–2.00 px of the mapped catalogue, none on it. The nearest kept dot is 2.24 px away.</p>
+<p>That is a plausible mechanism for a precision gain under the DTI cost. It is <b>not</b> a demonstrated causal score gain: the scores are owner-reported, and the organizer board is not a file receipt. Source: <code>evidence/session6_mechanism_and_witness.json</code>.</p>
+<h2>5 · Holdout and leaderboard</h2>
+<ul>
+<li>No holdout was run this session. <code>training_features.tif</code> is absent, and its link was unreachable from the audit environment (IR-S6-05).</li>
+<li>The later selected-row snapshot (2026-10-10 20:40 UTC) shows 0.3774 at rank 1, DARD 0.3195 at rank 8, and extradr19 0.2778 at rank 22; the earlier snapshot listed DARD at rank 7. These are public-board values, not exact-file receipts (IR-S6-06). Snapshot: <code>data/leaderboard_snapshot.json</code>.</li>
+<li><b>Download authorization is currently NO pending explicit owner resolution (IR-S6-10).</b> The Session-5 file remains in the repository for audit, but availability is not permission. The site provides no TIFF/ZIP download link; direct static URLs may still resolve.</li>
+</ul>
+<p><a href="irregularities.html">Audit ledger, including IR-S6-01 to IR-S6-12 →</a> · <a href="executive-summary.html">Download and submission guide →</a></p>
+</main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-10 21:42 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

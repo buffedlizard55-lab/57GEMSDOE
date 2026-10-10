@@ -31,7 +31,8 @@ import numpy as np
 import joblib
 from threadpoolctl import threadpool_limits
 from gems57 import load_grid
-from gems57.anatomy import FEATURES, SENSE_FEATURES, relative_strike_distribution
+from gems57.anatomy import (FEATURES, SENSE_FEATURES, package_holdout_structure,
+                            relative_strike_distribution)
 from gems57.faultzone import trace_sense_raster
 from gems57.fitting import canary, fit_model
 from gems57.holdout import buffered_component_draw, FOLD_NAMES
@@ -119,14 +120,12 @@ def main():
         print(f'[run] STOP: unresolved canary {flagged}',flush=True)
         return 3
     # Diagnostic WITHHELD strand orientations never enter the prediction matrix.
-    structure=relative_strike_distribution(grid,visible,hidden)
+    relative=relative_strike_distribution(grid,visible,hidden)
     pos=full.y==1
-    structure.update(evidence_class='HOLDOUT-STRUCTURE (descriptive, not a score)',
-        distance_quantile_probabilities=[.1,.5,.9,.95,.99], pixel_size_m=100,
+    structure=package_holdout_structure(
+        relative, withheld_positive_pixels=int(pos.sum()),
         distance_positive_quantiles_px=np.quantile(full.X[pos,0],[.1,.5,.9,.95,.99]).tolist(),
-        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist(),
-        n_withheld=int(pos.sum()),
-        null_caveat='Visible-reference nearest-different-component null uses at most 13 neighbors and is censored; no significance is inferred from it.')
+        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist())
     save(ROOT/'evidence/orientation_structure.json',structure)
     terms={n:None for n in ARMS};surface_terms={n:None for n in ARMS}
     details=[];fold_models={}
@@ -226,8 +225,14 @@ def main():
         raster_sha256=receipt['sha256'],validator_output=validator,
         submission_name=label,submission_note=note,submission_note_chars=len(note),
         file=str(target.relative_to(ROOT)),zip_file=str(target.with_suffix('.zip').relative_to(ROOT)),
-        verdict='negative',okay_to_download=True,okay_to_submit=False,
-        verdict_reason='Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.',
+        verdict='negative',okay_to_download=False,okay_to_submit=False,
+        download_permission_status={
+            'status':'NOT AUTHORIZED PENDING EXPLICIT OWNER DECISION',
+            'resolution':'HOLD pending explicit owner decision (IR-S6-10)',
+            'authorized':False,
+            'file_availability_is_permission':False,
+        },
+        verdict_reason='Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. Download authorization is not granted. No weekly slot used.',
         recorded_sense={'tested':True,'retained':keep_sense,'paired_difference':sense_gain},
         experiments_used=3,submission_slots_used=0,generated_utc=datetime.now(timezone.utc).isoformat())
     save(ROOT/'evidence/run_card_current.json',card)

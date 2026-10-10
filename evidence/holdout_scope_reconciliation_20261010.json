@@ -2,8 +2,8 @@
   "schema": "gems57.holdout-scope-reconciliation.v1",
   "created_utc": "2026-10-10T20:48:17Z",
   "evidence_class": "EVIDENCE RECONCILIATION — no new experiment, no new holdout run, not a score",
-  "purpose": "Reconcile the historical H57-K detached geophysics result with the later stored pooled-hide-v2 orientation records without treating unlike folds, outputs, or source provenance as a benchmark comparison.",
-  "comparability_verdict": "NOT COMPARABLE; NO CANDIDATE VALIDATED OR PROMOTED",
+  "purpose": "Reconcile the historical H57-K detached geophysics result and earlier orientation records with the later Session-5 relay/bend holdout, without treating unlike folds, outputs, or source provenance as a benchmark comparison.",
+  "comparability_verdict": "H57-K NOT COMPARABLE TO SESSION 5; SESSION-5 E2 POSITIVE ONLY WITHIN ITS RECORDED SPATIAL HOLDOUT",
   "records": [
     {
       "id": "h57k_lane8_geophys",
@@ -103,7 +103,7 @@
         "source_file": "evidence/orientation_canary.json",
         "caveat": "This does not repair the separate H57-K leakage flags or establish current-code reproducibility."
       },
-      "status": "HISTORICAL / VERSION-HASH MISMATCH / NOT CURRENT-CODE VALIDATION"
+      "status": "HISTORICAL / VERSION-HASH MISMATCH / NOT THE SESSION-5 E2 RESULT"
     },
     {
       "id": "stored_binary_allocation_orientation_result",
@@ -128,23 +128,107 @@
         "stored_evaluator_source_hashes_present": true,
         "stored_evaluator_hashes_match_current_tree": false
       },
-      "status": "NOT THE SCORE OF THE SOFT TIFF; NOT CURRENT-CODE VALIDATION"
+      "status": "HISTORICAL BINARY-ALLOCATION ARM / NOT THE SESSION-5 E2 RESULT"
     }
   ],
   "why_the_records_cannot_be_ranked_against_each_other": [
-    "H57-K has 22,619 withheld positives over 8 recorded cells; the later LOQO records have 11,321 withheld positives and a different split/version description.",
-    "H57-K's evaluator is described but not pinned to a version identifier or evaluator/input hashes in its own arm/run-card evidence; the later evaluator hashes are explicitly recorded as not matching the current tree.",
-    "H57-K's d, d_perp, and vis_dtip single-feature canaries cross the 0.90 leakage threshold.",
-    "The 0.023203 result measures a soft surface, while 0.109168 is a separate binary-allocation arm; neither is a like-for-like replacement for H57-K's geophysics model arm.",
-    "The cached training_features.tif and feature-array cache are absent in this checkout, so the geophysics experiment cannot be reproduced from present files."
+    "H57-K has 22,619 withheld positives over 8 recorded cells; the Session-5 buffered whole-component records use 11,321 positives and a different split/version description.",
+    "H57-K evaluator version and evaluator/input hashes are absent from its own arm/run-card evidence; its d, d_perp, and vis_dtip single-feature canaries cross the 0.90 leakage threshold.",
+    "Earlier orientation soft-surface and binary-allocation values are different representations, and their stored source hashes do not match the current tree; do not substitute them for Session-5 E2.",
+    "Session-5 E2 and its matched controls share the recorded folds/evaluator and have paired physical-cluster confidence intervals; that within-session result does not make historical H57-K comparable.",
+    "The current training_features.tif and feature-array cache are absent, so no Session-5 geophysical run was reproduced during this follow-up."
   ],
-  "benchmark_conclusion": "No current-code, clean-canary, same-fold candidate-vs-baseline HOLDOUT-DTI comparison with evaluator/input hashes is established by these records. Do not claim that H57-K beats the later holdout, or that the later records beat H57-K. No candidate has beaten a valid comparable benchmark.",
+  "benchmark_conclusion": "The H57-K geophysics result cannot be ranked against Session-5 E2 because its canaries, split, and provenance are deficient. Session-5 E2 is a positive paired HOLDOUT-DTI result versus its matched controls on the recorded spatial holdout (evaluator gems57-pooled-hide-v2, 11,321 withheld positives, 95% CI as stored), but it was not rerun in this follow-up and is not an ORGANIZER-CONFIRMED score or a live/private prediction. Session-6 full-registry evidence still fails the literal uniqueness gate; no candidate is promoted or authorized for download/submission.",
   "protocol_budget": {
     "experiments_authorized_max": 3,
     "recorded_experiments_used": 3,
     "new_experiments_in_this_reconciliation": 0,
     "new_holdout_runs_in_this_reconciliation": 0,
     "submission_slots_used": 0,
-    "next_action": "Stop model work until an explicit new budget and protocol resolution; this record grants neither."
+    "next_action": "Stop model work until explicit uniqueness protocol resolution and a new experiment budget; neither is granted by this reconciliation."
+  },
+  "current_session5_evidence": {
+    "evidence_class": "HOLDOUT-DTI; stored Session-5 result, not rerun in this follow-up and not a competition score",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "split_version": "buffered-whole-components-loqo-v2",
+    "withheld_positive_pixels": 11321,
+    "selected_arm": "relay_bend_anatomy (E2; two-host relay + multi-scale host bend)",
+    "binary_allocation": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "dti": 0.13520371677763354,
+      "ci95": [
+        0.11913983230552322,
+        0.15303605496339084
+      ],
+      "withheld_positive_pixels": 11321
+    },
+    "soft_surface": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "dti": 0.031159854641644204,
+      "ci95": [
+        0.024691006152132863,
+        0.03810944921363519
+      ],
+      "withheld_positive_pixels": 11321
+    },
+    "paired_binary_differences": {
+      "versus_distance_only": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.022478706941006857,
+        "ci95": [
+          0.00786688580393856,
+          0.03846308825323853
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "versus_single_host_anatomy": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.02555640893870513,
+        "ci95": [
+          0.013943366750616887,
+          0.03710882091013755
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "versus_bend_anatomy": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.022872483332255736,
+        "ci95": [
+          0.01305049452795725,
+          0.03210233238554293
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "E3_sense_transition_versus_E2": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.006187676916750318,
+        "ci95": [
+          -0.0016937951896787019,
+          0.015701673226549834
+        ],
+        "withheld_positive_pixels": 11321
+      }
+    },
+    "leakage_canary": {
+      "feature_count": 22,
+      "max_discriminative_auc": 0.8258665106604264,
+      "all_below_0_90": true,
+      "scope": "Stored feature-alone canaries for the recorded Session-5 split; not a test of all possible leakage or domain shift."
+    },
+    "registry_gate_after_session6": {
+      "evidence_file": "evidence/uniqueness_session6_full_registry_696.json",
+      "registry_rasters_checked": 696,
+      "duplicate_count": 80,
+      "worst_forward_overlap": 1.0,
+      "unique": false,
+      "promoted": false
+    },
+    "interpretation": "E2 has positive paired HOLDOUT-DTI differences against matched Session-5 controls under one recorded buffered whole-component holdout. This is not an ORGANIZER-CONFIRMED score, a forecast of private/live performance, current-code rerun, or uniqueness clearance. The literal gate remains blocked."
   }
 }

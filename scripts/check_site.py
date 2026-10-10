@@ -1,408 +1,218 @@
 #!/usr/bin/env python3
-"""Build/check the HOLD-first Pages site without downloads, experiments, or model work."""
-from __future__ import annotations
+"""Fail-closed local delivery QA: links, actual bytes, range, ZIP and run-card.
 
+No model fitting, registry download, live submission or slot selection here.
+The stored complete audit is checked against its immutable candidate hash.
+"""
+from __future__ import annotations
 import argparse
-import json
-import re
+import hashlib
 from html.parser import HTMLParser
+import json
+import math
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+import zipfile
 
-ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / "docs"
-REQUIRED_PAGES = (
-    "index.html",
-    "executive-summary.html",
-    "method.html",
-    "hypotheses.html",
-    "results.html",
-    "data-sources.html",
-    "irregularities.html",
-    "run-card.html",
-    "research.html",
-    "sources.html",
-    "archive.html",
-    "h57k.html",
-    "session-3.html",
-    "session-4.html",
-)
-FRONT_DOOR_PAGES = ("index.html", "executive-summary.html")
-HOLD_TEXT = "HOLD — NOT OK TO DOWNLOAD OR SUBMIT"
-MARKDOWN_LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+ROOT=Path(__file__).resolve().parents[1]
 
 
-class LinkParser(HTMLParser):
-    def __init__(self) -> None:
-        super().__init__(convert_charrefs=True)
-        self.links: list[str] = []
-        self.ids: set[str] = set()
-        self.download_links: list[str] = []
-
-    def handle_starttag(self, tag: str, attrs) -> None:
-        attributes = dict(attrs)
-        if attributes.get("id"):
-            self.ids.add(attributes["id"])
-        for key in ("href", "src"):
-            value = attributes.get(key)
-            if value:
-                self.links.append(value)
-        if tag == "a" and "download" in attributes:
-            self.download_links.append(attributes.get("href", ""))
+class Links(HTMLParser):
+    def __init__(self):
+        super().__init__();self.links=[];self.ids=set();self.downloads=[]
+    def handle_starttag(self,tag,attrs):
+        attrs=dict(attrs)
+        if 'id' in attrs:self.ids.add(attrs['id'])
+        for key in ('href','src'):
+            if attrs.get(key):self.links.append(attrs[key])
+        if tag=='a' and 'download' in attrs:self.downloads.append(attrs.get('href',''))
 
 
-def _is_download_path(value: str) -> bool:
-    path = urlsplit(value).path.lower()
-    return (path.endswith((".tif", ".tiff", ".zip"))
-            or "downloads/" in path or path.startswith("downloads/"))
-
-
-def inspect_site(docs: Path = DOCS) -> list[str]:
-    """Validate every published HTML page and reject active raster/ZIP links."""
-    docs = docs.resolve()
-    errors: list[str] = []
-    pages = sorted(docs.rglob("*.html"))
-    if not pages:
-        return ["no HTML pages found in published site"]
-
-    for relative in REQUIRED_PAGES:
-        if not (docs / relative).is_file():
-            errors.append(f"missing required generated page: {relative}")
-
+def check_links(docs):
+    errors=[];pages=list(docs.rglob('*.html'))
     for page in pages:
-        source = page.read_text(encoding="utf-8")
-        parser = LinkParser()
-        parser.feed(source)
-        rel = page.relative_to(docs).as_posix()
-        if HOLD_TEXT not in source:
-            errors.append(f"published page lacks HOLD status: {rel}")
-        if rel in FRONT_DOOR_PAGES:
-            first_content_heading = source.find("<h2>")
-            visible_intro = source if first_content_heading < 0 else source[:first_content_heading]
-            if HOLD_TEXT not in visible_intro:
-                errors.append(f"front-door page lacks prominent first-viewport HOLD status: {rel}")
-        if parser.download_links:
-            errors.append(f"active HTML download attribute on {rel}: {parser.download_links}")
+        parser=Links();parser.feed(page.read_text())
+        for value in parser.links:
+            url=urlsplit(value)
+            if url.scheme or url.netloc or value.startswith(('mailto:','data:')):continue
+            target=(page.parent/unquote(url.path)).resolve() if url.path else page
+            if not target.is_relative_to(docs.resolve()):
+                errors.append(f'{page}: local link escapes site: {value}');continue
+            if target.is_dir():target=target/'index.html'
+            if not target.is_file():errors.append(f'{page}: broken local link {value}');continue
+            if url.fragment and target.suffix=='.html':
+                other=Links();other.feed(target.read_text())
+                if unquote(url.fragment) not in other.ids:errors.append(f'{page}: missing anchor {value}')
+    return pages,errors
 
-        for href in parser.links:
-            if _is_download_path(href):
-                errors.append(f"active TIFF/ZIP download link on {rel}: {href}")
-            url = urlsplit(href)
-            if url.scheme or url.netloc or not url.path:
-                continue
-            target = (page.parent / unquote(url.path)).resolve()
-            try:
-                target.relative_to(docs)
-            except ValueError:
-                errors.append(f"local link escapes published site on {rel}: {href}")
-                continue
-            if target.is_dir():
-                target = target / "index.html"
-            if not target.is_file():
-                errors.append(f"broken local link on {rel}: {href}")
-                continue
-            if url.fragment and target.suffix.lower() == ".html":
-                target_parser = LinkParser()
-                target_parser.feed(target.read_text(encoding="utf-8"))
-                if unquote(url.fragment) not in target_parser.ids:
-                    errors.append(f"missing local anchor on {rel}: {href}")
 
-    for research_markdown in (
-        docs / "research" / "hypotheses.md",
-        docs / "research" / "hypotheses_h57.md",
-    ):
-        if not research_markdown.is_file():
+def check(root=ROOT):
+    import sys
+    sys.path.insert(0,str(root/'src'))
+    import numpy as np
+    import rasterio
+    from gems57.gates import format_report
+    docs=root/'docs'
+    card=json.loads((root/'evidence/run_card_current.json').read_text())
+    public=json.loads((docs/'data/run_card.json').read_text())
+    assert card==public,'public card is stale'
+    public_current=json.loads((docs/'data/run_card_current.json').read_text())
+    assert card==public_current,'public current-card copy is stale'
+    assert card['okay_to_download'] is False and card['okay_to_submit'] is False
+    assert card.get('download_permission_status',{}).get('resolution')=='HOLD pending explicit owner decision (IR-S6-10)'
+    assert card['verdict']=='negative' and card['submission_slots_used']==0
+    assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
+    assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
+    assert card['submission_note_chars']==len(card['submission_note'])
+    raster=root/card['file'];archive=root/card['zip_file']
+    digest=hashlib.sha256(raster.read_bytes()).hexdigest()
+    for source in (raster, archive, raster.with_suffix('.json')):
+        assert (root/'downloads'/source.name).read_bytes()==source.read_bytes(), 'legacy/root mirror is stale'
+    assert digest==card['raster_sha256'],'TIFF changed after its audit'
+    receipt=json.loads(raster.with_suffix('.json').read_text())
+    assert digest==receipt['sha256'] and receipt['approved_for_weekly_slot'] is False
+    assert receipt['note']==card['submission_note']
+    assert receipt['bytes']==raster.stat().st_size==card['validator_output']['bytes']
+    assert hashlib.sha256(archive.read_bytes()).hexdigest()==receipt['zip_sha256']
+    with zipfile.ZipFile(archive) as zipped:
+        assert zipped.namelist()==[raster.name],'ZIP must contain ONLY one TIFF'
+        assert zipped.read(raster.name)==raster.read_bytes(),'ZIP contents differ'
+    with rasterio.open(root/'data/official/sample_submission.tif') as ds:
+        footprint=np.isfinite(ds.read(1))
+    report=format_report(raster,root/'data/official/sample_submission.tif',footprint=footprint)
+    assert report['ok'],report['problems']
+    with rasterio.open(raster) as ds:
+        assert ds.nodata is None
+        values=ds.read(1)
+    with rasterio.open(root/'data/official/labels.tif') as ds:
+        known=ds.read(1)>0
+    assert not (values[known]>0).any(),'positive predictions on known mask'
+    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
+    audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
+    assert audit['candidate_file_sha256']==digest
+    index=json.loads((root/'evidence/registry_refreshed.json').read_text())
+    total=index['n_unique_grid_rasters']
+    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
+    assert audit['complete_accessible_scan'] and not audit['source_errors']
+    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert audit['jaccard_diagnostic_only'] is True
+    assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
+    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    snapshots={row['repo']:row['commit'] for row in index['snapshots']}
+    assert len(snapshots)==57
+    sites=json.loads((root/'evidence/site_inventory.json').read_text())
+    assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
+    classification=json.loads((root/'evidence/registry_classification.json').read_text())
+    assert classification['grid_rasters_checked']==total
+    assert classification['auxiliary_inputs']==4
+    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
+    relative=structure['relative_strike']
+    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
+    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
+    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
+    assert structure['withheld_positive_pixels']==11321
+    assert structure['model_fit_performed'] is False
+    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
+    canary=json.loads((root/'evidence/orientation_canary.json').read_text())
+    assert len(canary['features']) in (14, 22)
+    for feature in canary['features'].values():
+        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
+    holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
+    for scores in (holdout['scores'],holdout['raw_surface_holdout']['scores']):
+        for value in scores.values():
+            assert value['evidence_class']=='HOLDOUT-DTI'
+            assert value['evaluator_version']=='gems57-pooled-hide-v2'
+            assert value['withheld_positive_pixels']==11321
+            lo,hi=value['ci95'];assert 0<=lo<=hi<=1
+            assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-7)
+            calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
+            assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
+    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
+    assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
+                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json'):
+        source=root/'evidence'/name
+        public_copy=docs/'data'/name
+        assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
+        assert source.read_bytes()==public_copy.read_bytes(),f'public audit copy is stale: {name}'
+    feed_snapshot=json.loads((root/'evidence/leaderboard_snapshot.json').read_text())
+    feed_status=json.loads((root/'evidence/feed_refresh_status.json').read_text())
+    assert 'ORGANIZER-PUBLISHED' in feed_snapshot['evidence_class']
+    assert feed_snapshot['receipt_attribution_available'] is False
+    assert feed_snapshot['organizer_confirmed_submission_score'] is None
+    if feed_status.get('ok') is True:
+        assert feed_status.get('rows')==len(feed_snapshot['rows'])
+    else:
+        assert feed_status.get('retained_previous_snapshot') is True
+    assert feed_snapshot['top_public_dti']==feed_snapshot['rows'][0]['public_dti']
+    session6_hypotheses=json.loads((root/'evidence/session6_hypotheses.json').read_text())
+    ranked=session6_hypotheses['ranked']
+    assert 3<=len(ranked)<=5 and [item['rank'] for item in ranked]==list(range(1,len(ranked)+1))
+    audit=json.loads((root/'evidence/attribute_audit_20261010.json').read_text())
+    assert audit['evidence_class'].startswith('DATA-AUDIT') and 'limits' in audit
+    reconciliation=json.loads((root/'evidence/holdout_scope_reconciliation_20261010.json').read_text())
+    assert reconciliation['current_session5_evidence']['evaluator_version']=='gems57-pooled-hide-v2'
+    assert reconciliation['current_session5_evidence']['withheld_positive_pixels']==11321
+    irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
+    download_ir=[item for item in irreg['irregularities'] if item['id']=='IR-S6-10']
+    assert len(download_ir)==1 and 'resolved operationally' in download_ir[0]['status'].lower()
+    pages,errors=check_links(docs)
+    assert not errors,'\n'.join(errors)
+    tiff_or_zip_links=[]
+    for page in pages:
+        parser=Links();parser.feed(page.read_text())
+        for value in parser.links:
+            lowered=value.lower().split('#',1)[0].split('?',1)[0]
+            if lowered.endswith(('.tif','.tiff','.zip')) or 'downloads/' in lowered:
+                tiff_or_zip_links.append(f'{page.relative_to(docs)}: {value}')
+        assert not parser.downloads,f'active download attribute on {page.relative_to(docs)}'
+    assert not tiff_or_zip_links,'site must not publish raster/ZIP download links while authorization is unresolved: '+repr(tiff_or_zip_links)
+    for name in ('index.html','executive-summary.html'):
+        text=(docs/name).read_text();parser=Links();parser.feed(text)
+        assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
+        assert 'NOT OK TO DOWNLOAD OR SUBMIT' in text and 'IR-S6-10' in text
+        assert not parser.downloads
+        assert text.index('download-panel')<text.index('footer')
+    js=(docs/'assets/site.js').read_text()
+    assert 'localhost' not in js and '127.0.0.1' not in js
+    for name in ('research.html','sources.html','results.html','irregularities.html'):
+        assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
+    result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
+                zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
+                current_card_consistent=True,research_download_cleared=False,submission_cleared=False)
+    print(json.dumps(result,indent=2))
+    return result
+
+
+def inspect_site(docs):
+    """Check local HTML and current hypothesis-review Markdown links."""
+    docs=Path(docs).resolve()
+    pages,errors=check_links(docs)
+    markdown_link=re.compile(r'(?<!!)\[[^\]]+\]\(([^)]+)\)')
+    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md'):
+        if not source.is_file():
             continue
-        rel = research_markdown.relative_to(docs).as_posix()
-        for href in MARKDOWN_LINK.findall(research_markdown.read_text(encoding="utf-8")):
-            url = urlsplit(href)
+        for href in markdown_link.findall(source.read_text(encoding='utf-8')):
+            url=urlsplit(href)
             if url.scheme or url.netloc or not url.path:
                 continue
-            target = (research_markdown.parent / unquote(url.path)).resolve()
-            try:
-                target.relative_to(docs)
-            except ValueError:
-                errors.append(f"local Markdown link escapes published site in {rel}: {href}")
-                continue
-            if not target.is_file():
-                errors.append(f"broken local Markdown link in {rel}: {href}")
-
+            target=(source.parent/unquote(url.path)).resolve()
+            if not target.is_relative_to(docs):
+                errors.append(f'{source}: local Markdown link escapes site: {href}')
+            elif not target.is_file():
+                errors.append(f'{source}: broken local Markdown link: {href}')
     return errors
 
 
-def check(root: Path = ROOT) -> dict:
-    """Check HOLD status, matching run-card copies, links, and no download links."""
-    root = Path(root).resolve()
-    errors = inspect_site(root / "docs")
-    card_path = root / "evidence" / "run_card.json"
-    current_path = root / "evidence" / "run_card_current.json"
-    public_path = root / "docs" / "data" / "run_card.json"
-    public_current_path = root / "docs" / "data" / "run_card_current.json"
-    irregularities_path = root / "evidence" / "irregularities_current.json"
-    public_irregularities_path = root / "docs" / "data" / "irregularities_current.json"
-    hypotheses_path = root / "evidence" / "hypotheses_current.json"
-    public_hypotheses_path = root / "docs" / "data" / "hypotheses_current.json"
-    feed_snapshot_path = root / "evidence" / "leaderboard_snapshot.json"
-    public_feed_snapshot_path = root / "docs" / "data" / "leaderboard_snapshot.json"
-    feed_status_path = root / "evidence" / "feed_refresh_status.json"
-    public_feed_status_path = root / "docs" / "data" / "feed_refresh_status.json"
-    attribute_audit_path = root / "evidence" / "attribute_audit_20261010.json"
-    public_attribute_audit_path = root / "docs" / "data" / "attribute_audit_20261010.json"
-    holdout_reconciliation_path = root / "evidence" / "holdout_scope_reconciliation_20261010.json"
-    public_holdout_reconciliation_path = root / "docs" / "data" / "holdout_scope_reconciliation_20261010.json"
-    orientation_holdout_path = root / "evidence" / "orientation_holdout.json"
-    public_orientation_holdout_path = root / "docs" / "data" / "orientation_holdout.json"
-    review_passes_path = root / "evidence" / "review_passes.json"
-    public_review_passes_path = root / "docs" / "data" / "review_passes.json"
-    for path in (public_path, public_current_path, public_irregularities_path, public_hypotheses_path,
-                 public_feed_snapshot_path, public_feed_status_path, public_attribute_audit_path,
-                 public_holdout_reconciliation_path, public_orientation_holdout_path,
-                 public_review_passes_path):
-        if path.is_file() and not path.read_bytes().endswith(b"\n"):
-            errors.append(f"public JSON must end with a newline: {path.relative_to(root)}")
-    try:
-        card = json.loads(card_path.read_text(encoding="utf-8"))
-        current = json.loads(current_path.read_text(encoding="utf-8"))
-        public = json.loads(public_path.read_text(encoding="utf-8"))
-        public_current = json.loads(public_current_path.read_text(encoding="utf-8"))
-        irregularities = json.loads(irregularities_path.read_text(encoding="utf-8"))
-        public_irregularities = json.loads(public_irregularities_path.read_text(encoding="utf-8"))
-        hypotheses = json.loads(hypotheses_path.read_text(encoding="utf-8"))
-        public_hypotheses = json.loads(public_hypotheses_path.read_text(encoding="utf-8"))
-        feed_snapshot = json.loads(feed_snapshot_path.read_text(encoding="utf-8"))
-        public_feed_snapshot = json.loads(public_feed_snapshot_path.read_text(encoding="utf-8"))
-        feed_status = json.loads(feed_status_path.read_text(encoding="utf-8"))
-        public_feed_status = json.loads(public_feed_status_path.read_text(encoding="utf-8"))
-        attribute_audit = json.loads(attribute_audit_path.read_text(encoding="utf-8"))
-        public_attribute_audit = json.loads(public_attribute_audit_path.read_text(encoding="utf-8"))
-        holdout_reconciliation = json.loads(holdout_reconciliation_path.read_text(encoding="utf-8"))
-        public_holdout_reconciliation = json.loads(public_holdout_reconciliation_path.read_text(encoding="utf-8"))
-        orientation_holdout = json.loads(orientation_holdout_path.read_text(encoding="utf-8"))
-        public_orientation_holdout = json.loads(public_orientation_holdout_path.read_text(encoding="utf-8"))
-        review_passes = json.loads(review_passes_path.read_text(encoding="utf-8"))
-        public_review_passes = json.loads(public_review_passes_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        errors.append(f"current audit JSON missing or invalid: {exc}")
-        card = current = public = public_current = irregularities = public_irregularities = {}
-        hypotheses = public_hypotheses = {}
-        feed_snapshot = public_feed_snapshot = feed_status = public_feed_status = {}
-        attribute_audit = public_attribute_audit = holdout_reconciliation = public_holdout_reconciliation = {}
-        orientation_holdout = public_orientation_holdout = review_passes = public_review_passes = {}
-
-    current_card_consistent = bool(card) and card == current == public == public_current
-    if not current_card_consistent:
-        errors.append("current run-card copies differ")
-    if not irregularities or irregularities != public_irregularities:
-        errors.append("current irregularities ledger and public copy differ")
-    if not hypotheses or hypotheses != public_hypotheses:
-        errors.append("ranked hypothesis evidence and public copy differ")
-    candidates = hypotheses.get("candidates", [])
-    ranks = [row.get("rank") for row in candidates if isinstance(row, dict)]
-    if not (3 <= len(candidates) <= 5 and ranks == list(range(1, len(candidates) + 1))):
-        errors.append("current hypothesis list must contain 3–5 consecutively ranked candidates")
-    if any("NOT RUN" not in str(row.get("status", "NOT RUN")).upper()
-           and "UNTRIED" not in str(row.get("status", "")).upper()
-           for row in candidates if isinstance(row, dict)):
-        errors.append("a candidate in the untried shortlist is mislabeled as run")
-    candidate_fields = (
-        "layers", "physical_signature", "why_it_may_find_missing_faults",
-        "difference_from_inspected_work", "named_non_fault_mimic",
-        "relative_expected_dti_potential", "implementation_cost", "sources",
-        "future_test_gate",
-    )
-    for candidate in candidates:
-        if not isinstance(candidate, dict) or any(not candidate.get(key) for key in candidate_fields):
-            errors.append("each untried hypothesis must name data, signature, missing-fault rationale, novelty, mimic, priority, cost, sources, and a future test gate")
-            break
-    shortlist_status = str(hypotheses.get("status", "")).upper()
-    if not ("NOT IMPLEMENTED OR RUN" in shortlist_status
-            or "NONE IMPLEMENTED OR RUN" in shortlist_status):
-        errors.append("shortlist must be explicitly labeled unimplemented/unrun")
-    if feed_snapshot != public_feed_snapshot:
-        errors.append("public leaderboard snapshot differs from its evidence copy")
-    if feed_status != public_feed_status:
-        errors.append("public leaderboard refresh status differs from its evidence copy")
-    if attribute_audit != public_attribute_audit:
-        errors.append("public attribute audit differs from its evidence copy")
-    if holdout_reconciliation != public_holdout_reconciliation:
-        errors.append("public holdout reconciliation differs from its evidence copy")
-    if orientation_holdout != public_orientation_holdout:
-        errors.append("public orientation holdout differs from its evidence copy")
-    if review_passes != public_review_passes:
-        errors.append("public review-pass record differs from its evidence copy")
-    feed_rows = feed_snapshot.get("rows", [])
-    if ("ORGANIZER-PUBLISHED" not in str(feed_snapshot.get("evidence_class", ""))
-            or feed_snapshot.get("receipt_attribution_available") is not False
-            or feed_snapshot.get("organizer_confirmed_submission_score") is not None
-            or not isinstance(feed_rows, list) or not feed_rows
-            or any(not isinstance(row, dict) for row in feed_rows)):
-        errors.append("public feed must preserve its non-receipt / no-file-attribution evidence class")
-    else:
-        try:
-            ranks = [int(row.get("rank", -1)) for row in feed_rows]
-            scores = [float(row.get("public_dti", -1)) for row in feed_rows]
-            malformed_feed = (
-                ranks[0] != 1
-                or float(feed_rows[0].get("public_dti", -1)) != float(feed_snapshot.get("top_public_dti", -2))
-                or any(not 0 <= score <= 1 for score in scores)
-                or len(set(ranks)) != len(ranks)
-                or any(a < b for a, b in zip(scores, scores[1:]))
-                or any(not str(row.get("participant_display", "")).strip() for row in feed_rows)
-                or (feed_status.get("ok") is True and feed_status.get("rows") != len(feed_rows))
-            )
-        except (TypeError, ValueError):
-            malformed_feed = True
-        if malformed_feed:
-            errors.append("public feed rows/top score are malformed or outside [0,1]")
-    if feed_status.get("ok") is False and not feed_status.get("retained_previous_snapshot"):
-        errors.append("failed public feed refresh must disclose whether a prior snapshot was retained")
-    if holdout_reconciliation.get("comparability_verdict") != "NOT COMPARABLE; NO CANDIDATE VALIDATED OR PROMOTED":
-        errors.append("holdout reconciliation overstates comparability or candidate validation")
-    results_page = (root / "docs" / "results.html").read_text(encoding="utf-8")
-    if ("Public leaderboard snapshot" not in results_page
-            or "not a submission receipt" not in results_page.lower()
-            or "Do not infer attribution" not in results_page):
-        errors.append("results page lacks explicit public-board provenance and no-attribution warning")
-    irregularities_text = json.dumps(irregularities, ensure_ascii=False).lower()
-    if "download is permitted for research" in irregularities_text:
-        errors.append("current irregularities ledger still claims research download permission")
-
-    withdrawn_receipt_paths = (
-        root / "docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.json",
-        root / "docs/downloads/checks-gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif.json",
-        root / "docs/downloads/archive/run_card.json",
-    )
-    public_receipts_withdrawn = True
-    for receipt_path in withdrawn_receipt_paths:
-        try:
-            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-            archived_name = receipt.get("archived_original_receipt", receipt.get("archived_original_card"))
-            archived = root / archived_name if archived_name else None
-            okay = (
-                receipt.get("current_audit_status") == HOLD_TEXT
-                and str(receipt.get("current_download_status", "")).startswith("NOT OK")
-                and str(receipt.get("current_submission_status", "")).startswith("NOT OK")
-                and receipt.get("verdict") != "promote"
-                and archived is not None and archived.is_file()
-            )
-        except (OSError, json.JSONDecodeError):
-            okay = False
-        if not okay:
-            public_receipts_withdrawn = False
-            errors.append(f"historical public receipt lacks a withdrawal notice/original: {receipt_path.relative_to(root)}")
-
-    session4_path = root / "evidence" / "run_card_session4.json"
-    session4_original = root / "evidence" / "run_card_legacy_h57i.json"
-    try:
-        session4 = json.loads(session4_path.read_text(encoding="utf-8"))
-        session4_withdrawn = (
-            session4.get("current_audit_status") == HOLD_TEXT
-            and session4.get("verdict") == "negative"
-            and session4.get("promote") is False
-            and session4.get("preserved_original") == "evidence/run_card_legacy_h57i.json"
-            and session4_original.is_file()
-        )
-    except (OSError, json.JSONDecodeError):
-        session4_withdrawn = False
-    if not session4_withdrawn:
-        errors.append("non-legacy session-4 run-card path still lacks a withdrawal notice")
-
-    retired_publisher = root / "scripts" / "build_site_session4.py"
-    if not retired_publisher.is_file() or "Retired" not in retired_publisher.read_text(encoding="utf-8"):
-        errors.append("unsafe session-4 site publisher is not retired")
-    retired_session2 = root / "scripts" / "build_r2_submission.py"
-    if (not retired_session2.is_file()
-            or "no-output stub" not in retired_session2.read_text(encoding="utf-8")):
-        errors.append("session-2 publisher that screened after placement is not retired")
-
-    status_ok = (
-        card.get("okay_to_download") is False
-        and card.get("okay_to_submit") is False
-        and card.get("verdict") == "negative"
-        and card.get("promote") is False
-        and card.get("submission_slots_used") == 0
-        and card.get("download_status", "").startswith("NOT OK")
-    )
-    if not status_ok:
-        errors.append("current run card does not encode the required negative HOLD")
-    witness = card.get("registry_comparison", {}).get("independent_witness_blocker", {})
-    if (witness.get("universal_overlap_blocker") is not True
-            or witness.get("uncovered_allowable_cells") != 0
-            or witness.get("sha256") != "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be"):
-        errors.append("current run card does not record the independently verified universal-overlap witness")
-    historical = card.get("historical_artifact_review", {})
-    if (historical.get("okay_to_download") is not False
-            or historical.get("okay_to_submit") is not False
-            or historical.get("receipt_hash_size_and_zip_match_current_bytes") is not True
-            or historical.get("format_review", {}).get("all_finite") is not True):
-        errors.append("historical lean-offset artifact review is missing or misstates clearance")
-    final_dots = card.get("final_dots", {})
-    if final_dots.get("status") != "not_generated":
-        errors.append("final dots must remain ungenerated after the pre-placement stop")
-
-    report = card.get("registry_comparison", {})
-    cache = report.get("current_cache_preflight", {})
-    expected = report.get("indexed_matching_grid_rasters")
-    cache_ok = (
-        cache.get("status") == "HOLD / INCOMPLETE"
-        and cache.get("verified_rasters") == 0
-        and cache.get("missing_cache_files") == expected
-        and expected == 679
-    )
-    if not cache_ok:
-        errors.append("current 679-raster cache preflight is not recorded as 0/679 HOLD")
-    if "not organizer-complete" not in str(card.get("registry_scope", "")).lower():
-        errors.append("current run card overstates or omits the public registry's non-organizer-complete scope")
-    audit_scope_path = root / "registry" / "audit_scope.json"
-    try:
-        audit_scope = json.loads(audit_scope_path.read_text(encoding="utf-8"))
-        limitations = " ".join(str(x) for x in audit_scope.get("limitations", [])).lower()
-        if "not a complete organizer registry" not in limitations:
-            errors.append("pinned registry scope must disclose that it is not an organizer-complete registry")
-    except (OSError, json.JSONDecodeError):
-        errors.append("pinned registry audit-scope disclosure is missing or invalid")
-
-    if errors:
-        raise AssertionError("\n".join(errors))
-    html_pages = list((root / "docs").rglob("*.html"))
-    return {
-        "pages_checked": len(html_pages),
-        "links_pass": True,
-        "active_download_links": 0,
-        "current_card_consistent": current_card_consistent,
-        "current_irregularities_consistent": irregularities == public_irregularities,
-        "current_hypotheses_consistent": hypotheses == public_hypotheses,
-        "public_feed_consistent": feed_snapshot == public_feed_snapshot and feed_status == public_feed_status,
-        "attribute_audit_consistent": attribute_audit == public_attribute_audit,
-        "holdout_reconciliation_consistent": holdout_reconciliation == public_holdout_reconciliation,
-        "orientation_holdout_consistent": orientation_holdout == public_orientation_holdout,
-        "review_passes_consistent": review_passes == public_review_passes,
-        "universal_overlap_blocker_recorded": True,
-        "public_receipts_withdrawn": public_receipts_withdrawn,
-        "session4_withdrawn": session4_withdrawn,
-        "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-        "cache_preflight": f"0/{expected} verified",
-        "final_dots": "not generated",
-        "submission_cleared": False,
-    }
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--build", action="store_true", help="regenerate the site before checking")
-    args = parser.parse_args()
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--build',action='store_true')
+    args=parser.parse_args()
     if args.build:
-        import sys
-        sys.path.insert(0, str(ROOT))
-        from scripts import build_site
-        build_site.main()
-    result = check()
-    print(f"PASS: {result['pages_checked']} HTML pages; internal links resolve; HOLD is prominent; "
-          "no active download links; current cards/ledger/hypotheses, public feed, data audit, "
-          "holdout/orientation records and review-pass copies are consistent; historical receipts and unsafe publisher are "
-          "withdrawn; universal overlap blocker recorded; 0/679 cache verified")
-    return 0
+        from build_site import build
+        build()
+    check()
 
 
-if __name__ == "__main__":
-    raise SystemExit(main())
+if __name__=='__main__':main()
