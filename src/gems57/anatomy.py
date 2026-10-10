@@ -49,6 +49,15 @@ FEATURES = (
     "cos2",         # cyclic strike encoding, cos(2*strike)
     "coherence",    # structure-tensor linearity at the anchor
     "density",      # visible fault pixels within a 5 px (500 m) radius
+    # Explicit orientation x distance interactions (H57-D, added 2026-10-09).
+    # sin2/cos2 alone are rank-degenerate marginals (AUC exactly 0.5000), so the
+    # orientation selectivity of the halo is only usable in interaction.  These
+    # two products let the GBM express "the distance decay depends on the parent
+    # trace's strike" without any hard-coded angle: the fitted coefficients
+    # define the preferred orientations.  Both are computable from the visible
+    # catalogue alone, so the holdout protocol is unchanged.
+    "sin2d",        # sin(2*strike) * d  -- orientation-modulated distance decay
+    "cos2d",        # cos(2*strike) * d  -- orientation-modulated distance decay
 )
 
 # NOTE (bug fixed 2026-10-09): ``log_len`` was originally the length of the
@@ -101,20 +110,26 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     dy = (ys - ay).astype(np.float32)
     dx = (xs - ax).astype(np.float32)
 
-    # strike at the anchor: fall back to the anchor segment's principal strike
+    # strike at the anchor: fall back to the anchor segment's principal strike,
+    # and only then to 0.  IR-57-STRIKE-01: the second where was INVERTED
+    # (``np.where(isfinite(s), 0.0, s)`` zeroed every finite strike), so sin2/cos2
+    # were the constants 0/1 and d_perp/d_par_abs/side were decomposed in a
+    # grid-aligned frame instead of the local trace frame, in every fold and in
+    # the shipped surface.  Pinned by tests/test_anatomy.py.
     anc_seg = seg[ay, ax]
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    s = np.where(np.isfinite(s), 0.0, s)
+    s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
     # displacement proxy: size of the whole mapped component, not the 12 px chunk
     ln = comp_len[np.clip(comp[ay, ax], 0, len(comp_len) - 1)]
 
     th2 = np.radians(2.0 * s)
+    dd = d[ys, xs]
     X = np.stack([
-        d[ys, xs],
+        dd,
         d_perp,
         np.abs(d_par),
         side,
@@ -123,6 +138,8 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         np.cos(th2),
         coh[ay, ax],
         dens[ys, xs],
+        np.sin(th2) * dd,
+        np.cos(th2) * dd,
     ], axis=1).astype(np.float32)
 
     y = hidden[ys, xs].astype(np.int8)

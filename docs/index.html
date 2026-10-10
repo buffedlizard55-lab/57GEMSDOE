@@ -8,17 +8,39 @@
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
 <nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
+<h2>What this submission is</h2>
+<div class="card">
+<p>A <b>unique, portal-valid</b> fault-zone-anatomy raster for DrivenData competition 306:
+a binary dot field of <b>40000 dots</b> fitted around
+the known USGS + INGENIOUS faults — variant <code>shipped8</code>
+on the corrected trace frame (session 2, <code>IR-57-STRIKE-01</code>),
+holdout-optimal budget 46603 dots,
+capped at the <b>40000</b>-dot live budget
+(<code>IR-57-BUDGET-01</code>).</p>
+<p><b>Read the score with care.</b> The session-2 holdout reading for this variant
+(<span class="tag hold">HOLDOUT-DTI</span>, mode <code>all</code>) is
+<b>0.3270</b>
+[0.2923,
+0.3617]
+— a local instrument reading, never a live score. The session-1 reading for the shipped
+set, measured on the buggy frame, was
+0.2508.
+See the paired tables on <a href="results.html">Results</a>.</p>
+<p><b>Uniqueness:</b> clear against all 15 sibling-lane rasters (worst rho 0.0128, worst Jaccard 0.0110, worst 3 px overlap 36.5%)
+— computed, not asserted. ✅ OK to download and submit.</p>
+</div>
+
 <h2>Submit in four steps</h2>
 <div class="card">
 <ol>
 <li><b>Download the file.</b>
-<a href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download><code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
+<a href="downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif" download><code>gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif</code></a>
 — the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
 <li><b>Go to the submission page:</b>
 <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
 drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
 <li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></li>
+<li><b>Paste the note</b> and submit:<br><code>57GEMSDOE fault-zone anatomy | variant shipped8 (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 90e53294</code></li>
 </ol>
 </div>
 
@@ -49,10 +71,10 @@ outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. Tha
 <h2>Validator receipt for this file</h2>
 <table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
 <dl class="kv">
-<dt>File</dt><dd>/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>sha256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Bytes</dt><dd>808408</dd>
-<dt>Positive pixels</dt><dd>35341</dd>
+<dt>File</dt><dd>/home/user/57GEMSDOE/docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif</dd>
+<dt>sha256</dt><dd>9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47</dd>
+<dt>Bytes</dt><dd>818144</dd>
+<dt>Positive pixels</dt><dd>40000</dd>
 <dt>Min / max</dt><dd>0.0 / 1.0</dd>
 <dt>NaN cells</dt><dd>0</dd>
 <dt>On mapped catalogue</dt><dd>0</dd>
@@ -65,7 +87,7 @@ more heavily than false positives, so the metric rewards covering real fault pix
 conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
 rather than sprayed. See <a href="method.html">Method</a>.</p>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 19:35 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

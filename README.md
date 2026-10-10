@@ -11,20 +11,40 @@
 
 ## ⬇ ONE-CLICK SUBMISSION FILE
 
-**The file to submit is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
-`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
+**The file to submit is [`docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif`](docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif)**
+— the only `.tif` directly in `docs/downloads/` (everything else is in `docs/downloads/archive/`).
+It is portal-legal by construction: single band, `float32`,
+`EPSG:32611`, `3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
+12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue, 40,000 dots,
+sha256 `9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47`.
+**It is OK to download and submit this file** — the verdict box at the top of
+[the executive summary](docs/executive-summary.html) says so explicitly, computed from the
+validator receipt and the uniqueness screen, not asserted.
 
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
+Suggested submission note (108 characters, limit 140):
+
+```
+57GEMSDOE fault-zone anatomy | variant shipped8 (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 90e53294
+```
+
+> **Do not submit a `-nan.tif` variant.** Those are diagnostics (kept in
+> `docs/downloads/archive/`). They carry ~7.17 M `NaN` cells outside the study-area
+> footprint and the portal rejects them with *"Predicted values must be in range [0, 1]"*,
+> because `NaN` satisfies neither `v >= 0` nor `v <= 1`. See
+> [the executive summary](docs/executive-summary.html) and irregularity `IR-57-NAN-01`.
 
 The exact filename, sha256, check receipt and the suggested submission note are
 printed at the top of [`docs/index.html`](docs/index.html) and in
 [`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+
+**Uniqueness, disclosed (IR-57-OVERLAP-01).** The new raster is unique against all 15
+sibling-lane rasters by wide margins (worst rank correlation 0.0128, worst dot-set Jaccard
+0.0110, worst 3 px dot overlap 36.5 %; limits 0.90 / 0.50 / 70 %), and its sha256 differs from
+every registry raster. Against this repository's own session-1 build of the *same* lane, 3 px
+forward dot overlap is 71.1 % — expected, because two halos around the same faults overlap by
+construction; the dot-set Jaccard is 0.2400 and only 36.5 % of the new dots sit on a cell the
+previous build also used, so it is not a copy. Both numbers are on the run card for the
+selector to weigh.
 
 ---
 
@@ -78,28 +98,38 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
 
 ## Headline result
 
-Measured with the hide-and-recover holdout, leave-one-quadrant-out, 8 cells
-(4 quadrants x draws 20/21), 22,641 withheld positives. **Every number below is a
-`HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
+**Session 2 (current submission).** After the strike-frame fix
+(`IR-57-STRIKE-01`, below), the shipped feature set re-measured on the
+hide-and-recover holdout, leave-one-quadrant-out, 8 cells (4 quadrants x draws
+20/21): **`shipped8` scores 0.3270 [0.2923, 0.3617] on mode `all`** (22,641
+withheld positives) and **0.3262 [0.3041, 0.3483] on mode `detached`**
+(22,619 withheld positives). Every number is a `HOLDOUT-DTI` instrument
+reading — none is a projected live score.
 
-| Feature set | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
+| Feature set (corrected frame) | mode `all` | 95% CI (quadrant jackknife) | mode `detached` | 95% CI |
 | --- | --- | --- | --- | --- |
-| `d_only` (distance to nearest visible fault) | 0.1845 | [0.1630, 0.2059] | 0.1816 | [0.1683, 0.1950] |
-| `d_perp_par` (+ stepover, along-strike) | 0.1867 | [0.1605, 0.2128] | 0.1847 | [0.1665, 0.2029] |
-| `anatomy_full` (all 9 features) | **0.2517** | [0.2183, 0.2851] | 0.2538 | [0.2309, 0.2766] |
-| `no_side` (shipped: 8 features) | 0.2508 | [0.2164, 0.2852] | **0.2556** | [0.2329, 0.2784] |
+| `shipped8` (shipped: 8 features) | **0.3270** | [0.2923, 0.3617] | **0.3262** | [0.3041, 0.3483] |
+| `no_rielder` (minus `d_perp`/`d_par_abs`) | 0.2319 | [0.2126, 0.2513] | 0.2291 | [0.2150, 0.2433] |
+| `gated` (H57-D: + `sin2d`, `cos2d`) | 0.3288 | [0.2934, 0.3642] | 0.3273 | [0.3051, 0.3494] |
+| `anatomy_full` (all 11) | 0.3265 | [0.2925, 0.3605] | 0.3275 | [0.3047, 0.3503] |
 
-The full model beats distance-only by **+0.0673** (`all`) and **+0.0721**
-(`detached`) with disjoint confidence intervals.
+Session 1, same instrument, buggy grid-aligned frame: `no_side` 0.2508
+[0.2164, 0.2852] (`all`), 0.2556 [0.2329, 0.2784] (`detached`).
 
-**But the gain is not from the Riedel geometry.** Adding stepover and
-along-strike to distance alone buys only **+0.0022** — inside the noise. The
-+0.067 comes from local fault `density` (AUC 0.7289), trace `coherence` (0.6278)
-and `log_len`. The en echelon structure this lane set out to find **is** there in
-the data (joint stepover x along-strike enrichment 0.0326, **13.9x** base rate),
-and it **does not pay for itself on this instrument**. That is recorded as a
-negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
-over.
+**The frame fix — not new features — is the gain (+0.076, disjoint CIs), and
+it overturns session 1's headline negative result.** Removing the stepover /
+along-strike geometry now costs **−0.0950** (`all`) / **−0.0971** (`detached`):
+with offsets decomposed in the local trace frame, the en echelon structure
+pays for itself. Session 1's "+0.0022, inside the noise" was an artifact of
+the grid-aligned frame. Re-measured with the corrected frame, the joint
+stepover x along-strike enrichment peaks at **0.0902 (≈ 39x the base rate)**
+at stepover 0–1 px x along-strike 1–4 px — a sharp off-diagonal ridge, versus
+0.0326 (13.9x) measured in the buggy frame.
+
+**H57-D is a negative result.** The explicit strike x distance interaction
+(`sin2d`, `cos2d`) buys **+0.0018** (`all`) / **+0.0010** (`detached`) — inside
+the noise. Per the lane's rule ("keep only the structure the data shows"), the
+shipped variant is `shipped8`.
 
 ### Why 0.2778 won, and whether higher is achievable
 
@@ -112,8 +142,9 @@ brute-force implementation:
 2. **At the real base rate DTI tracks coverage — but only while the dot budget
    stays near `K`.** At the measured base rate 0.00221, a *random* pixel lands
    within 3 px of a true one only 2.1% of the time. Measured with the exact
-   metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
-   **0.1809** at `n/K = 6`.
+   metric, coverage 0.2778 is worth **0.3161** at `n/K = 0.5` and only
+   **0.1794** at `n/K = 6` (synthetic illustration, regenerated in session 2 by
+   `scripts/registry_budget.py`; the session-1 file read 0.3162 / 0.1809).
 
 So 0.2778 is roughly **28% coverage of the live truth at a near-matched budget**,
 and 0.3774 implies about 40%. Higher is achievable and the route is arithmetic:
@@ -121,10 +152,78 @@ raise coverage while holding `n <~ 2K`. The registry confirms the budget half of
 this with live evidence — **Spearman(dot count, organizer-confirmed live score) =
 -0.8104** (p = 0.00025) over 15 rasters, and the two rasters above 120,000 dots
 hold the two worst live scores (0.1922, 0.1894). That is why this lane's
-holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
-costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
+holdout-optimal budget (46,603 dots on the corrected frame) was **overruled** and
+capped at 40,000, inside the band every top performer occupies (35k–46k). See
+`IR-57-BUDGET-01`.
+
+What session 2 changed about this picture: the corrected trace frame raised the
+lane's measured coverage from 0.4852 to **0.5105** (`all`) and from 0.4740 to
+**0.5001** (`detached`) at the LOQO instrument — i.e. the lane now measures
+~51% coverage of *withheld catalogue* pixels at its holdout-optimal budget.
+The transfer to live truth is still unmeasured (holdout-to-live rank
+correlation +0.14 across 12 live scores, sibling repository), so no live score
+is projected.
 
 **Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
+
+---
+
+## Session 2 (2026-10-09, later) — the strike-frame bug and what it changed
+
+Reviewing this repository line by line found a real bug in the lane's feature
+geometry, registered as **`IR-57-STRIKE-01`**: the strike fallback in
+`src/gems57/anatomy.py` was *inverted* (`np.where(np.isfinite(s), 0.0, s)`
+kept the non-finite strikes and zeroed every finite one), so the anchor strike
+was identically 0 in every fold and in the shipped surface. Consequences:
+
+* `sin2`/`cos2` were the constants 0/1 — the canary's "AUC exactly 0.5000" was
+  this bug's symptom, not a property of the data;
+* `d_perp`/`d_par_abs`/`side` decomposed offsets in a **grid-aligned** (row/col)
+  frame instead of the **local trace frame**.
+
+Fixed and pinned by `tests/test_anatomy.py`, then the lane was re-measured
+end-to-end (`scripts/run_cv_r2.py`). All numbers below are `HOLDOUT-DTI`
+(leave-one-quadrant-out, pooled, quadrant-jackknife 95 % CI) — instrument
+readings, never live scores.
+
+| Feature set (corrected frame) | mode `all` | 95 % CI | mode `detached` | 95 % CI |
+| --- | --- | --- | --- | --- |
+| `shipped8` (8 features, the shipped set) | **0.3270** | [0.2923, 0.3617] | **0.3262** | [0.3041, 0.3483] |
+| `no_rielder` (minus `d_perp`/`d_par_abs`) | 0.2319 | [0.2126, 0.2513] | 0.2291 | [0.2150, 0.2433] |
+| `gated` (H57-D: + `sin2d`, `cos2d`) | 0.3288 | [0.2934, 0.3642] | 0.3273 | [0.3051, 0.3494] |
+| `anatomy_full` (all 11) | 0.3265 | [0.2925, 0.3605] | 0.3275 | [0.3047, 0.3503] |
+
+Session 1, same instrument, buggy frame (9-feature set): `no_side` 0.2508
+[0.2164, 0.2852] (`all`) and 0.2556 [0.2329, 0.2784] (`detached`).
+
+Three findings, each measured:
+
+1. **The bug fix is the gain.** `shipped8` on the corrected frame beats the
+   session-1 shipped set by **+0.0762** (`all`) and **+0.0706** (`detached`),
+   with disjoint jackknife CIs. The geometry features were not dead — they were
+   measured in the wrong frame.
+2. **The en echelon geometry is real.** Removing `d_perp`/`d_par_abs` from the
+   shipped set costs **−0.0950** (`all`) / **−0.0971** (`detached`), far outside
+   the noise. Session 1's "+0.0022, inside the noise" was an artifact of the
+   grid-aligned frame: with offsets decomposed along/across the actual trace,
+   the stepover × along-strike structure the lane set out to find pays for
+   itself. This overturns session 1's headline negative result.
+3. **H57-D (explicit strike × distance interaction) is a negative result.**
+   Adding `sin2d`/`cos2d` buys **+0.0018** (`all`) / **+0.0010** (`detached`) —
+   inside the noise. Per the lane's own rule ("keep only the structure the data
+   shows") the shipped variant is `shipped8`, not `gated`.
+
+The leakage canary (rule 4) fires only on `d` (0.8853 mean / 0.9000 max) and
+`d_perp` (0.9150 / 0.9245) — the same external-validity caveat as session 1
+(`IR-57-CANARY-02`), mitigated by the `detached` mode where the gain persists.
+The two new interaction features screen at 0.60–0.64 discriminative AUC, clear
+of the bar.
+
+The session-2 submission is built from `shipped8` on the corrected frame
+(`scripts/build_submission.py --mode all --variant shipped8 --budget-cap
+40000`), validated, and uniqueness-checked against all 18 registry rasters
+(15 sibling submissions plus this repository's own two earlier builds and the
+parallel session's merged raster). See the run card for the receipt.
 
 ---
 

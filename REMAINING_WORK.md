@@ -9,6 +9,68 @@ Numbered items with an `IR-57-*` tag are cross-referenced on the
 
 ---
 
+## Session 2 (2026-10-09, later) — what changed and what is still open
+
+**Closed this session:**
+
+1. **`IR-57-STRIKE-01` — the strike-frame bug.** The anchor-strike fallback in
+   `src/gems57/anatomy.py` was inverted, forcing a grid-aligned offset frame and constant
+   `sin2`/`cos2` in every fold and in the shipped surface. Fixed, pinned by
+   `tests/test_anatomy.py`, and the lane re-measured end-to-end. The shipped set now scores
+   **0.3270 [0.2923, 0.3617]** (mode `all`) vs 0.2508 session 1 — HOLDOUT-DTI, LOQO.
+2. **The redundancy ablation (was item 3 below).** With the corrected frame, removing
+   `d_perp`/`d_par_abs` costs **−0.0950** (`all`) / **−0.0971** (`detached`) — the en echelon
+   geometry is real and pays for itself. Session 1's "+0.0022, inside the noise" was an
+   artifact of the buggy frame and is **overturned**.
+3. **H57-D (was item 4 below).** RUN as the `gated` variant: +0.0018 (`all`) / +0.0010
+   (`detached`) — **negative result**, not significant. Shipped variant stays `shipped8`.
+4. **The re-measurement (was item: withheld-structure measurement)** is refreshed with the
+   corrected frame: joint stepover x along-strike enrichment now peaks at **0.0902 (≈ 39x
+   base rate)** at stepover 0–1 px x along-strike 1–4 px (was 0.0326 / 13.9x). Side asymmetry
+   re-measured in the true trace frame: log(R/L) = **−0.0352** — still no usable unilateral
+   preference.
+5. **Repo repairs (all registered on the irregularities page):** `IR-57-PANDAS-01`
+   (faultzone.py no longer needs pandas), `IR-57-DATA-01` (optional vs required data pins),
+   `IR-57-TEST-01` (format-gate test discovers the shipped artifact), `IR-57-SITE-01`
+   (executive summary no longer renders PENDING), `IR-57-CALIB-01` (three scripts re-pointed
+   to the in-repo registry; `scripts/registry_budget.py` added and reproduces the Spearman
+   −0.8104 evidence and the DTI-vs-coverage curve), `IR-57-SITE-02` (root index.html is now
+   generated, its download button can no longer rot).
+6. **New unique submission built and validated:**
+   `docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif`
+   — 40,000 dots, 0 on-catalogue, all 15 portal checks pass, sha256
+   `9afe74ab2b2fa631…`. Unique vs all 15 sibling-lane rasters (worst rho 0.0128, worst
+   Jaccard 0.0110, worst overlap 36.5 %). See `IR-57-OVERLAP-01` for the same-lane overlap
+   disclosure (71.1 % vs our own session-1 build; Jaccard 0.2400 — not a copy).
+
+**Still open (carried forward, re-ranked):**
+
+1. **The holdout does not rank live scores (was item 1 — unchanged, still the governing
+   limitation).** ρ = +0.14 holdout-to-live over 12 live scores. The session-2 gain (+0.076
+   HOLDOUT-DTI from the frame fix) is real on the instrument; whether it transfers to live
+   faults is unknown. A live A/B pair (two slots) is still the only way to settle it.
+2. **The dot budget is still capped by extrapolation, not measurement** (was item 5). The cap
+   of 40,000 rests on Spearman −0.8104 over 15 live scores (n = 15, confounded with method
+   quality). The corrected frame's holdout optimum is 46,603; shipping at 40,000 is inside
+   the 35k–46k band every top performer occupies.
+3. **H57-B (tip-lobe) is still NOT RUN** and is now the cheapest untried hypothesis. The
+   registry occupies it (h32-1 0.2649, h38-1 0.2707, h33d 0.2632 live).
+4. **H57-E is still BLOCKED** on the 420 MB feature stack / 1 m DEM (no DrivenData auth;
+   `raw.githubusercontent.com` is off the allowlist — verified again this session).
+5. **Engineering:** `build_submission.py` still re-runs the 4-setting flank sweep every time
+   (~13 min); no test covers `scripts/`; the build is not resumable. Two session-2 traps, both
+   caught by the multi-pass verification and fixed: (a) the session-2 build was once OOM-killed
+   silently because `cmd | tee` masked the exit code — run critical pipelines without a `tee`
+   pipe or with `pipefail`; (b) a `sha256()` helper used `iter(lambda: f.read(1<<20), 1<<20)`
+   with an **int** sentinel — `f.read()` returns `b''` at EOF, never the int, so the loop never
+   terminated (the uniqueness check spun at 99% CPU for 44 minutes before the cause was
+   found). The sentinel is now `b""` in both scripts that had it.
+6. **Session-1 holdout numbers are not comparable to session-2 numbers** for variants
+   containing geometry features (the frame changed). The results page labels both sessions;
+   do not difference them casually.
+
+---
+
 ## 1. The single largest limitation: the holdout does not rank live scores
 
 **This is the limitation that governs everything else.**

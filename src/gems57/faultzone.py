@@ -28,10 +28,74 @@ every feature from visible faults only.
 """
 from __future__ import annotations
 
+import csv
 from collections import Counter
 
 import numpy as np
 from scipy import ndimage
+
+
+# --------------------------------------------------------------- csv shim ---
+# The two INGENIOUS loaders below originally used pandas, which is NOT in
+# requirements.txt (the lane is CPU-only numpy/scipy).  This shim reproduces
+# exactly the DataFrame/Series surface those functions use -- column access
+# with ``.values``, ``.iloc`` scalar access, iteration, ``pd.unique`` order
+# preservation and numeric type inference -- so no call site changes.
+# (IR-57-PANDAS-01)
+
+class _Col:
+    """Minimal stand-in for a pandas Series: ``.values``, ``.iloc``, iteration."""
+
+    def __init__(self, values):
+        self._list = list(values)
+        try:
+            self.values = np.asarray([float(v) for v in self._list])
+        except (TypeError, ValueError):
+            self.values = np.asarray(self._list, dtype=object)
+
+    def __iter__(self):
+        return iter(self._list)
+
+    def __len__(self):
+        return len(self._list)
+
+    @property
+    def iloc(self):
+        col = self
+
+        class _ILoc:
+            def __getitem__(self, i):
+                return col._list[i]
+
+        return _ILoc()
+
+
+class _Table:
+    """Minimal stand-in for the pandas DataFrame slice used here."""
+
+    def __init__(self, columns, rows):
+        self.columns = list(columns)
+        self._cols = {c: _Col([r.get(c, "") for r in rows]) for c in self.columns}
+
+    def __getattr__(self, name):
+        if name.startswith("_"):
+            raise AttributeError(name)
+        try:
+            return self.__dict__["_cols"][name]
+        except KeyError:
+            raise AttributeError(name)
+
+
+def _read_csv(path):
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rdr = csv.DictReader(f)
+        rows = list(rdr)
+        return _Table(rdr.fieldnames or [], rows)
+
+
+def _unique(values):
+    """Order-preserving unique, the ``pd.unique`` contract."""
+    return list(dict.fromkeys(values))
 
 # ---------------------------------------------------------------- linking ---
 
@@ -238,9 +302,8 @@ def pixel_features(visible: np.ndarray, seg_lab: np.ndarray,
 # ------------------------------------------------------------- sense of slip ---
 
 def rasterize_traces(csv_path, shape, transform) -> tuple[np.ndarray, "object"]:
-    """Rasterize INGENIOUS UTM-11 trace segments; return mask + dataframe."""
-    import pandas as pd
-    tr = pd.read_csv(csv_path)
+    """Rasterize INGENIOUS UTM-11 trace segments; return mask + table."""
+    tr = _read_csv(csv_path)
     inv = ~transform
     H, W = shape
     mask = np.zeros((H, W), bool)
@@ -269,8 +332,7 @@ def ingenious_record_segments(csv_path, shape, transform):
     (seg_lab, seg_stats, trace_id_map, trace_sense) where seg_lab holds
     record-segment ids offset by ``base_id``.
     """
-    import pandas as pd
-    tr = pd.read_csv(csv_path)
+    tr = _read_csv(csv_path)
     inv = ~transform
     H, W = shape
     tmap = np.zeros((H, W), dtype=np.int32)
@@ -289,7 +351,7 @@ def ingenious_record_segments(csv_path, shape, transform):
         pix_rows.append((rr.astype(np.int32), ccc.astype(np.int32)))
     trace_sense = np.array(["unk"] + [str(s) for s in tr.sense], dtype=object)
     rec_ids = tr.record_id.values
-    uniq = pd.unique(rec_ids)
+    uniq = _unique(rec_ids)
     seg_stats = {}
     seg_pix = {}
     for new_id, rec in enumerate(uniq, start=1):

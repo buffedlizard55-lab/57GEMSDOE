@@ -163,5 +163,38 @@
     "file": "registry/rasters/19GEMSDOE__h19-4-multiline-corroborated.tif",
     "bytes": 941772,
     "sha256": "ad52f4c2704f2a8721f74b736dc139b6b9e11cbf6130c3b971b91cfb3661ac84"
+  },
+  {
+    "repo": "57GEMSDOE",
+    "submission": "h57-anatomy-enechelon-20261009T070415Z (this repo, previous build)",
+    "owner_reported_score": null,
+    "mode": "zeros",
+    "blob_sha": "session-1 shipped raster; not re-submitted by this session",
+    "path": "docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+    "file": "registry/rasters/57GEMSDOE__h57-anatomy-enechelon-20261009T070415Z-prev-zeros.tif",
+    "bytes": 808408,
+    "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482"
+  },
+  {
+    "repo": "57GEMSDOE",
+    "submission": "faultzone-anatomy-12000dots (parallel session, merged PR #1)",
+    "owner_reported_score": null,
+    "mode": "zeros",
+    "blob_sha": "parallel-run raster that landed on main; checked for lane drift",
+    "path": "docs/downloads/57GEMSDOE__parallel-12000dots-zeros.tif",
+    "file": "registry/rasters/57GEMSDOE__parallel-12000dots-zeros.tif",
+    "bytes": 75896,
+    "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb"
+  },
+  {
+    "repo": "57GEMSDOE",
+    "submission": "faultzone-anatomy-60000px-20261009T054251Z (this repo, superseded)",
+    "owner_reported_score": null,
+    "mode": "zeros",
+    "blob_sha": "earlier 60k-dot build, superseded by the capped-budget build",
+    "path": "docs/downloads/57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+    "file": "registry/rasters/57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+    "bytes": 154835,
+    "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8"
   }
 ]

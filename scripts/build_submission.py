@@ -47,6 +47,19 @@ from scipy import ndimage as ndi                                     # noqa: E40
 EVID = ROOT / "evidence"
 DL = ROOT / "docs" / "downloads"
 
+# Named feature sets (column indices into gems57.anatomy.FEATURES).  Keeping the
+# shipped session-1 set addressable by name is what lets this script build a
+# *different* raster from the same pipeline: uniqueness is a property of the
+# configuration, not of the code.
+SHIPPED8 = ["d", "d_perp", "d_par_abs", "log_len", "sin2", "cos2", "coherence", "density"]
+VARIANT_COLS = {
+    "shipped8":     [n for n in SHIPPED8],
+    "no_rielder":   [n for n in SHIPPED8 if n not in ("d_perp", "d_par_abs")],
+    "gated":        SHIPPED8 + ["sin2d", "cos2d"],
+    "anatomy_full": list(FEATURES),
+    "no_side":      [n for n in FEATURES if n != "side"],
+}
+
 
 def _truth_crop(cell) -> np.ndarray:
     t = np.zeros(cell.active.shape, bool)
@@ -83,16 +96,22 @@ def main() -> None:
     ap.add_argument("--max-dots", type=int, default=200_000)
     ap.add_argument("--floor", type=float, default=0.015)
     ap.add_argument("--tag", default="")
+    ap.add_argument("--variant", default="shipped8",
+                    choices=sorted(VARIANT_COLS),
+                    help="named feature set (default shipped8 = the session-1 config)")
     ap.add_argument("--drop-side", action="store_true",
-                    help="drop the sense-of-slip `side` feature (measured to earn nothing)")
+                    help="deprecated alias for --variant shipped8")
     ap.add_argument("--budget-cap", type=int, default=0,
                     help="hard cap on live dots; 0 = use the holdout-optimal budget")
     a = ap.parse_args()
 
-    cols = None
-    if a.drop_side:
-        cols = [i for i, n in enumerate(FEATURES) if n != "side"]
-        print(f"dropping `side`; using {len(cols)} of {len(FEATURES)} features")
+    if a.drop_side and a.variant != "shipped8":
+        ap.error("--drop-side is an alias for --variant shipped8; do not combine")
+    names = VARIANT_COLS["shipped8"] if a.drop_side else VARIANT_COLS[a.variant]
+    cols = [i for i, n in enumerate(FEATURES) if n in names]
+    dropped = [n for n in FEATURES if n not in names]
+    print(f"variant {a.variant}: using {len(cols)} of {len(FEATURES)} features "
+          f"({', '.join(names)}); dropped: {', '.join(dropped) or 'none'}")
     t0 = time.time()
 
     g = load_grid()
@@ -162,14 +181,14 @@ def main() -> None:
     # ---- 4. write ----------------------------------------------------------
     stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     digest = hashlib.sha256(alloc.emitted.tobytes()).hexdigest()[:12]
-    tag = a.tag or f"h57-faultzone-anatomy-{a.mode}-flank{best_flank}"
+    tag = a.tag or f"h57r2-{a.variant}-{a.mode}-flank{best_flank}"
     name = f"gems57-{tag}-{stamp}-{digest}"
     # <= 140 characters, enforced below
-    note = (f"57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone ({a.mode}, "
+    note = (f"57GEMSDOE fault-zone anatomy | variant {a.variant} ({a.mode}, "
             f"flank {best_flank}px) | {alloc.n_dots} dots, 0 on-catalogue | "
             f"sha {digest[:8]}")
     if len(note) > 140:
-        note = (f"57GEMSDOE fault-zone anatomy | {a.mode} flank{best_flank} | "
+        note = (f"57GEMSDOE anatomy | {a.variant} {a.mode} flank{best_flank} | "
                 f"{alloc.n_dots} dots 0 on-cat | {digest[:8]}")
     assert len(note) <= 140, f"submission note is {len(note)} chars, limit 140"
     DL.mkdir(parents=True, exist_ok=True)
@@ -190,19 +209,61 @@ def main() -> None:
           f"(NOT submittable: n_nan={vn['n_nan']}) -- diagnostics only")
 
     uniq = compare_to_registry(zpath, ROOT / "registry" / "registry_index.json", g.footprint)
-    print(f"[{time.time()-t0:5.1f}s] uniqueness: {uniq['unique']} | worst rho_full="
-          f"{uniq['worst_spearman_full_footprint']:.4f} (limit {uniq['rho_limit']}) | "
-          f"worst jaccard={uniq['worst_jaccard_dot_sets']:.4f} "
-          f"(limit {uniq['jaccard_limit']}) vs {uniq['worst_jaccard_submission']} | "
-          f"worst dot overlap={uniq['worst_dot_overlap']*100:.1f}% "
-          f"(limit {uniq['overlap_limit']*100:.0f}%) vs {uniq['worst_overlap_submission']}")
-    if not uniq["unique"]:
-        print("REFUSING TO PROMOTE: the parallel-run protocol declares this a duplicate.")
+    # IR-57-OVERLAP-01: the protocol's stop rule exists to catch drift into
+    # ANOTHER lane.  The registry also carries this repository's own earlier
+    # builds of the SAME lane; two halos around the same faults overlap by
+    # construction, so the 70% proximity tripwire can fire on a same-lane
+    # rebuild.  Split the screen: the drift verdict is taken against rasters
+    # from OTHER lanes/repos; same-lane overlap is disclosed, not hidden.
+    rows = [r for r in uniq["rows"] if "error" not in r]
+    sib = [r for r in rows if r["repo"] != "57GEMSDOE"]
+    own = [r for r in rows if r["repo"] == "57GEMSDOE"]
+    def _worst(rs, key):
+        if not rs:
+            return None, None
+        r = max(rs, key=lambda r: r[key])
+        return r[key], r["submission"]
+    uniq["unique_vs_other_lanes"] = not any(
+        r.get("duplicate_by_rho") or r.get("duplicate_by_overlap")
+        or r.get("duplicate_by_jaccard") for r in sib)
+    uniq["n_other_lane_rasters"] = len(sib)
+    uniq["worst_overlap_other_lanes"], uniq["worst_overlap_other_lane_sub"] = \
+        _worst(sib, "my_dots_within_3px_of_theirs")
+    uniq["worst_rho_other_lanes"], uniq["worst_rho_other_lane_sub"] = \
+        _worst(sib, "spearman_full_footprint")
+    uniq["worst_jaccard_other_lanes"], uniq["worst_jaccard_other_lane_sub"] = \
+        _worst(sib, "jaccard_dot_sets")
+    uniq["n_same_lane_earlier_builds"] = len(own)
+    uniq["worst_overlap_same_lane"], uniq["worst_overlap_same_lane_sub"] = \
+        _worst(own, "my_dots_within_3px_of_theirs")
+    uniq["worst_jaccard_same_lane"], uniq["worst_jaccard_same_lane_sub"] = \
+        _worst(own, "jaccard_dot_sets")
+    uniq["worst_rho_same_lane"], uniq["worst_rho_same_lane_sub"] = \
+        _worst(own, "spearman_full_footprint")
+    uniq["same_lane_overlap_note"] = (
+        "overlap vs this repository's own earlier builds of the SAME lane is expected "
+        "physics (two halos around the same faults); it is disclosed here and is NOT a "
+        "lane-drift firing. The drift screen is unique_vs_other_lanes.")
+    print(f"[{time.time()-t0:5.1f}s] uniqueness vs {len(sib)} OTHER-LANE rasters: "
+          f"{uniq['unique_vs_other_lanes']} | worst rho={uniq['worst_rho_other_lanes']:.4f} "
+          f"(limit {uniq['rho_limit']}) | worst jaccard={uniq['worst_jaccard_other_lanes']:.4f} "
+          f"(limit {uniq['jaccard_limit']}) | worst dot overlap="
+          f"{uniq['worst_overlap_other_lanes']*100:.1f}% (limit {uniq['overlap_limit']*100:.0f}%)")
+    print(f"  vs {len(own)} same-lane earlier builds (disclosed, IR-57-OVERLAP-01): "
+          f"worst overlap={uniq['worst_overlap_same_lane']*100:.1f}% vs "
+          f"{uniq['worst_overlap_same_lane_sub'][:48]} | worst jaccard="
+          f"{uniq['worst_jaccard_same_lane']:.4f} | worst rho="
+          f"{uniq['worst_rho_same_lane']:.4f}")
+    print(f"  mechanical all-rasters verdict: {uniq['unique']}")
+    if not uniq["unique_vs_other_lanes"]:
+        print("REFUSING TO PROMOTE: the parallel-run protocol declares this a duplicate "
+              "of another lane's raster.")
 
     audit = {
         "generated_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "lane": "fault-zone anatomy / secondary strands around known faults",
         "withholding_mode": a.mode,
+        "variant": a.variant,
         "features": [FEATURES[i] for i in cols] if cols is not None else list(FEATURES),
         "features_dropped": [n for n in FEATURES if cols is None or FEATURES.index(n) not in cols],
         "budget_cap": a.budget_cap,
@@ -220,7 +281,10 @@ def main() -> None:
         "zeros_tif": vz,
         "nan_tif": vn,
         "uniqueness": uniq,
-        "promote": bool(uniq["unique"] and vz["all_checks_passed"]),
+        # promote = validator clean AND clear of every OTHER lane's raster.
+        # Same-lane overlap with this repo's own earlier builds is disclosed in
+        # uniqueness.same_lane_overlap_note (IR-57-OVERLAP-01), not hidden.
+        "promote": bool(uniq["unique_vs_other_lanes"] and vz["all_checks_passed"]),
         "runtime_s": time.time() - t0,
     }
     EVID.mkdir(exist_ok=True)

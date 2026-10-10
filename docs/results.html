@@ -9,6 +9,7 @@
 <nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
 <h2>Holdout results</h2>
+<h3>Session 1 (9-feature set, as first shipped)</h3>
 <h3>Withholding mode <code>all</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
 <table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
 <th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
@@ -17,6 +18,31 @@
 <table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
 <th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
 <th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>d_only</code></td><td class="n">0.1816</td><td class="n">[0.1683, 0.1950]</td><td class="n">0.5044</td><td class="n">[0.4979, 0.5110]</td><td class="n">224992</td><td class="n">22619</td><td class="n">11410.1</td></tr><tr><td><code>d_perp_par</code></td><td class="n">0.1847</td><td class="n">[0.1665, 0.2029]</td><td class="n">0.4949</td><td class="n">[0.4884, 0.5015]</td><td class="n">215859</td><td class="n">22619</td><td class="n">11195.1</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.2538</td><td class="n">[0.2309, 0.2766]</td><td class="n">0.4706</td><td class="n">[0.4641, 0.4771]</td><td class="n">126495</td><td class="n">22619</td><td class="n">10643.9</td></tr><tr><td><code>no_side</code></td><td class="n">0.2556</td><td class="n">[0.2329, 0.2784]</td><td class="n">0.4740</td><td class="n">[0.4675, 0.4806]</td><td class="n">126524</td><td class="n">22619</td><td class="n">10722.4</td></tr></table>
+<h3>Session 2 (11-feature set, corrected strike frame — IR-57-STRIKE-01)</h3>
+<h3>Withholding mode <code>all (session 2, corrected frame)</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
+<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
+<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
+<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>shipped8</code></td><td class="n">0.3270</td><td class="n">[0.2923, 0.3617]</td><td class="n">0.5105</td><td class="n">[0.5040, 0.5171]</td><td class="n">92585</td><td class="n">22641</td><td class="n">11559.2</td></tr><tr><td><code>no_rielder</code></td><td class="n">0.2319</td><td class="n">[0.2126, 0.2513]</td><td class="n">0.4880</td><td class="n">[0.4815, 0.4946]</td><td class="n">156120</td><td class="n">22641</td><td class="n">11049.8</td></tr><tr><td><code>gated</code></td><td class="n">0.3288</td><td class="n">[0.2934, 0.3642]</td><td class="n">0.5146</td><td class="n">[0.5081, 0.5211]</td><td class="n">93030</td><td class="n">22641</td><td class="n">11651.5</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.3265</td><td class="n">[0.2925, 0.3605]</td><td class="n">0.5112</td><td class="n">[0.5047, 0.5177]</td><td class="n">93064</td><td class="n">22641</td><td class="n">11574.6</td></tr></table>
+<h3>Withholding mode <code>detached (session 2, corrected frame)</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
+<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
+<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
+<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>shipped8</code></td><td class="n">0.3262</td><td class="n">[0.3041, 0.3483]</td><td class="n">0.5001</td><td class="n">[0.4935, 0.5066]</td><td class="n">88518</td><td class="n">22619</td><td class="n">11310.9</td></tr><tr><td><code>no_rielder</code></td><td class="n">0.2291</td><td class="n">[0.2150, 0.2433]</td><td class="n">0.4608</td><td class="n">[0.4543, 0.4673]</td><td class="n">144557</td><td class="n">22619</td><td class="n">10422.5</td></tr><tr><td><code>gated</code></td><td class="n">0.3273</td><td class="n">[0.3051, 0.3494]</td><td class="n">0.5017</td><td class="n">[0.4952, 0.5082]</td><td class="n">88591</td><td class="n">22619</td><td class="n">11347.2</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.3275</td><td class="n">[0.3047, 0.3503]</td><td class="n">0.5006</td><td class="n">[0.4941, 0.5071]</td><td class="n">87964</td><td class="n">22619</td><td class="n">11323.4</td></tr></table>
+<div class="note"><b>Session 2 re-measurement (all), corrected strike frame
+(IR-57-STRIKE-01):</b> the shipped feature set re-scored as <code>shipped8</code> gives
+HOLDOUT-DTI 0.3270 [0.2923,
+0.3617]
+against 0.2508 measured in session 1 with the inverted strike fallback.
+The session-1 geometry features (<code>d_perp</code>, <code>d_par_abs</code>, <code>side</code>,
+<code>sin2</code>, <code>cos2</code>) were all computed in a grid-aligned frame; the comparison
+is therefore a bug-fix re-measurement, not a like-for-like replication.</div>
+<div class="note"><b>Session 2 re-measurement (detached), corrected strike frame
+(IR-57-STRIKE-01):</b> the shipped feature set re-scored as <code>shipped8</code> gives
+HOLDOUT-DTI 0.3262 [0.3041,
+0.3483]
+against 0.2556 measured in session 1 with the inverted strike fallback.
+The session-1 geometry features (<code>d_perp</code>, <code>d_par_abs</code>, <code>side</code>,
+<code>sin2</code>, <code>cos2</code>) were all computed in a grid-aligned frame; the comparison
+is therefore a bug-fix re-measurement, not a like-for-like replication.</div>
 <p class="small">Leave-one-quadrant-out: the model applied to a quadrant is trained only on the
 other three. The quadrant-jackknife CI is the one that respects the spatial blocking; the Wilson
 interval only propagates binomial noise on the coverage and ignores spatial heterogeneity, so it is
@@ -26,10 +52,10 @@ narrower and more optimistic. <b>Report the jackknife one.</b></p>
 <p>Whether to exclude the pixels immediately adjacent to a mapped trace was decided by measurement,
 not by hand. The holdout selected <b>0 px</b>.</p>
 <table><tr><th class="n">Excluded flank</th><th class="n">Pooled DTI</th>
-<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td class="n">0 px</td><td class="n">0.2808</td><td class="n">0.5475</td><td class="n">139578</td></tr><tr><td class="n">1 px</td><td class="n">0.2797</td><td class="n">0.5386</td><td class="n">135779</td></tr><tr><td class="n">2 px</td><td class="n">0.2783</td><td class="n">0.5162</td><td class="n">125335</td></tr><tr><td class="n">3 px</td><td class="n">0.2625</td><td class="n">0.4614</td><td class="n">111143</td></tr></table>
+<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td class="n">0 px</td><td class="n">0.3747</td><td class="n">0.5787</td><td class="n">93098</td></tr><tr><td class="n">1 px</td><td class="n">0.3727</td><td class="n">0.5693</td><td class="n">90308</td></tr><tr><td class="n">2 px</td><td class="n">0.3658</td><td class="n">0.5455</td><td class="n">84490</td></tr><tr><td class="n">3 px</td><td class="n">0.3379</td><td class="n">0.4891</td><td class="n">77613</td></tr></table>
 
 <h2>The dot budget, and why the holdout's own optimum was overruled</h2>
-<p>The allocator's unconstrained holdout optimum is <b>69133</b>
+<p>The allocator's unconstrained holdout optimum is <b>46603</b>
 dots per draw, about 3.5x the withheld truth count per draw. That was <b>not</b> shipped.</p>
 <p>Across the 15 registry rasters with an organizer-confirmed score,
 <b>Spearman(dot count, live score) = -0.8104</b>
@@ -44,8 +70,8 @@ than a holdout proxy.</p>
 (0.1922, 0.1894).</p>
 <p>The cap shipped is <b>40000</b>, inside the band every
 top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
-unconstrained 0.2808 vs
-capped 0.2793. The cap is
+unconstrained 0.3747 vs
+capped 0.3747. The cap is
 bought with measured holdout DTI because the live evidence says the holdout is wrong here
 (&rho; = +0.14, IR-57-BUDGET-01).</p>
 
@@ -62,23 +88,27 @@ the dot budget stays comparable to <code>K</code>.</b> The grid is sparse: with 
 ~2.56 M cells the base rate is 0.00221, and a <i>random</i> pixel lands within 3 px of a true one
 only 0.0207 of the time. Measured with the exact
 metric on synthetic fields at that density:</p>
-<table><tr><th class="n">Coverage of truth</th><th class="n">n/K = 0.5</th><th class="n">n/K = 1</th><th class="n">n/K = 2</th><th class="n">n/K = 4</th><th class="n">n/K = 6</th></tr><tr><td class="n">0.100</td><td class="n">0.1215</td><td class="n">0.1196</td><td class="n">0.1132</td><td class="n">0.1068</td><td class="n">0.1016</td></tr><tr><td class="n">0.200</td><td class="n">0.2300</td><td class="n">0.2163</td><td class="n">0.1937</td><td class="n">0.1672</td><td class="n">0.1462</td></tr><tr><td class="n">0.278</td><td class="n">0.3162</td><td class="n">0.2909</td><td class="n">0.2558</td><td class="n">0.2114</td><td class="n">0.1809</td></tr><tr><td class="n">0.300</td><td class="n">0.3413</td><td class="n">0.3132</td><td class="n">0.2729</td><td class="n">0.2221</td><td class="n">0.1887</td></tr><tr><td class="n">0.400</td><td class="n">0.4494</td><td class="n">0.4102</td><td class="n">0.3525</td><td class="n">0.2808</td><td class="n">0.2362</td></tr><tr><td class="n">0.500</td><td class="n">0.5603</td><td class="n">0.5101</td><td class="n">0.4334</td><td class="n">0.3384</td><td class="n">0.2825</td></tr><tr><td class="n">0.700</td><td class="n">0.5602</td><td class="n">0.7048</td><td class="n">0.5940</td><td class="n">0.4542</td><td class="n">0.3689</td></tr><tr><td class="n">1.000</td><td class="n">0.5597</td><td class="n">1.0000</td><td class="n">0.8365</td><td class="n">0.6301</td><td class="n">0.5063</td></tr></table><p class="small">Exact metric, synthetic fields at the measured base rate 0.002211 with sum(k) = 9.380298. A perfect prediction scores 1.0.</p>
-<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3162</b> at half the truth count
-in dots and only <b>0.1809</b> at six times it. That is the whole story of 0.2778. It is roughly
+<table><tr><th class="n">Coverage of truth</th><th class="n">n/K = 0.5</th><th class="n">n/K = 1</th><th class="n">n/K = 2</th><th class="n">n/K = 4</th><th class="n">n/K = 6</th></tr><tr><td class="n">0.100</td><td class="n">0.1208</td><td class="n">0.1181</td><td class="n">0.1129</td><td class="n">0.1062</td><td class="n">0.1007</td></tr><tr><td class="n">0.200</td><td class="n">0.2311</td><td class="n">0.2160</td><td class="n">0.1933</td><td class="n">0.1636</td><td class="n">0.1451</td></tr><tr><td class="n">0.278</td><td class="n">0.3161</td><td class="n">0.2924</td><td class="n">0.2555</td><td class="n">0.2091</td><td class="n">0.1794</td></tr><tr><td class="n">0.300</td><td class="n">0.3406</td><td class="n">0.3134</td><td class="n">0.2736</td><td class="n">0.2218</td><td class="n">0.1897</td></tr><tr><td class="n">0.400</td><td class="n">0.4503</td><td class="n">0.4119</td><td class="n">0.3538</td><td class="n">0.2797</td><td class="n">0.2346</td></tr><tr><td class="n">0.500</td><td class="n">0.5599</td><td class="n">0.5098</td><td class="n">0.4338</td><td class="n">0.3377</td><td class="n">0.2793</td></tr><tr><td class="n">0.700</td><td class="n">0.5601</td><td class="n">0.7057</td><td class="n">0.5944</td><td class="n">0.4543</td><td class="n">0.3694</td></tr><tr><td class="n">1.000</td><td class="n">0.5601</td><td class="n">1.0000</td><td class="n">0.8362</td><td class="n">0.6298</td><td class="n">0.5051</td></tr></table><p class="small">Exact metric, synthetic fields at the measured base rate 0.0022109375 with sum(k) = 9.380297810508182. A perfect prediction scores 0.9999999999999999.</p>
+<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3161</b>
+at half the truth count in dots and only <b>0.1794</b> at six times
+it. That is the whole story of 0.2778. It is roughly
 <b>28% coverage of the live truth set achieved at a near-matched dot budget</b> — and the reason
 nothing sprayed more dots beat it is that beyond <code>n &asymp; 2K</code> every extra dot costs
 0.2 in the denominator while returning far less than 0.2 in credit.</p>
 <p><b>Is higher achievable?</b> Yes, and the route is arithmetic rather than clever: DTI tracks
 coverage roughly one-for-one while <code>n &lesssim; 2K</code>, so the 0.3774 high-water mark implies
 about 40% coverage at a matched budget. Beating 0.2778 therefore needs roughly ten points more
-coverage at the same budget. This lane measured a real coverage gain over distance-only
-(0.0673 DTI, mode <code>all</code>; 0.0721 mode <code>detached</code>, with
-disjoint confidence intervals), which is the right direction — but on <i>withheld catalogue
-pixels</i>, which cling to visible traces. Whether that transfers to genuinely uncatalogued faults
-is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
+coverage at the same budget. This lane's shipped set measures 0.3270
+HOLDOUT-DTI on the corrected frame (mode <code>all</code>; session 1, buggy frame:
+0.2508), and dropping the en-echelon geometry from it costs
+0.0950 — the structure this lane
+set out to find pays for itself. That is the right direction — but it is measured on <i>withheld
+catalogue pixels</i>, which cling to visible traces. Whether it transfers to genuinely
+uncatalogued faults is not knowable from here, and the +0.14 holdout-to-live rank correlation says
+do not assume it
 does. No projected live score is claimed anywhere on this site.</p>
 </main>
-<footer>Generated 2026-10-09 07:32 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<footer>Generated 2026-10-09 19:35 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

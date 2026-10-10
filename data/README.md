@@ -37,7 +37,7 @@ Notes:
 | `qfaults_8_README_fielddefinitions_...txt` | 3,864 | — | INGENIOUS field definitions (shipped with the source) |
 | `qfaults_receipt.json` | 3,422 | — | source receipts: qfaults zip sha256 `c7b091c9ac8bca140ad89ee6bb2bd63dd3ac12e3013acbfd8373d11c9faee59d` (6,131,182 B, 22,956 records); geodetics zip sha256 `0dd65ccc…` (54,515,392 B) |
 
-SGMC is used **only** as the off-catalogue proxy truth for calibration (PROXY-DTI). It is
-never used to build the submission intensity: the lane's intensity is fitted on the
-hide-and-recover holdout of the catalogue itself, and the d&lt;3 px near-band extension is
-flagged as SGMC-informed in the run card.
+SGMC is used **only** as the off-catalogue proxy truth for calibration (PROXY-DTI, see
+`scripts/calibrate_registry.py`). It is never used to build the submission intensity: the
+lane's intensity is fitted on the hide-and-recover holdout of the catalogue itself
+(`src/gems57/anatomy.py`, `src/gems57/fitting.py`), using catalogue geometry only.
