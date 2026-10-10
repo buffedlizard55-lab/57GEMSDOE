@@ -1,121 +1,158 @@
 {
-  "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — qualitative priorities, not scores",
-  "status": "RESEARCH SHORTLIST ONLY; NOT IMPLEMENTED OR RUN; three-experiment/two-hour budget spent",
-  "novelty_scope": "Compared with the inspected fault-zone-anatomy implementations and experiments recorded in this repository; no claim of global novelty.",
-  "ranking_basis": "Mechanistic relevance to missed secondary strands, plausible incremental value, data readiness, and implementation cost. No numerical DTI gain is estimated.",
-  "current_blocker": "A separately SHA-verified raster in the 679-entry inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization.",
+  "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — not scores or validation",
+  "status": "RESEARCH SHORTLIST ONLY; NONE IMPLEMENTED OR RUN; THREE-EXPERIMENT/TWO-HOUR BUDGET SPENT",
+  "novelty_scope": "Compared with the inspected active anatomy implementation, archived experiment scripts, and the pre-merge H57 hypothesis slate in this checkout. Broad sense-by-angle/distance, slip-rate, tip-relay and junction-context ideas have already been proposed or partly measured; the shortlist does not claim global or repository-wide idea novelty.",
+  "ranking_basis": "Qualitative next-test priority combines mechanistic fit to secondary strands, possible incremental signal, data readiness, and implementation cost. No numerical DTI gain or probability is supported. The expected-effect descriptions below are hypotheses, not results.",
+  "current_blocker": "The independently SHA-verified 17GEMSDOE witness covers every allowable candidate cell within 3 px. Under the unchanged literal >70% overlap stop rule, the gate is unsatisfiable for any nonempty candidate while that witness remains in scope. The local public-registry cache is 0/679. Do not alter the gate, download data, implement, evaluate, or build a candidate without explicit protocol resolution and renewed authorization/budget.",
+  "data_audit": {
+    "evidence_file": "evidence/attribute_audit_20261010.json",
+    "classification": "Descriptive row/field inventory only; no host-level join, spatial feature, model, or holdout result.",
+    "trace_segments_utm11": {
+      "rows": 84331,
+      "records": 1126,
+      "sense_counts": {
+        "N": 66861,
+        "RL": 8448,
+        "LL": 7628,
+        "missing": 1394
+      }
+    },
+    "qfault_attributes": {
+      "rows": 22956,
+      "SLIPRTNUM_numeric_rows": 22956,
+      "RECNUM_numeric_rows": 22956,
+      "FCODE2023_rows": 22956,
+      "SECONDARY_nonmissing_rows": 89,
+      "MAPSCALE_missing_rows": 4059
+    },
+    "join_warning": "Completeness in a CSV is not evidence that the attribute can be joined to a visible rasterized host without ambiguity or leakage."
+  },
   "candidates": [
     {
       "rank": 1,
       "id": "FZA-U1",
-      "hypothesis": "Segment-pair stepover and bend geometry predicts connector, tip, or subparallel secondary strands.",
+      "hypothesis": "Visible-host branch-end/junction topology—and its interaction with recorded slip sense—changes the fitted location and relative-strike distribution of nearby secondary strands.",
       "layers": [
-        "Visible existing-fault raster and pinned trace-segment vectors",
-        "Gap width, overlap, segment endpoints, and host orientation",
-        "Recorded sense only when a reliable visible-only join supports a releasing/restraining classification"
+        "Visible-only fault skeleton/branch graph, endpoint and junction class/distance, local strike, cross-/along-strike offset, and component length from the competition fault raster/vectors",
+        "Recorded INGENIOUS trace-segment sense (`sense`: N, RL, LL, or unknown) from data/external/trace_segments_utm11.csv, only after a predeclared visible-host join is shown reliable"
       ],
-      "physical_signature": "Predeclared geometric classes for narrow-gap connectors versus wider-step tip/subparallel zones; no hard-coded textbook shear angle.",
-      "why_it_may_find_missing_faults": "Short linking or subparallel strands may occur between or beside mapped host segments rather than on an existing catalogue trace.",
-      "difference_from_inspected_work": "Tests a segment-pair geometry rule with distinct connector/tip outcomes, not the tested nearest-host distance/offset/length baseline, candidate magnetic-edge strike, or sense-only ablation. Detailed endpoint and gap definitions must be frozen before any future holdout evaluation.",
-      "named_non_fault_mimic": "Alluvial-fan risers, drainage lineaments, magnetic/lithologic contacts, or map generalization can align near fault segments.",
-      "qualitative_priority": "Highest of this shortlist; expected DTI effect unknown.",
-      "implementation_cost": "Medium; vector pairing and leakage-safe visible-only geometry need tests.",
-      "data_readiness": "Local trace vectors are present; provenance and host-sense missingness still require audit.",
+      "physical_signature": "Fit class-conditional distributions for withheld-strand location relative to the nearest visible tip or junction: distance, signed normalized along-strike/cross-strike offset, and relative strike. Estimate only on training folds, shrink sparse topology/sense classes to a pooled fit, and impose no textbook angle.",
+      "why_it_may_find_missing_faults": "Splays and relay strands may cluster near visible branch terminations or junctions rather than uniformly along a broad halo. A fitted topology-conditioned neighborhood can allocate probability to off-trace geometry; recorded sense is only a possible stratifier, not a hard-coded stepping rule.",
+      "difference_from_inspected_work": "The archived explore_zone.py/explore_zone2.py scripts measured d, relative azimuth, normalized along-strike position, length, and marginal sense-conditioned distance; the newer run_sense_experiment.py and run_orientation_experiments.py tested recorded-sense feature sets with existing geometry/orientation. The active feature matrix has no explicit visible branch-end/junction topology by fold. This is a narrower topology-conditioned refinement, not a new generic sense-by-angle/distance proposal or a claim of global novelty.",
+      "prior_work_note": "An archived pre-merge slate (docs/research/hypotheses_h57.md) had already proposed generic tip-relay and junction/stepover ideas, but no result in that slate shows them implemented or run. The historical run_orientation_experiments.py also included sense with geometry/orientation; its recorded-sense comparison is HOLDOUT-DTI, evaluator gems57-pooled-hide-v2, 11,321 withheld positives, paired delta +0.003580783591493636, 95% CI [-0.005722027160876473, 0.014532120997528746], and sense was not retained. Do not present generic sense conditioning or a generic relay idea as novel; only this explicit visible-topology × sense-stratified fit remains untested in the inspected code.",
+      "named_non_fault_mimic": "Raster fragmentation, cartographic line breaks, lithologic/dike contacts, drainage lineaments, and vector-snapping errors can create false endpoints/junctions or apparent sense-specific relays.",
+      "relative_expected_dti_potential": "Highest relative priority in this shortlist because it targets off-trace secondary-strand localization; effect direction and DTI gain are unknown, confidence is very low, and topology/sense coverage may be inadequate.",
+      "implementation_cost": "Medium-high; reconstruct endpoint/junction topology from each visible-only holdout mask, test raster fragmentation and boundary artifacts, validate the visible-host sense join, preregister class support/shrinkage, and run independent feature canaries.",
+      "data_readiness": "The official fault raster and local vectors are present, but no endpoint/junction feature or per-fold topology inventory was audited. The 84,331-row trace CSV has 1,394 missing sense values; matching a record to a visible raster host is unverified. Row completeness is not a join.",
       "sources": [
         {
-          "citation": "Wang et al. (2017), Strain partitioning and stress perturbation around stepovers and bends of strike-slip faults: Numerical results, Tectonophysics 721, 211–226.",
-          "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
-          "checked_takeaway": "Models show stress/strain localization around bends and stepovers; narrow and wider steps can localize deformation differently. Mechanism support only, not a DTI claim."
+          "citation": "INGENIOUS - Great Basin Regional Dataset Compilation, GDR submission 1391, Quaternary Faults v2 and field definitions.",
+          "url": "https://gdr.openei.org/submissions/1391",
+          "checked_takeaway": "The public GDR page lists the QFault/INGENIOUS fault-trace archive and field-definition text; its page states CC BY 4.0. Local field definitions describe the available sense classes."
         },
         {
-          "citation": "Zhu et al. (2024), An overview of structures associated with bends of strike-slip faults, Marine and Petroleum Geology 167, 106983.",
-          "url": "https://doi.org/10.1016/j.marpetgeo.2024.106983",
-          "checked_takeaway": "Structures vary with angle, displacement, stress regime, and analogue/numerical setup; no universal bend rule is assumed."
+          "citation": "Wang et al. (2017), strain partitioning and stress perturbation around strike-slip stepovers and bends.",
+          "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
+          "checked_takeaway": "Mechanistic context for geometry-dependent secondary structure; it does not prescribe a universal angle or predict contest DTI."
         }
       ],
-      "future_test_gate": "Only after renewed authorization: preregister visible-only pair rules, then whole-segment hide-and-recover, pixel-exact masking, pooled DTI, canary, and registry checks."
+      "future_test_gate": "Only after explicit resolution of the universal-overlap blocker, renewed authorization, and a new budget: build graph features from visible faults only in each fold; freeze topology bins and sense-join rules before holdout outcomes; test each feature alone for leakage (AUC >0.90 means leakage until resolved); whole-segment buffered hide-and-recover, pixel-exact masking, pooled DTI alpha=0.2, beta=0.8, 300 m triangular kernel, paired pooled-control CI, and all surface/final-dot registry checks."
     },
     {
       "rank": 2,
       "id": "FZA-U2",
-      "hypothesis": "Fault-tip relay and termination anatomy differs from the mid-fault damage-zone wall and predicts some missed secondary strands.",
+      "hypothesis": "Recorded host slip rate modifies the fitted radial/cross-strike width and decay of nearby secondary-strand anatomy, beyond host length alone.",
       "layers": [
-        "Visible fault raster and vector endpoints",
-        "Signed along-strike tip distance and neighboring-segment linkage"
+        "Visible-only fault geometry and host length from the existing mapped fault raster/trace vectors",
+        "QFault/INGENIOUS `SLIPRTNUM` or its documented rate category `SCODE2023` from data/external/qfault_attributes.csv, only after a reliable host-level join"
       ],
-      "physical_signature": "Matched tip-neighborhood versus mid-wall recovery, evaluated on both sides and with relay/linkage kept distinct from termination.",
-      "why_it_may_find_missing_faults": "Some secondary strands may form relay/link structures near segment ends, while other tips may be barriers or growth-arrest zones.",
-      "difference_from_inspected_work": "Tests signed endpoint-relative position and segment linkage rather than unsigned nearest-fault distance, an isotropic halo, or the previously tested candidate-strike term.",
-      "named_non_fault_mimic": "Alluvial-fan margins, dry washes, road corridors, and mapped trace truncation can create apparent tip lineaments.",
-      "qualitative_priority": "Second; expected DTI effect unknown.",
-      "implementation_cost": "Low to medium; careful vector endpoint matching and matched controls required.",
-      "data_readiness": "Existing vector trace endpoints are present; no new raster is required.",
+      "physical_signature": "Estimate whether the distance-decay/width residual varies with recorded mm/year slip rate after controlling for length and fitted relative orientation. Treat slip rate as a measured rate, not cumulative displacement, fault maturity, or a substitute for displacement.",
+      "why_it_may_find_missing_faults": "If current deformation rate is associated with active secondary faulting, conditioning the width/decay of the halo could identify off-catalogue strands near hosts with different recorded rates; only held-out recovery can test this.",
+      "difference_from_inspected_work": "The inspected anatomy uses connected-component length as a noisy host-size proxy; it has not used a validated host-level QFault slip-rate interaction. This is distinct from changing length's exponent or reusing the previously tested geometry-only model.",
+      "named_non_fault_mimic": "Slip-rate mapping effort, fault age/recency coding, uneven catalogue completeness, and lithologic contrasts may covary with assigned slip rate and mimic a physical width response.",
+      "relative_expected_dti_potential": "Low to medium relative potential; the literature supports a displacement/damage relation, not a gain from present-day slip rate. Expected DTI change is unknown.",
+      "implementation_cost": "Low to medium after a validated join; otherwise medium/high because attribute version, segment matching, duplicate records, and spatial leakage must be resolved first.",
+      "data_readiness": "SLIPRTNUM is numeric on all 22,956 qfault attribute rows (84 distinct values, 0.0001–4.5 mm/yr). These are row-level counts only; no join to visible rasterized hosts was tested. The source field is assigned slip rate, not cumulative displacement.",
       "sources": [
         {
-          "citation": "d’Alessio & Martel (2004), Fault terminations and barriers to fault growth, Journal of Structural Geology 26, 1885–1896.",
-          "url": "https://doi.org/10.1016/j.jsg.2004.01.010",
-          "checked_takeaway": "Small faults near a major fault-system tip can diffuse stress and inhibit growth; tip enrichment is not assumed to be universally beneficial."
+          "citation": "INGENIOUS - Great Basin Regional Dataset Compilation, GDR submission 1391 and the linked QFault v2 field definitions.",
+          "url": "https://gdr.openei.org/submissions/1391",
+          "checked_takeaway": "The source lists QFault v2 fault traces and slip-rate attributes; the local field definitions specify SLIPRTNUM in mm/year."
         },
         {
-          "citation": "Wang et al. (2017), Tectonophysics 721, 211–226.",
-          "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
-          "checked_takeaway": "Wider stepovers can localize strain near segment tips in the modeled settings; this motivates a bidirectional test, not a gain prediction."
+          "citation": "Savage & Brodsky (2011), collateral damage and displacement-dependent fracture/secondary-strand distributions.",
+          "url": "https://doi.org/10.1029/2010JB007665",
+          "checked_takeaway": "Supports testing damage-zone scaling with displacement; it does not equate present-day slip rate with cumulative displacement."
         }
       ],
-      "future_test_gate": "Hide whole components and compare tip versus matched mid-wall held-out positives without truth-informed endpoint definitions; reject leakage or unstable tip-class results."
+      "future_test_gate": "Pre-audit join coverage and missingness without holdout outcomes; keep length-only as the frozen comparator; fit one predeclared slip-rate interaction only on visible hosts; apply the full holdout, canary, CI, and registry protocol.",
+      "prior_work_note": "Slip-rate-scaled damage-zone width was also proposed as H57-2 in the archived pre-merge hypothesis slate (docs/research/hypotheses_h57.md), but no model result there shows it implemented or run. It remains untried, not a newly invented idea; the current audit adds a row-level availability check and a stricter warning that rate is not cumulative displacement."
     },
     {
       "rank": 3,
       "id": "FZA-U3",
-      "hypothesis": "A defensible host-maturity or displacement-related covariate changes secondary-strand density and damage-zone decay beyond the current host-length proxy.",
+      "hypothesis": "The recorded upper-bound recency of the most recent surface-deforming earthquake changes the relative distance/offset distribution of secondary strands around a visible host.",
       "layers": [
-        "Visible trace geometry and component length",
-        "Independently recorded host attributes, only after a documented join and missingness audit"
+        "Visible-only fault strike, distance, offset, and host length",
+        "QFault/INGENIOUS `RECNUM` or documented recency category `RCODE2023` from data/external/qfault_attributes.csv, only after a reliable host-level join"
       ],
-      "physical_signature": "An empirically estimated change in radial strand density/decay with host maturity or cumulative displacement; present-day slip rate is not silently substituted for cumulative displacement.",
-      "why_it_may_find_missing_faults": "Damage-zone width and secondary-fracture distribution can evolve with host displacement, so reliable maturity metadata could distinguish where strands are likely beyond a simple length proxy.",
-      "difference_from_inspected_work": "Adds one independently justified host covariate to the tested length-based anatomy; it does not treat fault length or slip rate as measured displacement.",
-      "named_non_fault_mimic": "Inherited joints, lithologic contacts, mapping intensity, and catalogue attribute-boundary errors.",
-      "qualitative_priority": "Third; expected DTI effect unknown and data-dependent.",
-      "implementation_cost": "Low to medium if a reliable attribute join exists; otherwise data-blocked.",
-      "data_readiness": "Local attribute tables exist, but host-level coverage, join precision, and cumulative-displacement availability have not been established.",
+      "physical_signature": "Test a predeclared recency-class interaction with the fitted distance and relative-strike/offset distribution. Estimate both near/far and along-strike patterns; do not impose the sign of the effect or interpret recency as displacement.",
+      "why_it_may_find_missing_faults": "If recently surface-deforming hosts have a different distribution of mapped secondary strands than long-inactive hosts, a recency-conditioned anatomy prior could place mass on new nearby geometry without simply extending catalogue traces.",
+      "difference_from_inspected_work": "This is a recency-by-anatomy interaction, not the global distance/length/orientation baseline, not a sense-only feature, and not the slip-rate interaction in candidate 2. The attribute is present in the table but has not been joined or modeled in this repository's inspected active lane.",
+      "named_non_fault_mimic": "Regional differences in dating, preservation of geomorphic scarps, erosion, and map compilation can make the recency attribute appear to predict trace geometry even when no physical strand-age effect exists.",
+      "relative_expected_dti_potential": "Low relative potential and low confidence; no direction or numerical DTI gain is supported before testing.",
+      "implementation_cost": "Medium; requires robust recency categories, host-level join validation, and safeguards against class/survey-region confounding.",
+      "data_readiness": "RECNUM is numeric on all 22,956 qfault attribute rows (67 distinct values; 88–66,000,000 in the audited file). The field definition calls it an upper-bounding time in years of the most recent surface-deforming earthquake. Row-level completeness does not establish a valid host join.",
       "sources": [
         {
-          "citation": "Savage & Brodsky (2011), Collateral damage: Evolution with displacement of fracture distribution and secondary fault strands in fault damage zones, JGR: Solid Earth 116, B03405.",
+          "citation": "INGENIOUS - Great Basin Regional Dataset Compilation, GDR submission 1391 and the linked QFault v2 field definitions.",
+          "url": "https://gdr.openei.org/submissions/1391",
+          "checked_takeaway": "The GDR page lists the public QFault v2 archive; the local field definitions define RECNUM/RCODE2023 as recency bounds/categories."
+        },
+        {
+          "citation": "Savage & Brodsky (2011), fracture distribution and secondary strands in fault damage zones.",
           "url": "https://doi.org/10.1029/2010JB007665",
-          "checked_takeaway": "Observed fracture/secondary-strand patterns relate to displacement; this does not justify replacing cumulative displacement with fault length or present-day slip rate."
+          "checked_takeaway": "Provides damage-zone context only; the proposed recency-conditioned response is untested."
         }
       ],
-      "future_test_gate": "First inspect joins and missingness without holdout outcomes; only a prespecified independently supported covariate may enter a later spatial holdout."
+      "future_test_gate": "Freeze age-bin and regional-confounding controls before holdout; derive attributes only from visible hosts; use the specified buffered hide-and-recover/canary protocol and stop on any unresolved >0.90 AUC.",
+      "prior_work_note": "A repository search of the reviewed experiment scripts, active anatomy code, and archived H57 slate found no RECNUM/RCODE2023 join or recency-conditioned model. This is untried in the checked-in work, not a claim of global novelty."
     },
     {
       "rank": 4,
       "id": "FZA-U4",
-      "hypothesis": "Independent geophysical contrast inside a fixed visible-fault damage-zone halo can corroborate some secondary strands beyond geometry alone.",
+      "hypothesis": "An independently estimated host-fault slip/dilation-tendency attribute modifies the fitted orientation/distance distribution of secondary strands around visible faults.",
       "layers": [
-        "A fixed halo from visible-only mapped fault geometry",
-        "Magnetic-gradient magnitude/coherence or other officially documented local geophysical bands"
+        "Visible-only host geometry from the competition's mapped fault raster and trace vectors",
+        "USGS ScienceBase DOI 10.5066/P9YL58W6 Quaternary-fault slip/dilation tendency shapefile, if its fields and geometries can be joined to the contest hosts"
       ],
-      "physical_signature": "Local edge/gradient support within a preregistered halo; this is not an unconstrained survey-wide geophysical classifier and is distinct from the already-tested candidate magnetic-edge relative-strike feature.",
-      "why_it_may_find_missing_faults": "A strand without a catalogue trace may still offset or juxtapose magnetized units, producing a local geophysical contrast near an existing fault zone.",
-      "difference_from_inspected_work": "Tests within-halo scalar corroboration, not the previously tested candidate magnetic-edge tangent/orientation interaction.",
-      "named_non_fault_mimic": "Magnetic lithologic contacts, surficial drainage, cultural metal, and flight-line leveling artifacts.",
-      "qualitative_priority": "Fourth; expected DTI effect unknown.",
-      "implementation_cost": "High because exact file coverage, CRS, band meaning, and registration must be verified first.",
-      "data_readiness": "The competition feature stack is absent from this checkout. Official GeoDAWN metadata identifies public access and CC BY 4.0, but actual AOI coverage and competition-grid alignment have not been checked; no external raster was downloaded.",
+      "physical_signature": "Within an anatomy halo fixed from visible hosts, test a continuous tendency-by-relative-strike/distance interaction using the dataset's documented tendency fields; estimate the geometry from holdout training only and do not hard-code angles.",
+      "why_it_may_find_missing_faults": "A stressed or dilatant host may have a different secondary-strand neighborhood; the proposed modifier would rank nearby off-trace geometry, not merely rediscover the host trace. This is a structural-fault hypothesis, not a geothermal-resource classifier.",
+      "difference_from_inspected_work": "Uses a separately published fault-segment tendency dataset rather than the already-tested 19-band geophysical stack or a scalar geophysical edge; no such tendency join or interaction is present in the inspected active implementation.",
+      "named_non_fault_mimic": "Stress-model assumptions, uncertain fault geometry, lithologic boundaries, and shared source-fault ancestry can create an apparent tendency/strand association without predicting a new fault.",
+      "relative_expected_dti_potential": "Low and highly uncertain until contest-grid overlap and a leakage-safe independent join are demonstrated; no numerical gain is estimable.",
+      "implementation_cost": "High; retrieve and receipt the official file, review reuse terms, inspect schema, test geographic overlap, transform/reproject, and validate the host join before any feature can be considered.",
+      "data_readiness": "The official USGS ScienceBase DOI record is publicly viewable and lists downloadable Great Basin and INGENIOUS shapefile/KMZ archives. No archive was downloaded. Exact contest-AOI overlap, feature schema/CRS, reuse terms for this competition, and registration to the 100 m grid remain unverified; this is data-gated, not yet a viable model feature.",
       "sources": [
         {
-          "citation": "Grauch (2002), High-resolution aeromagnetic survey to image shallow faults, Dixie Valley geothermal field, Nevada, USGS Open-File Report 2002-384.",
-          "url": "https://doi.org/10.3133/ofr02384",
-          "checked_takeaway": "Official report record documents an aeromagnetic shallow-fault imaging analogue; it does not establish coverage or alignment with the contest grid."
+          "citation": "Siler, D.L., Shapefile for slip tendency and dilation tendency calculated for Quaternary faults in the Great Basin, USGS data release.",
+          "url": "https://doi.org/10.5066/P9YL58W6",
+          "checked_takeaway": "The official ScienceBase record describes segment-level slip/dilation tendency under stated ambient-stress conditions and lists downloadable archives; it does not establish contest-grid coverage or predictive value."
         },
         {
-          "citation": "Glen & Earney (2024), GeoDAWN airborne magnetic and radiometric surveys of the northwestern Great Basin, GDR submission 1591 / USGS ScienceBase DOI 10.5066/P93LGLVQ.",
-          "url": "https://gdr.openei.org/submissions/1591",
-          "checked_takeaway": "Public catalog record and CC BY 4.0 availability were checked; spatial overlap, usable files, CRS, and grid compatibility remain unverified."
+          "citation": "INGENIOUS - Great Basin Regional Dataset Compilation, GDR submission 1391.",
+          "url": "https://gdr.openei.org/submissions/1391",
+          "checked_takeaway": "The source documents the regional INGENIOUS data compilation and its public data/metadata context; it does not prove the specific candidate join."
         }
       ],
-      "future_test_gate": "Only after an authorized official file is obtained and coverage/grid provenance verified: preregister the fixed halo and transforms, recompute with whole-segment hiding, then apply canary and registry gates."
+      "future_test_gate": "Do not obtain or process the archive under the spent budget. Only after explicit authorization: review actual license/terms, archive receipt and hash, AOI/grid/schema, and join quality; then preregister one feature and follow the full holdout, canary, and registry gates."
     }
-  ]
+  ],
+  "cross_candidate_controls": {
+    "mapping_observation_process": "FCODE2023 is complete in the audited attribute table and MAPSCALE is missing on 4,059/22,956 rows. Treat mapping certainty/scale as possible confounding and uncertainty controls, not as evidence that a fault exists. Any future use requires a visible-host join audit.",
+    "sparse_secondary_attribute": "SECONDARY is populated on only 89/22,956 qfault rows; do not infer or impute missing secondary-slip classes.",
+    "shared_protocol": "If a future experiment is separately authorized, reuse the shared cache and evaluator/writer; whole-segment buffered hide-and-recover; derive catalogue features only from visible faults; mask visible faults pixel-exactly; pooled DTI alpha=0.2, beta=0.8, 300 m triangular kernel; individual-feature leakage canary (AUC >0.90 is leakage until resolved); registry correlation and 3-pixel overlap checks before placement and on final dots; one JSON run card per experiment.",
+    "stop_state": "The budget is spent and the universal-overlap witness remains in scope. This shortlist is not implementation, download, holdout, TIFF, or submission authorization.",
+    "prior_work_review": "Reviewed scripts/explore_zone.py, scripts/explore_zone2.py, scripts/run_sense_experiment.py, scripts/run_orientation_experiments.py, src/gems57/anatomy.py, and the archived docs/research/hypotheses_h57.md. The older geometry/sense measurements and feature ablations are not called untried; generic tip relay/junction and slip-rate ideas were previously proposed but not shown run. The current four items are unrun, with novelty scoped to their specific operationalization in this repository, not global novelty."
+  }
 }

@@ -26,6 +26,7 @@ the candidate.</p></div>
 11321
 withheld positives; evaluator <code>gems57-pooled-hide-v2</code>.
 This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
+<div class="note"><b>Holdout reconciliation:</b> the historical H57-K `lane8_geophys` result uses 22,619 withheld positives across 8 recorded cells; its evaluator version/input hashes are not pinned in that arm record, and its single-feature canary flags `d`, `d_perp`, and `vis_dtip` above the 0.90 leakage threshold. The later pooled-hide-v2 records use 11,321 withheld positives and stored code hashes that do not match this tree. The soft surface and binary allocation are also different representations. These values are <b>not comparable</b>; no candidate has beaten a valid comparable benchmark. See <a href="data/holdout_scope_reconciliation_20261010.json">the machine-readable reconciliation</a>.</div>
 <div class="card"><h3>Indexed public-inventory comparison</h3>
 <p>Recorded public owner-repository inventory: 679 indexed rasters;
 not organizer-complete. Max Spearman 0.821258; max Jaccard diagnostic
@@ -36,11 +37,27 @@ not organizer-complete. Max Spearman 0.821258; max Jaccard diagnostic
 78 firings are itemized.
 Literal verdict: <b>HOLD / STOP; forward-overlap gate fired before placement</b>.</p>
 <p>The protocol says log and stop. Reverse-overlap or saturation exceptions are not silently applied.</p></div>
-<h2>Reported live-score figures</h2>
-<p>The historical <b>0.2778</b> figure is labeled
-<b>OWNER-REPORTED; no organizer submission-page receipt in this repository</b>. Conflicting
-reported highs [0.3195, 0.3774] are not verified by a
-submission-page receipt tied to exact bytes. No `ORGANIZER-CONFIRMED` score is available here.</p>
+
+<div class="card"><h3>Public leaderboard snapshot — context only, not a submission receipt</h3>
+<p><b>Evidence class: organizer-published public-board values, not ORGANIZER-CONFIRMED exact-file
+scores.</b> Retrieved 2026-10-10T20:40:27Z; latest recorded attempt 2026-10-10T20:40:27Z. Method: web page retrieval tool; manual selected-row capture, not scripts/refresh_feed.py.
+See the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">official DrivenData leaderboard</a>.</p>
+<p>Selected public rows 1-22 only, not a complete registry or submission-page receipt list; no file-hash attribution</p>
+<table><tr><th>Rank</th><th>Participant display</th><th>Public-board DTI</th></tr><tr><td>1</td><td>xiaofanhu</td><td>0.3774</td></tr><tr><td>2</td><td>JerryDataWorks</td><td>0.3418</td></tr><tr><td>3</td><td>alexoktaba</td><td>0.3361</td></tr><tr><td>8</td><td>DARD</td><td>0.3195</td></tr><tr><td>22</td><td>extradr19</td><td>0.2778</td></tr></table>
+<p>No submission-page receipt or raster hash ties these participant rows to H33-2-B2 or to any
+artifact in this repository. The public rank-22 value of 0.2778 numerically matches an
+owner-reported H33 figure, but that is not evidence that the participant, score, or file is the
+same. Do not infer attribution or causality.</p>
+<p class="note">This capture used the page-retrieval tool, not the repository's scheduled raw-HTML refresh script. Only the selected rows shown in the saved snapshot were retained; raw HTML was not saved.</p>
+</div>
+
+<h2>Owner-reported H33 value and artifact audit</h2>
+<p>The historical H33 <b>0.2778</b> value remains labeled
+<b>OWNER-REPORTED; no organizer submission-page receipt in this repository</b>. It is neither a
+HOLDOUT-DTI result nor an ORGANIZER-CONFIRMED exact-file result. The public
+board values shown above are organizer-published, but no submission-page receipt or raster hash
+in this checkout ties them to H33-2-B2 or any exact repository bytes. No
+`ORGANIZER-CONFIRMED` exact-file score is available here.</p>
 <div class="card"><h3>What the available 0.2778 artifact audit suggests</h3>
 <p>The separate raster audit found the named H33-2-B2 artifact is an exact 2-pixel catalogue-flank
 prune of a 40,199-positive base: 2,545 cells were removed, none added, leaving 37,654. Sparse
@@ -51,10 +68,10 @@ unavailable, so this is a plausible mechanism—not a causal explanation for 0.2
 <div class="note"><b>Improvement:</b> possible in principle, but no expected gain or probability can be estimated from the evidence here. The universal overlap witness currently blocks every nonempty candidate under the unchanged literal rule, and the experiment budget is spent.</div>
 <h2>Could a future candidate improve?</h2>
 <p>Possibly, but the available evidence cannot establish a probability or expected gain. The local
-holdout and a reported live score are different instruments; the old candidate also fails the
+holdout reading and owner-reported value are different evidence classes; the old candidate also fails the
 uniqueness gate. The experiment budget is spent, so this audit makes no gain claim and runs no new
 experiment. The next step is an independently authorized, version-pinned validation—not a score
 projection.</p>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 21:13 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

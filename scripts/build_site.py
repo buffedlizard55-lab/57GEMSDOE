@@ -58,6 +58,22 @@ def load_card() -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_public_feed() -> tuple[dict, dict]:
+    """Load the last successful public board snapshot and latest refresh attempt."""
+    snapshot_path = EVIDENCE / "leaderboard_snapshot.json"
+    status_path = EVIDENCE / "feed_refresh_status.json"
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8")) if snapshot_path.is_file() else {}
+    status = json.loads(status_path.read_text(encoding="utf-8")) if status_path.is_file() else {}
+    return snapshot, status
+
+
+def load_hypotheses() -> dict:
+    path = EVIDENCE / "hypotheses_current.json"
+    if not path.is_file():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def esc(value) -> str:
     return html.escape(str(value))
 
@@ -241,41 +257,143 @@ make an old score or candidate retroactively valid.</p>
 """
 
 
-def build_hypotheses() -> str:
-    hypotheses = [
-        ("1", "Segment-pair stepover/bend geometry", "Existing fault raster + INGENIOUS trace vectors",
-         "Gap width, overlap, connecting faults, and tip/subparallel localization",
-         "Alluvial-fan risers, drainage lineaments, lithologic contacts", "High priority; medium cost"),
-        ("2", "Fault-tip relay/termination anatomy", "Existing fault raster + vector endpoints",
-         "Signed along-strike tip distance and neighboring-segment linkage",
-         "Dry washes, roads, and alluvial-fan margins", "Second; low-to-medium cost"),
-        ("3", "Host maturity/scale-conditioned strand density", "Pinned QFault/INGENIOUS attributes + trace vectors",
-         "Secondary-strand density/decay conditioned on a defensible host covariate",
-         "Inherited joints and lithologic contacts", "Third; attribute-join audit first"),
-        ("4", "Halo-restricted geophysical corroboration", "Official GeoDAWN data only after grid check; competition feature stack absent",
-         "Magnetic-gradient or terrain-edge support within a fixed visible-only halo",
-         "Magnetic lithologic contacts, drainage, and anthropogenic metal", "Fourth; high data/registration cost"),
-    ]
-    rows = "".join(
-        f"<tr><td>{n}</td><td><b>{esc(name)}</b></td><td>{esc(layers)}</td>"
-        f"<td>{esc(signature)}</td><td>{esc(mimic)}</td><td>{esc(priority)}</td></tr>"
-        for n, name, layers, signature, mimic, priority in hypotheses
-    )
+def build_hypotheses(hypotheses: dict) -> str:
+    candidates = hypotheses.get("candidates", [])
+    cards = []
+    for candidate in candidates:
+        source_links = "".join(
+            f'<li><a href="{esc(source.get("url", ""))}">'
+            f'{esc(source.get("citation", "Source record"))}</a>: '
+            f'{esc(source.get("checked_takeaway", ""))}</li>'
+            for source in candidate.get("sources", [])
+        )
+        prior_work = candidate.get("prior_work_note")
+        prior_html = (
+            f'<p><b>Prior work / distinction:</b> {esc(prior_work)}</p>'
+            if prior_work else ""
+        )
+        cards.append(f"""
+<div class="card">
+<h3>Rank {esc(candidate.get('rank'))}: {esc(candidate.get('hypothesis', ''))}
+<span class="tag">UNTRIED</span></h3>
+<p><b>Layers/data:</b> {esc('; '.join(candidate.get('layers', [])))}</p>
+<p><b>Physical signature:</b> {esc(candidate.get('physical_signature', ''))}</p>
+<p><b>Why it may find missing faults:</b> {esc(candidate.get('why_it_may_find_missing_faults', ''))}</p>
+<p><b>What differs from inspected work:</b> {esc(candidate.get('difference_from_inspected_work', ''))}</p>
+{prior_html}
+<p><b>Named non-fault mimic:</b> {esc(candidate.get('named_non_fault_mimic', ''))}</p>
+<p><b>Relative expected DTI potential:</b> {esc(candidate.get('relative_expected_dti_potential', 'Not estimated'))}</p>
+<p><b>Implementation cost:</b> {esc(candidate.get('implementation_cost', 'Not estimated'))}</p>
+<p><b>Data readiness:</b> {esc(candidate.get('data_readiness', 'Not audited'))}</p>
+<p><b>Sources reviewed:</b></p><ul>{source_links}</ul>
+<p><b>Future test gate:</b> {esc(candidate.get('future_test_gate', 'Not specified'))}</p>
+</div>""")
+    rows = "".join(cards)
+    status = hypotheses.get("status", "RESEARCH SHORTLIST ONLY; NOT RUN")
+    ranking = hypotheses.get("ranking_basis", "No numerical DTI gain is estimated.")
+    blocker = hypotheses.get("current_blocker", "Current protocol status not recorded.")
     return f"""
 {hold_banner()}
-<h2>Four ranked, untried fault-zone-anatomy hypotheses</h2>
-<p>Rank is a future test priority based on mechanistic relevance, cost, and data readiness—not a
-numerical expected DTI gain. No candidate below was run in this audit. Full evidence, cautions,
-future tests, and source links are in <a href="research/hypotheses.md">docs/research/hypotheses.md</a>.</p>
-<table><tr><th>Rank</th><th>Hypothesis</th><th>Layers</th><th>Physical signature</th><th>Named non-fault mimic</th><th>Priority/cost</th></tr>{rows}</table>
-<p>Recorded-sense-only features and the previous distance/offset/length baseline are excluded from
-the “untried” list because they were already tested. The recorded three-experiment budget is
-spent. No implementation, new data download, or holdout result is authorized by this shortlist.</p>
-<div class="note"><b>Not actionable under current uniqueness protocol:</b> the session-5 verified witness covers every allowable candidate cell under the 3-px test, making the literal &gt;70% rule unsatisfiable for any nonempty candidate. This ranking is future research context only; no threshold exception is proposed.</div>
+<h2>{len(candidates)} ranked, untried fault-zone-anatomy hypotheses</h2>
+<p><b>{esc(status)}</b></p>
+<p>{esc(ranking)}</p>
+<p>Attribute counts are descriptive only. No visible-host spatial join, model test, holdout score,
+or candidate implementation was performed. The shortlist is not approval to download data, run
+experiments, build a TIFF, or use a competition slot. The full structured evidence and protocol
+controls are in <a href="research/hypotheses.md">docs/research/hypotheses.md</a> and
+<a href="data/hypotheses_current.json">the JSON shortlist</a>.</p>
+<div class="note"><b>Current blocker:</b> {esc(blocker)}</div>
+{rows}
 """
 
 
-def build_results(card: dict) -> str:
+def build_public_board(snapshot: dict, status: dict) -> str:
+    """Render organizer-published public values without implying file attribution."""
+    url = snapshot.get(
+        "source_url",
+        "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+    )
+    retrieved = snapshot.get("retrieved_utc") or snapshot.get("retrieved_date_utc", "NOT RECORDED")
+    attempted = status.get("attempted_utc", "NOT RECORDED")
+    method = str(status.get("method", snapshot.get("retrieval_method", "not recorded")))
+    rows = snapshot.get("rows", [])
+    freshness_warning = ""
+    try:
+        checked = dt.datetime.fromisoformat(str(retrieved).replace("Z", "+00:00"))
+        if checked.tzinfo is None:
+            checked = checked.replace(tzinfo=dt.timezone.utc)
+        age = dt.datetime.now(dt.timezone.utc) - checked.astimezone(dt.timezone.utc)
+        if age > dt.timedelta(hours=26) or age < -dt.timedelta(minutes=5):
+            freshness_warning = (
+                '<p class="note"><b>STALE / CLOCK-SKEWED SNAPSHOT.</b> '
+                "Use the linked official leaderboard for current context.</p>"
+            )
+    except (TypeError, ValueError, OverflowError):
+        freshness_warning = (
+            '<p class="note"><b>Snapshot timestamp could not be verified.</b> '
+            "Use the linked official leaderboard for current context.</p>"
+        )
+    highlighted = []
+    if isinstance(rows, list):
+        highlighted = [
+            row for row in rows
+            if isinstance(row, dict) and row.get("rank") in {1, 2, 3, 8, 22}
+        ]
+    table_rows = "".join(
+        "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+            esc(row.get("rank", "")),
+            esc(row.get("participant_display", "")),
+            number(row.get("public_dti"), 4),
+        )
+        for row in highlighted
+    )
+    if table_rows:
+        table = (
+            "<table><tr><th>Rank</th><th>Participant display</th>"
+            "<th>Public-board DTI</th></tr>" + table_rows + "</table>"
+        )
+    else:
+        table = "<p>No valid selected rows are available in the retained snapshot.</p>"
+
+    status_warning = ""
+    if status.get("ok") is False:
+        status_warning = (
+            "<p class=\"note\"><b>Latest refresh failed.</b> The displayed values are the last "
+            "successful cached public snapshot, not a fresh result of this failed attempt. "
+            + esc(status.get("error", "No error detail was retained."))
+            + "</p>"
+        )
+    elif status.get("ok") is None:
+        status_warning = (
+            "<p class=\"note\"><b>Refresh state unknown.</b> Do not treat the retained snapshot "
+            "as current; use the linked official board for current context.</p>"
+        )
+    elif "not scripts/refresh_feed.py" in method.lower():
+        status_warning = (
+            "<p class=\"note\">This capture used the page-retrieval tool, not the repository's "
+            "scheduled raw-HTML refresh script. Only the selected rows shown in the saved snapshot "
+            "were retained; raw HTML was not saved.</p>"
+        )
+    status_warning += freshness_warning
+
+    full_scope = snapshot.get("scope", "Scope not recorded; exact-file attribution is unavailable.")
+    return f"""
+<div class="card"><h3>Public leaderboard snapshot — context only, not a submission receipt</h3>
+<p><b>Evidence class: organizer-published public-board values, not ORGANIZER-CONFIRMED exact-file
+scores.</b> Retrieved {esc(retrieved)}; latest recorded attempt {esc(attempted)}. Method: {esc(method)}.
+See the <a href="{esc(url)}">official DrivenData leaderboard</a>.</p>
+<p>{esc(full_scope)}</p>
+{table}
+<p>No submission-page receipt or raster hash ties these participant rows to H33-2-B2 or to any
+artifact in this repository. The public rank-22 value of 0.2778 numerically matches an
+owner-reported H33 figure, but that is not evidence that the participant, score, or file is the
+same. Do not infer attribution or causality.</p>
+{status_warning}
+</div>
+"""
+
+
+def build_results(card: dict, feed_snapshot: dict, feed_status: dict) -> str:
     hold = card.get("holdout_result", {})
     report = card.get("registry_comparison", {})
     reported = card.get("reported_live_score", {})
@@ -295,6 +413,7 @@ the candidate.</p></div>
 {esc(card.get('binary_dot_holdout_result', {}).get('withheld_positive_pixels', 'not available'))}
 withheld positives; evaluator <code>{esc(card.get('binary_dot_holdout_result', {}).get('evaluator_version', 'not available'))}</code>.
 This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
+<div class="note"><b>Holdout reconciliation:</b> the historical H57-K `lane8_geophys` result uses 22,619 withheld positives across 8 recorded cells; its evaluator version/input hashes are not pinned in that arm record, and its single-feature canary flags `d`, `d_perp`, and `vis_dtip` above the 0.90 leakage threshold. The later pooled-hide-v2 records use 11,321 withheld positives and stored code hashes that do not match this tree. The soft surface and binary allocation are also different representations. These values are <b>not comparable</b>; no candidate has beaten a valid comparable benchmark. See <a href="data/holdout_scope_reconciliation_20261010.json">the machine-readable reconciliation</a>.</div>
 <div class="card"><h3>Indexed public-inventory comparison</h3>
 <p>Recorded public owner-repository inventory: {esc(report.get('indexed_matching_grid_rasters', 'not available'))} indexed rasters;
 not organizer-complete. Max Spearman {number(report.get('max_spearman_full_footprint'))}; max Jaccard diagnostic
@@ -305,11 +424,14 @@ not organizer-complete. Max Spearman {number(report.get('max_spearman_full_footp
 {esc(report.get('firings_itemized_in_stored_report', 'not available'))} firings are itemized.
 Literal verdict: <b>{esc(report.get('literal_gate_verdict', 'not available'))}</b>.</p>
 <p>The protocol says log and stop. Reverse-overlap or saturation exceptions are not silently applied.</p></div>
-<h2>Reported live-score figures</h2>
-<p>The historical <b>{number(reported.get('value'), 4)}</b> figure is labeled
-<b>{esc(reported.get('classification', 'OWNER-REPORTED; no organizer receipt'))}</b>. Conflicting
-reported highs {esc(reported.get('conflicting_reported_highs', []))} are not verified by a
-submission-page receipt tied to exact bytes. No `ORGANIZER-CONFIRMED` score is available here.</p>
+{build_public_board(feed_snapshot, feed_status)}
+<h2>Owner-reported H33 value and artifact audit</h2>
+<p>The historical H33 <b>{number(reported.get('value'), 4)}</b> value remains labeled
+<b>{esc(reported.get('classification', 'OWNER-REPORTED; no organizer receipt'))}</b>. It is neither a
+HOLDOUT-DTI result nor an ORGANIZER-CONFIRMED exact-file result. The public
+board values shown above are organizer-published, but no submission-page receipt or raster hash
+in this checkout ties them to H33-2-B2 or any exact repository bytes. No
+`ORGANIZER-CONFIRMED` exact-file score is available here.</p>
 <div class="card"><h3>What the available 0.2778 artifact audit suggests</h3>
 <p>The separate raster audit found the named H33-2-B2 artifact is an exact 2-pixel catalogue-flank
 prune of a 40,199-positive base: 2,545 cells were removed, none added, leaving 37,654. Sparse
@@ -320,7 +442,7 @@ unavailable, so this is a plausible mechanism—not a causal explanation for 0.2
 <div class="note"><b>Improvement:</b> possible in principle, but no expected gain or probability can be estimated from the evidence here. The universal overlap witness currently blocks every nonempty candidate under the unchanged literal rule, and the experiment budget is spent.</div>
 <h2>Could a future candidate improve?</h2>
 <p>Possibly, but the available evidence cannot establish a probability or expected gain. The local
-holdout and a reported live score are different instruments; the old candidate also fails the
+holdout reading and owner-reported value are different evidence classes; the old candidate also fails the
 uniqueness gate. The experiment budget is spent, so this audit makes no gain claim and runs no new
 experiment. The next step is an independently authorized, version-pinned validation—not a score
 projection.</p>
@@ -328,31 +450,44 @@ projection.</p>
 
 
 def build_sources() -> str:
+    audit_path = "data/attribute_audit_20261010.json"
+    reconciliation_path = "data/holdout_scope_reconciliation_20261010.json"
     return f"""
 {hold_banner()}
 <h2>Competition and local data</h2>
 <ul>
-<li>Competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a>.
-The data bundle is absent from this checkout except for the pinned files described in
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.</li>
-<li>The `training_features.tif` 19-band stack is not present. A historical feature-cache receipt
-records 19 bands and a bridge hash, but it does not establish present-file availability. No
-competition features were fetched or prepared in this audit.</li>
-<li>INGENIOUS/QFault vector tables under `data/external/` have local receipts; see
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">the data manifest</a>. Attribute availability and missingness must be
-checked before a future feature is used.</li>
+<li>Official competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a> and its
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">problem description</a>.
+Competition-grid features are not present in this checkout. The historical `training_features.tif`
+receipt records a 19-band third-party bridge, but does not authenticate official origin or present-file
+availability; no feature raster was downloaded or prepared in this audit.</li>
+<li>Local INGENIOUS/QFault extracts are pinned in
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.
+The read-only field/count audit is <a href="{audit_path}">available as JSON</a>; it is a completeness
+inventory only, not a spatial join, feature, experiment, or holdout result.</li>
 </ul>
-<h2>Official free sources checked for future fault-zone validation</h2>
+<h2>Official fault and regional-data records reviewed</h2>
 <ul>
-<li>USGS, Grauch (2002), <i>High-resolution aeromagnetic survey to image shallow faults, Dixie
-Valley geothermal field, Nevada</i>, Open-File Report 2002-384.
-<a href="https://doi.org/10.3133/ofr02384">Official report record / DOI</a>. The report record was
-reviewed; no data were downloaded.</li>
-<li>Glen &amp; Earney (2024), official USGS/DOE GeoDAWN airborne magnetic/radiometric survey record,
-Geothermal Data Repository <a href="https://gdr.openei.org/submissions/1591">submission 1591</a>.
-The page states public access and CC-BY 4.0 and links to
-<a href="https://doi.org/10.5066/P93LGLVQ">USGS ScienceBase</a>. Catalog/license availability was
-checked; spatial coverage and contest-grid compatibility were not.</li>
+<li><b>INGENIOUS / QFault:</b> <a href="https://gdr.openei.org/submissions/1391">Geothermal Data Repository submission 1391</a>
+(DOI <a href="https://doi.org/10.15121/1881483">10.15121/1881483</a>). The record lists Quaternary
+Faults v2 with field definitions and states public access / CC BY 4.0. Local definitions describe
+slip rate and most-recent-event recency; those fields are not cumulative displacement. Local row
+counts do not prove a correct join to rasterized hosts.</li>
+<li><b>USGS fault slip/dilation tendency:</b> official
+<a href="https://www.sciencebase.gov/catalog/item/6296974dd34ec53d276bb33d">ScienceBase item</a>,
+DOI <a href="https://doi.org/10.5066/P9YL58W6">10.5066/P9YL58W6</a>. The record describes tendency
+estimates for Great Basin Quaternary-fault segments and lists downloadable archives. No archive was
+downloaded; contest-area overlap, detailed schema/CRS, reuse terms, and grid registration are
+unverified. It is a data-gated proposal, not a viable feature yet.</li>
+<li><b>GeoDAWN:</b> official USGS page for the
+<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">airborne magnetic/radiometric data release</a>
+(DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a>) and
+<a href="https://gdr.openei.org/submissions/1591">GDR submission 1591</a>. Public catalog/license
+metadata was reviewed. The USGS page describes two overlapping survey areas and warns that actual
+flight heights vary with terrain; contest-grid overlap and alignment remain unverified.</li>
+<li><b>USGS magnetic-fault analogue:</b> Grauch (2002), Open-File Report 2002-384,
+<a href="https://doi.org/10.3133/ofr02384">official record</a>. Reviewed as regional background only;
+no data were downloaded.</li>
 </ul>
 <h2>Mechanistic literature reviewed</h2>
 <ul>
@@ -365,9 +500,10 @@ checked; spatial coverage and contest-grid compatibility were not.</li>
 <li>Savage &amp; Brodsky (2011), displacement and secondary strands in damage zones,
 <a href="https://doi.org/10.1029/2010JB007665">open-access DOI</a>.</li>
 </ul>
-<p>These sources support mechanisms to test; they do not establish a score increase or validate a
-specific raster. See <a href="research/hypotheses.md">the ranked hypothesis notes</a> for caveats
-and proposed controls.</p>
+<p>These sources support mechanisms and data review; they do not establish DTI improvement or
+validate a raster. Holdout scope and version limitations are documented in
+<a href="{reconciliation_path}">the reconciliation JSON</a>. See
+<a href="research/hypotheses.md">the ranked shortlist</a> for candidate-specific sources and controls.</p>
 """
 
 
@@ -448,6 +584,8 @@ def preserve_legacy_pages() -> None:
 
 def main() -> None:
     card = load_card()
+    feed_snapshot, feed_status = load_public_feed()
+    hypotheses = load_hypotheses()
     preserve_legacy_pages()
     DOCS.mkdir(exist_ok=True)
     (DOCS / "assets").mkdir(exist_ok=True)
@@ -458,8 +596,8 @@ def main() -> None:
         "index.html": ("Submission status", build_status(card), "index.html"),
         "executive-summary.html": ("Executive submission guide", build_executive(card), "executive-summary.html"),
         "method.html": ("Method and validation", build_method(card), "method.html"),
-        "hypotheses.html": ("Ranked hypotheses", build_hypotheses(), "hypotheses.html"),
-        "results.html": ("Results and score interpretation", build_results(card), "results.html"),
+        "hypotheses.html": ("Ranked hypotheses", build_hypotheses(hypotheses), "hypotheses.html"),
+        "results.html": ("Results and score interpretation", build_results(card, feed_snapshot, feed_status), "results.html"),
         "data-sources.html": ("Data and source record", build_sources(), "data-sources.html"),
         "irregularities.html": ("Audit findings", build_irregularities(card), "irregularities.html"),
         "run-card.html": ("Run card", build_run_card(card), "run-card.html"),
@@ -484,6 +622,19 @@ def main() -> None:
 
     public_data = DOCS / "data"
     public_data.mkdir(exist_ok=True)
+    # Publish the exact successful public snapshot, its latest refresh state, and
+    # the source/scope audits used by the visible research pages.
+    for filename in (
+        "leaderboard_snapshot.json",
+        "feed_refresh_status.json",
+        "attribute_audit_20261010.json",
+        "holdout_scope_reconciliation_20261010.json",
+        "orientation_holdout.json",
+        "review_passes.json",
+    ):
+        source_path = EVIDENCE / filename
+        if source_path.is_file():
+            (public_data / filename).write_bytes(source_path.read_bytes())
     card_json = json.dumps(card, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
     # Keep the canonical evidence alias and both public card URLs synchronized;
     # an old *_current.json path must not expose stale approval.

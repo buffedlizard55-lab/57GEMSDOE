@@ -353,13 +353,33 @@
     "geotiff_builds": 0,
     "downloads": 0,
     "submissions": 0,
-    "unit_tests_run": false,
+    "unit_tests_run": true,
     "full_test_suite": {
-      "command": ".venv/bin/pytest -q",
-      "status": "PENDING FINAL POST-MERGE RUN",
-      "historical_pre_merge_result": "101 collected; 99 passed, 2 skipped; run before merging current main and not final validation"
+      "command": ".venv/bin/pytest -q -rs",
+      "status": "PASS",
+      "collected": 115,
+      "passed": 113,
+      "skipped": 2,
+      "skip_reasons": [
+        "tests/test_anatomy.py: training_features.tif not assembled",
+        "tests/test_data_pins.py: 419 MB training_features.tif is gitignored and absent"
+      ],
+      "warnings": "PendingDeprecationWarning from existing raster affine multiplication in faultzone.py and Rasterio; no test failures.",
+      "completed_utc": "2026-10-10T21:13:26Z"
     },
-    "site_build_and_check": "PENDING FINAL POST-MERGE REBUILD/CHECK"
+    "site_build_and_check": "PASS — scripts/check_site.py --build; 28 HTML pages, HTML/Markdown links pass, no active TIFF/ZIP downloads, public feed and audit JSON copies consistent, HOLD/0-of-679 blocker retained.",
+    "followup_audit_20261010": {
+      "read_only_attribute_audit": "evidence/attribute_audit_20261010.json; CSV completeness/types only; no host join, training, rasterization, holdout, or experiment.",
+      "holdout_scope_reconciliation": "evidence/holdout_scope_reconciliation_20261010.json; historical H57-K leakage flags and evaluator/input-hash gaps mean it is not comparable to later records.",
+      "public_leaderboard": "evidence/leaderboard_snapshot.json; selected rows 1-22 manually captured from the public page; not a complete table, receipt, or file attribution; raw HTML not retained.",
+      "new_experiments": 0,
+      "new_holdout_runs": 0,
+      "feature_downloads": 0,
+      "geotiff_builds": 0,
+      "submissions": 0,
+      "weekly_slots_used": 0
+    },
+    "site_build_and_check_completed_utc": "2026-10-10T21:13:26Z"
   },
   "historical_artifact_review": {
     "evidence_class": "HISTORICAL LOCAL FORMAT REVIEW — not uniqueness clearance or download authorization",

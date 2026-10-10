@@ -36,8 +36,29 @@ reading is unpinned legacy context. The 0.2778 figure is owner-reported without 
 receipt tying it to exact bytes. A separate raster audit found the named H33-2-B2 artifact is an
 exact 2-pixel catalogue-flank prune of a 40,199-positive base (2,545 removed, none added; 37,654
 remain). That could plausibly reduce false-positive cost under max-cover DTI, but no causal gain is
-verified. The 0.3195 and 0.3774 figures conflict in the saved reports; the public leaderboard
-snapshot is not a submission-page receipt for exact bytes. No gain estimate is supported.
+verified. The saved public board now shows rank #1 at 0.3774, DARD at rank #8 / 0.3195, and
+extradr19 at rank #22 / 0.2778 in the selected-row snapshot retrieved 2026-10-10 20:40:27 UTC.
+Only rows 1–22 were captured; raw HTML was not retained. The numeric rank-22/H33 match does not
+establish participant identity or exact-file attribution. See `evidence/leaderboard_snapshot.json`
+and `evidence/feed_refresh_status.json`; the Pages workflow is configured for scheduled public
+refresh, but this local manual capture was not produced by `scripts/refresh_feed.py`. No public
+board number here is `ORGANIZER-CONFIRMED` exact-file evidence.
+
+The historical H57-K `lane8_geophys` reading is **HOLDOUT-DTI (historical; evaluator version ID
+not recorded)** 0.110327, 95% quadrant-jackknife CI [0.091677, 0.128977], 22,619 withheld
+positives over 8 recorded cells. Its single-feature canary flags `d`, `d_perp`, and `vis_dtip`
+above AUC 0.90; that run's own evidence does not pin evaluator/input hashes. The later pooled-hide-v2
+records use 11,321 withheld positives and different outputs; their stored source hashes do not
+match the current tree. These scores are not comparable. The later soft surface and binary
+allocation are not the same representation. No candidate has beaten a valid, comparable,
+current-code holdout benchmark. See `evidence/holdout_scope_reconciliation_20261010.json`.
+
+The read-only local attribute audit (`evidence/attribute_audit_20261010.json`) found 84,331 trace
+rows (1,126 records), with 1,394 sense values missing; QFault has 22,956 rows with numeric
+`SLIPRTNUM` and `RECNUM`, but only 89 nonmissing `SECONDARY` values and 4,059 missing `MAPSCALE`
+values. This is descriptive completeness only: no host-level join or spatial test was run. `RECNUM`
+is the upper bound on the latest surface-deforming earthquake; slip rate/recency are not cumulative
+displacement. The revised four-item shortlist ranks explicit visible branch-end/junction topology × recorded sense first, then slip-rate- and recency-conditioned anatomy, followed by a data-gated official USGS tendency modifier. The generic sense-by-angle/distance model was already tested; the current top item is a narrower topology-conditioned refinement. The slip-rate idea was proposed earlier in the archived H57 slate but remains unrun. None is implemented or validated.
 
 ## Blocking work (not permission to proceed)
 

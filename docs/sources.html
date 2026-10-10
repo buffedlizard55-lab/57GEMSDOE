@@ -14,27 +14,38 @@ resolve. That is not download authorization. No weekly slot was used. The curren
 </div>
 <h2>Competition and local data</h2>
 <ul>
-<li>Competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a>.
-The data bundle is absent from this checkout except for the pinned files described in
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.</li>
-<li>The `training_features.tif` 19-band stack is not present. A historical feature-cache receipt
-records 19 bands and a bridge hash, but it does not establish present-file availability. No
-competition features were fetched or prepared in this audit.</li>
-<li>INGENIOUS/QFault vector tables under `data/external/` have local receipts; see
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">the data manifest</a>. Attribute availability and missingness must be
-checked before a future feature is used.</li>
+<li>Official competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a> and its
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">problem description</a>.
+Competition-grid features are not present in this checkout. The historical `training_features.tif`
+receipt records a 19-band third-party bridge, but does not authenticate official origin or present-file
+availability; no feature raster was downloaded or prepared in this audit.</li>
+<li>Local INGENIOUS/QFault extracts are pinned in
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.
+The read-only field/count audit is <a href="data/attribute_audit_20261010.json">available as JSON</a>; it is a completeness
+inventory only, not a spatial join, feature, experiment, or holdout result.</li>
 </ul>
-<h2>Official free sources checked for future fault-zone validation</h2>
+<h2>Official fault and regional-data records reviewed</h2>
 <ul>
-<li>USGS, Grauch (2002), <i>High-resolution aeromagnetic survey to image shallow faults, Dixie
-Valley geothermal field, Nevada</i>, Open-File Report 2002-384.
-<a href="https://doi.org/10.3133/ofr02384">Official report record / DOI</a>. The report record was
-reviewed; no data were downloaded.</li>
-<li>Glen &amp; Earney (2024), official USGS/DOE GeoDAWN airborne magnetic/radiometric survey record,
-Geothermal Data Repository <a href="https://gdr.openei.org/submissions/1591">submission 1591</a>.
-The page states public access and CC-BY 4.0 and links to
-<a href="https://doi.org/10.5066/P93LGLVQ">USGS ScienceBase</a>. Catalog/license availability was
-checked; spatial coverage and contest-grid compatibility were not.</li>
+<li><b>INGENIOUS / QFault:</b> <a href="https://gdr.openei.org/submissions/1391">Geothermal Data Repository submission 1391</a>
+(DOI <a href="https://doi.org/10.15121/1881483">10.15121/1881483</a>). The record lists Quaternary
+Faults v2 with field definitions and states public access / CC BY 4.0. Local definitions describe
+slip rate and most-recent-event recency; those fields are not cumulative displacement. Local row
+counts do not prove a correct join to rasterized hosts.</li>
+<li><b>USGS fault slip/dilation tendency:</b> official
+<a href="https://www.sciencebase.gov/catalog/item/6296974dd34ec53d276bb33d">ScienceBase item</a>,
+DOI <a href="https://doi.org/10.5066/P9YL58W6">10.5066/P9YL58W6</a>. The record describes tendency
+estimates for Great Basin Quaternary-fault segments and lists downloadable archives. No archive was
+downloaded; contest-area overlap, detailed schema/CRS, reuse terms, and grid registration are
+unverified. It is a data-gated proposal, not a viable feature yet.</li>
+<li><b>GeoDAWN:</b> official USGS page for the
+<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">airborne magnetic/radiometric data release</a>
+(DOI <a href="https://doi.org/10.5066/P93LGLVQ">10.5066/P93LGLVQ</a>) and
+<a href="https://gdr.openei.org/submissions/1591">GDR submission 1591</a>. Public catalog/license
+metadata was reviewed. The USGS page describes two overlapping survey areas and warns that actual
+flight heights vary with terrain; contest-grid overlap and alignment remain unverified.</li>
+<li><b>USGS magnetic-fault analogue:</b> Grauch (2002), Open-File Report 2002-384,
+<a href="https://doi.org/10.3133/ofr02384">official record</a>. Reviewed as regional background only;
+no data were downloaded.</li>
 </ul>
 <h2>Mechanistic literature reviewed</h2>
 <ul>
@@ -47,9 +58,10 @@ checked; spatial coverage and contest-grid compatibility were not.</li>
 <li>Savage &amp; Brodsky (2011), displacement and secondary strands in damage zones,
 <a href="https://doi.org/10.1029/2010JB007665">open-access DOI</a>.</li>
 </ul>
-<p>These sources support mechanisms to test; they do not establish a score increase or validate a
-specific raster. See <a href="research/hypotheses.md">the ranked hypothesis notes</a> for caveats
-and proposed controls.</p>
+<p>These sources support mechanisms and data review; they do not establish DTI improvement or
+validate a raster. Holdout scope and version limitations are documented in
+<a href="data/holdout_scope_reconciliation_20261010.json">the reconciliation JSON</a>. See
+<a href="research/hypotheses.md">the ranked shortlist</a> for candidate-specific sources and controls.</p>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 21:13 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

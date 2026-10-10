@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -28,6 +29,7 @@ REQUIRED_PAGES = (
 )
 FRONT_DOOR_PAGES = ("index.html", "executive-summary.html")
 HOLD_TEXT = "HOLD — NOT OK TO DOWNLOAD OR SUBMIT"
+MARKDOWN_LINK = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 
 
 class LinkParser(HTMLParser):
@@ -105,6 +107,26 @@ def inspect_site(docs: Path = DOCS) -> list[str]:
                 if unquote(url.fragment) not in target_parser.ids:
                     errors.append(f"missing local anchor on {rel}: {href}")
 
+    for research_markdown in (
+        docs / "research" / "hypotheses.md",
+        docs / "research" / "hypotheses_h57.md",
+    ):
+        if not research_markdown.is_file():
+            continue
+        rel = research_markdown.relative_to(docs).as_posix()
+        for href in MARKDOWN_LINK.findall(research_markdown.read_text(encoding="utf-8")):
+            url = urlsplit(href)
+            if url.scheme or url.netloc or not url.path:
+                continue
+            target = (research_markdown.parent / unquote(url.path)).resolve()
+            try:
+                target.relative_to(docs)
+            except ValueError:
+                errors.append(f"local Markdown link escapes published site in {rel}: {href}")
+                continue
+            if not target.is_file():
+                errors.append(f"broken local Markdown link in {rel}: {href}")
+
     return errors
 
 
@@ -120,7 +142,22 @@ def check(root: Path = ROOT) -> dict:
     public_irregularities_path = root / "docs" / "data" / "irregularities_current.json"
     hypotheses_path = root / "evidence" / "hypotheses_current.json"
     public_hypotheses_path = root / "docs" / "data" / "hypotheses_current.json"
-    for path in (public_path, public_current_path, public_irregularities_path, public_hypotheses_path):
+    feed_snapshot_path = root / "evidence" / "leaderboard_snapshot.json"
+    public_feed_snapshot_path = root / "docs" / "data" / "leaderboard_snapshot.json"
+    feed_status_path = root / "evidence" / "feed_refresh_status.json"
+    public_feed_status_path = root / "docs" / "data" / "feed_refresh_status.json"
+    attribute_audit_path = root / "evidence" / "attribute_audit_20261010.json"
+    public_attribute_audit_path = root / "docs" / "data" / "attribute_audit_20261010.json"
+    holdout_reconciliation_path = root / "evidence" / "holdout_scope_reconciliation_20261010.json"
+    public_holdout_reconciliation_path = root / "docs" / "data" / "holdout_scope_reconciliation_20261010.json"
+    orientation_holdout_path = root / "evidence" / "orientation_holdout.json"
+    public_orientation_holdout_path = root / "docs" / "data" / "orientation_holdout.json"
+    review_passes_path = root / "evidence" / "review_passes.json"
+    public_review_passes_path = root / "docs" / "data" / "review_passes.json"
+    for path in (public_path, public_current_path, public_irregularities_path, public_hypotheses_path,
+                 public_feed_snapshot_path, public_feed_status_path, public_attribute_audit_path,
+                 public_holdout_reconciliation_path, public_orientation_holdout_path,
+                 public_review_passes_path):
         if path.is_file() and not path.read_bytes().endswith(b"\n"):
             errors.append(f"public JSON must end with a newline: {path.relative_to(root)}")
     try:
@@ -132,10 +169,25 @@ def check(root: Path = ROOT) -> dict:
         public_irregularities = json.loads(public_irregularities_path.read_text(encoding="utf-8"))
         hypotheses = json.loads(hypotheses_path.read_text(encoding="utf-8"))
         public_hypotheses = json.loads(public_hypotheses_path.read_text(encoding="utf-8"))
+        feed_snapshot = json.loads(feed_snapshot_path.read_text(encoding="utf-8"))
+        public_feed_snapshot = json.loads(public_feed_snapshot_path.read_text(encoding="utf-8"))
+        feed_status = json.loads(feed_status_path.read_text(encoding="utf-8"))
+        public_feed_status = json.loads(public_feed_status_path.read_text(encoding="utf-8"))
+        attribute_audit = json.loads(attribute_audit_path.read_text(encoding="utf-8"))
+        public_attribute_audit = json.loads(public_attribute_audit_path.read_text(encoding="utf-8"))
+        holdout_reconciliation = json.loads(holdout_reconciliation_path.read_text(encoding="utf-8"))
+        public_holdout_reconciliation = json.loads(public_holdout_reconciliation_path.read_text(encoding="utf-8"))
+        orientation_holdout = json.loads(orientation_holdout_path.read_text(encoding="utf-8"))
+        public_orientation_holdout = json.loads(public_orientation_holdout_path.read_text(encoding="utf-8"))
+        review_passes = json.loads(review_passes_path.read_text(encoding="utf-8"))
+        public_review_passes = json.loads(public_review_passes_path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         errors.append(f"current audit JSON missing or invalid: {exc}")
         card = current = public = public_current = irregularities = public_irregularities = {}
         hypotheses = public_hypotheses = {}
+        feed_snapshot = public_feed_snapshot = feed_status = public_feed_status = {}
+        attribute_audit = public_attribute_audit = holdout_reconciliation = public_holdout_reconciliation = {}
+        orientation_holdout = public_orientation_holdout = review_passes = public_review_passes = {}
 
     current_card_consistent = bool(card) and card == current == public == public_current
     if not current_card_consistent:
@@ -152,6 +204,65 @@ def check(root: Path = ROOT) -> dict:
            and "UNTRIED" not in str(row.get("status", "")).upper()
            for row in candidates if isinstance(row, dict)):
         errors.append("a candidate in the untried shortlist is mislabeled as run")
+    candidate_fields = (
+        "layers", "physical_signature", "why_it_may_find_missing_faults",
+        "difference_from_inspected_work", "named_non_fault_mimic",
+        "relative_expected_dti_potential", "implementation_cost", "sources",
+        "future_test_gate",
+    )
+    for candidate in candidates:
+        if not isinstance(candidate, dict) or any(not candidate.get(key) for key in candidate_fields):
+            errors.append("each untried hypothesis must name data, signature, missing-fault rationale, novelty, mimic, priority, cost, sources, and a future test gate")
+            break
+    shortlist_status = str(hypotheses.get("status", "")).upper()
+    if not ("NOT IMPLEMENTED OR RUN" in shortlist_status
+            or "NONE IMPLEMENTED OR RUN" in shortlist_status):
+        errors.append("shortlist must be explicitly labeled unimplemented/unrun")
+    if feed_snapshot != public_feed_snapshot:
+        errors.append("public leaderboard snapshot differs from its evidence copy")
+    if feed_status != public_feed_status:
+        errors.append("public leaderboard refresh status differs from its evidence copy")
+    if attribute_audit != public_attribute_audit:
+        errors.append("public attribute audit differs from its evidence copy")
+    if holdout_reconciliation != public_holdout_reconciliation:
+        errors.append("public holdout reconciliation differs from its evidence copy")
+    if orientation_holdout != public_orientation_holdout:
+        errors.append("public orientation holdout differs from its evidence copy")
+    if review_passes != public_review_passes:
+        errors.append("public review-pass record differs from its evidence copy")
+    feed_rows = feed_snapshot.get("rows", [])
+    if ("ORGANIZER-PUBLISHED" not in str(feed_snapshot.get("evidence_class", ""))
+            or feed_snapshot.get("receipt_attribution_available") is not False
+            or feed_snapshot.get("organizer_confirmed_submission_score") is not None
+            or not isinstance(feed_rows, list) or not feed_rows
+            or any(not isinstance(row, dict) for row in feed_rows)):
+        errors.append("public feed must preserve its non-receipt / no-file-attribution evidence class")
+    else:
+        try:
+            ranks = [int(row.get("rank", -1)) for row in feed_rows]
+            scores = [float(row.get("public_dti", -1)) for row in feed_rows]
+            malformed_feed = (
+                ranks[0] != 1
+                or float(feed_rows[0].get("public_dti", -1)) != float(feed_snapshot.get("top_public_dti", -2))
+                or any(not 0 <= score <= 1 for score in scores)
+                or len(set(ranks)) != len(ranks)
+                or any(a < b for a, b in zip(scores, scores[1:]))
+                or any(not str(row.get("participant_display", "")).strip() for row in feed_rows)
+                or (feed_status.get("ok") is True and feed_status.get("rows") != len(feed_rows))
+            )
+        except (TypeError, ValueError):
+            malformed_feed = True
+        if malformed_feed:
+            errors.append("public feed rows/top score are malformed or outside [0,1]")
+    if feed_status.get("ok") is False and not feed_status.get("retained_previous_snapshot"):
+        errors.append("failed public feed refresh must disclose whether a prior snapshot was retained")
+    if holdout_reconciliation.get("comparability_verdict") != "NOT COMPARABLE; NO CANDIDATE VALIDATED OR PROMOTED":
+        errors.append("holdout reconciliation overstates comparability or candidate validation")
+    results_page = (root / "docs" / "results.html").read_text(encoding="utf-8")
+    if ("Public leaderboard snapshot" not in results_page
+            or "not a submission receipt" not in results_page.lower()
+            or "Do not infer attribution" not in results_page):
+        errors.append("results page lacks explicit public-board provenance and no-attribution warning")
     irregularities_text = json.dumps(irregularities, ensure_ascii=False).lower()
     if "download is permitted for research" in irregularities_text:
         errors.append("current irregularities ledger still claims research download permission")
@@ -261,6 +372,11 @@ def check(root: Path = ROOT) -> dict:
         "current_card_consistent": current_card_consistent,
         "current_irregularities_consistent": irregularities == public_irregularities,
         "current_hypotheses_consistent": hypotheses == public_hypotheses,
+        "public_feed_consistent": feed_snapshot == public_feed_snapshot and feed_status == public_feed_status,
+        "attribute_audit_consistent": attribute_audit == public_attribute_audit,
+        "holdout_reconciliation_consistent": holdout_reconciliation == public_holdout_reconciliation,
+        "orientation_holdout_consistent": orientation_holdout == public_orientation_holdout,
+        "review_passes_consistent": review_passes == public_review_passes,
         "universal_overlap_blocker_recorded": True,
         "public_receipts_withdrawn": public_receipts_withdrawn,
         "session4_withdrawn": session4_withdrawn,
@@ -282,8 +398,9 @@ def main() -> int:
         build_site.main()
     result = check()
     print(f"PASS: {result['pages_checked']} HTML pages; internal links resolve; HOLD is prominent; "
-          "no active download links; current cards/ledger/hypotheses are consistent; historical receipts and unsafe publisher are withdrawn; "
-          "universal overlap blocker recorded; 0/679 cache verified")
+          "no active download links; current cards/ledger/hypotheses, public feed, data audit, "
+          "holdout/orientation records and review-pass copies are consistent; historical receipts and unsafe publisher are "
+          "withdrawn; universal overlap blocker recorded; 0/679 cache verified")
     return 0
 
 

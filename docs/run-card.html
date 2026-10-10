@@ -370,13 +370,33 @@ A historical prior version is retained separately as <code>evidence/run_card_his
     &quot;geotiff_builds&quot;: 0,
     &quot;downloads&quot;: 0,
     &quot;submissions&quot;: 0,
-    &quot;unit_tests_run&quot;: false,
+    &quot;unit_tests_run&quot;: true,
     &quot;full_test_suite&quot;: {
-      &quot;command&quot;: &quot;.venv/bin/pytest -q&quot;,
-      &quot;status&quot;: &quot;PENDING FINAL POST-MERGE RUN&quot;,
-      &quot;historical_pre_merge_result&quot;: &quot;101 collected; 99 passed, 2 skipped; run before merging current main and not final validation&quot;
+      &quot;command&quot;: &quot;.venv/bin/pytest -q -rs&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;collected&quot;: 115,
+      &quot;passed&quot;: 113,
+      &quot;skipped&quot;: 2,
+      &quot;skip_reasons&quot;: [
+        &quot;tests/test_anatomy.py: training_features.tif not assembled&quot;,
+        &quot;tests/test_data_pins.py: 419 MB training_features.tif is gitignored and absent&quot;
+      ],
+      &quot;warnings&quot;: &quot;PendingDeprecationWarning from existing raster affine multiplication in faultzone.py and Rasterio; no test failures.&quot;,
+      &quot;completed_utc&quot;: &quot;2026-10-10T21:13:26Z&quot;
     },
-    &quot;site_build_and_check&quot;: &quot;PENDING FINAL POST-MERGE REBUILD/CHECK&quot;
+    &quot;site_build_and_check&quot;: &quot;PASS \u2014 scripts/check_site.py --build; 28 HTML pages, HTML/Markdown links pass, no active TIFF/ZIP downloads, public feed and audit JSON copies consistent, HOLD/0-of-679 blocker retained.&quot;,
+    &quot;followup_audit_20261010&quot;: {
+      &quot;read_only_attribute_audit&quot;: &quot;evidence/attribute_audit_20261010.json; CSV completeness/types only; no host join, training, rasterization, holdout, or experiment.&quot;,
+      &quot;holdout_scope_reconciliation&quot;: &quot;evidence/holdout_scope_reconciliation_20261010.json; historical H57-K leakage flags and evaluator/input-hash gaps mean it is not comparable to later records.&quot;,
+      &quot;public_leaderboard&quot;: &quot;evidence/leaderboard_snapshot.json; selected rows 1-22 manually captured from the public page; not a complete table, receipt, or file attribution; raw HTML not retained.&quot;,
+      &quot;new_experiments&quot;: 0,
+      &quot;new_holdout_runs&quot;: 0,
+      &quot;feature_downloads&quot;: 0,
+      &quot;geotiff_builds&quot;: 0,
+      &quot;submissions&quot;: 0,
+      &quot;weekly_slots_used&quot;: 0
+    },
+    &quot;site_build_and_check_completed_utc&quot;: &quot;2026-10-10T21:13:26Z&quot;
   },
   &quot;historical_artifact_review&quot;: {
     &quot;evidence_class&quot;: &quot;HISTORICAL LOCAL FORMAT REVIEW \u2014 not uniqueness clearance or download authorization&quot;,
@@ -414,5 +434,5 @@ A historical prior version is retained separately as <code>evidence/run_card_his
   }
 }</pre>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 21:13 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

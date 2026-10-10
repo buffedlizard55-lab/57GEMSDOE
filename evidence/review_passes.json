@@ -39,5 +39,59 @@
     "first_run_conclusion": "success",
     "final_head_verification": "pending on push"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "followup_audit_20261010": {
+    "completed_utc": "2026-10-10T21:13:26Z",
+    "scope": "Three-pass follow-up review of public-source provenance, historical holdout comparability, read-only data audit, shortlist, feed/site integration, and final checks; no modeling run.",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Standing protocol/source review, direct review of older exploration scripts and archived H57 hypotheses, and holdout/evaluator reconciliation",
+        "result": "Reviewed official DrivenData problem/leaderboard, GDR 1391/1591, USGS GeoDAWN and ScienceBase DOI 10.5066/P9YL58W6. H57-K single-feature canaries for d, d_perp and vis_dtip exceed 0.90; own evaluator/input hashes absent. Later results use different folds/representations and do not match current evaluator hashes. No comparable current-code benchmark. Directly inspected explore_zone.py/explore_zone2.py, run_sense_experiment.py/run_orientation_experiments.py, anatomy.py, and archived hypotheses_h57.md: generic sense-by-angle/distance and broad sense+geometry tests were already tried; generic tip-relay/junction/slip-rate were previously proposed but not run; RECNUM was absent from reviewed code/slates. Narrowed rank 1 to explicit visible topology x sense; marked slip-rate as previously proposed/unrun; no global novelty claim."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Read-only attribute evidence, hypothesis shortlist, public feed and site build",
+        "result": "Added pinned CSV completeness inventory, scope reconciliation and four ranked untried hypotheses. Made feed snapshots public with provenance and exact-file caveats; builder copies evidence JSON and scheduled refresh is fail-closed. No spatial join, model, external archive download, or holdout. The shortlist was revised after the novelty review: the already-tried generic sense model is excluded; one topology-conditioned refinement is clearly distinguished from prior broad proposals."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Independent protocol, hold, public claims, test suite, link/feed and code review",
+        "status": "complete",
+        "initial_regression": "One full-suite run exposed a wording assertion requiring the explicit term unsatisfiable; the blocker wording was corrected without changing the gate. A later renderer test expected the phrase not a submission-page receipt while the UI says not a submission receipt; the test expectation was corrected. The final full suite passed."
+      }
+    ],
+    "final_tests": {
+      "command": ".venv/bin/pytest -q -rs",
+      "collected": 115,
+      "passed": 113,
+      "skipped": 2,
+      "skip_reasons": [
+        "tests/test_anatomy.py: training_features.tif not assembled",
+        "tests/test_data_pins.py: 419 MB training_features.tif is gitignored and absent"
+      ]
+    },
+    "site_check": {
+      "command": ".venv/bin/python scripts/check_site.py --build",
+      "status": "PASS",
+      "html_pages": 28,
+      "html_and_markdown_links": "PASS",
+      "active_download_links": 0,
+      "public_feed_and_audit_copies_match": true,
+      "cache_preflight": "0/679",
+      "download_or_submission_clearance": false
+    },
+    "static_checks": {
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "evidence_json_parsing": "PASS"
+    },
+    "experiments": 0,
+    "holdout_runs": 0,
+    "external_archive_downloads": 0,
+    "geotiff_builds": 0,
+    "submission_slots_used": 0,
+    "organizer_submissions": 0,
+    "verdict": "negative; HOLD; not cleared to download or submit"
+  }
 }

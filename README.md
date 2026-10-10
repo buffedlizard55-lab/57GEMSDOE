@@ -38,9 +38,10 @@ research-surface TIFF or any archived `-zeros.tif`. See
 [`registry/audit_scope.json`](registry/audit_scope.json), and the generated
 [status site](docs/index.html).
 
-The three-experiment / two-hour budget is spent. This audit ran tests and
-site checks only; it did not run new geological experiments, holdouts,
-candidate GeoTIFF builds, data downloads, or submissions. The exact historical
+The three-experiment / two-hour budget is spent. This follow-up made a
+read-only field/completeness audit of local CSVs and captured selected public
+leaderboard rows; it performed no feature join, training, geological experiment,
+holdout run, raster download, candidate GeoTIFF build, or submission. The exact historical
 `lean-offset` TIFF was re-read against its receipt and locally passes the
 single-band float32, grid, finite `[0,1]`, and 40,000-dot checks, but it is not
 uniqueness-cleared or authorized to download/submit. The current `scripts/build_submission.py` is a retired no-output stub. Any
@@ -50,6 +51,14 @@ set before fitting or writing any file; none is available here.
 
 ### What the reported scores do—and do not—mean
 
+- [`evidence/holdout_scope_reconciliation_20261010.json`](evidence/holdout_scope_reconciliation_20261010.json)
+  reconciles the stored experiments and concludes that no candidate result is a
+  valid common benchmark. The historical H57-K `lane8_geophys` result is
+  **HOLDOUT-DTI (historical; evaluator version ID not recorded)** `0.110327`,
+  95% quadrant-jackknife CI `[0.091677, 0.128977]`, 22,619 withheld positives
+  across 8 recorded cells. Its single-feature canary flags `d`, `d_perp`, and
+  `vis_dtip` above AUC 0.90, and the arm record does not pin evaluator/input
+  hashes. It is not validated or comparable to the later results.
 - The latest stored **HOLDOUT-DTI** soft-surface result is `0.023203`, 95% CI
   `[0.018778, 0.027992]`, with 11,321 withheld positives and evaluator
   `gems57-pooled-hide-v2`. It describes the surface representation only; its
@@ -62,8 +71,10 @@ set before fitting or writing any file; none is available here.
 - The earlier local `0.227908` value, 95% CI `[0.186735, 0.269081]`, and
   22,641 withheld positives remain unpinned legacy context in
   [`evidence/run_card_historical_unpinned.json`](evidence/run_card_historical_unpinned.json).
-- `0.2778` is an **owner-reported historical live score**; no submission-page
-  receipt in this repository ties it to exact file bytes. The repository's
+- `0.2778` is an **owner-reported historical live-result claim**, not a
+  validated metric: it is neither a `HOLDOUT-DTI` result nor
+  `ORGANIZER-CONFIRMED` from a submission-page receipt. No receipt in this
+  repository ties it to exact file bytes. The repository's
   separate raster audit found the named H33-2-B2 construction is an exact
   2-pixel catalogue-flank prune of a 40,199-positive base: 2,545 pixels were
   removed, none added, leaving 37,654. Sparse thinning and removing dots with
@@ -72,22 +83,33 @@ set before fitting or writing any file; none is available here.
   these bytes are unavailable. This is a plausible mechanism, not a causal
   explanation for 0.2778. See
   [`evidence/best_submission_audit.json`](evidence/best_submission_audit.json).
-- The brief's 0.3195 and 0.3774 highs conflict with its earlier framing; a
-  saved public leaderboard snapshot is contextual evidence, not a
-  submission-page receipt for exact bytes. None of these figures is labeled
-  `ORGANIZER-CONFIRMED` here.
+- The **ORGANIZER-PUBLISHED public leaderboard snapshot** at
+  [`evidence/leaderboard_snapshot.json`](evidence/leaderboard_snapshot.json),
+  retrieved 2026-10-10 20:40:27 UTC, records public rank #1 at `0.3774`, DARD
+  at rank #8 / `0.3195`, and `extradr19` at rank #22 / `0.2778`. Only selected
+  rows 1–22 were captured; raw HTML was not retained. These are public-board
+  values, not `ORGANIZER-CONFIRMED` exact-file results: no receipt or hash ties
+  them to H33-2-B2 or any repository artifact. The numeric match between rank
+  #22 and the owner-reported H33 value does not establish participant identity,
+  file attribution, or causality. The public site renders this provenance and
+  refresh state from the saved feed; see `docs/results.html` and `docs/data/`.
 - Improvement is possible in principle, but the repository cannot estimate or
   claim it: holdout performance does not establish live performance, the
-  reported score is not tied to an organizer receipt here, the literal registry
+  owner-reported result claim is not tied to an organizer receipt here, the literal registry
   gate is currently blocked by a universal overlap witness, and the experiment
   budget is spent. No projected score is supplied.
 
 ### Next candidates (not run)
 
-Four source-grounded, untried fault-zone-anatomy hypotheses and their named
+Four source-grounded, unrun fault-zone-anatomy hypotheses and their named
 non-fault mimics are ranked in [`docs/research/hypotheses.md`](docs/research/hypotheses.md).
-This is a research shortlist, not an authorization to run experiments. Its
-validation order must still follow the brief's hide-and-recover and canary rules.
+The generic sense-by-angle/distance feature family was already tested and is not
+misrepresented as untried; rank 1 is a narrower visible-branch-topology × sense
+refinement. Slip-rate width was proposed in an archived slate but not run. These
+are repository-scoped novelty claims, not claims of global novelty. The shortlist
+uses a read-only QFault/INGENIOUS inventory; no CSV field has been joined to
+visible rasterized hosts. Ranking is research context, not authorization to run
+experiments; any later validation must follow the brief's holdout and canary rules.
 
 ## Executive submission guide
 
@@ -142,19 +164,28 @@ chat; current audit status and evidence above supersede historical claims.
 | `scripts/build_submission.py` | Retired fail-closed stub; creates no candidate TIFF or ZIP while HOLD remains |
 | `scripts/build_r2_submission.py` | Retired session-2 publisher; its write-before-check/same-lane exception source is archived under `evidence/history/` |
 | `scripts/build_site.py` / `scripts/check_site.py` | Generate the HOLD-first executive site and check internal links/status gates |
-| `docs/research/hypotheses.md` | Ranked, source-grounded untried hypotheses |
+| `docs/research/hypotheses.md` / `evidence/hypotheses_current.json` | Ranked, source-grounded untried hypotheses; not an experiment plan authorization |
+| `scripts/refresh_feed.py` | Unauthenticated public leaderboard-only refresh; never a submission/receipt endpoint |
+| `evidence/leaderboard_snapshot.json` / `docs/data/leaderboard_snapshot.json` | Selected organizer-published public rows with explicit no-file-attribution status |
+| `evidence/attribute_audit_20261010.json` | Read-only local CSV completeness/types; no spatial join or model result |
+| `evidence/holdout_scope_reconciliation_20261010.json` | Explains why historical HOLDOUT-DTI records are not comparable |
 | `evidence/run_card.json` | Current audit run card; HOLD verdict |
 | `REMAINING_WORK.md` | Current blocking gaps and limitations; old plan retained separately in `evidence/history/` |
 
 ## Data provenance and limits
 
 The checked-in `data/bridge/` files are pinned in [`data/README.md`](data/README.md).
-`training_features.tif` is not present in this checkout, so geophysical-band
-validation is data-blocked. An official, publicly accessible USGS/DOE GeoDAWN
-catalogue record is documented in the hypotheses page; no GeoDAWN data were
-downloaded, clipped, registered to the contest grid, or used in this audit.
-The INGENIOUS attribute/vector files under `data/external/` are locally pinned;
-record coverage and attribute missingness still require care.
+`training_features.tif` and the shared feature arrays are absent in this checkout,
+so the historical geophysical experiment cannot be reproduced. An official,
+publicly accessible USGS/DOE GeoDAWN record is documented in the hypotheses page;
+no GeoDAWN data were downloaded, clipped, registered to the contest grid, or used.
+A read-only inventory of the local INGENIOUS/QFault extracts is recorded in
+[`evidence/attribute_audit_20261010.json`](evidence/attribute_audit_20261010.json):
+`SLIPRTNUM` and `RECNUM` are populated in the local attribute table, while the
+`SECONDARY` field is sparse. These row counts do not validate a host-level join
+or establish a predictor. Slip rate and most-recent-event recency are not
+cumulative displacement. The separate holdout-scope record documents why
+historical scores are not comparable.
 
 ---
 
