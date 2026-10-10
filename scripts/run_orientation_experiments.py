@@ -31,7 +31,8 @@ import numpy as np
 import joblib
 from threadpoolctl import threadpool_limits
 from gems57 import load_grid
-from gems57.anatomy import FEATURES, SENSE_FEATURES, relative_strike_distribution
+from gems57.anatomy import (FEATURES, SENSE_FEATURES, package_holdout_structure,
+                            relative_strike_distribution)
 from gems57.faultzone import trace_sense_raster
 from gems57.fitting import canary, fit_model
 from gems57.holdout import buffered_component_draw, FOLD_NAMES
@@ -41,6 +42,20 @@ from gems57.strand_orientation import (ALL_FEATURES, MAG_FEATURES, cached_magnet
 from gems57.submission_writer import write_submission
 from gems57.uniqueness import compare_to_registry, saturation_certificate
 from gems57.validate import validate
+
+MAX_EXPERIMENTS = 3
+BATCH_EXPERIMENTS = 3
+
+
+def require_batch_budget(experiments_used):
+    """Fail before any run-card/plan write if the three-run preregistered batch is spent."""
+    if type(experiments_used) is not int or experiments_used < 0:
+        raise RuntimeError('current experiment count is missing or invalid; refusing to run')
+    if experiments_used + BATCH_EXPERIMENTS > MAX_EXPERIMENTS:
+        raise RuntimeError(
+            f'experiment budget already spent ({experiments_used}/{MAX_EXPERIMENTS}); '
+            'no new model or holdout run is authorized')
+
 
 COLS={n:i for i,n in enumerate(ALL_FEATURES)}
 BASE=[COLS[n] for n in FEATURES if n!='side']
@@ -81,6 +96,14 @@ def main():
     a=ap.parse_args()
     if not 0<a.minutes<=120 or a.per_quadrant_cap<1:
         ap.error('time must be <=120 minutes; density cap must be positive')
+    card_path=ROOT/'evidence/run_card_current.json'
+    if not card_path.is_file():
+        raise SystemExit('current run card is missing; fail closed before experiment planning')
+    current_card=json.loads(card_path.read_text())
+    try:
+        require_batch_budget(current_card.get('experiments_used'))
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from exc
     start=time.monotonic();deadline=start+a.minutes*60
     def check_time():
         if time.monotonic()>deadline:
@@ -119,14 +142,12 @@ def main():
         print(f'[run] STOP: unresolved canary {flagged}',flush=True)
         return 3
     # Diagnostic WITHHELD strand orientations never enter the prediction matrix.
-    structure=relative_strike_distribution(grid,visible,hidden)
+    relative=relative_strike_distribution(grid,visible,hidden)
     pos=full.y==1
-    structure.update(evidence_class='HOLDOUT-STRUCTURE (descriptive, not a score)',
-        distance_quantile_probabilities=[.1,.5,.9,.95,.99], pixel_size_m=100,
+    structure=package_holdout_structure(
+        relative, withheld_positive_pixels=int(pos.sum()),
         distance_positive_quantiles_px=np.quantile(full.X[pos,0],[.1,.5,.9,.95,.99]).tolist(),
-        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist(),
-        n_withheld=int(pos.sum()),
-        null_caveat='Visible-reference nearest-different-component null uses at most 13 neighbors and is censored; no significance is inferred from it.')
+        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist())
     save(ROOT/'evidence/orientation_structure.json',structure)
     terms={n:None for n in ARMS};surface_terms={n:None for n in ARMS}
     details=[];fold_models={}
@@ -198,7 +219,10 @@ def main():
     decoded=hashlib.sha256(surface.tobytes()).hexdigest()[:12]
     label=f'gems57-relative-strand-surface-{stamp}-{decoded}'
     note='Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.'
-    target=ROOT/'docs/downloads'/f'{label}.tif'
+    # Research surfaces are never published as live download candidates. Keep
+    # the local artifact in the provenance archive; a later selector/clearance
+    # decision is separate and cannot be inferred from format validity.
+    target=ROOT/'evidence/history'/f'{label}.tif'
     receipt=write_submission(target,surface,ROOT/'data/official/sample_submission.tif',grid.footprint,
         note=note,name=label,metadata=dict(kind='pre-placement intensity surface',emission_performed=False,
         fitted_zone_px=zone,training_fraction_inside_zone=fraction,sense_retained=keep_sense,
@@ -226,13 +250,17 @@ def main():
         raster_sha256=receipt['sha256'],validator_output=validator,
         submission_name=label,submission_note=note,submission_note_chars=len(note),
         file=str(target.relative_to(ROOT)),zip_file=str(target.with_suffix('.zip').relative_to(ROOT)),
-        verdict='negative',okay_to_download=True,okay_to_submit=False,
-        verdict_reason='Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.',
+        verdict='negative',okay_to_download=False,okay_to_submit=False,
+        current_audit_status='HOLD — NOT OK TO DOWNLOAD OR SUBMIT',
+        download_status='HOLD — NOT OK TO DOWNLOAD OR SUBMIT',
+        download_authorization={'research_download':False,'competition_submission':False},
+        verdict_reason='Historical research surface only; no final dots were generated, the literal overlap gate is not cleared, and neither download nor submission is authorized. No weekly slot used.',
         recorded_sense={'tested':True,'retained':keep_sense,'paired_difference':sense_gain},
         experiments_used=3,submission_slots_used=0,generated_utc=datetime.now(timezone.utc).isoformat())
     save(ROOT/'evidence/run_card_current.json',card)
-    save(ROOT/'docs/data/run_card.json',card)
-    print(f'[run] NEGATIVE deliverable; runtime {(time.monotonic()-start)/60:.1f} minutes',flush=True)
+    # Never write current status directly into docs/data: only build_site.py
+    # may publish evidence after rendering the explicit HOLD state.
+    print(f'[run] HOLD research artifact; runtime {(time.monotonic()-start)/60:.1f} minutes',flush=True)
     return 0
 
 

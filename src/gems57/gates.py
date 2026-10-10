@@ -112,12 +112,10 @@ def find_priors(roots, exclude=None, *, min_bytes=1000):
                 continue
             if exclude is not None and path.resolve() == Path(exclude).resolve():
                 continue
-            # ... and never a *copy* of the candidate either.  scripts/refresh_feed.py stages every
-            # built raster into docs/downloads/ so the site can serve it, and docs/downloads/ is one
-            # of the roots this function scans; without the basename check the file is compared
-            # against itself and reports "identical-to-a-prior, novel = 0", which is the one verdict
-            # that would stop a legitimate submission.  Caught by scripts/check_site.py on the H55
-            # build, not by reasoning about it.  IR-52-026; regression test in tests/test_gates.py.
+            # ... and never a *copy* of the candidate either. A historical builder staged outputs
+            # under docs/downloads/, which some prior scans included; the public artifact tree is
+            # now empty and the bytes live under evidence/history. Keep the basename guard for any
+            # caller that supplies a scan root containing the candidate. IR-52-026 regression.
             if exclude is not None and path.name == Path(exclude).name:
                 continue
             if path.stat().st_size < min_bytes:

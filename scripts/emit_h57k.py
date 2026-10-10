@@ -1,21 +1,11 @@
 #!/usr/bin/env python3
-"""Package the H57-K emission: GeoTIFF, portal validation, uniqueness, run card.
+"""Retired H57-K emitter; it must never write a TIFF, ZIP, or clearance card.
 
-Reads the surface and the fitted emission produced by ``scripts/build_h57k.py``
-(``out/h57k_surface_f32.npy``) and
-
-1. allocates dots at the exact marginal bar using the **live-anchored**
-   hidden-truth mass ``G = 14,089`` instead of the catalogue holdout's withheld
-   count (the holdout counts catalogue pixels, not new-fault pixels);
-2. excludes the <= 2 px proximal band, whose credit was measured at 0.0024 per
-   dot against 0.1387 for the dots the 0.2778 submission kept;
-3. writes a portal-legal single-band GeoTIFF (every cell finite, in [0, 1], no
-   nodata tag) plus a single-TIFF zip;
-4. runs the validator and the uniqueness screen;
-5. writes ``evidence/h57k_submission.json`` and the download in
-   ``docs/downloads/``.
-
-Every number is labelled.  Nothing here projects a leaderboard score.
+The historical implementation used owner-reported live values, partial registry
+coverage, Jaccard, and a saturation/discriminating exception. Those do not pass
+the current literal >0.90 / >70% protocol. Its prior artifacts are retained
+under evidence/history for audit only. Current status is HOLD — NOT OK TO
+DOWNLOAD OR SUBMIT.
 """
 from __future__ import annotations
 
@@ -124,6 +114,10 @@ def uniqueness(mine_path: Path, fp: np.ndarray) -> dict:
 
 
 def main() -> None:
+    raise SystemExit(
+        'Retired H57-K emitter: partial-registry/Jaccard/saturation clearance is prohibited. '
+        'HOLD — NOT OK TO DOWNLOAD OR SUBMIT; no TIFF or ZIP will be written.'
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--surface", default="out/h57k_surface_f32.npy")
     ap.add_argument("--g-live", type=float, default=14088.747191011289)

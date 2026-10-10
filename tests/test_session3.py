@@ -24,7 +24,10 @@ def test_shared_canary_rejects_mislabelled_feature_columns():
 def test_new_research_raster_is_distinct_and_fail_closed():
     e = json.loads(EXP.read_text())
     ras = e['research_raster']
-    path = ROOT / ras['path']
+    recorded_path = Path(ras['path'])
+    if recorded_path.parts[:2] == ('docs', 'downloads'):
+        recorded_path = Path('evidence/history/public-downloads') / Path(*recorded_path.parts[2:])
+    path = ROOT / recorded_path
     assert path.is_file() and 'DO-NOT-SUBMIT' in path.name
     assert hashlib.sha256(path.read_bytes()).hexdigest() == ras['sha256']
     assert ras['sha256'] not in {r['sha256'] for r in json.loads(INDEX.read_text())['rasters']}

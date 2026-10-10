@@ -1,36 +1,13 @@
 #!/usr/bin/env python3
-"""H57-K — fault-zone anatomy with a live-anchored emission envelope.
+"""Retired H57-K model/emission pipeline; no new run or TIFF is authorized.
 
-What is new in this session, and why
-------------------------------------
-1. The official 19-band GeoDAWN feature stack (``training_features.tif``,
-   sha256 4371c82e...) is now local and byte-verified.  Neither the previous
-   sessions of this repository nor any earlier fault-zone-anatomy raster had it.
-   It supplies the *strand-expression* term: whether a pixel inside a damage
-   zone actually carries the geophysical signature of a fault (magnetic
-   tilt-angle / gravity-gradient edge, detrended-elevation scarp, conductivity
-   and strain contrasts) rather than being a bare distance halo.
-2. A pure distance-to-catalogue model is falsified against live evidence
-   (``scripts/live_credit_shells.py``): a NNLS fit of a 9-bin distance profile
-   to the nine owner-reported scores leaves relative residuals of 0.14-0.73.
-3. The <= 2 px (200 m) proximal band is measured, from the same live evidence,
-   to earn 0.0024 credit per dot against 0.1387 for the retained dots of the
-   0.2778 submission.  That is a direct measurement against the hidden truth,
-   so the emitted dot set excludes it.
-4. The hidden-truth mass G = 14,089 is inverted from two owner-reported scores
-   of the same family, which fixes the greedy allocation bar that previously
-   had to use the catalogue holdout's K (a quantity about catalogue faults,
-   not about new ones).
-
-Protocol
---------
-* Fit on the shared hide-and-recover holdout (whole segments, buffered,
-  visible-only features, visible faults masked pixel-exactly, pooled DTI
-  alpha 0.2 / beta 0.8 / 300 m triangular kernel).
-* Leakage canary on every single feature (rule 4).
-* Uniqueness against every registry raster (rule 1).
-* Every number is labelled HOLDOUT-DTI or MODEL / LIVE-ANCHORED.  No score is
-  projected.
+The earlier workflow depended on a feature-stack transport receipt that does
+not establish current checkout availability or official origin. It also used
+owner-reported values and a partial/saturation-style uniqueness screen that do
+not satisfy the current literal registry protocol. The experiment budget is
+spent and the current literal witness blocks every nonempty candidate. The
+entry point exits before loading data or writing files; retained results are
+historical evidence only.
 """
 from __future__ import annotations
 
@@ -284,6 +261,13 @@ def score_arm(geoms, cols, ctx, k_truth_mode="own", k_truth=None,
 
 # --------------------------------------------------------------------------- #
 def main() -> None:
+    card_path = ROOT / 'evidence' / 'run_card_current.json'
+    if not card_path.is_file():
+        raise SystemExit('Current run card missing; refusing H57-K model work.')
+    card = json.loads(card_path.read_text())
+    used = card.get('experiments_used')
+    if type(used) is not int or used >= 3:
+        raise SystemExit(f'Experiment budget spent or unverified ({used!r}/3); H57-K model work is disabled.')
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", default="detached", choices=["all", "detached"])
     ap.add_argument("--max-dots", type=int, default=120_000)

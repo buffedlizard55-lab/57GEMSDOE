@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-"""H57-I: strike-binned damage-zone histogram, three preregistered arms.
+"""Retired H57-I historical runner; no experiment or candidate output is allowed.
 
-Experiment 1 — measure (d_perp, strike) enrichment on visible-only folds.
-Experiment 2 — LOQO HOLDOUT-DTI of isotropic 1-D decay vs strike-binned decay.
-Experiment 3 — same strike-binned model with the 0–2 px catalogue flank removed.
-
-Then, if and only if the surface rank-gate passes, emit sparse binary dots,
-uniqueness-check them with the shared lane_report (literal + saturating-probe
-policy), write a portal-legal zeros GeoTIFF, and record a run card.
-
-Nothing here is a live score.  No weekly slot is spent by this script.
+The old implementation used a partial-registry / saturation-probe policy that
+is not the current literal gate. Its command-line entry point was disabled, and
+the callable main is also fail-closed. Historical artifacts and receipts remain
+for audit. The three-experiment budget is spent; do not re-enable this code.
 """
 from __future__ import annotations
 
@@ -117,6 +112,10 @@ def sha256_file(p: Path) -> str:
 
 
 def main() -> None:
+    raise SystemExit(
+        'Retired H57-I pipeline: its partial-registry/saturation-policy clearance is prohibited. '
+        'No experiment, download, or candidate output is authorized.'
+    )
     t0 = time.monotonic()
     EVID.mkdir(parents=True, exist_ok=True)
     DL.mkdir(parents=True, exist_ok=True)

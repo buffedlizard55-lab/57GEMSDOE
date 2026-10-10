@@ -42,7 +42,7 @@ The requested ranking is necessarily qualitative: the hidden competition truth i
 | 1 | Segment-pair stepover/bend geometry | **Moderate; highest relative prior, very low confidence.** Directly targets connectors and tip/subparallel strands that a radial halo can miss. | **Medium.** Existing raster/vector geometry is present; freeze visible-only pair rules and audit sense joins. |
 | 2 | Fault-tip relay/termination anatomy | **Low to moderate; very low confidence.** A spatially focused tip signal could help, but may cover few withheld pixels and endpoints are mapping-sensitive. | **Low to medium.** Existing trace endpoints; matched controls and leakage-safe endpoint handling required. |
 | 3 | Host maturity/scale covariate | **Low / uncertain.** A genuinely independent maturity measure might refine decay beyond length; present-day slip rate or mapping completeness may add little or bias it. | **Low to medium if the attribute join is reliable; otherwise data-blocked.** Audit coverage and missingness before any fit. |
-| 4 | Fixed-halo geophysical corroboration | **Indeterminate, potentially useful but not presently viable.** The exact training-feature raster is absent, and coverage/alignment are unverified; a numeric or relative gain claim would be unjustified. | **High.** Official GeoDAWN metadata/license were checked, but the actual raster file, AOI coverage, band definitions, and grid registration were not verified. Do not treat this as an obtainable usable feature yet. |
+| 4 | Fixed-halo geophysical corroboration | **Indeterminate, potentially useful but not presently viable.** A merged-main receipt records a prior bridge transfer, but the exact training-feature raster is absent from this checkout; external coverage/alignment are also unverified, so no gain claim is justified. | **High.** Official GeoDAWN metadata/license were checked, but the actual raster file, AOI coverage, band definitions, and grid registration were not verified. Do not treat this as an obtainable usable feature yet. |
 
 The ordering is a risk-adjusted research priority, not a measured ranking of DTI scores. It balances mechanistic specificity against cost and data readiness; a future authorized holdout, not this table, must determine whether any candidate helps.
 
@@ -151,8 +151,7 @@ geophysical support—not the already-tested candidate magnetic-edge tangent's
 relative-strike feature. It is a within-lane corroborator, not an unconstrained
 geophysical classifier over the whole survey; incremental value is unknown.
 
-**Lane data.** `training_features.tif` is declared in `data/README.md` but is
-absent from this checkout. Public catalogue metadata for the USGS/DOE GeoDAWN
+**Lane data.** `training_features.tif` is declared in `data/README.md`. Merged main records a prior eight-pin bridge transport check, but the file is absent from this checkout and was not re-fetched or used in this audit. Public catalogue metadata for the USGS/DOE GeoDAWN
 northwestern Great Basin Nevada/California survey is available through the
 Geothermal Data Repository and links to USGS ScienceBase. GDR submission 1591
 displays public access and CC-BY 4.0; the linked USGS/ScienceBase record is

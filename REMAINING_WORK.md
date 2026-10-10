@@ -6,22 +6,24 @@ There is no cleared submission file. Do not use the retained historical TIFF. No
 experiments, holdout runs, GeoTIFF builds, downloads, or submissions occurred in this audit;
 the three-experiment / two-hour budget is spent. No weekly slot was used.
 
-The latest stored scan measured the soft candidate against the 679-entry indexed public
-owner-repository inventory (not organizer-complete): maximum full-footprint Spearman 0.821258;
-maximum forward 3-pixel overlap 1.0 on the soft surface's
-inherited finite-positive support (treated as “dots” by the gate), with 78 firings above the
-0.70 stop threshold. This was a pre-placement support comparison, not a final-dot comparison.
-The overlap gate failed before placement, so final dots were not generated. The scan is historical.
-Two older `-zeros.tif` reports use different 644- and 655-raster snapshots (114/50 and 98/98
-overlap firings/itemized respectively); both also fail and neither is the current comparison. A
-fresh cache preflight found **0 of 679** indexed rasters present; no current cache hashes or grids
-could be verified. No candidate fitting or TIFF creation occurred during that preflight.
+The latest stored, tree-pinned surface scan covers the **698-entry indexed public
+owner-repository inventory** (not organizer-complete): maximum full-footprint Spearman
+0.821258 and maximum 3-pixel forward overlap **1.0**, with **80** literal overlap triggers
+above the 0.70 stop. This is a pre-placement soft-surface support comparison, not a final-dot
+comparison; the gate fired, so final dots were not generated. The scan is historical evidence,
+not a fresh scan in this continuation.
+
+A prior local-cache preflight found 0/679 files before the registry extension. This checkout
+currently has zero files under `.cache/registry`, but no hash/grid preflight of the complete
+698-entry inventory was performed in this audit. `data/official/training_features.tif` is also
+absent from this checkout. Do not infer present availability from the prior bridge receipt; no
+re-fetch was attempted. No fitting, TIFF creation, external download, or slot selection occurred.
 
 A session-5 independent witness check re-fetched and SHA256-verified the in-scope 17GEMSDOE
 `E-proba-multiscale` raster (5,167,373 positive cells). Its 3-pixel support covers every
 allowable cell and gives measured forward overlap 1.0 for dense and sparse test candidates. Under
 the literal >70% overlap rule, every nonempty candidate is blocked while this witness remains in
-scope. This is a registry measurement—not a score, threshold change, or full 679-raster cache
+scope. This is a registry measurement—not a score, threshold change, or full 698-raster cache
 revalidation. The public owner-repository index cannot prove completeness against private,
 unlinked, inaccessible, externally stored, or later-written competition rasters. No density or
 reverse-overlap exception is authorized. A separate check found the archived 40,000-dot
@@ -45,11 +47,11 @@ snapshot is not a submission-page receipt for exact bytes. No gain estimate is s
 domain under the required 3-pixel support rule, so any nonempty candidate fails the >70% test.
 Do not exclude it, alter the threshold, or apply a density/reverse-overlap exception without an
 explicit owner protocol revision. Under the unchanged rule, the gate is unsatisfiable.
-2. **Registry:** the present checkout has 0/679 cache files. Any future public-inventory audit
-would need every indexed file in `evidence/registry_refreshed.json` restored and SHA256/grid
-verified; the historical scan and one re-fetched witness do not replace that check. Even a complete
-local copy of this 679-entry public owner-repository inventory would not establish
-organizer-complete scope; `registry/audit_scope.json` records those exclusions.
+2. **Registry:** the latest indexed inventory has 698 rows, but no current 698-entry local hash/grid
+preflight was performed here; the older 0/679 preflight predates the extension. Any future public-inventory
+audit would need every indexed file restored and SHA256/grid verified. Even a complete local copy of this
+698-entry public owner-repository inventory would not establish organizer-complete scope;
+`registry/audit_scope.json` records those exclusions.
 3. **Validation:** current-code spatial hide-and-recover evidence must include evaluator version,
 source/input hashes, withheld-positive count, 95% CI, and a clean single-feature leakage canary.
 The existing experiment budget is spent; no such run is authorized by this document.

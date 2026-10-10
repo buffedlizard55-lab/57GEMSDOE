@@ -2,8 +2,8 @@
   "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — qualitative priorities, not scores",
   "status": "RESEARCH SHORTLIST ONLY; NOT IMPLEMENTED OR RUN; three-experiment/two-hour budget spent",
   "novelty_scope": "Compared with the inspected fault-zone-anatomy implementations and experiments recorded in this repository; no claim of global novelty.",
-  "ranking_basis": "Risk-adjusted, qualitative prior on relative incremental DTI potential, implementation cost, and data readiness. These are not numeric scores or forecasts; confidence is low. The latest stored holdout is not reproducible under the current evaluator hash and the literal registry gate blocks any nonempty candidate, so no idea is actionable now.",
-  "current_blocker": "A separately SHA-verified raster in the 679-entry inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization.",
+  "ranking_basis": "Mechanistic relevance to missed secondary strands, plausible incremental value, data readiness, and implementation cost. Relative DTI upside tiers are low-confidence qualitative research priors only; no numerical gain or score is estimated.",
+  "current_blocker": "A separately SHA-verified raster in the 698-entry indexed public owner-repository inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization. The inventory is not a complete organizer registry.",
   "candidates": [
     {
       "rank": 1,
@@ -117,7 +117,7 @@
       "named_non_fault_mimic": "Magnetic lithologic contacts, surficial drainage, cultural metal, and flight-line leveling artifacts.",
       "qualitative_priority": "Fourth; expected DTI effect unknown.",
       "implementation_cost": "High because exact file coverage, CRS, band meaning, and registration must be verified first.",
-      "data_readiness": "Data-blocked. The competition feature stack is absent. GDR submission 1591 displays public access and CC BY 4.0, while the linked USGS/ScienceBase record is separately recorded as CC0 1.0 in the source audit. No exact binary asset/license receipt, usable file, AOI coverage, band definitions, CRS or grid alignment has been verified; do not treat this source as an obtainable usable feature yet.",
+      "data_readiness": "Merged main contains a prior eight-pin bridge-transport receipt for the 19-band competition feature stack, but data/official/training_features.tif is absent from this checkout and no re-fetch occurred in this audit; that receipt does not independently authenticate official origin. Separately, GeoDAWN GDR submission 1591 displays public access and CC BY 4.0, while the linked USGS/ScienceBase record is separately recorded as CC0 1.0. No exact GeoDAWN binary/license receipt, usable file, AOI coverage, band definitions, CRS or contest-grid alignment has been verified; this external hypothesis remains data-blocked.",
       "sources": [
         {
           "citation": "Grauch (2002), High-resolution aeromagnetic survey to image shallow faults, Dixie Valley geothermal field, Nevada, USGS Open-File Report 2002-384.",
@@ -127,10 +127,10 @@
         {
           "citation": "Glen & Earney (2024), GeoDAWN airborne magnetic and radiometric surveys of the northwestern Great Basin, GDR submission 1591 / USGS ScienceBase DOI 10.5066/P93LGLVQ.",
           "url": "https://gdr.openei.org/submissions/1591",
-          "checked_takeaway": "GDR submission 1591 displays public access and CC BY 4.0 and links to USGS ScienceBase, whose separate record is marked CC0 1.0 in the source audit. Exact binary asset/license, spatial overlap, usable files, CRS and grid compatibility remain unverified."
+          "checked_takeaway": "Public catalog record and CC BY 4.0 availability were checked; spatial overlap, usable files, CRS, and grid compatibility remain unverified."
         }
       ],
-      "future_test_gate": "Not viable until an exact official asset is obtained with a receipt and its license, coverage, bands, CRS and grid registration are verified. Only then, under renewed authorization, preregister the fixed halo and transforms, recompute with whole-segment hiding, and apply the canary and registry gates.",
+      "future_test_gate": "Only after an authorized official file is obtained and coverage/grid provenance verified: preregister the fixed halo and transforms, recompute with whole-segment hiding, then apply canary and registry gates.",
       "relative_expected_dti_upside": {
         "tier": "indeterminate; not currently rankable as a viable feature",
         "confidence": "very low; exact raster and coverage absent",

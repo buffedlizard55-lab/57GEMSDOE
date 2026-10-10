@@ -18,8 +18,8 @@ from gems57.uniqueness import dot_overlap, surface_rho, _dots  # shared function
 from gems57.metric import RADIUS_PX
 
 CANDIDATES = [
-    "docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
-    "downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "evidence/history/public-downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+    "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
 ]
 REF = ROOT / "data/official/sample_submission.tif"
 OVERLAP_LIMIT, RHO_LIMIT, JACCARD_LIMIT = 0.70, 0.90, 0.50

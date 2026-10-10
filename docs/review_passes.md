@@ -67,3 +67,61 @@ Date: 2026-10-09 (UTC)
 - **Final status: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.** No new TIFF, holdout result, external data, or submission was produced.
 
 The machine-readable results are in `evidence/run_card.json` and `evidence/review_passes.json`.
+
+## PR #20 integration review — 2026-10-10 UTC
+
+**Current verdict: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.** This is a three-pass repository,
+source, code, and delivery review; the experiment budget remains spent.
+
+### Pass 1 — reconcile current main and the governing protocol
+
+- Main advanced from the branch base to `e936f71` while PR #20 was open. Integrated that latest
+  main into the fixed session branch without switching branches.
+- Adopted the latest stored 698-entry indexed public-owner inventory comparison: maximum
+  full-footprint Spearman 0.821258; maximum 3-pixel forward overlap 1.0; 80 overlap triggers.
+  The scan is historical registry evidence, not a score or a new scan in this audit. The public
+  inventory is not organizer-complete.
+- Preserved the independently SHA-verified 17GEMSDOE witness that covers every allowable cell.
+  Under the unchanged literal `>70%` rule, every nonempty candidate remains blocked. No final
+  dots were generated and no threshold or overlap definition was changed.
+- Found conflicting repository states: merged main showed research-download permission and
+  active links, while `BRIEF.md`, the run card and the current task context required HOLD. Resolved
+  fail-closed: both research download and competition submission remain unauthorized.
+
+### Pass 2 — implementation and source/data review
+
+- Removed every TIFF/ZIP/sidecar from public `docs/downloads` and root `downloads`, preserving the
+  exact historical bytes under `evidence/history/public-downloads/` (the current soft surface is
+  separately under `evidence/history/`). The orientation-surface runner now archives research
+  output only, keeps both authorization flags false, does not write its card directly into
+  `docs/data`, and refuses to start when the three-experiment batch is spent. Retired the H57-I
+  and H57-K emitters that used partial-registry/Jaccard/saturation policies; H57-K model work
+  also refuses to start under the spent budget. Removed the public numeric leaderboard feed
+  because it is not a submission-page receipt for exact file bytes. The static pages contain no
+  active TIFF/ZIP files or links; archived names are plain text only.
+- Rebuilt the executive guide around explicit `Download: NOT OK` / `Submit: NO` status and future
+  selector-cleared submission steps. Kept the full preserved task prompt and clear stopped-state
+  rationale.
+- Made the four-hypothesis page render the evidence JSON, including each layer, physical
+  signature, rationale, difference from tested work, named mimic, qualitative low-confidence
+  relative DTI prior and implementation cost. No gain number is predicted and no hypothesis was
+  implemented or tested.
+- Preserved the source-specific GeoDAWN catalog labels (GDR CC BY 4.0; linked USGS/ScienceBase
+  CC0 1.0) without asserting a legal conflict. The exact GeoDAWN asset/license/coverage is
+  unverified. The merged-main eight-pin bridge receipt is historical transport evidence; the
+  feature raster and registry cache are absent from this checkout, and no data was downloaded.
+- Added audit irregularities for the conflicting download UI, unresolved exact GeoDAWN asset terms,
+  and mismatch between prior transport receipt and current local data availability.
+
+### Pass 3 — build, tests, and final status
+
+- `.venv/bin/python scripts/check_site.py --build` — **PASS**; 28 HTML pages checked, internal links
+  resolve, no TIFF/ZIP files or links remain under `docs/` or root `downloads/`, and historical
+  local-format/one-TIFF ZIP checks pass. These are local integrity checks only and do not authorize
+  download or submission.
+- `.venv/bin/python -m pytest -q -ra --junitxml=evidence/tests-session6-review.xml` —
+  **115 passed, 2 skipped, 0 failed** (117 collected), 2 warnings. The skips require the absent,
+  gitignored 419 MB `training_features.tif`. JUnit report: `evidence/tests-session6-review.xml`.
+- Exercised the orientation budget guard, H57-K model guard, and retired H57-I/H57-K emitters;
+  they exited before plan/model work or file creation. No new experiment, holdout run, TIFF build,
+  data download, submission, production dots, or weekly slot occurred. **Final status: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.**

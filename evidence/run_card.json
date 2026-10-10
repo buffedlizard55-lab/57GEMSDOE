@@ -43,18 +43,23 @@
     "withheld_positive_pixels": 11321
   },
   "correlation_overlap_vs_registry": {
-    "registry_rasters_expected": 679,
-    "registry_rasters_checked": 679,
+    "registry_rasters_expected": 698,
+    "registry_rasters_checked": 698,
     "complete_accessible_scan": true,
     "worst_spearman_full_footprint": 0.8212578086422125,
     "worst_rho_submission": "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
     "worst_dot_overlap": 1.0,
-    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
-    "duplicate_count": 78,
+    "worst_overlap_submission": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "duplicate_count": 80,
     "byte_unique_among_checked": true,
     "pixel_unique_among_checked": true,
     "unique": false,
-    "measurement_semantics": "Pre-placement soft-surface positive support: finite values > 0 are treated as dots by the inherited literal gate. This is not a production final-dot comparison; final dots were not generated."
+    "worst_jaccard_dot_sets": 0.6366446695387807,
+    "worst_jaccard_submission": "7GEMSDOE:downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+    "stop_required": true,
+    "verdict": "negative",
+    "jaccard_diagnostic_only": true,
+    "measurement_semantics": "Historical pre-placement soft-surface positive-support measurement; finite values > 0 are interpreted under the literal gate. The 698-entry indexed public owner-repository scan is not organizer-complete; no final dots were generated."
   },
   "surface_before_placement": {
     "checked": true,
@@ -68,7 +73,7 @@
   },
   "raster_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
   "validator_output": {
-    "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
     "bytes": 10010096,
     "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "meta": {
@@ -124,12 +129,12 @@
   "submission_name": "gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95",
   "submission_note": "Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.",
   "submission_note_chars": 131,
-  "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
-  "zip_file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
+  "file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+  "zip_file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
   "verdict": "negative",
   "okay_to_download": false,
   "okay_to_submit": false,
-  "verdict_reason": "The historical 679-raster pre-placement scan fired the literal forward-overlap stop; an independently SHA-verified 17GEMSDOE witness covers every allowable cell and makes the >70% rule unsatisfiable for any nonempty candidate while it remains in scope. The complete local cache is still 0/679, so there is no current full-inventory revalidation. Do not download, build, or submit.",
+  "verdict_reason": "The 698-raster indexed public owner-repository scan fails the literal forward-overlap gate: maximum candidate-to-prior 3-pixel overlap 1.0 (>0.70), with 80 triggered comparisons. The hash-verified 17GEMSDOE witness covers every allowable cell, so any nonempty candidate is blocked while it remains in scope. No final dots were generated. This historical TIFF is retained under evidence/history for audit only; do not download or submit it. No new TIFF was made in the current audit.",
   "recorded_sense": {
     "tested": true,
     "retained": false,
@@ -146,9 +151,9 @@
   },
   "experiments_used": 3,
   "submission_slots_used": 0,
-  "generated_utc": "2026-10-10T20:46:27Z",
+  "generated_utc": "2026-10-10T21:31:47Z",
   "registry_reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
-  "registry_scope": "679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.",
+  "registry_scope": "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. Private, unlinked, external, inaccessible and later-written files may be absent.",
   "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
   "current_run_card": "evidence/run_card.json",
   "audit_date_utc": "2026-10-10",
@@ -197,39 +202,26 @@
     "evidence_class": "REGISTRY-MEASUREMENT — uniqueness diagnostic, not a score",
     "evidence_file": "evidence/orientation_surface_uniqueness.json",
     "registry_index_path": "evidence/registry_refreshed.json",
-    "registry_index_sha256": "5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310",
-    "indexed_matching_grid_rasters": 679,
-    "historical_scan_checked_rasters": 679,
+    "registry_index_sha256": "a18482189c66c0963e48bb2fa1fcab35a6a0c16e02034d51f75524216da89469",
+    "indexed_matching_grid_rasters": 698,
+    "historical_scan_checked_rasters": 698,
     "historical_scan_complete_at_measurement": true,
     "max_spearman_full_footprint": 0.8212578086422125,
     "max_forward_dot_overlap_within_3px": 1.0,
     "stop_threshold_forward_overlap": 0.7,
-    "forward_overlap_firings": 78,
-    "forward_overlap_firings_itemized": 78,
+    "forward_overlap_firings": 80,
+    "forward_overlap_firings_itemized": 80,
     "rank_correlation_firings": 0,
     "jaccard_dot_set_firings_diagnostic_only": 53,
     "max_jaccard_dot_sets_diagnostic_only": 0.6366446695387807,
-    "verdict": "HOLD / STOP — forward overlap threshold fired before placement; final-dot comparison was correctly not run",
+    "verdict": "HOLD / STOP — literal forward-overlap threshold fired before placement; final-dot check was not run",
     "current_cache_preflight": {
-      "status": "HOLD / INCOMPLETE",
+      "status": "HISTORICAL / NOT REVALIDATED FOR THE 698-ENTRY INVENTORY",
       "indexed_rasters": 679,
       "verified_rasters": 0,
       "missing_cache_files": 679,
-      "sha256_mismatches": null,
-      "hash_check_status": "NOT RUN — no indexed cache files were present to hash",
-      "registry_index_sha256": "5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310",
-      "checked_at_utc": "2026-10-10",
-      "missing_path_preview": [
-        ".cache/registry/2a266668251f1f2f1013972329f484886e3b412a.tif",
-        ".cache/registry/919b5c0a590b544b33a54068822afb8e21c0144d.tif",
-        ".cache/registry/cf12b308d762ad013dce425384f26664cd79d940.tif",
-        ".cache/registry/6b230be4c06cc176014f717fb87ff85b4c58d5a4.tif",
-        ".cache/registry/b3985f8ae58eea2f4fb5fdbf0e1fff43b1cfe710.tif",
-        ".cache/registry/ab2cedff6f0a8b5c6ed8da1737ab000a9056725a.tif",
-        ".cache/registry/7bd014f31a7ce8f29579ba789fd6edf845f406ce.tif",
-        ".cache/registry/57732c697e2aa7c50c8ce35fa3d8866aee103abf.tif"
-      ],
-      "result": "The complete pinned registry lists 679 rasters; none of the indexed cache paths exists in this checkout. No current cache hashes or grids could be verified; the fail-closed builder stops before fitting or TIFF creation."
+      "checked_at_utc": "2026-10-10 (prior audit; before the 19-raster extension)",
+      "result": "The prior 0/679 cache check does not validate the later 698-entry inventory. No 698-entry local cache preflight was performed in this continuation."
     },
     "historical_644_inventory_report": {
       "status": "older reports for the prior -zeros.tif candidate; not the current 679-raster surface comparison",
@@ -249,9 +241,9 @@
           "maximum_forward_overlap": 1.0
         }
       ],
-      "interpretation": "Both legacy inventories failed the literal overlap stop; inventory snapshots and counts differ. Neither replaces the current 679-raster scan or the present 0/679 cache preflight."
+      "interpretation": "Both legacy inventories failed the literal overlap stop; inventory snapshots and counts differ. Neither replaces the latest stored 698-raster scan. The earlier 0/679 cache check is historical; no 698-entry local-cache preflight was performed in this continuation."
     },
-    "scope_note": "The 679-raster scan is historical evidence from 2026-10-09; current 0/679 cache preflight prevents revalidation. Private, inaccessible, or later-submitted rasters remain outside the recorded scope.",
+    "scope_note": "698-entry indexed public owner-repository inventory, including current public-main tree pins and then-open main-target PR heads #16 and #19; not a complete organizer registry. No new registry scan or cache download occurred in this audit.",
     "firings_itemized_in_stored_report": 78,
     "max_jaccard": 0.6366446695387807,
     "literal_gate_verdict": "HOLD / STOP; forward-overlap gate fired before placement",
@@ -271,7 +263,7 @@
       "measured_forward_overlap_for_dense_and_sparse_test_candidates": 1.0,
       "universal_overlap_blocker": true,
       "implication": "Every nonempty legal candidate has forward 3-px overlap 1.0 with this witness; the literal 0.70 stop threshold cannot be cleared while this raster remains in the comparison set.",
-      "scope_note": "A specific witness was re-fetched and verified; this does not change the full local-cache preflight of 0/679."
+      "scope_note": "A specific 17GEMSDOE witness was re-fetched and SHA-verified and is represented in the indexed 698-entry inventory; it blocks every nonempty candidate under the unchanged literal 3-pixel >70% rule. This does not verify the other local cache files; no 698-entry local-cache preflight was performed."
     },
     "inventory_scope_disclosure": "Public owner-repository inventory only; not organizer-complete. See registry/audit_scope.json."
   },
@@ -344,7 +336,7 @@
     "mechanism_evidence_file": "evidence/best_submission_audit.json",
     "public_leaderboard_context": "The saved public leaderboard snapshot is contextual evidence only; it is not a submission-page receipt tying any quoted value to exact raster bytes. The values remain outside the ORGANIZER-CONFIRMED label."
   },
-  "download_status": "NOT OK — not cleared to download or submit",
+  "download_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
   "weekly_slot_status": "NOT PROMOTED — slot selection is separate; 0 slots used",
   "promote": false,
   "audit_actions": {
@@ -353,34 +345,39 @@
     "geotiff_builds": 0,
     "downloads": 0,
     "submissions": 0,
+    "weekly_slots_used": 0,
     "unit_tests_run": true,
     "full_test_suite": {
       "evidence_class": "LOCAL-QA — not a model score",
-      "command": ".venv/bin/pytest -q -ra --junitxml=evidence/tests-session6-review.xml",
-      "status": "PASS — 106 passed, 2 skipped, 0 failures (108 collected)",
-      "collected": 108,
-      "passed": 106,
+      "command": ".venv/bin/python -m pytest -q -ra --junitxml=evidence/tests-session6-review.xml",
+      "status": "PASS — 115 passed, 2 skipped, 0 failures (117 collected)",
+      "collected": 117,
+      "passed": 115,
       "skipped": 2,
       "failures": 0,
-      "warnings": 10,
+      "errors": 0,
+      "warnings": 2,
       "junit": "evidence/tests-session6-review.xml",
-      "completed_utc": "2026-10-10T20:44:18.517098+00:00",
+      "completed_utc": "2026-10-10T21:31:09Z",
       "skip_reasons": [
         "training_features.tif not assembled; requires prepare_data.py --fetch",
         "419 MB training_features.tif is gitignored and absent from this checkout"
       ]
     },
     "site_build_and_check": {
-      "evidence_class": "LOCAL-QA — static site integrity, not a model score",
-      "command": "python scripts/check_site.py --build",
+      "evidence_class": "LOCAL-QA — static site and historical artifact integrity, not a model score",
+      "command": ".venv/bin/python scripts/check_site.py --build",
       "status": "PASS",
       "html_pages_checked": 28,
       "active_tif_zip_links": 0,
       "internal_links_pass": true,
-      "front_door_hold_status": true,
-      "run_card_and_public_copies_consistent": true,
+      "current_card_consistent": true,
+      "historical_local_format_pass": true,
+      "historical_zip_exactly_one_tiff": true,
+      "download_authorized": false,
       "submission_cleared": false,
-      "completed_utc": "2026-10-10T20:46:27Z"
+      "completed_utc": "2026-10-10T21:31:47Z",
+      "external_numeric_leaderboard_published": false
     }
   },
   "historical_artifact_review": {
@@ -420,7 +417,7 @@
   "latest_audit": {
     "evidence_class": "REPOSITORY REVIEW / LOCAL-QA; no geological experiment",
     "date_utc": "2026-10-10",
-    "scope": "three-pass review; source-aware hypothesis ranking; README, static site, shared evaluator provenance, data readiness, submission gates",
+    "scope": "Three-pass post-merge integration review for PR #20: adopt latest 698-raster evidence, reconcile download status fail-closed, remove active TIFF/ZIP paths, carry four ranked untried hypotheses and source caveats, run local tests and static delivery QA.",
     "experiments_run": 0,
     "holdout_runs": 0,
     "candidate_geotiffs_created": 0,
@@ -428,9 +425,20 @@
     "competition_submissions": 0,
     "weekly_slots_used": 0,
     "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-    "submission_name": null,
-    "submission_note": "No new candidate raster; literal uniqueness STOP remains in force.",
     "verdict": "negative",
-    "completed_utc": "2026-10-10T20:46:27Z"
+    "local_tests": {
+      "collected": 117,
+      "passed": 115,
+      "skipped": 2,
+      "failures": 0,
+      "warnings": 2
+    },
+    "site_qa": {
+      "pages_checked": 28,
+      "active_tif_zip_links": 0,
+      "links_pass": true,
+      "submission_cleared": false
+    },
+    "completed_utc": "2026-10-10T21:31:47Z"
   }
 }

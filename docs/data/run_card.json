@@ -14,7 +14,7 @@
     "tpw": 259.16790716440863,
     "fpw": 10304.58136457905,
     "fnw": 11061.832092835584,
-    "representation": "soft pre-placement prediction surface serialized to the historical research GeoTIFF; not final dots",
+    "representation": "soft pre-placement surface (matches downloaded TIFF method)",
     "split_version": "buffered-whole-components-loqo-v2",
     "canary_clean": true
   },
@@ -43,23 +43,26 @@
     "withheld_positive_pixels": 11321
   },
   "correlation_overlap_vs_registry": {
-    "registry_rasters_expected": 679,
-    "registry_rasters_checked": 679,
+    "registry_rasters_expected": 698,
+    "registry_rasters_checked": 698,
     "complete_accessible_scan": true,
     "worst_spearman_full_footprint": 0.8212578086422125,
     "worst_rho_submission": "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
     "worst_dot_overlap": 1.0,
-    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
-    "duplicate_count": 78,
+    "worst_overlap_submission": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "duplicate_count": 80,
     "byte_unique_among_checked": true,
     "pixel_unique_among_checked": true,
     "unique": false,
-    "measurement_semantics": "Pre-placement soft-surface positive support: finite values > 0 are treated as dots by the inherited literal gate. This is not a production final-dot comparison; final dots were not generated."
+    "worst_jaccard_dot_sets": 0.6366446695387807,
+    "worst_jaccard_submission": "7GEMSDOE:downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+    "stop_required": true,
+    "verdict": "negative",
+    "jaccard_diagnostic_only": true
   },
   "surface_before_placement": {
     "checked": true,
-    "protocol_pass": false,
-    "support_definition": "finite prediction value > 0, matching the inherited literal positive-support rule"
+    "protocol_pass": false
   },
   "final_dots": {
     "status": "not_generated",
@@ -68,7 +71,7 @@
   },
   "raster_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
   "validator_output": {
-    "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
     "bytes": 10010096,
     "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "meta": {
@@ -124,12 +127,12 @@
   "submission_name": "gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95",
   "submission_note": "Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.",
   "submission_note_chars": 131,
-  "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
-  "zip_file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
+  "file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+  "zip_file": "evidence/history/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
   "verdict": "negative",
   "okay_to_download": false,
   "okay_to_submit": false,
-  "verdict_reason": "The historical 679-raster pre-placement scan fired the literal forward-overlap stop; an independently SHA-verified 17GEMSDOE witness covers every allowable cell and makes the >70% rule unsatisfiable for any nonempty candidate while it remains in scope. The complete local cache is still 0/679, so there is no current full-inventory revalidation. Do not download, build, or submit.",
+  "verdict_reason": "The 698-raster indexed public owner-repository scan fails the literal forward-overlap gate: maximum candidate-to-prior 3-pixel overlap 1.0 (>0.70), with 80 triggered comparisons. The hash-verified 17GEMSDOE witness covers every allowable cell, so any nonempty candidate is blocked while it remains in scope. No final dots were generated. This historical TIFF is retained under evidence/history for audit only; do not download or submit it. No new TIFF was made in the current audit.",
   "recorded_sense": {
     "tested": true,
     "retained": false,
@@ -146,281 +149,63 @@
   },
   "experiments_used": 3,
   "submission_slots_used": 0,
-  "generated_utc": "2026-10-10T20:46:27Z",
-  "registry_reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
-  "registry_scope": "679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.",
+  "generated_utc": "2026-10-09T20:00:19.209388+00:00",
+  "registry_reviewed_utc": "2026-10-10T20:38:44.704659+00:00",
+  "registry_scope": "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. Private, unlinked, external, inaccessible and later-written files may be absent.",
+  "download_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
   "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-  "current_run_card": "evidence/run_card.json",
-  "audit_date_utc": "2026-10-10",
-  "holdout_result": {
-    "evidence_class": "HOLDOUT-DTI",
-    "evaluator_version": "gems57-pooled-hide-v2",
-    "pooled_dti": 0.023203075374027337,
-    "withheld_positive_pixels": 11321,
-    "representation": "soft pre-placement prediction surface serialized to the historical research GeoTIFF; not final dots",
-    "split_version": "buffered-whole-components-loqo-v2",
-    "stored_evaluator_implementation_sha256": {
-      "evaluate_holdout.py": "6157f25cc947c3f170870987272aad80a31d6d335d75b1188b64097abb087d3c",
-      "holdout.py": "7a0a84176986190b527aa9c6a84216c2dab4b599f25b1143db5f420e85020ab1",
-      "metric.py": "4afe10cbaa229948520c75194b1ebc32676e72544f05582f0725092b097b4d7f",
-      "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
-    },
-    "current_tree_hash_match": "NO — stored source hashes predate the current evaluator code; not current-code clearance",
-    "evidence_status": "historical, source-versioned HOLDOUT-DTI from the three completed experiments; not a live-score projection or current clearance",
-    "ci95_spatial_block_bootstrap": [
-      0.018777925030160507,
-      0.02799187291971626
-    ],
-    "ci95": [
-      0.018777925030160507,
-      0.02799187291971626
-    ],
-    "confidence_method": "paired physical spatial-cluster percentile"
+  "submission_note_status": "Historical text only; not authorized for download or use in a competition submission.",
+  "download_authorization": {
+    "research_download": false,
+    "competition_submission": false,
+    "reason": "Literal uniqueness STOP and explicit HOLD; no current file is cleared."
   },
-  "binary_dot_holdout_result": {
-    "evidence_class": "HOLDOUT-DTI",
-    "evaluator_version": "gems57-pooled-hide-v2",
-    "pooled_dti": 0.10916787041142981,
-    "withheld_positive_pixels": 11321,
-    "representation": "holdout binary allocation ONLY; production dots were not generated",
-    "note": "test-fold allocator comparison only; no production final dots were generated and this value does not describe the soft TIFF",
-    "ci95_spatial_block_bootstrap": [
-      0.09450251109316313,
-      0.12419365163463253
-    ],
-    "ci95": [
-      0.09450251109316313,
-      0.12419365163463253
-    ]
-  },
-  "registry_comparison": {
-    "evidence_class": "REGISTRY-MEASUREMENT — uniqueness diagnostic, not a score",
-    "evidence_file": "evidence/orientation_surface_uniqueness.json",
-    "registry_index_path": "evidence/registry_refreshed.json",
-    "registry_index_sha256": "5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310",
-    "indexed_matching_grid_rasters": 679,
-    "historical_scan_checked_rasters": 679,
-    "historical_scan_complete_at_measurement": true,
-    "max_spearman_full_footprint": 0.8212578086422125,
-    "max_forward_dot_overlap_within_3px": 1.0,
-    "stop_threshold_forward_overlap": 0.7,
-    "forward_overlap_firings": 78,
-    "forward_overlap_firings_itemized": 78,
-    "rank_correlation_firings": 0,
-    "jaccard_dot_set_firings_diagnostic_only": 53,
-    "max_jaccard_dot_sets_diagnostic_only": 0.6366446695387807,
-    "verdict": "HOLD / STOP — forward overlap threshold fired before placement; final-dot comparison was correctly not run",
-    "current_cache_preflight": {
-      "status": "HOLD / INCOMPLETE",
-      "indexed_rasters": 679,
-      "verified_rasters": 0,
-      "missing_cache_files": 679,
-      "sha256_mismatches": null,
-      "hash_check_status": "NOT RUN — no indexed cache files were present to hash",
-      "registry_index_sha256": "5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310",
-      "checked_at_utc": "2026-10-10",
-      "missing_path_preview": [
-        ".cache/registry/2a266668251f1f2f1013972329f484886e3b412a.tif",
-        ".cache/registry/919b5c0a590b544b33a54068822afb8e21c0144d.tif",
-        ".cache/registry/cf12b308d762ad013dce425384f26664cd79d940.tif",
-        ".cache/registry/6b230be4c06cc176014f717fb87ff85b4c58d5a4.tif",
-        ".cache/registry/b3985f8ae58eea2f4fb5fdbf0e1fff43b1cfe710.tif",
-        ".cache/registry/ab2cedff6f0a8b5c6ed8da1737ab000a9056725a.tif",
-        ".cache/registry/7bd014f31a7ce8f29579ba789fd6edf845f406ce.tif",
-        ".cache/registry/57732c697e2aa7c50c8ce35fa3d8866aee103abf.tif"
-      ],
-      "result": "The complete pinned registry lists 679 rasters; none of the indexed cache paths exists in this checkout. No current cache hashes or grids could be verified; the fail-closed builder stops before fitting or TIFF creation."
-    },
-    "historical_644_inventory_report": {
-      "status": "older reports for the prior -zeros.tif candidate; not the current 679-raster surface comparison",
-      "reports": [
-        {
-          "evidence_file": "evidence/uniqueness_full_shipped-h57-zeros_session-parallel.json",
-          "indexed_rasters": 644,
-          "forward_overlap_firings": 114,
-          "itemized_firings": 50,
-          "maximum_forward_overlap": 1.0
-        },
-        {
-          "evidence_file": "evidence/uniqueness_full_shipped-h57-zeros.json",
-          "indexed_rasters": 655,
-          "forward_overlap_firings": 98,
-          "itemized_firings": 98,
-          "maximum_forward_overlap": 1.0
-        }
-      ],
-      "interpretation": "Both legacy inventories failed the literal overlap stop; inventory snapshots and counts differ. Neither replaces the current 679-raster scan or the present 0/679 cache preflight."
-    },
-    "scope_note": "The 679-raster scan is historical evidence from 2026-10-09; current 0/679 cache preflight prevents revalidation. Private, inaccessible, or later-submitted rasters remain outside the recorded scope.",
-    "firings_itemized_in_stored_report": 78,
-    "max_jaccard": 0.6366446695387807,
-    "literal_gate_verdict": "HOLD / STOP; forward-overlap gate fired before placement",
-    "independent_witness_blocker": {
-      "evidence_class": "RASTER-MEASUREMENT — uniqueness diagnostic, not a score",
-      "evidence_file": "evidence/session5_witness_verification.json",
-      "repository": "buffedlizard55-lab/17GEMSDOE",
-      "path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
-      "registry_member": true,
-      "git_blob_sha": "374c88b1da2b803e2ed160de467fd71ae114010d",
-      "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
-      "bytes": 25065181,
-      "positive_pixels": 5167373,
-      "sha256_matches_indexed_and_public_blob": true,
-      "uncovered_allowable_cells": 0,
-      "covered_allowable_fraction": 1.0,
-      "measured_forward_overlap_for_dense_and_sparse_test_candidates": 1.0,
-      "universal_overlap_blocker": true,
-      "implication": "Every nonempty legal candidate has forward 3-px overlap 1.0 with this witness; the literal 0.70 stop threshold cannot be cleared while this raster remains in the comparison set.",
-      "scope_note": "A specific witness was re-fetched and verified; this does not change the full local-cache preflight of 0/679."
-    },
-    "inventory_scope_disclosure": "Public owner-repository inventory only; not organizer-complete. See registry/audit_scope.json."
-  },
-  "validator_result": {
-    "evidence_status": "historical local on-disk format/range receipt; not current revalidation, uniqueness clearance, organizer acceptance, or authorization to download",
-    "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
-    "bytes": 10010096,
-    "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
-    "meta": {
-      "crs": "EPSG:32611",
-      "shape": [
-        3730,
-        3292
-      ],
-      "dtype": "float32",
-      "count": 1,
-      "nodata": null,
-      "transform": [
-        100.0,
-        0.0,
-        243350.0,
-        0.0,
-        -100.0,
-        4508550.0
-      ],
-      "profile_compress": "deflate"
-    },
-    "band_description": [
-      null
-    ],
-    "n_finite": 12279160,
-    "n_nan": 0,
-    "min": 0.0,
-    "max": 0.7537760734558105,
-    "mean": 0.0007940529612824321,
-    "emitted_positive_pixels": 2714823,
-    "checks": {
-      "single_band": true,
-      "dtype_float32": true,
-      "dimensions_3730x3292": true,
-      "crs_epsg_32611": true,
-      "transform_matches_sample_submission": true,
-      "no_nan_anywhere": true,
-      "no_inf_anywhere": true,
-      "no_sentinel_values": true,
-      "range_0_1_guaranteed": true,
-      "min_ge_0": true,
-      "max_le_1": true,
-      "in_footprint_all_finite": true,
-      "in_footprint_range_0_1": true,
-      "outside_footprint_zero": true,
-      "zero_dots_on_mapped_catalogue": true
-    },
-    "all_checks_passed": true,
-    "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 2714823,
-    "footprint_fraction": 0.5253777886752127
-  },
-  "submission_note_status": "historical research-surface note; not approved for submission",
-  "reported_live_score": {
-    "value": 0.2778,
-    "classification": "OWNER-REPORTED; no organizer submission-page receipt in this repository",
-    "conflicting_reported_highs": [
-      0.3195,
-      0.3774
-    ],
-    "conflicts_verified": false,
-    "note": "No live-score improvement estimate is supported.",
-    "explanation": "The repository raster audit found the named H33-2-B2 construction is an exact 2-px catalogue-flank prune of a 40,199-positive base: 2,545 cells removed, none added, leaving 37,654. Sparse thinning and pruning dots with little unique new-truth coverage could plausibly reduce false-positive cost under max-cover DTI, but hidden truth and an organizer receipt tied to the exact bytes are unavailable; a causal explanation for 0.2778 is not established. Improvement is possible in principle but cannot be estimated here.",
-    "mechanism_evidence_file": "evidence/best_submission_audit.json",
-    "public_leaderboard_context": "The saved public leaderboard snapshot is contextual evidence only; it is not a submission-page receipt tying any quoted value to exact raster bytes. The values remain outside the ORGANIZER-CONFIRMED label."
-  },
-  "download_status": "NOT OK — not cleared to download or submit",
-  "weekly_slot_status": "NOT PROMOTED — slot selection is separate; 0 slots used",
-  "promote": false,
   "audit_actions": {
     "new_experiments_run": 0,
     "new_holdout_runs": 0,
-    "geotiff_builds": 0,
-    "downloads": 0,
-    "submissions": 0,
-    "unit_tests_run": true,
+    "candidate_geotiffs_created": 0,
+    "data_downloads": 0,
+    "competition_submissions": 0,
+    "weekly_slots_used": 0,
+    "historical_artifact_moved_out_of_public_downloads": true,
     "full_test_suite": {
       "evidence_class": "LOCAL-QA — not a model score",
-      "command": ".venv/bin/pytest -q -ra --junitxml=evidence/tests-session6-review.xml",
-      "status": "PASS — 106 passed, 2 skipped, 0 failures (108 collected)",
-      "collected": 108,
-      "passed": 106,
+      "command": ".venv/bin/python -m pytest -q -ra --junitxml=evidence/tests-session6-review.xml",
+      "status": "PASS — 115 passed, 2 skipped, 0 failures (117 collected)",
+      "collected": 117,
+      "passed": 115,
       "skipped": 2,
       "failures": 0,
-      "warnings": 10,
+      "errors": 0,
+      "warnings": 2,
       "junit": "evidence/tests-session6-review.xml",
-      "completed_utc": "2026-10-10T20:44:18.517098+00:00",
+      "completed_utc": "2026-10-10T21:31:09Z",
       "skip_reasons": [
         "training_features.tif not assembled; requires prepare_data.py --fetch",
         "419 MB training_features.tif is gitignored and absent from this checkout"
       ]
     },
     "site_build_and_check": {
-      "evidence_class": "LOCAL-QA — static site integrity, not a model score",
-      "command": "python scripts/check_site.py --build",
+      "evidence_class": "LOCAL-QA — static site and historical artifact integrity, not a model score",
+      "command": ".venv/bin/python scripts/check_site.py --build",
       "status": "PASS",
       "html_pages_checked": 28,
       "active_tif_zip_links": 0,
       "internal_links_pass": true,
-      "front_door_hold_status": true,
-      "run_card_and_public_copies_consistent": true,
+      "current_card_consistent": true,
+      "historical_local_format_pass": true,
+      "historical_zip_exactly_one_tiff": true,
+      "download_authorized": false,
       "submission_cleared": false,
-      "completed_utc": "2026-10-10T20:46:27Z"
-    }
-  },
-  "historical_artifact_review": {
-    "evidence_class": "HISTORICAL LOCAL FORMAT REVIEW — not uniqueness clearance or download authorization",
-    "submission_name": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb",
-    "file": "docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
-    "receipt_file": "evidence/submission_build_all.json",
-    "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
-    "bytes": 118108,
-    "zip_file": "docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.zip",
-    "zip_sha256": "4bd9b16bd4a1b272edb4573350628e9ba9d1b40f1cda5647964c4627c5cafb9e",
-    "zip_contains_only_exact_tif": true,
-    "receipt_hash_size_and_zip_match_current_bytes": true,
-    "format_review": {
-      "single_band": true,
-      "dtype": "float32",
-      "crs": "EPSG:32611",
-      "shape": [
-        3730,
-        3292
-      ],
-      "transform_matches_sample_submission": true,
-      "all_finite": true,
-      "min": 0.0,
-      "max": 1.0,
-      "binary_values": true,
-      "positive_pixels": 40000,
-      "positive_outside_footprint": 0,
-      "positive_on_mapped_catalogue": 0,
-      "evidence_class": "local format/range review only"
+      "completed_utc": "2026-10-10T21:31:47Z",
+      "external_numeric_leaderboard_published": false
     },
-    "uniqueness_status": "NOT CLEARED — old local uniqueness receipt is not current clearance; the independently verified universal 17GEMSDOE witness makes any nonempty candidate fail the literal 0.70 overlap rule.",
-    "okay_to_download": false,
-    "okay_to_submit": false,
-    "organizer_acceptance": false
+    "browser_qa": "Not run in this continuation; static HTML/link and local-delivery checks only."
   },
   "latest_audit": {
     "evidence_class": "REPOSITORY REVIEW / LOCAL-QA; no geological experiment",
     "date_utc": "2026-10-10",
-    "scope": "three-pass review; source-aware hypothesis ranking; README, static site, shared evaluator provenance, data readiness, submission gates",
+    "scope": "Three-pass post-merge integration review for PR #20: adopt latest 698-raster evidence, reconcile download status fail-closed, remove active TIFF/ZIP paths, carry four ranked untried hypotheses and source caveats, run local tests and static delivery QA.",
     "experiments_run": 0,
     "holdout_runs": 0,
     "candidate_geotiffs_created": 0,
@@ -428,9 +213,21 @@
     "competition_submissions": 0,
     "weekly_slots_used": 0,
     "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-    "submission_name": null,
-    "submission_note": "No new candidate raster; literal uniqueness STOP remains in force.",
     "verdict": "negative",
-    "completed_utc": "2026-10-10T20:46:27Z"
-  }
+    "local_tests": {
+      "collected": 117,
+      "passed": 115,
+      "skipped": 2,
+      "failures": 0,
+      "warnings": 2
+    },
+    "site_qa": {
+      "pages_checked": 28,
+      "active_tif_zip_links": 0,
+      "links_pass": true,
+      "submission_cleared": false
+    },
+    "completed_utc": "2026-10-10T21:31:47Z"
+  },
+  "audit_completed_utc": "2026-10-10T21:31:47Z"
 }

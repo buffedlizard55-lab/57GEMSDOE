@@ -17,7 +17,7 @@ from gems57.submission_writer import write_submission
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DL = ROOT / "docs" / "downloads"
+DL = ROOT / "evidence" / "history" / "public-downloads"
 SAMPLE = ROOT / "data" / "official" / "sample_submission.tif"
 BUILD = ROOT / "evidence" / "submission_build_all.json"
 

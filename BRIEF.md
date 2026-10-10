@@ -1,17 +1,10 @@
 # Current audit status — 2026-10-10 UTC
 
-**HOLD — not cleared to download or submit.** The latest recorded pre-placement
-scan covered 679 rasters and fired the literal forward-overlap stop in 78
-comparisons (maximum 3-pixel overlap 1.0 on soft-surface finite-positive
-support, not final dots); it is historical, not a current cache revalidation.
-The current cache preflight found 0/679 indexed rasters present. A session-5
-witness audit independently verified one in-scope 17GEMSDOE raster whose
-3-pixel support covers every allowable candidate cell; under the literal
->70% rule, any nonempty candidate is blocked while it remains in scope. That
-single-witness check does not revalidate all 679 local cache files. No new
-experiments, holdout runs, GeoTIFF builds, data downloads, or submissions were
-performed in this audit; the three-experiment / two-hour budget is spent. See
-`evidence/run_card.json` and `evidence/irregularities_current.json`.
+**HOLD — NOT OK TO DOWNLOAD OR SUBMIT.** The latest stored, tree-pinned comparison covers the 698-entry indexed public owner-repository inventory. It measured maximum full-footprint Spearman 0.821258 and maximum 3-pixel forward overlap 1.0, with 80 literal overlap triggers (>0.70); the surface failed before placement, so production final dots were not generated. The scan is stored historical evidence, not a new scan in this audit, and the inventory is not organizer-complete.
+
+A separately SHA-verified 17GEMSDOE raster covers every allowable cell under the same 3-pixel support definition, blocking every nonempty candidate while it remains in scope. The older local-cache check was 0/679; this checkout has zero files in `.cache/registry`, but no verified 698-entry cache hash/grid preflight was run here. The pinned training-feature file is also absent from this checkout; its merged-main bridge receipt is historical transport evidence, not current availability or official-origin authentication.
+
+No new experiments, holdout runs, TIFF builds, data downloads, or submissions were performed; the three-experiment / two-hour budget is spent and no slot was used. See `evidence/run_card.json`, `evidence/run_card_current.json`, and `evidence/irregularities_current.json`.
 
 # Standing brief — preserved task prompt and protocol
 

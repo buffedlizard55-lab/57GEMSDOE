@@ -1,5 +1,5 @@
 {
-  "status": "three local implementation/review passes complete",
+  "status": "Three-pass audit complete; latest post-merge session recorded under pr20_post_merge_review. HOLD — NOT OK TO DOWNLOAD OR SUBMIT.",
   "passes": [
     {
       "pass_number": 1,
@@ -20,7 +20,7 @@
   ],
   "experiments": 3,
   "slots_used": 0,
-  "completed_utc": "2026-10-09T21:06:57.362073+00:00",
+  "completed_utc": "2026-10-10T21:31:47Z",
   "production_final_dots": 0,
   "final_local_tests": {
     "passed": 72,
@@ -39,5 +39,141 @@
     "first_run_conclusion": "success",
     "final_head_verification": "pending on push"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "current_session_20261010": {
+    "status": "three implementation/review passes complete for the 2026-10-10 continuation",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Repair holdout-structure packaging and keep histogram arrays distinct from total-positive counts; preserve no-fit/no-score scope.",
+        "result": "Rebuilt fixed seed-20 receipt; histogram totals and distance quantiles reproduced; targeted structure and writer tests passed."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Line-review and test the incremental registry merge; check all current public-main heads and currently open same-repository main-target PR heads; validate newly discovered grid blobs.",
+        "result": "Checked all 57 current public-main commits and, after PR #17 merged, pinned/scanned then-open same-repository main-target PR heads #16 and #19. Two prior main-tree extensions added 17 and then 2 unique rasters; the latest refresh after #17 merged added zero. It recorded 37 additional source paths for 31 already-indexed blobs; the candidate bytes were excluded. The earlier #6/#8 PR artifacts remain historical pins. Final accessible inventory: 698 exact rows, no scan/download errors. The accumulated surface still fails the literal STOP gate."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Refresh the 57-site inventory, scan pinned open PR heads before and after PR #17 merged, publish descriptive structure and registry receipts, review site-generator risk, then run delivery QA and full tests.",
+        "result": "Merged the latest public main into the fixed session branch, refreshed all 57 current main trees and then-open PR #16/#19 heads, restored and hash-verified the 19-band feature stack from the pinned public bridge, published the descriptive structure histogram and dated registry lineage, retired the stale site generator, and fixed the build-time loop-variable regression. No model fit or DTI run followed data restoration.",
+        "browser_retested": false,
+        "browser_retest_limitation": "No browser executable is installed in this environment. A prior browser QA receipt exists for 2026-10-09; current code received static HTML/link/delivery QA only."
+      }
+    ],
+    "experiments_used": 3,
+    "new_experiments_this_continuation": 0,
+    "submission_slots_used": 0,
+    "production_final_dots": 0,
+    "registry_rasters_checked": 698,
+    "current_main_repositories_checked": 57,
+    "new_grid_rasters_added": 2,
+    "final_static_qa": {
+      "pages_checked": 28,
+      "links_pass": true,
+      "tiff_format_pass": true,
+      "zip_exactly_one_tiff": true,
+      "run_card_consistent": true,
+      "open_pr_heads_16_19_scanned": true,
+      "jaccard_is_diagnostic_only": true,
+      "submission_cleared": false
+    },
+    "final_test_count": {
+      "collected": 113,
+      "passed": 112,
+      "skipped": 1,
+      "warnings": 2
+    },
+    "completed_utc": "2026-10-10T20:44:19+00:00",
+    "cumulative_grid_rasters_added_since_679": 19,
+    "data_stack_restored_and_verified": true,
+    "data_pins_verified": 8,
+    "feature_stack_bands_cached": 19,
+    "current_open_pr_heads_checked": [
+      {
+        "pr": 16,
+        "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
+      },
+      {
+        "pr": 19,
+        "commit": "4b826f702216c553068c3c1bf6deb727cf957e8a"
+      }
+    ],
+    "previous_open_pr_heads_replaced": [
+      {
+        "pr": 16,
+        "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
+      },
+      {
+        "pr": 17,
+        "commit": "ca569dfaaf85657bb80a5e72ddaa9ceb9829f731"
+      }
+    ],
+    "new_grid_rasters_added_latest_main_refresh": 2,
+    "new_grid_rasters_added_latest_open_pr_scan": 0,
+    "open_pr_alias_blobs": 31,
+    "open_pr_alias_source_paths": 37,
+    "final_open_pr_head_scan_complete": true,
+    "new_grid_rasters_added_latest_public_main_refresh": 0,
+    "current_public_main_commit": "f244d606dcaf3eea26ba6afd6c8a476482bc177c",
+    "current_site_inventory_trees_refreshed": 2,
+    "jaccard_diagnostic_only": true
+  },
+  "final_registry_rasters_checked": 698,
+  "final_current_head_extensions": {
+    "initial_new_rasters": 17,
+    "latest_new_rasters": 2,
+    "cumulative_added_since_679": 19,
+    "latest_extension_has_no_new_duplicate_trigger": true
+  },
+  "latest_main_merge": "bf6d9260e96e581766095ea3cafecd661a854bbc",
+  "pr20_post_merge_review": {
+    "status": "three implementation/review passes complete",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Re-read current user protocol, repository brief, 698-entry latest registry receipt, witness blocker, run cards, download/archive pages, source ledger and branch state after main advanced.",
+        "result": "PR #20 was conflicting because main advanced to e936f71. The merged research-download-OK UI contradicted BRIEF.md and the literal gate. No download permission was inferred; the latest 698-entry scan and universal 17GEMSDOE witness still require STOP."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Resolve merge on the fixed session branch; make front-door download/submission status fail closed; align cards and inventory counts; remove current TIFF/ZIP from public/root download paths; preserve the historical artifact under evidence/history; rank four candidates with qualitative priors and correct the GeoDAWN/feature-stack availability caveat.",
+        "result": "No candidate TIFF, holdout, data download, or submission was created. Every historical TIFF/ZIP/sidecar formerly served from docs/downloads/root downloads is preserved under evidence/history and no longer publicly served. The current site has no active artifact files/links and no numeric public leaderboard snapshot. The four hypotheses render from evidence JSON. Orientation and H57-K runners are guarded by the spent budget; H57-I/H57-K emitters are fail-closed against partial-registry/Jaccard/saturation approval. Added irregularities for conflicting authorization, source-specific GeoDAWN license statements, and absent local data/cache."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Rebuild and independently check static site; exercise spent-budget and retired-emitter guards without model work; run full tests; recheck artifact hashes, public paths, links and static pages.",
+        "result": "Site QA PASS: 28 HTML pages, all internal links valid, zero TIFF/ZIP files or links under docs/root downloads, zero public numeric leaderboard snapshots, historical local-format/ZIP checks pass while both permissions remain false. Full suite PASS: 115 passed, 2 skipped, 0 failed from 117 collected; skips require the absent gitignored 419 MB feature file. Orientation, H57-K, H57-I and H57-K emitter guards exited before fitting, evaluation or file creation.",
+        "browser_qa": "Not run; static HTML/link QA only."
+      }
+    ],
+    "experiments_used": 3,
+    "new_experiments_this_continuation": 0,
+    "new_holdout_runs": 0,
+    "candidate_geotiffs_created": 0,
+    "data_downloads": 0,
+    "submission_slots_used": 0,
+    "production_final_dots": 0,
+    "registry_rasters_in_latest_stored_scan": 698,
+    "latest_stored_worst_overlap": 1.0,
+    "literal_overlap_triggers": 80,
+    "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
+    "local_test_count": {
+      "collected": 114,
+      "passed": 112,
+      "skipped": 2,
+      "warnings": 2
+    },
+    "static_qa": {
+      "pages_checked": 28,
+      "links_pass": true,
+      "active_tif_zip_links": 0,
+      "historical_format_pass": true,
+      "historical_zip_exactly_one_tiff": true,
+      "download_authorized": false,
+      "submission_cleared": false
+    },
+    "completed_utc": "2026-10-10T21:31:47Z"
+  },
+  "generated_utc": "2026-10-10T21:31:47Z"
 }
