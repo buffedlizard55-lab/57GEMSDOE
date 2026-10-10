@@ -131,3 +131,21 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+
+---
+
+## Session 7 addendum — 2026-10-10 (verification only; HOLD unchanged)
+
+Evidence: [evidence/literal_gate_witness_verification_20261010.json](evidence/literal_gate_witness_verification_20261010.json), reproduced by `scripts/verify_literal_gate_witness.py` and pinned by `tests/test_literal_gate_witness.py`.
+
+- **IR-S7-01 (correction to Session 6).** `training_features.tif` is **listed** on the GitHub bridge `buffedlizard55-lab/GEMSDOE` (`data/bridge/gems-geodawn-numerical-features.tif.part-000…004` + `manifest.json`, ref `c0c06ac82178f26b94fce3397036ef8f12a2f3a0`) via the authenticated GitHub API; part-000 is 94,371,840 bytes. It was not downloaded. Session 6's "unreachable" note is stale for the GitHub bridge; DrivenData (login) and Dropbox are still unreachable from this sandbox. The bridge gives transport identity only, not official-origin authentication. The gate verdict does not depend on features.
+- **IR-S7-02 (leaderboard prompt conflict).** The prompt's "0.3195 is highest" is contradicted by the repo's organizer-published snapshot (`docs/data/leaderboard_snapshot.json`, 2026-10-10 20:40 UTC, selected rows): 0.3774 rank 1, 0.3195 rank 8. The prompt also lists 0.3774 under the GEMSDOE site as a participant value. Neither is a file receipt. DrivenData cannot be re-fetched from this sandbox.
+- **IR-S7-03 (the one decision that unblocks everything).** The literal support rule (every positive finite pixel is a dot) makes any soft or whole-footprint registry raster a universal blocker. Independently reproduced: 17GEMSDOE E-proba-multiscale covers 5,167,373 / 5,167,373 allowed cells, so every footprint-confined candidate has overlap 1.0. The owner must choose: keep the rule (no candidate can pass), revise the support definition for all candidates and all registry rasters, or exclude the witness with a stated reason. No choice was made here.
+- **GEMSDOE32 mechanism, file level.** Exact subset of the 40,199-dot base; 2,545 removed, all at 1.41–2.00 px from the catalogue; kept dots ≥ 2.236 px. At owner-reported DTI 0.2778 the metric bar is `k > 0.0556`, i.e. within 2.83 px of new truth. Plausible, not verified: holdout test still needed, and this requires IR-S6-05 resolved first.
+- **Experiments run:** 0 of 3. **Hours:** under one. **Candidates generated:** 0. **Slots used:** 0. **Download / submit:** NO.
+
+Next steps, in order (none authorized by this addendum):
+1. Owner ruling on IR-S7-03 (support definition). Until then, no candidate can be promoted.
+2. If the ruling allows: restore the 19-band stack from the bridge with the existing `scripts/download_features.sh` (hash-verified), then run the hypothesis H6-1 (training-catalogue proximity pruning vs matched random pruning) on the spatially blocked holdout, with a leakage canary per feature.
+3. Re-fetch the DrivenData leaderboard from an allowed route, or have the owner paste the current board, to resolve IR-S7-02.
