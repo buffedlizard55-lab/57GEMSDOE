@@ -10,6 +10,7 @@ import hashlib
 from html.parser import HTMLParser
 import json
 import math
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 import zipfile
@@ -164,7 +165,8 @@ def check(root=ROOT):
         assert all((not v['leakage_flag']) and v['discriminative_auc_max']<=.90 for v in rows.values())
     for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
                  'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json','preflight_anatomy.json',
-                 'run_card_preflight.json','h6_1_proximity_pruning_holdout.json','run_card_session7_h6_1.json','review_passes_h57m.json'):
+                 'run_card_preflight.json','h6_1_proximity_pruning_holdout.json','run_card_session7_h6_1.json','review_passes_h57m.json',
+                 'session7_proximal_holdout.json','session7_proximal_hypotheses.json','session7_registry_precheck.json','session7_review_passes.json'):
         source=root/'evidence'/name; public_copy=docs/'data'/name
         assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
         assert source.read_bytes()==public_copy.read_bytes(),f'public audit copy is stale: {name}'
@@ -180,6 +182,23 @@ def check(root=ROOT):
     assert 3<=len(ranked)<=5 and [item['rank'] for item in ranked]==list(range(1,len(ranked)+1))
     lane=json.loads((root/'evidence/session7_hypotheses.json').read_text())['ranked']
     assert [item['rank'] for item in lane]==list(range(1,len(lane)+1))
+    session7=json.loads((root/'evidence/session7_proximal_holdout.json').read_text())
+    assert session7==json.loads((docs/'data/session7_proximal_holdout.json').read_text())
+    assert session7['holdout_promotion_condition_met'] is False
+    assert session7['candidate_geoTIFF_sha256'] is None
+    assert session7['okay_to_download'] is False and session7['okay_to_submit'] is False
+    assert session7['submission_slots_used']==0
+    paired=session7['paired_differences']['matched_random_prune']
+    assert paired['ci95'][0] <= 0 <= paired['ci95'][1]
+    cross=session7['cross_branch_context']
+    assert cross['prior_h6_1_promotion_rule_passed'] is False
+    assert cross['current_comparable_best_after_main_fetch']['evaluator_hashes_match'] is True
+    assert cross['current_comparable_best_after_main_fetch']['paired_cross_model_test_performed'] is False
+    assert cross['current_comparable_best_after_main_fetch']['dti'] > cross['current_comparable_best_after_main_fetch']['s7_1_proximal_dti']
+    proximal_slate=json.loads((root/'evidence/session7_proximal_hypotheses.json').read_text())
+    assert proximal_slate['post_run_cross_branch_audit']['action'].startswith('Preserve the original')
+    review=json.loads((root/'evidence/session7_review_passes.json').read_text())
+    assert review['final_decision']['independent_replication'] is False
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     for name in ('index.html','executive-summary.html'):
@@ -187,7 +206,16 @@ def check(root=ROOT):
         assert 'Download for research: OK' in text and 'Submit to competition: NO' in text
         assert parser.downloads[0]==f'downloads/{raster.name}'
         assert parser.downloads[1]==f'downloads/{archive.name}'
-        assert text.index('download-panel')<text.index('footer')
+        assert 'Matched pruning did not improve over equal-count random' in text
+        assert 'S7-1 download: NO' in text and 'not an independent replication' in text
+        assert text.index('download-panel')<text.index('session7-proximal')<text.index('footer')
+    latest=(docs/'session-7-verification.html').read_text()
+    assert 'Research verdict: negative' in latest
+    assert 'S7-1: NEGATIVE FOR PROMOTION' in latest
+    assert 'NOT REPOSITORY-NOVEL' in latest
+    assert 'session7_proximal_hypotheses.json' in latest
+    assert 'session7_review_passes.json' in latest
+    assert '0.135204' in latest and '0.101005' in latest
     js=(docs/'assets/site.js').read_text()
     assert 'localhost' not in js and '127.0.0.1' not in js
     for name in ('research.html','sources.html','results.html','irregularities.html'):
@@ -200,8 +228,22 @@ def check(root=ROOT):
 
 
 def inspect_site(docs):
-    """Compatibility helper for the repository's separate site-link smoke test."""
-    pages, errors = check_links(Path(docs))
+    """Check local HTML and the Session-7 research-review Markdown links."""
+    docs=Path(docs).resolve()
+    pages,errors=check_links(docs)
+    markdown_link=re.compile(r'(?<!!)\[[^\]]+\]\(([^)]+)\)')
+    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md',docs/'research/session7_hypotheses.md'):
+        if not source.is_file():
+            continue
+        for href in markdown_link.findall(source.read_text(encoding='utf-8')):
+            url=urlsplit(href)
+            if url.scheme or url.netloc or not url.path:
+                continue
+            target=(source.parent/unquote(url.path)).resolve()
+            if not target.is_relative_to(docs):
+                errors.append(f'{source}: local Markdown link escapes site: {href}')
+            elif not target.is_file():
+                errors.append(f'{source}: broken local Markdown link: {href}')
     return errors
 
 

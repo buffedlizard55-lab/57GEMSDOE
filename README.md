@@ -90,6 +90,14 @@ H6-1 tested fold-visible-catalogue proximity pruning against equal-count, fixed-
 
 Evidence: [experiment receipt](evidence/h6_1_proximity_pruning_holdout.json) · [ranked hypotheses](evidence/session7_hypotheses.json) · [Session-7 JSON run card](evidence/run_card_session7_h6_1.json). The next eligible untried geological experiment is H6-2, visible fault-tip termination anatomy; it requires a separately budgeted run.
 
+### Branch-local S7-1 holdout — cross-branch scope correction
+
+A one-time branch-local test used a different base allocator (visible anatomy rather than the retained E2 relay+bend surface): base `0.100989`, proximal prune `0.101005`, equal-count random prune `0.101007`; proximal minus random was `−0.0000020031` (95% CI `[−0.0000156476, +0.0000164644]`). It is negative for promotion and **not an independent replication** of H6-1: the receipts use different allocations but share the same catalog and underlying buffered holdout. Do not pool or rerun.
+
+**Material process correction:** after S7-1 ran, a cross-branch audit found H6-1 had already merged to `main` in [PR #27](https://github.com/buffedlizard55-lab/57GEMSDOE/pull/27) at 22:00:49 UTC, before this branch’s 22:01:25 UTC pre-run check. This branch still pointed at `5fd64ec` and had not fetched its own `origin/main`; the claim that the matched-pruning family had not been tested was incomplete. The original preregistration is retained, but that novelty claim is superseded. H6-1’s hash-matched unpruned E2 best is `0.135204`; S7-1 proximal is `0.101005` (descriptive point comparison only; no paired cross-model test). Neither result authorizes an S7-1 artifact or submission.
+
+**Artifact scopes are separate:** this S7-1 run created no TIFF and its own receipt has `okay_to_download=false`, `okay_to_submit=false`; the current H57-M dotted TIFF described below is a different artifact with an explicitly scoped research-download permission in its own run card. H57-M is still **not cleared for competition submission**. Provenance/cross-branch details: [S7-1 receipt](evidence/session7_proximal_holdout.json) · [branch-local preregistration and correction](evidence/session7_proximal_hypotheses.json) · [three-pass review](evidence/session7_review_passes.json) · [readable review](docs/research/session7_hypotheses.md) · [S7-1 evidence page](docs/session-7-verification.html).
+
 ## Session 7 (2026-10-10) — dotted emission, corrected budget selector, measured gate obstruction
 
 **Status: HOLD for submission; the artifact is new, validated and offered for research download only.** Session 7 ran one predeclared emission experiment plus two measurement passes, spent **0 submission slots** and did **not** relax any gate.

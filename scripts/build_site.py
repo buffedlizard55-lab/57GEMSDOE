@@ -19,7 +19,8 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit'),
-       ('results.html', 'Results'), ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
+       ('results.html', 'Results'), ('session-7-verification.html', 'S7-1 audit'),
+       ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'h57m_uniqueness_certificate', 'gate_universality', 'h57m_validation', 'h57m_emission', 'h57m_holdout',
           'session7_hypotheses_h57m', 'session7_hypotheses', 'h6_1_proximity_pruning_holdout', 'run_card_session7_h6_1',
@@ -30,7 +31,9 @@ PUBLIC = ['run_card_current', 'h57m_uniqueness_certificate', 'gate_universality'
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'feed_refresh_status',
           'attribute_audit_20261010', 'holdout_scope_reconciliation_20261010', 'session6_hypotheses',
-          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'session7_proximal_holdout', 'session7_proximal_hypotheses', 'session7_registry_precheck',
+          'session7_review_passes']
 
 
 def esc(value):
@@ -115,6 +118,56 @@ def page(title, body, active, stamp):
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
 <p>Site built {esc(stamp)}. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 {link('data/run_card.json', 'JSON run card')} · {link('run-card.html', 'Readable card')} · {link('https://github.com/buffedlizard55-lab/57GEMSDOE', 'Repository')}</p></footer></body></html>'''
+
+
+def session7_proximal_status_panel(receipt):
+    scores = receipt['scores']
+    paired = receipt['paired_differences']['matched_random_prune']
+    context = receipt['cross_branch_context']
+    return f'''<section class="warning" id="session7-proximal"><div class="eyebrow">BRANCH-LOCAL S7-1 HOLDOUT · NOT PROMOTED</div>
+<h2>Matched pruning did not improve over equal-count random—and was not repository-novel.</h2>
+<p>On the visible-anatomy base, proximal pruning scored <strong>{scores['proximal_prune']['dti']:.6f}</strong> and equal-count random pruning <strong>{scores['matched_random_prune']['dti']:.6f}</strong>. Proximal minus random: <strong>{paired['delta']:+.8f}</strong>, 95% CI [{paired['ci95'][0]:+.8f}, {paired['ci95'][1]:+.8f}] (crosses zero).</p>
+<p><strong>Scope correction:</strong> H6-1 had already tested this pruning family on the retained E2 allocator in <a href="{esc(context['prior_experiment_pr'])}">PR #27</a>. S7-1 used a different base model on the same underlying catalogue/holdout and is not an independent replication. Its hash-matched current E2 best is 0.135204 versus S7-1 proximal 0.101005 (descriptive only; no paired cross-model test). Keep receipts separate; do not pool or rerun.</p>
+<div class="permissions"><span class="permission no">S7-1 TIFF: NO — none generated</span><span class="permission no">S7-1 download: NO</span><span class="permission no">S7-1 submit: NO</span></div>
+<p>This status applies only to S7-1. The separate H57-M artifact above has its own scoped research-download status; its competition-submission status remains NO.</p>
+<p>{link('session-7-verification.html', 'Full S7-1 evidence and cross-branch correction →')} · {link('data/session7_proximal_holdout.json', 'S7-1 JSON receipt')} · {link('data/session7_review_passes.json', 'Three-pass review')}</p></section>'''
+
+
+def session7_proximal_page(receipt):
+    scores = receipt['scores']
+    paired = receipt['paired_differences']['matched_random_prune']
+    context = receipt['cross_branch_context']
+    fold_rows = [[esc(fold['fold']), f"{fold['base_dots']:,}", str(fold['proximal_dots_removed_at_2px']),
+                  f"{fold['proximal_prune']['dti']:.6f}", f"{fold['matched_random_prune']['dti']:.6f}"]
+                 for fold in receipt['per_fold']]
+    canary_rows = [[f'<code>{esc(name)}</code>', f"{value['discriminative_auc_max']:.6f}",
+                    'PASS (< 0.90)' if not value['leakage_flag'] else '<strong>STOP</strong>']
+                   for name, value in receipt['leakage_canary']['features'].items()]
+    prior_ci = context['prior_h6_1_proximity_minus_random_ci95']
+    return f'''<div class="eyebrow">SESSION 7 · BRANCH-LOCAL S7-1 · CROSS-BRANCH CORRECTION</div>
+<h1>Proximal pruning versus equal-count random pruning</h1>
+<p><strong>Research verdict: negative.</strong> These are local HOLDOUT-DTI readings, not a live or organizer-confirmed score.</p>
+<section class="warning"><strong>S7-1: NEGATIVE FOR PROMOTION. NOT REPOSITORY-NOVEL. NO TIFF, DOWNLOAD, OR SUBMISSION FROM THIS RUN.</strong> The main branch separately carries an H57-M artifact with scoped research-download authorization; that is not an S7-1 output or submission clearance.</section>
+<h2>1 · S7-1 local HOLDOUT-DTI</h2>
+<p>Evaluator <code>{esc(receipt['evaluator_version'])}</code>; seed {receipt['split']['seed']}; {receipt['split']['withheld_positive_pixels']:,} withheld positives; pooled α={receipt['metric']['alpha']}, β={receipt['metric']['beta']}, {receipt['metric']['triangular_kernel_radius_m']:.0f} m triangular kernel; {receipt['bootstrap']['draws']:,} paired physical-block bootstrap draws.</p>
+{table(['Arm / contrast', 'HOLDOUT-DTI', '95% CI'], [
+ ['Visible-anatomy base', f"{scores['base']['dti']:.6f}", interval(scores['base']['ci95'])],
+ ['2 px proximal prune', f"{scores['proximal_prune']['dti']:.6f}", interval(scores['proximal_prune']['ci95'])],
+ ['Equal-count random prune', f"{scores['matched_random_prune']['dti']:.6f}", interval(scores['matched_random_prune']['ci95'])],
+ ['Proximal − base', f"{receipt['paired_differences']['base']['delta']:+.8f}", f"[{receipt['paired_differences']['base']['ci95'][0]:+.8f}, {receipt['paired_differences']['base']['ci95'][1]:+.8f}]"],
+ ['Proximal − random (registered contrast)', f"{paired['delta']:+.8f}", f"[{paired['ci95'][0]:+.8f}, {paired['ci95'][1]:+.8f}]"],
+])}
+<p>The registered proximal-minus-random interval crosses zero and the point estimate is slightly negative. Only {sum(f['proximal_dots_removed_at_2px'] for f in receipt['per_fold'])} base dots were removed within 2 px ({', '.join(str(f['proximal_dots_removed_at_2px']) for f in receipt['per_fold'])} across folds). The top single-feature discriminative AUC was {max(v['discriminative_auc_max'] for v in receipt['leakage_canary']['features'].values()):.6f}; canary PASS is a leakage screen, not evidence of generalization.</p>
+<h2>2 · Per-fold checks</h2>
+{table(['Fold', 'Base dots', 'Removed at ≤2 px', 'Proximal DTI', 'Random DTI'], fold_rows)}
+<h2>3 · Cross-branch H6-1 reconciliation</h2>
+<p>PR #27 merged H6-1 to <code>main</code> at {esc(context['prior_experiment_merge_utc'])}, before the local S7-1 pre-run audit at {esc(context['branch_pre_run_audit_utc'])}. The stale branch still pointed at <code>5fd64ec</code> and had not fetched its own upstream. H6-1 tested the same 2 px pruning family on the retained E2 relay+bend allocator; this receipt uses a separately fitted visible-anatomy allocator. H6-1 proximal-minus-random was {context['prior_h6_1_proximity_minus_random']:+.8f}, 95% CI [{prior_ci[0]:+.8f}, {prior_ci[1]:+.8f}]. Both intervals cross zero. The H6-1 unpruned E2 score is 0.135204, above S7-1 proximal 0.101005; this is descriptive only because no paired cross-model test was performed. Same catalog and buffered holdout means these are not independent tests; model-specific results are kept separate and not pooled.</p>
+<p>The S7-1 pre-registration's novelty statement is superseded. This reporting correction does not recompute S7-1 scores or alter either experiment. The H6-1 receipt also documents a 3 px context-collar limitation: neither test identifies live near-catalogue new-fault performance.</p>
+<h2>4 · Artifact gate and provenance</h2>
+<p>The unchanged universal-support witness still implies 100% forward overlap for any nonempty allowable candidate against the 70% limit. No candidate-specific full-registry uniqueness/correlation scan ran because production placement was stopped before it. The stale 696-raster inventory is not represented as a current complete scan.</p>
+<p>A receipt audit found that <code>pooled_summary</code> overwrote the initial pipeline-hash key. The receipt restores the full map as <code>pipeline_implementation_sha256</code>, pins shared grid and lockfile/runtime, and records the original executed runner hash. This was metadata-only; HOLDOUT-DTI values, CIs and gates were not recomputed.</p>
+<p><strong>S7-1 only: OK to download: NO. OK to submit: NO. Submission slots used: 0.</strong> The separate H57-M artifact retains its distinct status from the main run card.</p>
+<p>{link('data/session7_proximal_holdout.json', 'S7-1 full JSON receipt')} · {link('data/session7_proximal_hypotheses.json', 'Branch-local pre-registration and novelty correction')} · {link('data/session7_hypotheses.json', 'Earlier H6-1 ranked hypotheses')} · {link('data/h6_1_proximity_pruning_holdout.json', 'Earlier H6-1 receipt')} · {link('data/session7_registry_precheck.json', 'Registry freshness / witness recheck')} · {link('data/session7_review_passes.json', 'Three-pass review log')} · {link('executive-summary.html', 'Download and submission guide')}</p>'''
 
 
 def download_panel(card):
@@ -261,6 +314,7 @@ def build(root=ROOT, make_preview=True):
     raw = card['holdout_dti']
     dots = card['holdout_dot_dti']
     panel = download_panel(card)
+    s7_proximal_panel = session7_proximal_status_panel(evidence['session7_proximal_holdout'])
     disclaimer = evidence_notice(card)
     names = {'distance_only': 'Distance only (control)',
              'anatomy': 'Single-host visible anatomy (repaired control)',
@@ -291,7 +345,7 @@ def build(root=ROOT, make_preview=True):
 <h2>STOP before production placement — measured, not asserted.</h2>
 <p>A SHA/grid-verified raster on public main is finite-positive on all {preflight['certificate']['allowed_pixels']:,} allowable cells. Under the literal one-directional gate, every nonempty in-footprint candidate therefore overlaps its 3-px halo by 100 % (limit 70 %). That pre-placement lane built no TIFF and used no slot; its 696-raster re-run recorded {session6_gate['duplicate_count']} firings, worst forward {session6_gate['worst_dot_overlap']:.2f}. {link('data/preflight_anatomy.json', 'Witness certificate')} · {link('data/run_card_preflight.json', 'Negative preflight run card')}.</p>
 <p>The 19-band bridge feature stack was restored from hash-pinned public GitHub parts (all eight pins verified; official DrivenData origin not independently authenticated). {link('data/data_preparation.json', 'Input receipt')} · {link('research/hypotheses.md', 'Lane hypothesis review')}.</p></section>'''
-    index = panel + f'''<section class="stat-grid" aria-label="Current research diagnostics">
+    index = panel + s7_proximal_panel + f'''<section class="stat-grid" aria-label="Current research diagnostics">
 <div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
 <div class="stat"><span>Registry audit</span><strong>{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']}</strong><small>Pinned rasters measured for this file</small></div>
 <div class="stat"><span>Worst forward overlap</span><strong>{registry['worst_dot_overlap']:.0%}</strong><small>Required ≤70% · FAIL: {registry['forward_firings_blanket']} of {registry['duplicate_count']} firings are blanket rasters</small></div>
@@ -305,7 +359,7 @@ def build(root=ROOT, make_preview=True):
 <section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>Session 7 measured the obstruction instead of asserting it. Of the <strong>{registry['registry_rasters_checked']}</strong> pinned rasters measured for the current file, <strong>{registry['blanket_rasters']}</strong> have a 3 px dilation covering ≥70&nbsp;% of the footprint — many cover 100&nbsp;% with a zero-area sliver — so the inherited one-directional test fires for <em>any</em> candidate that places dots on the geologically plausible grid. <strong>{registry['forward_firings_blanket']} of {registry['duplicate_count']}</strong> firings on this file are those blanket rasters; the other <strong>{registry['forward_firings_localised']}</strong> come from broad coverage fields (forward 0.84–0.90, reverse only 0.13–0.17). <strong>{registry['rasters_firing_in_both_directions']}</strong> rasters fire in both directions (worst reverse overlap {number(registry['worst_reverse_overlap'])} &lt; 0.70), and the owner's best-known file (GEMSDOE32 <code>h33-2-b2</code>) fires against <strong>{registry['best_known_control']['forward_overlap_firings']}</strong> of the same set. The rule as literally written cannot separate a good candidate from a duplicate; the ruling is the owner's and no exemption was applied here.</p><p>{link('data/gate_universality.json', 'Gate-universality measurement')} · {link('data/h57m_uniqueness_certificate.json', 'Two-reading certificate')} · {link('data/preflight_anatomy.json', 'Universal-support witness')} · {link('data/uniqueness_saturation_certificate.json', 'Hash-verified saturation certificate')}</p></section>
 {build_public_board(evidence['leaderboard_snapshot'], feed_status)}'''
 
-    executive = panel + fresh_notice + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Research download: OK. Submit: NO.</strong> Downloading the actual TIFF or ZIP is safe for review; do not upload it. Local format PASS is not organizer acceptance or uniqueness clearance for a competition submission, and the fail-closed verdict below is recorded, not hidden.</div>
+    executive = panel + s7_proximal_panel + fresh_notice + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Research download: OK. Submit: NO.</strong> Downloading the actual TIFF or ZIP is safe for review; do not upload it. Local format PASS is not organizer acceptance or uniqueness clearance for a competition submission, and the fail-closed verdict below is recorded, not hidden.</div>
 <p>{registry['duplicate_count']} registry comparisons triggered a literal duplicate condition across the {registry['registry_rasters_checked']}-raster audit. Against all 665 rasters from the other 56 repositories, worst rank correlation is {number(registry.get('worst_spearman_other_repos', 0.6580))} (below 0.90); against this repository's own earlier Session-3 soft surface (sharing the exact 2,452,550 zeroed pixels outside the fitted <code>d1 ≤ 25.55 px</code> zone), full-footprint Spearman is {number(registry['worst_spearman_full_footprint'])}; worst forward overlap is {registry['worst_dot_overlap']:.2f} (above 0.70 due to the 17 dense-support prior rasters). Pixel and byte identity checks pass across all 695 rasters, but that alone is not the protocol.</p></section>
 <section><h2>Exact submission steps—for a future selector-cleared file</h2><ol class="steps"><li><strong>Check the release card.</strong> Require format PASS, full-registry surface PASS before placement, final-dot PASS, clean canaries and a positive paired holdout gain. A separate selector must clear the real slot.</li>
 <li><strong>Download the .tif, or the single-TIFF .zip.</strong> Do not upload this HTML page, a JSON receipt, a PDF or a ZIP of the repository. Our ZIP is round-trip checked to contain exactly one GeoTIFF.</li>
@@ -441,6 +495,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
              'session-6-verification.html': ('Session 6 verification', session6_page(root)),
+             'session-7-verification.html': ('S7-1 audit', session7_proximal_page(evidence['session7_proximal_holdout'])),
              'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive),
              'h57k.html': ('H57-K candidate', h57k_page)}
     for filename, (title, body) in pages.items():
@@ -451,15 +506,14 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
     for filename in pages:
         (aliases / filename).write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../{filename}"><title>57GEMSDOE · moved</title></head><body><p>Research release HOLD; not cleared for submission. <a href="../{filename}">Open current page</a>.</p></body></html>')
     (docs / '.nojekyll').touch()
-    # Mirror this current release only for the existing main-root Pages layout.
-    # Artifact deployment still serves docs/ directly. These are identical delivery
-    # bytes, not new predictions or copied prior submissions.
+    # A site build never creates/copies a TIFF or ZIP. The current release's
+    # existing main-root mirror must already match the audited artifact.
     for suffix in ('.tif', '.zip', '.json'):
         source = (root / card['file']).with_suffix(suffix)
         target = root / 'downloads' / source.name
-        target.parent.mkdir(exist_ok=True)
-        shutil.copyfile(source, target)
-    print(f'Built {len(pages)} evidence-led pages. Download OK; submission HOLD. No model run or slot used.')
+        if not target.is_file() or target.read_bytes() != source.read_bytes():
+            raise RuntimeError(f'pre-existing current-release mirror is missing or stale: {target}')
+    print(f'Built {len(pages)} evidence-led pages. H57-M research download scope unchanged; S7-1 remains negative. The site builder used no model or slot.')
     return card
 
 
