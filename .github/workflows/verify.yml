@@ -23,5 +23,5 @@ jobs:
       - run: python -m pip install -r requirements-lock.txt
       - name: Shared metric, holdout, geometry, packaging and gate regressions
         run: python -m pytest
-      - name: Static links, actual TIFF/ZIP bytes and current negative card
+      - name: Static links, actual TIFF/ZIP bytes and the current fail-closed card
         run: python scripts/check_site.py --build

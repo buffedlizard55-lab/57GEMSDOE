@@ -1,0 +1,91 @@
+{
+  "evidence_class": "RUN CARD (Session 7; no new candidate; no organizer score)",
+  "session": "Session 7 (2026-10-10)",
+  "hypothesis": "No new candidate. Session 7 checks (a) whether the Session-5 holdout reproduces from the restored feature stack, (b) why the owner-reported 0.2778 raster beats its 0.2708 sibling, and (c) whether the holdout can test near-trace dot pruning at all.",
+  "mechanism": "DTI is max-cover based: TP_w uses the best dot per truth pixel, while FP_w charges every dot its unclaimed mass. A dot that is not the unique max-cover for any truth pixel can be removed without losing TP_w, so removal raises DTI. The 0.2778 pair differs only by 2,545 dots that all lie 1.41-2.00 px from the known catalogue.",
+  "named_non_fault_process_that_could_mimic_it": "Catalogue digitisation or rasterisation offset of 1-2 px: a dot that looks like a near-trace strand can be a false positive from misplaced trace geometry, which the holdout collar also hides.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI (reproduced, not new)",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "candidate": "relay_bend_anatomy (E2), soft surface",
+    "dti": 0.031159854641644204,
+    "ci95": [
+      0.024691006152132863,
+      0.03810944921363519
+    ],
+    "withheld_positive_pixels": 11321,
+    "reproduction": "bit-identical numbers in evidence/session7_reproduction_compare.json"
+  },
+  "holdout_dot_dti": {
+    "evidence_class": "HOLDOUT-DTI (reproduced, not new)",
+    "candidate": "relay_bend_anatomy (E2), binary allocation",
+    "dti": 0.13520371677763354,
+    "ci95": [
+      0.11913983230552322,
+      0.15303605496339084
+    ],
+    "withheld_positive_pixels": 11321,
+    "note": "Binary allocation only; not the downloadable soft TIFF."
+  },
+  "correlation_overlap_vs_registry": {
+    "new_raster_generated": false,
+    "session6_gate_result_unchanged": true,
+    "literal_gate_unique": false,
+    "worst_dot_overlap": 1.0,
+    "dense_prior": "17GEMSDOE E-proba-multiscale: finite>0 on 5,167,373 of 5,167,373 footprint cells (re-fetched this session, sha ab0a0a62...)",
+    "discriminating_other_lanes_from_session5": {
+      "worst_spearman": 0.028841495318253536,
+      "worst_overlap": 0.23746962509158057
+    }
+  },
+  "raster_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+  "validator_output": {
+    "source": "evidence/session7_verification.json",
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "dtype": "float32",
+    "count": 1,
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 0.9014216065406799,
+    "in_unit_interval": true,
+    "outside_footprint_is_nan": false,
+    "format_note": "zero outside footprint, not NaN (IR-S7-03)"
+  },
+  "submission_name": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec",
+  "submission_note": "Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b",
+  "submission_note_chars": 121,
+  "verdict": "negative",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "verdict_reason": "Literal uniqueness gate fails (dense prior, IR-S7-01). Output is not in the official NaN-outside convention (IR-S7-03). Holdout cannot measure near-trace dots (IR-S7-04). Research download NOT authorized (main, IR-S6-10, fail-closed).",
+  "experiments_used": 2,
+  "experiments": [
+    {
+      "id": "S7-1",
+      "what": "Reproduce the Session-5 holdout in a scratch copy (seed 20, E1-E3 + controls).",
+      "result": "0 numeric differences in the receipt; pooled binary and soft DTI identical to 12 decimals."
+    },
+    {
+      "id": "S7-2",
+      "what": "Audit the holdout collar (nearest visible-to-truth distance in all fold-arm receipts).",
+      "result": "3.1623 px (sqrt 10) in 20/20 receipts; blind zone confirmed from src/gems57/holdout.py."
+    }
+  ],
+  "submission_slots_used": 0,
+  "budget_stop": "Stopped after 2 experiments; a third would have needed the holdout redesign that is listed as the next step.",
+  "next_step": "Owner ruling on the dense-prior gate (IR-S7-01) and a holdout with a reduced or absent collar for near-trace truth (REMAINING_WORK.md).",
+  "generated_by": "scripts/session7_verify.py + scratch reproduction of scripts/run_relay_bend_experiments.py",
+  "download_status": "NO pending explicit owner authorization (inherited from main, PR #23)"
+}

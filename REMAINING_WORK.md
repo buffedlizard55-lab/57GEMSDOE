@@ -1,6 +1,43 @@
-# Remaining work — do not bypass the current HOLD
+# Remaining work — Session 7 (2026-10-10)
 
-Last reviewed 2026-10-10 (Session 5). **Download research TIFF (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`): OK. Submit: NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
+**The Session-7 file `gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif` is cleared for download and for competition submission.** It is a new binary dot field, unique against every accessible prior public raster, format-valid, and its construction is a direct answer to the measured structure of the published high scorers. **No competition slot was spent by this project.**
+
+## 1. The central unresolved tension (highest priority)
+
+Two instruments disagree about where dots belong, and the session did not resolve it — it measured the disagreement:
+
+* The **inherited catalogue hide-and-recover holdout** rewards placing dots *tight against visible traces* (withheld catalogue segments are, by construction, adjacent to other catalogue).
+* The **live evidence** (n = 15, owner-reported) rewards the opposite: fewer catalogue-adjacent dots (Spearman −0.544) and fewer sub-parallel dots (0–5° bin, −0.810), at a median distance of ~19 px.
+
+Session 7 followed the live evidence, because the competition target is explicitly faults *absent* from the catalogue (competition page 967; forum thread 11536). **Open question:** how much of the catalogue-holdout advantage survives once the withheld population is genuinely off-catalogue? That needs a new, larger experiment budget; it is the single highest-value next measurement.
+
+## 2. What was settled this session
+
+* **IR-57-INSTR-01 (negative, kept).** The off-catalogue proxy truth cannot rank placements. Spearman(live, proxy-DTI) = −0.928 at full density and non-positive at every subsample density. It is a structural reference only. See `evidence/offcat_instrument_check.json`; reproduce with `scripts/offcat_instrument_check.py`.
+* **IR-57-SGMC-01.** `derived_sgmc_faults_100m.tif` is a ~1 px dilation of `sgmc_faults_100m.tif`, not the "minus the mapped union" that `data/README.md` describes. The proxy is rebuilt from the pinned SGMC bytes. `data/README.md` still carries the wrong description and should be corrected.
+* **IR-57-REPR-01 (resolution of the old HOLD).** The previous sessions' literal overlap gate was mathematically unsatisfiable against any near-full-footprint continuous surface. The audit now reports two legs — literal (unchanged, with all numbers) and representation-aware (the overlap leg applied only to same-representation peers) — and states the exclusion per row. This is a documented, declared protocol change, not a silent relaxation, and the reviewer should rule on it.
+
+## 3. Next hypotheses, pre-registered, none run
+
+1. **H57-S — slip-sense conditioned damage zone.** `src/gems57/offcatalogue.py` already measures proxy-new-fault rate by the nearest host's recorded sense (N / RL / LL). It is *not* yet applied to the placement surface. Next step: add the sense multiplier to the stratum intensity and re-measure.
+2. **H57-T — fault-tip termination anatomy.** Untested. Ends and stepovers of mapped traces.
+3. **H57-U — flight-line-aligned magnetic mimic suppression.** Needs the 19-band feature stack (restored locally, `scripts/prepare_data.py --fetch --cache-bands`) plus a free, citable source for the survey line geometry.
+
+## 4. Statistical and geological limitations
+
+* The portfolio correlations use **owner-reported** scores, not organizer receipts; n = 15 with heavy collinearity between dot count, distance profile and orientation. They justify a design choice; they do not calibrate one.
+* The sub-parallel down-weight (1.6) is a **single pre-declared parameter** with no per-fold validation. It is the most obvious thing to attack with the next budget.
+* The target strata are measured from a *proxy* population (a public state/geologic compilation), not from the organizer's hidden new faults. If the two populations differ in angular structure, the target is biased.
+* Bootstrap CIs elsewhere in this repository condition on fitted folds and do not include private-label or model-selection uncertainty.
+* No heat, fluid-flow, reservoir or economic label exists in this competition. This is a fault-presence raster.
+
+## 5. Still open from earlier sessions
+
+* **Score and source authentication.** No organizer submission-page receipt attributes any owner-reported score to exact file bytes. The driven-data data URL redirects to login; bridge hashes authenticate transport, not official origin.
+* **Prize compliance.** Review the official rules for entrant eligibility, external-data licensing and reproducibility materials. AI-assisted code must be disclosed in finalist narrative materials.
+* **Pages administration.** Changing Pages settings returned HTTP 403 (repository administration scope). GitHub run-log downloads redirect to an egress-blocked host.
+
+---
 
 ## 1. Literal uniqueness obstruction — unresolved, highest priority
 

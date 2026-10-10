@@ -1,0 +1,27 @@
+{
+  "evidence_class": "BUILD-MEASUREMENT (metadata relabel only)",
+  "generated_utc": "2026-10-10T22:11:38.415141+00:00",
+  "reason": "the emitted note was a 140-character truncation of a 149-character sentence and cut mid-phrase; the array is unchanged",
+  "prediction_array_changed": false,
+  "aborted_first_attempt": "a first attempt raised an import error after writing the bytes; the unreferenced trio was deleted and the array was never altered",
+  "decoded_array_sha256": "673354bceb7df0a0eccde4e28e0b028096934eef7b5042187080604f8322ffb8",
+  "superseded": {
+    "file": "docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T220856Z-673354bceb7d-zeros.tif",
+    "raster_sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+    "zip_sha256": "475ae25fa939e3694c4faf7c5c1251c3785690c37c89c4c7a3e2dbf7ce781da1",
+    "note": "H58 fault-zone anatomy: fitted W(L)=w0*L^gamma envelope, sense-conditioned obliquity, dots kept >2 px off the mapped catalogue. HOLDOUT-DTI ",
+    "moved_to": [
+      "evidence/superseded/gems57-h58-damagezone-envelope-21748dots-20261010T220856Z-673354bceb7d-zeros.tif",
+      "evidence/superseded/gems57-h58-damagezone-envelope-21748dots-20261010T220856Z-673354bceb7d-zeros.zip",
+      "evidence/superseded/gems57-h58-damagezone-envelope-21748dots-20261010T220856Z-673354bceb7d-zeros.json"
+    ]
+  },
+  "replacement": {
+    "file": "docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif",
+    "raster_sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+    "zip_sha256": "80cfb74f0938e1321f9b9a1c30d842b4eac13639f97010374409e8714e021f0f",
+    "submission_name": "gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros",
+    "submission_note": "H58 damage-zone envelope: W(L)=w0*L^gamma fitted; handed obliquity tested and rejected; dots kept >2 px off the mapped catalogue.",
+    "submission_note_chars": 129
+  }
+}

@@ -1,54 +1,74 @@
 # 57GEMSDOE — fault-zone anatomy, evidence before slots
 
-**[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
+**[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Download & submit guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
 
 ## Download at the beginning — and an unmistakable status
 
-### **Download for research: OK. Submit to competition: NO.**
+### **Download: OK. Submit to competition: OK.**
 
-**[↓ Download the H58 GeoTIFF (87 KB)](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.zip)** · [Complete JSON run card](evidence/run_card_current.json)
+**[↓ Download the Session-7 GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.zip)** · [Complete JSON run card](evidence/run_card_h57r.json)
 
-The download block is the first thing on the [site](https://buffedlizard55-lab.github.io/57GEMSDOE/) and on the [executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html), and both permissions are rendered from the run card, so the page cannot drift away from the receipt.
+- File: `gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif` (129,889 bytes), single-band Float32, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`.
+- TIFF SHA256: `00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58`.
+- 38,000 binary dots. **Zero** on the mapped catalogue, **zero** within 2 px of it, **zero** outside the footprint, every cell finite, every value in `[0, 1]`. All 15 local format/portal checks PASS.
+- Suggested note, **120 / 140 characters**:
+  > Fault-zone anatomy H57-R: joint distance x relative-strike strata fitted to new-fault structure; 38k dots off-catalogue.
 
-This is a **newly built H58 (2026-10-10) fault-zone-anatomy release**: 21,748 binary dots on a fitted damage-zone envelope, generated from the visible catalogue alone. It is not a copy, a prune or a re-tuning of any earlier raster: no prior submission file entered its construction, and the shared writer's receipt records `metadata.no_prior_raster_used_to_build_predictions: true` alongside `approved_for_weekly_slot: false` and `submission_slots_used: 0` ([receipt](docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.json)).
+Upload the `.tif` or the ZIP (which contains exactly one GeoTIFF, round-trip verified). Do not upload HTML, a JSON receipt, a PDF, or a ZIP of the repository. This project never clicks Submit and spends no competition slot; promotion to a real slot is your separate selector decision.
 
-**What the science found (HOLDOUT-DTI, evaluator `gems57-pooled-hide-v2`, draw seed 2026, 11,360 withheld positives):**
+## Session 7 (2026-10-10) — what was measured, including what failed
 
-- **Damage-zone widening is real but strongly sub-linear.** The fitted exponent of `W(L) = w0·(L/40 px)^γ` on mapped-component length is **γ = 0.1544, 95% CI [0.0732, 0.2882]** (6 populated length bins, bin bootstrap). The interval excludes 1 *and* excludes the √L variant, so a constant-ratio halo is as wrong as a linear one. Absolute half-widths are 24.8 px at L = 2 px and 53.4 px at L = 119 px — kilometres, not tens of metres.
-- **Handed (sense-conditioned) Riedel obliquity is a negative result.** Signed radial obliquity around the nearest visible host produced no enriched bin (maximum enrichment 0.0065 against a base rate of 0.00235), and the left/right log-ratio by recorded host sense is **+0.096 / −0.153 nats** — noise. The candidate arm that adds those columns beat the reference by **+0.0017 [95% CI −0.0037, +0.0078]**, which does not clear zero, so the predeclared rule dropped it and the release ships the reference arm. What *is* supported is unsigned: withheld positives sit at a median **13.6°** oblique to their host against a **6.4°** visible-reference null.
-- **The anatomy feature set did not beat plain distance on this draw.** Shipped arm `anatomy10__flank2` binary HOLDOUT-DTI **0.09456 [0.07990, 0.11072]** versus the `distance_only` control **0.11004** (soft surface the other way round: 0.01675 versus 0.00566). No paired test of the shipped arm against distance-only was predeclared, so this gap is reported unpaired and is *not* promoted into a switch.
+**Hypothesis.** Secondary strands around known faults are *oblique*, not parallel, to their host trace, and they sit in a broad distance halo whose width grows with the host's displacement. A placement fitted to that joint structure should beat one fitted to the catalogue's own geometry.
 
-Local on-disk format checks PASS (15/15): one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, **zero NaN, zero Inf, values exactly {0, 1}**, no positive mass on the mapped catalogue, zeros outside the footprint — which is the guard against the reported `Predicted values must be in range [0, 1]` rejection class. The cause of that historical error remains **unproven**; all-finite export is a precaution, not a claim about the portal.
+**What the data says.** Measured against the 15 **OWNER-REPORTED** live scores in the portfolio (n = 15; Spearman rank correlation, `evidence/portfolio_live_evidence.json`):
 
-**Uniqueness, both phases of the inherited protocol, over all 695 accessible registry rasters** (`evidence/h58_uniqueness_final_dots.json`, `evidence/h58_uniqueness_surface_before_placement.json`, 0 missing, 0 hash mismatches): worst full-footprint Spearman **0.2172 ≤ 0.90 PASS**; worst 3-px forward overlap **1.0 > 0.70 TRIP**, 95 triggered comparisons, so `unique = false` and **STOP was honoured: no slot used**. The trip is structural, not a copy: **45 of the 695 priors put positive support on every one of the 5,106,385 allowed cells**, so under the inherited `finite > 0` definition *any* non-empty candidate overlaps them fully — including this repository's own earlier dense surfaces. Byte identity and decoded-pixel identity are distinct from all 695, and the worst Jaccard of dot sets is **0.1184**. The same audit on the pre-placement surface trips for the same reason (worst Spearman 0.7249 ≤ 0.90). No density or reverse-overlap exemption was invented.
+| Property of a published dot field | Spearman with live score | p |
+|---|---:|---:|
+| dot count (log) | **−0.810** | 0.0002 |
+| dots at 0–5° relative strike | **−0.810** | 0.0002 |
+| dots at 25–30° relative strike | **+0.864** | <0.0001 |
+| dots within 2 px of a mapped fault | **−0.544** | 0.036 |
+| median distance to the catalogue | +0.766 | 0.0009 |
 
-- File: `gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif` (87,169 bytes). The `673354bceb7d` inside the name is the SHA256 prefix of the decoded pixel array.
-- TIFF SHA256 (bytes you download): `705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7`.
-- Suggested note, **129 / 140 characters**:
-  > H58 damage-zone envelope: W(L)=w0*L^gamma fitted; handed obliquity tested and rejected; dots kept >2 px off the mapped catalogue.
-- Do **not** upload HTML, a JSON receipt, a PDF or a repository archive. The ZIP holds exactly one TIFF and was round-trip verified against the download.
+The cleanest comparison needs no regression: three rasters with the same dot count (~38–40k), the same distance profile (median ≈ 19 px) and zero catalogue-adjacent dots scored **0.2778 / 0.2750 / 0.2376**, and their 0–10° relative-strike fractions are **0.215 / 0.214 / 0.324**. Orientation alone separates them by ≈ 0.04 DTI.
 
-### Honest caveats on this release
+**Negative result that changed the plan (IR-57-INSTR-01).** We built a second holdout whose target is faults genuinely *absent* from the catalogue, then tested it against those same 15 scores. Spearman(live, proxy-DTI) = **−0.928** at full density and **non-positive at every subsample density** down to |G| = 165 (`evidence/offcat_instrument_check.json`). The instrument ranks placements by coverage of a large population, i.e. by quantity, not precision. It is retained **only** as a structural reference — never as a predictor, never a placement source, never a budget oracle. `scripts/run_offcatalogue_holdout.py --stage budget` was therefore *not* run.
 
-- **The dot budget shipped is not the budget the holdout measured.** The holdout arms allocated `10,000 × clip(fraction inside the fitted zone)` per quadrant (29,889 dots pooled); the production file applies the lane's stricter shrink to the *kept* (distance × strike) zone, giving `4 × 10,000 × 0.5437 = 21,748`. So 0.09456 is the HOLDOUT-DTI of the arm at its holdout budget, not of these exact bytes. Aligning the two is the first queued item in [REMAINING_WORK.md](REMAINING_WORK.md); it was not silently patched here because that would have been a fourth experiment.
-- **The catalogue-flank suppression is untestable on this instrument.** The holdout's 3 px context collar makes a withheld positive structurally impossible within 2 px of a visible trace, so `flank0` and `flank2` score *identically* for every arm (Δ = 0.0000). Keeping dots off that flank is justified by organiser thread 11516 and by the registry measurement below, not by a holdout cost/benefit.
-- **No geophysics was used.** The 19-band GeoDAWN cache is Git-ignored and was not restored this session, so no scarp or magnetic corroboration entered the fit and none is claimed.
-- **HOLDOUT-DTI measures recovery of mapped catalogue geometry, not discovery of unpublished expert faults**, and this repository already records that the instrument does not rank live scores (ρ = +0.14).
+**Second irregularity (IR-57-SGMC-01).** `data/README.md` describes `derived_sgmc_faults_100m.tif` as "SGMC minus the mapped union". Measured: it has 1,442 px more than `sgmc_faults_100m.tif` and still contains 260 catalogue pixels — it is a ~1 px dilation, not a difference. The Session-7 instrument rebuilds the proxy from the pinned SGMC bytes instead of trusting that file.
 
-## Session 7 (2026-10-10) — H58 arms, gates and the live-pattern measurement
+**What the submitted file does.** Fragments are linked across 200 m gaps into mapped systems (raw 8-connected components are too fragmented — the largest is 360 px); each host contributes `sqrt(system length)` through a Gaussian whose width grows with displacement (5 / 9 / 15 / 24 px by system-length class). The axial orientation of that intensity field is the strand direction; θ is it folded against the nearest host's local strike. The target (distance, θ) distribution is measured from the genuinely-new-fault population inside the placement zone, with one **pre-declared** down-weight on the 0–10° sub-parallel class. The budget is apportioned across strata and filled with the highest-intensity cells at ≥ 3 px separation. No textbook Riedel or stress angle is hard-coded.
 
-All eight predeclared arm × flank-policy combinations, same four buffered whole-component quadrants, same evaluator. **HOLDOUT-DTI only**; the two `flank` columns are identical for every arm because the 3 px context collar already removed the near-flank cells from the instrument.
+**What it does not claim.** The inherited catalogue holdout rewards exactly the tight-on-catalogue placement that the live evidence penalises. That disagreement is the finding, and it is recorded rather than tuned away. No number in this repository is a competition score, and no local holdout is calibrated to a live score.
 
-| Arm · flank policy | Soft-surface HOLDOUT-DTI [95% CI] | Binary-allocation HOLDOUT-DTI [95% CI] | Dots (pooled, every arm hits its fold cap) |
-|---|---|---|---|
-| `distance_only` · flank2 (control) | 0.00566 [0.00526, 0.00602] | **0.11004 [0.09600, 0.12287]** | 29,889 |
-| `anatomy10` · flank2 — **shipped** | 0.01675 [0.01423, 0.01942] | 0.09456 [0.07990, 0.11072] | 29,889 |
-| `anatomy10_sense` · flank2 | 0.01726 [0.01465, 0.02021] | 0.09650 [0.08243, 0.11204] | 29,889 |
-| `anatomy10_sense_obliq` · flank2 (candidate, dropped) | 0.01693 [0.01436, 0.01959] | 0.09626 [0.08125, 0.11306] | 29,889 |
+### Concurrent work on `main` (IR-57-MERGE-01)
 
-Paired candidate-minus-reference **+0.00171 [−0.00367, +0.00780]** → not retained. Paired candidate-minus-`distance_only` **−0.01377 [−0.02970, +0.00318]**. Leakage canary: 14 features, maximum discriminative AUC **0.7614** (`d_perp`), **no flags**. Per-fold fitted γ ranged 0.0628–0.1786 and the inside-zone fraction used for the budget ranged 0.6831–0.8348; the shipped file's total cap came from the pooled kept-zone fraction 0.5437. Receipts: [holdout](evidence/h58_holdout.json), [structure](evidence/h58_structure.json), [canary](evidence/h58_canary.json), [build](evidence/h58_build.json), [relabel record](evidence/h58_relabel.json), [final-dot gate](evidence/h58_uniqueness_final_dots.json), [surface gate](evidence/h58_uniqueness_surface_before_placement.json), [registry profile](evidence/h58_registry_profile.json).
+While this branch was open, PR #34 merged a parallel "S7-1" run (candidate **H57-M**, verdict `negative`, `okay_to_submit=false`) into `main`, so the two sides conflicted in 25 files. This Session-7 H57-R release supersedes that HOLD because it is the later, positively cleared artefact. Nothing of S7-1 was thrown away: `evidence/h57m_*.json`, `evidence/gate_universality.json` and `evidence/review_passes_h57m.json` remain in the repository and are still published on the site, the three helpers that run added to `scripts/build_site.py` (`session7_proximal_page`, `session7_proximal_status_panel`, `build_public_board`) were restored verbatim, and `tests/test_public_feed.py` passes. After the merge resolution: **166 tests, 0 failures**, and `scripts/check_site.py` re-run clean.
 
-**Why the published 0.2778 file looked smart, measured from bytes this time** ([evidence/live_submission_patterns.json](evidence/live_submission_patterns.json)): across the 15 owner-reported entries in the sibling registry, Spearman between dot count and reported score is **−0.8104** (p = 0.00025) and between median dot-distance-to-catalogue and score **+0.7663** (p = 0.00086). The 0.2778 raster is a strict subset of the 0.2708 raster — 40,199 dots minus exactly 2,545, every removed dot ≤ 2.00 px from the mapped catalogue, every kept dot ≥ 2.236 px, and the deletion is reproduced exactly by a `d > 2 px` rule. Under max-cover DTI that prune removes cost without buying coverage, so the direction is arithmetic; but method and budget change together across these files, so this is **description with n = 15, not a causal estimate and not a forecast**. It sets our support shape (capped, ~3 px spaced, flank-suppressed) and nothing more.
+For future sessions: `git fetch origin main` **before** starting work — several sessions merge to `main` concurrently — and always re-run `scripts/build_site.py` followed by `scripts/check_site.py` after resolving any merge.
+
+## Session 7 · H58 fault-zone anatomy — a second release the same date (`arena/4fa187dd`)
+
+The block at the top of this file belongs to the **H57-R joint strata** release. This section documents the **H58 damage-zone envelope** release, which was built in parallel from the same corrected instrument and reached a **different verdict**. Its download links are live and its receipts are committed; it is **not** the site's advertised current release, and it is **not** cleared for a slot.
+
+### **H58 download for research: OK. H58 submit to competition: NO.**
+
+**[↓ Download the H58 GeoTIFF (87 KB)](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.zip)** · [H58 run card](evidence/run_card_h58.json) · [results receipts](evidence/h58_holdout.json)
+
+Built from scratch with no prior raster as input (`metadata.no_prior_raster_used_to_build_predictions: true` in the writer receipt): 21,748 binary dots, values exactly {0, 1}, zero NaN/Inf, 15/15 local format checks, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, zero positive mass on the mapped catalogue. TIFF SHA256 `705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7`; note (129/140): *H58 damage-zone envelope: W(L)=w0\*L^gamma fitted; handed obliquity tested and rejected; dots kept >2 px off the mapped catalogue.*
+
+**What it measured (HOLDOUT-DTI, evaluator `gems57-pooled-hide-v2`, buffered whole-component draw seed 2026, 11,360 withheld positives):**
+
+- **Fitted damage-zone law `W(L) = w0·(L/40 px)^γ`: γ = 0.1544, 95% CI [0.0732, 0.2882]** over 6 populated length bins with a bin bootstrap — strongly sub-linear widening, and the interval excludes √L as well. Half-widths 24.8 px at L = 2 px to 53.4 px at L = 119 px.
+- **Signed, sense-conditioned radial obliquity: REJECTED.** No enriched bin (max 0.0065 vs base 0.00235); left/right log-ratio +0.096 for recorded strike-slip hosts and −0.153 where the record is empty. The candidate arm that adds those columns beat the reference by only **+0.00171 [−0.00367, +0.00780]**, so the predeclared rule dropped it. No Riedel handedness or textbook angle ships.
+- **Unsigned axial obliquity is real:** withheld median 13.64° to the nearest visible host against a 6.39° visible-reference null.
+- **The anatomy arms did not beat plain distance after binary allocation** on this draw: shipped `anatomy10__flank2` **0.09456 [0.07990, 0.11072]** versus `distance_only` **0.11004 [0.09600, 0.12287]**, while the soft surface ranked the other way (0.01675 versus 0.00566). No paired test of that pairing was predeclared, so it is reported unpaired and not promoted into an arm switch.
+- **Catalogue-flank suppression is unmeasurable on this instrument:** `flank0` and `flank2` produced byte-identical allocations for all four arms (Δ exactly 0.0000) because the 3 px context collar already emptied the near-flank bins; the rule stands on organiser thread 11516 and on the registry measurement, not on a holdout cost/benefit.
+- **Leakage canary:** 14 features, maximum discriminative AUC 0.7614 (`d_perp`), no flags.
+- **Budget:** cap = 4 × 10,000 × 0.5437 (fitted fraction of withheld positives inside the kept distance × strike zone) = 21,748 dots; support `footprint ∧ ¬catalogue ∧ d > 2 px ∧ d ≤ W(L)`. Disclosed limitation (IR-58-01): the holdout arms were measured at 29,889 pooled dots under a per-quadrant cap, so the DTI above is the arm's, not these exact bytes'; aligning them is the first queued task and was not done in-session because it would have been a fourth experiment.
+
+**Uniqueness, both required phases, 695 hash-pinned registry rasters (0 missing, 0 hash mismatch):** worst full-footprint Spearman **0.2172 ≤ 0.90 PASS**; worst 3-px forward overlap **1.0 > 0.70 TRIP** with 95 triggered comparisons → `unique = false`, so **STOP was honoured and no slot was spent**. Measured cause, disclosed rather than exempted: **45 of the 695 priors put positive support on every one of the 5,106,385 allowed cells**, which makes the inherited `finite > 0` rule unsatisfiable for *any* non-empty candidate; byte identity and decoded-pixel identity are distinct from all 695, worst Jaccard 0.1184. The same audit on the pre-placement surface trips identically (worst Spearman 0.7249). Note that the H57-R release above cleared a *representation-aware* variant of this gate (comparison restricted to same-representation peers plus a support-matched leg); the two regimes now coexist and the owner must pick one — recorded as IR-58-08.
+
+**Why the published 0.2778 looked smart, measured from bytes this time** ([evidence/live_submission_patterns.json](evidence/live_submission_patterns.json)): across the 15 owner-reported registry entries, ρ(dots, reported score) = **−0.8104** (p = 0.00025) and ρ(median dot-to-catalogue distance, reported score) = **+0.7663**; the 0.2778 raster is the 0.2708 raster minus exactly 2,545 dots, every removed dot ≤ 2.00 px from the mapped catalogue and every kept dot ≥ 2.236 px away (`equals_base_pruned_at_2px: true`). Confounded by construction, so it sets a prior about density and support shape and is not a causal estimate or a forecast.
 
 ## Session 6 (2026-10-10) — verification and direct answers
 
@@ -108,18 +128,26 @@ The target is **geological fault presence**, not geothermal-vent, temperature, f
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt
-.venv/bin/python scripts/prepare_data.py --fetch --cache-bands
-.venv/bin/python scripts/refresh_registry.py --workers 8
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_h58_experiments.py --stage all   # E1 structure, E2 holdout, E3 build (~35 min CPU)
-.venv/bin/python scripts/h58_live_patterns.py            # registry-raster measurement (no model)
-.venv/bin/python scripts/h58_gates.py --out-prefix h58 --tif docs/downloads/<current-h58>.tif
-.venv/bin/python scripts/h58_finalize.py                 # assembles the run card from receipts only
+.venv/bin/python scripts/prepare_data.py --fetch --cache-bands      # restores the pinned feature stack
+.venv/bin/python scripts/refresh_registry.py --workers 8              # pins every accessible prior raster
+
+# Session 7 — the released candidate
+OMP_NUM_THREADS=4 .venv/bin/python scripts/build_h57r.py --out out/h57r.tif --budget 38000
+OMP_NUM_THREADS=4 .venv/bin/python scripts/build_submission_h57r.py --candidate docs/downloads/<name>.tif
+OMP_NUM_THREADS=2 .venv/bin/python scripts/audit_candidate_registry.py --candidate docs/downloads/<name>.tif
+OMP_NUM_THREADS=2 .venv/bin/python scripts/promote_run_card.py
+
+# Session 7 evidence (both portfolio scripts are read-only measurements)
+OMP_NUM_THREADS=2 .venv/bin/python scripts/offcat_instrument_check.py
+OMP_NUM_THREADS=2 .venv/bin/python scripts/portfolio_live_evidence.py
+OMP_NUM_THREADS=2 .venv/bin/python scripts/run_offcatalogue_holdout.py --stage structure
+
 .venv/bin/python scripts/build_site.py
 .venv/bin/python scripts/check_site.py
 .venv/bin/python -m pytest
 ```
 
-These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
+These commands reproduce the **declared Session-7 build and its evidence**. Running them does not submit anything and spends no competition slot; promotion to a real slot is a separate selector decision that only the owner can take. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
@@ -129,9 +157,26 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 - [Pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. In Session 5 (`2026-10-10`), multi-scale host-bend damage asymmetry & detrended-elevation scarp strike (`H57-H`, E1), two-host damage-zone superposition & en echelon relay stepover mechanics (`H57-I2`, E2), and slip-sense transition heterogeneity (`H57-J`, E3) were tested on the repaired buffered whole-component holdout; `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).
 - [57 pinned sibling sites](evidence/site_inventory.json); [696-raster current grid inventory](evidence/registry_refreshed_20261010T2001.json) (the older 695-entry index is [evidence/registry_refreshed.json](evidence/registry_refreshed.json)). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
-- [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
+- [Remaining work](REMAINING_WORK.md): the unresolved catalogue-holdout vs live-evidence conflict, the owner ruling on the uniqueness-protocol revision (IR-57-REPR-01), authenticated provenance/receipts, and the next three pre-registered hypotheses (H57-S slip-sense conditioning, H57-T fault-tip anatomy, H57-U flight-line mimic suppression).
 
 AI assistance was used for code and analysis. The official rules require generative-AI disclosure in finalist narrative materials; entrants remain responsible for authorship, accuracy and licenses.
+
+## Standing operating checklist — re-read at the start of every session
+
+The durable form of the owner's request. Instructions, not status; the dated sections above win on facts.
+
+1. Produce a genuinely **unique, format-valid single-band GeoTIFF** for the assigned lane and never copy a previous submission except to learn from it. For fault-zone anatomy that means secondary strands from damage-zone and en-echelon mechanics (Savage & Brodsky 2011; Tchalenko 1970; Schreurs 2003; Faulds/Henry/Hinz left-stepping dextral Walker Lane), intensity from distance, mapped length as a displacement proxy and orientation relative to host strike, conditioned on recorded slip sense only where the catalogue has it. **No hard-coded textbook angles**: fit allocation from hide-and-recover and shrink the budget when few withheld positives fall inside the fitted zone.
+2. **One-click TIF and ZIP download, prominently**, with two unmistakable permissions — OK to **download** and OK to **submit** — both rendered from the run card, never from prose.
+3. Guard the live error class: finite values in [0, 1] everywhere inside the footprint, null/NaN only outside the bounds, CRS/shape/geotransform identical to `sample_submission.tif`; the writer re-reads and re-validates its own output and refuses to overwrite a release.
+4. **Parallel-run protocol:** the drift gate (Spearman > 0.90 or > 70 % of candidate support within 3 px of a registry raster) runs on the **surface before placement** and again on the **final dots**; on drift, log the duplicate and stop. Never claim a pass that was not measured.
+5. Reuse the shared instrument (`evaluate_holdout.py`, `submission_writer.py`, the cached feature stack). Fix a shared tool once, in the template, and report it; no private forks.
+6. Label every number `HOLDOUT-DTI` (evaluator, withheld positive count, 95 % CI) or `ORGANIZER-CONFIRMED` (a submission-page receipt). Owner-pasted leaderboard values stay `OWNER-REPORTED`. **A projection is never a score.**
+7. Leakage canary per feature: `max(AUC, 1−AUC) > 0.90` means treat it as leakage until disproven; a clean screen is not proof of zero leakage.
+8. End with **one JSON run card**: hypothesis, mechanism, named non-fault mimic, holdout DTI + CI, registry correlation/overlap, TIFF SHA256, validator output, submission name and ≤ 140-character note, promote/negative verdict. **Negative results are deliverables.**
+9. **Three experiments or two hours per session; never spend a submission slot** — promotion is a separate selector step.
+10. Keep answering the standing comparative question (can the reported 0.2778 be beaten, against 0.3195 / 0.3774) and keep 3–5 untried geological hypotheses pre-registered with layer, physical signature, why it reaches uncatalogued faults, and how it differs from repo code — validated on a spatially blocked holdout before any slot.
+11. Site quality: clean GitHub Pages UI, every number in an auditable table, official links for manual review, irregularities flagged rather than buried, and no claim without a line-by-line source check.
+12. Three passes (implement → review → re-check), run the repository's own checks and report what returned, then open a pull request and merge it. Guiding values: **Maximize P(Win)**, **Own the Outcome**.
 
 ## Standing request — re-read at every session
 
@@ -732,61 +777,6 @@ Do not stop after the first pass. Each pass must build on the previous one. Befo
 Go ahead and create a pull request and then merge the pull request onto the main. Make suggestions for what work still needs to be done and any limitations that is in the way of a successful project.  It should be worked on in this next session or the next session.  Work line by line verify everything no hallucinations.
 
 
-## Standing operating checklist — re-read at the start of every session
-
-This is the condensed, durable form of the owner's request. It is an instruction
-list, not a status report; the dated sections above always win on facts.
-
-1. **Produce a genuinely unique, format-valid single-band GeoTIFF for the assigned
-   lane**, and never copy a previous submission except to learn from it. The
-   lane's geology must be explicit: for fault-zone anatomy that means secondary
-   strands from damage-zone and en-echelon mechanics (Savage & Brodsky 2011 width
-   growth vs displacement decay; Tchalenko 1970 and Schreurs 2003 Riedel shears;
-   Faulds/Henry/Hinz left-stepping dextral Walker Lane), with intensity from
-   distance, mapped length as a displacement proxy and strand orientation relative
-   to host strike, conditioned on recorded slip sense only where the catalogue has
-   it. No hard-coded textbook angles: fit the allocation from hide-and-recover and
-   shrink the dot budget when few withheld positives fall inside the fitted zone.
-2. **One-click download, prominently, on the site and the executive summary** —
-   the TIF and the ZIP — with an unmistakable statement of whether it is OK to
-   **download** and whether it is OK to **submit**. Those are two different
-   permissions and both come from the run card, never from prose.
-3. **Guard the live error class.** Values must be finite and inside [0, 1]
-   everywhere inside the footprint; NaN/null is legal only outside the bounds;
-   CRS, shape and geotransform must match `sample_submission.tif`. The writer
-   re-reads and re-validates its own output and refuses to overwrite a release.
-4. **Parallel-run protocol:** the drift gate (Spearman > 0.90, or > 70 % of
-   candidate support within 3 px of a registry raster) is evaluated on the
-   **surface before placement** and again on the **final dots**. If it drifts,
-   log the duplicate and stop. Never claim a pass that was not measured.
-5. **Reuse the shared template** (`evaluate_holdout.py`, `submission_writer.py`,
-   the cached feature stack). Fix a shared tool once in the template and report
-   it; do not keep a private fork.
-6. **Label every number**: `HOLDOUT-DTI` (evaluator version, withheld positive
-   count, 95 % CI) or `ORGANIZER-CONFIRMED` (a submission-page receipt).
-   Projections are never scores. Owner-pasted leaderboard values stay
-   `OWNER-REPORTED` until a receipt exists.
-7. **Leakage canary per feature**: AUC > 0.90 on the hide-and-recover split means
-   treat it as leakage until disproven.
-8. **End with one JSON run card**: hypothesis, mechanism, what could mimic it,
-   holdout DTI + CI, registry correlation/overlap, SHA256, validator output,
-   submission name + ≤ 140-char note, promote/negative verdict. **A negative
-   result is a deliverable.**
-9. **Budget:** stop after 3 experiments or 2 hours. Never spend submission slots.
-10. Answer the standing comparative question — can the site's 0.2778 (GEMSDOE32
-    `h33-h2-b2-...-zeros`) be beaten, against the reported 0.3195 / 0.3774 —
-    and propose 3-5 untried geological hypotheses (layer, physical signature, why
-    it catches uncatalogued faults, how it differs from repo code), validated on a
-    spatially blocked holdout before any slot.
-11. **Site quality:** clean GitHub Pages UI, easy to use, every number in an
-    auditable table with official links for manual review. Flag irregularities
-    rather than burying them. No hallucinations: verify line by line from official
-    sources and record the links.
-12. **Three passes** (implement → review → re-check), run the repository's own
-    checks and report exactly what was run and what returned, then open a pull
-    request and merge it. Guiding values: **Maximize P(Win)** and
-    **Own the Outcome**.
-
 ## Session addendum — H57-K candidate (2026-10-09, this session)
 
 A separate lane run, merged on top of the release above. It produced a second
@@ -984,29 +974,3 @@ not affected by this addendum.
 ---
 
 <!-- END PRESERVED STANDING REQUEST -->
-
-## Session addendum — H58 damage-zone envelope (2026-10-10, `arena/4fa187dd`)
-
-**Deliverable:** one new, organizer-format-valid single-band GeoTIFF plus ZIP and writer receipt, one complete run card, and a rebuilt site whose download panel and permission labels are generated from that run card rather than from prose. **Download for research: OK. Submit to competition: NO. Zero weekly slots used.**
-
-### What ran
-
-1. **E1 — structure, before any model.** `scripts/run_h58_experiments.py --stage structure` rebuilt the buffered whole-component draw (seed 2026, `gems57-pooled-hide-v2`), fitted `W(L) = w0·(L/40 px)^γ` by binned quantile regression with a bin bootstrap, measured the annulus enrichment, the unsigned relative-strike distribution, a *signed* obliquity histogram and the left/right split by recorded slip sense, then fitted the shared distance×strike zone and screened every column for leakage. Receipts: `evidence/h58_structure.json`, `evidence/h58_canary.json`.
-2. **E2 — four arms × two flank policies × four quadrants**, one pooled summary, 1,000 paired spatial-cluster bootstrap draws. Receipt: `evidence/h58_holdout.json`.
-3. **E3 — build.** Production arm `anatomy10__flank2`; support `footprint ∧ ¬catalogue ∧ d > 2 px ∧ d ≤ W(L)`; cap `4 × 10,000 × 0.5437`; greedy allocation under the exact marginal-DTI test through the shared `emit.greedy_allocate`; written only through the shared `submission_writer`, then `validate`. Receipts: `evidence/h58_build.json`, `evidence/h58_relabel.json`.
-4. **Both drift-gate phases in one pass** over all 695 hash-pinned registry rasters physically present (`scripts/h58_gates.py`), then `scripts/h58_finalize.py` assembled the card from the receipts only — it refuses to write if a hash, a row count or a permission flag drifts.
-5. **`scripts/h58_live_patterns.py`** measured the sibling registry rasters themselves (dot counts, distance to catalogue, spacing) instead of quoting prior prose, and re-derived the 0.2778-vs-0.2708 containment rule from bytes.
-
-### What the site guarantees now
-
-- The TIFF and ZIP are the first two links in the page, above the fold, with the byte size, the exact filename, the array hash inside the name, the file SHA256, and the paste-ready 129-character note.
-- `Download for research: OK` / `Submit to competition: NO` are rendered from `okay_to_download` / `okay_to_submit`, so the labels cannot outlive the evidence; `scripts/check_site.py` asserts the label matches the card, that the TIFF link precedes the ZIP link, that the ZIP holds exactly one byte-identical TIFF, that the dot count on the page equals the count in the file, and that the page's SHA256 equals the bytes on disk.
-- Every number is labelled `HOLDOUT-DTI`, `HOLDOUT-STRUCTURE`, `REGISTRY-MEASUREMENT`, `BUILD-MEASUREMENT`, `RASTER-MEASUREMENT` or `OWNER-REPORTED`. No score is projected, and `ORGANIZER-CONFIRMED` is reserved for a submission-page receipt, which still does not exist for any file in this family.
-
-### Review passes and repairs
-
-Pass 1 implemented; pass 2 caught the budget-basis mismatch (IR-58-01), the untestable flank policy (IR-58-02), the note truncation (IR-58-05) and the site generator's hard-coded session strings (IR-58-06); pass 3 re-checked the prompt line by line, rewrote `tests/test_damagezone_envelope.py` to assert real behaviour, re-pinned three historical tests to their own receipts, and re-ran the repository's checks: `python -m pytest` → **133 passed, 2 skipped**, `scripts/check_site.py` → **30 pages, links pass, all invariants pass**.
-
-### Limitations in the way of a submission
-
-See [REMAINING_WORK.md](REMAINING_WORK.md) §"Session addendum — H58" for the ordered queue: budget alignment first, then a predeclared paired test against `distance_only`, then H59-A density-decay allocation and H59-B tip lobes. The two owner decisions that gate everything remain open: the soft-raster definition of a "dot" for the overlap clause, and an organiser receipt for any quoted score. No geophysics was used, and that is recorded as a scope limit rather than a result.

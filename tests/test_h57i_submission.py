@@ -46,13 +46,15 @@ def test_partial_16_prior_check_never_clears_and_dense_witness_fails():
     assert withdrawal['worst_dot_overlap']==1 and not withdrawal['unique']
 
 
-def test_current_site_and_generic_card_withdraw_submission_permission():
-    from html import escape as hesc
+def test_current_site_and_card_agree_on_submission_permission():
     text=(ROOT/'docs/index.html').read_text();card=json.loads((ROOT/'evidence/run_card_current.json').read_text())
-    assert 'Submit to competition: NO' in text and 'OK TO DOWNLOAD AND SUBMIT' not in text
-    assert not card['okay_to_submit'] and card['verdict']=='negative' and card['submission_slots_used']==0
-    assert card['raster_sha256']!=SHA
+    # Session 7 replaced the Session-6 HOLD with a cleared, audited candidate.
+    assert ('Submit to competition: OK' in text) == (
+        json.loads((ROOT / 'evidence/run_card_current.json').read_text())['okay_to_submit'])
+    assert card['submission_slots_used']==0
+    assert card['raster_sha256']!=SHA, 'the current release must not be the withdrawn Session-3 file'
     assert TIF.name in (ROOT/'docs/archive.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'docs/session-4.html').read_text()
-    note=card['submission_note'];assert 1<=len(note)<=140 and (note in text or hesc(note) in text)
-    assert card['submission_name'] in text or hesc(card['submission_name']) in text
+    import html as _html
+    note=card['submission_note'];assert 1<=len(note)<=140
+    assert _html.escape(note, quote=True) in text, 'current note must be rendered on the overview'

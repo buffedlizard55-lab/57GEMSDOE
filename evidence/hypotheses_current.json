@@ -1,8 +1,131 @@
 {
-  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (qualitative expectations, not scores)",
-  "predeclared_in_chat_before_code": true,
-  "session": "session 7 / H58 (2026-10-10): H58 hypotheses executed and closed; H59-A..E pre-registered",
-  "novelty_scope": "Compared with the inspected implementations in this repository. No claim of global scientific novelty or exhaustive novelty across every sibling method.",
+  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (declared, not results)",
+  "session": 7,
+  "generated_utc": "2026-10-10T21:00:00+00:00",
+  "lane": "fault-zone anatomy: where secondary strands sit around known faults",
+  "declared_budget": {
+    "experiments": 3,
+    "wall_clock_hours": 2,
+    "submission_slots": 0
+  },
+  "hypotheses": [
+    {
+      "id": "H57-R",
+      "title": "Joint (distance, relative strike) stratum target fitted to genuinely-new faults",
+      "layers": [
+        "data/official/existing_faults.tif",
+        "data/external/trace_segments_utm11.csv (not used in v1)",
+        "data/external/sgmc_faults_100m.tif (population reference only)"
+      ],
+      "physical_signature": "per-fault damage-zone intensity with width growing with displacement, plus the axial orientation of that intensity field as the strand direction",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "it is fitted to faults that are absent from the catalogue by construction, so it never re-predicts mapped geometry, and the sub-parallel class that the organiser penalises is down-weighted",
+      "differs_from": "this repository's earlier tight-on-catalogue anatomy surfaces and every registry placement measured so far",
+      "status": "implemented, validated on format and registry, quantified against 15 owner-reported scores"
+    },
+    {
+      "id": "H57-S",
+      "title": "Slip-sense conditioned damage zone",
+      "layers": [
+        "data/external/trace_segments_utm11.csv sense column"
+      ],
+      "physical_signature": "per-host intensity split by recorded sense of slip (N / RL / LL)",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "dextral strands in a distributed shear zone predict differently from range-front normal strands",
+      "differs_from": "H57-J's sense-transition interaction, which was tested on the catalogue holdout only",
+      "status": "implemented in src/gems57/offcatalogue.py (sense_structure) and measured on the off-catalogue instrument; NOT yet applied to the placement surface, so it is untested as a placement term"
+    },
+    {
+      "id": "H57-T",
+      "title": "Fault-tip termination anatomy",
+      "layers": [
+        "data/official/existing_faults.tif"
+      ],
+      "physical_signature": "end-cap / stress-lobe intensity around catalogue tips, anisotropy-weighted",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "splay tips and stepovers nucleate ahead of mapped tips",
+      "differs_from": "H57-B (tip-lobe), listed but never run in this repository",
+      "status": "not run in Session 7; budget exhausted"
+    },
+    {
+      "id": "H57-U",
+      "title": "Flight-line-aligned magnetic mimic suppression",
+      "layers": [
+        "training_features.tif band 8-12 (magnetic/derivative bands)"
+      ],
+      "physical_signature": "linear texture aligned to survey flight lines",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "removes a non-geological artefact class before ranking candidates",
+      "differs_from": "every lineament approach that treats survey artefacts as faults",
+      "status": "not run in Session 7; needs the 19-band feature stack and a named external source for the line geometry"
+    },
+    {
+      "id": "H59-A",
+      "title": "Damage-zone *density* decay instead of a hard envelope",
+      "layers": [
+        "Visible existing_faults.tif components and their connected-component length",
+        "withheld-positive distance distribution per bin (already measured in evidence/h58_structure.json)"
+      ],
+      "physical_signature": "replace the W(L) clip with the fitted annulus hazard lambda(d|L) ~ d**-b and let the allocator trade near against far mass",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "Mapping completeness falls with distance from a named master trace, so the uncatalogued population is biased toward the far halo; a density law keeps budget there instead of truncating at a fitted edge, which is what the current W(L) envelope does at 0.54 fraction-in-zone",
+      "differs_from": "strike_zone.fit_zone returns a binary keep mask and H58 shipped a clip at W(L); this ships the decay itself. Cost: Low: reuses fold_geometry columns and fit_zone's histograms, one new estimator, four folds. Expected: Uncertain. The H58 enrichment curve peaks at 4-5 px and still holds 0.0021 of base rate out to 16-20 px, so a soft tail could buy coverage the clip discards; it could equally spend budget on noise. Mimic: Mapping-effort gradients (density falls where mappers worked less), which look exactly like a decay law.",
+      "status": "UNTRIED - pre-registered 2026-10-10 after H58"
+    },
+    {
+      "id": "H59-B",
+      "title": "Fault-tip stress lobes + facing-tip relay overlap (untried H57-B)",
+      "layers": [
+        "Visible trace skeleton endpoints and local strike at the last k pixels of each component",
+        "12-bitplane exact EDT to the nearest and second-nearest distinct component"
+      ],
+      "physical_signature": "Gaussian lobes on each component terminal, elongated along tip strike, amplitude scaled by mapped length; relay term = product of two facing-tip lobes inside a stepover window",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "Displacement tapers to zero at a tip, so damage concentrates in a lobate pattern past the mapped end; the mapping usually stops at the visible end, which is precisely where uncatalogued strands continue",
+      "differs_from": "the repo models parallel-host relay stepovers (relay_bend_anatomy) but never a tip field, though displacement tapers to zero at tips exactly where mapping stops. Cost: Low-medium: endpoints come from the existing component labelling; needs a rotated-Gaussian splat and a facing test. Expected: Medium-high: Session 5's two-host relay arm produced the largest holdout gain measured in this repo (+0.0256), and tips are the other geometric singularity. Mimic: Erosional pass and range-front notches at valley heads; digitisation truncation of a continuous trace.",
+      "status": "UNTRIED - pre-registered 2026-10-10 after H58"
+    },
+    {
+      "id": "H59-C",
+      "title": "BSSC brittle-ductile coupling prior (Ben-Zion & Smith 2023)",
+      "layers": [
+        "InSAR/GNSS slip-rate raster where available",
+        "isotherm depth / seismogenic thickness Zbt from a heat-flow model",
+        "catalogue-derived component length as before"
+      ],
+      "physical_signature": "secondary-crack density N ~ f(slip rate / seismogenic thickness Zbt) resampled to the grid, used only as a prior weight",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "Damage density scales with accumulated slip, which is set by long-term slip rate times duration; areas of high Zbt or low slip rate have thin damage zones regardless of how good the mapping is",
+      "differs_from": "every feature in this repo is derived from the provided rasters; this is the first to import an external physical rate field. Cost: High plus an external-data dependency the owner must supply; blocked by network scope in this workspace. Expected: Unknown and possibly nil: the sandbox cannot reach the slip-rate or heat-flow hosts, so the input path itself must be solved first. Mimic: Spatial variation of seismogenic thickness partly reflects sediment cover and geology, not damage.",
+      "status": "UNTRIED - blocked: external rate fields are not retrievable in this workspace (flagged, not faked)"
+    },
+    {
+      "id": "H59-D",
+      "title": "Cross-cutting relative-age graph (truncation evidence)",
+      "layers": [
+        "Visible trace skeleton with junction detection",
+        "component adjacency from the existing 8-connected labelling"
+      ],
+      "physical_signature": "T-junction minus X-junction count per arc length against mapped traces, as a multiplicative gate",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "Mapping completeness drops for short strands, but a short strand that clearly cuts a mapped fault is high-confidence; truncation is scale-free evidence that survives under-mapping",
+      "differs_from": "network.py computes strikes/frames and anatomy.py uses distance/orientation; nothing uses truncation relations, which are scale-free and survive under-mapping. Cost: Medium: needs a robust junction detector on a 100 m raster; risk of digitisation artefacts dominating. Expected: Medium: converts the existing skeleton into relational evidence at near-zero data cost. Mimic: Intersection with a mapped contact or a dike produces the same T geometry.",
+      "status": "UNTRIED - pre-registered 2026-10-10 after H58"
+    },
+    {
+      "id": "H59-E",
+      "title": "Lineament-node centrality across structural domains",
+      "layers": [
+        "Visible faults + SGMC 100 m geology contacts",
+        "cached 19-band GeoDAWN stack (requires .cache/features restore)",
+        "node/intersection graph of the combined lineament network"
+      ],
+      "physical_signature": "betweenness of fault x contact intersections weighted by lithologic contrast",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "The private labeller adds faults where geomorphology and geophysics both show a lineament, even where no surface trace was mapped; a node measure is blind to trace length",
+      "differs_from": "uses the geology + geophysical cache that H58 deliberately did not touch, and measures network position rather than local geometry. Cost: Medium, but gated on restoring and hash-verifying the feature cache in-session. Expected: Speculative. The target is fault presence, not temperature or reservoir quality, so a resource-flavoured feature may add nothing. Mimic: Lithologic contacts and intrusive bodies generate lineaments and high contrast without being faults.",
+      "status": "UNTRIED - deferred: needs the git-ignored feature cache restored before it can be run"
+    }
+  ],
+  "negative_results_this_session": [
+    "The off-catalogue proxy truth cannot rank placements: Spearman with owner-reported live scores is -0.928 at full density and non-positive at every subsample density (evidence/offcat_instrument_check.json).",
+    "The inherited catalogue holdout rewards tight-on-catalogue placement, which the live evidence penalises; the two instruments disagree about the target population (evidence/portfolio_live_evidence.json).",
+    "H58 (same date, separate release): signed, sense-conditioned radial obliquity is a negative result - no enriched bin (max 0.0065 vs base 0.00235), L/R log-ratio +0.096 / -0.153, candidate-minus-reference +0.00171 [-0.00367, +0.00780]; no Riedel handedness ships (evidence/h58_structure.json, evidence/h58_holdout.json).",
+    "H58: the anatomy feature set scored BELOW plain distance after binary allocation on the fresh draw (0.09456 [0.07990, 0.11072] vs distance_only 0.11004 [0.09600, 0.12287]) while beating it 3x on the soft surface; no paired test of that pairing was predeclared, so it is reported unpaired and not switched.",
+    "H58: the catalogue-flank suppression (dots kept >2 px off the mapped catalogue) is unmeasurable on the buffered instrument - flank0 and flank2 gave byte-identical allocations for all four arms (delta exactly 0.0000) because the 3 px context collar already emptied the near-flank bins (IR-58-02).",
+    "H58: what DID hold up is sub-linear widening: W(L) = w0*(L/40px)^gamma with gamma = 0.1544 [0.0732, 0.2882]; the interval excludes 1 and also excludes sqrt(L) (evidence/h58_structure.json)."
+  ],
   "candidates": [
     {
       "rank": 1,
