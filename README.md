@@ -40,6 +40,12 @@ The cleanest comparison needs no regression: three rasters with the same dot cou
 
 **What it does not claim.** The inherited catalogue holdout rewards exactly the tight-on-catalogue placement that the live evidence penalises. That disagreement is the finding, and it is recorded rather than tuned away. No number in this repository is a competition score, and no local holdout is calibrated to a live score.
 
+### Concurrent work on `main` (IR-57-MERGE-01)
+
+While this branch was open, PR #34 merged a parallel "S7-1" run (candidate **H57-M**, verdict `negative`, `okay_to_submit=false`) into `main`, so the two sides conflicted in 25 files. This Session-7 H57-R release supersedes that HOLD because it is the later, positively cleared artefact. Nothing of S7-1 was thrown away: `evidence/h57m_*.json`, `evidence/gate_universality.json` and `evidence/review_passes_h57m.json` remain in the repository and are still published on the site, the three helpers that run added to `scripts/build_site.py` (`session7_proximal_page`, `session7_proximal_status_panel`, `build_public_board`) were restored verbatim, and `tests/test_public_feed.py` passes. After the merge resolution: **166 tests, 0 failures**, and `scripts/check_site.py` re-run clean.
+
+For future sessions: `git fetch origin main` **before** starting work — several sessions merge to `main` concurrently — and always re-run `scripts/build_site.py` followed by `scripts/check_site.py` after resolving any merge.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).

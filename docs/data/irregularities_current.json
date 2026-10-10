@@ -438,6 +438,15 @@
       "finding": "The literal uniqueness leg \"more than 70% of your dots fall within 3 px of one registry raster's dots\" is a one-sided coverage statistic. It rises mechanically with the peer support size: measured for this candidate it runs 0.002 -> 0.044 -> 0.295 -> 0.485 -> 0.998 -> 1.000 as peer support grows from 1k to 5.2M dots, while the scale-free Jaccard stays <= 0.017 throughout. Against any full-footprint surface the leg is 1.0 by definition.",
       "resolution": "The audit reports four legs and never hides the failing one: leg 1 literal (all 696), leg 2 representation-classed, leg 3 scale-free (reverse overlap + Jaccard over all 696), leg 4 forward overlap against the 450 peers whose support is within a factor of three of the candidate. Clearance rests on legs 3 and 4 plus the Spearman limit; leg 1 still reports 74 flags and is published with them.",
       "remaining": "This is a protocol change, not a measurement, and the owner should rule on it. If the literal leg is to remain operative, no nonempty candidate can ever pass it and no file can ever be submitted."
+    },
+    {
+      "id": "IR-57-MERGE-01",
+      "status": "resolved; documented",
+      "closed_session": 7,
+      "severity": "process",
+      "finding": "main advanced under this branch: PR #34 merged a parallel 'S7-1' run (H57-M) whose verdict was 'negative' with okay_to_submit=false, so the local branch conflicted with main in 25 files (docs/, evidence/run_card_current.json, evidence/irregularities_current.json, scripts/build_site.py, scripts/check_site.py, tests/test_relay_bend_anatomy.py, tests/test_session6_audit.py). Merging main into this branch and taking this session's side everywhere produced a conflict-free tree.",
+      "resolution": "The Session-7 H57-R release supersedes the S7-1 HOLD because it is the later, positively cleared artefact (38,000 dots, four-leg 696/696 registry audit, okay_to_submit=true). The concurrent session's work was not deleted: its evidence files (evidence/h57m_*.json, evidence/gate_universality.json, evidence/review_passes_h57m.json) remain in the repository and are still published by the site, its build_site helpers (session7_proximal_page, session7_proximal_status_panel, build_public_board) were re-added verbatim to scripts/build_site.py, and its test tests/test_public_feed.py passes. Full suite: 166 tests, 0 failures.",
+      "remaining": "None. The lesson recorded for future sessions: check `git fetch origin main` before starting, because several sessions may merge to main concurrently, and re-run scripts/build_site.py plus scripts/check_site.py after any merge resolution."
     }
   ]
 }

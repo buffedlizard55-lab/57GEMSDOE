@@ -1,0 +1,85 @@
+{
+  "evidence_class": "DATA-AUDIT + REGISTRY-MEASUREMENT (independent cross-check of main Session-7; no new candidate; no organizer receipt)",
+  "session": "7 (arena/5730a1c2-57gemsdoe cross-check; main's card is evidence/run_card_session7.json)",
+  "date_utc": "2026-10-10",
+  "verdict": "negative",
+  "verdict_detail": "No new raster was generated for download. Download and submission remain NOT OK. The literal uniqueness gate blocks every nonempty in-footprint candidate (IR-S6-01 / IR-S7-01).",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "submission_slots_used": 0,
+  "new_candidate_built": false,
+  "holdout_run_by_this_cross_check": false,
+  "holdout_note": "This cross-check did not re-run the holdout. Main's run card reports a reproduction of the Session-5 holdout (HOLDOUT-DTI, gems57-pooled-hide-v2, 11,321 withheld positives) with 0 numeric differences. That is cited as main's claim and was not independently re-scored here.",
+
+  "checks": [
+    {
+      "id": "C1",
+      "claim": "0.2778 raster is an exact subset of the 0.2708 raster, with 2,545 dots removed and none added.",
+      "result": "VERIFIED (pixel level)",
+      "files": {
+        "0.2778 (GEMSDOE32)": {"path": "docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif", "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9", "positive_dots": 37654, "values": [0, 1]},
+        "0.2708 (GEMSDOE31)": {"path": "docs/downloads/gemsdoe31-h27-4-solo-d28-20261004-8acb75e1-nan.tif", "sha256": "07b6db440535404bb41ec8ddc797713e200d308e3da35937393efde5eb84bc40", "positive_dots": 40199},
+        "0.2708 (GEMSDOE28)": {"path": "docs/downloads/gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-nan.tif", "sha256": "ab02300152248fdda04e988e2cd2a0c13f35eec42fcf670a15e8b76b19e24a73", "positive_dots": 40199}
+      },
+      "measured": {"dots_removed": 2545, "dots_added": 0, "shared_values_equal": true, "grids_equal": true, "GEMSDOE28_equals_GEMSDOE31_pixelwise": true, "GEMSDOE28_equals_GEMSDOE31_bytewise": false},
+      "causal_status": "NOT VERIFIED. Owner-reported scores only; the explanation is main's mechanism claim, not tested here."
+    },
+    {
+      "id": "C2",
+      "claim": "17GEMSDOE E-proba-multiscale is a dense prior that makes the literal overlap gate fail for every candidate.",
+      "result": "VERIFIED (independent clone)",
+      "witness": {"repo": "17GEMSDOE", "path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif", "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be", "finite_positive_cells": 5167373, "footprint_cells": 5167373, "nan_inside_footprint": 0, "value_min": 0.00046257814392, "value_max": 0.98411571979523},
+      "candidate_measured": {"file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif", "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648", "positive_cells": 2714823, "forward_overlap_within_3px": 1.0, "spearman_footprint": 0.5146483046192433, "rank_rule_fires_at_0_90": false, "overlap_rule_fires_at_0_70": true}
+    },
+    {
+      "id": "C3",
+      "claim": "The public leaderboard matches the values in the request: #1 0.3774, #8 DARD 0.3195, #22 extradr19 0.2778.",
+      "result": "VERIFIED (live page fetch of the DrivenData leaderboard, 2026-10-10)",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+      "evidence_class": "ORGANIZER-PUBLISHED public-board context. Not a submission receipt, not file attribution."
+    },
+    {
+      "id": "C4",
+      "claim": "bridge labels.tif is byte-identical to existing_faults.tif.",
+      "result": "VERIFIED (sha256sum)",
+      "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+      "note": "Main's run card reports the same identity (duplicate_labels.byte_identical=true)."
+    },
+    {
+      "id": "C5",
+      "claim": "Retained candidate passes the local format and range preflight.",
+      "result": "VERIFIED (src/gems57/validate.py, run this session)",
+      "crs": "EPSG:32611",
+      "shape": [3730, 3292],
+      "dtype": "float32",
+      "transform": [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0],
+      "n_nan": 0,
+      "n_inf": 0,
+      "min": 0.0,
+      "max": 0.9014216065406799,
+      "all_checks_passed": true,
+      "scope": "local preflight only; outside-footprint cells are 0.0, not NaN (main IR-S7-03), so the convention is still open for the official NaN-outside rule"
+    }
+  ],
+
+  "answers": {
+    "why_0_2778_scored_higher": "Main's account is the working explanation: the 0.2778 raster is a pure dot deletion of 0.2708, so any score difference comes from removing 2,545 dots. Whether removal raised the organizer score is not verified; C1 only shows the file relation.",
+    "can_a_unique_higher_scoring_tif_be_produced_now": "Not under the literal rule. Every in-footprint candidate has overlap 1.0 with the C2 witness. Only the owner can change the dot definition or authorize a download (IR-S6-01 / IR-S6-10)."
+  },
+
+  "hypotheses": {
+    "new_untested_hypotheses_added": 0,
+    "queue": "evidence/session6_hypotheses.json (H6-1 to H6-4, pre-registered; none tested)",
+    "reason": "No holdout run was done here. A new hypothesis without a validated holdout cannot be ranked against the current best."
+  },
+
+  "run_card": {
+    "hypothesis": "Secondary strands sit in a distance-decaying, length-scaled zone around known faults (fault-zone anatomy lane).",
+    "holdout_dti_ci": "NOT RUN by this cross-check (main reports a reproduction; see holdout_note)",
+    "correlation_overlap_vs_registry": {"witness": "17GEMSDOE E-proba-multiscale", "forward_overlap": 1.0, "spearman": 0.5146483046192433},
+    "raster_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648 (retained; NOT cleared)",
+    "submission_name": "gems57-session7-crosscheck-no-new-raster",
+    "submission_note": "Session 7 cross-check: no new raster. Literal uniqueness gate blocks all candidates. Owner ruling needed (IR-S6-01).",
+    "verdict": "negative"
+  }
+}

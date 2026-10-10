@@ -1,0 +1,81 @@
+{
+  "schema": "gems57.session7-registry-precheck.v1",
+  "evidence_class": "REGISTRY-FRESHNESS-CHECK (not a new raster scan or candidate uniqueness result)",
+  "checked_utc": "2026-10-10T22:01:25.044895+00:00",
+  "baseline_index": {
+    "path": "evidence/registry_refreshed_20261010T2001.json",
+    "generated_utc": "2026-10-10T20:01:44.491256+00:00",
+    "complete_accessible_scan": true,
+    "unique_grid_rasters": 696,
+    "snapshots": 57
+  },
+  "public_main_head_check": {
+    "repositories_checked": 57,
+    "errors": [],
+    "changed_since_index": {
+      "12GEMSDOE": {
+        "indexed_main_commit": "0125608623a696e85f0fc55c61ef31f458ffdfd3",
+        "current_main_commit": "eaf8615fff18f809e919b2ad14be3f93197d3f36"
+      },
+      "57GEMSDOE": {
+        "indexed_main_commit": "5309c85a6334c5715791c548dafc2fabdacc8568",
+        "current_main_commit": "7e5eef99dba9055bc3ba63fb0182ee7f22236f6a"
+      },
+      "GEMSDOE25": {
+        "indexed_main_commit": "0e8b8234fdaec8eb4d80569ed8e5ea003780e5af",
+        "current_main_commit": "cc90c1aa28d2525667fb3dffdcab7877895f5e79"
+      },
+      "GEMSDOE52": {
+        "indexed_main_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+        "current_main_commit": "99335c835d8682f9609de3595384d81774ed65ef"
+      }
+    },
+    "unseen_raster_content_scanned": false
+  },
+  "open_pull_request_heads": {
+    "count": 4,
+    "heads": [
+      {
+        "pr": 16,
+        "repo": "57GEMSDOE",
+        "branch": "arena/6fc4c9e2-57gemsdoe",
+        "commit": "ef4a9abf482fcd8582cdc273b8b17f95154b3a58"
+      },
+      {
+        "pr": 20,
+        "repo": "57GEMSDOE",
+        "branch": "arena/34995a82-57gemsdoe",
+        "commit": "10c292e16a4303ad919857fd550e9b5dd1e80d42"
+      },
+      {
+        "pr": 25,
+        "repo": "57GEMSDOE",
+        "branch": "arena/5730a1c2-57gemsdoe",
+        "commit": "772ba15dd1518023e69fa028c277a535da508937"
+      },
+      {
+        "pr": 28,
+        "repo": "57GEMSDOE",
+        "branch": "arena/d6e92462-57gemsdoe",
+        "commit": "158198cb80781a90f5b925f07a504892fd545ed2"
+      }
+    ],
+    "errors": [],
+    "PR_raster_content_scanned": false
+  },
+  "witness_recheck": {
+    "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "source": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "indexed_row_matches": true,
+    "indexed_repo_commit": "6fc71d19d49dca4960d5434bd81b6dd06fcc030a",
+    "current_repo_main_commit": "6fc71d19d49dca4960d5434bd81b6dd06fcc030a",
+    "repo_17_main_unchanged_since_index": true,
+    "covered_allowed_fraction": 1.0,
+    "uncovered_allowed_pixels": 0,
+    "overlap_limit": 0.7,
+    "universal_overlap_blocker": true,
+    "candidate_dot_overlap_implied_for_any_nonempty_allowed_set": 1.0
+  },
+  "decision": "STOP BEFORE PRODUCTION DOT PLACEMENT. An already indexed, hash-verified universal-support witness proves the unchanged literal forward-overlap rule fails for any nonempty allowed candidate. The index is stale for four other repository heads, but their changes cannot remove this blocking witness.",
+  "scope_limit": "No candidate surface/TIFF was built; no new all-raster inventory or correlation calculation was performed. The witness result is sufficient only for the fail-closed STOP decision."
+}

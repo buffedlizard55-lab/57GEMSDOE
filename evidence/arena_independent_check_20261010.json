@@ -1,0 +1,241 @@
+{
+  "evidence_class": "ARENA-INDEPENDENT-LOCAL-CHECK",
+  "note": "Diagnostics of gate behaviour and file identity. Not organizer scores, not a submission, not a download clearance.",
+  "labels": {
+    "census": {
+      "-1": 7111787,
+      "0": 5106385,
+      "1": 60988
+    },
+    "footprint_cells": 5167373,
+    "sample_submission_finite_cells": 5167373,
+    "footprint_matches_sample": true,
+    "sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093"
+  },
+  "subset_and_distance": {
+    "candidate_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+    "prior_sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+    "candidate_dots": 37654,
+    "prior_dots": 40199,
+    "candidate_is_subset_of_prior": true,
+    "removed_cells": 2545,
+    "removed_dist_px_min": 1.4142135623730951,
+    "removed_dist_px_max": 2.0,
+    "removed_within_2px": 2545,
+    "candidate_dots_within_2px_of_known": 0,
+    "candidate_dots_on_known_fault": 0
+  },
+  "eproba_17gemsdoe": {
+    "path": "/home/user/work_gate/eproba.tif",
+    "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "index_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "sha_matches_index": true,
+    "finite_cells": 5167373,
+    "positive_finite_cells": 5167373,
+    "min": 0.0004625781439244747,
+    "max": 0.984115719795227
+  },
+  "literal_gate_local_rasters": [
+    {
+      "raster": "19GEMSDOE__h19-4-multiline-corroborated.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 123779,
+      "positive_fraction": 0.01008,
+      "forward_overlap_3px": 0.980613,
+      "spearman_rho": 0.477442,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "19GEMSDOE__h19-5-powerlaw-budget-multiline.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 121131,
+      "positive_fraction": 0.009865,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.555638,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 60000,
+      "positive_fraction": 0.004886,
+      "forward_overlap_3px": 0.146386,
+      "spearman_rho": 0.008555,
+      "gate_overlap_fail": false,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "57GEMSDOE__h57-anatomy-enechelon-zeros.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 35341,
+      "positive_fraction": 0.002878,
+      "forward_overlap_3px": 0.046237,
+      "spearman_rho": 0.005544,
+      "gate_overlap_fail": false,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 40000,
+      "positive_fraction": 0.003258,
+      "forward_overlap_3px": 0.067669,
+      "spearman_rho": 0.007066,
+      "gate_overlap_fail": false,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "57GEMSDOE__parallel-12000dots-zeros.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 12000,
+      "positive_fraction": 0.000977,
+      "forward_overlap_3px": 0.014978,
+      "spearman_rho": 0.001612,
+      "gate_overlap_fail": false,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 60069,
+      "positive_fraction": 0.004892,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.534791,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE25__dotted-h19-5-d2-8.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 44090,
+      "positive_fraction": 0.003591,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.923892,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 61328,
+      "positive_fraction": 0.004994,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.52922,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 40199,
+      "positive_fraction": 0.003274,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.967727,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 42294,
+      "positive_fraction": 0.003444,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.923764,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE28__h36-1-rung30-blind-r1.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 37660,
+      "positive_fraction": 0.003067,
+      "forward_overlap_3px": 0.998752,
+      "spearman_rho": 0.696096,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE28__h38-1-hf-euler-r30-r1.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 37860,
+      "positive_fraction": 0.003083,
+      "forward_overlap_3px": 0.998752,
+      "spearman_rho": 0.694298,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE29__wormrank-d28.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 41338,
+      "positive_fraction": 0.003367,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.519686,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE30__d28-poisson300m-offcat-44090.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 44090,
+      "positive_fraction": 0.003591,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.923892,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE32__h33-2-b2-zeros.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 37654,
+      "positive_fraction": 0.003066,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 1.0,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE33__h33d-analog-tip-stepover-r30.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 41865,
+      "positive_fraction": 0.003409,
+      "forward_overlap_3px": 0.999841,
+      "spearman_rho": 0.795591,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "GEMSDOE36__anderson-geothermal-pinn-38854.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 38854,
+      "positive_fraction": 0.003164,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.984388,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": true
+    },
+    {
+      "raster": "GEMSDOE49__gate_ortho_w0.25-40k.tif",
+      "finite_cells": 12279160,
+      "positive_cells": 40000,
+      "positive_fraction": 0.003258,
+      "forward_overlap_3px": 0.423859,
+      "spearman_rho": 0.027176,
+      "gate_overlap_fail": false,
+      "gate_rho_fail": false
+    },
+    {
+      "raster": "eproba.tif",
+      "finite_cells": 5167373,
+      "positive_cells": 5167373,
+      "positive_fraction": 1.0,
+      "forward_overlap_3px": 1.0,
+      "spearman_rho": 0.058207,
+      "gate_overlap_fail": true,
+      "gate_rho_fail": false
+    }
+  ],
+  "verdict": "STOP: literal gate blocks any nonempty candidate when a registry raster has full-footprint positive support (see eproba_17gemsdoe)."
+}

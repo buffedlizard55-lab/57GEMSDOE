@@ -22,7 +22,10 @@ NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit
        ('results.html', 'Results'), ('session-7.html', 'Session 7'), ('h57k.html', 'H57-K candidate'),
        ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
-PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
+PUBLIC = ['run_card_current',
+          'h57m_uniqueness_certificate', 'gate_universality', 'h57m_validation',
+          'h57m_emission', 'h57m_holdout', 'h57m_canary', 'review_passes_h57m',
+          'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification', 'uniqueness_session6_full_registry_696', 'session6_mechanism_and_witness',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
@@ -137,6 +140,90 @@ def evidence_notice(card):
     port = card.get('portfolio_live_evidence', {})
     uniq = card.get('correlation_overlap_vs_registry', {})
     return f'''<p class="evidence-note"><strong>Local evidence only.</strong> The placement was fitted to a measured population of genuinely new faults and compared against {port.get('scored_rasters', 0)} <strong>owner-reported</strong> portfolio scores (n = 15, {esc(port.get('caveat', ''))[:120]}). Uniqueness: {uniq.get('registry_rasters_checked', 0)}/{uniq.get('registry_rasters_expected', 0)} prior rasters checked, worst Spearman {number(uniq.get('worst_spearman'))}, worst Jaccard {number(uniq.get('worst_jaccard'))}. No live submission score, private-label claim or calibrated score forecast is made anywhere on this site.</p>'''
+
+
+def session7_proximal_status_panel(receipt):
+    scores = receipt['scores']
+    paired = receipt['paired_differences']['matched_random_prune']
+    context = receipt['cross_branch_context']
+    return f'''<section class="warning" id="session7-proximal"><div class="eyebrow">BRANCH-LOCAL S7-1 HOLDOUT · NOT PROMOTED</div>
+<h2>Matched pruning did not improve over equal-count random—and was not repository-novel.</h2>
+<p>On the visible-anatomy base, proximal pruning scored <strong>{scores['proximal_prune']['dti']:.6f}</strong> and equal-count random pruning <strong>{scores['matched_random_prune']['dti']:.6f}</strong>. Proximal minus random: <strong>{paired['delta']:+.8f}</strong>, 95% CI [{paired['ci95'][0]:+.8f}, {paired['ci95'][1]:+.8f}] (crosses zero).</p>
+<p><strong>Scope correction:</strong> H6-1 had already tested this pruning family on the retained E2 allocator in <a href="{esc(context['prior_experiment_pr'])}">PR #27</a>. S7-1 used a different base model on the same underlying catalogue/holdout and is not an independent replication. Its hash-matched current E2 best is 0.135204 versus S7-1 proximal 0.101005 (descriptive only; no paired cross-model test). Keep receipts separate; do not pool or rerun.</p>
+<div class="permissions"><span class="permission no">S7-1 TIFF: NO — none generated</span><span class="permission no">S7-1 download: NO</span><span class="permission no">S7-1 submit: NO</span></div>
+<p>This status applies only to S7-1. The separate H57-M artifact above has its own scoped research-download status; its competition-submission status remains NO.</p>
+<p>{link('session-7-verification.html', 'Full S7-1 evidence and cross-branch correction →')} · {link('data/session7_proximal_holdout.json', 'S7-1 JSON receipt')} · {link('data/session7_review_passes.json', 'Three-pass review')}</p></section>'''
+
+
+def session7_proximal_page(receipt):
+    scores = receipt['scores']
+    paired = receipt['paired_differences']['matched_random_prune']
+    context = receipt['cross_branch_context']
+    fold_rows = [[esc(fold['fold']), f"{fold['base_dots']:,}", str(fold['proximal_dots_removed_at_2px']),
+                  f"{fold['proximal_prune']['dti']:.6f}", f"{fold['matched_random_prune']['dti']:.6f}"]
+                 for fold in receipt['per_fold']]
+    canary_rows = [[f'<code>{esc(name)}</code>', f"{value['discriminative_auc_max']:.6f}",
+                    'PASS (< 0.90)' if not value['leakage_flag'] else '<strong>STOP</strong>']
+                   for name, value in receipt['leakage_canary']['features'].items()]
+    prior_ci = context['prior_h6_1_proximity_minus_random_ci95']
+    return f'''<div class="eyebrow">SESSION 7 · BRANCH-LOCAL S7-1 · CROSS-BRANCH CORRECTION</div>
+<h1>Proximal pruning versus equal-count random pruning</h1>
+<p><strong>Research verdict: negative.</strong> These are local HOLDOUT-DTI readings, not a live or organizer-confirmed score.</p>
+<section class="warning"><strong>S7-1: NEGATIVE FOR PROMOTION. NOT REPOSITORY-NOVEL. NO TIFF, DOWNLOAD, OR SUBMISSION FROM THIS RUN.</strong> The main branch separately carries an H57-M artifact with scoped research-download authorization; that is not an S7-1 output or submission clearance.</section>
+<h2>1 · S7-1 local HOLDOUT-DTI</h2>
+<p>Evaluator <code>{esc(receipt['evaluator_version'])}</code>; seed {receipt['split']['seed']}; {receipt['split']['withheld_positive_pixels']:,} withheld positives; pooled α={receipt['metric']['alpha']}, β={receipt['metric']['beta']}, {receipt['metric']['triangular_kernel_radius_m']:.0f} m triangular kernel; {receipt['bootstrap']['draws']:,} paired physical-block bootstrap draws.</p>
+{table(['Arm / contrast', 'HOLDOUT-DTI', '95% CI'], [
+ ['Visible-anatomy base', f"{scores['base']['dti']:.6f}", interval(scores['base']['ci95'])],
+ ['2 px proximal prune', f"{scores['proximal_prune']['dti']:.6f}", interval(scores['proximal_prune']['ci95'])],
+ ['Equal-count random prune', f"{scores['matched_random_prune']['dti']:.6f}", interval(scores['matched_random_prune']['ci95'])],
+ ['Proximal − base', f"{receipt['paired_differences']['base']['delta']:+.8f}", f"[{receipt['paired_differences']['base']['ci95'][0]:+.8f}, {receipt['paired_differences']['base']['ci95'][1]:+.8f}]"],
+ ['Proximal − random (registered contrast)', f"{paired['delta']:+.8f}", f"[{paired['ci95'][0]:+.8f}, {paired['ci95'][1]:+.8f}]"],
+])}
+<p>The registered proximal-minus-random interval crosses zero and the point estimate is slightly negative. Only {sum(f['proximal_dots_removed_at_2px'] for f in receipt['per_fold'])} base dots were removed within 2 px ({', '.join(str(f['proximal_dots_removed_at_2px']) for f in receipt['per_fold'])} across folds). The top single-feature discriminative AUC was {max(v['discriminative_auc_max'] for v in receipt['leakage_canary']['features'].values()):.6f}; canary PASS is a leakage screen, not evidence of generalization.</p>
+<h2>2 · Per-fold checks</h2>
+{table(['Fold', 'Base dots', 'Removed at ≤2 px', 'Proximal DTI', 'Random DTI'], fold_rows)}
+<h2>3 · Cross-branch H6-1 reconciliation</h2>
+<p>PR #27 merged H6-1 to <code>main</code> at {esc(context['prior_experiment_merge_utc'])}, before the local S7-1 pre-run audit at {esc(context['branch_pre_run_audit_utc'])}. The stale branch still pointed at <code>5fd64ec</code> and had not fetched its own upstream. H6-1 tested the same 2 px pruning family on the retained E2 relay+bend allocator; this receipt uses a separately fitted visible-anatomy allocator. H6-1 proximal-minus-random was {context['prior_h6_1_proximity_minus_random']:+.8f}, 95% CI [{prior_ci[0]:+.8f}, {prior_ci[1]:+.8f}]. Both intervals cross zero. The H6-1 unpruned E2 score is 0.135204, above S7-1 proximal 0.101005; this is descriptive only because no paired cross-model test was performed. Same catalog and buffered holdout means these are not independent tests; model-specific results are kept separate and not pooled.</p>
+<p>The S7-1 pre-registration's novelty statement is superseded. This reporting correction does not recompute S7-1 scores or alter either experiment. The H6-1 receipt also documents a 3 px context-collar limitation: neither test identifies live near-catalogue new-fault performance.</p>
+<h2>4 · Artifact gate and provenance</h2>
+<p>The unchanged universal-support witness still implies 100% forward overlap for any nonempty allowable candidate against the 70% limit. No candidate-specific full-registry uniqueness/correlation scan ran because production placement was stopped before it. The stale 696-raster inventory is not represented as a current complete scan.</p>
+<p>A receipt audit found that <code>pooled_summary</code> overwrote the initial pipeline-hash key. The receipt restores the full map as <code>pipeline_implementation_sha256</code>, pins shared grid and lockfile/runtime, and records the original executed runner hash. This was metadata-only; HOLDOUT-DTI values, CIs and gates were not recomputed.</p>
+<p><strong>S7-1 only: OK to download: NO. OK to submit: NO. Submission slots used: 0.</strong> The separate H57-M artifact retains its distinct status from the main run card.</p>
+<p>{link('data/session7_proximal_holdout.json', 'S7-1 full JSON receipt')} · {link('data/session7_proximal_hypotheses.json', 'Branch-local pre-registration and novelty correction')} · {link('data/session7_hypotheses.json', 'Earlier H6-1 ranked hypotheses')} · {link('data/h6_1_proximity_pruning_holdout.json', 'Earlier H6-1 receipt')} · {link('data/session7_registry_precheck.json', 'Registry freshness / witness recheck')} · {link('data/session7_review_passes.json', 'Three-pass review log')} · {link('executive-summary.html', 'Download and submission guide')}</p>'''
+
+
+def build_public_board(snapshot, status):
+    """Render timestamped public-board context without implying receipts or attribution."""
+    retrieved = snapshot.get('retrieved_utc')
+    attempted = status.get('attempted_utc')
+    method = status.get('method') or snapshot.get('retrieval_method') or 'method not recorded'
+    if status.get('ok') is False:
+        error = status.get('error', 'refresh failure details were not recorded')
+        freshness = (
+            '<strong>Latest refresh failed; STALE / CLOCK-SKEWED SNAPSHOT.</strong> '
+            f"Last saved public snapshot: {esc(retrieved or 'unknown')}. "
+            f"Attempted: {esc(attempted or 'unknown')}. Error: {esc(error)}."
+        )
+    else:
+        freshness = (
+            f"Saved public snapshot retrieved {esc(retrieved or 'time not recorded')}; "
+            f"capture method: {esc(method)}."
+        )
+        if status.get('full_table_captured') is False or snapshot.get('raw_html_retained') is False:
+            freshness += ' Selected rows only; raw organizer HTML was not retained.'
+    rows = snapshot.get('rows', [])
+    row_data = [[esc(row.get('rank', '')), esc(row.get('participant_display', 'unknown')),
+                 number(float(row['public_dti'])) if isinstance(row.get('public_dti'), (int, float)) else 'unknown']
+                for row in rows if isinstance(row, dict)]
+    board_table = table(['Public rank', 'Participant display', 'Published DTI'], row_data) if row_data else '<p>No valid public rows in this snapshot.</p>'
+    evidence_class = snapshot.get('evidence_class', 'ORGANIZER-PUBLISHED public leaderboard; not a receipt')
+    return f'''<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div>
+<h2>Leaderboard context—not a score receipt</h2>
+<p><strong id="leaderboard-top">{number(snapshot.get('top_public_dti'))}</strong> <span id="leaderboard-context">top DTI in this saved public-board snapshot</span></p>
+<p id="feed-status" aria-live="polite">{freshness}</p>
+<p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')} · {link('data/feed_refresh_status.json', 'Refresh status')}</p>
+<p class="small">Evidence class: {esc(evidence_class)}. This is not a submission receipt or submission-page receipt, exact-file attribution, private-score source, or complete submission registry. Do not infer attribution or causality. Neither remaining team slots nor private scores are known.</p>
+{board_table}</section>'''
 
 
 def session6_page(root) -> str:
@@ -492,7 +579,8 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
         target.parent.mkdir(exist_ok=True)
         shutil.copyfile(source, target)
     print(f'Built {len(pages)} evidence-led pages. Download OK; submission cleared by the '
-          f'Scale-7 clearance receipt. No competition slot was spent by this build.')
+          f'Session-7 registry audit (evidence/uniqueness_h57r.json, 696/696 rasters, four legs). '
+          f'No competition slot was spent by this build.')
     return card
 
 

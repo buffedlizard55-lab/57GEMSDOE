@@ -1,0 +1,36 @@
+{
+  "generated_utc": "2026-10-10T21:37:37.326658+00:00",
+  "session": "session-7-2026-10-10",
+  "hypotheses": [
+    {
+      "id": "C1",
+      "kind": "control",
+      "text": "distance to nearest visible fault only"
+    },
+    {
+      "id": "C2",
+      "kind": "control",
+      "text": "single-host visible anatomy (Session-5 control)"
+    },
+    {
+      "id": "C3",
+      "kind": "experiment",
+      "hypothesis_id": "H57-M",
+      "text": "Two-host relay damage band + live-anchored mass discipline: no dot within 2.0 px of the mapped catalogue (v_out); dot count set by the shared marginal DTI test"
+    }
+  ],
+  "experiment_count": 3,
+  "emission_variants": [
+    "v_out (d > 2 px gate)",
+    "v_in (no gate, Session-5 behaviour)"
+  ],
+  "split": "buffered-whole-components-loqo-v2",
+  "evaluator": "gems57-pooled-hide-v2",
+  "seed": 20,
+  "per_quadrant_cap": 12000,
+  "no_textbook_angle": true,
+  "submission_slots_used": 0,
+  "zone": "90th percentile of TRAINING withheld-positive distances",
+  "truth_count_estimate": "TRAINING base rate x allowed-domain size (never test labels)",
+  "decision_rule": "promote C3 v_out if paired binary HOLDOUT-DTI vs C1 has CI95 lower bound > 0 and (C3 v_out - C3 v_in) >= -0.01"
+}

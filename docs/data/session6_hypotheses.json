@@ -1,0 +1,49 @@
+{
+  "evidence_class": "PRE-REGISTRATION (hypotheses only; none run, none scored, no slot used)",
+  "session": "6 (2026-10-10)",
+  "generated_utc": "2026-10-10",
+  "scope_note": "Ranked, untried fault-zone hypotheses. Tested families already in the repository are excluded: H57-H (bend/scarp relative strike), H57-I2 (two-host relay), H57-J (slip-sense transition), the orientation ablations, and the dot-budget sweep. Each entry records its blocker. Nothing here is a score, a forecast, or authorization to build or submit.",
+  "validation_rule": "Test the top-ranked hypothesis only on the spatially blocked holdout (HOLDOUT-DTI, buffered whole-component LOQO, 153 physical 20 km clusters, paired draws). Require a strictly positive paired 95% lower bound against the matched control. Reject on any canary AUC > 0.90 or on any uniqueness firing. No slot may be used on a result that has not cleared both.",
+  "ranked": [
+    {
+      "rank": 1,
+      "id": "H6-1",
+      "hypothesis": "Catalogue-proximity pruning helps only where a dot is redundant with the training catalogue. Removing dots within 2 px of the TRAINING catalogue, at a matched dot count, raises HOLDOUT-DTI more than removing an equal number of random dots.",
+      "why_ranked_first": "The one measured mechanism in this repository: the owner-reported 0.2778 file is a nested subset of 0.2708 with 2,545 dots removed, all 1.4 to 2.0 px from the mapped catalogue (evidence/session6_mechanism_and_witness.json). This is file-level only. It has not been tested on a holdout.",
+      "predicted_direction": "positive paired difference versus matched random pruning",
+      "falsifier": "Paired 95% lower bound for (proximity-prune minus random-prune) is at or below 0, or a canary fires.",
+      "leakage_control": "Catalogue used for pruning is the training-fold catalogue only; held-out catalogue never referenced.",
+      "blocker": "IR-S6-05: training_features.tif is absent and the feature link is unreachable from this sandbox. Holdout cannot run.",
+      "evidence_links": ["evidence/session6_mechanism_and_witness.json", "evidence/best_submission_audit.json"]
+    },
+    {
+      "rank": 2,
+      "id": "H6-2",
+      "hypothesis": "Fault-tip termination anatomy: the signed along-strike distance to visible segment tips, compared with matched mid-wall controls, adds held-out skill beyond distance-to-fault.",
+      "why_ranked_second": "Named as a 'Future test' in docs/research/hypotheses.md (section 2, fault-tip relay/termination). No implementation or holdout result exists in the repository. Mechanism is bidirectional: tips can be growth sites or arrest sites.",
+      "predicted_direction": "positive paired difference versus distance-only control, on both sides of the fault",
+      "falsifier": "Leakage canary fires, or results depend on one side of the fault only, or the paired lower bound is at or below 0.",
+      "leakage_control": "Tip distance computed from visible vectors only; tips inside held-out components are not used.",
+      "blocker": "IR-S6-05 (holdout data access)."
+    },
+    {
+      "rank": 3,
+      "id": "H6-3",
+      "hypothesis": "Flight-line-aligned magnetic mimic suppression: linear magnetic-gradient responses that are parallel to flight-line direction and lack a matching geological edge are down-weighted; this improves held-out precision over an unsuppressed magnetic-edge feature.",
+      "why_ranked_third": "Mimic risk is named in REMAINING_WORK.md (flight-line leveling residuals, magnetic contacts). No suppression test exists. Ranked below H6-1 and H6-2 because it needs a magnetic input that is not present in data/official, and survey spacing is coarser than the pixel size.",
+      "predicted_direction": "positive paired difference versus unsuppressed magnetic-edge feature",
+      "falsifier": "Suppression removes true-fault signal (held-out recall drops) or the paired lower bound is at or below 0.",
+      "leakage_control": "Flight-line direction taken from survey metadata, not from fault labels.",
+      "blocker": "Magnetic survey raster and flight-line metadata are not in data/official. IR-S6-05 also applies."
+    },
+    {
+      "rank": 4,
+      "id": "H6-4",
+      "hypothesis": "A binarised registry-compatible surface (each soft raster thresholded to its declared dot budget) lets the uniqueness rule be applied to soft predictions without changing the 0.70 limit.",
+      "why_ranked_last": "This is a protocol question, not a geology hypothesis. It can only be decided by the owner (IR-S6-01 option B). Its effect on the 0.70 gate is untested. It is recorded so the owner can rule on it.",
+      "predicted_direction": "lowers worst forward overlap below 0.70 on the 696-raster index",
+      "falsifier": "Overlap stays at or above 0.70 for the witness, or the change alters the verdict on owner-scored rasters (IR-S6-02).",
+      "blocker": "Owner ruling required before any candidate is built (IR-S6-01)."
+    }
+  ]
+}
