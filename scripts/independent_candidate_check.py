@@ -30,7 +30,7 @@ def sha(p):
 def main():
     out = {"evidence_class": "RASTER-MEASUREMENT (not a score)", "radius_px": RADIUS_PX,
            "limits": dict(overlap=OVERLAP_LIMIT, rho_full_footprint=RHO_LIMIT, jaccard=JACCARD_LIMIT),
-           "registry_scope": "19 local files in registry/rasters; full 679 inventory NOT available here",
+           "registry_scope": "19-file local cache slice; 679-row indexed public owner-repository inventory is not materialized here as rasters and is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent",
            "candidates": []}
     with rasterio.open(REF) as r:
         ref_shape, ref_tr, ref_crs = r.shape, tuple(r.transform)[:6], r.crs.to_string()
