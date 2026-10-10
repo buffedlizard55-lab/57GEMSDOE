@@ -75,7 +75,25 @@ def test_legacy_gate_checks_fixture_transform(tmp_path):
 def test_current_tiff_zip_links_and_card_are_consistent():
     result=script('check_site').check()
     assert result['links_pass'] and result['zip_exactly_one_tiff']
-    assert result['current_card_consistent'] and not result['submission_cleared']
+    assert result['current_card_consistent']
+    # Two run cards are live and they govern two DIFFERENT artifacts.  The
+    # invariant is not "nothing is ever cleared" (that was a Session-6 policy
+    # state, frozen into this test, which broke the moment a candidate cleared);
+    # the invariant is that the site summary agrees with each card about the
+    # artifact that card names.
+    cards=result['cards']
+    assert set(cards)=={'session5_relay_bend_research_surface','h57l_anatomy_candidate'}
+    s5=cards['session5_relay_bend_research_surface']
+    assert s5['artifact_sha256']==result['tiff_sha256']
+    assert not s5['research_download_cleared'] and not s5['submission_cleared']
+    h57l=cards['h57l_anatomy_candidate']
+    current=json.loads((ROOT/'evidence/run_card_h57l.json').read_text())
+    assert h57l['artifact_sha256']==current['raster']['tif_sha256']
+    assert h57l['artifact']==current['raster']['submission_name']
+    assert h57l['research_download_cleared']==current['gate_verdicts']['okay_to_download']
+    assert h57l['submission_cleared']==current['gate_verdicts']['okay_to_submit']
+    # A cleared submission still never spends a slot from inside the repository.
+    assert current['spends_a_submission_slot'] is False
 
 
 def test_feed_parser_accepts_only_a_real_sorted_table():

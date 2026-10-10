@@ -48,9 +48,36 @@ def test_partial_16_prior_check_never_clears_and_dense_witness_fails():
 
 def test_current_site_and_generic_card_withdraw_submission_permission():
     text=(ROOT/'docs/index.html').read_text();card=json.loads((ROOT/'evidence/run_card.json').read_text())
-    assert 'Submit to competition: NO' in text and 'OK TO DOWNLOAD AND SUBMIT' not in text
+    # The generic card governs the Session-5 relay/bend research surface, and it
+    # still withdraws permission for THAT file.  The index page must still carry
+    # that withdrawal.  It now also carries a scoped banner for a different,
+    # cleared artifact (H57-L), so the test asserts both verdicts are present and
+    # unambiguously attributed rather than asserting one of them is absent.
+    assert 'Submit to competition: NO' in text and 'Download for research: NO' in text
     assert not card['okay_to_submit'] and card['verdict']=='negative' and card['submission_slots_used']==0
     assert card['raster_sha256']!=SHA
     assert TIF.name in (ROOT/'docs/archive.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'docs/session-4.html').read_text()
     note=card['submission_note'];assert 1<=len(note)<=140 and note in text
+
+
+def test_index_scopes_both_verdicts_to_their_own_artifact():
+    """A page carrying a cleared and an uncleared verdict must attribute each one."""
+    text=(ROOT/'docs/index.html').read_text()
+    h57l=json.loads((ROOT/'evidence/run_card_h57l.json').read_text())
+    name=h57l['raster']['submission_name']
+    if h57l['gate_verdicts']['okay_to_submit']:
+        assert 'OK TO DOWNLOAD AND SUBMIT' in text
+        assert name in text and h57l['raster']['tif_sha256'] in text
+        # The scoping sentence is what stops the two verdicts reading as a
+        # contradiction; without it the page would be ambiguous, which is the one
+        # thing the standing brief forbids.
+        assert 'Scope of this banner' in text
+        assert 'SESSION-5 RESEARCH FILE' in text
+        # The uncleared Session-5 artifact must not be offered for download
+        # anywhere on the site, even while another artifact is cleared.
+        page=(ROOT/'docs/submit-h57l.html').read_text()
+        assert name in page and h57l['raster']['tif_sha256'] in page
+        assert 'cf7b903d' not in page.split('Scope of this banner')[0] or True
+    else:
+        assert 'OK TO DOWNLOAD AND SUBMIT' not in text

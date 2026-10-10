@@ -1,0 +1,56 @@
+{
+ "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.tif",
+ "bytes": 94722,
+ "sha256": "2e8deb79ba6476e39982d889932be4cd43f009a05934cb34cb9a0ddfd9fe900f",
+ "meta": {
+  "crs": "EPSG:32611",
+  "shape": [
+   3730,
+   3292
+  ],
+  "dtype": "float32",
+  "count": 1,
+  "nodata": null,
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "profile_compress": "deflate"
+ },
+ "band_description": [
+  null
+ ],
+ "n_finite": 12279160,
+ "n_nan": 0,
+ "n_infinite": 0,
+ "min": 0.0,
+ "max": 1.0,
+ "mean": 0.001303020748309791,
+ "emitted_positive_pixels": 16000,
+ "checks": {
+  "single_band": true,
+  "dtype_float32": true,
+  "dimensions_3730x3292": true,
+  "crs_epsg_32611": true,
+  "transform_matches_sample_submission": true,
+  "no_nan_anywhere": true,
+  "no_inf_anywhere": true,
+  "no_sentinel_values": true,
+  "range_0_1_guaranteed": true,
+  "min_ge_0": true,
+  "max_le_1": true,
+  "in_footprint_all_finite": true,
+  "in_footprint_range_0_1": true,
+  "outside_footprint_zero": true,
+  "zero_dots_on_mapped_catalogue": true
+ },
+ "all_checks_passed": true,
+ "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+ "on_catalogue_positive_pixels": 0,
+ "in_footprint_positive_pixels": 16000,
+ "footprint_fraction": 0.0030963508924167077
+}

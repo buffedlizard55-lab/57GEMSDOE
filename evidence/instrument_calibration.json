@@ -1,0 +1,2387 @@
+{
+ "evidence_class": "REGISTRY-MEASUREMENT + OWNER-REPORTED live scores (not ORGANIZER-CONFIRMED)",
+ "generated_utc": "2026-10-10T22:07:05.449385+00:00",
+ "metric_constants": {
+  "alpha": 0.2,
+  "beta": 0.8,
+  "radius_px": 3.0
+ },
+ "truth_sets": {
+  "sgmc_off_known": 78953,
+  "catalogue_negative_control": 60988,
+  "withheld_hide_and_recover": 0
+ },
+ "withheld_positive_pixels": 11321,
+ "correlations": {
+  "n_distinct_rasters": 66,
+  "sgmc_off_known": {
+   "n_truth": 78953,
+   "spearman_live_vs_dti": [
+    -0.006575994489048572,
+    0.9582072391086851
+   ],
+   "spearman_live_vs_coverage": [
+    -0.03895493878274488,
+    0.7561483616642127
+   ],
+   "spearman_live_vs_credit_per_dot": [
+    -0.05703370458438318,
+    0.6492087974439492
+   ],
+   "spearman_live_vs_n_dots": [
+    -0.06375537713729965,
+    0.6110517501666157
+   ],
+   "spearman_credit_per_dot_vs_n_dots": [
+    0.08994769864639622,
+    0.47261276558927967
+   ],
+   "spearman_dti_vs_n_dots": [
+    0.6447086905300422,
+    5.158548404356974e-09
+   ],
+   "cpd_min": 0.046861653785595515,
+   "cpd_max": 0.9321651903001685
+  },
+  "catalogue_negative_control": {
+   "n_truth": 60988,
+   "spearman_live_vs_dti": [
+    -0.026400676575134438,
+    0.8333408559560704
+   ],
+   "spearman_live_vs_coverage": [
+    -0.06327514996384037,
+    0.6137455017112924
+   ],
+   "spearman_live_vs_credit_per_dot": [
+    -0.08139425672452479,
+    0.5158891829817965
+   ],
+   "spearman_live_vs_n_dots": [
+    -0.08206703966165482,
+    0.5124140273023021
+   ],
+   "spearman_credit_per_dot_vs_n_dots": [
+    0.5210148607687694,
+    7.289389854381367e-06
+   ],
+   "spearman_dti_vs_n_dots": [
+    0.7101481746993845,
+    2.4337034402111777e-11
+   ],
+   "cpd_min": 0.0,
+   "cpd_max": 0.4182981411847832
+  },
+  "withheld_hide_and_recover": {
+   "n_truth": 0,
+   "spearman_live_vs_dti": [
+    null,
+    null
+   ],
+   "spearman_live_vs_coverage": [
+    null,
+    null
+   ],
+   "spearman_live_vs_credit_per_dot": [
+    null,
+    null
+   ],
+   "spearman_live_vs_n_dots": [
+    -0.06375537713729965,
+    0.6110517501666157
+   ],
+   "spearman_credit_per_dot_vs_n_dots": [
+    null,
+    null
+   ],
+   "spearman_dti_vs_n_dots": [
+    null,
+    null
+   ],
+   "cpd_min": 0.0,
+   "cpd_max": 0.0
+  }
+ },
+ "rows": [
+  {
+   "repo": "GEMSDOE32",
+   "submission": "h33-h33-2-b2",
+   "sha256": "baeae3219bba6a19bc8cfe79224e28555c50184b7c1ca65c2a822f54807c77dd",
+   "live_owner_reported": 0.2778,
+   "n_dots": 37654,
+   "sgmc_off_known": {
+    "n": 37654,
+    "T": 6671.509211944048,
+    "M": 2821.3883823824394,
+    "credit_per_dot": 0.07492931381479895,
+    "coverage": 0.08449975570205119,
+    "n_truth": 78953,
+    "dti": 0.09335583847231918
+   },
+   "catalogue_negative_control": {
+    "n": 37654,
+    "T": 377.9998967710639,
+    "M": 277.9379531975834,
+    "credit_per_dot": 0.007381365942465167,
+    "coverage": 0.006197938885863841,
+    "n_truth": 60988,
+    "dti": 0.006709118968955278
+   },
+   "withheld_hide_and_recover": {
+    "n": 37654,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE36",
+   "submission": "anderson-geothermal-pinn-38854",
+   "sha256": "96d451d5ffc819fc3834052f22ab66190621f206c0bf8990446082a3363dc2ef",
+   "live_owner_reported": 0.275,
+   "n_dots": 38854,
+   "sgmc_off_known": {
+    "n": 38854,
+    "T": 6797.318448788028,
+    "M": 2878.852068695334,
+    "credit_per_dot": 0.07409409761402516,
+    "coverage": 0.086093225701215,
+    "n_truth": 78953,
+    "dti": 0.09477987874665768
+   },
+   "catalogue_negative_control": {
+    "n": 38854,
+    "T": 392.08966119579213,
+    "M": 288.78955543553445,
+    "credit_per_dot": 0.007432685320315397,
+    "coverage": 0.006428964078110319,
+    "n_truth": 60988,
+    "dti": 0.0069296000705741535
+   },
+   "withheld_hide_and_recover": {
+    "n": 38854,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE28",
+   "submission": "h36-1-rung30-blind-r1",
+   "sha256": "5556aa1438fd67376b60d5ffc99228ec09dcc11a8408298a743ccb88d6163641",
+   "live_owner_reported": 0.271,
+   "n_dots": 37660,
+   "sgmc_off_known": {
+    "n": 37660,
+    "T": 7578.12712255853,
+    "M": 3154.407710336162,
+    "credit_per_dot": 0.08376016225003086,
+    "coverage": 0.09598276344861538,
+    "n_truth": 78953,
+    "dti": 0.10587060296507882
+   },
+   "catalogue_negative_control": {
+    "n": 37660,
+    "T": 2615.302412106311,
+    "M": 1260.4802193887353,
+    "credit_per_dot": 0.033470000514836305,
+    "coverage": 0.04288224588617943,
+    "n_truth": 60988,
+    "dti": 0.04621217413123315
+   },
+   "withheld_hide_and_recover": {
+    "n": 37660,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE31",
+   "submission": "h27-4-solo-d28",
+   "sha256": "07b6db440535404bb41ec8ddc797713e200d308e3da35937393efde5eb84bc40",
+   "live_owner_reported": 0.2708,
+   "n_dots": 40199,
+   "sgmc_off_known": {
+    "n": 40199,
+    "T": 7853.634874900117,
+    "M": 3375.9025072469503,
+    "credit_per_dot": 0.0839797633584654,
+    "coverage": 0.0994722793928048,
+    "n_truth": 78953,
+    "dti": 0.10893037936745271
+   },
+   "catalogue_negative_control": {
+    "n": 40199,
+    "T": 2804.280907126056,
+    "M": 1360.7811237275544,
+    "credit_per_dot": 0.033851118777271934,
+    "coverage": 0.04598086356539083,
+    "n_truth": 60988,
+    "dti": 0.04909549919996512
+   },
+   "withheld_hide_and_recover": {
+    "n": 40199,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE28",
+   "submission": "h27-4-r1-solo-d2-8",
+   "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+   "live_owner_reported": 0.2708,
+   "n_dots": 40199,
+   "sgmc_off_known": {
+    "n": 40199,
+    "T": 7853.634874900117,
+    "M": 3375.9025072469503,
+    "credit_per_dot": 0.0839797633584654,
+    "coverage": 0.0994722793928048,
+    "n_truth": 78953,
+    "dti": 0.10893037936745271
+   },
+   "catalogue_negative_control": {
+    "n": 40199,
+    "T": 2804.280907126056,
+    "M": 1360.7811237275544,
+    "credit_per_dot": 0.033851118777271934,
+    "coverage": 0.04598086356539083,
+    "n_truth": 60988,
+    "dti": 0.04909549919996512
+   },
+   "withheld_hide_and_recover": {
+    "n": 40199,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE28",
+   "submission": "h38-1-hf-euler-r30-r1",
+   "sha256": "529d9e1bd80b54957ca16398e47bfc51b1e32eaee8fc89d6dfbddbd7036c5ffc",
+   "live_owner_reported": 0.2707,
+   "n_dots": 37860,
+   "sgmc_off_known": {
+    "n": 37860,
+    "T": 7602.094666275663,
+    "M": 3165.0098819005834,
+    "credit_per_dot": 0.08359772535395096,
+    "coverage": 0.09628633068123647,
+    "n_truth": 78953,
+    "dti": 0.10614216434711567
+   },
+   "catalogue_negative_control": {
+    "n": 37860,
+    "T": 2615.302412106311,
+    "M": 1260.4802193887353,
+    "credit_per_dot": 0.03329319121470511,
+    "coverage": 0.04288224588617943,
+    "n_truth": 60988,
+    "dti": 0.04617953459120979
+   },
+   "withheld_hide_and_recover": {
+    "n": 37860,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE28",
+   "submission": "h32-1-prethin-tip-euler-d2-8",
+   "sha256": "04d31922f5c1ea4016984fc470ab2b0ff8e266c615792f0e86020da3b940d3ff",
+   "live_owner_reported": 0.2649,
+   "n_dots": 42294,
+   "sgmc_off_known": {
+    "n": 42200,
+    "T": 8708.142461235198,
+    "M": 3826.823227559285,
+    "credit_per_dot": 0.09068301487107311,
+    "coverage": 0.11029527011304445,
+    "n_truth": 78953,
+    "dti": 0.11998212697362735
+   },
+   "catalogue_negative_control": {
+    "n": 42294,
+    "T": 5929.793387427575,
+    "M": 2656.035321752019,
+    "credit_per_dot": 0.06279934084626707,
+    "coverage": 0.09722885465054724,
+    "n_truth": 60988,
+    "dti": 0.10240740436931496
+   },
+   "withheld_hide_and_recover": {
+    "n": 42200,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE33",
+   "submission": "h33d-analog-tip-stepover-r30",
+   "sha256": "87f857d505e23247e991ccfab2cbe9f49a04df4f9c8028dce7ea261554690757",
+   "live_owner_reported": 0.2632,
+   "n_dots": 41865,
+   "sgmc_off_known": {
+    "n": 41786,
+    "T": 8411.37536231014,
+    "M": 3664.8795732994704,
+    "credit_per_dot": 0.08770592000429499,
+    "coverage": 0.10653648831976163,
+    "n_truth": 78953,
+    "dti": 0.11606876135918998
+   },
+   "catalogue_negative_control": {
+    "n": 41865,
+    "T": 4989.452257048709,
+    "M": 2260.1590099586456,
+    "credit_per_dot": 0.05398683888591056,
+    "coverage": 0.08181039314371202,
+    "n_truth": 60988,
+    "dti": 0.0864584361992844
+   },
+   "withheld_hide_and_recover": {
+    "n": 41786,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE25",
+   "submission": "dotted-h19-5-d2-8",
+   "sha256": "3e78737f0da8dd2ca66cc6caac0ce8eeefcd6715707f8d1bd3091845cd9bcc30",
+   "live_owner_reported": 0.26,
+   "n_dots": 44090,
+   "sgmc_off_known": {
+    "n": 43781,
+    "T": 9378.778693116281,
+    "M": 4241.876685142245,
+    "credit_per_dot": 0.09688852893132284,
+    "coverage": 0.11878938980300027,
+    "n_truth": 78953,
+    "dti": 0.12857156270273715
+   },
+   "catalogue_negative_control": {
+    "n": 44090,
+    "T": 9498.79813730125,
+    "M": 3954.7811237275546,
+    "credit_per_dot": 0.08969791616528815,
+    "coverage": 0.15574864132782268,
+    "n_truth": 60988,
+    "dti": 0.1617719780036745
+   },
+   "withheld_hide_and_recover": {
+    "n": 43781,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE30",
+   "submission": "d28-poisson300m-offcat-44090",
+   "sha256": "5f963b8bca5ec226ddc7caaadec239c6be6d28aa567f890033be04d04bfd5e32",
+   "live_owner_reported": 0.26,
+   "n_dots": 44090,
+   "sgmc_off_known": {
+    "n": 43781,
+    "T": 9378.778693116281,
+    "M": 4241.876685142245,
+    "credit_per_dot": 0.09688852893132284,
+    "coverage": 0.11878938980300027,
+    "n_truth": 78953,
+    "dti": 0.12857156270273715
+   },
+   "catalogue_negative_control": {
+    "n": 44090,
+    "T": 9498.79813730125,
+    "M": 3954.7811237275546,
+    "credit_per_dot": 0.08969791616528815,
+    "coverage": 0.15574864132782268,
+    "n_truth": 60988,
+    "dti": 0.1617719780036745
+   },
+   "withheld_hide_and_recover": {
+    "n": 43781,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "efd28-repro",
+   "sha256": "5f963b8bca5ec226ddc7caaadec239c6be6d28aa567f890033be04d04bfd5e32",
+   "live_owner_reported": 0.26,
+   "n_dots": 44090,
+   "sgmc_off_known": {
+    "n": 43781,
+    "T": 9378.778693116281,
+    "M": 4241.876685142245,
+    "credit_per_dot": 0.09688852893132284,
+    "coverage": 0.11878938980300027,
+    "n_truth": 78953,
+    "dti": 0.12857156270273715
+   },
+   "catalogue_negative_control": {
+    "n": 44090,
+    "T": 9498.79813730125,
+    "M": 3954.7811237275546,
+    "credit_per_dot": 0.08969791616528815,
+    "coverage": 0.15574864132782268,
+    "n_truth": 60988,
+    "dti": 0.1617719780036745
+   },
+   "withheld_hide_and_recover": {
+    "n": 43781,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "wormrank-d28",
+   "sha256": "3ea61e719af4c0d0df9f8d279560ae4a6b5063cca0a43991c8f66a56cb63c51f",
+   "live_owner_reported": 0.256,
+   "n_dots": 41338,
+   "sgmc_off_known": {
+    "n": 41010,
+    "T": 8955.228841759574,
+    "M": 3914.7648843037514,
+    "credit_per_dot": 0.09545878771772132,
+    "coverage": 0.11342480769267252,
+    "n_truth": 78953,
+    "dti": 0.12373801835954502
+   },
+   "catalogue_negative_control": {
+    "n": 41338,
+    "T": 9140.394453992583,
+    "M": 3677.690693874775,
+    "credit_per_dot": 0.08896634316790303,
+    "coverage": 0.1498720150520198,
+    "n_truth": 60988,
+    "dti": 0.1571850293356818
+   },
+   "withheld_hide_and_recover": {
+    "n": 41010,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE24",
+   "submission": "h25-1-dotted-h19-5-d1-5",
+   "sha256": "3e0730e8d4f7db095dd80246a98cba3bc0fc9a28f436b91db27ca34df4d0d1ce",
+   "live_owner_reported": 0.2477,
+   "n_dots": 60069,
+   "sgmc_off_known": {
+    "n": 59627,
+    "T": 10491.296126721923,
+    "M": 5807.136158062222,
+    "credit_per_dot": 0.09739105033059223,
+    "coverage": 0.1328802721457313,
+    "n_truth": 78953,
+    "dti": 0.13799864401299444
+   },
+   "catalogue_negative_control": {
+    "n": 60069,
+    "T": 10633.361305372346,
+    "M": 5416.839016555437,
+    "credit_per_dot": 0.09017694678711877,
+    "coverage": 0.17435169714324697,
+    "n_truth": 60988,
+    "dti": 0.17192870429612941
+   },
+   "withheld_hide_and_recover": {
+    "n": 59627,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE27",
+   "submission": "topo-gap-closure-t-v2-on-d1-5",
+   "sha256": "33003374335d84bf885f2d8f5e9dd4c57044c8ec58fa6a0d7fa581e8bc41c11d",
+   "live_owner_reported": 0.2449,
+   "n_dots": 61328,
+   "sgmc_off_known": {
+    "n": 60886,
+    "T": 10644.606619402286,
+    "M": 5878.658812172673,
+    "credit_per_dot": 0.09655189718773893,
+    "coverage": 0.13482206653834922,
+    "n_truth": 78953,
+    "dti": 0.13952310146988608
+   },
+   "catalogue_negative_control": {
+    "n": 61328,
+    "T": 10727.718759130465,
+    "M": 5489.282563876566,
+    "credit_per_dot": 0.08950695545063538,
+    "coverage": 0.17589884500443473,
+    "n_truth": 60988,
+    "dti": 0.17273883783803545
+   },
+   "withheld_hide_and_recover": {
+    "n": 60886,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE49",
+   "submission": "gate_ortho_w0.25-40k",
+   "sha256": "3722e26fbf9129874be1fb8c687825803952c57ef1154ed0a21029596bc412f1",
+   "live_owner_reported": 0.2376,
+   "n_dots": 40000,
+   "sgmc_off_known": {
+    "n": 40000,
+    "T": 8980.865792321216,
+    "M": 3735.5419025381716,
+    "credit_per_dot": 0.09338854756345429,
+    "coverage": 0.11374951923702982,
+    "n_truth": 78953,
+    "dti": 0.12436897409485494
+   },
+   "catalogue_negative_control": {
+    "n": 40000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 60988,
+    "dti": 0.0
+   },
+   "withheld_hide_and_recover": {
+    "n": 40000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE48",
+   "submission": "h59-cover-ds-belief-b2xh33d",
+   "sha256": "2bfaf1839652eb1052d96a218afbc5ae7f622ced979a0be30c72d1dd3535b486",
+   "live_owner_reported": 0.2296,
+   "n_dots": 6040,
+   "sgmc_off_known": {
+    "n": 6040,
+    "T": 1382.679037675276,
+    "M": 579.1270609565247,
+    "credit_per_dot": 0.09588196373452396,
+    "coverage": 0.017512685239006447,
+    "n_truth": 78953,
+    "dti": 0.02142654960071853
+   },
+   "catalogue_negative_control": {
+    "n": 6040,
+    "T": 89.99506201194546,
+    "M": 64.8808495940343,
+    "credit_per_dot": 0.010741862515568593,
+    "coverage": 0.0014756191711803217,
+    "n_truth": 60988,
+    "dti": 0.0017997780331046548
+   },
+   "withheld_hide_and_recover": {
+    "n": 6040,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "19GEMSDOE",
+   "submission": "h19-5-powerlaw-budget-multiline-corroborated",
+   "sha256": "ec1f9b56b83ce33cad781ceb9f104b18fb4f2ff785263a4e89616af4aabdee8d",
+   "live_owner_reported": 0.1922,
+   "n_dots": 121131,
+   "sgmc_off_known": {
+    "n": 120384,
+    "T": 12404.22815386682,
+    "M": 12215.743444254127,
+    "credit_per_dot": 0.10147314796197275,
+    "coverage": 0.15710901617249273,
+    "n_truth": 78953,
+    "dti": 0.14212499055873948
+   },
+   "catalogue_negative_control": {
+    "n": 121131,
+    "T": 12199.639425539293,
+    "M": 10599.485982339005,
+    "credit_per_dot": 0.08750432162154201,
+    "coverage": 0.20003343978388033,
+    "n_truth": 60988,
+    "dti": 0.1663512396326797
+   },
+   "withheld_hide_and_recover": {
+    "n": 120384,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "19GEMSDOE",
+   "submission": "h19-4-multiline-corroborated-openness-thermal-pop",
+   "sha256": "89109a3bd2cd3b12e7a0f388113c519843acfc9c4f46825affefc3e63dd99b22",
+   "live_owner_reported": 0.1894,
+   "n_dots": 123779,
+   "sgmc_off_known": {
+    "n": 123020,
+    "T": 13016.466049953742,
+    "M": 12574.178065262342,
+    "credit_per_dot": 0.10221247004765358,
+    "coverage": 0.1648634763714329,
+    "n_truth": 78953,
+    "dti": 0.14815875190044545
+   },
+   "catalogue_negative_control": {
+    "n": 123779,
+    "T": 12373.28401027555,
+    "M": 10721.726266023414,
+    "credit_per_dot": 0.08661991344269555,
+    "coverage": 0.20288063242401047,
+    "n_truth": 60988,
+    "dti": 0.16748603515332186
+   },
+   "withheld_hide_and_recover": {
+    "n": 123020,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE21",
+   "submission": "h19-4-reference",
+   "sha256": "356f833c09900fc41f2cc75278c6c91feb398deee09acd45c55303d07cd59e3a",
+   "live_owner_reported": 0.1894,
+   "n_dots": 123779,
+   "sgmc_off_known": {
+    "n": 123020,
+    "T": 13016.466049953742,
+    "M": 12574.178065262342,
+    "credit_per_dot": 0.10221247004765358,
+    "coverage": 0.1648634763714329,
+    "n_truth": 78953,
+    "dti": 0.14815875190044545
+   },
+   "catalogue_negative_control": {
+    "n": 123779,
+    "T": 12373.28401027555,
+    "M": 10721.726266023414,
+    "credit_per_dot": 0.08661991344269555,
+    "coverage": 0.20288063242401047,
+    "n_truth": 60988,
+    "dti": 0.16748603515332186
+   },
+   "withheld_hide_and_recover": {
+    "n": 123020,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "20GEMSDOE",
+   "submission": "h20-1-sarnnpu-powerlaw-pi0363-tilt-wingcrack",
+   "sha256": "10cd66f0e55fd419366ad90b9bd27b8164fc702e2ed0c2d471f92c1983708c1d",
+   "live_owner_reported": 0.189,
+   "n_dots": 123829,
+   "sgmc_off_known": {
+    "n": 123081,
+    "T": 13114.566765495085,
+    "M": 12665.377284952303,
+    "credit_per_dot": 0.10290278178559081,
+    "coverage": 0.16610599680183255,
+    "n_truth": 78953,
+    "dti": 0.14925230355182964
+   },
+   "catalogue_negative_control": {
+    "n": 123829,
+    "T": 12443.460482514052,
+    "M": 10867.492192161844,
+    "credit_per_dot": 0.0877620928228593,
+    "coverage": 0.20403129275454274,
+    "n_truth": 60988,
+    "dti": 0.16844762047012773
+   },
+   "withheld_hide_and_recover": {
+    "n": 123081,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "20GEMSDOE",
+   "submission": "h20-5-continuous-pu-proxy",
+   "sha256": "4e199f0ce1bb7e6f6e5e42fbbe54fcd3714bbf1b4ee864fad262b95ebba464f7",
+   "live_owner_reported": 0.1859,
+   "n_dots": 121258,
+   "sgmc_off_known": {
+    "n": 120510,
+    "T": 11149.907555011901,
+    "M": 11015.979428160128,
+    "credit_per_dot": 0.09141133041374266,
+    "coverage": 0.14122208852116958,
+    "n_truth": 78953,
+    "dti": 0.13179954316951378
+   },
+   "catalogue_negative_control": {
+    "n": 121258,
+    "T": 10992.816376447698,
+    "M": 9764.157778916342,
+    "credit_per_dot": 0.08052382340889955,
+    "coverage": 0.1802455626754066,
+    "n_truth": 60988,
+    "dti": 0.15575352872305195
+   },
+   "withheld_hide_and_recover": {
+    "n": 120510,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "16GEMSDOE",
+   "submission": "h16-1-topo-geophys-baseline-ridges",
+   "sha256": "055309694ed499ca3d87e76b3f5e81c292aef6e39c418d33ff5a817aa1309bea",
+   "live_owner_reported": 0.1855,
+   "n_dots": 123939,
+   "sgmc_off_known": {
+    "n": 123182,
+    "T": 13434.279181828071,
+    "M": 12691.623576011629,
+    "credit_per_dot": 0.10303147843038454,
+    "coverage": 0.17015539855139222,
+    "n_truth": 78953,
+    "dti": 0.15275368803767259
+   },
+   "catalogue_negative_control": {
+    "n": 123939,
+    "T": 12335.98179093953,
+    "M": 10647.251076949879,
+    "credit_per_dot": 0.08590718883442564,
+    "coverage": 0.20226900031054518,
+    "n_truth": 60988,
+    "dti": 0.16689202309752882
+   },
+   "withheld_hide_and_recover": {
+    "n": 123182,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE10",
+   "submission": "h28-dotted-ridge",
+   "sha256": "7637b72d4c6c3e10226bf46bd72a20272d62ccbe29743062632d10b158b49c58",
+   "live_owner_reported": 0.1839,
+   "n_dots": 69281,
+   "sgmc_off_known": {
+    "n": 64707,
+    "T": 10471.563995358298,
+    "M": 4476.304422869541,
+    "credit_per_dot": 0.0691780552779381,
+    "coverage": 0.13263034964293058,
+    "n_truth": 78953,
+    "dti": 0.1354615481320219
+   },
+   "catalogue_negative_control": {
+    "n": 69281,
+    "T": 24371.51290377041,
+    "M": 10174.764645477084,
+    "credit_per_dot": 0.1468622659239486,
+    "coverage": 0.3996116105425725,
+    "n_truth": 60988,
+    "dti": 0.3721639990472844
+   },
+   "withheld_hide_and_recover": {
+    "n": 64707,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE46",
+   "submission": "r11f-scarp-radiometric-fusion",
+   "sha256": "57be86502a03a22eb755f04204cb090b49ba4b89158662a728ca2e34b1d37f95",
+   "live_owner_reported": 0.1589,
+   "n_dots": 44090,
+   "sgmc_off_known": {
+    "n": 44090,
+    "T": 10037.921626251173,
+    "M": 3595.180273959174,
+    "credit_per_dot": 0.08154185243726864,
+    "coverage": 0.1271379380929309,
+    "n_truth": 78953,
+    "dti": 0.13700103335997252
+   },
+   "catalogue_negative_control": {
+    "n": 44090,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 60988,
+    "dti": 0.0
+   },
+   "withheld_hide_and_recover": {
+    "n": 44090,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "8GEMSDOE",
+   "submission": "Hedge-v2",
+   "sha256": "052688eafbc7a55d90caab72252a50304fe5caa8ecf973f8e791b4ae910f0792",
+   "live_owner_reported": 0.1563,
+   "n_dots": 227507,
+   "sgmc_off_known": {
+    "n": 165534,
+    "T": 13834.96278489356,
+    "M": 13522.258102534372,
+    "credit_per_dot": 0.08168870505475836,
+    "coverage": 0.17523036217614985,
+    "n_truth": 78953,
+    "dti": 0.1436179046532268
+   },
+   "catalogue_negative_control": {
+    "n": 227507,
+    "T": 60988.0,
+    "M": 74326.67236046004,
+    "credit_per_dot": 0.3267005954122732,
+    "coverage": 1.0,
+    "n_truth": 60988,
+    "dti": 0.6656329824332399
+   },
+   "withheld_hide_and_recover": {
+    "n": 165534,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE2",
+   "submission": "gemsdoe2-dual-family-union",
+   "sha256": "f68e590f8534d036872f18170819b52366c728e68619f17c648dce9629b0aaf2",
+   "live_owner_reported": 0.156,
+   "n_dots": 183642,
+   "sgmc_off_known": {
+    "n": 174765,
+    "T": 14410.876160083038,
+    "M": 15172.624943309143,
+    "credit_per_dot": 0.0868172971894209,
+    "coverage": 0.18252474459593732,
+    "n_truth": 78953,
+    "dti": 0.14710522104287566
+   },
+   "catalogue_negative_control": {
+    "n": 183642,
+    "T": 20239.30222313977,
+    "M": 22968.50564718502,
+    "credit_per_dot": 0.12507218200185696,
+    "coverage": 0.33185712309207993,
+    "n_truth": 60988,
+    "dti": 0.23818521075705917
+   },
+   "withheld_hide_and_recover": {
+    "n": 174765,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "7GEMSDOE",
+   "submission": "lidarscarp-ridge-top2pct",
+   "sha256": "36c3a3f341c8306dfb5610f61acfec635a7cb8a3ef6ef00380ca083d2f9745fe",
+   "live_owner_reported": 0.1461,
+   "n_dots": 76859,
+   "sgmc_off_known": {
+    "n": 76151,
+    "T": 7692.240622350722,
+    "M": 6282.566507648631,
+    "credit_per_dot": 0.08250143146706716,
+    "coverage": 0.09742809801211762,
+    "n_truth": 78953,
+    "dti": 0.09777294063018432
+   },
+   "catalogue_negative_control": {
+    "n": 76859,
+    "T": 11345.187012436767,
+    "M": 8157.7066080692375,
+    "credit_per_dot": 0.10613859935816544,
+    "coverage": 0.18602326707609312,
+    "n_truth": 60988,
+    "dti": 0.17508086763674577
+   },
+   "withheld_hide_and_recover": {
+    "n": 76151,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE23",
+   "submission": "h30-arrangement-matched-habitat",
+   "sha256": "38539dc647d5ede0d8fa90123810d18130ee15e524097f55e83b6b8a57976ea9",
+   "live_owner_reported": 0.1352,
+   "n_dots": 91533,
+   "sgmc_off_known": {
+    "n": 91082,
+    "T": 18057.61061020076,
+    "M": 6874.9683516044215,
+    "credit_per_dot": 0.07548108684047805,
+    "coverage": 0.22871341950528493,
+    "n_truth": 78953,
+    "dti": 0.21596052954127298
+   },
+   "catalogue_negative_control": {
+    "n": 91533,
+    "T": 13967.131094198718,
+    "M": 5149.725248982367,
+    "credit_per_dot": 0.05626085946032979,
+    "coverage": 0.2290144142158903,
+    "n_truth": 60988,
+    "dti": 0.20283231916302297
+   },
+   "withheld_hide_and_recover": {
+    "n": 91082,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "12GEMSDOE",
+   "submission": "r7-nms3-dem10-scarp",
+   "sha256": "0c9199f14e625d7b2539a0a045803b74d6494ce568d185abecc193fe7e93c6f2",
+   "live_owner_reported": 0.1294,
+   "n_dots": 103347,
+   "sgmc_off_known": {
+    "n": 102342,
+    "T": 17473.128055737125,
+    "M": 8208.432605606242,
+    "credit_per_dot": 0.08020590378931662,
+    "coverage": 0.22131050189020207,
+    "n_truth": 78953,
+    "dti": 0.20440294542258508
+   },
+   "catalogue_negative_control": {
+    "n": 103347,
+    "T": 23245.351967753915,
+    "M": 10888.245827174494,
+    "credit_per_dot": 0.10535618670280215,
+    "coverage": 0.38114632333826187,
+    "n_truth": 60988,
+    "dti": 0.3231608134948217
+   },
+   "withheld_hide_and_recover": {
+    "n": 102342,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE10",
+   "submission": "H25-ctx-ridge",
+   "sha256": "1381e784fb8b8340beffd0e735ac9eea89ad35d1a807f8a9bab5506e3fc8275e",
+   "live_owner_reported": 0.128,
+   "n_dots": 174232,
+   "sgmc_off_known": {
+    "n": 159654,
+    "T": 14649.685339136893,
+    "M": 13061.666113165746,
+    "credit_per_dot": 0.08181233237604911,
+    "coverage": 0.18554944510198337,
+    "n_truth": 78953,
+    "dti": 0.1535432545239455
+   },
+   "catalogue_negative_control": {
+    "n": 174232,
+    "T": 33416.37612356479,
+    "M": 32558.261749833655,
+    "credit_per_dot": 0.18686729045085665,
+    "coverage": 0.5479172316449923,
+    "n_truth": 60988,
+    "dti": 0.3987233618929495
+   },
+   "withheld_hide_and_recover": {
+    "n": 159654,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE26",
+   "submission": "dilcond-oof-v1",
+   "sha256": "d54cf7edc6ec57c29b88dec81fe3fb101efa4fe31fc9c1088664a0c2e5190887",
+   "live_owner_reported": 0.1223,
+   "n_dots": 60068,
+   "sgmc_off_known": {
+    "n": 58486,
+    "T": 8880.572970795472,
+    "M": 4623.836241059209,
+    "credit_per_dot": 0.07905885581265959,
+    "coverage": 0.11247923411137604,
+    "n_truth": 78953,
+    "dti": 0.11729575817110473
+   },
+   "catalogue_negative_control": {
+    "n": 60068,
+    "T": 8465.766708418389,
+    "M": 4421.409382544338,
+    "credit_per_dot": 0.07360673540894216,
+    "coverage": 0.1388103677513345,
+    "n_truth": 60988,
+    "dti": 0.13740256714383875
+   },
+   "withheld_hide_and_recover": {
+    "n": 58486,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE3",
+   "submission": "pindrop-v4-nodes",
+   "sha256": "f347b70daa95170bfc967b1c0b6bbf951496c2b74764a7102848ad6178829aca",
+   "live_owner_reported": 0.1193,
+   "n_dots": 155021,
+   "sgmc_off_known": {
+    "n": 154419,
+    "T": 24646.00773490294,
+    "M": 9081.24291958812,
+    "credit_per_dot": 0.05880910328125502,
+    "coverage": 0.31216049719330413,
+    "n_truth": 78953,
+    "dti": 0.2536663503465558
+   },
+   "catalogue_negative_control": {
+    "n": 155021,
+    "T": 16945.784564889524,
+    "M": 6163.300525748801,
+    "credit_per_dot": 0.03975784265195555,
+    "coverage": 0.27785440684871654,
+    "n_truth": 60988,
+    "dti": 0.20677922840528506
+   },
+   "withheld_hide_and_recover": {
+    "n": 154419,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE37",
+   "submission": "h6-physics-dotted-80k",
+   "sha256": "ce749a992baec603460dfeddd068758855cb8b12978268e6ef94f6e23ffd9ee7",
+   "live_owner_reported": 0.1193,
+   "n_dots": 80000,
+   "sgmc_off_known": {
+    "n": 79999,
+    "T": 12109.30219969363,
+    "M": 5246.1633486026385,
+    "credit_per_dot": 0.06557786158080274,
+    "coverage": 0.153373553882609,
+    "n_truth": 78953,
+    "dti": 0.15036106160484836
+   },
+   "catalogue_negative_control": {
+    "n": 80000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 60988,
+    "dti": 0.0
+   },
+   "withheld_hide_and_recover": {
+    "n": 79999,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE3",
+   "submission": "pindrop-v4-ridge",
+   "sha256": "4e03fc97052e9bd673e48f1923ad17f15926f8db26d2befc033e1722381dc9b7",
+   "live_owner_reported": 0.1152,
+   "n_dots": 155021,
+   "sgmc_off_known": {
+    "n": 153801,
+    "T": 31662.078438986842,
+    "M": 32429.27397599847,
+    "credit_per_dot": 0.21085216595469775,
+    "coverage": 0.40102438715421634,
+    "n_truth": 78953,
+    "dti": 0.33765982480372514
+   },
+   "catalogue_negative_control": {
+    "n": 155021,
+    "T": 15688.443912966464,
+    "M": 13774.58620307425,
+    "credit_per_dot": 0.088856259494354,
+    "coverage": 0.25723820936850633,
+    "n_truth": 60988,
+    "dti": 0.19567171648614684
+   },
+   "withheld_hide_and_recover": {
+    "n": 153801,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE51",
+   "submission": "h53-twostage",
+   "sha256": "5823def4fab491ac6bd667cedb467c0540fd1bbce1351992289f4a609e7b775e",
+   "live_owner_reported": 0.1047,
+   "n_dots": 44069,
+   "sgmc_off_known": {
+    "n": 44068,
+    "T": 12894.511542409437,
+    "M": 5766.272008610898,
+    "credit_per_dot": 0.13084941473656392,
+    "coverage": 0.16331882946068466,
+    "n_truth": 78953,
+    "dti": 0.1756706001858298
+   },
+   "catalogue_negative_control": {
+    "n": 44069,
+    "T": 2473.028705790073,
+    "M": 1898.1491928512853,
+    "credit_per_dot": 0.043072209327447535,
+    "coverage": 0.04054943113055147,
+    "n_truth": 60988,
+    "dti": 0.042845876905169014
+   },
+   "withheld_hide_and_recover": {
+    "n": 44068,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE22",
+   "submission": "h23-a-dti-optimal-emission-6pct",
+   "sha256": "c36696693639749791286bcd58e48a78ff79d4651b63fc33d273aab8191df0d4",
+   "live_owner_reported": 0.1002,
+   "n_dots": 335879,
+   "sgmc_off_known": {
+    "n": 335118,
+    "T": 28168.959058844604,
+    "M": 29883.996383571448,
+    "credit_per_dot": 0.0891745486174167,
+    "coverage": 0.3567813643413753,
+    "n_truth": 78953,
+    "dti": 0.2169463173088808
+   },
+   "catalogue_negative_control": {
+    "n": 335879,
+    "T": 18789.782010198775,
+    "M": 21043.57030359855,
+    "credit_per_dot": 0.06265223578609723,
+    "coverage": 0.30808982111560923,
+    "n_truth": 60988,
+    "dti": 0.1626603476501396
+   },
+   "withheld_hide_and_recover": {
+    "n": 335118,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "16GEMSDOE",
+   "submission": "h18-3a-topo-geophys-x-complexity-prior",
+   "sha256": "703ea58b0e49479d57acb9293d748d861b07eba80898aa6bc0ed07595bc1dc91",
+   "live_owner_reported": 0.0976,
+   "n_dots": 122120,
+   "sgmc_off_known": {
+    "n": 121163,
+    "T": 12800.661930794999,
+    "M": 13016.538789508784,
+    "credit_per_dot": 0.10742998101325309,
+    "coverage": 0.1621301525058579,
+    "n_truth": 78953,
+    "dti": 0.14654143728846783
+   },
+   "catalogue_negative_control": {
+    "n": 122120,
+    "T": 15171.092562324995,
+    "M": 14075.040273928076,
+    "credit_per_dot": 0.11525581619659414,
+    "coverage": 0.24875537093075678,
+    "n_truth": 60988,
+    "dti": 0.20659603235861956
+   },
+   "withheld_hide_and_recover": {
+    "n": 121163,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE10",
+   "submission": "h20-dem10-scarp-thin",
+   "sha256": "a26e5e46acc00ddd867f0b2910e638b25e4e81108ebe05c0abcc7c9b04372247",
+   "live_owner_reported": 0.0921,
+   "n_dots": 153957,
+   "sgmc_off_known": {
+    "n": 142214,
+    "T": 12533.917407375251,
+    "M": 13929.764322787963,
+    "credit_per_dot": 0.09794931808955493,
+    "coverage": 0.15875162954384572,
+    "n_truth": 78953,
+    "dti": 0.13724364589928248
+   },
+   "catalogue_negative_control": {
+    "n": 153957,
+    "T": 25437.4721673261,
+    "M": 30927.676474231856,
+    "credit_per_dot": 0.20088515932521325,
+    "coverage": 0.41708979089863746,
+    "n_truth": 60988,
+    "dti": 0.32411128680009027
+   },
+   "withheld_hide_and_recover": {
+    "n": 142214,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "13GEMSDOE",
+   "submission": "20261001_r13-lattice-s5_v2",
+   "sha256": "b4570b406efec198eb2f4d142ad8d0d6184b14b66f2f52b5c4d697f0647dc9b2",
+   "live_owner_reported": 0.0904,
+   "n_dots": 206895,
+   "sgmc_off_known": {
+    "n": 204116,
+    "T": 28727.659539621378,
+    "M": 10231.584868740896,
+    "credit_per_dot": 0.05012632458377048,
+    "coverage": 0.3638577323169655,
+    "n_truth": 78953,
+    "dti": 0.2667753996436877
+   },
+   "catalogue_negative_control": {
+    "n": 206895,
+    "T": 22820.31487384506,
+    "M": 8416.597170080098,
+    "credit_per_dot": 0.040680524759322836,
+    "coverage": 0.37417713113801176,
+    "n_truth": 60988,
+    "dti": 0.2452474978058523
+   },
+   "withheld_hide_and_recover": {
+    "n": 204116,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE46",
+   "submission": "r12-scarp-rad-concordance",
+   "sha256": "73fd1d8340e32d0175ca7ddb084c50f561a04a2b6bd58f80426d7934cef157c7",
+   "live_owner_reported": 0.0843,
+   "n_dots": 37654,
+   "sgmc_off_known": {
+    "n": 37654,
+    "T": 9647.374198639201,
+    "M": 3291.264122042272,
+    "credit_per_dot": 0.08740808737563796,
+    "coverage": 0.12219135686597345,
+    "n_truth": 78953,
+    "dti": 0.13405755133537406
+   },
+   "catalogue_negative_control": {
+    "n": 37654,
+    "T": 1.4243433496871247,
+    "M": 1.367152391269188,
+    "credit_per_dot": 3.6308291051925106e-05,
+    "coverage": 2.3354485303455185e-05,
+    "n_truth": 60988,
+    "dti": 2.528964333890856e-05
+   },
+   "withheld_hide_and_recover": {
+    "n": 37654,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE3",
+   "submission": "pindrop-v4-discovery",
+   "sha256": "37f9d5b855ee1b6c302cb81cdae1414db94db427f5dc9da3538474df37cf1cad",
+   "live_owner_reported": 0.083,
+   "n_dots": 155021,
+   "sgmc_off_known": {
+    "n": 154588,
+    "T": 24361.852408064333,
+    "M": 8984.234466546595,
+    "credit_per_dot": 0.05811728249635544,
+    "coverage": 0.3085614531184924,
+    "n_truth": 78953,
+    "dti": 0.250751079385848
+   },
+   "catalogue_negative_control": {
+    "n": 155021,
+    "T": 14509.763968500436,
+    "M": 5462.57246487629,
+    "credit_per_dot": 0.035237628868838994,
+    "coverage": 0.23791178540861213,
+    "n_truth": 60988,
+    "dti": 0.17780693542431658
+   },
+   "withheld_hide_and_recover": {
+    "n": 154588,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "15GEMSDOE",
+   "submission": "gems-tso1-20260929T005627Z-conj_alteration_mag",
+   "sha256": "b437efcec17fb4582a3ff2f5f6ce6a179545c1e21fcd51e0c4b828cfd185d631",
+   "live_owner_reported": 0.0782,
+   "n_dots": 99999,
+   "sgmc_off_known": {
+    "n": 98558,
+    "T": 15411.482019052502,
+    "M": 6012.665322275554,
+    "credit_per_dot": 0.06100636500614414,
+    "coverage": 0.19519818143772247,
+    "n_truth": 78953,
+    "dti": 0.1818383209409202
+   },
+   "catalogue_negative_control": {
+    "n": 99999,
+    "T": 10476.60705978031,
+    "M": 4281.652388379463,
+    "credit_per_dot": 0.04281695205331517,
+    "coverage": 0.17178144978979978,
+    "n_truth": 60988,
+    "dti": 0.14960342851329272
+   },
+   "withheld_hide_and_recover": {
+    "n": 98558,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE34",
+   "submission": "h34-scatter-q50-arr-matched",
+   "sha256": "acf00361263a14c29fc6292bce2f10f862ec3ac258e1cd123a8a17c37bd5d203",
+   "live_owner_reported": 0.0778,
+   "n_dots": 37654,
+   "sgmc_off_known": {
+    "n": 37653,
+    "T": 7131.1784202980525,
+    "M": 2729.3706412794154,
+    "credit_per_dot": 0.07248746823040436,
+    "coverage": 0.09032181703416023,
+    "n_truth": 78953,
+    "dti": 0.09963453253118582
+   },
+   "catalogue_negative_control": {
+    "n": 37654,
+    "T": 346.40231739801004,
+    "M": 259.63489544216804,
+    "credit_per_dot": 0.006895280592823287,
+    "coverage": 0.005679843861054798,
+    "n_truth": 60988,
+    "dti": 0.006148583802279947
+   },
+   "withheld_hide_and_recover": {
+    "n": 37653,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE50",
+   "submission": "h59-sharpened-scarp-scatter-90k",
+   "sha256": "838f9502fd4a2720374559db0947fb3372f97629401a617e5c9c95c1b1ce8be5",
+   "live_owner_reported": 0.0764,
+   "n_dots": 90000,
+   "sgmc_off_known": {
+    "n": 90000,
+    "T": 19187.843134991315,
+    "M": 9289.314841678279,
+    "credit_per_dot": 0.10321460935198087,
+    "coverage": 0.2430286769975975,
+    "n_truth": 78953,
+    "dti": 0.23078370439361282
+   },
+   "catalogue_negative_control": {
+    "n": 90000,
+    "T": 2609.58529999619,
+    "M": 1350.7769455072569,
+    "credit_per_dot": 0.01500863272785841,
+    "coverage": 0.042788504295864595,
+    "n_truth": 60988,
+    "dti": 0.0389245399455695
+   },
+   "withheld_hide_and_recover": {
+    "n": 90000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE38",
+   "submission": "D-step-3p0-07pct-tipProt",
+   "sha256": "1c1fd7096880829d1693a262573522b2bb41a8eccdf22b03b3d8fdda1de99081",
+   "live_owner_reported": 0.0763,
+   "n_dots": 36171,
+   "sgmc_off_known": {
+    "n": 35067,
+    "T": 6643.553799788194,
+    "M": 2925.147856394112,
+    "credit_per_dot": 0.0834159710381302,
+    "coverage": 0.08414567907220998,
+    "n_truth": 78953,
+    "dti": 0.09367741681743623
+   },
+   "catalogue_negative_control": {
+    "n": 36171,
+    "T": 7417.279406368698,
+    "M": 3574.367245462411,
+    "credit_per_dot": 0.09881859073463302,
+    "coverage": 0.12161866935083455,
+    "n_truth": 60988,
+    "dti": 0.13060158083632542
+   },
+   "withheld_hide_and_recover": {
+    "n": 35067,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE22",
+   "submission": "h23-b-dti-optimal-emission-10pct",
+   "sha256": "789dd56c4287cd50c8d2d5e3f063828a8d25a275d82bd8418a4cf971d908b8a6",
+   "live_owner_reported": 0.0748,
+   "n_dots": 516738,
+   "sgmc_off_known": {
+    "n": 515821,
+    "T": 36382.93953844005,
+    "M": 42121.52401469908,
+    "credit_per_dot": 0.08165918800261929,
+    "coverage": 0.46081769582460513,
+    "n_truth": 78953,
+    "dti": 0.22026386699423195
+   },
+   "catalogue_negative_control": {
+    "n": 516738,
+    "T": 21721.365902133657,
+    "M": 27044.84882018457,
+    "credit_per_dot": 0.052337642712911706,
+    "coverage": 0.356158029483401,
+    "n_truth": 60988,
+    "dti": 0.14378030671815656
+   },
+   "withheld_hide_and_recover": {
+    "n": 515821,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE44",
+   "submission": "h46-twostageAB",
+   "sha256": "3c04892d0deca00ccbadf77c801130180f05a03a9c0d575e4d8b91127286d06f",
+   "live_owner_reported": 0.0715,
+   "n_dots": 42000,
+   "sgmc_off_known": {
+    "n": 42000,
+    "T": 22768.825691333943,
+    "M": 9595.125742715569,
+    "credit_per_dot": 0.22845537482656117,
+    "coverage": 0.28838455399204516,
+    "n_truth": 78953,
+    "dti": 0.30686931726057676
+   },
+   "catalogue_negative_control": {
+    "n": 42000,
+    "T": 1139.9831019874468,
+    "M": 860.8471069973091,
+    "credit_per_dot": 0.020496359690412122,
+    "coverage": 0.018691924673500473,
+    "n_truth": 60988,
+    "dti": 0.019913680914283895
+   },
+   "withheld_hide_and_recover": {
+    "n": 42000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE42",
+   "submission": "xscale-worm-persistence",
+   "sha256": "7de8f533e13a26c25aadd74852b920a6ef759d5beab5d453ba25cb2d9212b9c9",
+   "live_owner_reported": 0.0581,
+   "n_dots": 60069,
+   "sgmc_off_known": {
+    "n": 59932,
+    "T": 6649.28934657694,
+    "M": 3116.7808177868674,
+    "credit_per_dot": 0.052005286287573706,
+    "coverage": 0.08421832414951858,
+    "n_truth": 78953,
+    "dti": 0.08765754267736578
+   },
+   "catalogue_negative_control": {
+    "n": 60069,
+    "T": 5308.250173112658,
+    "M": 2444.100878226261,
+    "credit_per_dot": 0.04068822318044684,
+    "coverage": 0.08703761679531477,
+    "n_truth": 60988,
+    "dti": 0.08648594083664751
+   },
+   "withheld_hide_and_recover": {
+    "n": 59932,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "wormsurv-filter",
+   "sha256": "87eda0c871f8f2ff03482452674010083486aad534e6a7f75dc3124177a34db1",
+   "live_owner_reported": 0.0532,
+   "n_dots": 38907,
+   "sgmc_off_known": {
+    "n": 38907,
+    "T": 6846.100035231882,
+    "M": 2974.144934056697,
+    "credit_per_dot": 0.07644241226660232,
+    "coverage": 0.08671108172244098,
+    "n_truth": 78953,
+    "dti": 0.09545834798454801
+   },
+   "catalogue_negative_control": {
+    "n": 38907,
+    "T": 1993.134296401402,
+    "M": 856.511865957754,
+    "credit_per_dot": 0.022014338447008355,
+    "coverage": 0.03268076173019942,
+    "n_truth": 60988,
+    "dti": 0.03509093343312997
+   },
+   "withheld_hide_and_recover": {
+    "n": 38907,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "sgmc-off-catalogue-44k",
+   "sha256": "9b83158bde01cd5d42e38229d70d01e67cecd2514eeb5fa8d1f3ab6851469dad",
+   "live_owner_reported": 0.0512,
+   "n_dots": 44090,
+   "sgmc_off_known": {
+    "n": 43373,
+    "T": 38002.021382557665,
+    "M": 16584.204950063235,
+    "credit_per_dot": 0.3823624132539422,
+    "coverage": 0.48132460302404806,
+    "n_truth": 78953,
+    "dti": 0.4992346317712797
+   },
+   "catalogue_negative_control": {
+    "n": 44090,
+    "T": 4145.497441889727,
+    "M": 2255.1850982562037,
+    "credit_per_dot": 0.05114958263225683,
+    "coverage": 0.06797234606627087,
+    "n_truth": 60988,
+    "dti": 0.07149078018210679
+   },
+   "withheld_hide_and_recover": {
+    "n": 43373,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE10",
+   "submission": "h16-continuation",
+   "sha256": "b33684ae033512a1a1c7d2cfccd128955fedfdff2a8fed6c7585a755b1b58b3c",
+   "live_owner_reported": 0.0461,
+   "n_dots": 310042,
+   "sgmc_off_known": {
+    "n": 279909,
+    "T": 16862.39684947147,
+    "M": 34375.262482059356,
+    "credit_per_dot": 0.12280870740869124,
+    "coverage": 0.21357512506771714,
+    "n_truth": 78953,
+    "dti": 0.1458159773895239
+   },
+   "catalogue_negative_control": {
+    "n": 310042,
+    "T": 35238.56224452068,
+    "M": 81424.91423158243,
+    "credit_per_dot": 0.262625432140105,
+    "coverage": 0.5777950128635253,
+    "n_truth": 60988,
+    "dti": 0.3469676203421699
+   },
+   "withheld_hide_and_recover": {
+    "n": 279909,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "xfit-c0-habitat",
+   "sha256": "ac4ebc913a172f3415f14a3b47b169af03798cff3a643ffd0a89451b869259be",
+   "live_owner_reported": 0.0439,
+   "n_dots": 33766,
+   "sgmc_off_known": {
+    "n": 33766,
+    "T": 6179.666011477336,
+    "M": 2596.8284693198025,
+    "credit_per_dot": 0.07690660632943797,
+    "coverage": 0.07827018620543026,
+    "n_truth": 78953,
+    "dti": 0.08749081657078776
+   },
+   "catalogue_negative_control": {
+    "n": 33766,
+    "T": 1774.2293899263498,
+    "M": 770.8045516219353,
+    "credit_per_dot": 0.022827831298404766,
+    "coverage": 0.029091450612027774,
+    "n_truth": 60988,
+    "dti": 0.03182800516601189
+   },
+   "withheld_hide_and_recover": {
+    "n": 33766,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE47",
+   "submission": "h60-lidarscarp-s2p0",
+   "sha256": "4ee074230a305fce6768012fc33380bf196c89170e70050a77cf4a44d74ef14c",
+   "live_owner_reported": 0.043,
+   "n_dots": 37654,
+   "sgmc_off_known": {
+    "n": 37558,
+    "T": 5993.659084305167,
+    "M": 3410.3870673852375,
+    "credit_per_dot": 0.09080321282776606,
+    "coverage": 0.07591426651685391,
+    "n_truth": 78953,
+    "dti": 0.08419165597697137
+   },
+   "catalogue_negative_control": {
+    "n": 37654,
+    "T": 2665.5696463258073,
+    "M": 1350.9093744829715,
+    "credit_per_dot": 0.03587691545341721,
+    "coverage": 0.04370646104685852,
+    "n_truth": 60988,
+    "dti": 0.04710807693868324
+   },
+   "withheld_hide_and_recover": {
+    "n": 37558,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE43",
+   "submission": "sup01-hgb21-sep40-n40000",
+   "sha256": "224be205fdd428260f9c3f5ff6978e4b0ddf09a7dfa7b7acde341c18151d6c65",
+   "live_owner_reported": 0.0424,
+   "n_dots": 40000,
+   "sgmc_off_known": {
+    "n": 40000,
+    "T": 7901.50998179486,
+    "M": 2988.6767726428798,
+    "credit_per_dot": 0.074716919316072,
+    "coverage": 0.10007865415873823,
+    "n_truth": 78953,
+    "dti": 0.10952267842914884
+   },
+   "catalogue_negative_control": {
+    "n": 40000,
+    "T": 2476.572082935447,
+    "M": 1745.0594358137257,
+    "credit_per_dot": 0.04362648589534314,
+    "coverage": 0.04060753070990108,
+    "n_truth": 60988,
+    "dti": 0.043496935595375895
+   },
+   "withheld_hide_and_recover": {
+    "n": 40000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE35",
+   "submission": "h35-06-aaa86efb25",
+   "sha256": "465935789e62e6a042881a0e2dd11f96dc89d0913a29d3079455c2833c1bc464",
+   "live_owner_reported": 0.0418,
+   "n_dots": 39530,
+   "sgmc_off_known": {
+    "n": 39277,
+    "T": 2234.2449101489638,
+    "M": 5034.143738597162,
+    "credit_per_dot": 0.1281702711153388,
+    "coverage": 0.028298416908147425,
+    "n_truth": 78953,
+    "dti": 0.031710389318302654
+   },
+   "catalogue_negative_control": {
+    "n": 39530,
+    "T": 1468.332570073158,
+    "M": 3260.458685795934,
+    "credit_per_dot": 0.08248061436367149,
+    "coverage": 0.024075761954370663,
+    "n_truth": 60988,
+    "dti": 0.02606292781891714
+   },
+   "withheld_hide_and_recover": {
+    "n": 39277,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "16GEMSDOE",
+   "submission": "h18-4-usgs-geologic-map-faults-gap",
+   "sha256": "4151c2e438758c4a216a8a597b381e851a5a8e9f358b3fcffd62c01b627142cc",
+   "live_owner_reported": 0.036,
+   "n_dots": 57783,
+   "sgmc_off_known": {
+    "n": 57782,
+    "T": 57833.68339652979,
+    "M": 53862.36902592434,
+    "credit_per_dot": 0.9321651903001685,
+    "coverage": 0.7325077374707711,
+    "n_truth": 78953,
+    "dti": 0.765876541028901
+   },
+   "catalogue_negative_control": {
+    "n": 57783,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 60988,
+    "dti": 0.0
+   },
+   "withheld_hide_and_recover": {
+    "n": 57782,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE40",
+   "submission": "h8-euler-lineament-depthcluster",
+   "sha256": "0814b454be3bd8f0f898c8822bd9d2bc7eec57271276e3b326ee4e235ed7ff3b",
+   "live_owner_reported": 0.0355,
+   "n_dots": 40000,
+   "sgmc_off_known": {
+    "n": 40000,
+    "T": 4420.926104997086,
+    "M": 1874.4661514238205,
+    "credit_per_dot": 0.046861653785595515,
+    "coverage": 0.055994403062544634,
+    "n_truth": 78953,
+    "dti": 0.061683015737508104
+   },
+   "catalogue_negative_control": {
+    "n": 40000,
+    "T": 1315.8093406865432,
+    "M": 689.2905986257396,
+    "credit_per_dot": 0.01723226496564349,
+    "coverage": 0.02157488916978001,
+    "n_truth": 60988,
+    "dti": 0.023118564017110158
+   },
+   "withheld_hide_and_recover": {
+    "n": 40000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE39",
+   "submission": "h40-e-disc-h40e-30k",
+   "sha256": "8c035eb13edcc64944d7dd46619a7c6e5b22ebdd01e1c1b9750f3e253f4a3d8b",
+   "live_owner_reported": 0.0339,
+   "n_dots": 30000,
+   "sgmc_off_known": {
+    "n": 30000,
+    "T": 10422.002221895273,
+    "M": 4358.399155970095,
+    "credit_per_dot": 0.14527997186566985,
+    "coverage": 0.13200261195768714,
+    "n_truth": 78953,
+    "dti": 0.1480921401070064
+   },
+   "catalogue_negative_control": {
+    "n": 30000,
+    "T": 3392.1774068536497,
+    "M": 2909.7978135367953,
+    "credit_per_dot": 0.09699326045122651,
+    "coverage": 0.05562040740561503,
+    "n_truth": 60988,
+    "dti": 0.06180306949662252
+   },
+   "withheld_hide_and_recover": {
+    "n": 30000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "18GEMSDOE",
+   "submission": "H19-C_20260930T212401Z",
+   "sha256": "c11e495e5817730ad5f0fdc368b810f79050cbb6bd65e98c98123b7921ed336b",
+   "live_owner_reported": 0.0297,
+   "n_dots": 513786,
+   "sgmc_off_known": {
+    "n": 451557,
+    "T": 77706.54186148131,
+    "M": 99232.47692005133,
+    "credit_per_dot": 0.21975625872271126,
+    "coverage": 0.9842126564092727,
+    "n_truth": 78953,
+    "dti": 0.5209309137142912
+   },
+   "catalogue_negative_control": {
+    "n": 513786,
+    "T": 60988.0,
+    "M": 78777.26469813523,
+    "credit_per_dot": 0.15332699742331482,
+    "coverage": 1.0,
+    "n_truth": 60988,
+    "dti": 0.4121096306429912
+   },
+   "withheld_hide_and_recover": {
+    "n": 451557,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "6GEMSDOE",
+   "submission": "gems6_hgb88-topk03",
+   "sha256": "33cec71ff00b3f32d0d59c81c156f3f1488ffef46baa4b6499094e24ea1875ab",
+   "live_owner_reported": 0.0286,
+   "n_dots": 155021,
+   "sgmc_off_known": {
+    "n": 128257,
+    "T": 11020.86482987908,
+    "M": 20740.20874863315,
+    "credit_per_dot": 0.16170820110117304,
+    "coverage": 0.13958766392510835,
+    "n_truth": 78953,
+    "dti": 0.12686627784295523
+   },
+   "catalogue_negative_control": {
+    "n": 155021,
+    "T": 31215.24637109782,
+    "M": 64844.99614460627,
+    "credit_per_dot": 0.4182981411847832,
+    "coverage": 0.5118260374351974,
+    "n_truth": 60988,
+    "dti": 0.42720436673930867
+   },
+   "withheld_hide_and_recover": {
+    "n": 128257,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE41",
+   "submission": "h42-submission-primary",
+   "sha256": "2943432c6e3d13f1cfae69a473499cdb9c611a873f6841f9268f151f2a025555",
+   "live_owner_reported": 0.0245,
+   "n_dots": 40000,
+   "sgmc_off_known": {
+    "n": 40000,
+    "T": 8565.424185205477,
+    "M": 3152.884138202485,
+    "credit_per_dot": 0.07882210345506212,
+    "coverage": 0.10848763422802778,
+    "n_truth": 78953,
+    "dti": 0.1185609397425066
+   },
+   "catalogue_negative_control": {
+    "n": 40000,
+    "T": 804.5544060240925,
+    "M": 578.3114765015479,
+    "credit_per_dot": 0.014457786912538698,
+    "coverage": 0.013192011642029456,
+    "n_truth": 60988,
+    "dti": 0.014155805837388217
+   },
+   "withheld_hide_and_recover": {
+    "n": 40000,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "11GEMSDOE",
+   "submission": "gems-structural-area06-v1",
+   "sha256": "6292a7916c83d371fc650b0f0c6a090702b9890eaa6e6546d50f104eea2fadc3",
+   "live_owner_reported": 0.0202,
+   "n_dots": 343526,
+   "sgmc_off_known": {
+    "n": 278802,
+    "T": 15154.145519021717,
+    "M": 30805.052589827283,
+    "credit_per_dot": 0.11049078769100394,
+    "coverage": 0.191938818271905,
+    "n_truth": 78953,
+    "dti": 0.13087315671842856
+   },
+   "catalogue_negative_control": {
+    "n": 343526,
+    "T": 60988.0,
+    "M": 115445.32875988173,
+    "credit_per_dot": 0.3360599452730848,
+    "coverage": 1.0,
+    "n_truth": 60988,
+    "dti": 0.5720978874806694
+   },
+   "withheld_hide_and_recover": {
+    "n": 278802,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "17GEMSDOE",
+   "submission": "17GEMSDOE_F-ensemble-2pct",
+   "sha256": "0210da4395b209450e52e9efc780ab3ca6aceffd60c26d6f623da2b8fe76b691",
+   "live_owner_reported": 0.0187,
+   "n_dots": 103347,
+   "sgmc_off_known": {
+    "n": 89025,
+    "T": 7169.069743925434,
+    "M": 13992.334197370184,
+    "credit_per_dot": 0.15717308842875805,
+    "coverage": 0.09080173956563314,
+    "n_truth": 78953,
+    "dti": 0.09006058213142841
+   },
+   "catalogue_negative_control": {
+    "n": 103347,
+    "T": 16732.783777796893,
+    "M": 37075.97089555498,
+    "credit_per_dot": 0.3587522704631482,
+    "coverage": 0.27436190361705404,
+    "n_truth": 60988,
+    "dti": 0.25588754073969405
+   },
+   "withheld_hide_and_recover": {
+    "n": 89025,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE53",
+   "submission": "h8-tiprelay-ridgeconcord-pr2-n80000",
+   "sha256": "388b31312ab1dc53d839a5a584970a8c9cd2f7dca6a286c36945b89a5ef07be0",
+   "live_owner_reported": 0.0159,
+   "n_dots": 80000,
+   "sgmc_off_known": {
+    "n": 79999,
+    "T": 11285.268108711402,
+    "M": 5679.48137290188,
+    "credit_per_dot": 0.07099440459133088,
+    "coverage": 0.14293653323764013,
+    "n_truth": 78953,
+    "dti": 0.14056796429067556
+   },
+   "catalogue_negative_control": {
+    "n": 80000,
+    "T": 4494.193688822304,
+    "M": 3756.100007235154,
+    "credit_per_dot": 0.04695125009043943,
+    "coverage": 0.07368980272877129,
+    "n_truth": 60988,
+    "dti": 0.06920743466275277
+   },
+   "withheld_hide_and_recover": {
+    "n": 79999,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE9",
+   "submission": "2314b599",
+   "sha256": "2314b59920bfeeaf6a592d4868b25eca62212825620f9945723c2f6d0a2e5b22",
+   "live_owner_reported": 0.0107,
+   "n_dots": 147684,
+   "sgmc_off_known": {
+    "n": 145319,
+    "T": 3556.2857295782646,
+    "M": 6902.87111013752,
+    "credit_per_dot": 0.0475015043465584,
+    "coverage": 0.045043072835462425,
+    "n_truth": 78953,
+    "dti": 0.038842363523173114
+   },
+   "catalogue_negative_control": {
+    "n": 147684,
+    "T": 3579.853350650541,
+    "M": 7160.468750886118,
+    "credit_per_dot": 0.04848506778585438,
+    "coverage": 0.05869766758461568,
+    "n_truth": 60988,
+    "dti": 0.04612554667090572
+   },
+   "withheld_hide_and_recover": {
+    "n": 145319,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE45",
+   "submission": "h51-km-faultzone",
+   "sha256": "81c90dedb7f775aa6e1731088be90e2f9f63a7ac0a9c979638abdf5a842e2a0c",
+   "live_owner_reported": 0.0106,
+   "n_dots": 37654,
+   "sgmc_off_known": {
+    "n": 37654,
+    "T": 5609.481808478455,
+    "M": 2961.347693734259,
+    "credit_per_dot": 0.07864629770367713,
+    "coverage": 0.07104836812380093,
+    "n_truth": 78953,
+    "dti": 0.07875960641695581
+   },
+   "catalogue_negative_control": {
+    "n": 37654,
+    "T": 486.0318382848848,
+    "M": 407.41463653987194,
+    "credit_per_dot": 0.010819956353637646,
+    "coverage": 0.007969302785546088,
+    "n_truth": 60988,
+    "dti": 0.008627234300423023
+   },
+   "withheld_hide_and_recover": {
+    "n": 37654,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  },
+  {
+   "repo": "GEMSDOE29",
+   "submission": "repo-c0-habitat-emission",
+   "sha256": "3537e9fc47a465036a8c1462b99a29b7f3449ee2e7bb94fd0a12d438a85b375d",
+   "live_owner_reported": 0.0041,
+   "n_dots": 37913,
+   "sgmc_off_known": {
+    "n": 34846,
+    "T": 7526.118363483319,
+    "M": 3684.2001195627327,
+    "credit_per_dot": 0.10572806404071436,
+    "coverage": 0.09532403282311398,
+    "n_truth": 78953,
+    "dti": 0.10615120027058547
+   },
+   "catalogue_negative_control": {
+    "n": 37913,
+    "T": 28959.276658185023,
+    "M": 12071.783073713701,
+    "credit_per_dot": 0.3184074875033287,
+    "coverage": 0.47483565059003446,
+    "n_truth": 60988,
+    "dti": 0.4846700409212966
+   },
+   "withheld_hide_and_recover": {
+    "n": 34846,
+    "T": 0.0,
+    "M": 0.0,
+    "credit_per_dot": 0.0,
+    "coverage": 0.0,
+    "n_truth": 0,
+    "dti": 0.0
+   }
+  }
+ ],
+ "runtime_s": 188.6482276916504,
+ "caveat": "Live scores are OWNER-REPORTED public-page values, not submission-page receipts. credit_per_dot = M/n is free of the instrument's truth size G and scale-free in n, so it is the only one of these statistics that can rank two placements at matched budget. A clean rank correlation over a self-selected raster family is calibration evidence for this registry, not proof about the organizer's private truth."
+}

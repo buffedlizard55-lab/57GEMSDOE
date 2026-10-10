@@ -93,18 +93,44 @@ def check(root=ROOT):
     assert audit['candidate_file_sha256']==digest
     index=json.loads((root/'evidence/registry_refreshed.json').read_text())
     total=index['n_unique_grid_rasters']
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
+    # A historical uniqueness audit is internally consistent with the index IT was
+    # run against, which it records itself.  It must not be required to equal the
+    # CURRENT index: refreshing the registry (695 -> 706 rasters) would otherwise
+    # invalidate every earlier artifact even though nothing about them changed.
+    # The audit's own coverage is asserted exactly; drift versus the live index is
+    # asserted to be growth only, and reported.
+    hist_total=audit['registry_rasters_expected']
+    assert hist_total==audit['registry_rasters_checked']==len(audit['rows']),(
+        'historical audit is not internally consistent: expected=%s checked=%s rows=%d'%(
+            hist_total,audit['registry_rasters_checked'],len(audit['rows'])))
+    assert total>=hist_total,'registry index shrank (%d < %d): refresh lost rasters'%(
+        total,hist_total)
+    registry_drift=total-hist_total
     assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert not audit['unique'] and audit['worst_dot_overlap']>0.70
     assert audit['jaccard_diagnostic_only'] is True
     assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    cur=json.loads((root/'evidence/h57l_uniqueness.json').read_text())
+    assert cur['registry_rasters_checked']==cur['registry_rasters_expected']==total,(
+        'current candidate scan covered %s/%s of a %d-raster index'%(
+            cur['registry_rasters_checked'],cur['registry_rasters_expected'],total))
+    assert cur['complete_accessible_scan'],'current scan is not a complete accessible scan'
+    cs=cur['comparable_budget_screen']
+    assert cs['unique'] and cs['unique_after_certificate'],'operative screen did not clear'
+    assert cs['worst_spearman']<=0.90 and cs['worst_overlap']<=0.70 and cs['worst_jaccard']<=0.50
+    print('  registry drift: historical audits used %d rasters, live index has %d (+%d); '
+          'current candidate scan covers %d/%d'%(hist_total,total,registry_drift,
+          cur['registry_rasters_checked'],total))
     snapshots={row['repo']:row['commit'] for row in index['snapshots']}
     assert len(snapshots)==57
     sites=json.loads((root/'evidence/site_inventory.json').read_text())
     assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
     classification=json.loads((root/'evidence/registry_classification.json').read_text())
-    assert classification['grid_rasters_checked']==total
+    # Same rule: the classification was computed on the historical index.
+    assert classification['grid_rasters_checked']==hist_total,(
+        'classification checked %s rasters, historical audit used %s'%(
+            classification['grid_rasters_checked'],hist_total))
     assert classification['auxiliary_inputs']==4
     structure=json.loads((root/'evidence/orientation_structure.json').read_text())
     relative=structure['relative_strike']
@@ -157,17 +183,46 @@ def check(root=ROOT):
     irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
     download_ir=[item for item in irreg['irregularities'] if item['id']=='IR-S6-10']
     assert len(download_ir)==1 and 'resolved operationally' in download_ir[0]['status'].lower()
+    # Download policy is CARD-CONDITIONAL, not absolute.  Session 6 failed closed
+    # because nothing was cleared; that blanket ban must not survive a cleared
+    # candidate, or the site could never offer the one-click download the brief
+    # requires.  The rule now is: a page may carry an active `download` attribute
+    # and a raster/ZIP link ONLY if (a) the current run card says download is OK,
+    # (b) the page is the submission page, and (c) the link target is the cleared
+    # artifact.  Everything else still fails closed, including every link to the
+    # retained Session-5 research file.
+    card=json.loads((root/'evidence/run_card_h57l.json').read_text())
+    cleared_name=Path(card['raster']['submission_name']).name
+    download_ok=bool(card['gate_verdicts']['okay_to_download'])
+    submit_ok=bool(card['gate_verdicts']['okay_to_submit'])
+    allowed_targets={f'downloads/{cleared_name}.tif',f'downloads/{cleared_name}.zip'}
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     tiff_or_zip_links=[]
     for page in pages:
+        rel=str(page.relative_to(docs))
         parser=Links();parser.feed(page.read_text())
         for value in parser.links:
             lowered=value.lower().split('#',1)[0].split('?',1)[0]
             if lowered.endswith(('.tif','.tiff','.zip')) or 'downloads/' in lowered:
-                tiff_or_zip_links.append(f'{page.relative_to(docs)}: {value}')
-        assert not parser.downloads,f'active download attribute on {page.relative_to(docs)}'
-    assert not tiff_or_zip_links,'site must not publish raster/ZIP download links while authorization is unresolved: '+repr(tiff_or_zip_links)
+                if download_ok and rel=='submit-h57l.html' and value in allowed_targets:
+                    continue
+                tiff_or_zip_links.append(f'{rel}: {value}')
+        if parser.downloads:
+            assert download_ok and rel=='submit-h57l.html',(
+                f'active download attribute on {rel} while okay_to_download={download_ok}; '
+                f'only the cleared submission page may carry one')
+    assert not tiff_or_zip_links,('site must not publish raster/ZIP download links outside the '
+        f'cleared submission page ({sorted(allowed_targets)}): '+repr(tiff_or_zip_links))
+    assert submit_ok,'run card does not clear submission; the banner must not say otherwise'
+    banner_page=(docs/'submit-h57l.html').read_text()
+    assert cleared_name in banner_page and card['raster']['tif_sha256'] in banner_page,(
+        'submission page does not name the cleared artifact and its sha256')
+    for nm in ('index.html','executive-summary.html'):
+        txt=(docs/nm).read_text()
+        assert 'OK TO DOWNLOAD AND SUBMIT' in txt,f'{nm} is missing the cleared banner'
+        assert 'Scope of this banner' in txt,(
+            f'{nm} carries both a cleared and an uncleared verdict without scoping them')
     for name in ('index.html','executive-summary.html'):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
         assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
@@ -178,9 +233,25 @@ def check(root=ROOT):
     assert 'localhost' not in js and '127.0.0.1' not in js
     for name in ('research.html','sources.html','results.html','irregularities.html'):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
+    # Two cards are live and they are about two different artifacts.  Reporting a
+    # single hard-coded cleared/uncleared pair (as Session 6 did) made the site
+    # summary contradict the page it was checking, so each card is reported under
+    # its own name with the artifact it governs.
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
-                current_card_consistent=True,research_download_cleared=False,submission_cleared=False)
+                current_card_consistent=True,
+                cards={
+                    'session5_relay_bend_research_surface': dict(
+                        artifact_sha256=digest,
+                        research_download_cleared=False,submission_cleared=False,
+                        status='retained for provenance; never cleared'),
+                    'h57l_anatomy_candidate': dict(
+                        artifact=card['raster']['submission_name'],
+                        artifact_sha256=card['raster']['tif_sha256'],
+                        research_download_cleared=download_ok,
+                        submission_cleared=submit_ok,
+                        status=card['verdict']),
+                })
     print(json.dumps(result,indent=2))
     return result
 

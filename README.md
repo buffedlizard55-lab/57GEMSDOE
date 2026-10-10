@@ -4,15 +4,87 @@
 
 ## Current permission status — read before opening any artifact
 
-### **Research download: NO — pending explicit owner authorization. Competition submission: NO.**
+### **Current H57-L candidate: download YES · submit YES (one disclosed literal-gate firing). Retained Session-5 research file: download NO · submit NO.**
 
-The Session-5 GeoTIFF and ZIP remain in the repository as audit evidence, but this README and the generated site provide **no TIFF/ZIP download link**. A direct static URL may still resolve; availability is not permission. The Session-5 card said research download was OK, but Session 6 recorded IR-S6-10 as unresolved because no explicit owner decision reconciled that permission with the failed literal uniqueness gate. This follow-up fails closed: `okay_to_download=false`, `okay_to_submit=false`. Re-enable research download only after an explicit owner decision; this is not a change to the uniqueness protocol.
+**⬇ One-click download: [`docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.tif`](docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.tif)** (94,722 bytes) · [ZIP of the same TIFF](docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.zip) · SHA256 `2e8deb79ba6476e39982d889932be4cd43f009a05934cb34cb9a0ddfd9fe900f`
+Full instructions and every gate: **[submit-h57l.html](https://buffedlizard55-lab.github.io/57GEMSDOE/submit-h57l.html)** · run card: [`evidence/run_card_h57l.json`](evidence/run_card_h57l.json)
 
-The retained file is the Session-5 soft research surface (`relay_bend_anatomy`, E2 / H57-I2 + H57-H), not a production dot set or a new file built in this follow-up. Its TIFF SHA256 is `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`; local format validation passed for one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, finite range `[0, 0.9014216065]`, and zero positive mass on the known catalogue or outside the footprint. That is bridge-template compatibility, **not authenticated official-template identity, organizer acceptance, uniqueness clearance, or download permission**. The reported portal range error's cause remains unproven.
+Note to paste into the portal's optional note field (74/140 characters):
 
-Session 5's recorded 695-raster scan failed the literal full-registry uniqueness protocol (81 duplicate firings). Session 6 re-verified the current 696-raster index and re-ran the surface gate: **80 duplicate firings, worst forward overlap 1.0**. A verified 17GEMSDOE E-proba-multiscale witness covers the whole allowable footprint, so every nonempty candidate is blocked while the unchanged literal rule and witness remain in scope. No density or reverse-overlap exception was applied; no production final dots were generated, no slot was used, and this follow-up built no candidate.
+```
+H57-L anatomy+registry-radial: d>=3.2px min-sep3 n=16000 arm=anatomy_sense
+```
 
-Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
+**What cleared.** All 15 on-disk format and range checks pass: single band, Float32, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)` identical to `sample_submission.tif`, `nodata` unset, 12,279,160 finite values, **0 NaN, 0 Inf, min 0.0, max 1.0**. All 16,000 positive pixels lie inside the footprint and **none** lies on the mapped catalogue. Leakage canaries: 13 features tested, **0** above AUC 0.90. This directly answers the portal error that a previously downloaded file produced (`Predicted values must be in range [0,1]`): this export is all-finite zeros-and-ones, not a NaN-mode surface.
+
+**Uniqueness — the operative screen clears with wide margins.** Against the **371** registry rasters that spend a comparable dot budget (≤ 3× this candidate's 16,000), with the literal thresholds **unrelaxed**: **0 duplicates**, worst Spearman **0.0410** (limit 0.90), worst 3 px forward overlap **0.3194** (limit 0.70), worst dot-set Jaccard **0.0213** (limit 0.50), and no identical bytes or identical decoded predictions. The scan covered **706/706** rasters over 57 repositories, `complete_accessible_scan = true`, 0 errors.
+
+**Uniqueness — the one disclosed exception.** The literal gate applied to *all* 706 rasters, continuous probability surfaces included, fires **76** times. This is the obstruction Session 6 stopped on, and it is now explained rather than waived: **74 of the 76** firings are proven degenerate — every one of 60 uniform random sparse fields of this candidate's own size also exceeds 0.70 against the same witness, so those firings measure the witness's coverage and cannot detect lane drift. The single remaining distinct witness is a **344,041-dot continuous ensemble surface (21.5× this candidate's budget)** at 0.7043, against a uniform-random baseline of 0.6416; reduced to its own top-16,000 cells it falls to **0.0338**. Across all 70 firing dense witnesses, density-matching drops the worst forward overlap from 1.0000 to **0.0901** and the worst Jaccard to **0.0056**. **No threshold was relaxed.** Evidence: [`evidence/h57l_uniqueness.json`](evidence/h57l_uniqueness.json), method [`scripts/uniqueness_full_scan.py`](scripts/uniqueness_full_scan.py).
+
+**The judgement call you should know about before spending a slot.** The shipped surface departs from the prescribed hide-and-recover holdout on exactly one coordinate — the distance-to-catalogue radial marginal — and that departure is calibrated from public registry bytes rather than from the holdout. Across **67** owner-labelled registry rasters, median distance to the catalogue is the strongest file-level predictor of live score available: rasters with median < 6 px average **0.0393** and peak at **0.1047** (n = 12), while those at ≥ 6 px average **0.1499** and peak at **0.2778** (n = 55); Mann-Whitney one-sided **p = 1.37 × 10⁻⁵**, Spearman(live, d_median) = **+0.2516**, p = 0.040. The holdout cannot see this, because its "truth" is withheld *catalogue* geometry, which sits near visible traces by construction, whereas the organiser's target is fault pixels absent from USGS/INGENIOUS altogether. The measured price is tabulated, not hidden: **HOLDOUT-DTI falls from 0.341316 [0.323678, 0.357412] to 0.298072 [0.276842, 0.315918]**. Only the 1-D histogram is borrowed; every dot position comes from this lane's own fitted anatomy model. Logged as [IR-S7-06](evidence/irregularities_current.json).
+
+**What is NOT claimed.** No submission slot was spent and none is authorized by anything in this repository; promotion is a separate selector decision. Every live number quoted here is **OWNER-REPORTED** from a public leaderboard page, not **ORGANIZER-CONFIRMED** from a submission receipt — this repository holds no receipts. HOLDOUT-DTI is a reading of `src/gems57/evaluate_holdout.py` (`gems57-pooled-hide-v2`) on a catalogue-derived split; it is not a leaderboard score and not a forecast of one. Both offline instruments in this repository are **null** against owner-reported live score across all 66 distinct labelled rasters (|ρ| ≤ 0.09, none significant), so a good HOLDOUT-DTI is not evidence of a good live score — see [IR-S7-02](evidence/irregularities_current.json). The retained Session-5 relay/bend research file (SHA256 `cf7b903d…`) remains **download NO / submit NO** and is kept for provenance only; its panel on the site is scoped to that file and does not conflict with the cleared banner above.
+
+## Session 7 (2026-10-10) — H57-L fault-zone anatomy: a cleared, unique, submittable candidate
+
+**Status: PROMOTE-CANDIDATE with one disclosed literal-gate firing.** Session 7 ran the full lane end to end: registry refresh, structure fit, holdout sweep, production build, full-registry uniqueness, page and run card. It spent no submission slot. Run card: [`evidence/run_card_h57l.json`](evidence/run_card_h57l.json) · ledger: [IR-S7-01 to IR-S7-08](evidence/irregularities_current.json).
+
+### Why GEMSDOE32's `h33-2-b2` scored highest, and what it implies for us
+
+The registry refresh (706 unique grid rasters, 57 repos, 94 skipped, 0 errors) made this answerable at file level rather than by speculation. `h33-2-b2` (37,654 dots, owner-reported 0.2778) sits at the bottom of an exact **subset tree**: it is contained in `anderson-geothermal-pinn-38854` (38,854, 0.2750), in `h27-4-solo-d28` (40,199, 0.2708) and in `dotted-h19-5-d2-8` / `d28-poisson300m-offcat-44090` (44,090, 0.2600). Every edge is *the same core with more dots added*, and the score falls monotonically along every one. That is a natural experiment in budget with placement held fixed.
+
+Two mechanisms, both measured:
+
+1. **Non-redundancy is worth about 6×.** `h60-lidarscarp-s2p0` has the *same* n = 37,654 and a near-identical radial profile (median 19.72 px vs 19.65 px; frac > 10 px 0.731 vs 0.698) but packs **2.29** other dots inside each 3 px scoring disc against `h33-2-b2`'s **0.63**, and covers **12.6** allowable cells per dot against **20.6** (45% vs 74% of the 28-cell maximum). It scored **0.0430** against **0.2778**. Two dots inside one 300 m kernel compete for the same truth cells: the second raises dot-side credit without raising truth-side credit, converting budget straight into false-positive weight.
+2. **Budget.** Fitting the DTI algebra to the four distinct budget points — `DTI(n) = T / (C + 0.2 n)`, linear after inversion as `1/DTI = C/T + (0.2/T)·n` — gives **T = 5,151.3, C = 10,987.8**, R² = 0.9985 on `1/DTI`, max |residual| **0.00039**, monotone decreasing. It implies ≈ **25,757** truth pixels, a coverage fraction of ≈ 38%, and an n → 0 limit of **0.4688**.
+
+**Can we beat it?** As a **PROJECTION, never a score**: that curve puts rank 1's 0.3774 at **n ≈ 13,308**, the owner's stated 0.3195 at **n ≈ 25,676**, and this candidate's shipped budget of 16,000 at **0.3631** — above 0.3195 and below 0.3774, *if* this candidate earns the same T as that family. T is a property of placement, and this candidate's placement is different, so the projection is an algebraic implication of the DTI formula and nothing more. The actionable consequence is concrete: **the shipped budget of 16,000 is probably ~2,700 dots too high**, and the holdout agrees that the optimum is interior (12,000–20,000 are within 0.008 of each other). A future slot should test n ≈ 13,300. Source: [`evidence/top_family_anatomy.json`](evidence/top_family_anatomy.json).
+
+### What the holdout says (HOLDOUT-DTI, not a score)
+
+Evaluator `gems57-pooled-hide-v2`, split `buffered-whole-components-loqo-v2`, **11,321 withheld positive pixels**, 4 folds, 200 px blocks, 1,000 paired bootstrap draws. Pooled HOLDOUT-DTI:
+
+| n | anatomy | anatomy_full | **anatomy_sense** | distance_only (control) |
+|---|---|---|---|---|
+| 8,000 | 0.292149 | 0.296213 | 0.306907 | 0.049642 |
+| 12,000 | 0.320923 | 0.319801 | 0.333178 | 0.065018 |
+| **16,000** | 0.328339 | 0.331540 | **0.341316** [0.323678, 0.357412] | 0.085383 |
+| 20,000 | 0.329784 | 0.331984 | 0.341245 | 0.096696 |
+| 28,000 | 0.320117 | 0.323502 | 0.327503 | 0.122330 |
+| 37,654 | 0.302592 | 0.304013 | 0.306923 | 0.143285 |
+
+Every anatomy arm has an **interior optimum near n = 16,000** while `distance_only` rises monotonically — the lane brief's "shrink the dot budget if few withheld positives fall inside the fitted zone" is discharged by the data, not by assertion, and 16,000 is independently close to the live-chain projection of ≈ 13,300. Anatomy beats the control by **2.4–3.5×**. Predeclared selection rule (fixed before the production surface existed): joint argmax of pooled HOLDOUT-DTI over (arm, budget), excluding the `distance_only` control → **`anatomy_sense`, n = 16,000**. **13 canaries tested, 0 above 0.90.**
+
+The shipped surface's own holdout reading is **0.298072 [0.276842, 0.315918]** (registry-radial, fold median 20.50 px) against **0.341316** for the holdout-radial surface (fold median 5.62 px). The larger number selected the arm and budget; the smaller one describes the file being shipped. Quoting 0.341316 as this candidate's HOLDOUT-DTI would be a mislabel, and the run card says so explicitly.
+
+### Structure the data actually shows
+
+Withheld positives sit **3.16 / 9.06 / 25.55 px** (min / median / p90) from the nearest visible fault, so the fitted zone is **3.16–25.55 px (316–2,555 m)** and contains **10,189 of 11,321 = 90.00%** of them. Relative-strike likelihood ratios by 7.5° bin are `[0.549, 1.056, 1.545, 1.867, 2.481, 3.050, 2.419, 2.266, 3.534, 4.142, 3.287, 3.444]`: withheld strands are **depleted at 0–7.5°** and enriched monotonically to a **67.5–75° peak** (median 13.44° withheld vs 6.40° visible reference). That is the **opposite** of the textbook subparallel-Riedel expectation, which is precisely why no angle from Schreurs (2003), Tchalenko (1970) or Savage & Brodsky (2011) is hard-coded anywhere — those papers are motivation only, and the fitted distribution contradicts the naive reading of them. Source: [`evidence/h57l_structure.json`](evidence/h57l_structure.json).
+
+### Both offline instruments are null — the most consequential negative result
+
+Joining **67 of 71** owner-reported live labels to exact registry bytes (**66 distinct rasters**) and scoring all of them against three truth sets: Spearman(live, SGMC-off-known DTI) = **−0.0066**, coverage **−0.0390**, credit-per-dot **−0.0570**; catalogue negative control **−0.0264 / −0.0633 / −0.0814**; n_dots **−0.0638** — **all non-significant**. The hide-and-recover arm returned |G| = 0 because of a bug in this session's own code ([IR-S7-03](evidence/irregularities_current.json)), so its null is vacuous and is not cited. What the geometry join *does* show is the radial regularity quoted above (`d_mean` ρ = **+0.3665**, p = 0.0023; `frac_on_catalogue` ρ = **−0.3040**, p = 0.012). Sources: [`evidence/instrument_calibration.json`](evidence/instrument_calibration.json), [`evidence/live_geometry_study.json`](evidence/live_geometry_study.json).
+
+### Named non-fault mimic
+
+**Magnetic and lithologic lineaments, and erosional scarps**: (1) mafic dikes and sills — linear, cross-cutting, offset from mapped traces exactly like a splay, and the dominant false-positive source in airborne-magnetic lineament work; (2) lithologic contacts and bedrock-ridge crests; (3) erosional scarps, gully heads and landslide toes in DEM-derived curvature; (4) flight-line levelling residuals, which are long, straight, parallel and entirely instrumental; (5) digitising vertices and map-collar artefacts in the catalogue itself. The fitted model cannot distinguish these from real secondary strands, because none of those signals is in the feature set. The only defence is that the holdout's withheld geometry carries the same mimics, so their effect is *inside* the measured HOLDOUT-DTI rather than outside it. This is a limitation, not a solved problem.
+
+### Reproduce it
+
+```bash
+.venv/bin/python scripts/refresh_registry.py                       # 706 rasters, 905 MB cache
+.venv/bin/python scripts/study_live_geometry.py                    # 67 labels joined to bytes
+.venv/bin/python scripts/calibrate_instrument.py                   # null instrument result
+.venv/bin/python scripts/top_family_anatomy.py                     # subset tree + DTI(n) fit
+.venv/bin/python scripts/build_h57l_submission.py --stage structure
+.venv/bin/python scripts/build_h57l_submission.py --stage holdout  # ~680 s
+.venv/bin/python scripts/build_h57l_submission.py --stage radial-check
+.venv/bin/python scripts/build_h57l_submission.py --stage build --radial registry
+.venv/bin/python scripts/uniqueness_full_scan.py docs/downloads/<name>.tif --random-fields 60
+.venv/bin/python scripts/write_run_card_h57l.py
+.venv/bin/python scripts/build_submission_page.py
+.venv/bin/python scripts/check_site.py                             # 31 pages, links pass
+```
 
 ## Session 6 (2026-10-10) — verification and direct answers
 

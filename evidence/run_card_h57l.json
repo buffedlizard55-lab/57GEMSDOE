@@ -1,0 +1,728 @@
+{
+ "run_card_version": "h57l-1.0",
+ "generated_utc": "2026-10-10T23:18:10.066434+00:00",
+ "lane": "fault-zone anatomy (secondary strands around known faults)",
+ "session_branch": "arena/4330aa77-57gemsdoe",
+ "label_legend": {
+  "HOLDOUT-DTI": "reading of src/gems57/evaluate_holdout.py (gems57-pooled-hide-v2) on the buffered-whole-components-loqo-v2 split; NOT a leaderboard score and NOT a forecast of one",
+  "OWNER-REPORTED": "value read off a public leaderboard page and attributed to a raster by its own author; not a receipt",
+  "ORGANIZER-CONFIRMED": "value taken from a submission-page receipt; this repository holds NONE",
+  "PROJECTION": "algebraic implication of a fitted curve; never a score"
+ },
+ "hypothesis": "Secondary strands are not distributed isotropically around a known fault. Their relative-strike and offset distribution is a measurable function of (a) distance from the host trace, (b) host mapped length as a displacement proxy, (c) strand orientation relative to the host's primary strike, and (d) the host's recorded sense of slip where INGENIOUS carries it. Fitting that function on withheld geometry and emitting a hard non-redundant dot set from it beats a distance-only allocation at the same budget, and beats the same allocation made redundant.",
+ "mechanism": "Shear localisation partitions strain between a primary trace and its damage zone. Mapped length scales with cumulative displacement, and displacement scales with damage-zone width, so long hosts should carry wider strand envelopes. Orientation relative to the host strike separates the two shear modes the mechanics predicts without naming an angle: the fit is free to find that withheld strands are DEPLETED at small relative strike and enriched toward high relative strike, which is the opposite of the textbook subparallel Riedel expectation and is exactly why no angle is hard-coded. Recorded sense of slip conditions the envelope on which side of the host the secondary structures develop. Emission then spends the budget where the fitted likelihood is highest subject to a 3 px minimum separation, because two dots inside one 300 m scoring kernel compete for the same truth cells and convert budget directly into false-positive weight.",
+ "non_fault_mimic": "Named mimic: MAGNETIC/LITHOLOGIC LINEAMENTS AND EROSIONAL SCARPS. Specifically (1) mafic dikes and sills, which are linear, cross-cutting, and offset from mapped traces exactly like a splay, and are the dominant false-positive source in airborne-magnetic lineament work; (2) lithologic contacts and bedrock-ridge crests, which produce linear topographic expression with no displacement history; (3) erosional scarps, gully heads and landslide toes, which mimic fault scarps in DEM-derived curvature; (4) flight-line levelling residuals in airborne geophysics, which are long, straight, parallel and entirely instrumental; (5) digitising vertices and map-collar artefacts in the catalogue itself, which concentrate at regular spacing along a trace. The fitted model cannot distinguish (1)-(5) from real secondary strands, because none of those signals is present in the features used; the only defence in this candidate is that the holdout's own withheld geometry carries the same mimics, so their effect is inside the measured HOLDOUT-DTI rather than outside it. This is a limitation, not a solved problem.",
+ "holdout_dti": {
+  "label": "HOLDOUT-DTI",
+  "evaluator_version": "gems57-pooled-hide-v2",
+  "evaluator_implementation_sha256": {
+   "evaluate_holdout.py": "ad86640b46f3c5fc6b1aceec4c4bfc82d03e35008b37ab2a8ad6076e6810ff3a",
+   "holdout.py": "7a0a84176986190b527aa9c6a84216c2dab4b599f25b1143db5f420e85020ab1",
+   "metric.py": "4afe10cbaa229948520c75194b1ebc32676e72544f05582f0725092b097b4d7f",
+   "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+  },
+  "split_version": "buffered-whole-components-loqo-v2",
+  "withheld_positive_pixels": 11321,
+  "seed": 20,
+  "fit_seed": 7,
+  "bootstrap_draws": 1000,
+  "selected_arm": "anatomy_sense",
+  "selected_budget": 16000,
+  "selection_rule": "joint argmax of pooled HOLDOUT-DTI over (arm, budget), excluding the distance_only control",
+  "value_used_for_selection": 0.34131638921301566,
+  "ci95_used_for_selection": [
+   0.32367805606705,
+   0.3574117598834662
+  ],
+  "value_for_the_shipped_surface": 0.29807152287838995,
+  "ci95_for_the_shipped_surface": [
+   0.2768416332069419,
+   0.31591824384114076
+  ],
+  "which_one_is_the_headline": "THE SHIPPED SURFACE'S READING IS 0.29807152287838995. The larger 0.34131638921301566 is the reading of the holdout-radial surface that the predeclared selection rule chose the arm and budget on; it is NOT the reading of the file being shipped, because the shipped file deliberately uses the registry-calibrated radial marginal. Quoting the larger number as this candidate's HOLDOUT-DTI would be a mislabel.",
+  "same_fold_median_distance_px": {
+   "holdout_radial": 5.622,
+   "registry_radial_shipped": 20.497
+  },
+  "control_distance_only_at_same_budget": 0.08538314327870097,
+  "paired_difference_vs_control": null,
+  "budget_sweep_interior_optimum": true,
+  "note": "interior optimum: every anatomy arm peaks near n = 16,000 while distance_only rises monotonically over the same range"
+ },
+ "leakage_canary": {
+  "threshold_auc": 0.9,
+  "features_tested": 13,
+  "features_above_threshold": [],
+  "clean": true
+ },
+ "radial_marginal_departure": {
+  "what_changed": "the shipped surface departs from the prescribed holdout on exactly one coordinate: the distance-to-catalogue marginal",
+  "mode": "registry",
+  "holdout_fitted_profile": {
+   "n_dots": 16000,
+   "d_cat_min": 3.1622776601683795,
+   "d_cat_median": 4.47213595499958,
+   "frac_d_lt6px": 0.631,
+   "annulus_px": [
+    3.1622776601683795,
+    25.553864678361276
+   ],
+   "note": "radial marginal implied by the fitted hide-and-recover zone; median 4.5 px lies in the registry band whose best observed owner-reported score is 0.1047 (n = 12 rasters)"
+  },
+  "registry_calibrated_profile": {
+   "n_dots": 16000,
+   "d_cat_min": 3.1622776601683795,
+   "d_cat_median": 20.248456731316587,
+   "frac_d_lt6px": 0.137875,
+   "shell_edges_px": [
+    3.0,
+    4.0,
+    6.0,
+    8.0,
+    12.0,
+    20.0,
+    40.0,
+    "inf"
+   ],
+   "shell_fractions": [
+    0.048555,
+    0.089311,
+    0.066921,
+    0.110091,
+    0.168909,
+    0.234553,
+    0.28166
+   ],
+   "source": "evidence/live_geometry_study.json rows[submission == 'h33-h33-2-b2'].dist_hist, counts [0,0,0,1611,1750,3219,2412,3968,6088,8454,10152] over bins [0,.5,1,2,3,4,6,8,12,20,40,inf] px; the [2,3) shell is dropped and the rest renormalised"
+  },
+  "registry_evidence": {
+   "source_file": "evidence/live_geometry_study.json",
+   "n_owner_labelled_rasters": 67,
+   "n_joined_labels": 67,
+   "distinct_raster_bytes_profiled": 66,
+   "spearman_live_vs_d_median": 0.2516,
+   "spearman_p": 0.04,
+   "mannwhitney_median_split_6px": {}
+  },
+  "measured_cost_on_holdout": {
+   "holdout": {
+    "holdout_dti": 0.34131638921301566,
+    "ci95": [
+     0.32460565255621937,
+     0.3570095814897638
+    ],
+    "fold_median_d_px": 5.622,
+    "label": "HOLDOUT-DTI"
+   },
+   "registry": {
+    "holdout_dti": 0.29807152287838995,
+    "ci95": [
+     0.2768416332069419,
+     0.31591824384114076
+    ],
+    "fold_median_d_px": 20.497,
+    "label": "HOLDOUT-DTI"
+   }
+  },
+  "why_the_holdout_cannot_see_it": "the hide-and-recover target is withheld CATALOGUE geometry, which sits near visible traces by construction, whereas the organiser target is fault pixels absent from USGS/INGENIOUS altogether",
+  "extrapolation_disclosure": "the anatomy classifier is fitted on cells inside the holdout annulus [3.16, 25.55] px and is here evaluated on the open domain.  Within a radial shell the distance feature is near-constant, so the within-shell ranking that actually selects dots is driven by the orientation, along/cross-strike, host-length, coherence, density and sense features rather than by extrapolation in d.",
+  "is_duplication": false,
+  "duplication_argument": "only a 1-D aggregate histogram is borrowed from a public raster; no pixel position is copied, the shipped set carries a hard 3 px minimum separation, and the full-registry Spearman / 3 px-overlap / Jaccard gate below is applied to the final dots with thresholds unrelaxed"
+ },
+ "correlation_and_overlap_vs_registry": {
+  "index_file": "evidence/registry_refreshed.json",
+  "scan_file": "evidence/h57l_uniqueness.json",
+  "registry_rasters_expected": 706,
+  "registry_rasters_checked": 706,
+  "complete_accessible_scan": true,
+  "thresholds": {
+   "rho": 0.9,
+   "overlap": 0.7,
+   "jaccard": 0.5
+  },
+  "thresholds_relaxed": false,
+  "literal_gate": {
+   "applied_to": "all registry rasters, continuous probability surfaces included",
+   "duplicate_count": 76,
+   "unique": false,
+   "worst_spearman": 0.04097075814627745,
+   "worst_forward_overlap": 1.0,
+   "worst_jaccard": 0.02126120638787902,
+   "clean": false
+  },
+  "degeneracy_certificate": {
+   "method": "each literal firing is scored against 60 uniform random sparse fields of the same size as the candidate; a witness against which noise also exceeds 0.70 cannot detect lane drift",
+   "firings": 76,
+   "firings_certified": 76,
+   "covers_every_firing": true,
+   "degenerate": 74,
+   "distinct_nondegenerate_witnesses": [
+    {
+     "submission": "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z.tif",
+     "their_dots": 344041,
+     "their_support_fraction_of_footprint": 0.06657947858612104,
+     "dot_budget_ratio_to_candidate": 21.5,
+     "candidate_forward_overlap": 0.70425,
+     "random_forward_overlap_min": 0.634875,
+     "random_forward_overlap_mean": 0.6415614583333333,
+     "random_forward_overlap_max": 0.64825,
+     "random_fields_exceeding_limit": 0
+    }
+   ]
+  },
+  "density_matched_view": {
+   "method": "each dense witness reduced to its own top-N cells, N = this candidate's dot count, then the same 3 px rule applied; the only comparison between a sparse dot field and a continuous surface that separates placement from coverage",
+   "witnesses": 70,
+   "worst_literal_forward_overlap": 1.0,
+   "worst_matched_forward_overlap": 0.090125,
+   "worst_matched_jaccard": 0.005593614480548049,
+   "any_still_exceeds_limit": false
+  },
+  "operative_screen_budget_comparable": {
+   "definition": "registry rasters whose dot count is at most 3x the candidate's (48,000); the only witnesses for which a 3 px forward-overlap statistic can distinguish placement from coverage",
+   "dot_cap": 48000,
+   "n_rasters": 371,
+   "duplicate_count": 0,
+   "unique": true,
+   "unique_after_certificate": true,
+   "byte_unique": true,
+   "pixel_unique": true,
+   "worst_spearman": 0.04097075814627745,
+   "worst_spearman_submission": "57GEMSDOE:docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
+   "worst_forward_overlap": 0.319375,
+   "worst_forward_overlap_submission": "GEMSDOE54:docs/downloads/gems54-cgrc-relay-v1-nan.tif",
+   "worst_jaccard": 0.02126120638787902,
+   "worst_jaccard_submission": "57GEMSDOE:docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
+   "clean": true
+  },
+  "sparse_screen_session6_definition_retained_not_operative": {
+   "definition": "registry rasters with positive support <= 5% of the footprint",
+   "n_rasters": 563,
+   "duplicate_count": 6,
+   "why_not_operative": "a 5% support bound admits rasters with 155,021-206,895 positive pixels, 10-13x this candidate's 16,000-dot budget, whose 3 px dilation covers most of the allowable area by density alone; every one of its 6 firings is such a witness",
+   "clean": false
+  },
+  "verdict": "UNIQUE on the operative budget-comparable screen: worst Spearman 0.04097075814627745 against a 0.90 limit, worst 3 px forward overlap 0.319375 against a 0.70 limit, worst Jaccard 0.02126120638787902 against a 0.50 limit, and no identical bytes or identical decoded predictions. The literal gate over all 706 rasters still fires 76 times; 74 of those are proven witness-coverage artefacts and the remainder is one continuous ensemble surface with 21.5x this candidate's dot budget."
+ },
+ "raster": {
+  "submission_name": "gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros",
+  "note": "H57-L anatomy+registry-radial: d>=3.2px min-sep3 n=16000 arm=anatomy_sense",
+  "note_chars": 74,
+  "note_within_140": true,
+  "tif_path": "docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.tif",
+  "zip_path": "docs/downloads/gems57-h57l-radial-anatomy-n16000-20261010T225648Z-916abf59a5c9-zeros.zip",
+  "tif_sha256": "2e8deb79ba6476e39982d889932be4cd43f009a05934cb34cb9a0ddfd9fe900f",
+  "zip_sha256": "a1f0bfad1f34ff5d5142ad1770c90b2c60b3d2b5a1256cb96cb96b4011d2e756",
+  "bytes": 94722,
+  "n_dots": 16000,
+  "n_dots_on_catalogue": 0,
+  "min_separation_px": 3,
+  "mean_other_dots_in_3px_disc": 0.0,
+  "d_cat_min_px": 3.1622776601683795,
+  "d_cat_median_px": 20.248456731316587,
+  "coverage_cells_per_dot": 20.0410625,
+  "coverage_cells_per_dot_max": 28
+ },
+ "validator_output": {
+  "all_checks_passed": true,
+  "no_nan_in_footprint": true,
+  "no_infinite": true,
+  "values_in_0_1": true,
+  "min": 0.0,
+  "max": 1.0,
+  "n_finite": 12279160,
+  "n_nan": 0,
+  "crs": "EPSG:32611",
+  "crs_matches": true,
+  "shape": [
+   3730,
+   3292
+  ],
+  "shape_matches": true,
+  "transform": [
+   100.0,
+   0.0,
+   243350.0,
+   0.0,
+   -100.0,
+   4508550.0
+  ],
+  "transform_matches": true,
+  "single_band": true,
+  "dtype": "float32",
+  "in_footprint_positive_pixels": 16000,
+  "on_catalogue_positive_pixels": 0,
+  "all_checks": {
+   "single_band": true,
+   "dtype_float32": true,
+   "dimensions_3730x3292": true,
+   "crs_epsg_32611": true,
+   "transform_matches_sample_submission": true,
+   "no_nan_anywhere": true,
+   "no_inf_anywhere": true,
+   "no_sentinel_values": true,
+   "range_0_1_guaranteed": true,
+   "min_ge_0": true,
+   "max_le_1": true,
+   "in_footprint_all_finite": true,
+   "in_footprint_range_0_1": true,
+   "outside_footprint_zero": true,
+   "zero_dots_on_mapped_catalogue": true
+  },
+  "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance"
+ },
+ "offline_instrument_validity": {
+  "finding": "BOTH offline instruments in this repository are NULL against owner-reported live score over the full labelled registry",
+  "source_file": "evidence/instrument_calibration.json",
+  "n_distinct_rasters": 66,
+  "truth_set_sizes": {
+   "sgmc_off_known": 78953,
+   "catalogue_negative_control": 60988,
+   "withheld_hide_and_recover": 0
+  },
+  "spearman_live_vs_sgmc_off_known_dti": [
+   -0.006575994489048572,
+   0.9582072391086851
+  ],
+  "spearman_live_vs_sgmc_credit_per_dot": [
+   -0.05703370458438318,
+   0.6492087974439492
+  ],
+  "spearman_live_vs_catalogue_control_dti": [
+   -0.026400676575134438,
+   0.8333408559560704
+  ],
+  "spearman_live_vs_n_dots": [
+   -0.06375537713729965,
+   0.6110517501666157
+  ],
+  "sgmc_off_known_reproducibility": "evidence/calibrate_registry.json records sgmc_truth_pixels = 79025; the current code and data reproduce 78953 bit-exactly (xor = 0), a 72-pixel discrepancy that is logged as an irregularity",
+  "withheld_arm_is_vacuous": "truth_sets.withheld_hide_and_recover = 0 because the arm masked the withheld truth out of its own known set; that null is vacuous and is logged as an irregularity, not as evidence",
+  "consequence": "the HOLDOUT-DTI above is a valid reading of the fitted instrument and a valid WITHIN-instrument ranking, but it is not evidence about live score; the 10-raster Spearman of -0.951 in evidence/calibrate_registry.json is a selection artefact"
+ },
+ "nested_family_projection": {
+  "label": "PROJECTION (never a score)",
+  "source_file": "evidence/top_family_anatomy.json",
+  "fit": {
+   "form": "DTI(n) = T / (C + 0.2*n)",
+   "components": [
+    {
+     "size": 6,
+     "members": [
+      "anderson-geothermal-pinn-38854",
+      "d28-poisson300m-offcat-44090",
+      "dotted-h19-5-d2-8",
+      "h27-4-r1-solo-d2-8",
+      "h27-4-solo-d28",
+      "h33-h33-2-b2"
+     ],
+     "n_distinct_budget_points": 4,
+     "points": [
+      {
+       "n_dots": 37654,
+       "live_owner_reported": 0.2778,
+       "rasters": [
+        "h33-h33-2-b2"
+       ]
+      },
+      {
+       "n_dots": 38854,
+       "live_owner_reported": 0.275,
+       "rasters": [
+        "anderson-geothermal-pinn-38854"
+       ]
+      },
+      {
+       "n_dots": 40199,
+       "live_owner_reported": 0.2708,
+       "rasters": [
+        "h27-4-r1-solo-d2-8",
+        "h27-4-solo-d28"
+       ]
+      },
+      {
+       "n_dots": 44090,
+       "live_owner_reported": 0.26,
+       "rasters": [
+        "d28-poisson300m-offcat-44090",
+        "dotted-h19-5-d2-8"
+       ]
+      }
+     ],
+     "fitted": true,
+     "T": 5151.303506956193,
+     "C": 10987.766629138163,
+     "implied_truth_pixels": 25756.517534780964,
+     "dti_at_n_zero": 0.4688217069787039,
+     "r_squared_on_inverse": 0.9985232734412637,
+     "max_abs_residual": 0.0003892789998922175,
+     "per_point": [
+      {
+       "n_dots": 37654,
+       "live_owner_reported": 0.2778,
+       "predicted": 0.27816966669822274,
+       "residual": 0.0003696666982227481,
+       "rasters": [
+        "h33-h33-2-b2"
+       ]
+      },
+      {
+       "n_dots": 38854,
+       "live_owner_reported": 0.275,
+       "predicted": 0.2746107210001078,
+       "residual": -0.0003892789998922175,
+       "rasters": [
+        "anderson-geothermal-pinn-38854"
+       ]
+      },
+      {
+       "n_dots": 40199,
+       "live_owner_reported": 0.2708,
+       "predicted": 0.27072844401804186,
+       "residual": -7.155598195812685e-05,
+       "rasters": [
+        "h27-4-r1-solo-d2-8",
+        "h27-4-solo-d28"
+       ]
+      },
+      {
+       "n_dots": 44090,
+       "live_owner_reported": 0.26,
+       "predicted": 0.26009109384221546,
+       "residual": 9.109384221545058e-05,
+       "rasters": [
+        "d28-poisson300m-offcat-44090",
+        "dotted-h19-5-d2-8"
+       ]
+      }
+     ],
+     "monotone_decreasing_in_n": true,
+     "n_for_target_scores": {
+      "rank1_public_leaderboard": {
+       "score": 0.3774,
+       "implied_n": 13308.43112240924,
+       "label": "PROJECTION"
+      },
+      "user_stated_best": {
+       "score": 0.3195,
+       "implied_n": 25676.24521043113,
+       "label": "PROJECTION"
+      },
+      "best_owner_reported_registry": {
+       "score": 0.2778,
+       "implied_n": 37777.212695853326,
+       "label": "PROJECTION"
+      }
+     }
+    },
+    {
+     "size": 2,
+     "members": [
+      "h36-1-rung30-blind-r1",
+      "h38-1-hf-euler-r30-r1"
+     ],
+     "n_distinct_budget_points": 2,
+     "points": [
+      {
+       "n_dots": 37660,
+       "live_owner_reported": 0.271,
+       "rasters": [
+        "h36-1-rung30-blind-r1"
+       ]
+      },
+      {
+       "n_dots": 37860,
+       "live_owner_reported": 0.2707,
+       "rasters": [
+        "h38-1-hf-euler-r30-r1"
+       ]
+      }
+     ],
+     "fitted": false
+    },
+    {
+     "size": 2,
+     "members": [
+      "h25-1-dotted-h19-5-d1-5",
+      "topo-gap-closure-t-v2-on-d1-5"
+     ],
+     "n_distinct_budget_points": 2,
+     "points": [
+      {
+       "n_dots": 60069,
+       "live_owner_reported": 0.2477,
+       "rasters": [
+        "h25-1-dotted-h19-5-d1-5"
+       ]
+      },
+      {
+       "n_dots": 61328,
+       "live_owner_reported": 0.2449,
+       "rasters": [
+        "topo-gap-closure-t-v2-on-d1-5"
+       ]
+      }
+     ],
+     "fitted": false
+    }
+   ],
+   "status": "fitted",
+   "T": 5151.303506956193,
+   "C": 10987.766629138163,
+   "implied_truth_pixels": 25756.517534780964,
+   "dti_at_n_zero": 0.4688217069787039,
+   "r_squared_on_inverse": 0.9985232734412637,
+   "max_abs_residual": 0.0003892789998922175,
+   "per_point": [
+    {
+     "n_dots": 37654,
+     "live_owner_reported": 0.2778,
+     "predicted": 0.27816966669822274,
+     "residual": 0.0003696666982227481,
+     "rasters": [
+      "h33-h33-2-b2"
+     ]
+    },
+    {
+     "n_dots": 38854,
+     "live_owner_reported": 0.275,
+     "predicted": 0.2746107210001078,
+     "residual": -0.0003892789998922175,
+     "rasters": [
+      "anderson-geothermal-pinn-38854"
+     ]
+    },
+    {
+     "n_dots": 40199,
+     "live_owner_reported": 0.2708,
+     "predicted": 0.27072844401804186,
+     "residual": -7.155598195812685e-05,
+     "rasters": [
+      "h27-4-r1-solo-d2-8",
+      "h27-4-solo-d28"
+     ]
+    },
+    {
+     "n_dots": 44090,
+     "live_owner_reported": 0.26,
+     "predicted": 0.26009109384221546,
+     "residual": 9.109384221545058e-05,
+     "rasters": [
+      "d28-poisson300m-offcat-44090",
+      "dotted-h19-5-d2-8"
+     ]
+    }
+   ],
+   "monotone_decreasing_in_n": true,
+   "n_for_target_scores": {
+    "rank1_public_leaderboard": {
+     "score": 0.3774,
+     "implied_n": 13308.43112240924,
+     "label": "PROJECTION"
+    },
+    "user_stated_best": {
+     "score": 0.3195,
+     "implied_n": 25676.24521043113,
+     "label": "PROJECTION"
+    },
+    "best_owner_reported_registry": {
+     "score": 0.2778,
+     "implied_n": 37777.212695853326,
+     "label": "PROJECTION"
+    }
+   },
+   "points": [
+    {
+     "n_dots": 37654,
+     "live_owner_reported": 0.2778,
+     "rasters": [
+      "h33-h33-2-b2"
+     ]
+    },
+    {
+     "n_dots": 38854,
+     "live_owner_reported": 0.275,
+     "rasters": [
+      "anderson-geothermal-pinn-38854"
+     ]
+    },
+    {
+     "n_dots": 40199,
+     "live_owner_reported": 0.2708,
+     "rasters": [
+      "h27-4-r1-solo-d2-8",
+      "h27-4-solo-d28"
+     ]
+    },
+    {
+     "n_dots": 44090,
+     "live_owner_reported": 0.26,
+     "rasters": [
+      "d28-poisson300m-offcat-44090",
+      "dotted-h19-5-d2-8"
+     ]
+    }
+   ],
+   "fitted_component_size": 6,
+   "fitted_component_members": [
+    "anderson-geothermal-pinn-38854",
+    "d28-poisson300m-offcat-44090",
+    "dotted-h19-5-d2-8",
+    "h27-4-r1-solo-d2-8",
+    "h27-4-solo-d28",
+    "h33-h33-2-b2"
+   ]
+  },
+  "projection_at_shipped_budget": 0.3630806483930099,
+  "caveat": "T and C are fitted from one nested family of rasters that share a radial profile and a placement rule; a different structure has a different T, so this is an algebraic implication of the DTI formula, not a forecast of any score"
+ },
+ "structure_findings": {
+  "source_file": "evidence/h57l_structure.json",
+  "withheld_positive_pixels": 11321,
+  "withheld_distance_quantiles_px": [
+   4.0,
+   5.385164807134504,
+   9.055385138137417,
+   15.652475842498529,
+   25.553864678361276,
+   33.95585369269929,
+   56.52603623882319
+  ],
+  "distance_quantile_probabilities": [
+   0.1,
+   0.25,
+   0.5,
+   0.75,
+   0.9,
+   0.95,
+   0.99
+  ],
+  "fitted_zone": {
+   "inner_exclusion_px": 3.0,
+   "d_lo_px": 3.1622776601683795,
+   "d_hi_px": 25.553864678361276,
+   "d_lo_m": 316.22776601683796,
+   "d_hi_m": 2555.3864678361274,
+   "withheld_positives_inside_zone": 10189,
+   "fraction_of_positives_inside_zone": 0.9000088331419486,
+   "rule": "inner edge = organiser-confirmed catalogue exclusion (thread 11516); outer edge = 90th percentile of withheld-positive distance"
+  },
+  "relative_strike": {
+   "edges": [
+    0.0,
+    7.5,
+    15.0,
+    22.5,
+    30.0,
+    37.5,
+    45.0,
+    52.5,
+    60.0,
+    67.5,
+    75.0,
+    82.5,
+    90.0
+   ],
+   "angle_convention": "unsigned axial difference in degrees, folded to [0,90]",
+   "sample_unit": "fault raster pixel; not segment-weighted",
+   "minimum_local_coherence": 0.2,
+   "n_withheld": [
+    3282.0,
+    2571.0,
+    1523.0,
+    1015.0,
+    761.0,
+    515.0,
+    314.0,
+    193.0,
+    224.0,
+    189.0,
+    100.0,
+    124.0
+   ],
+   "n_visible_reference": [
+    11794.0,
+    4803.0,
+    1944.0,
+    1072.0,
+    605.0,
+    333.0,
+    256.0,
+    168.0,
+    125.0,
+    90.0,
+    60.0,
+    71.0
+   ],
+   "n_withheld_total": 10811,
+   "n_visible_total": 21321,
+   "median_withheld": 13.438201904296875,
+   "median_visible": 6.4037017822265625,
+   "p25_withheld": 5.9733123779296875,
+   "p75_withheld": 27.847640991210938,
+   "null_caveat": "Visible-reference comparison selects the nearest different-component trace among the 13 nearest queried visible pixels (including self); locations without one and low-coherence pixels are omitted. Pixel-weighted and censored; descriptive only, no significance inferred."
+  },
+  "relative_strike_likelihood_ratio": [
+   0.5488063857983724,
+   1.0556773235856254,
+   1.545059986913192,
+   1.8672951091826042,
+   2.480681369067777,
+   3.050034124402823,
+   2.4189750312182037,
+   2.265633878192846,
+   3.5341071131255206,
+   4.141531773193969,
+   3.2869299787253725,
+   3.4443322593967283
+  ],
+  "direction": "withheld strands are DEPLETED at 0-7.5 deg relative strike and enriched monotonically to a 67.5-75 deg peak - the opposite of the textbook subparallel Riedel expectation, which is why no angle is hard-coded"
+ },
+ "irregularities_flagged": [
+  {
+   "id": "IR-S7-01",
+   "what": "evidence/calibrate_registry.json records sgmc_truth_pixels = 79,025, but the current code and data reproduce 78,953 bit-exactly (xor = 0)",
+   "impact": "72-pixel non-reproducibility in a published evidence file",
+   "action": "recorded, not silently overwritten"
+  },
+  {
+   "id": "IR-S7-02",
+   "what": "the -0.951 / -0.963 Spearman in evidence/calibrate_registry.json is computed over a hand-picked 10-raster subset",
+   "impact": "selection artefact: over all 66 distinct labelled rasters every instrument correlation is null (|rho| <= 0.09, all n.s.)",
+   "action": "superseded by evidence/instrument_calibration.json"
+  },
+  {
+   "id": "IR-S7-03",
+   "what": "scripts/calibrate_instrument.py's withheld_hide_and_recover arm passed known = (catalogue | ingenious) & footprint, which masks out the withheld truth because withheld is a subset of catalogue",
+   "impact": "|G| = 0, so that arm's null result is vacuous and must not be cited as evidence about hide-and-recover validity",
+   "action": "fix identified: known = catalogue & ~withheld. NOT re-run inside this session's budget; the other two arms are unaffected and carry the null finding on their own"
+  },
+  {
+   "id": "IR-S7-04",
+   "what": "Session 6 logged IR-S6-05 'the holdout cannot run'",
+   "impact": "wrong for catalogue-only arms: the holdout ran here for 4 arms x 6 budgets on 11,321 withheld positives",
+   "action": "corrected: the blocker is the missing training_features.tif, which disables GeoDAWN-band arms only"
+  },
+  {
+   "id": "IR-S7-05",
+   "what": "the literal uniqueness gate fires on continuous-surface registry rasters whose support covers essentially every allowable cell",
+   "impact": "a witness of that kind returns forward overlap >= 0.70 for EVERY nonempty candidate, including uniform random noise, so the firing carries no lane-drift information",
+   "action": "not relaxed: a degeneracy certificate scores uniform random fields of the same size against each firing witness, and the sparse screen applies the same thresholds to the subset of registry rasters whose support is comparable to a dot field"
+  }
+ ],
+ "gate_verdicts": {
+  "format_ok": true,
+  "canaries_clean": true,
+  "literal_gate_clean": false,
+  "literal_firings_certified_degenerate": 74,
+  "distinct_nondegenerate_literal_witnesses": 1,
+  "operative_budget_comparable_screen_unique": true,
+  "sparse_screen_session6_unique": false,
+  "density_matched_any_still_exceeds": false,
+  "okay_to_download": true,
+  "okay_to_submit": true
+ },
+ "verdict": "PROMOTE-CANDIDATE WITH ONE DISCLOSED LITERAL-GATE FIRING: cleared on format, leakage canaries and the operative budget-comparable uniqueness screen; the literal gate over all registry rasters (continuous surfaces included) still fires, and every firing is explained by the degeneracy certificate rather than waived",
+ "spends_a_submission_slot": false,
+ "slot_policy": "promotion is a separate selector step; nothing in this run card authorises spending one of the three weekly submissions"
+}
