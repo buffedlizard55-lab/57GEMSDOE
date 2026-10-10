@@ -2,6 +2,10 @@
 
 Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of **every** session. The historical request is preserved for requirements and context, not word-for-word certified chat fidelity or score verification.
 
+## Latest preflight (2026-10-10; supersedes the data-access paragraph below)
+
+STOP before production placement: `scripts/preflight_anatomy.py` checked the pinned 17GEMSDOE witness against public main, validated SHA/grid, and proved all 5,106,385 allowed cells covered under the unchanged finite-positive-dot rule. See `evidence/preflight_anatomy.json` and `evidence/run_card_session7.json`. No new TIFF, holdout or slot; research download NO and submit NO. `scripts/prepare_data.py --fetch` also restored the 19-band bridge stack via the permitted GitHub API (eight pins verified; third-party bridge, not independently authenticated official-origin data). Older Session-6 references to an unavailable feature TIFF describe that session only.
+
 ## Current outcome, 2026-10-10 (Session-6 follow-up)
 
 **Research download: NO pending explicit owner authorization (IR-S6-10). Competition submission: NO.** The Session-5 TIFF/ZIP remain in the repository for audit only; the README and site provide no TIFF/ZIP download links. A direct static URL may still resolve, but availability is not permission. The current [run card](evidence/run_card_current.json) is negative and records `okay_to_download=false`, `okay_to_submit=false`.

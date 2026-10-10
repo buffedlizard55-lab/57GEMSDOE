@@ -1,5 +1,7 @@
 # Data manifest — current availability, bridge pins, and sources
 
+**2026-10-10 update (supersedes the old missing-feature claim immediately below):** `python scripts/prepare_data.py --fetch` assembled `data/official/training_features.tif` from five pinned public GitHub bridge parts. The current [eight-file verification receipt](../evidence/data_preparation.json) records all pins matching, including the 418,912,844-byte, 19-band stack (SHA256 `4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5`). The feature TIFF and parts are ignored local caches; if missing in a fresh checkout, rerun `python scripts/prepare_data.py --fetch` through the allowed GitHub API. This verifies third-party bridge bytes, **not an independent official DrivenData origin**. The uniqueness preflight still blocks any new production raster.
+
 **No new data were downloaded, restored, or prepared in this audit.** The competition
 `training_features.tif` is absent from this checkout. Earlier receipts report a 19-band
 bridge file, but that historical receipt does not establish present availability or
