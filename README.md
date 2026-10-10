@@ -1,5 +1,13 @@
 # 57GEMSDOE — fault-zone anatomy, evidence before slots
 
+> **Standing request:** Read this README, [the preserved full task prompt](TASK_PROMPT.md), and [the short operating brief](BRIEF.md) at the start of every session. Maximize P(Win); Own the Outcome. The prompt is archived for continuity, not a guarantee that its owner-reported scores or historical access claims were verified. Never replace a negative gate with a plausible forecast.
+
+## Latest pre-placement verification — 2026-10-10
+
+**NO NEW SUBMISSION TIFF WAS GENERATED. NOT OK TO DOWNLOAD OR SUBMIT ANY RETAINED TIFF.** This is the only truthful result under the requested literal >70% within-3-px rule: the prior [17GEMSDOE positive surface](https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif) remains on public main. Its immutable blob, SHA256, reference CRS/shape/transform and all **5,106,385 allowed cells** were freshly verified ([preflight evidence](evidence/preflight_anatomy.json)). Its finite-positive pixels cover the entire allowed domain, so **every nonempty candidate** has directed 3-px overlap 1.0 > 0.70. `scripts/preflight_anatomy.py` exits with status 2 (STOP) before any production placement; changing the definition of a dot needs an explicit protocol decision, not a silent exception. One verified witness suffices to prove STOP, not to claim a fresh full-registry uniqueness scan. [Negative preflight JSON run card](evidence/run_card_preflight.json) · [submission guide](docs/executive-summary.html).
+
+**Data-access correction:** `python scripts/prepare_data.py --fetch` restored the hash-pinned **19-band, 418,912,844-byte** bridge feature TIFF via permitted GitHub API. All eight input pins verified in [the new receipt](evidence/data_preparation.json). It is ignored by Git and is **not** independently authenticated as DrivenData's official download. The earlier “feature missing” statement below describes Session 6, not present availability. This preflight did not run a new holdout; a separately merged Session-7 audit reproduced an earlier holdout and identified a near-trace blind spot. Zero weekly slots used.
+
 **[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
 
 ## Current permission status — read before opening any artifact
