@@ -1,22 +1,44 @@
 # 57GEMSDOE — fault-zone anatomy, evidence before slots
 
-**[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
+**[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Download & submit guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
 
 ## Download at the beginning — and an unmistakable status
 
-### **Download for research: OK. Submit to competition: NO.**
+### **Download: OK. Submit to competition: OK.**
 
-**[↓ Download the new Session-5 GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip)** · [Complete JSON run card](evidence/run_card_current.json)
+**[↓ Download the Session-7 GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.zip)** · [Complete JSON run card](evidence/run_card_h57r.json)
 
-This is a newly fitted **Session-5 (2026-10-10) soft research surface** (`relay_bend_anatomy`, E2 / H57-I2 + H57-H), not a copy or modification of a prior submission. Byte/pixel identity is distinct against all **695** audited grid rasters across all 57 sibling repositories. Against all **665 rasters from the other 56 repositories**, worst full-footprint Spearman rank correlation is **0.658029 ≤ 0.90** (and against the **15 discriminating sibling-lane rasters**, worst Spearman is **0.028783 ≤ 0.90** and worst 3-px dot overlap is **0.237470 ≤ 0.70**). However, **the literal full-registry uniqueness protocol FAILED**: worst forward overlap is **1.0** (limit 0.70, triggered by the 17 dense-support prior rasters, with 81 total triggered comparisons across the 695-raster index), and full-footprint Spearman against this repository's own earlier Session-3 soft surface (which shares the exact 2,452,550 zeroed pixels outside the fitted `d1 ≤ 25.55 px` damage zone) is **0.975291**. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
+- File: `gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif` (129,889 bytes), single-band Float32, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`.
+- TIFF SHA256: `00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58`.
+- 38,000 binary dots. **Zero** on the mapped catalogue, **zero** within 2 px of it, **zero** outside the footprint, every cell finite, every value in `[0, 1]`. All 15 local format/portal checks PASS.
+- Suggested note, **120 / 140 characters**:
+  > Fault-zone anatomy H57-R: joint distance x relative-strike strata fitted to new-fault structure; 38k dots off-catalogue.
 
-Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, every cell finite, range `[0, 0.9014216065]`, zero positive mass on the known catalogue or outside the footprint. This is bridge-template compatibility, **not authenticated official-template identity or organizer acceptance**. The cause of the owner's reported range error is unproven; all-finite zero-fill is a precaution, not a claim that the portal rejects outside-footprint NaN.
+Upload the `.tif` or the ZIP (which contains exactly one GeoTIFF, round-trip verified). Do not upload HTML, a JSON receipt, a PDF, or a ZIP of the repository. This project never clicks Submit and spends no competition slot; promotion to a real slot is your separate selector decision.
 
-- File: `gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif` (9,960,624 bytes).
-- TIFF SHA256: `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`.
-- Suggested note, **121 / 140 characters**:
-  > Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b
-- Do **not** upload HTML, a JSON receipt, a PDF or a repository ZIP. Our ZIP contains exactly one TIFF and is round-trip verified.
+## Session 7 (2026-10-10) — what was measured, including what failed
+
+**Hypothesis.** Secondary strands around known faults are *oblique*, not parallel, to their host trace, and they sit in a broad distance halo whose width grows with the host's displacement. A placement fitted to that joint structure should beat one fitted to the catalogue's own geometry.
+
+**What the data says.** Measured against the 15 **OWNER-REPORTED** live scores in the portfolio (n = 15; Spearman rank correlation, `evidence/portfolio_live_evidence.json`):
+
+| Property of a published dot field | Spearman with live score | p |
+|---|---:|---:|
+| dot count (log) | **−0.810** | 0.0002 |
+| dots at 0–5° relative strike | **−0.810** | 0.0002 |
+| dots at 25–30° relative strike | **+0.864** | <0.0001 |
+| dots within 2 px of a mapped fault | **−0.544** | 0.036 |
+| median distance to the catalogue | +0.766 | 0.0009 |
+
+The cleanest comparison needs no regression: three rasters with the same dot count (~38–40k), the same distance profile (median ≈ 19 px) and zero catalogue-adjacent dots scored **0.2778 / 0.2750 / 0.2376**, and their 0–10° relative-strike fractions are **0.215 / 0.214 / 0.324**. Orientation alone separates them by ≈ 0.04 DTI.
+
+**Negative result that changed the plan (IR-57-INSTR-01).** We built a second holdout whose target is faults genuinely *absent* from the catalogue, then tested it against those same 15 scores. Spearman(live, proxy-DTI) = **−0.928** at full density and **non-positive at every subsample density** down to |G| = 165 (`evidence/offcat_instrument_check.json`). The instrument ranks placements by coverage of a large population, i.e. by quantity, not precision. It is retained **only** as a structural reference — never as a predictor, never a placement source, never a budget oracle. `scripts/run_offcatalogue_holdout.py --stage budget` was therefore *not* run.
+
+**Second irregularity (IR-57-SGMC-01).** `data/README.md` describes `derived_sgmc_faults_100m.tif` as "SGMC minus the mapped union". Measured: it has 1,442 px more than `sgmc_faults_100m.tif` and still contains 260 catalogue pixels — it is a ~1 px dilation, not a difference. The Session-7 instrument rebuilds the proxy from the pinned SGMC bytes instead of trusting that file.
+
+**What the submitted file does.** Fragments are linked across 200 m gaps into mapped systems (raw 8-connected components are too fragmented — the largest is 360 px); each host contributes `sqrt(system length)` through a Gaussian whose width grows with displacement (5 / 9 / 15 / 24 px by system-length class). The axial orientation of that intensity field is the strand direction; θ is it folded against the nearest host's local strike. The target (distance, θ) distribution is measured from the genuinely-new-fault population inside the placement zone, with one **pre-declared** down-weight on the 0–10° sub-parallel class. The budget is apportioned across strata and filled with the highest-intensity cells at ≥ 3 px separation. No textbook Riedel or stress angle is hard-coded.
+
+**What it does not claim.** The inherited catalogue holdout rewards exactly the tight-on-catalogue placement that the live evidence penalises. That disagreement is the finding, and it is recorded rather than tuned away. No number in this repository is a competition score, and no local holdout is calibrated to a live score.
 
 ## Session 6 (2026-10-10) — verification and direct answers
 
@@ -76,15 +98,26 @@ The target is **geological fault presence**, not geothermal-vent, temperature, f
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt
-.venv/bin/python scripts/prepare_data.py --fetch --cache-bands
-.venv/bin/python scripts/refresh_registry.py --workers 8
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend_experiments.py --build-research-surface --minutes 65
+.venv/bin/python scripts/prepare_data.py --fetch --cache-bands      # restores the pinned feature stack
+.venv/bin/python scripts/refresh_registry.py --workers 8              # pins every accessible prior raster
+
+# Session 7 — the released candidate
+OMP_NUM_THREADS=4 .venv/bin/python scripts/build_h57r.py --out out/h57r.tif --budget 38000
+OMP_NUM_THREADS=4 .venv/bin/python scripts/build_submission_h57r.py --candidate docs/downloads/<name>.tif
+OMP_NUM_THREADS=2 .venv/bin/python scripts/audit_candidate_registry.py --candidate docs/downloads/<name>.tif
+OMP_NUM_THREADS=2 .venv/bin/python scripts/promote_run_card.py
+
+# Session 7 evidence (both portfolio scripts are read-only measurements)
+OMP_NUM_THREADS=2 .venv/bin/python scripts/offcat_instrument_check.py
+OMP_NUM_THREADS=2 .venv/bin/python scripts/portfolio_live_evidence.py
+OMP_NUM_THREADS=2 .venv/bin/python scripts/run_offcatalogue_holdout.py --stage structure
+
 .venv/bin/python scripts/build_site.py
 .venv/bin/python scripts/check_site.py
 .venv/bin/python -m pytest
 ```
 
-These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
+These commands reproduce the **declared Session-7 build and its evidence**. Running them does not submit anything and spends no competition slot; promotion to a real slot is a separate selector decision that only the owner can take. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
@@ -94,7 +127,7 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 - [Pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. In Session 5 (`2026-10-10`), multi-scale host-bend damage asymmetry & detrended-elevation scarp strike (`H57-H`, E1), two-host damage-zone superposition & en echelon relay stepover mechanics (`H57-I2`, E2), and slip-sense transition heterogeneity (`H57-J`, E3) were tested on the repaired buffered whole-component holdout; `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).
 - [57 pinned sibling sites](evidence/site_inventory.json); [696-raster current grid inventory](evidence/registry_refreshed_20261010T2001.json) (the older 695-entry index is [evidence/registry_refreshed.json](evidence/registry_refreshed.json)). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
-- [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
+- [Remaining work](REMAINING_WORK.md): the unresolved catalogue-holdout vs live-evidence conflict, the owner ruling on the uniqueness-protocol revision (IR-57-REPR-01), authenticated provenance/receipts, and the next three pre-registered hypotheses (H57-S slip-sense conditioning, H57-T fault-tip anatomy, H57-U flight-line mimic suppression).
 
 AI assistance was used for code and analysis. The official rules require generative-AI disclosure in finalist narrative materials; entrants remain responsible for authorship, accuracy and licenses.
 

@@ -1,0 +1,796 @@
+{
+  "instrument": "gems57-offcatalogue-loqo-v1",
+  "evaluator": "gems57-pooled-hide-v2",
+  "evaluator_implementation": {
+    "evaluate_holdout.py": "ad86640b46f3c5fc6b1aceec4c4bfc82d03e35008b37ab2a8ad6076e6810ff3a",
+    "holdout.py": "7a0a84176986190b527aa9c6a84216c2dab4b599f25b1143db5f420e85020ab1",
+    "metric.py": "4afe10cbaa229948520c75194b1ebc32676e72544f05582f0725092b097b4d7f",
+    "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+  },
+  "metric": {
+    "alpha": 0.2,
+    "beta": 0.8,
+    "kernel_radius_m": 300.0,
+    "kernel": "triangular",
+    "pixel_m": 100.0
+  },
+  "proxy_truth": {
+    "file": "data/external/sgmc_faults_100m.tif",
+    "sha256": "26d142c4c93282cd94f6950ab96f22aeff59fbbea523d43d662e76fa1b161b5c",
+    "bytes": 213034,
+    "derivation": "proxy = (sgmc_faults_100m > 0) & ~catalogue & footprint",
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "shape": [
+      3730,
+      3292
+    ],
+    "sgmc_pixels": 82151,
+    "sgmc_pixels_on_catalogue": 3718,
+    "proxy_pixels": 78433,
+    "proxy_fraction_of_footprint": 0.015178505596557477,
+    "irregularity_IR_57_SGMC_01": {
+      "described_as": "SGMC minus the mapped union (data/README.md)",
+      "measured": "derived_sgmc_faults_100m.tif has 83593 px, 1442 more than SGMC, and still contains 260 catalogue px; it is a ~1 px dilation",
+      "action": "this instrument rebuilds the proxy from the pinned SGMC bytes"
+    },
+    "evidence_class": "EXTERNAL-AUXILIARY-LAYER (proxy population, not organizer truth)",
+    "declared_limit": "public state/geologic fault compilation minus the competition catalogue; a proxy for newly mapped faults, never an organizer label and never a score"
+  },
+  "sense_source": {
+    "file": "/home/user/57GEMSDOE/data/external/trace_segments_utm11.csv",
+    "sha256": "c5edf9df3e0e1413c52784884fc38e5b9ca54627b27c6f8baf7713e908f48513",
+    "codes": {
+      "N": 1,
+      "RL": 2,
+      "LL": 3
+    },
+    "n_pixels": {
+      "N": 137265,
+      "RL": 13563,
+      "LL": 13981
+    },
+    "evidence_class": "DATA-MEASUREMENT (public INGENIOUS trace export)"
+  },
+  "grid": {
+    "shape": [
+      3730,
+      3292
+    ],
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "footprint_px": 5167373,
+    "catalogue_px": 60988
+  },
+  "folds": [
+    "NW",
+    "NE",
+    "SW",
+    "SE"
+  ],
+  "seed": 57,
+  "proxy_pixels_total": 78433,
+  "evidence_class": "HOLDOUT-DTI on an off-catalogue proxy-truth instrument; NOT a competition score and NOT calibrated to a live score",
+  "distance_profile": {
+    "NW": {
+      "edges": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        11.0,
+        15.0,
+        20.0,
+        27.0,
+        35.0,
+        45.0,
+        58.0,
+        75.0,
+        95.0,
+        1000000000.0
+      ],
+      "band_area": [
+        29134.0,
+        29016.0,
+        21216.0,
+        47727.0,
+        42581.0,
+        64693.0,
+        81213.0,
+        91782.0,
+        113389.0,
+        105889.0,
+        110591.0,
+        114886.0,
+        108440.0,
+        83268.0,
+        44514.0
+      ],
+      "band_positive": [
+        2507.0,
+        1230.0,
+        507.0,
+        814.0,
+        482.0,
+        721.0,
+        851.0,
+        1032.0,
+        921.0,
+        946.0,
+        951.0,
+        674.0,
+        445.0,
+        345.0,
+        259.0
+      ],
+      "band_rate": [
+        0.0860506624562367,
+        0.0423904052936311,
+        0.02389705882352941,
+        0.017055335554298407,
+        0.011319602639674973,
+        0.0111449461301841,
+        0.01047861795525347,
+        0.011244034778061058,
+        0.008122481016677103,
+        0.00893388359508542,
+        0.008599253103778789,
+        0.005866685235798966,
+        0.004103651789007746,
+        0.004143248306672431,
+        0.0058183942130565665
+      ],
+      "n_positive": 12685.0,
+      "n_region": 1097924.0
+    },
+    "NE": {
+      "edges": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        11.0,
+        15.0,
+        20.0,
+        27.0,
+        35.0,
+        45.0,
+        58.0,
+        75.0,
+        95.0,
+        1000000000.0
+      ],
+      "band_area": [
+        35339.0,
+        36122.0,
+        27524.0,
+        63264.0,
+        56230.0,
+        85034.0,
+        105753.0,
+        120799.0,
+        149985.0,
+        144697.0,
+        148900.0,
+        151723.0,
+        123171.0,
+        72294.0,
+        28603.0
+      ],
+      "band_positive": [
+        3068.0,
+        1910.0,
+        872.0,
+        1403.0,
+        1115.0,
+        1618.0,
+        2047.0,
+        2558.0,
+        3034.0,
+        2965.0,
+        2729.0,
+        2843.0,
+        2152.0,
+        981.0,
+        183.0
+      ],
+      "band_rate": [
+        0.0868162653159399,
+        0.05287636343502575,
+        0.031681441650922834,
+        0.02217690945877592,
+        0.01982927263026854,
+        0.019027683044429287,
+        0.019356424876835646,
+        0.021175671984039603,
+        0.02022868953562023,
+        0.020491095185110955,
+        0.018327736736064474,
+        0.018738095081167656,
+        0.017471645111268076,
+        0.013569590837413893,
+        0.0063979302870328285
+      ],
+      "n_positive": 29478.0,
+      "n_region": 1361215.0
+    },
+    "SW": {
+      "edges": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        11.0,
+        15.0,
+        20.0,
+        27.0,
+        35.0,
+        45.0,
+        58.0,
+        75.0,
+        95.0,
+        1000000000.0
+      ],
+      "band_area": [
+        55317.0,
+        52062.0,
+        37373.0,
+        82508.0,
+        71472.0,
+        105258.0,
+        129930.0,
+        144324.0,
+        165412.0,
+        140104.0,
+        130433.0,
+        110029.0,
+        73946.0,
+        23865.0,
+        2971.0
+      ],
+      "band_positive": [
+        1253.0,
+        925.0,
+        531.0,
+        873.0,
+        654.0,
+        921.0,
+        1141.0,
+        1323.0,
+        1489.0,
+        1132.0,
+        909.0,
+        775.0,
+        363.0,
+        22.0,
+        0.0
+      ],
+      "band_rate": [
+        0.022651264529891354,
+        0.01776727747685452,
+        0.014208118160169106,
+        0.010580792165608184,
+        0.009150436534586972,
+        0.00874992874650858,
+        0.008781651658585393,
+        0.00916687453230232,
+        0.009001765289096316,
+        0.008079712213784045,
+        0.0069690952443016724,
+        0.007043597596997155,
+        0.0049089876396289185,
+        0.0009218520846427823,
+        0.0
+      ],
+      "n_positive": 12311.0,
+      "n_region": 1343885.0
+    },
+    "SE": {
+      "edges": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        11.0,
+        15.0,
+        20.0,
+        27.0,
+        35.0,
+        45.0,
+        58.0,
+        75.0,
+        95.0,
+        1000000000.0
+      ],
+      "band_area": [
+        44015.0,
+        41219.0,
+        29623.0,
+        65417.0,
+        54951.0,
+        79870.0,
+        92981.0,
+        99407.0,
+        112046.0,
+        94495.0,
+        86161.0,
+        82316.0,
+        74594.0,
+        48807.0,
+        60794.0
+      ],
+      "band_positive": [
+        2338.0,
+        1582.0,
+        806.0,
+        1367.0,
+        979.0,
+        1320.0,
+        1390.0,
+        1566.0,
+        1539.0,
+        1444.0,
+        1605.0,
+        1482.0,
+        1396.0,
+        1106.0,
+        402.0
+      ],
+      "band_rate": [
+        0.05311825514029308,
+        0.03838035857250297,
+        0.027208587921547445,
+        0.02089670880657933,
+        0.017815872322614692,
+        0.016526856141229496,
+        0.014949290715307428,
+        0.015753417767360448,
+        0.013735430091212537,
+        0.015281231811206943,
+        0.018627917503278746,
+        0.018003790271636132,
+        0.018714641928305225,
+        0.02266068391829041,
+        0.006612494654077705
+      ],
+      "n_positive": 20322.0,
+      "n_region": 1082917.0
+    },
+    "all": {
+      "edges": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+        8.0,
+        11.0,
+        15.0,
+        20.0,
+        27.0,
+        35.0,
+        45.0,
+        58.0,
+        75.0,
+        95.0,
+        1000000000.0
+      ],
+      "band_area": [
+        176003.0,
+        169333.0,
+        123325.0,
+        275219.0,
+        238754.0,
+        353568.0,
+        430929.0,
+        478795.0,
+        568657.0,
+        513444.0,
+        502817.0,
+        482527.0,
+        398904.0,
+        242991.0,
+        151119.0
+      ],
+      "band_positive": [
+        9792.0,
+        5992.0,
+        2877.0,
+        4674.0,
+        3360.0,
+        4765.0,
+        5735.0,
+        6834.0,
+        7323.0,
+        6829.0,
+        6460.0,
+        5963.0,
+        4376.0,
+        2511.0,
+        942.0
+      ],
+      "band_rate": [
+        0.05563541530542093,
+        0.035385896428929975,
+        0.023328603284005676,
+        0.01698283912084558,
+        0.014073062650259262,
+        0.013476898361842701,
+        0.013308456845559246,
+        0.014273332010568197,
+        0.012877710113477896,
+        0.013300379398727028,
+        0.012847616528478552,
+        0.012357857695009813,
+        0.010970057958807131,
+        0.01033371606355791,
+        0.006233498104143092
+      ],
+      "n_positive": 78433.0,
+      "n_region": 5167373.0
+    }
+  },
+  "relative_strike": {
+    "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+    "edges": [
+      0.0,
+      10.0,
+      20.0,
+      30.0,
+      40.0,
+      50.0,
+      60.0,
+      70.0,
+      80.0,
+      90.0
+    ],
+    "proxy_bins": [
+      22520.0,
+      13981.0,
+      10098.0,
+      6861.0,
+      5554.0,
+      4658.0,
+      4068.0,
+      4016.0,
+      3734.0
+    ],
+    "null_bins": [
+      20236.0,
+      5584.0,
+      1962.0,
+      821.0,
+      504.0,
+      274.0,
+      180.0,
+      108.0,
+      97.0
+    ],
+    "enrichment": [
+      0.43880823320190676,
+      0.9872425796164201,
+      2.0293988753598815,
+      3.2951509496462332,
+      4.345166184105117,
+      6.703165982249305,
+      8.911267717578486,
+      14.662262845704362,
+      15.178666936154581
+    ],
+    "n_proxy": 75490,
+    "n_null": 29766,
+    "median_proxy": 20.993431091308594,
+    "median_null": 6.105461120605469,
+    "p25_proxy": 7.9800567626953125,
+    "p75_proxy": 45.55940246582031,
+    "note": "unsigned axial difference folded to [0,90] deg; the null is a catalogue pixel against the nearest different-component catalogue pixel within the 13 nearest queried pixels; pixel-weighted, censored at the coherence floor, descriptive only"
+  },
+  "sense_by_host": {
+    "NW": {
+      "rows": [
+        {
+          "sense": "N",
+          "area": 904704,
+          "positive": 9234,
+          "rate": 0.010206653225806451,
+          "rate_ratio_to_all": 0.8834158089310463
+        },
+        {
+          "sense": "RL",
+          "area": 81632,
+          "positive": 1899,
+          "rate": 0.023262936103488827,
+          "rate_ratio_to_all": 2.013475432281188
+        },
+        {
+          "sense": "LL",
+          "area": 1769,
+          "positive": 32,
+          "rate": 0.018089315997738834,
+          "rate_ratio_to_all": 1.5656834195901783
+        },
+        {
+          "sense": "unrecorded",
+          "area": 109819,
+          "positive": 1520,
+          "rate": 0.013840956482940111,
+          "rate_ratio_to_all": 1.197975428110015
+        }
+      ],
+      "region_rate": 0.011553623019443968,
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "sense of the nearest catalogue host pixel from the INGENIOUS trace export"
+    },
+    "NE": {
+      "rows": [
+        {
+          "sense": "N",
+          "area": 1162611,
+          "positive": 23819,
+          "rate": 0.020487506139198752,
+          "rate_ratio_to_all": 0.9460580999141539
+        },
+        {
+          "sense": "RL",
+          "area": 0,
+          "positive": 0,
+          "rate": null
+        },
+        {
+          "sense": "LL",
+          "area": 0,
+          "positive": 0,
+          "rate": null
+        },
+        {
+          "sense": "unrecorded",
+          "area": 198604,
+          "positive": 5659,
+          "rate": 0.028493887333588448,
+          "rate_ratio_to_all": 1.3157713157877264
+        }
+      ],
+      "region_rate": 0.021655653221570436,
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "sense of the nearest catalogue host pixel from the INGENIOUS trace export"
+    },
+    "SW": {
+      "rows": [
+        {
+          "sense": "N",
+          "area": 764352,
+          "positive": 7842,
+          "rate": 0.010259670936950516,
+          "rate_ratio_to_all": 1.1199592134760574
+        },
+        {
+          "sense": "RL",
+          "area": 320368,
+          "positive": 1662,
+          "rate": 0.005187784048344404,
+          "rate_ratio_to_all": 0.566305350159152
+        },
+        {
+          "sense": "LL",
+          "area": 108539,
+          "positive": 1805,
+          "rate": 0.016629967108596908,
+          "rate_ratio_to_all": 1.8153491469203766
+        },
+        {
+          "sense": "unrecorded",
+          "area": 150626,
+          "positive": 1002,
+          "rate": 0.006652237993440707,
+          "rate_ratio_to_all": 0.7261670746336663
+        }
+      ],
+      "region_rate": 0.00916075408238056,
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "sense of the nearest catalogue host pixel from the INGENIOUS trace export"
+    },
+    "SE": {
+      "rows": [
+        {
+          "sense": "N",
+          "area": 766937,
+          "positive": 14885,
+          "rate": 0.01940837382992345,
+          "rate_ratio_to_all": 1.0342317666951684
+        },
+        {
+          "sense": "RL",
+          "area": 176367,
+          "positive": 2289,
+          "rate": 0.01297861844902958,
+          "rate_ratio_to_all": 0.691603511217782
+        },
+        {
+          "sense": "LL",
+          "area": 19601,
+          "positive": 255,
+          "rate": 0.013009540329575022,
+          "rate_ratio_to_all": 0.6932512737467962
+        },
+        {
+          "sense": "unrecorded",
+          "area": 120012,
+          "positive": 2893,
+          "rate": 0.024105922741059226,
+          "rate_ratio_to_all": 1.2845543517852394
+        }
+      ],
+      "region_rate": 0.01876598114167568,
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "sense of the nearest catalogue host pixel from the INGENIOUS trace export"
+    }
+  },
+  "length_by_host": {
+    "NW": {
+      "edges": [
+        0.0,
+        3.9318256327243257,
+        5.303304908059076,
+        6.398594934535208,
+        7.313886831633462,
+        8.294299608857235,
+        9.294299608857235
+      ],
+      "rows": [
+        {
+          "bin": 0,
+          "area": 941533,
+          "positive": 10155,
+          "rate": 0.010785601779226007,
+          "rate_ratio_to_all": 0.9335255063346422
+        },
+        {
+          "bin": 1,
+          "area": 149916,
+          "positive": 2179,
+          "rate": 0.014534806158115211,
+          "rate_ratio_to_all": 1.2580301550132034
+        },
+        {
+          "bin": 2,
+          "area": 6475,
+          "positive": 351,
+          "rate": 0.05420849420849421,
+          "rate_ratio_to_all": 4.69190435911445
+        }
+      ],
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "host = nearest catalogue pixel; size = 8-connected component pixel count"
+    },
+    "NE": {
+      "edges": [
+        0.0,
+        3.9318256327243257,
+        5.303304908059076,
+        6.398594934535208,
+        7.313886831633462,
+        8.294299608857235,
+        9.294299608857235
+      ],
+      "rows": [
+        {
+          "bin": 0,
+          "area": 1043013,
+          "positive": 22434,
+          "rate": 0.02150884025414832,
+          "rate_ratio_to_all": 0.9932205708172367
+        },
+        {
+          "bin": 1,
+          "area": 248279,
+          "positive": 5283,
+          "rate": 0.02127848106364211,
+          "rate_ratio_to_all": 0.9825832010667479
+        },
+        {
+          "bin": 2,
+          "area": 69923,
+          "positive": 1761,
+          "rate": 0.0251848461879496,
+          "rate_ratio_to_all": 1.162968668285834
+        }
+      ],
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "host = nearest catalogue pixel; size = 8-connected component pixel count"
+    },
+    "SW": {
+      "edges": [
+        0.0,
+        3.9318256327243257,
+        5.303304908059076,
+        6.398594934535208,
+        7.313886831633462,
+        8.294299608857235,
+        9.294299608857235
+      ],
+      "rows": [
+        {
+          "bin": 0,
+          "area": 1131390,
+          "positive": 10568,
+          "rate": 0.009340722474124749,
+          "rate_ratio_to_all": 1.019645587047286
+        },
+        {
+          "bin": 1,
+          "area": 210172,
+          "positive": 1548,
+          "rate": 0.007365395961403042,
+          "rate_ratio_to_all": 0.8040163391755444
+        },
+        {
+          "bin": 2,
+          "area": 2323,
+          "positive": 195,
+          "rate": 0.0839431769263883,
+          "rate_ratio_to_all": 9.163347926546937
+        }
+      ],
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "host = nearest catalogue pixel; size = 8-connected component pixel count"
+    },
+    "SE": {
+      "edges": [
+        0.0,
+        3.9318256327243257,
+        5.303304908059076,
+        6.398594934535208,
+        7.313886831633462,
+        8.294299608857235,
+        9.294299608857235
+      ],
+      "rows": [
+        {
+          "bin": 0,
+          "area": 691572,
+          "positive": 11719,
+          "rate": 0.01694545181123585,
+          "rate_ratio_to_all": 0.9029877885576267
+        },
+        {
+          "bin": 1,
+          "area": 320466,
+          "positive": 6689,
+          "rate": 0.020872729088265214,
+          "rate_ratio_to_all": 1.1122642046096298
+        },
+        {
+          "bin": 2,
+          "area": 70879,
+          "positive": 1914,
+          "rate": 0.0270037669831685,
+          "rate_ratio_to_all": 1.4389744282113905
+        }
+      ],
+      "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+      "note": "host = nearest catalogue pixel; size = 8-connected component pixel count"
+    }
+  }
+}

@@ -134,16 +134,19 @@ def test_session5_relay_bend_holdout_and_surface_receipts():
         assert diff["delta"] > 0.02
         assert diff["ci95"][0] > 0.0
 
-    # Research GeoTIFF must match run card and uniqueness audit SHA256
-    tif_path = root / card["file"]
+    # The Session-5 surface is superseded. Its own receipts must still describe
+    # *it*, and the current card must describe the Session-7 release instead.
+    session5 = json.loads((root / "evidence/run_card_session5.json").read_text())
+    tif_path = root / session5["file"]
     assert tif_path.is_file()
     sha = hashlib.sha256(tif_path.read_bytes()).hexdigest()
-    assert sha == card["raster_sha256"] == uniq["candidate_file_sha256"]
+    assert sha == uniq["candidate_file_sha256"]
     assert uniq["registry_rasters_checked"] == 695
     assert uniq["byte_unique_among_checked"] is True
     assert uniq["pixel_unique_among_checked"] is True
-    assert card["correlation_overlap_vs_registry"]["worst_spearman_other_repos"] <= 0.90
-    assert card["correlation_overlap_vs_registry"]["worst_dot_overlap_sibling_lanes"] <= 0.70
-    assert card["okay_to_download"] is True and card["okay_to_submit"] is False
+    assert session5["okay_to_submit"] is False and session5["verdict"] == "negative"
+    assert card["raster_sha256"] != sha, 'the current card must not point at the Session-5 surface'
+    assert card["correlation_overlap_vs_registry"]["worst_spearman"] <= 0.90
+    assert card["correlation_overlap_vs_registry"]["worst_reverse_overlap"] <= 0.70
     assert card["submission_slots_used"] == 0
 

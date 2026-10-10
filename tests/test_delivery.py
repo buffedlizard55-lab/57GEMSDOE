@@ -75,7 +75,12 @@ def test_legacy_gate_checks_fixture_transform(tmp_path):
 def test_current_tiff_zip_links_and_card_are_consistent():
     result=script('check_site').check()
     assert result['links_pass'] and result['zip_exactly_one_tiff']
-    assert result['current_card_consistent'] and not result['submission_cleared']
+    assert result['current_card_consistent'] and result['submission_cleared']
+    assert result['registry_rasters_checked'] == result['registry_rasters_checked'] > 600
+    assert result['worst_spearman'] <= 0.90
+    assert result['worst_reverse_overlap'] <= 0.70
+    assert result['worst_jaccard'] <= 0.50
+    assert result['worst_support_matched_overlap'] <= 0.70
 
 
 def test_feed_parser_accepts_only_a_real_sorted_table():

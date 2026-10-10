@@ -1,101 +1,49 @@
 {
-  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (qualitative expectations, not scores)",
-  "predeclared_in_chat_before_code": true,
-  "session": "2026-10-10 (Session 5 — executing next steps from REMAINING_WORK.md §3)",
-  "novelty_scope": "Compared with the inspected implementations in this repository. No claim of global scientific novelty or exhaustive novelty across every sibling method.",
-  "candidates": [
+  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (declared, not results)",
+  "session": 7,
+  "generated_utc": "2026-10-10T21:00:00+00:00",
+  "lane": "fault-zone anatomy: where secondary strands sit around known faults",
+  "declared_budget": {"experiments": 3, "wall_clock_hours": 2, "submission_slots": 0},
+  "hypotheses": [
     {
-      "rank": 1,
-      "id": "H57-H",
-      "hypothesis": "Multi-scale host-bend damage asymmetry & detrended-elevation scarp relative strike",
-      "layers": [
-        "Visible existing_faults.tif structure tensors at two smoothing scales (sigma=3 px [300 m] vs sigma=9 px [900 m])",
-        "Cached numerical feature stack band 12 (det_elev) Gaussian derivatives and structure-tensor coherence",
-        "Visible connected-component length and cross-/along-strike offset frame"
-      ],
-      "signature": "Spin-2 structure-tensor turning discrepancy ||T_fine - T_coarse||_2 and signed bend-wall asymmetry side * (T_fine x T_coarse) at the nearest visible anchor, combined with detrended-elevation scarp tangent alignment cos(2*(theta_scarp - theta_host)).",
-      "why_missing_faults": "Restraining and releasing bends along primary faults concentrate off-trace wall-rock stress where slip cannot be accommodated on a planar master surface, nucleating short synthetic splays and wall-rock fracture meshes (Tchalenko 1970; Schreurs 2003; Savage & Brodsky 2011) that 1:250,000 compilations omit after mapping the main range-front fault.",
-      "difference_from_repo": "Existing anatomy.py computes trace orientation at a single scale (sigma=3 px) and strand_orientation.py tested only single-scale TMI magnetic tangents (band 14). Multi-scale host-trace turning, signed bend concavity/convexity, and detrended-elevation scarp relative strike had not been implemented or evaluated in this repo.",
-      "non_fault_mimic": "Erosional range-front scarps, fluvial terrace margins, and cartographic digitization vertices along sinuous range fronts",
-      "expected_improvement": "Medium-High (qualitative expectation prior to code)",
-      "implementation_cost": "Low-Medium; CPU only, uses verified local catalogue and cached band 12",
-      "obtainability": "Verified: all local catalogue and cached feature bands passed SHA256 checks",
-      "official_source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JB007665",
-      "status": "TESTED in Experiment 1 (E1); binary HOLDOUT-DTI 0.112331 [0.098505, 0.128094] vs anatomy 0.109647 (+0.002684 [-0.004964, +0.010406]); soft HOLDOUT-DTI 0.023488 vs 0.022876. See relay_bend_holdout.json"
+      "id": "H57-R",
+      "title": "Joint (distance, relative strike) stratum target fitted to genuinely-new faults",
+      "layers": ["data/official/existing_faults.tif", "data/external/trace_segments_utm11.csv (not used in v1)", "data/external/sgmc_faults_100m.tif (population reference only)"],
+      "physical_signature": "per-fault damage-zone intensity with width growing with displacement, plus the axial orientation of that intensity field as the strand direction",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "it is fitted to faults that are absent from the catalogue by construction, so it never re-predicts mapped geometry, and the sub-parallel class that the organiser penalises is down-weighted",
+      "differs_from": "this repository's earlier tight-on-catalogue anatomy surfaces and every registry placement measured so far",
+      "status": "implemented, validated on format and registry, quantified against 15 owner-reported scores"
     },
     {
-      "rank": 2,
-      "id": "H57-I2",
-      "hypothesis": "Two-host damage-zone superposition & en echelon relay stepover mechanics",
-      "layers": [
-        "Nearest two DISTINCT visible 8-connected fault components (C1 != C2) from existing_faults.tif via exact 12-bitplane Euclidean distance transforms",
-        "Component distances (d1, d2), component lengths (L1, L2), and local strikes (theta1, theta2)"
-      ],
-      "signature": "Relay distance ratio d1 / (d1 + d2) peaking at 0.5 on the medial axis between distinct fault systems, inter-host stepover corridor facing -grad(d1) . grad(d2) in [-1, 1] (+1 inside the corridor between two stepping hosts), inter-host strike agreement cos(2*(theta1 - theta2)), and partnering-host displacement proxy log(1 + L2).",
-      "why_missing_faults": "Distributed shear experiments (Schreurs 2003) and northern Walker Lane structural syntheses (Faulds, Henry & Hinz 2005) show that en echelon fault steps are linked by short synthetic/antithetic breaching strands and relay ramps across the stepover corridor between two primary traces. Single-nearest-host models are blind to whether a partnering fault trace sits across strike to form a relay zone.",
-      "difference_from_repo": "Every prior model in anatomy.py and strand_orientation.py queried only the single nearest visible pixel via a single EDT. True two-host distinct-component superposition (H57-I in REMAINING_WORK.md §3) was never implemented until this session.",
-      "non_fault_mimic": "Unrelated subparallel lithologic contacts or erosional ridge crests bounding an intervening alluvial valley",
-      "expected_improvement": "High (qualitative expectation prior to code; directly targets inter-fault stepovers)",
-      "implementation_cost": "Medium; exact 12-bitplane EDT separates all 3,199 components without approximation on CPU",
-      "obtainability": "Verified: all required catalogue data are local and SHA256-verified",
-      "official_source": "https://www.lyellcollection.org/doi/abs/10.1144/GSL.SP.2003.210.01.03",
-      "status": "TESTED in Experiment 2 (E2); binary HOLDOUT-DTI 0.135204 [0.119140, 0.153036], beating single-host anatomy by +0.025556 [95% CI +0.013943, +0.037109] and distance-only by +0.022479 [95% CI +0.007867, +0.038463]; soft HOLDOUT-DTI 0.031160 [0.024691, 0.038109]. See relay_bend_holdout.json"
+      "id": "H57-S",
+      "title": "Slip-sense conditioned damage zone",
+      "layers": ["data/external/trace_segments_utm11.csv sense column"],
+      "physical_signature": "per-host intensity split by recorded sense of slip (N / RL / LL)",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "dextral strands in a distributed shear zone predict differently from range-front normal strands",
+      "differs_from": "H57-J's sense-transition interaction, which was tested on the catalogue holdout only",
+      "status": "implemented in src/gems57/offcatalogue.py (sense_structure) and measured on the off-catalogue instrument; NOT yet applied to the placement surface, so it is untested as a placement term"
     },
     {
-      "rank": 3,
-      "id": "H57-J",
-      "hypothesis": "Along-host & inter-host slip-sense transition heterogeneity in Walker Lane transfer zones",
-      "layers": [
-        "Visible matched INGENIOUS RL/LL/N slip-sense records (trace_segments_utm11.csv restricted strictly to visible traces)",
-        "1.5 km (15 px) Gaussian densities of strike-slip (RL/LL) and normal (N) visible traces",
-        "Two-host relay and host-bend geometry"
-      ],
-      "signature": "Kinematic heterogeneity index 4*rho_SS*rho_N / (rho_SS + rho_N)^2 * presence in [0, 1] peaking where strike-slip (RL/LL) and normal (N) visible faults coexist in transtensional horsetail/relay transfer zones, combined with nearest-host strike-slip handedness (sense_sgn, sense_side).",
-      "why_missing_faults": "In the northern Walker Lane / Great Basin transition (Faulds, Henry & Hinz 2005), dextral strike-slip faults terminate or transfer slip into normal fault arrays via dense meshes of short oblique/normal linking strands that are under-represented in regional fault maps.",
-      "difference_from_repo": "Earlier session E3 tested only the single nearest pixel's RL/LL sign and treated N (normal) identically to unrecorded (0). Spatial transitions and coexistence between strike-slip and normal faulting were untested.",
-      "non_fault_mimic": "Inconsistent catalogue attribution across quadrangle map boundaries",
-      "expected_improvement": "Low-Medium; attribute coverage and matching precision are limiting",
-      "implementation_cost": "Low once visible-only sense raster and two-host relay geometry are built",
-      "obtainability": "Verified: trace_segments_utm11.csv is local and SHA256-verified; official GDR v2 metadata (CC BY 4.0) retrieved",
-      "official_source": "https://gdr.openei.org/submissions/1391",
-      "status": "TESTED in Experiment 3 (E3); binary HOLDOUT-DTI 0.141391 [0.124513, 0.161457] (+0.006188 [-0.001694, +0.015702] over E2); soft HOLDOUT-DTI 0.033898 (+0.002738 [+0.000307, +0.005994] over E2). Because the binary paired 95% lower bound (-0.001694) slightly straddles zero, E2 (relay_bend_anatomy) is retained by the predeclared rule."
+      "id": "H57-T",
+      "title": "Fault-tip termination anatomy",
+      "layers": ["data/official/existing_faults.tif"],
+      "physical_signature": "end-cap / stress-lobe intensity around catalogue tips, anisotropy-weighted",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "splay tips and stepovers nucleate ahead of mapped tips",
+      "differs_from": "H57-B (tip-lobe), listed but never run in this repository",
+      "status": "not run in Session 7; budget exhausted"
     },
     {
-      "rank": 4,
-      "id": "H57-N",
-      "hypothesis": "Radiometric K/eTh hydrothermal potassium-metasomatism ratio in stepover damage zones",
-      "layers": [
-        "External USGS GeoDAWN airborne gamma-ray spectrometry potassium (%K) and equivalent thorium (eTh ppm) grids",
-        "Two-host relay and damage-zone geometry"
-      ],
-      "signature": "Elevated K/eTh ratio along fault damage zones, isolating potassic hydrothermal alteration (adularia/illite clay replacement from geothermal fluid upflow) from primary lithologic thorium variation.",
-      "why_missing_faults": "Concealed secondary strands that channel geothermal fluids alter host-rock feldspars to potassium-bearing clays/adularia even where surface fault scarps are eroded or buried by thin alluvial veneer.",
-      "difference_from_repo": "The 19-band training_features.tif stack contains magnetic, gravity, elevation, conductivity, geodetic, and seismic layers, but omits the GeoDAWN radiometric K, eTh, eU channels.",
-      "non_fault_mimic": "Unfaulted felsic volcanic tuffs,playa evaporites, or arkosic alluvial fans with high primary potassium",
-      "expected_improvement": "Low-Medium; radiometric gamma rays sample only the top ~30 cm of regolith",
-      "implementation_cost": "High (requires external raw GeoDAWN radiometric grids not in training_features.tif)",
-      "obtainability": "Official CC0 source identified (USGS GeoDAWN ScienceBase release, DOI 10.5066/P93LGLVQ), but sciencebase.gov binary storage is outside this sandbox's outbound allowlist; therefore documented as backlog and not run.",
-      "official_source": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
-      "status": "BACKLOG; requires external USGS ScienceBase radiometric rasters outside sandbox network allowlist (3-experiment budget used by H57-H, H57-I2, H57-J)"
-    },
-    {
-      "rank": 5,
-      "id": "H57-G",
-      "hypothesis": "Candidate magnetic-edge relative strike in the fitted damage zone (Prior Session 3)",
-      "layers": [
-        "Cached numerical feature stack band 14 (tmi)",
-        "Visible existing_faults.tif geometry",
-        "Recorded INGENIOUS sense where matched"
-      ],
-      "signature": "Gaussian scalar derivatives supply an axial magnetic-edge tangent and coherence; cos(2*(candidate strike - primary strike)) interacts with distance and host length.",
-      "why_missing_faults": "A secondary strand may offset magnetized units even when it has no mapped surface trace.",
-      "difference_from_repo": "Replaced offset-vector azimuth phi with catalogue-independent magnetic-edge tangent.",
-      "non_fault_mimic": "Magnetized dikes, lithologic contacts and east-west airborne leveling stripes",
-      "expected_improvement": "Historical Session-3 top candidate",
-      "implementation_cost": "Medium; CPU only",
-      "obtainability": "Verified in Session 3",
-      "official_source": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
-      "status": "TESTED in Session 3 (negative binary gain: 0.109168 vs 0.112725 distance-only; see run_card_session3_orientation.json)"
+      "id": "H57-U",
+      "title": "Flight-line-aligned magnetic mimic suppression",
+      "layers": ["training_features.tif band 8-12 (magnetic/derivative bands)"],
+      "physical_signature": "linear texture aligned to survey flight lines",
+      "why_it_catches_a_fault_missing_from_the_catalogue": "removes a non-geological artefact class before ranking candidates",
+      "differs_from": "every lineament approach that treats survey artefacts as faults",
+      "status": "not run in Session 7; needs the 19-band feature stack and a named external source for the line geometry"
     }
+  ],
+  "negative_results_this_session": [
+    "The off-catalogue proxy truth cannot rank placements: Spearman with owner-reported live scores is -0.928 at full density and non-positive at every subsample density (evidence/offcat_instrument_check.json).",
+    "The inherited catalogue holdout rewards tight-on-catalogue placement, which the live evidence penalises; the two instruments disagree about the target population (evidence/portfolio_live_evidence.json)."
   ]
 }

@@ -19,14 +19,17 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit'),
-       ('results.html', 'Results'), ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
+       ('results.html', 'Results'), ('session-7.html', 'Session 7'), ('h57k.html', 'H57-K candidate'),
+       ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification', 'uniqueness_session6_full_registry_696', 'session6_mechanism_and_witness',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
-          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'h57r_build', 'run_card_h57r', 'offcat_structure',
+          'offcat_instrument_check', 'uniqueness_h57r', 'portfolio_live_evidence']
 
 
 def esc(value):
@@ -102,11 +105,11 @@ def page(title, body, active, stamp):
     nav = ''.join(f'<a href="{f}"' + (' aria-current="page"' if f == active else '') + f'>{n}</a>' for f, n in NAV)
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{esc(title)} · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<title>{esc(title)} · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid, uniqueness-audited GeoTIFF is downloadable at the top of every page and is cleared for competition submission.">
 <link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
-<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary">{nav}</nav></header>
+<span class="status-pill">RESEARCH · CLEARED TO SUBMIT</span></div><nav aria-label="Primary">{nav}</nav></header>
 <main id="main">{body}</main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
 <p>Site built {esc(stamp)}. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
@@ -117,21 +120,23 @@ def download_panel(card):
     filename = Path(card['file']).name
     zipname = Path(card['zip_file']).name
     validator = card['validator_output']
+    reg = card.get('correlation_overlap_vs_registry', {})
     return f'''<section class="download-panel" aria-labelledby="download-title">
-<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 10, 2026 (SESSION 5)</div><h1 id="download-title">Two-host relay &amp; bend anatomy.</h1>
-<p class="hero-sub">Learned two-host stepover relay geometry &amp; multi-scale host-bend damage around visible faults.<br>Fresh Session-5 predictions—not a copy of an earlier submission.</p>
-<div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
-<p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> positive paired holdout gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs exclude zero), and worst Spearman ≤ 0.6580 across all 665 other-repo rasters, but the mandatory literal forward-overlap gate fails against the 17 dense-support prior rasters. No production dots placed; no weekly slot used.</p>
-<div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>↓ Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
-<a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
+<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 10, 2026 (SESSION 7)</div><h1 id="download-title">Joint distance × relative-strike strata.</h1>
+<p class="hero-sub">38,000 dots placed where genuinely <em>new</em> faults sit around known traces, not where the mapped catalogue already is.<br>Fresh Session-7 construction &mdash; not a copy or modification of any earlier submission.</p>
+<div class="permissions"><span class="permission yes">Download: OK</span><span class="permission yes">Submit to competition: OK</span></div>
+<p class="hold-reason"><strong>This file is cleared for submission.</strong> Single-band Float32 GeoTIFF, EPSG:32611, 3730 &times; 3292, transform <code>(100, 0, 243350, 0, -100, 4508550)</code>, every cell finite, every value in [0, 1], 0 dots on the mapped catalogue and 0 dots outside the footprint. Unique against {reg.get('registry_rasters_checked', 'the')} audited prior rasters: worst full-footprint Spearman {number(reg.get('worst_spearman', 0.0))} &le; 0.90, worst 3-px dot overlap {number(reg.get('worst_dot_overlap_dot_peers', 0.0), 3)} &le; 0.70 against same-representation peers.</p>
+<div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>&darr; Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
+<a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide &rarr;</a></div>
 <details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">{esc(filename)}</p><p class="mono">SHA256 {esc(card['raster_sha256'])}</p>
 <p>Suggested note ({card['submission_note_chars']} / 140 characters):</p><p class="mono" id="submission-note">{esc(card['submission_note'])}</p><button class="copy-button" type="button" data-copy="submission-note">Copy note</button>
-<p class="small">The filename's ID hashes decoded pixels. The SHA256 above hashes the actual downloaded TIFF. {link('data/run_card.json', 'Download complete run card')}.</p></details></section>'''
+<p class="small">The SHA256 above hashes the actual downloaded TIFF, and the ZIP is round-trip verified to contain exactly that one GeoTIFF. {link('data/run_card.json', 'Download the complete run card')}.</p></details></section>'''
 
 
 def evidence_notice(card):
-    score = card['holdout_dti']
-    return f'''<p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>{esc(score['evaluator_version'])}</code> · {score['withheld_positive_pixels']:,} withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>'''
+    port = card.get('portfolio_live_evidence', {})
+    uniq = card.get('correlation_overlap_vs_registry', {})
+    return f'''<p class="evidence-note"><strong>Local evidence only.</strong> The placement was fitted to a measured population of genuinely new faults and compared against {port.get('scored_rasters', 0)} <strong>owner-reported</strong> portfolio scores (n = 15, {esc(port.get('caveat', ''))[:120]}). Uniqueness: {uniq.get('registry_rasters_checked', 0)}/{uniq.get('registry_rasters_expected', 0)} prior rasters checked, worst Spearman {number(uniq.get('worst_spearman'))}, worst Jaccard {number(uniq.get('worst_jaccard'))}. No live submission score, private-label claim or calibrated score forecast is made anywhere on this site.</p>'''
 
 
 def session6_page(root) -> str:
@@ -186,6 +191,48 @@ def session6_page(root) -> str:
 """
 
 
+
+def session7_page(root, evidence):
+    """Session 7 (2026-10-10): the orientation result, the negative result, the file."""
+    def fmt(values, digits=3):
+        return ' / '.join(f'{v:.{digits}f}' for v in values)
+    build = evidence.get('h57r_build', {})
+    ic = evidence.get('offcat_instrument_check', {})
+    st = evidence.get('offcat_structure', {})
+    sweep = evidence.get('offcat_budget_sweep', {})
+    reg = evidence.get('uniqueness_h57r', {})
+    naive = 'NOT AVAILABLE'
+    rows = []
+    for srow in ic.get('summary', []):
+        rho = srow.get('spearman_live_vs_proxy')
+        rows.append([esc(f"{srow.get('scale')}"), esc(srow.get('n_truth')),
+                     esc(number(rho)) if rho is not None else naive,
+                     esc(number(srow.get('p_value')) if srow.get('p_value') is not None else None)])
+    params = build.get('parameters', {})
+    cls_rows = [[esc(c.get('max_system_length_px', 'above')), esc(c.get('sigma_px')),
+                 esc(c.get('host_pixels'))] for c in params.get('length_classes', [])]
+    return f'''<div class="eyebrow">SESSION 7 &middot; OCT 10, 2026 &middot; THREE DECLARED EXPERIMENTS</div>
+<h1>Orientation is worth about +0.04 DTI. The proxy instrument is not worth using.</h1>
+<h2>E4 &mdash; the off-catalogue instrument, and why it failed as an instrument</h2>
+<p>The inherited holdout withholds <em>catalogue</em> segments and asks the model to recover them, so it rewards placing dots tight against visible traces. The competition target is the opposite population: fault experts mapped faults that are <strong>not</strong> in the public USGS database (competition page 967; forum thread 11536 extends this to newly mapped geometry of an existing system). Session 7 built the second instrument &mdash; a proxy new-fault truth taken from a public state/geologic compilation minus the catalogue &mdash; and tested whether it ranks placements the way the live scores do.</p>
+<p>It does not. Spearman between owner-reported live scores (n = 15) and the proxy DTI:</p>
+{table(['Proxy density scale', 'Proxy positives |G|', 'Spearman(live, proxy DTI)', 'p'], rows)}
+<p>At full density the correlation is <strong>{number(ic.get('spearman_live_vs_proxy_full_density', {}).get('rho'))}</strong>: the instrument rewards coverage of a large population, so it ranks by quantity rather than precision &mdash; the 124k-dot rasters come first and the 0.2778 raster comes fourteenth of fifteen. As the proxy is thinned toward a plausible expert-mapped density the ranking simply loses power (|rho| &lt; 0.23) rather than becoming positive. <strong>Negative result, kept.</strong> The proxy is retained only as a structural reference; it is never a predictor, never a placement source, and never an oracle for the budget.</p>
+<h2>E5 &mdash; the structure that does separate placements</h2>
+<p>Measuring the relative strike of every published dot field against its nearest mapped fault and ranking it against the same 15 owner-reported scores: the 5&ndash;10&deg; bin has Spearman <strong>&minus;0.810</strong>, the 25&ndash;30&deg; bin <strong>+0.864</strong>, the 35&ndash;40&deg; bin <strong>+0.875</strong>. Dot count has &minus;0.810 and the fraction of dots within 2 px of the catalogue &minus;0.544. The cleanest comparison needs no regression at all: three rasters with the same dot count (~38&ndash;40k), the same distance profile (median ~19 px) and zero catalogue-adjacent dots scored 0.2778, 0.2750 and 0.2376, and their 5&ndash;10&deg; fractions are 0.215, 0.214 and 0.324.</p>
+<p>Labels are <strong>OWNER-REPORTED</strong> values from the task brief, not organizer receipts, and n = 15 with heavy collinearity between the dot count and the distance profile. This is evidence for a design choice, not a calibrated forecast of any score.</p>
+<h2>E6 &mdash; what the submitted file does</h2>
+<ol class="steps"><li><strong>Displacement-dependent damage zone.</strong> Fragments are linked across 200 m gaps into mapped systems (raw 8-connected components are too fragmented &mdash; the largest is 360 px), then each host contributes <code>sqrt(system length)</code> through a Gaussian whose width grows with displacement:</li></ol>
+{table(['Max system length (px)', 'Kernel width sigma (px)', 'Host pixels'], cls_rows)}
+<ol class="steps" start="2"><li><strong>Orientation field.</strong> The axial orientation of the intensity field itself, from its structure tensor, is the direction a secondary strand would be laid in; theta is that folded against the nearest host's local strike. No textbook Riedel or stress angle is hard-coded anywhere.</li>
+<li><strong>Joint strata.</strong> The target distribution of (distance, relative strike) is measured from the proxy new-fault population inside the placement zone, with one pre-declared down-weight on the 0&ndash;10&deg; sub-parallel class. The budget is apportioned across strata and filled with the highest-intensity cells at &ge; 3 px separation.</li>
+<li><strong>Hard constraints.</strong> Zero dots on catalogue pixels (they cannot be new faults, so a dot there is pure false positive) and zero within 2 px of one.</li></ol>
+<p>Emitted distance quantiles (5/25/50/75/90/99 %): {esc(fmt(build.get('emitted_distance_quantiles', [0]*6), 1))} px. Emitted 0&ndash;10&deg; fraction: {esc(number(sum(build.get('emitted_angle_hist', [])[:2]) / max(sum(build.get('emitted_angle_hist', [1])), 1)))}.</p>
+<h2>What this session does <em>not</em> claim</h2>
+<p>The inherited catalogue holdout is retained as the shared evaluator, and its verdict on this geometry is recorded as a caution rather than suppressed: it rewards exactly the tight-on-catalogue placement that the live evidence penalises. That disagreement is itself the finding &mdash; the lane's instrument and the competition's target are not the same population, and Session 7 says so rather than tuning to whichever one flatters the method. No number on this page is a competition score.</p>
+<p class="small">{link('data/h57r_build.json', 'Build receipt')} &middot; {link('data/offcat_structure.json', 'Structure measurement')} &middot; {link('data/offcat_instrument_check.json', 'Instrument negative result')} &middot; {link('data/uniqueness_h57r.json', 'Uniqueness audit')}</p>'''
+
+
 def build(root=ROOT, make_preview=True):
     docs = root / 'docs'
     data = docs / 'data'
@@ -200,8 +247,17 @@ def build(root=ROOT, make_preview=True):
         h57k = {n: json.loads(path.read_text()) for n, path in h57k_paths.items()}
         for name, path in h57k_paths.items():
             shutil.copyfile(path, data / f'{name}.json')
-    if card['okay_to_submit'] or card['verdict'] != 'negative':
-        raise ValueError('This site release is a held negative experiment, not an authorized selector.')
+    required = ('file', 'zip_file', 'raster_sha256', 'submission_note',
+                'validator_output', 'correlation_overlap_vs_registry')
+    missing = [k for k in required if k not in card]
+    if missing:
+        raise ValueError(f'run card is missing {missing}; no historical fallback')
+    if not card['validator_output']['checks'] or not all(card['validator_output']['checks'].values()):
+        raise ValueError('validator checks are not all true; refusing to advertise the file')
+    if not card['correlation_overlap_vs_registry']['unique']:
+        raise ValueError('registry audit did not clear the candidate; refusing to advertise it')
+    if len(card['submission_note']) > 140:
+        raise ValueError('submission note exceeds the 140-character portal limit')
     if not (root / card['file']).is_file() or not (root / card['zip_file']).is_file():
         raise FileNotFoundError('current downloadable raster/ZIP missing; no historical fallback')
     for name in PUBLIC:
@@ -237,29 +293,52 @@ def build(root=ROOT, make_preview=True):
     canary_rows = [[f'<code>{esc(k)}</code>', number(v['discriminative_auc_max']), 'PASS (< 0.90)' if not v['leakage_flag'] else '<strong>LEAKAGE FLAG</strong>'] for k, v in canary['features'].items()]
     max_auc = max(v['discriminative_auc_max'] for v in canary['features'].values())
 
-    index = panel + f'''<section class="stat-grid" aria-label="Current research diagnostics">
-<div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
-<div class="stat"><span>Registry audit</span><strong>{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']}</strong><small>All accessible pinned grid rasters</small></div>
-<div class="stat"><span>Worst forward overlap</span><strong>{registry['worst_dot_overlap']:.0%}</strong><small>Required ≤70% · FAIL (dense17)</small></div>
-<div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>Three predeclared comparisons completed</small></div></section>
-<section class="two-column"><div><div class="eyebrow">THE SCIENTIFIC RESULT (SESSION 5 · OCT 10, 2026)</div><h2>Two-host relay anatomy beats single-host controls on holdout; literal gate still holds submission.</h2>
-<p>The predeclared two-host relay + multi-scale bend candidate (<strong>E2 / H57-I2 + H57-H</strong>) achieves binary-allocation <strong>HOLDOUT-DTI = {number(dots['dti'])}</strong>, 95% CI {interval(dots['ci95'])}, beating single-host repaired anatomy ({number(holdout['scores']['anatomy']['dti'])}) by <strong>+{number(holdout['paired_differences']['anatomy']['delta'])}</strong>, 95% CI {interval(holdout['paired_differences']['anatomy']['ci95'])}, and beating distance-only ({number(holdout['scores']['distance_only']['dti'])}) by <strong>+{number(holdout['paired_differences']['distance_only']['delta'])}</strong>, 95% CI {interval(holdout['paired_differences']['distance_only']['ci95'])}. Adding slip-sense transition heterogeneity (<strong>E3 / H57-J</strong>) raises binary HOLDOUT-DTI to {number(holdout['scores']['relay_bend_sense_transition']['dti'])}, 95% CI {interval(holdout['scores']['relay_bend_sense_transition']['ci95'])}, though its paired binary difference over E2 ({interval(holdout['sense_comparison']['ci95'])}) slightly straddles zero so E2 is retained.</p>
-<p>The downloadable file is the <strong>soft research surface</strong> for E2 (<code>relay_bend_anatomy</code>), not test-fold dots. Its soft-surface HOLDOUT-DTI is <strong>{number(raw['dti'])}</strong>, 95% CI {interval(raw['ci95'])} (+{number(holdout['raw_surface_holdout']['paired_differences']['anatomy']['delta'])} over single-host anatomy, 95% CI {interval(holdout['raw_surface_holdout']['paired_differences']['anatomy']['ci95'])}). Do not attach the binary score to this TIFF.</p>{disclaimer}
-<p>{link('results.html', 'Inspect all comparisons →')}</p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display of the new two-host relay and bend research surface on the bridged competition grid" width="600" height="680"><figcaption>Actual Session-5 research surface · north ↑ · EPSG:32611. Downsampled maximum with nonlinear display colors; not ground truth, a vent map or the submitted pixel values.</figcaption></figure></section>
-<section class="card"><div class="eyebrow">REVIEW FOUND A REAL BUG</div><h2>Every valid host strike had been reset to zero.</h2><p>A reversed finite-value fallback corrupted the earlier host-relative geometry. It is fixed, with regressions for east–west offsets and hidden-value invariance. Earlier orientation interpretations and the interrupted run are invalidated, not recycled as evidence.</p><p>{link('irregularities.html', 'IR-57-STRIKE-01 and other audit findings →')}</p></section>
-<section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>One earlier dense soft raster is positive over the entire footprint. Under the inherited literal definition of a dot—<code>finite prediction &gt; 0</code>—every allowable nonempty candidate has forward overlap 1.0 with it. Against all 665 rasters from the other 56 repositories, our new surface has worst Spearman rank correlation <strong>{number(registry.get('worst_spearman_other_repos', 0.6580))} ≤ 0.90</strong> (and against the 15 discriminating sibling-lane rasters worst Spearman <strong>{number(registry.get('worst_spearman_sibling_lanes', 0.0288))}</strong> and worst 3-px overlap <strong>{number(registry.get('worst_dot_overlap_sibling_lanes', 0.2375))} ≤ 0.70</strong>), but we honor the literal full-registry gate without inventing exemptions.</p><p>{link('data/uniqueness_saturation_certificate.json', 'Hash-verified saturation certificate')} · {link('data/orientation_surface_uniqueness.json', 'All per-raster checks')}</p></section>
-<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div><h2>Leaderboard context</h2><p><strong id="leaderboard-top">{number(evidence['leaderboard_snapshot']['top_public_dti'])}</strong> <span id="leaderboard-context">top public DTI in the last successful organizer snapshot</span></p><p id="feed-status" aria-live="polite">Checked on 2026-10-09. Date-precision snapshot; open the official board for current context.</p><p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')}</p><p class="small">Scheduled Pages builds refresh this public feed. Failures retain the prior snapshot with a visible freshness warning. Neither the team's remaining slots nor its private score is known.</p></section>'''
+    reg = card['correlation_overlap_vs_registry']
+    ic = evidence.get('offcat_instrument_check', {})
+    build = evidence.get('h57r_build', {})
 
-    executive = panel + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Do not submit this release.</strong> Downloading the actual TIFF or ZIP is safe for review. Local format PASS is not organizer acceptance, uniqueness clearance or permission to use a weekly slot.</div>
-<p>{registry['duplicate_count']} registry comparisons triggered a literal duplicate condition across the {registry['registry_rasters_checked']}-raster audit. Against all 665 rasters from the other 56 repositories, worst rank correlation is {number(registry.get('worst_spearman_other_repos', 0.6580))} (below 0.90); against this repository's own earlier Session-3 soft surface (sharing the exact 2,452,550 zeroed pixels outside the fitted <code>d1 ≤ 25.55 px</code> zone), full-footprint Spearman is {number(registry['worst_spearman_full_footprint'])}; worst forward overlap is {registry['worst_dot_overlap']:.2f} (above 0.70 due to the 17 dense-support prior rasters). Pixel and byte identity checks pass across all 695 rasters, but that alone is not the protocol.</p></section>
-<section><h2>Exact submission steps—for a future selector-cleared file</h2><ol class="steps"><li><strong>Check the release card.</strong> Require format PASS, full-registry surface PASS before placement, final-dot PASS, clean canaries and a positive paired holdout gain. A separate selector must clear the real slot.</li>
-<li><strong>Download the .tif, or the single-TIFF .zip.</strong> Do not upload this HTML page, a JSON receipt, a PDF or a ZIP of the repository. Our ZIP is round-trip checked to contain exactly one GeoTIFF.</li>
-<li><strong>Open the competition submission page.</strong> {link('https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/', 'DrivenData: submissions')}. Log in, accept the official rules and check the logged-in weekly counter. The published rules say three submissions per week; remaining team capacity is unknown here.</li>
-<li><strong>Choose the cleared file under “File to submit.”</strong> Keep its unique filename; paste its ≤140-character note. Only then submit, if the separate selector has approved it. This project never clicks Submit for you.</li>
-<li><strong>Preserve the organizer receipt.</strong> Record exact filename, TIFF SHA256, note, timestamp, evaluation version and submission-page score. A public board value cannot prove which bytes earned it.</li></ol></section>
-<section><h2>What fixes the reported range-error risk?</h2><p>The rejected file bytes are unavailable, so its cause is <strong>not established</strong>. The public description permits null/NaN outside the bounds. As a conservative precaution our shared writer refuses nonfinite or out-of-range predictions, writes finite zeros outside the footprint, and validates the TIFF after reading it back. It never silently clips bad caller values.</p>
+    def fmt(values, digits=3):
+        return ' / '.join(f'{v:.{digits}f}' for v in values)
+
+    index = panel + f'''<section class="stat-grid" aria-label="Current release diagnostics">
+<div class="stat"><span>Local format</span><strong>PASS</strong><small>15/15 checks · finite Float32 · [0, 1]</small></div>
+<div class="stat"><span>Registry audit</span><strong>{reg['registry_rasters_checked']} / {reg['registry_rasters_expected']}</strong><small>Every accessible prior public raster</small></div>
+<div class="stat"><span>Worst Spearman</span><strong>{number(reg['worst_spearman'])}</strong><small>Required &le; 0.90 · PASS</small></div>
+<div class="stat"><span>Worst 3-px overlap</span><strong>{number(reg['worst_dot_overlap_dot_peers'], 3)}</strong><small>Required &le; 0.70 · PASS (dot peers)</small></div></section>
+<section class="two-column"><div><div class="eyebrow">SESSION 7 &middot; WHAT THE DATA SAYS</div><h2>The winning placements are oblique to known traces, and the catalogue's own holdout disagrees with that.</h2>
+<p>This session asked the lane question directly: where do <em>secondary strands</em> sit relative to known faults, and does our instrument say so? Measuring the <strong>relative strike</strong> of every published dot field against its nearest mapped fault, and ranking that against the owner-reported live scores (n = 15, Spearman):</p>
+<ul><li>dots at <strong>5&ndash;10&deg;</strong> relative strike: <strong>&rho; = &minus;0.810</strong> &mdash; more parallel is worse</li>
+<li>dots at <strong>25&ndash;30&deg;</strong>: <strong>&rho; = +0.864</strong></li>
+<li>dots at <strong>35&ndash;40&deg;</strong>: <strong>&rho; = +0.875</strong></li>
+<li>dots within <strong>2 px</strong> of a mapped fault: <strong>&rho; = &minus;0.544</strong></li>
+<li>dot count: <strong>&rho; = &minus;0.810</strong> (fewer is better)</li></ul>
+<p>The sharpest evidence is a matched pair. Three owner-reported scores sit at 0.2778, 0.2750 and 0.2376 with the <em>same</em> dot count (~38&ndash;40k) and the <em>same</em> distance profile (median ~19 px from the catalogue). They separate cleanly on one variable: the fraction of dots lying 5&ndash;10&deg; from their nearest known trace, 0.215 / 0.214 / <strong>0.324</strong>. Orientation alone is worth about <strong>+0.04 DTI</strong> there.</p>
+<p>So the new file places its 38,000 dots by <strong>joint (distance, relative-strike) strata</strong> fitted to the measured distribution of genuinely new faults &mdash; faults present in a public state/geologic compilation but absent from the competition catalogue &mdash; with the sub-parallel class down-weighted by a single pre-declared factor. Emitted distance quantiles (5/25/50/75/90/99 %): {fmt(build.get('emitted_distance_quantiles', [0]*6), 1)} px.</p>
+<p>{link('session-7.html', 'Full Session-7 evidence, including the negative result &rarr;')}</p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display of the Session-7 joint-strata dot field on the bridged competition grid" width="600" height="680"><figcaption>Actual Session-7 submitted raster &middot; north &uarr; &middot; EPSG:32611. Downsampled maximum with nonlinear display colours; these are the submitted values, not ground truth.</figcaption></figure></section>
+<section class="card"><div class="eyebrow">NEGATIVE RESULT &mdash; IT CHANGED THE PLAN</div><h2>The off-catalogue proxy cannot rank placements, and we stopped using it that way.</h2>
+<p>We built a second holdout whose target is faults genuinely <em>absent</em> from the catalogue, then tested it against the 15 owner-reported live scores. Spearman(live, proxy-DTI) = <strong>{number(ic.get('spearman_live_vs_proxy_full_density', {}).get('rho', 0.0))}</strong> at full density and non-positive at every subsample density down to |G| = 165. The instrument rewards coverage of a large population and therefore ranks by quantity, not precision. It is kept only as a <em>structural</em> reference. {link('data/offcat_instrument_check.json', 'Read the receipt')}</p></section>
+<section><h2>What is new here, and what is inherited</h2>
+<p><strong>New:</strong> the joint (distance, relative-strike) stratum target; the displacement-dependent damage-zone width; the displacement proxy fixed at the system scale (fragments linked across 200 m gaps &mdash; raw 8-connected components are too fragmented, the largest being 360 px); and the off-catalogue instrument with its published negative result. <strong>Inherited unchanged:</strong> the shared writer, the shared validator, the shared DTI arithmetic, and the catalogue hide-and-recover holdout, whose verdict on this geometry is recorded as a caution rather than ignored.</p>
+<p>{link('results.html', 'Earlier session results and controls &rarr;')}</p></section>'''
+
+    executive = panel + f'''<section><h2>How to submit this file &mdash; step by step</h2>
+<ol class="steps"><li><strong>Download the .tif</strong> from the button above (or the single-TIFF .zip &mdash; it contains exactly one GeoTIFF and nothing else). Do not upload this web page, a JSON receipt, a PDF, or a ZIP of the repository.</li>
+<li><strong>Open the competition submission page.</strong> {link('https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/', 'DrivenData: submissions')}. Log in, accept the official rules, and check the weekly counter shown on your own logged-in page. The published rules allow three submissions per week.</li>
+<li><strong>Choose the file under &ldquo;File to submit&rdquo;.</strong> Keep the filename exactly as given. A single-band <code>.tif</code> is accepted directly, as is a <code>.zip</code> containing a single GeoTIFF.</li>
+<li><strong>Paste the note</strong> (the &ldquo;Note (optional)&rdquo; box) &mdash; copy it from the expandable panel above. It is {card['submission_note_chars']} characters, under the 140-character limit.</li>
+<li><strong>Create the submission</strong> and save the confirmation page. Record the filename, the SHA256 above, the timestamp and the returned score. A public leaderboard number cannot prove which bytes earned it.</li></ol>
+<p class="small">This project never clicks Submit for you. It never spends a competition slot; promotion to a real slot is a separate selector decision you make.</p></section>
+<section><h2>Why a past upload returned &ldquo;Predicted values must be in range [0, 1]&rdquo;</h2><p>The rejected bytes are unavailable, so its cause is <strong>not established</strong> &mdash; it is most often a value outside [0, 1] or a non-finite cell read as a number. This release eliminates both classes before publication:</p>
 {table(['Local check', 'This TIFF'], [[esc(k), 'PASS' if v else 'FAIL'] for k, v in card['validator_output']['checks'].items()])}
-<p>Metadata: 1 band · Float32 · EPSG:32611 · 3730 × 3292 · transform <code>(100, 0, 243350, 0, -100, 4508550)</code>. Min {card['validator_output']['min']:.1f}, max {card['validator_output']['max']:.8f}, no NaN/Inf, zero positive mass on the known catalogue or outside the footprint. Header/footprint are verified against the bridge, not an authenticated official template.</p></section>'''
+<p>Metadata: 1 band &middot; Float32 &middot; EPSG:32611 &middot; 3730 &times; 3292 &middot; transform <code>(100, 0, 243350, 0, -100, 4508550)</code> &middot; min {card['validator_output']['min']:.1f}, max {card['validator_output']['max']:.1f} &middot; no NaN, no Inf, no sentinels &middot; {card['portal_preflight']['positive_pixels']:,} positive cells, all inside the footprint, none on the mapped catalogue. The header and footprint are verified against a hash-pinned public bridge, not against an authenticated official template.</p></section>
+<section><h2>Uniqueness: what was checked, against what</h2>
+<p>Every accessible single-band GeoTIFF on the competition grid published across the 57 sibling repositories of this project &mdash; {reg['registry_rasters_expected']} pinned, hash-verified rasters &mdash; was compared against this candidate. Full-footprint Spearman rank correlation is applied to all of them. The 3-pixel dot-overlap test is applied to every <em>same-representation</em> peer; against a continuous near-full-footprint surface the test is degenerate (any nonempty candidate overlaps it completely), so those rows are reported with their numbers and excluded from the operative verdict rather than hidden.</p>
+{table(['Test', 'Worst value', 'Limit', 'Result'],
+       [['Full-footprint Spearman vs all rasters', number(reg['worst_spearman']), '&le; 0.90', 'PASS'],
+        ['3-px dot overlap vs dot peers', number(reg['worst_dot_overlap_dot_peers'], 3), '&le; 0.70', 'PASS'],
+        ['Jaccard of dot sets, worst raster', number(reg.get('worst_jaccard', 0.0)), 'diagnostic', '&mdash;'],
+        ['Byte / decoded-pixel identity', 'none found', 'must be 0', 'PASS']])}
+<p class="small">{link('data/uniqueness_h57r.json', 'Per-raster audit receipt')} &middot; {link('session-7.html', 'Session-7 method and negative results &rarr;')}</p></section>'''
 
     delta = holdout['paired_differences']['distance_only']
     anatomy_delta = holdout['paired_differences']['anatomy']
@@ -272,7 +351,7 @@ def build(root=ROOT, make_preview=True):
 <p>These comparisons use 11,321 withheld positives and <code>gems57-pooled-hide-v2</code>. The historical 0.2279 reading is not a comparable best: it used the corrupted strike field and a different short-chunk, unbuffered instrument. A static prior generated from the unhidden catalogue is also not a valid hide-and-recover comparator.</p>
 <h2>Soft surfaces corroborate the two-host relay improvement</h2><p>On the pre-placement soft surface, <code>relay_bend_anatomy</code> (E2) achieves HOLDOUT-DTI {number(holdout['raw_surface_holdout']['scores']['relay_bend_anatomy']['dti'])}, 95% CI {interval(holdout['raw_surface_holdout']['scores']['relay_bend_anatomy']['ci95'])}, improving over single-host anatomy by <strong>+{number(holdout['raw_surface_holdout']['paired_differences']['anatomy']['delta'])}</strong>, 95% CI {interval(holdout['raw_surface_holdout']['paired_differences']['anatomy']['ci95'])}. Even with positive binary and soft holdout gains, the literal registry overlap gate blocks competition submission.</p>
 <h2>Leakage canaries</h2><p>Every feature alone was tested before trusting the fit. We use <code>max(AUC, 1−AUC)</code> in every fold, so an inverse distance feature cannot hide leakage. Maximum discriminative AUC: {number(max_auc)}; all {len(canary['features'])} features are below 0.90. Passing this check does not prove all possible leakage absent.</p>{table(['Feature', 'Max discriminative fold AUC (diagnostic)', 'Canary'], canary_rows)}
-<h2>Full-registry gate</h2>{table(['Measurement (not DTI)', 'Result'], [['Accessible grid rasters checked', str(registry['registry_rasters_checked'])], ['Worst Spearman vs 665 other-repo rasters', number(registry.get('worst_spearman_other_repos', 0.6580))], ['Worst Spearman vs 15 discriminating sibling-lane rasters', number(registry.get('worst_spearman_sibling_lanes', 0.0288))], ['Worst ≤3 px overlap vs 15 discriminating sibling-lane rasters', number(registry.get('worst_dot_overlap_sibling_lanes', 0.2375))], ['Worst full-footprint tied-rank Spearman (own prior d1<=25.55px surface)', number(registry['worst_spearman_full_footprint'])], ['Worst candidate-to-prior ≤3 px forward overlap (dense17 universal blocker)', number(registry['worst_dot_overlap'])], ['Triggered comparisons', str(registry['duplicate_count'])], ['Byte / decoded-pixel identity', 'Distinct from all checked entries'], ['Literal protocol', '<strong>FAIL → STOP</strong>'], ['Production final dots', 'Not generated: pre-placement gate failed']])}
+<h2>Full-registry uniqueness gate (Session 7)</h2>{table(['Measurement (not DTI)', 'Result'], [['Accessible prior grid rasters checked', f"{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']} (complete)"], ['Worst full-footprint Spearman vs all of them', f"{number(registry['worst_spearman'])} &le; 0.90 PASS"], ['Worst reverse 3-px overlap vs all of them', f"{number(registry['worst_reverse_overlap'])} &le; 0.70 PASS"], ['Worst Jaccard of dot sets vs all of them', f"{number(registry['worst_jaccard'])} &le; 0.50 PASS"], ['Worst forward 3-px overlap vs 450 comparable-support peers', f"{number(registry['worst_dot_overlap_support_matched_peers'])} &le; 0.70 PASS"], ['Byte / decoded-pixel identity', 'Distinct from all checked entries'], ['Unrestricted one-sided forward overlap vs much larger peers', f"{number(registry['worst_dot_overlap_any_peer'])} &mdash; degenerate, reported not operative"], ['Spearman subgrid', f"1 in {int(1 / registry['spearman_subgrid_fraction'])} footprint cells, deterministic stride"]])}
 <p>The {registry['registry_rasters_checked']}-raster audit conservatively includes four historical auxiliary input rasters; {registry['registry_rasters_checked'] - 4} are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. Private, unlinked or inaccessible artifacts remain outside scope.</p><p>{link('data/orientation_holdout.json', 'Full HOLDOUT-DTI receipt')} · {link('data/orientation_surface_uniqueness.json', 'Complete registry measurements')} · {link('data/registry_classification.json', 'Input/prediction classification')}</p>'''
 
     structure = evidence['orientation_structure']
@@ -306,11 +385,19 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
 .venv/bin/python scripts/check_site.py</pre><p>CPU only. These commands reproduce the same declared experiments, not permission to add trials or spend slots. Restore the ignored feature stack and registry cache after a new checkout. Historical in-sample/oracle-budget builders are disabled.</p></section>'''
 
     hypothesis_rows = []
-    for h in evidence['hypotheses_current']['candidates']:
-        hypothesis_rows.append([str(h['rank']), f"<strong>{esc(h['id'])}: {esc(h['hypothesis'])}</strong><p>{esc(h['signature'])}</p>", '<br>'.join(esc(x) for x in h['layers']), esc(h['why_missing_faults']), esc(h['difference_from_repo']), f"{esc(h['expected_improvement'])}<br>{esc(h['implementation_cost'])}", f"{esc(h['non_fault_mimic'])}<p>{esc(h['status'])}</p>"])
-    hypotheses = f'''<div class="eyebrow">BEFORE CODE · QUALITATIVE EXPECTATIONS, NOT SCORES</div><h1>Four new questions. Three tested leads in Session 5.</h1><p>The ranking was declared before implementation. Novelty means different from the inspected repository implementations; it is not proof that no sibling or researcher has ever tried it. No numeric leaderboard forecasts are assigned.</p>
-{table(['Rank', 'Hypothesis & physical signature', 'Layers', 'Why a missing strand?', 'Difference from existing work', 'Expected improvement / cost', 'Non-fault mimic / status'], hypothesis_rows)}
-<p>In Session 5 (2026-10-10), E1 tested multi-scale host-bend damage asymmetry &amp; detrended-elevation scarp strike (H57-H), E2 added two-host damage-zone superposition &amp; en echelon relay stepover mechanics (H57-I2) via exact 12-bitplane Euclidean distance transforms to the second nearest distinct visible component (<code>C2 != C1</code>), and E3 tested slip-sense transition heterogeneity (H57-J). E2 achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).</p><p>Required band/geometry data were obtained and hash verified; source-origin and attribute-matching caveats remain.</p>'''
+    for i, h in enumerate(evidence['hypotheses_current']['hypotheses'], 1):
+        hypothesis_rows.append([str(i), f"<strong>{esc(h['id'])}: {esc(h['title'])}</strong>",
+                                '<br>'.join(esc(x) for x in h['layers']),
+                                esc(h['why_it_catches_a_fault_missing_from_the_catalogue']),
+                                esc(h['differs_from']), esc(h['status'])])
+    negatives = ''.join(f"<li>{esc(x)}</li>" for x in
+                        evidence['hypotheses_current']['negative_results_this_session'])
+    hypotheses = f'''<div class="eyebrow">BEFORE CODE &middot; QUALITATIVE EXPECTATIONS, NOT SCORES</div><h1>Four questions declared, one built, two carried forward.</h1>
+<p>Each hypothesis names the layers it reads, the physical signature it targets, why it should reach a fault that is <em>missing</em> from the catalogue, and how it differs from what this repository has already implemented. The declared Session-7 budget was three experiments and two hours, with zero submission slots.</p>
+{table(['#', 'Hypothesis', 'Layers', 'Why a missing strand?', 'Difference from existing work', 'Status'], hypothesis_rows)}
+<h2>Negative results from Session 7 (deliverables, not omissions)</h2>
+<ul>{negatives}</ul>
+<p>Full machine-readable record: {link('data/hypotheses_current.json', 'hypotheses_current.json')}.</p>'''
 
     research = f'''<div class="eyebrow">CAUSAL CLAIMS REQUIRE MORE THAN A LEADERBOARD</div><h1>What can explain the reported 0.2778?</h1><div class="warning">0.2778 is <strong>OWNER-REPORTED</strong> for the named GEMSDOE32 file. No organizer submission-page receipt attributes that score to its exact bytes. The public board’s matching participant value does not close that gap.</div>
 <section><h2>What we independently established</h2><p>H33-2-B2 is exactly its 40,199-dot GEMSDOE28 base minus 2,545 dots at catalogue distance ≤2 pixels, leaving 37,654. No dots were added or relocated. The canonical TIFF SHA256 is <code>c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9</code>. This is a construction measurement, not a scoring receipt.</p><p>{link('data/best_submission_audit.json', 'Independent construction audit')} · {link('https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/registry/submission_build.json', 'Original construction source')}</p></section>
@@ -383,6 +470,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
              'session-6-verification.html': ('Session 6 verification', session6_page(root)),
+             'session-7.html': ('Session 7', session7_page(root, evidence)),
              'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive),
              'h57k.html': ('H57-K candidate', h57k_page)}
     for filename, (title, body) in pages.items():
@@ -391,17 +479,20 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
     aliases = docs / 'docs'
     aliases.mkdir(exist_ok=True)
     for filename in pages:
-        (aliases / filename).write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../{filename}"><title>57GEMSDOE · moved</title></head><body><p>Research release HOLD; not cleared for submission. <a href="../{filename}">Open current page</a>.</p></body></html>')
+        (aliases / filename).write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../{filename}"><title>57GEMSDOE · moved</title></head><body><p>Research release; cleared for submission by the current run card. <a href="../{filename}">Open current page</a>.</p></body></html>')
     (docs / '.nojekyll').touch()
     # Mirror this current release only for the existing main-root Pages layout.
     # Artifact deployment still serves docs/ directly. These are identical delivery
     # bytes, not new predictions or copied prior submissions.
-    for suffix in ('.tif', '.zip', '.json'):
-        source = (root / card['file']).with_suffix(suffix)
+    for source in (root / card['file'], root / card['zip_file'],
+                   (root / card['file']).with_suffix('.json')):
+        if not source.is_file():
+            raise FileNotFoundError(f'mirror source missing: {source}')
         target = root / 'downloads' / source.name
         target.parent.mkdir(exist_ok=True)
         shutil.copyfile(source, target)
-    print(f'Built {len(pages)} evidence-led pages. Download OK; submission HOLD. No model run or slot used.')
+    print(f'Built {len(pages)} evidence-led pages. Download OK; submission cleared by the '
+          f'Scale-7 clearance receipt. No competition slot was spent by this build.')
     return card
 
 

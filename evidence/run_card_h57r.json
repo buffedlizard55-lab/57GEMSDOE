@@ -1,0 +1,156 @@
+{
+  "evidence_class": "SUBMISSION-BUILD (local facts, not a competition score)",
+  "generated_utc": "2026-10-10T21:54:59.915616+00:00",
+  "submission_name": "gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+  "submission_note": "Fault-zone anatomy H57-R: joint distance x relative-strike strata fitted to new-fault structure; 38k dots off-catalogue.",
+  "note_characters": 120,
+  "file": "docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+  "zip_file": "docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif.zip",
+  "sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
+  "validator_output": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+    "bytes": 129889,
+    "sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "n_infinite": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0030946743208914995,
+    "emitted_positive_pixels": 38000,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 38000,
+    "footprint_fraction": 0.007353833369489681
+  },
+  "bytes": 129889,
+  "validator": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+    "bytes": 129889,
+    "sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "n_infinite": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0030946743208914995,
+    "emitted_positive_pixels": 38000,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 38000,
+    "footprint_fraction": 0.007353833369489681
+  },
+  "raster_sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
+  "submission_note_chars": 120,
+  "verdict": "promote-candidate",
+  "okay_to_submit": true,
+  "portal_preflight": {
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "dtype": "float32",
+    "bands": 1,
+    "all_finite": true,
+    "nan_inside_footprint": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "in_unit_interval": true,
+    "positive_pixels": 38000,
+    "positive_outside_footprint": 0,
+    "zeros_mode": true
+  },
+  "catalogue_clearance": {
+    "dots_on_catalogue": 0,
+    "rule": "thread 11536: a new fault is a fault pixel not already captured by USGS/INGENIOUS, so catalogue pixels cannot be true positives"
+  }
+}

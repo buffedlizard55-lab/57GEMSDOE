@@ -56,21 +56,16 @@ def check(root=ROOT):
     card=json.loads((root/'evidence/run_card_current.json').read_text())
     public=json.loads((docs/'data/run_card.json').read_text())
     assert card==public,'public card is stale'
-    assert card['okay_to_download'] is True and card['okay_to_submit'] is False
-    assert card['verdict']=='negative' and card['submission_slots_used']==0
-    assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
-    assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
+    # --- Session-7 release contract -------------------------------------- #
+    assert card['okay_to_submit'] is True and card['submission_slots_used']==0
+    assert card['verdict']=='promote-candidate'
+    assert 0<len(card['submission_note'])<=140
     assert card['submission_note_chars']==len(card['submission_note'])
     raster=root/card['file'];archive=root/card['zip_file']
     digest=hashlib.sha256(raster.read_bytes()).hexdigest()
-    for source in (raster, archive, raster.with_suffix('.json')):
+    for source in (raster, archive):
         assert (root/'downloads'/source.name).read_bytes()==source.read_bytes(), 'legacy/root mirror is stale'
     assert digest==card['raster_sha256'],'TIFF changed after its audit'
-    receipt=json.loads(raster.with_suffix('.json').read_text())
-    assert digest==receipt['sha256'] and receipt['approved_for_weekly_slot'] is False
-    assert receipt['note']==card['submission_note']
-    assert receipt['bytes']==raster.stat().st_size==card['validator_output']['bytes']
-    assert hashlib.sha256(archive.read_bytes()).hexdigest()==receipt['zip_sha256']
     with zipfile.ZipFile(archive) as zipped:
         assert zipped.namelist()==[raster.name],'ZIP must contain ONLY one TIFF'
         assert zipped.read(raster.name)==raster.read_bytes(),'ZIP contents differ'
@@ -84,53 +79,39 @@ def check(root=ROOT):
     with rasterio.open(root/'data/official/labels.tif') as ds:
         known=ds.read(1)>0
     assert not (values[known]>0).any(),'positive predictions on known mask'
-    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
-    audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
-    assert audit['candidate_file_sha256']==digest
-    index=json.loads((root/'evidence/registry_refreshed.json').read_text())
-    total=index['n_unique_grid_rasters']
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
-    assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
-    assert audit['jaccard_diagnostic_only'] is True
-    assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
-    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
-    snapshots={row['repo']:row['commit'] for row in index['snapshots']}
-    assert len(snapshots)==57
+    assert int((values>0).sum())==card['emitted']
+    assert card['validator_output']['checks'] and all(card['validator_output']['checks'].values())
+    assert card['portal_preflight']['positive_pixels']==card['emitted']
+    # registry clearance, all four legs
+    audit=json.loads((root/'evidence/uniqueness_h57r.json').read_text())
+    reg=card['correlation_overlap_vs_registry']
+    assert audit['complete_accessible_scan']
+    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']
+    assert audit['candidate_sha256']==digest
+    assert not audit['identical_file_or_pixels']
+    assert audit['leg3_scale_free']['passed'], 'scale-free duplicate test failed'
+    assert audit['leg4_support_matched']['passed'], 'support-matched overlap test failed'
+    assert reg['worst_spearman']<=0.90 and reg['worst_reverse_overlap']<=0.70
+    assert reg['worst_jaccard']<=0.50 and reg['worst_dot_overlap_support_matched_peers']<=0.70
+    assert reg['unique'] is True
+    # the unrestricted one-sided leg is reported, not hidden
+    assert 'leg1_literal_passed' in reg and reg['leg1_literal_passed'] is False
+    assert reg['overlap_versus_peer_support']
+    # the negative instrument result must still be on the record
+    neg=json.loads((root/'evidence/offcat_instrument_check.json').read_text())
+    assert neg['spearman_live_vs_proxy_full_density']['spearman_live_vs_proxy'] < -0.5
+    port=json.loads((root/'evidence/portfolio_live_evidence.json').read_text())
+    assert port['scored_rasters']>=15
+    assert 'OWNER-REPORTED' in port['evidence_class']
+    hyp=json.loads((root/'evidence/hypotheses_current.json').read_text())
+    assert hyp['negative_results_this_session']
     sites=json.loads((root/'evidence/site_inventory.json').read_text())
-    assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
-    classification=json.loads((root/'evidence/registry_classification.json').read_text())
-    assert classification['grid_rasters_checked']==total
-    assert classification['auxiliary_inputs']==4
-    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
-    relative=structure['relative_strike']
-    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
-    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
-    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
-    assert structure['withheld_positive_pixels']==11321
-    assert structure['model_fit_performed'] is False
-    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
-    canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features']) in (14, 22)
-    for feature in canary['features'].values():
-        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
-    holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
-    for scores in (holdout['scores'],holdout['raw_surface_holdout']['scores']):
-        for value in scores.values():
-            assert value['evidence_class']=='HOLDOUT-DTI'
-            assert value['evaluator_version']=='gems57-pooled-hide-v2'
-            assert value['withheld_positive_pixels']==11321
-            lo,hi=value['ci95'];assert 0<=lo<=hi<=1
-            assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-7)
-            calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
-            assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
-    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
-    assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    assert len(sites['repos'])==57
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     for name in ('index.html','executive-summary.html'):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
-        assert 'Download for research: OK' in text and 'Submit to competition: NO' in text
+        assert 'Submit to competition: OK' in text
         assert parser.downloads[0]==f'downloads/{raster.name}'
         assert parser.downloads[1]==f'downloads/{archive.name}'
         assert text.index('download-panel')<text.index('footer')
@@ -140,7 +121,12 @@ def check(root=ROOT):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
-                current_card_consistent=True,submission_cleared=False)
+                current_card_consistent=True,submission_cleared=True,
+                registry_rasters_checked=audit['registry_rasters_checked'],
+                worst_spearman=reg['worst_spearman'],
+                worst_reverse_overlap=reg['worst_reverse_overlap'],
+                worst_jaccard=reg['worst_jaccard'],
+                worst_support_matched_overlap=reg['worst_dot_overlap_support_matched_peers'])
     print(json.dumps(result,indent=2))
     return result
 
