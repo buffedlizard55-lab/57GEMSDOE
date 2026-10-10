@@ -10,7 +10,7 @@
 
 The download block is the first thing on the [site](https://buffedlizard55-lab.github.io/57GEMSDOE/) and on the [executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html), and both permissions are rendered from the run card, so the page cannot drift away from the receipt.
 
-This is a **newly built H58 (2026-10-10) fault-zone-anatomy release**: 21,748 binary dots on a fitted damage-zone envelope, generated from the visible catalogue alone. It is not a copy, a prune or a re-tuning of any earlier raster: no prior submission file entered its construction, and the writer recorded `no_prior_raster_used_to_build_predictions: true` in the build receipt.
+This is a **newly built H58 (2026-10-10) fault-zone-anatomy release**: 21,748 binary dots on a fitted damage-zone envelope, generated from the visible catalogue alone. It is not a copy, a prune or a re-tuning of any earlier raster: no prior submission file entered its construction, and the shared writer's receipt records `metadata.no_prior_raster_used_to_build_predictions: true` alongside `approved_for_weekly_slot: false` and `submission_slots_used: 0` ([receipt](docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.json)).
 
 **What the science found (HOLDOUT-DTI, evaluator `gems57-pooled-hide-v2`, draw seed 2026, 11,360 withheld positives):**
 
