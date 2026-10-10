@@ -15,9 +15,11 @@ def test_max_cover_and_shared_evaluator_match_canonical_dti():
     truth = np.zeros(pred.shape, dtype=bool)
     truth[[3, 8, 12, 16], [4, 17, 9, 20]] = True
 
-    credit, q, coords = metric.max_cover(pred, truth)
+    credit, q, distance_to_truth = metric.max_cover(pred, truth)
     canonical = metric.dti_exact(pred, truth)
-    assert coords[0].size == int(truth.sum())
+    assert credit.size == int(truth.sum())
+    assert q.shape == pred.shape
+    assert distance_to_truth.shape == pred.shape
     np.testing.assert_allclose(credit.sum(), canonical["tp"], rtol=1e-12, atol=1e-12)
     np.testing.assert_allclose(
         (pred * (1.0 - q)).sum(), canonical["fp"], rtol=1e-6, atol=1e-6)

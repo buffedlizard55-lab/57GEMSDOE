@@ -1,200 +1,203 @@
 {
-  "generated_utc": "2026-10-09T07:04:47.031619+00:00",
+  "generated_utc": "2026-10-09T18:18:18.515660+00:00",
   "lane": "fault-zone anatomy / secondary strands around known faults",
   "withholding_mode": "all",
+  "feature_set": "d,d_perp,d_par_abs",
   "features": [
     "d",
     "d_perp",
-    "d_par_abs",
+    "d_par_abs"
+  ],
+  "features_dropped": [
+    "side",
     "log_len",
     "sin2",
     "cos2",
     "coherence",
-    "density"
-  ],
-  "features_dropped": [
-    "side"
+    "density",
+    "g_tmi_hg",
+    "g_tc",
+    "g_slope",
+    "g_grav_hg",
+    "g_curv",
+    "g_edge_max",
+    "g_cond",
+    "g_base_edge",
+    "g_strain"
   ],
   "budget_cap": 40000,
   "holdout_at_capped_budget": {
-    "pooled_dti": 0.2793490519890984,
-    "coverage": 0.5243913853238875,
+    "pooled_dti": 0.3242844116719546,
+    "coverage": 0.5056682334928373,
     "coverage_ci95": [
-      0.5178827138957656,
-      0.5308917812688256
+      0.49915540452346985,
+      0.5121791393499942
     ],
     "dti_ci95_coverage_only": [
-      0.27607325370270236,
-      0.2826161538519675
+      0.32037536290146434,
+      0.3281857837937846
     ],
     "dti_ci95_quadrant_jackknife": [
-      0.24138280875419366,
-      0.3173152952240031
+      0.2895980395179838,
+      0.3589707838259254
     ],
     "jackknife_drop_quadrant": {
-      "foldNE": 0.28469683917575783,
-      "foldNW": 0.27450318709875604,
-      "foldSE": 0.26449141534693094,
-      "foldSW": 0.29443584861476957
+      "foldNE": 0.32792302692162717,
+      "foldNW": 0.3204114512856208,
+      "foldSE": 0.31113850381034897,
+      "foldSW": 0.3390153894982947
     },
-    "tp": 11872.745355118137,
-    "fp": 110070.60468918184,
-    "fn": 10768.254644881863,
+    "tp": 11448.83447451133,
+    "fp": 74511.7541648733,
+    "fn": 11192.16552548867,
     "n_truth": 22641,
-    "n_dots": 131585
+    "n_dots": 89978
   },
   "calibration": {
-    "scale": 0.9997820451259384,
+    "scale": 0.9999606723812937,
     "base_rate": 0.0023385609499261225
   },
   "flank_variants": {
     "0": {
-      "pooled_dti": 0.2808384932440179,
-      "coverage": 0.5474795081771904,
+      "pooled_dti": 0.3242844116719546,
+      "coverage": 0.5056682334928373,
       "coverage_ci95": [
-        0.5409885907843013,
-        0.5539543167732122
+        0.49915540452346985,
+        0.5121791393499942
       ],
       "dti_ci95_coverage_only": [
-        0.2776937949294885,
-        0.283971217308099
+        0.32037536290146434,
+        0.3281857837937846
       ],
       "dti_ci95_quadrant_jackknife": [
-        0.24615690200951215,
-        0.31552008447852364
+        0.2895980395179838,
+        0.3589707838259254
       ],
       "jackknife_drop_quadrant": {
-        "foldNE": 0.28633221068358583,
-        "foldNW": 0.2764953164639117,
-        "foldSE": 0.2672987868288458,
-        "foldSW": 0.2944581661949356
+        "foldNE": 0.32792302692162717,
+        "foldNW": 0.3204114512856208,
+        "foldSE": 0.31113850381034897,
+        "foldSW": 0.3390153894982947
       },
-      "tp": 12395.483544639766,
-      "fp": 117727.5633316132,
-      "fn": 10245.516455360235,
+      "tp": 11448.83447451133,
+      "fp": 74511.7541648733,
+      "fn": 11192.16552548867,
       "n_truth": 22641,
-      "n_dots": 139578
-    },
-    "1": {
-      "pooled_dti": 0.279683122030429,
-      "coverage": 0.5385614065931371,
-      "coverage_ci95": [
-        0.5320619721303393,
-        0.5450477579830563
-      ],
-      "dti_ci95_coverage_only": [
-        0.2764945148562463,
-        0.28286102161426446
-      ],
-      "dti_ci95_quadrant_jackknife": [
-        0.24609048202734263,
-        0.31327576203351537
-      ],
-      "jackknife_drop_quadrant": {
-        "foldNE": 0.2855473941461886,
-        "foldNW": 0.2754285150129565,
-        "foldSE": 0.26640494117697144,
-        "foldSW": 0.292457461235485
-      },
-      "tp": 12193.568806675217,
-      "fp": 115231.4309969772,
-      "fn": 10447.431193324783,
-      "n_truth": 22641,
-      "n_dots": 135779
-    },
-    "2": {
-      "pooled_dti": 0.27829106081905264,
-      "coverage": 0.5162241681243698,
-      "coverage_ci95": [
-        0.5097125587407041,
-        0.5227302729895877
-      ],
-      "dti_ci95_coverage_only": [
-        0.27497377048781074,
-        0.28160089815282685
-      ],
-      "dti_ci95_quadrant_jackknife": [
-        0.24666234299458614,
-        0.3099197786435191
-      ],
-      "jackknife_drop_quadrant": {
-        "foldNE": 0.2836060826971495,
-        "foldNW": 0.2739037163193172,
-        "foldSE": 0.2661556768159145,
-        "foldSW": 0.2906517792589639
-      },
-      "tp": 11687.831390503856,
-      "fp": 107741.1047121651,
-      "fn": 10953.168609496144,
-      "n_truth": 22641,
-      "n_dots": 125335
-    },
-    "3": {
-      "pooled_dti": 0.2625482665660047,
-      "coverage": 0.461394429618124,
-      "coverage_ci95": [
-        0.4549081302328615,
-        0.4678938270601082
-      ],
-      "dti_ci95_coverage_only": [
-        0.25904857879829374,
-        0.2660498427526858
-      ],
-      "dti_ci95_quadrant_jackknife": [
-        0.23780613385776966,
-        0.28729039927423977
-      ],
-      "jackknife_drop_quadrant": {
-        "foldNE": 0.26575217831362347,
-        "foldNW": 0.25829836981880827,
-        "foldSE": 0.2541284744481682,
-        "foldSW": 0.2732073382641341
-      },
-      "tp": 10446.431280983945,
-      "fp": 97932.63198158967,
-      "fn": 12194.568719016055,
-      "n_truth": 22641,
-      "n_dots": 111143
+      "n_dots": 89978
     }
   },
   "selected_flank_px": 0,
   "flank_best_holdout": {
-    "pooled_dti": 0.2808384932440179,
-    "coverage": 0.5474795081771904,
+    "pooled_dti": 0.3242844116719546,
+    "coverage": 0.5056682334928373,
     "coverage_ci95": [
-      0.5409885907843013,
-      0.5539543167732122
+      0.49915540452346985,
+      0.5121791393499942
     ],
     "dti_ci95_coverage_only": [
-      0.2776937949294885,
-      0.283971217308099
+      0.32037536290146434,
+      0.3281857837937846
     ],
     "dti_ci95_quadrant_jackknife": [
-      0.24615690200951215,
-      0.31552008447852364
+      0.2895980395179838,
+      0.3589707838259254
     ],
     "jackknife_drop_quadrant": {
-      "foldNE": 0.28633221068358583,
-      "foldNW": 0.2764953164639117,
-      "foldSE": 0.2672987868288458,
-      "foldSW": 0.2944581661949356
+      "foldNE": 0.32792302692162717,
+      "foldNW": 0.3204114512856208,
+      "foldSE": 0.31113850381034897,
+      "foldSW": 0.3390153894982947
     },
-    "tp": 12395.483544639766,
-    "fp": 117727.5633316132,
-    "fn": 10245.516455360235,
+    "tp": 11448.83447451133,
+    "fp": 74511.7541648733,
+    "fn": 11192.16552548867,
     "n_truth": 22641,
-    "n_dots": 139578
+    "n_dots": 89978
   },
-  "holdout_dot_budget": 69133,
+  "holdout_dot_budget": 44991,
   "live_dot_budget": 40000,
-  "emitted_pixels": 35341,
-  "submission_name": "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357",
-  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a",
+  "emitted_pixels": 40000,
+  "submission_name": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb",
+  "submission_note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378",
   "submission_note_len": 123,
+  "packaging_receipt": {
+    "file": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+    "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+    "bytes": 118108,
+    "submission_name": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb",
+    "note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 468b8378",
+    "note_chars": 123,
+    "validator": {
+      "path": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+      "bytes": 118108,
+      "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+      "bands": 1,
+      "dtype": "float32",
+      "crs": "EPSG:32611",
+      "width": 3292,
+      "height": 3730,
+      "bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "ref_bounds": [
+        243350.0,
+        4135550.0,
+        572550.0,
+        4508550.0
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "nodata": null,
+      "blocksize": [
+        256,
+        256
+      ],
+      "fixture_grid": false,
+      "has_validity_mask": false,
+      "nan_pixels": 0,
+      "infinity_pixels": 0,
+      "n_nan": 0,
+      "min": 0.0,
+      "max": 1.0,
+      "mean": 0.0032575519289821386,
+      "n_nonzero": 40000,
+      "mass": 40000.0,
+      "mass_outside_footprint": 0,
+      "problems": [],
+      "ok": true,
+      "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+    },
+    "zip_file": "gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.zip",
+    "zip_sha256": "4bd9b16bd4a1b272edb4573350628e9ba9d1b40f1cda5647964c4627c5cafb9e",
+    "approved_for_weekly_slot": false,
+    "promoted": false,
+    "submission_slots_used": 0,
+    "status": "research-only; local format validation is not organizer acceptance",
+    "metadata": {
+      "lane": "fault-zone anatomy",
+      "mode": "all",
+      "flank_px": 0,
+      "feature_set": "d,d_perp,d_par_abs",
+      "features": [
+        "d",
+        "d_perp",
+        "d_par_abs"
+      ]
+    }
+  },
   "zeros_tif": {
-    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "bytes": 808408,
-    "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+    "bytes": 118108,
+    "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
     "meta": {
       "crs": "EPSG:32611",
       "shape": [
@@ -212,17 +215,17 @@
         -100.0,
         4508550.0
       ],
-      "profile_compress": "lzw"
+      "profile_compress": "deflate"
     },
     "band_description": [
-      "predicted_new_fault_probability"
+      null
     ],
     "n_finite": 12279160,
     "n_nan": 0,
     "min": 0.0,
     "max": 1.0,
-    "mean": 0.0028781285509467125,
-    "emitted_positive_pixels": 35341,
+    "mean": 0.0032575519289821386,
+    "emitted_positive_pixels": 40000,
     "checks": {
       "single_band": true,
       "dtype_float32": true,
@@ -242,13 +245,13 @@
     },
     "all_checks_passed": true,
     "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 35341,
-    "footprint_fraction": 0.006839258555556179
+    "in_footprint_positive_pixels": 40000,
+    "footprint_fraction": 0.007740877231041769
   },
   "nan_tif": {
-    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-nan.tif",
-    "bytes": 1672068,
-    "sha256": "b8b25eacb38de8845b2d841e26f837884628b045459397c98e940f5cc8ec2f64",
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif",
+    "bytes": 1682750,
+    "sha256": "ba0aab85f966e55477ef283cd1b4c14c481328ee21e564af47ad7043337a5d84",
     "meta": {
       "crs": "EPSG:32611",
       "shape": [
@@ -275,8 +278,8 @@
     "n_nan": 7172775,
     "min": 0.0,
     "max": 1.0,
-    "mean": 0.006920943036675453,
-    "emitted_positive_pixels": 35341,
+    "mean": 0.00783332996070385,
+    "emitted_positive_pixels": 40000,
     "checks": {
       "single_band": true,
       "dtype_float32": true,
@@ -296,21 +299,21 @@
     },
     "all_checks_passed": false,
     "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 35341,
-    "footprint_fraction": 0.006839258555556179
+    "in_footprint_positive_pixels": 40000,
+    "footprint_fraction": 0.007740877231041769
   },
   "uniqueness": {
-    "my_file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "my_dots": 35341,
+    "my_file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+    "my_dots": 40000,
     "rho_limit": 0.9,
     "overlap_limit": 0.7,
-    "worst_spearman_full_footprint": 0.01070177139044915,
-    "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_spearman_full_footprint": 0.2766141133066089,
+    "worst_rho_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
     "jaccard_limit": 0.5,
-    "worst_jaccard_dot_sets": 0.009534650570199256,
-    "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_dot_overlap": 0.35720551201154466,
-    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_jaccard_dot_sets": 0.16369337225646016,
+    "worst_jaccard_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "worst_dot_overlap": 0.58955,
+    "worst_overlap_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
     "unique": true,
     "rows": [
       {
@@ -318,12 +321,12 @@
         "submission": "h33-h33-2-b2 (best known, 0.2778)",
         "owner_reported_score": 0.2778,
         "their_dots": 37654,
-        "my_dots_within_3px_of_theirs": 0.2021165218867604,
-        "their_dots_within_3px_of_mine": 0.04623678759228767,
-        "spearman_on_dot_union": -0.9914976940556909,
-        "n_dot_union": 72685,
-        "jaccard_dot_sets": 0.004264979019054826,
-        "spearman_full_footprint": 0.00144871234823916,
+        "my_dots_within_3px_of_theirs": 0.22815,
+        "their_dots_within_3px_of_mine": 0.07252881499973442,
+        "spearman_on_dot_union": -0.9882705816881655,
+        "n_dot_union": 77199,
+        "jaccard_dot_sets": 0.005893858728740009,
+        "spearman_full_footprint": 0.004245454531707777,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -333,12 +336,12 @@
         "submission": "h27-4-r1-solo-d2-8",
         "owner_reported_score": 0.2708,
         "their_dots": 40199,
-        "my_dots_within_3px_of_theirs": 0.23621289720155061,
-        "their_dots_within_3px_of_mine": 0.052712754048608174,
-        "spearman_on_dot_union": -0.9886740982985969,
-        "n_dot_union": 75114,
-        "jaccard_dot_sets": 0.005671379503155204,
-        "spearman_full_footprint": 0.004037508025876037,
+        "my_dots_within_3px_of_theirs": 0.252675,
+        "their_dots_within_3px_of_mine": 0.08410656981516954,
+        "spearman_on_dot_union": -0.9861593426070501,
+        "n_dot_union": 79644,
+        "jaccard_dot_sets": 0.006968509868916679,
+        "spearman_full_footprint": 0.006128059972406198,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -348,12 +351,12 @@
         "submission": "h36-1-rung30-blind-r1",
         "owner_reported_score": 0.271,
         "their_dots": 37660,
-        "my_dots_within_3px_of_theirs": 0.2287994114484593,
-        "their_dots_within_3px_of_mine": 0.052124269782262346,
-        "spearman_on_dot_union": -0.989660886488799,
-        "n_dot_union": 72624,
-        "jaccard_dot_sets": 0.005191121392377176,
-        "spearman_full_footprint": 0.0032970479822846473,
+        "my_dots_within_3px_of_theirs": 0.247325,
+        "their_dots_within_3px_of_mine": 0.08279341476367498,
+        "spearman_on_dot_union": -0.9869053645711046,
+        "n_dot_union": 77152,
+        "jaccard_dot_sets": 0.0065844048112816255,
+        "spearman_full_footprint": 0.005619796190880683,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -363,12 +366,12 @@
         "submission": "h38-1-hf-euler-r30-r1",
         "owner_reported_score": 0.2707,
         "their_dots": 37860,
-        "my_dots_within_3px_of_theirs": 0.23177046489912567,
-        "their_dots_within_3px_of_mine": 0.05258848388800845,
-        "spearman_on_dot_union": -0.9896326089889913,
-        "n_dot_union": 72822,
-        "jaccard_dot_sets": 0.005204471176292878,
-        "spearman_full_footprint": 0.003305797121687636,
+        "my_dots_within_3px_of_theirs": 0.25005,
+        "their_dots_within_3px_of_mine": 0.0832540940306392,
+        "spearman_on_dot_union": -0.9867867662410791,
+        "n_dot_union": 77346,
+        "jaccard_dot_sets": 0.006645463243089494,
+        "spearman_full_footprint": 0.005720308392367037,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -378,12 +381,12 @@
         "submission": "h32-1-prethin-tip-euler-d2-8",
         "owner_reported_score": 0.2649,
         "their_dots": 42294,
-        "my_dots_within_3px_of_theirs": 0.2630372654989955,
-        "their_dots_within_3px_of_mine": 0.060812408379439166,
-        "spearman_on_dot_union": -0.9872221551240226,
-        "n_dot_union": 77143,
-        "jaccard_dot_sets": 0.006377765967100061,
-        "spearman_full_footprint": 0.005283678091837157,
+        "my_dots_within_3px_of_theirs": 0.26835,
+        "their_dots_within_3px_of_mine": 0.09599470374048329,
+        "spearman_on_dot_union": -0.986209346625955,
+        "n_dot_union": 81727,
+        "jaccard_dot_sets": 0.006937731716568576,
+        "spearman_full_footprint": 0.005872226685656165,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -393,12 +396,12 @@
         "submission": "anderson-geothermal-pinn-38854",
         "owner_reported_score": 0.275,
         "their_dots": 38854,
-        "my_dots_within_3px_of_theirs": 0.2070399818907218,
-        "their_dots_within_3px_of_mine": 0.046095640088536574,
-        "spearman_on_dot_union": -0.9913275987225727,
-        "n_dot_union": 73874,
-        "jaccard_dot_sets": 0.004345236483742589,
-        "spearman_full_footprint": 0.0015022467613595755,
+        "my_dots_within_3px_of_theirs": 0.233,
+        "their_dots_within_3px_of_mine": 0.07278529881093324,
+        "spearman_on_dot_union": -0.9880767014882417,
+        "n_dot_union": 78384,
+        "jaccard_dot_sets": 0.005996121657481118,
+        "spearman_full_footprint": 0.0043258469193535876,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -408,12 +411,12 @@
         "submission": "h33d-analog-tip-stepover-r30",
         "owner_reported_score": 0.2632,
         "their_dots": 41865,
-        "my_dots_within_3px_of_theirs": 0.26182054837157975,
-        "their_dots_within_3px_of_mine": 0.06067120506389585,
-        "spearman_on_dot_union": -0.9879454217456992,
-        "n_dot_union": 76744,
-        "jaccard_dot_sets": 0.006020014593974774,
-        "spearman_full_footprint": 0.004601509154588327,
+        "my_dots_within_3px_of_theirs": 0.271325,
+        "their_dots_within_3px_of_mine": 0.09657231577690195,
+        "spearman_on_dot_union": -0.9861162397333565,
+        "n_dot_union": 81297,
+        "jaccard_dot_sets": 0.006986727677528076,
+        "spearman_full_footprint": 0.006008420515557067,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -423,12 +426,12 @@
         "submission": "d28-poisson300m-offcat-44090",
         "owner_reported_score": 0.26,
         "their_dots": 44090,
-        "my_dots_within_3px_of_theirs": 0.26847004895164256,
-        "their_dots_within_3px_of_mine": 0.06042186436833749,
-        "spearman_on_dot_union": -0.9876372293243473,
-        "n_dot_union": 78946,
-        "jaccard_dot_sets": 0.00614343981962354,
-        "spearman_full_footprint": 0.0046835589991355685,
+        "my_dots_within_3px_of_theirs": 0.270375,
+        "their_dots_within_3px_of_mine": 0.09430709911544569,
+        "spearman_on_dot_union": -0.9863868865357494,
+        "n_dot_union": 83519,
+        "jaccard_dot_sets": 0.006836767681605383,
+        "spearman_full_footprint": 0.005514651371165693,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -438,12 +441,12 @@
         "submission": "wormrank-d28",
         "owner_reported_score": 0.256,
         "their_dots": 41338,
-        "my_dots_within_3px_of_theirs": 0.26583854446676664,
-        "their_dots_within_3px_of_mine": 0.06042866128017804,
-        "spearman_on_dot_union": -0.9885312787913622,
-        "n_dot_union": 76242,
-        "jaccard_dot_sets": 0.005731748904803127,
-        "spearman_full_footprint": 0.004066551319492688,
+        "my_dots_within_3px_of_theirs": 0.265725,
+        "their_dots_within_3px_of_mine": 0.09274759301369201,
+        "spearman_on_dot_union": -0.9869398146593996,
+        "n_dot_union": 80807,
+        "jaccard_dot_sets": 0.006571212889972403,
+        "spearman_full_footprint": 0.005230280476569027,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -453,12 +456,12 @@
         "submission": "dotted-h19-5-d2-8",
         "owner_reported_score": 0.26,
         "their_dots": 44090,
-        "my_dots_within_3px_of_theirs": 0.26847004895164256,
-        "their_dots_within_3px_of_mine": 0.06042186436833749,
-        "spearman_on_dot_union": -0.9876372293243473,
-        "n_dot_union": 78946,
-        "jaccard_dot_sets": 0.00614343981962354,
-        "spearman_full_footprint": 0.0046835589991355685,
+        "my_dots_within_3px_of_theirs": 0.270375,
+        "their_dots_within_3px_of_mine": 0.09430709911544569,
+        "spearman_on_dot_union": -0.9863868865357494,
+        "n_dot_union": 83519,
+        "jaccard_dot_sets": 0.006836767681605383,
+        "spearman_full_footprint": 0.005514651371165693,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -468,12 +471,12 @@
         "submission": "h25-1-dotted-h19-5-d1-5",
         "owner_reported_score": 0.2477,
         "their_dots": 60069,
-        "my_dots_within_3px_of_theirs": 0.2825047395376475,
-        "their_dots_within_3px_of_mine": 0.06029732474321197,
-        "spearman_on_dot_union": -0.984643838503895,
-        "n_dot_union": 94727,
-        "jaccard_dot_sets": 0.0072101935034361905,
-        "spearman_full_footprint": 0.005962234152619021,
+        "my_dots_within_3px_of_theirs": 0.28405,
+        "their_dots_within_3px_of_mine": 0.09475769531705205,
+        "spearman_on_dot_union": -0.9836478845087452,
+        "n_dot_union": 99284,
+        "jaccard_dot_sets": 0.007906611337174166,
+        "spearman_full_footprint": 0.0065923348524915834,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -483,12 +486,12 @@
         "submission": "topo-gap-closure-t-v2-on-d1-5",
         "owner_reported_score": 0.2449,
         "their_dots": 61328,
-        "my_dots_within_3px_of_theirs": 0.35720551201154466,
-        "their_dots_within_3px_of_mine": 0.06804396034437778,
-        "spearman_on_dot_union": -0.9796241187334127,
-        "n_dot_union": 95756,
-        "jaccard_dot_sets": 0.009534650570199256,
-        "spearman_full_footprint": 0.01070177139044915,
+        "my_dots_within_3px_of_theirs": 0.380475,
+        "their_dots_within_3px_of_mine": 0.10895512653274197,
+        "spearman_on_dot_union": -0.9757194929770264,
+        "n_dot_union": 100153,
+        "jaccard_dot_sets": 0.011732049963555759,
+        "spearman_full_footprint": 0.014278566191852839,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -498,12 +501,12 @@
         "submission": "gate_ortho_w0.25-40k",
         "owner_reported_score": 0.2376,
         "their_dots": 40000,
-        "my_dots_within_3px_of_theirs": 0.16872754025070033,
-        "their_dots_within_3px_of_mine": 0.037375,
-        "spearman_on_dot_union": -0.9922187042416886,
-        "n_dot_union": 75049,
-        "jaccard_dot_sets": 0.003890791349651561,
-        "spearman_full_footprint": 0.0004937709504269795,
+        "my_dots_within_3px_of_theirs": 0.179025,
+        "their_dots_within_3px_of_mine": 0.057025,
+        "spearman_on_dot_union": -0.9907250000000002,
+        "n_dot_union": 79629,
+        "jaccard_dot_sets": 0.00465910660688945,
+        "spearman_full_footprint": 0.0015460908685597428,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -513,12 +516,12 @@
         "submission": "h19-5-powerlaw-budget-multiline",
         "owner_reported_score": 0.1922,
         "their_dots": 121131,
-        "my_dots_within_3px_of_theirs": 0.30548088622280073,
-        "their_dots_within_3px_of_mine": 0.061255995575038594,
-        "spearman_on_dot_union": -0.9740367868529195,
-        "n_dot_union": 155057,
-        "jaccard_dot_sets": 0.009125676364175755,
-        "spearman_full_footprint": 0.009102943778832875,
+        "my_dots_within_3px_of_theirs": 0.30585,
+        "their_dots_within_3px_of_mine": 0.09672998654349424,
+        "spearman_on_dot_union": -0.9720138455124724,
+        "n_dot_union": 159454,
+        "jaccard_dot_sets": 0.010517139739360568,
+        "spearman_full_footprint": 0.010790082305500251,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
@@ -528,69 +531,33 @@
         "submission": "h19-4-multiline-corroborated",
         "owner_reported_score": 0.1894,
         "their_dots": 123779,
-        "my_dots_within_3px_of_theirs": 0.3061599841543816,
-        "their_dots_within_3px_of_mine": 0.059929390284297016,
-        "spearman_on_dot_union": -0.9738298284405793,
-        "n_dot_union": 157687,
-        "jaccard_dot_sets": 0.009087622949260243,
-        "spearman_full_footprint": 0.009005716815983852,
+        "my_dots_within_3px_of_theirs": 0.3102,
+        "their_dots_within_3px_of_mine": 0.09522616922095024,
+        "spearman_on_dot_union": -0.9716931564968747,
+        "n_dot_union": 162074,
+        "jaccard_dot_sets": 0.010519885978010044,
+        "spearman_full_footprint": 0.010785183131045796,
+        "duplicate_by_rho": false,
+        "duplicate_by_jaccard": false,
+        "duplicate_by_overlap": false
+      },
+      {
+        "repo": "57GEMSDOE",
+        "submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+        "owner_reported_score": null,
+        "their_dots": 35341,
+        "my_dots_within_3px_of_theirs": 0.58955,
+        "their_dots_within_3px_of_mine": 0.8469200079228092,
+        "spearman_on_dot_union": -0.7173732883181885,
+        "n_dot_union": 64743,
+        "jaccard_dot_sets": 0.16369337225646016,
+        "spearman_full_footprint": 0.2766141133066089,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
         "duplicate_by_overlap": false
       }
     ]
   },
-  "promote": false,
-  "runtime_s": 1072.9367468357086,
-  "holdout_at_capped_budget_valid_for_promotion": false,
-  "holdout_at_capped_budget_status": "INVALID AS HOLDOUT EVIDENCE: final model was fitted on all scored holdout cells; the reported 40,000 cap was divided by two draws rather than four quadrants, so the per-map holdout emission exceeded the advertised candidate cap. Retained only as historical diagnostic output.",
-  "integrity_review": {
-    "previous_promote_claim_revoked": true,
-    "reasons": [
-      "holdout_at_capped_budget is in-sample: the final model was fit on the same cells that were scored",
-      "budget accounting used budget//2 per cell despite four spatial quadrants per draw; not cap-matched",
-      "pre-placement surface-to-registry comparison was not recorded",
-      "saved single-feature canary flags d and d_perp above the 0.90 discriminative-AUC threshold pending explanation",
-      "recorded slip-sense exists in local INGENIOUS vector data but is not encoded in this H57 model",
-      "uniqueness scope is the checked-in 15-row owner-repository inventory, not a complete competition-wide registry",
-      "no organizer upload receipt is present; local format validation is not acceptance"
-    ],
-    "valid_oof_comparator": {
-      "source": "evidence/cv_all.json",
-      "variant": "no_side",
-      "evidence_class": "HOLDOUT-DTI",
-      "pooled_dti": 0.2507996751585896,
-      "ci95_quadrant_jackknife": [
-        0.2164329914998474,
-        0.28516635881733177
-      ],
-      "withheld_positive_pixels": 22641,
-      "dots_across_two_draws": 136293,
-      "approx_dots_per_full_map": 68146.5,
-      "budget_matched_to_40000_candidate": false,
-      "leakage_canary_flags": [
-        "d",
-        "d_perp"
-      ],
-      "eligible_for_promotion": false
-    },
-    "replacement_verdict": "negative; do not promote or submit"
-  },
-  "surface_uniqueness": {
-    "phase": "surface-before-placement",
-    "status": "NOT RUN for this artifact",
-    "reason": "the prior build ran final-dot registry comparisons only; the builder is now changed to enforce surface check before allocation",
-    "registry_scope": "15 local owner-repository rasters only; incomplete relative to private/unlinked/external competition artifacts"
-  },
-  "recorded_sense_of_slip": {
-    "present_in_local_external_database": true,
-    "field": "sense in data/external/trace_segments_utm11.csv; qfault_attributes.csv also carries SLIPSENSE",
-    "present_in_official_fault_raster": false,
-    "encoded_in_h57_candidate": false,
-    "promotion_blocker": true
-  },
-  "organizer_receipt": {
-    "present": false,
-    "status": "not uploaded / no organizer-confirmed result"
-  }
+  "promote": true,
+  "runtime_s": 573.4315993785858
 }

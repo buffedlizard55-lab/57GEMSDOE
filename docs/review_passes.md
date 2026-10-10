@@ -2,6 +2,8 @@
 
 Date: 2026-10-09 (UTC)
 
+**Scope note:** This three-pass review covers the PR #8 candidate and its pre-merge code snapshot only. It is an archived integrity record, not the current main-line H57 release assessment; use the current README and `evidence/run_card_current.json` for that. The public owner-repository inventory discussed here is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent.
+
 ## Pass 1 — requirement and method audit
 
 - Kept scope in fault-zone anatomy and retained the full task prompt in `README.md` / `BRIEF.md`.
@@ -23,10 +25,17 @@ Date: 2026-10-09 (UTC)
 ## Pass 3 — claims, site, and promotion recheck
 
 - Updated README, generated site pages, research hypotheses, registry provenance notes, and the single JSON run card so owner-reported leaderboard values are not labeled organizer-confirmed.
-- Rechecked that the valid saved `no_side` OOF comparator is labeled `HOLDOUT-DTI`, has 22,641 withheld positives and a four-quadrant jackknife 95% CI `[0.216433, 0.285166]`, and is explicitly not cap-matched.
-- Rechecked that `d` and `d_perp` canary flags remain visible and unresolved, and that missing slip-sense conditioning and pre-placement uniqueness prevent promotion.
+- The pre-merge `no_side` summary could not be matched to a raw result receipt in the integrated evidence tree, so it is not carried forward as a verified score. The newer main-line run card is authoritative.
+- The pre-merge candidate's `d`/`d_perp` canary flags, missing sense conditioning, and absent pre-placement surface remain documented as historical blockers for that artifact; they are not substituted for the newer main-line diagnostics.
 - Final verdict: **negative / do not submit**. The GeoTIFF is downloadable and locally format-validated, but it is not cleared as a competition submission. No organizer receipt or live score is claimed.
 
 ## Test result
 
-`49 passed, 1 skipped` (`.venv/bin/pytest -q`; 50 tests collected). The one expected skip is the all-data-pin test because the 418,912,844-byte gitignored `training_features.tif` is absent; a separate test verifies that the missing-file condition is reported. `.venv/bin/python -m compileall -q src scripts tests` and `git diff --check` passed after the latest uniqueness helper and regression-test changes.
+`89 passed, 2 skipped` (`.venv/bin/python -m pytest -ra`; 91 tests collected). Both skips require the 418,912,844-byte gitignored `training_features.tif`, which is absent in this checkout; a separate test verifies the missing-file condition. `scripts/check_site.py` passed (28 pages, local format and links pass, current card consistent, submission not cleared). `.venv/bin/python -m compileall -q src scripts tests` and `git diff --check` passed.
+
+## Main-line integration validation — 2026-10-10
+
+- Integrated PR #8 head `58840b86` with `origin/main` `621b6748`, preserving the newer main-line H57 run card, candidate, and evidence. The older PR #8 artifact and its research slate are labeled as historical; no candidate was rebuilt.
+- Kept main's newer `metric.max_cover` return contract (distance grid) and routed active `fitting.run_cell` scoring through the shared evaluator. Targeted evaluator/pipeline tests: **16 passed**; full suite: **89 passed, 2 skipped**.
+- Repaired the indexed inventory wording across README, site, run cards, and gate tooling. It is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent.
+- No registry scan, new experiment, or organizer submission was run during integration.

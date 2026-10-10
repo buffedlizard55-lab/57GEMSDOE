@@ -12,7 +12,7 @@ Stages
 ``final``    full-catalogue surface, emission, GeoTIFF write, portal validation
 
 Every number printed here is a HOLDOUT-DTI instrument reading unless it is
-labelled ORGANIZER-CONFIRMED (copied from a submission-page receipt).  Nothing
+labelled ORGANIZER-CONFIRMED (copied from a submission-page receipt); owner-pasted scores are OWNER-REPORTED.  Nothing
 here is a projection written as a score.
 """
 
@@ -158,6 +158,11 @@ def stage_measure(a) -> None:
                 "enrichment": (np.sum([a["n_withheld"] for a in arr], axis=0)
                                / np.maximum(np.sum([a["n_domain"] for a in arr], axis=0), 1)).tolist()}
 
+    rl = side['n_withheld_left'] / max(side['n_domain_left'], 1)
+    rr = side['n_withheld_right'] / max(side['n_domain_right'], 1)
+    side = {**side,
+            "rate_left": rl, "rate_right": rr,
+            "log_ratio_R_over_L": float(np.log(rr / max(rl, 1e-12)))}
     out = {
         "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, "
                       "15 px collar, 12 px domain erosion, visible-faults-only features",
@@ -242,4 +247,9 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["verify"]:
+        stage_verify(None)
+    else:
+        raise SystemExit("Legacy experiment/final stages retired: they do not satisfy the current buffer, "
+                         "budget or indexed public-inventory protocol. Use scripts/run_orientation_experiments.py "
+                         "for declared research reproduction, not automatic slot promotion.")

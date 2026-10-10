@@ -1,9 +1,9 @@
 """Shared hide-and-recover evaluator for the H57 spatial-quadrant instrument.
 
-DTI arithmetic delegates to the canonical metric module; visible pixels and the
-scored region are masked before scoring. Spatial block terms are additive
-bookkeeping for a conditional bootstrap, not a new scoring rule. No translated
-synthetic truth is used.
+Delegates official-formula arithmetic to metric.max_cover / dti_from_components.
+The inherited holdout.score API was replaced elsewhere while this file still
+called it; v2 repairs that shared interface rather than adding a private metric. Spatial block terms are bookkeeping for a
+conditional bootstrap, not a new scoring rule. No translated synthetic truth.
 """
 from __future__ import annotations
 import hashlib
@@ -11,7 +11,7 @@ from pathlib import Path
 import numpy as np
 from . import metric
 
-VERSION = 'gems57-shared-spatial-dti-v2'
+VERSION = 'gems57-pooled-hide-v2'
 
 
 def implementation_hashes():
@@ -34,23 +34,22 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
         raise ValueError('prediction must be a 2D array')
     if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
         raise ValueError('predictions must be finite in [0,1] before masking')
-    # ``holdout.score`` and ``metric.max_cover`` were removed during the move to
-    # the spatial-quadrant evaluator, leaving this shared helper unable to run.
-    # Rebuild its result from the canonical metric module instead of keeping a
-    # private copy of the DTI arithmetic here.
-    region = np.asarray(fold['region'], dtype=bool)
-    visible = np.asarray(fold['visible'], dtype=bool)
-    truth_mask = np.asarray(fold['truth'], dtype=bool)
-    valid_mask = np.asarray(valid, dtype=bool)
-    if any(a.shape != p.shape for a in (region, visible, truth_mask, valid_mask)):
-        raise ValueError('prediction, fold masks, and valid mask must have identical shapes')
-    active = valid_mask & region & ~visible
-    p = np.where(active, p, 0).astype(np.float32)
-    truth = active & truth_mask
+    valid = np.asarray(valid, bool)
+    region = np.asarray(fold['region'], bool)
+    known = np.asarray(fold.get('masked_known', fold['visible']), bool)
+    truth_all = np.asarray(fold['truth'], bool)
+    if p.ndim != 2 or any(a.shape != p.shape for a in (valid, region, known, truth_all)):
+        raise ValueError('fold/prediction grid shape mismatch')
+    active = valid & region & ~known
+    p = np.where(active, p, 0).astype(np.float64)
+    truth = active & truth_all
     if not truth.any():
         raise ValueError('a holdout fold must contain positives')
     result = metric.dti_exact(p, truth, valid=active)
     covers, q, _ = metric.max_cover(p, truth)
+    tpw = float(covers.sum())
+    fpw = float((p * (1.0 - q)).sum())
+    fnw = float(truth.sum()) - tpw
     h, w = truth.shape
     oy, ox = map(int, origin)
     gh, gw = map(int, global_shape or (h + oy, w + ox))
@@ -73,6 +72,8 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
         totals, [result['tp'], result['fp'], result['fn'], result['n_truth']],
         rtol=1e-11, atol=1e-7)
     result.update(tpw=result['tp'], fpw=result['fp'], fnw=result['fn'],
+                  n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
+                  emitted=int((p > 0).sum()),
                   evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
                   spatial_bootstrap_cluster_m=block_side * metric.PIXEL_M)
     return result, terms

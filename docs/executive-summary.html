@@ -1,45 +1,29 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Download and validation status · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="on" href="executive-summary.html">Download status</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
-<main>
-<h2>Download and validation status</h2>
-<div class="bad-box"><b>RESEARCH-ONLY; no upload or organizer receipt is evidenced.</b> The file is easy to download and its local GeoTIFF format
-checks pass, but the current evidence does not clear it for submission. Do not upload it as a
-competition entry until the run card blockers are resolved and reviewed.</div>
-<div class="card"><p><a class="dl-link" href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download>Download the H57 research TIFF</a></p>
-<dl class="kv"><dt>Filename</dt><dd>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>SHA256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Emitted dots</dt><dd>35341</dd>
-<dt>Submission note candidate</dt><dd><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code> (123 characters, portal limit 140)</dd>
-<dt>Organizer receipt</dt><dd>None recorded — no upload is evidenced</dd></dl></div>
-<h2>Local format checks</h2>
-<p>The file has one float32 band, the competition sample grid (EPSG:32611, 3730×3292 and matching
-transform), finite values in [0,1], no positive mass outside the footprint, and zero dots on the
-mapped catalogue. These checks are not an organizer acceptance receipt.</p>
-<table><tr><th>Validator check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<h2>Why it is not submission-ready</h2>
-<ul><li>No cap-matched leave-one-quadrant-out DTI/CI is available for the 40,000-dot map.</li>
-<li>The `d` and `d_perp` single-feature leakage canaries exceed 0.90 and are unexplained.</li>
-<li>Recorded INGENIOUS slip-sense is available locally but is not used by this candidate.</li>
-<li>The current artifact has no pre-placement surface-to-registry correlation audit.</li>
-<li>Final-dot uniqueness was checked against 18 local rasters only; the full competition registry is unavailable.</li>
-</ul>
-<h2>Submission procedure — only after the run card is cleared</h2>
-<ol><li>Wait until the run card explicitly says the candidate is eligible; it currently says <b>negative</b>.</li>
-<li>Download the exact `-zeros.tif` file linked on the home page. Do not open/save it in GIS software, because that can change the grid metadata.</li>
-<li>Open the <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">DrivenData submissions page</a>, choose <i>New submission</i>, and upload the TIFF or a ZIP containing that one TIFF.</li>
-<li>Enter the exact submission name and note shown in the JSON run card (the note must be at most 140 characters), then submit.</li>
-<li>Save the submission-page receipt. Only that receipt can support an `ORGANIZER-CONFIRMED` score label.</li></ol>
-<p>Until the blockers above are resolved, treat this GeoTIFF as a research artifact and do not upload it.</p>
-</main>
-<footer>Generated 2026-10-09 19:01 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Run-specific measurements come from checked-in evidence; fixed protocol constants and grid metadata come from source code and pinned data.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download &amp; submit · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html" aria-current="page">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><section class="download-panel" aria-labelledby="download-title">
+<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 9, 2026</div><h1 id="download-title">A new file. An honest verdict.</h1>
+<p class="hero-sub">Learned magnetic-edge orientation around visible faults.<br>Fresh predictions—not a copy of an earlier submission.</p>
+<div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
+<p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> the mandatory forward-overlap gate failed. No demonstrated binary holdout gain. No production dots placed; no weekly slot used.</p>
+<div class="actions"><a class="button primary" href="downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif" download>↓ Download GeoTIFF <span>10.01 MB</span></a>
+<a class="button secondary" href="downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
+<details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif</p><p class="mono">SHA256 f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a</p>
+<p>Suggested note (131 / 140 characters):</p><p class="mono" id="submission-note">Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.</p><button class="copy-button" type="button" data-copy="submission-note">Copy note</button>
+<p class="small">The filename's ID hashes decoded pixels. The SHA256 above hashes the actual downloaded TIFF. <a href="data/run_card.json">Download complete run card</a>.</p></details></section><section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Do not submit this release.</strong> Downloading the actual TIFF or ZIP is safe for review. Local format PASS is not organizer acceptance, uniqueness clearance or permission to use a weekly slot.</div>
+<p>78 indexed-inventory comparisons triggered a literal duplicate condition. Worst rank correlation is 0.8213 (below 0.90); worst forward overlap is 1.00 (above 0.70). Pixel and byte identity checks pass, but that alone is not the protocol.</p><p>The checked set is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent.</p></section>
+<section><h2>Exact submission steps—for a future selector-cleared file</h2><ol class="steps"><li><strong>Check the release card.</strong> Require format PASS and a surface PASS against the scoped public inventory before placement, final-dot PASS, clean canaries and a positive paired holdout gain. A separate selector must clear the real slot.</li>
+<li><strong>Download the .tif, or the single-TIFF .zip.</strong> Do not upload this HTML page, a JSON receipt, a PDF or a ZIP of the repository. Our ZIP is round-trip checked to contain exactly one GeoTIFF.</li>
+<li><strong>Open the competition submission page.</strong> <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">DrivenData: submissions</a>. Log in, accept the official rules and check the logged-in weekly counter. The published rules say three submissions per week; remaining team capacity is unknown here.</li>
+<li><strong>Choose the cleared file under “File to submit.”</strong> Keep its unique filename; paste its ≤140-character note. Only then submit, if the separate selector has approved it. This project never clicks Submit for you.</li>
+<li><strong>Preserve the organizer receipt.</strong> Record exact filename, TIFF SHA256, note, timestamp, evaluation version and submission-page score. A public board value cannot prove which bytes earned it.</li></ol></section>
+<section><h2>What fixes the reported range-error risk?</h2><p>The rejected file bytes are unavailable, so its cause is <strong>not established</strong>. The public description permits null/NaN outside the bounds. As a conservative precaution our shared writer refuses nonfinite or out-of-range predictions, writes finite zeros outside the footprint, and validates the TIFF after reading it back. It never silently clips bad caller values.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Local check</th><th scope="col">This TIFF</th></tr></thead><tbody><tr><td>single_band</td><td>PASS</td></tr><tr><td>dtype_float32</td><td>PASS</td></tr><tr><td>dimensions_3730x3292</td><td>PASS</td></tr><tr><td>crs_epsg_32611</td><td>PASS</td></tr><tr><td>transform_matches_sample_submission</td><td>PASS</td></tr><tr><td>no_nan_anywhere</td><td>PASS</td></tr><tr><td>no_inf_anywhere</td><td>PASS</td></tr><tr><td>no_sentinel_values</td><td>PASS</td></tr><tr><td>range_0_1_guaranteed</td><td>PASS</td></tr><tr><td>min_ge_0</td><td>PASS</td></tr><tr><td>max_le_1</td><td>PASS</td></tr><tr><td>in_footprint_all_finite</td><td>PASS</td></tr><tr><td>in_footprint_range_0_1</td><td>PASS</td></tr><tr><td>outside_footprint_zero</td><td>PASS</td></tr><tr><td>zero_dots_on_mapped_catalogue</td><td>PASS</td></tr></tbody></table></div>
+<p>Metadata: 1 band · Float32 · EPSG:32611 · 3730 × 3292 · transform <code>(100, 0, 243350, 0, -100, 4508550)</code>. Min 0.0, max 0.75377607, no NaN/Inf, zero positive mass on the known catalogue or outside the footprint. Header/footprint are verified against the bridge, not an authenticated official template.</p></section></main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-09 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

@@ -69,6 +69,7 @@ ALPHA: float = 0.2
 BETA: float = 0.8
 RADIUS_PX: float = 3.0      # 300 m at the 100 m competition grid
 PIXEL_M: float = 100.0
+R_M: float = RADIUS_PX * PIXEL_M
 EPS: float = 1e-12
 
 
@@ -92,38 +93,6 @@ def offsets(radius: float = RADIUS_PX) -> tuple[np.ndarray, np.ndarray, np.ndarr
 
 
 OFF_DY, OFF_DX, OFF_K = offsets()
-
-
-def max_cover(pred, truth, radius: float = RADIUS_PX):
-    """Return the maximum distance-weighted prediction at each truth cell.
-
-    This is the shared primitive used by :mod:`gems57.evaluate_holdout`.  The
-    first return value is a one-dimensional array in ``np.nonzero(truth)`` order;
-    the second is the per-pixel self-credit of the nearest truth cell, used for
-    weighted false positives; the third is the truth coordinate pair.
-    """
-    p = np.asarray(pred, dtype=np.float64)
-    g = np.asarray(truth, dtype=bool)
-    if not np.isfinite(radius) or radius <= 0:
-        raise ValueError("radius must be finite and positive")
-    if p.ndim != 2 or p.shape != g.shape:
-        raise ValueError("prediction and truth must be same-shape 2D arrays")
-    if not np.isfinite(p).all() or (p < 0.0).any() or (p > 1.0).any():
-        raise ValueError("predictions must be finite and in [0, 1]")
-
-    yy, xx = np.nonzero(g)
-    credit = np.zeros(yy.size, dtype=np.float64)
-    dy, dx, weights = offsets(radius)
-    height, width = p.shape
-    for off_y, off_x, weight in zip(dy, dx, weights):
-        py = yy + off_y
-        px = xx + off_x
-        inside = (py >= 0) & (py < height) & (px >= 0) & (px < width)
-        if inside.any():
-            credit[inside] = np.maximum(
-                credit[inside], p[py[inside], px[inside]] * weight)
-    self_credit = kernel(distance_transform_edt(~g), radius)
-    return credit, self_credit, (yy, xx)
 
 
 def marginal_inclusion_threshold(current_dti: float, alpha: float = ALPHA) -> float:
@@ -190,6 +159,30 @@ def dti_binary(pred_bool, truth, valid=None, known=None,
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
+def max_cover(pred, truth):
+    """Shared official-kernel primitives for soft predictions.
+
+    Returns credit per truth pixel (row-major), kernel credit per prediction
+    location, and distance-to-truth. Empty truth has zero kernel credit rather
+    than SciPy EDT's distance to the implicit array boundary.
+    """
+    p = np.asarray(pred, np.float64)
+    g = np.asarray(truth, bool)
+    if p.ndim != 2 or p.shape != g.shape:
+        raise ValueError("grid shape mismatch")
+    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
+        raise ValueError("predictions must be finite in [0,1]")
+    yy, xx = np.nonzero(g)
+    credit = np.zeros(len(yy), np.float64)
+    h, w = p.shape
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ny, nx = yy + j, xx + i
+        ok = (ny >= 0) & (ny < h) & (nx >= 0) & (nx < w)
+        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    dg = distance_transform_edt(~g) if len(yy) else np.full(p.shape, np.inf)
+    return credit, kernel(dg), dg
+
+
 def dti_exact(pred, truth, valid=None, known=None,
               alpha: float = ALPHA, beta: float = BETA) -> dict:
     """Exact DTI for arbitrary soft predictions in [0, 1] (max over the kernel)."""
@@ -208,16 +201,10 @@ def dti_exact(pred, truth, valid=None, known=None,
     if n == 0:
         return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0,
                     n_emitted=int((p > 0).sum()), dti=0.0, coverage=0.0)
-    H, W = p.shape
-    credit = np.zeros(n, np.float64)
-    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
-        ny, nx = yy + j, xx + i
-        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
-        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    credit, q, _ = max_cover(p, g)
     tp = float(credit.sum())
     fn = float(n) - tp
-    dg = distance_transform_edt(~g)
-    fp = float((p * (1.0 - kernel(dg))).sum())
+    fp = float((p * (1.0 - q)).sum())
     return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=int((p > 0).sum()),
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
