@@ -53,4 +53,6 @@ def test_current_site_and_generic_card_withdraw_submission_permission():
     assert card['raster_sha256']!=SHA
     assert TIF.name in (ROOT/'docs/archive.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'docs/session-4.html').read_text()
-    note=card['submission_note'];assert 1<=len(note)<=140 and note in text
+    import html as _html
+    note=card['submission_note'];assert 1<=len(note)<=140
+    assert _html.escape(note, quote=True) in text, 'current note must be rendered on the overview'

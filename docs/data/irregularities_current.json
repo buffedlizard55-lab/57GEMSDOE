@@ -483,6 +483,48 @@
         "https://buffedlizard55-lab.github.io/GEMSDOE28/",
         "https://buffedlizard55-lab.github.io/GEMSDOE31/docs/"
       ]
+    },
+    {
+      "id": "IR-S7A-01",
+      "severity": "high",
+      "status": "fixed; the retracted artifact was deleted and is not offered",
+      "finding": "scripts/build_h57m_emission.py selected the emission budget by the argmax of a surrogate DTI curve that is monotone increasing in the dot budget (0.05369 at 2500 dots to 0.47944 at 140000), so the argmax could only ever pick the largest budget. The exact 4-fold HOLDOUT-DTI curve peaks at 10000 dots (0.16441) and falls to 0.09844 at 140000; the surrogate-argmax run wrote a 140000-dot TIFF.",
+      "resolution": "The 140000-dot TIFF and its mirrors were deleted. The selector now takes an explicit budget and records how it was chosen; the shipped budget 43950 is a documented density transfer (10000 dots x 2471263 production allowed cells / 562290.5 mean holdout band cells).",
+      "evidence": [
+        "scripts/build_h57m_emission.py",
+        "evidence/h57m_emission.json"
+      ],
+      "remaining": "The surrogate curve is retained only as a diagnostic; any future use must state that it cannot select a budget by argmax.",
+      "manual_review": "See README.md top card and evidence/run_card_current.json."
+    },
+    {
+      "id": "IR-S7A-02",
+      "severity": "high",
+      "status": "measured; owner ruling required before any file can be cleared",
+      "finding": "The inherited one-directional forward-overlap gate is not satisfiable in practice. Of 213 pinned rasters measured against the new candidate, 40 have a 3 px dilation covering >=70 % of the footprint (many cover 100 %, sliver 0), so any candidate placing >=70 % of its dots on the geologically plausible grid fires regardless of what it predicts. The owner's best-known file (GEMSDOE32 h33-2-b2, owner-reported 0.2778) fires against 116 of the same 213 rasters. No raster fires in both directions (worst reverse overlap 0.698725).",
+      "resolution": "Reported, not relaxed. The certificate prints the literal reading, a like-for-like reading on dot-field representations, and a three-way decomposition of the firings (blanket / localised / both-direction). The candidate is held.",
+      "evidence": [
+        "evidence/gate_universality.json",
+        "evidence/h57m_uniqueness_certificate.json",
+        "src/gems57/uniqueness.py"
+      ],
+      "remaining": "Owner decision: either accept that no nonempty candidate can pass the literal one-directional gate, or authorise an explicit revision (for example a symmetric both-direction condition, which currently yields zero firings) that is logged in the audit ledger before any selector is allowed to clear a file.",
+      "manual_review": "See README.md top card and evidence/run_card_current.json."
+    },
+    {
+      "id": "IR-S7A-03",
+      "severity": "policy",
+      "status": "research download authorized (scoped); competition submission stays fail-closed",
+      "finding": "IR-S6-10 records that the retained Session-5 file's download permission was unresolved, and the merged main lane set research download to NO pending an explicit owner decision. The Session-7 lane generated a new artifact, so the question of a research-only download had to be answered explicitly rather than inherited.",
+      "resolution": "The Session-7 artifact docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif (sha256 bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0) is explicitly marked research-download-OK in the run card's download_permission_status, scoped to research download only (file_availability_is_permission=false, submission_cleared=false). The standing owner instruction for this session requires an easy-to-download TIF and an unmistakable download/submit status. Competition submission remains NO under the unchanged uniqueness gate; zero slots were used.",
+      "evidence": [
+        "evidence/run_card_current.json",
+        "evidence/h57m_uniqueness_certificate.json",
+        "README.md",
+        "docs/index.html"
+      ],
+      "remaining": "IR-S6-10 still governs the retained Session-5 file, which the site does not link. A submission clearance needs the owner's separate ruling on the support definition (IR-S6-01 / IR-S7A-02).",
+      "manual_review": "Check the top card of README.md, docs/index.html and evidence/run_card_current.json."
     }
   ]
 }

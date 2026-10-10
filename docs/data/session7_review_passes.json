@@ -59,7 +59,7 @@
         "All 13 feature-only canaries passed; maximum discriminative AUC was 0.8258665. Distance and relative-strike distributions are recorded as HOLDOUT-STRUCTURE, not scores.",
         "The registered proximal-minus-random contrast was -0.0000020031 [95% CI -0.0000156476, +0.0000164644]; it does not support S7-1. No follow-up hypothesis ran.",
         "The literal uniqueness blocker was not relaxed. No full production surface, production dots, candidate TIFF, TIFF SHA, candidate registry scan, validator, or submission slot was produced/used.",
-        "README and the generated Overview, Download & Submit, and Session 7 pages state prominently that no new TIFF exists and neither research download nor competition submission is authorized.",
+        "README and generated Overview, Download & Submit, and S7-1 pages prominently state that this S7-1 run produced no TIFF and that S7-1 download/submit are false. The separate H57-M artifact retains its own scoped research-download authorization in current main; submission remains NO.",
         "scripts/check_site.py passed on 32 pages; the full pytest suite passed; git diff --check passed; no TIFF/ZIP was added or changed.",
         "Post-merge audit found an already-merged H6-1 matched-pruning holdout in origin/main (PR #27); this branch-local S7-1 test is a different base allocator but not a novel or independent hypothesis test. Both paired proximal-minus-random intervals cross zero; the receipts remain separate.",
         "Cross-branch reconciliation also found a hash-matched current E2 best at 0.1352037; S7-1 proximal is 0.1010050. This point comparison is descriptive only, with no paired cross-model inference."

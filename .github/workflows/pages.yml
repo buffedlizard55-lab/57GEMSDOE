@@ -31,7 +31,7 @@ jobs:
       - run: python -m pytest
       - name: Refresh PUBLIC organizer context only (never submit)
         run: python scripts/refresh_feed.py
-      - name: Build and verify HOLD status, retained bytes and no active TIFF/ZIP links
+      - name: Build the site and verify the scoped research-download status, retained bytes and fail-closed submission
         run: python scripts/check_site.py --build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
