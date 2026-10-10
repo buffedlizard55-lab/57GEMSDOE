@@ -14,6 +14,43 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 (2026-10-10) — independent verification, owner decision needed
+
+**Status: HOLD. Download: NO. Submit: NO.** This session generated **no candidate raster**, used **no submission slot** and ran **no experiment**. Its purpose was to test, from raw files, the claim that blocks every candidate.
+
+**Answers to the questions asked, each reproducible with `.venv/bin/python scripts/verify_literal_gate_witness.py --witness <17GEMSDOE E-proba-multiscale .tif>`:**
+
+- **Can a unique GeoTIFF pass the stated uniqueness rule? No, not under the rule as written.** The 17GEMSDOE E-proba-multiscale raster (SHA256 `ab0a0a62…3872be`, matches the certificate) is positive on **5,167,373 of 5,167,373** allowed cells. Any candidate confined to the footprint (the writer's own rule) therefore has forward 3 px overlap **1.0** > 0.70. Evidence: [literal_gate_witness_verification_20261010.json](evidence/literal_gate_witness_verification_20261010.json).
+- **Is it OK to download or submit a generated TIF now? No.** The gate blocks every candidate, and the owner has not authorized research download (IR-S6-10). The site therefore shows no TIF link.
+- **Why did GEMSDOE32 (owner-reported 0.2778) score well?** File-level evidence: it is an exact subset of the 40,199-dot base (`GEMSDOE28/h27-4-r1-solo-d2-8`, listed at 0.2708), with 2,545 dots removed. Every removed dot lies 1.41–2.00 px from the mapped catalogue, and every kept dot lies ≥ 2.236 px away (√5 px). Under the repo's metric (`src/gems57/metric.py`), a non-redundant dot is kept only if its truth-credit `k > α·DTI`. At DTI 0.2778 that bar is `k > 0.0556`, i.e. within 2.83 px of new truth. Dots next to the catalogue with no new truth nearby are therefore pure false-positive cost. This is a **plausible mechanism, not a verified score gain**: the 0.2778 has no organizer receipt, and the 2,545-dot removal has not been holdout-tested.
+- **Leaderboard irregularity (IR-S7-02).** The prompt says 0.3195 is the highest score. The repo's organizer-published snapshot (retrieved 2026-10-10 20:40 UTC, selected rows only) shows **0.3774 at rank 1** and 0.3195 at rank 8. That is public-board context, not a file receipt. DrivenData is not in this sandbox's egress allowlist, so the board could not be re-fetched here.
+- **Feature-stack access correction (IR-S7-01).** Session 6 recorded `training_features.tif` as unreachable. In this session the GitHub bridge (`buffedlizard55-lab/GEMSDOE`, ref `c0c06ac…`, pinned in `scripts/download_features.sh`) **listed all five parts** through the authenticated GitHub API. Not downloaded: restoring it would not change the gate verdict, which is independent of features. The bridge is still not independent official-origin proof.
+
+**Run card (JSON, protocol item 5):**
+
+```json
+{"session":"7","date_utc":"2026-10-10",
+ "hypothesis":"none tested: gate-feasibility check on existing rasters",
+ "mechanism":"n/a (a candidate-independent definitional property of the support rule)",
+ "named_non_fault_mimic":"a whole-footprint soft registry surface, whose support is every allowed cell, not a fault signal",
+ "holdout_dti":"NOT RUN (training_features unrestored; no candidate to score)",
+ "correlation_overlap_vs_registry":"any candidate: forward 3 px overlap 1.0 vs 17GEMSDOE witness (blocked)",
+ "raster_sha256":"none generated",
+ "validator":"not run for a candidate; witness grid/CRS/transform verified equal to the competition grid",
+ "submission_name":"none","submission_note":"none",
+ "verdict":"negative: blocked by literal gate; owner ruling required before any candidate",
+ "budget_used":{"experiments":0,"hours_approx":"<1"}}
+```
+
+**Owner decision required (IR-S6-01 / IR-S7-03).** Choose one; nothing else unblocks a unique submission:
+1. **Keep the literal rule.** Then no candidate can pass while the 17GEMSDOE witness stays in the registry. The honest outcome is "no unique submission this cycle."
+2. **Revise the support definition** so that soft or continuous registry rasters do not count as dot sets (for example, dots = top-N cells, or a declared threshold). This is an explicit protocol change, and it must be applied to all candidates and all 696 rasters, not picked per candidate.
+3. **Exclude the witness** from the registry as a non-dot continuous surface, with an explicit reason. This is still an owner decision.
+
+No threshold, density, or reverse-overlap exemption was applied, and none was chosen here.
+
+Verification evidence: [literal-gate witness reproduction](evidence/literal_gate_witness_verification_20261010.json) · [script](scripts/verify_literal_gate_witness.py) · [tests](tests/test_literal_gate_witness.py) · [REMAINING_WORK Session 7 addendum](REMAINING_WORK.md).
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
