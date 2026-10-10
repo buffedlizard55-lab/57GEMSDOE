@@ -116,3 +116,12 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+---
+
+## Session 7 addendum (2026-10-10)
+
+- Reproduced the Session-5 pooled HOLDOUT-DTI values from current code in a scratch copy (no committed evidence overwritten). Details and irregularities: [evidence/session7_verification.json](evidence/session7_verification.json).
+- Measured the 0.2778 vs 0.2708 subset relation on the fetched files (37,654 vs 40,199 binary dots; 2,545 removed, 0 added). Score causation remains unestablished.
+- The uniqueness witness covers 100% of allowed cells under the literal `finite > 0` rule. The only unblocker is an owner ruling on IR-S6-01. No download or submission authorization was given or implied.
+- Open irregularities for review: IR-S7-01 (evaluator hash in evidence matches no commit), IR-S7-03 (portal range error cause unknown).

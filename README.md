@@ -14,6 +14,20 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 (2026-10-10) — reproduction and an unpassable gate, stated plainly
+
+**Status: HOLD. Download NO. Submit NO. No new TIFF was generated or cleared.** Evidence: [evidence/session7_verification.json](evidence/session7_verification.json) (checks V7-01 to V7-08, irregularities IR-S7-01 to IR-S7-04).
+
+- **Why the 0.2778 raster outscored 0.2708 (measured, not scored):** the 0.2778 file is a binary 0/1 set of 37,654 dots and is an exact subset of the 0.2708 file (40,199 dots). It removes 2,545 dots and adds none. Removed dots sit 1.41–2.00 px from the catalogue. A precision-type mechanism fits this, but it rests on **one owner-reported pair** with no organizer receipt, so causation is not established.
+- **Can a higher-scoring unique TIFF be made?** Not cleared. The literal gate is unpassable: the 17GEMSDOE E-proba-multiscale witness has 5,167,373 finite positive cells, covers 100% of the allowed footprint, and every candidate therefore scores forward overlap 1.0 (verified on the fetched file, sha `ab0a0a62…`). The retained TIFF is a continuous surface (2.71M positive cells), so it is not a sparse dot set and cannot be judged on dot overlap. **The owner must decide how continuous surfaces count as "dots" (IR-S6-01).** Until then no candidate is clearable.
+- **Holdout reproduced:** the Session-5 pooled HOLDOUT-DTI values reproduce from the current code to about 1e-15 (binary: distance-only 0.112725, E2 0.135204, E3 0.141391; soft: E2 0.031160). Evaluator `gems57-pooled-hide-v2`, 11,321 withheld positives. Run in a scratch copy, so committed evidence was not overwritten. This is a reproduction, not a new experiment and not an organizer score.
+- **Feature stack:** `training_features.tif` restored from the owner's public mirror and matches sha256 `4371c82e…`; all 19 cached bands rebuild byte-identically. Provenance is a third-party mirror, not an authenticated DrivenData origin.
+- **Hypotheses and next experiment:** the ranked untried set is in [evidence/session6_hypotheses.json](evidence/session6_hypotheses.json). H6-1 (remove dots within 2 px of the training catalogue, versus matched random pruning) remains first. It has **not** been run; it needs a budget and the gate ruling.
+- **Irregularity to review:** the committed `evaluate_holdout.py` hash in the relay evidence matches no git commit (IR-S7-01). The scored numbers reproduce, so this is a record defect.
+- **Portal error "Predicted values must be in range [0, 1]":** the retained file's values lie in [0, 0.9014] and pass the local check, so the cause remains unknown (IR-S7-03).
+
+**Decision needed from the owner (the only blocker):** (a) rule on how continuous/soft registry rasters define a dot for the uniqueness gate, and (b) if you want a download, give an explicit written authorization. Without (a), every candidate stays blocked; without (b), download stays NO.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
