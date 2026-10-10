@@ -1,0 +1,43 @@
+{
+  "evidence_class": "REPRODUCTION (same code, same seed, scratch copy; not a new score)",
+  "generated_by": "Session 7 (2026-10-10): scripts/run_relay_bend_experiments.py --minutes 60 --seed 20 --per-quadrant-cap 10000, run in a scratch copy of the repository",
+  "original_receipt": "evidence/relay_bend_holdout.json (Session 5, unchanged)",
+  "reproduction_receipt": "evidence/session7_relay_bend_holdout_reproduction.json",
+  "original_sha256": "afd827ca67fdae8cc6e5a72e59354b744587671a482b140c8484afa4191a3dbf",
+  "reproduction_sha256": "b7e3378b7f62b1a1332b216572e391ccd17433d161db4be2a3cfce0848bb758c",
+  "fields_compared": "every JSON field except runtime_seconds, generated timestamps (run-specific)",
+  "numeric_differences_outside_tolerance": 0,
+  "implementation_sha256_equal": false,
+  "pooled_binary_dti": {
+    "distance_only": {
+      "original": 0.112725009837,
+      "reproduction": 0.112725009837
+    },
+    "anatomy": {
+      "original": 0.109647307839,
+      "reproduction": 0.109647307839
+    },
+    "bend_anatomy": {
+      "original": 0.112331233445,
+      "reproduction": 0.112331233445
+    },
+    "relay_bend_anatomy": {
+      "original": 0.135203716778,
+      "reproduction": 0.135203716778
+    },
+    "relay_bend_sense_transition": {
+      "original": 0.141391393694,
+      "reproduction": 0.141391393694
+    },
+    "orientation": {
+      "original": 0.135203716778,
+      "reproduction": 0.135203716778
+    },
+    "orientation_sense": {
+      "original": 0.141391393694,
+      "reproduction": 0.141391393694
+    }
+  },
+  "reproduction_runtime_seconds": 544.6,
+  "caveat": "Reproduction verifies determinism of the Session-5 holdout on this machine; it is not an independent holdout, not organizer confirmation, and not a live score."
+}

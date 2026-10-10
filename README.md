@@ -1,5 +1,13 @@
 # 57GEMSDOE — fault-zone anatomy, evidence before slots
 
+> **Standing request:** Read this README, [the preserved full task prompt](TASK_PROMPT.md), and [the short operating brief](BRIEF.md) at the start of every session. Maximize P(Win); Own the Outcome. The prompt is archived for continuity, not a guarantee that its owner-reported scores or historical access claims were verified. Never replace a negative gate with a plausible forecast.
+
+## Latest pre-placement verification — 2026-10-10
+
+**NO NEW SUBMISSION TIFF WAS GENERATED. NOT OK TO DOWNLOAD OR SUBMIT ANY RETAINED TIFF.** This is the only truthful result under the requested literal >70% within-3-px rule: the prior [17GEMSDOE positive surface](https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif) remains on public main. Its immutable blob, SHA256, reference CRS/shape/transform and all **5,106,385 allowed cells** were freshly verified ([preflight evidence](evidence/preflight_anatomy.json)). Its finite-positive pixels cover the entire allowed domain, so **every nonempty candidate** has directed 3-px overlap 1.0 > 0.70. `scripts/preflight_anatomy.py` exits with status 2 (STOP) before any production placement; changing the definition of a dot needs an explicit protocol decision, not a silent exception. One verified witness suffices to prove STOP, not to claim a fresh full-registry uniqueness scan. [Negative preflight JSON run card](evidence/run_card_preflight.json) · [submission guide](docs/executive-summary.html).
+
+**Data-access correction:** `python scripts/prepare_data.py --fetch` restored the hash-pinned **19-band, 418,912,844-byte** bridge feature TIFF via permitted GitHub API. All eight input pins verified in [the new receipt](evidence/data_preparation.json). It is ignored by Git and is **not** independently authenticated as DrivenData's official download. The earlier “feature missing” statement below describes Session 6, not present availability. This preflight did not run a new holdout; a separately merged Session-7 audit reproduced an earlier holdout and identified a near-trace blind spot. Zero weekly slots used.
+
 **[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
 
 ## Current permission status — read before opening any artifact
@@ -14,19 +22,60 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
-## Session 7 (2026-10-10) — reproduction and an unpassable gate, stated plainly
+## Session 7 cross-check (branch arena/5730a1c2-57gemsdoe)
 
-**Status: HOLD. Download NO. Submit NO. No new TIFF was generated or cleared.** Evidence: [evidence/session7_verification.json](evidence/session7_verification.json) (checks V7-01 to V7-08, irregularities IR-S7-01 to IR-S7-04).
+Independent re-check of the main Session-7 claims in the section below, from public clones and a live fetch (not a new candidate; no slot; no download):
 
-- **Why the 0.2778 raster outscored 0.2708 (measured, not scored):** the 0.2778 file is a binary 0/1 set of 37,654 dots and is an exact subset of the 0.2708 file (40,199 dots). It removes 2,545 dots and adds none. Removed dots sit 1.41–2.00 px from the catalogue. A precision-type mechanism fits this, but it rests on **one owner-reported pair** with no organizer receipt, so causation is not established.
-- **Can a higher-scoring unique TIFF be made?** Not cleared. The literal gate is unpassable: the 17GEMSDOE E-proba-multiscale witness has 5,167,373 finite positive cells, covers 100% of the allowed footprint, and every candidate therefore scores forward overlap 1.0 (verified on the fetched file, sha `ab0a0a62…`). The retained TIFF is a continuous surface (2.71M positive cells), so it is not a sparse dot set and cannot be judged on dot overlap. **The owner must decide how continuous surfaces count as "dots" (IR-S6-01).** Until then no candidate is clearable.
-- **Holdout reproduced:** the Session-5 pooled HOLDOUT-DTI values reproduce from the current code to about 1e-15 (binary: distance-only 0.112725, E2 0.135204, E3 0.141391; soft: E2 0.031160). Evaluator `gems57-pooled-hide-v2`, 11,321 withheld positives. Run in a scratch copy, so committed evidence was not overwritten. This is a reproduction, not a new experiment and not an organizer score.
-- **Feature stack:** `training_features.tif` restored from the owner's public mirror and matches sha256 `4371c82e…`; all 19 cached bands rebuild byte-identically. Provenance is a third-party mirror, not an authenticated DrivenData origin.
-- **Hypotheses and next experiment:** the ranked untried set is in [evidence/session6_hypotheses.json](evidence/session6_hypotheses.json). H6-1 (remove dots within 2 px of the training catalogue, versus matched random pruning) remains first. It has **not** been run; it needs a budget and the gate ruling.
-- **Irregularity to review:** the committed `evaluate_holdout.py` hash in the relay evidence matches no git commit (IR-S7-01). The scored numbers reproduce, so this is a record defect.
-- **Portal error "Predicted values must be in range [0, 1]":** the retained file's values lie in [0, 0.9014] and pass the local check, so the cause remains unknown (IR-S7-03).
+- **Subset relation re-verified:** the 0.2778 raster (GEMSDOE32, sha256 `c55bafc4…`) is a subset of the 0.2708 raster, with 2,545 dots removed and none added. Two 0.2708-labelled files exist (GEMSDOE28 sha256 `ab023001…`, GEMSDOE31 sha256 `07b6db44…`). They are pixel-identical but have different bytes, so byte-level identity is not a reliable key for "the 0.2708 file" (IR-S7B-05).
+- **Dense-prior blocker re-verified:** 17GEMSDOE E-proba-multiscale (sha256 `ab0a0a62…`) is positive on all 5,167,373 footprint cells. Measured overlap of the retained candidate inside it: 1.0. Spearman 0.515, so the rank rule does not fire.
+- **Public board re-verified** with a live fetch of the DrivenData leaderboard: #1 0.3774, #8 DARD 0.3195, #22 extradr19 0.2778. These are public-board values, not file receipts.
+- **Ledger:** [evidence/session7_arena_verification.json](evidence/session7_arena_verification.json) · IR-S7B-01 to IR-S7B-05 in [evidence/irregularities_current.json](evidence/irregularities_current.json). Matching items in main's ledger: IR-S7-01 (dense prior), IR-S7-03 (0-vs-NaN fill), and its duplicate-label check.
 
-**Decision needed from the owner (the only blocker):** (a) rule on how continuous/soft registry rasters define a dot for the uniqueness gate, and (b) if you want a download, give an explicit written authorization. Without (a), every candidate stays blocked; without (b), download stays NO.
+## Session 7 (2026-10-10) — independent verification, owner decision needed
+
+**Status: HOLD. Download: NO. Submit: NO.** This session generated **no candidate raster**, used **no submission slot** and ran **no experiment**. Its purpose was to test, from raw files, the claim that blocks every candidate.
+
+**Answers to the questions asked, each reproducible with `.venv/bin/python scripts/verify_literal_gate_witness.py --witness <17GEMSDOE E-proba-multiscale .tif>`:**
+
+- **Can a unique GeoTIFF pass the stated uniqueness rule? No, not under the rule as written.** The 17GEMSDOE E-proba-multiscale raster (SHA256 `ab0a0a62…3872be`, matches the certificate) is positive on **5,167,373 of 5,167,373** allowed cells. Any candidate confined to the footprint (the writer's own rule) therefore has forward 3 px overlap **1.0** > 0.70. Evidence: [literal_gate_witness_verification_20261010.json](evidence/literal_gate_witness_verification_20261010.json).
+- **Is it OK to download or submit a generated TIF now? No.** The gate blocks every candidate, and the owner has not authorized research download (IR-S6-10). The site therefore shows no TIF link.
+- **Why did GEMSDOE32 (owner-reported 0.2778) score well?** File-level evidence: it is an exact subset of the 40,199-dot base (`GEMSDOE28/h27-4-r1-solo-d2-8`, listed at 0.2708), with 2,545 dots removed. Every removed dot lies 1.41–2.00 px from the mapped catalogue, and every kept dot lies ≥ 2.236 px away (√5 px). Under the repo's metric (`src/gems57/metric.py`), a non-redundant dot is kept only if its truth-credit `k > α·DTI`. At DTI 0.2778 that bar is `k > 0.0556`, i.e. within 2.83 px of new truth. Dots next to the catalogue with no new truth nearby are therefore pure false-positive cost. This is a **plausible mechanism, not a verified score gain**: the 0.2778 has no organizer receipt, and the 2,545-dot removal has not been holdout-tested.
+- **Leaderboard irregularity (IR-S7-02).** The prompt says 0.3195 is the highest score. The repo's organizer-published snapshot (retrieved 2026-10-10 20:40 UTC, selected rows only) shows **0.3774 at rank 1** and 0.3195 at rank 8. That is public-board context, not a file receipt. DrivenData is not in this sandbox's egress allowlist, so the board could not be re-fetched here.
+- **Feature-stack access correction (IR-S7-01).** Session 6 recorded `training_features.tif` as unreachable. In this session the GitHub bridge (`buffedlizard55-lab/GEMSDOE`, ref `c0c06ac…`, pinned in `scripts/download_features.sh`) **listed all five parts** through the authenticated GitHub API. Not downloaded: restoring it would not change the gate verdict, which is independent of features. The bridge is still not independent official-origin proof.
+
+**Run card (JSON, protocol item 5):**
+
+```json
+{"session":"7","date_utc":"2026-10-10",
+ "hypothesis":"none tested: gate-feasibility check on existing rasters",
+ "mechanism":"n/a (a candidate-independent definitional property of the support rule)",
+ "named_non_fault_mimic":"a whole-footprint soft registry surface, whose support is every allowed cell, not a fault signal",
+ "holdout_dti":"NOT RUN (training_features unrestored; no candidate to score)",
+ "correlation_overlap_vs_registry":"any candidate: forward 3 px overlap 1.0 vs 17GEMSDOE witness (blocked)",
+ "raster_sha256":"none generated",
+ "validator":"not run for a candidate; witness grid/CRS/transform verified equal to the competition grid",
+ "submission_name":"none","submission_note":"none",
+ "verdict":"negative: blocked by literal gate; owner ruling required before any candidate",
+ "budget_used":{"experiments":0,"hours_approx":"<1"}}
+```
+
+**Owner decision required (IR-S6-01 / IR-S7-03).** Choose one; nothing else unblocks a unique submission:
+1. **Keep the literal rule.** Then no candidate can pass while the 17GEMSDOE witness stays in the registry. The honest outcome is "no unique submission this cycle."
+2. **Revise the support definition** so that soft or continuous registry rasters do not count as dot sets (for example, dots = top-N cells, or a declared threshold). This is an explicit protocol change, and it must be applied to all candidates and all 696 rasters, not picked per candidate.
+3. **Exclude the witness** from the registry as a non-dot continuous surface, with an explicit reason. This is still an owner decision.
+
+No threshold, density, or reverse-overlap exemption was applied, and none was chosen here.
+
+Verification evidence: [literal-gate witness reproduction](evidence/literal_gate_witness_verification_20261010.json) · [script](scripts/verify_literal_gate_witness.py) · [tests](tests/test_literal_gate_witness.py) · [REMAINING_WORK Session 7 addendum](REMAINING_WORK.md).
+
+
+## Session 7B (2026-10-10) — top pre-registered candidate tested; not promoted
+
+**Download: NO. Submit: NO. No new competition TIFF was cleared or generated.** The simultaneous requirements to (a) generate a submission and (b) stop when the top candidate fails holdout/uniqueness cannot both be satisfied. This session followed the explicit evidence-first stop rule rather than fabricating clearance.
+
+H6-1 tested fold-visible-catalogue proximity pruning against equal-count, fixed-seed random pruning using the shared buffered whole-component holdout and retained E2 relay+bend allocator. **HOLDOUT-DTI** (`gems57-pooled-hide-v2`, 11,321 withheld positive pixels, 1,000 paired 20 km spatial-block bootstrap draws): proximity-pruned `0.135258 [0.118493, 0.153099]`; paired difference versus random pruning `+0.000108 [−0.00000076, +0.00023510]`. The lower bound is below zero, so the predeclared promotion rule failed. The result is also **inconclusive for the motivating near-catalogue regime**: the shared 3 px feature-context collar places every withheld truth at least √10 px from visible context. The distance canary's maximum discriminative AUC was `0.793451`, below the `0.90` leakage threshold. No live raster was built, no registry gate was run on nonexistent final dots, and no weekly slot was used.
+
+Evidence: [experiment receipt](evidence/h6_1_proximity_pruning_holdout.json) · [ranked hypotheses](evidence/session7_hypotheses.json) · [Session-7 JSON run card](evidence/run_card_session7_h6_1.json). The next eligible untried geological experiment is H6-2, visible fault-tip termination anatomy; it requires a separately budgeted run.
 
 ## Session 6 (2026-10-10) — verification and direct answers
 
@@ -37,6 +86,20 @@ Audit-only references: [current JSON run card](evidence/run_card_current.json) �
 - **Target 0.3195 / 0.3774:** the later selected-row public snapshot (retrieved 2026-10-10 20:40 UTC) shows 0.3774 at rank 1, DARD 0.3195 at rank 8, and extradr19 0.2778 at rank 22. An earlier snapshot placed DARD at rank 7. These are public-board values, not exact-file receipts; no causal score explanation is established (IR-S6-06).
 - **Ranked untried hypotheses** (pre-registered, none run): [evidence/session6_hypotheses.json](evidence/session6_hypotheses.json). H6-1 ranks first: remove dots within 2 px of the *training* catalogue, compared with matched random pruning, on the spatially blocked holdout. H6-2 is fault-tip termination anatomy. H6-3 is flight-line-aligned magnetic-mimic suppression. H6-4 is a binarised surface for the gate, which needs an owner ruling.
 - **Download status (IR-S6-10):** no explicit owner authorization was recorded to resolve the Session-5 `OK` versus Session-6 hold conflict. This follow-up sets the operational permission to **NO pending an explicit owner decision**, removes TIFF/ZIP page links, and leaves the bytes only for provenance/audit. A direct URL may still resolve; that does not authorize downloading. Submission remains NO.
+
+## Session 7 (2026-10-10) — verified answers, reproduction, and what blocks a submission
+
+**Status: unchanged from main (PR #23). Research download: NO pending explicit owner authorization. Submit to competition: NO.** No new candidate was built and no slot was used. Two experiments ran (budget: 3 / 2 h). Run card: [evidence/run_card_session7.json](evidence/run_card_session7.json) · checks: [evidence/session7_verification.json](evidence/session7_verification.json) · ledger: [evidence/session7_irregularities.json](evidence/session7_irregularities.json).
+
+- **Official format, checked at source.** The DrivenData page says: one float32 layer, EPSG:32611, 100 m, same bounds, values between 0 and 1, data outside the bounds null or NaN ([competition page](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/)). Metric: distance-weighted Tversky, α=0.2, β=0.8, triangular 300 m kernel (same page). The downloadable TIFF passes the range, dtype, CRS, shape and transform checks (min 0.0, max 0.9014, no NaN). **It fills outside the footprint with 0, not NaN** (IR-S7-03). Scoring is unaffected because zero probability adds nothing to the metric, but it must be fixed before any upload.
+- **Why 0.2778 beat 0.2708 (owner-reported, one pair).** The 0.2778 raster is an exact subset of the 0.2708 raster: 37,654 vs 40,199 positive cells, and the 2,545 removed dots all lie 1.41–2.00 px from the known catalogue. No kept dot lies closer than 2.24 px. Under this metric, removing a dot that is not the unique max-cover for any truth pixel lowers FP weight and leaves TP weight unchanged, so DTI rises. That is consistent with those dots being pure false positives on the private labels, but it is not an organizer receipt.
+- **Can we beat 0.2778? Not demonstrated.** The holdout cannot test the mechanism. In all 20 fold-arm receipts the nearest visible-to-withheld-truth distance is 3.1623 px (√10), because the 3-px collar removes visible catalogue near the truth (IR-S7-04). The holdout therefore cannot reward dots near a known trace and rewards deleting them by construction. Any near-trace pruning claim is untestable here.
+- **Reproduction.** The Session-5 holdout was re-run from the restored, hash-verified feature stack in a scratch copy (seed 20). Every field matches except timestamps and runtime, with 0 numeric differences. The stored evaluator hash differs from HEAD, so the receipt needs regenerating (IR-S7-06).
+- **Feature stack restored.** `scripts/prepare_data.py --fetch` restored `training_features.tif`, SHA256 `4371c82e…23bc5` (19 bands), and `--cache-bands` regenerated the band-12 cache with its pinned hash. These are bridge hashes, not organizer receipts.
+- **Leaderboard correction.** The public DrivenData board (fetched 2026-10-10) shows #1 **0.3774**, #8 DARD **0.3195**, #22 extradr19 **0.2778**. 0.3195 is therefore not the highest public score (IR-S7-07). Board values are public-split scores, not private or final-round scores.
+- **Uniqueness blocker, re-verified.** The 17GEMSDOE E-proba-multiscale raster (re-fetched; SHA256 `ab0a0a62…872be`) has finite positive values on all 5,167,373 footprint cells. Under the literal rule, every candidate overlaps it at 1.0, so no candidate can pass the 0.70 gate without an owner ruling (IR-S7-01). No exemption was applied.
+
+**Owner decisions needed:** (1) how a dense soft raster defines a "dot" for the 70 % overlap test; (2) whether to re-export the TIFF with NaN outside the footprint; (3) whether to confirm the research-download permission (IR-S6-10).
 
 ## What the corrected Session-5 holdout actually says
 

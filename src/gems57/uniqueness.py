@@ -313,16 +313,27 @@ def compare_to_registry(mine_path, registry_index, footprint, **kwargs):
     return result
 
 
-def saturation_certificate(registry_path, footprint, catalogue=None):
-    """A witness that proves every nonempty allowed dot set fails the overlap gate."""
-    fp = np.asarray(footprint,bool)
-    allowed = fp if catalogue is None else fp & ~np.asarray(catalogue,bool)
+def saturation_certificate(registry_path, footprint, catalogue=None, *, expected_grid=None):
+    """Certify whether one prior covers every allowed cell within the literal 3 px halo.
+
+    Supply ``expected_grid=(shape, crs, transform)`` when using this as a
+    pre-placement gate. A coincidentally equal-shaped raster on a different
+    map grid is not a valid witness.
+    """
+    fp = np.asarray(footprint, bool)
+    if fp.ndim != 2 or not fp.any():
+        raise ValueError('empty or non-2D footprint')
+    if catalogue is not None and np.asarray(catalogue).shape != fp.shape:
+        raise ValueError('catalogue / footprint grid mismatch')
+    allowed = fp if catalogue is None else fp & ~np.asarray(catalogue, bool)
     if not allowed.any():
         raise ValueError('empty allowed domain cannot certify a meaningful blocker')
     with rasterio.open(registry_path) as src:
-        a = src.read(1)
-        if a.shape != fp.shape or src.count != 1:
+        if src.shape != fp.shape or src.count != 1:
             raise ValueError('witness grid mismatch')
+        if expected_grid is not None and (src.shape, src.crs, src.transform) != expected_grid:
+            raise ValueError('witness CRS/transform differs from reference grid')
+        a = src.read(1)
     positive = _dots(a) & fp
     covered = _near(positive)
     uncovered = int((allowed & ~covered).sum())
