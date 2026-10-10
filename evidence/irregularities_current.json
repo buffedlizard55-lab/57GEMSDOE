@@ -179,6 +179,51 @@
         "BRIEF_legacy_owner_context.md"
       ],
       "remaining": "Any policy change for this run needs an explicit revision in this conversation, not inferred from repository text."
+    },
+    {
+      "id": "IR-57-REGISTRY-DELTA-01",
+      "severity": "high",
+      "status": "fixed for current accessible public-main scope",
+      "finding": "The former 679-raster receipt was stale against changed public-main heads: the first refresh found 17 additional distinct competition-grid TIFF blobs, and a later merged-main refresh exposed 2 more.",
+      "resolution": "Checked all 57 current public-main commits twice as main advanced; the two hash-verified extensions added 17 then 2 grid rasters and merged exact comparisons under unchanged thresholds. The current 698-row accessible audit is complete; the latest two-raster delta has no new trigger, but the accumulated surface still fails the literal gate.",
+      "evidence": [
+        "scripts/refresh_registry_delta.py",
+        "scripts/refresh_site_inventory.py",
+        "evidence/registry_live_delta.json",
+        "evidence/registry_live_delta_20261010T2001.json",
+        "evidence/orientation_surface_delta_uniqueness.json",
+        "evidence/orientation_surface_delta_uniqueness_20261010T2001.json",
+        "evidence/orientation_surface_uniqueness.json"
+      ],
+      "remaining": "Private, unlinked, inaccessible, and files added after the latest recorded head scan remain outside scope; rerun the live-head refresh before any future promotion."
+    },
+    {
+      "id": "IR-57-STRUCTURE-02",
+      "severity": "medium",
+      "status": "fixed; rebuilt as descriptive evidence only",
+      "finding": "A structure-receipt packaging collision overwrote the relative-strike histogram array with the scalar withheld-positive count, hiding the intended bin distribution.",
+      "resolution": "Keep the histogram nested under relative_strike, validate both histogram totals, separately record total withheld positives, and rebuild the fixed seed-20 receipt with the exact finite/coherence-qualified sample sizes. No model fit or DTI evaluation was performed.",
+      "evidence": [
+        "src/gems57/anatomy.py",
+        "scripts/rebuild_orientation_structure.py",
+        "evidence/orientation_structure.json",
+        "tests/test_anatomy_structure_package.py"
+      ],
+      "remaining": "The pixel-weighted visible-reference comparison is censored and descriptive; no inferential test or segment-level weighting is provided."
+    },
+    {
+      "id": "IR-57-LEGACY-SITE-01",
+      "severity": "medium",
+      "status": "retired safely",
+      "finding": "An obsolete session-specific site builder contained a stale positive submission banner and malformed Python at its final guard; attempting to repair only the syntax would still have allowed legacy output side effects.",
+      "resolution": "Replace the historical generator with a side-effect-free retirement stub. Current Pages output is generated exclusively by scripts/build_site.py from the current negative run card.",
+      "evidence": [
+        "scripts/build_site_session4.py",
+        "scripts/build_site.py",
+        "scripts/check_site.py"
+      ],
+      "remaining": "Historical site artifacts remain available for audit; do not use them to establish current submission clearance."
     }
-  ]
+  ],
+  "generated_utc": "2026-10-10T20:14:30+00:00"
 }

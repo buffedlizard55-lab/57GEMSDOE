@@ -253,8 +253,8 @@ def _csv_pixels(csv_path, shape, transform):
     tr = pd.read_csv(csv_path)
     inv = ~transform
     h, w = shape
-    c0, r0 = inv * (tr.x0.values, tr.y0.values)
-    c1, r1 = inv * (tr.x1.values, tr.y1.values)
+    c0, r0 = inv @ (tr.x0.values, tr.y0.values)
+    c1, r1 = inv @ (tr.x1.values, tr.y1.values)
     points = []
     for a, b, c, d in zip(c0, r0, c1, r1):
         if not np.isfinite([a, b, c, d]).all():

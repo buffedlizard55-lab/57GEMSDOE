@@ -87,31 +87,35 @@ def load_grid(data_dir: Path | None = None) -> Grid:
 
 
 def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> dict:
-    """Write a portal-legal single-band GeoTIFF.
+    """Write a single-band GeoTIFF without repairing invalid predictions.
 
-    ``mode="zeros"`` -- every cell finite, outside-footprint cells set to 0.0 and
-    no nodata tag.  This is the only mode that survives the portal check
-    *"Predicted values must be in range [0, 1]"*, because ``NaN`` is neither
-    ``>= 0`` nor ``<= 1``.  The competition's own ``sample_submission.tif``
-    carries 7,111,787 NaN cells, so a submission written by copying its nodata
-    convention fails that check; see ``docs/executive-summary`` and irregularity
-    ``IR-57-NAN-01``.
-
-    ``mode="nan"`` is produced for comparison/diagnostics only and must NOT be
-    submitted.
+    ``mode="zeros"`` is intended for a fully finite submission array. Callers
+    must explicitly write zero outside their scored footprint; this function
+    does not know that footprint and therefore cannot infer or validate it.
+    ``mode="nan"`` is diagnostic-only and may preserve NaN outside the study
+    area. In both modes, every non-NaN value must already be in [0, 1], and
+    infinities are rejected. No clipping or silent NaN-to-zero replacement is
+    performed. The stricter ``submission_writer`` additionally checks the
+    footprint and validates the written file. The cause of any previously
+    reported portal range error is not established by this helper.
     """
     values = np.asarray(values, np.float32)
     if values.shape != (HEIGHT, WIDTH):
         raise ValueError(f"values shape {values.shape} != {(HEIGHT, WIDTH)}")
-    if mode == "zeros":
-        out = np.where(np.isfinite(values), values, 0.0).astype(np.float32)
-        np.clip(out, 0.0, 1.0, out=out)
-        nodata = None
-    elif mode == "nan":
-        out = values.astype(np.float32)
-        nodata = float("nan")
-    else:
+    if mode not in ("zeros", "nan"):
         raise ValueError("mode must be 'zeros' or 'nan'")
+    if np.isinf(values).any():
+        raise ValueError("values contain infinity")
+    finite = np.isfinite(values)
+    if mode == "zeros" and not finite.all():
+        raise ValueError("zeros mode requires all values finite; set outside-footprint cells to 0 explicitly")
+    if finite.any() and ((values[finite] < 0.0).any() or (values[finite] > 1.0).any()):
+        raise ValueError("finite predictions must already be in [0, 1]; no silent clipping")
+    out = values.astype(np.float32, copy=False)
+    if mode == "zeros":
+        nodata = None
+    else:
+        nodata = float("nan")
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with rasterio.open(

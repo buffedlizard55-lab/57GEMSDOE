@@ -32,6 +32,41 @@ def test_zeros_mode_passes_and_nan_mode_fails(tmp_path):
     assert rn["all_checks_passed"] is False
 
 
+def test_legacy_grid_writer_fails_closed_instead_of_clipping(tmp_path):
+    import pytest
+
+    valid = np.zeros((gridmod.HEIGHT, gridmod.WIDTH), np.float32)
+    valid[100, 100] = 0.5
+    for bad in (-0.01, 1.01, np.inf, -np.inf):
+        candidate = valid.copy()
+        candidate[110, 110] = bad
+        with pytest.raises(ValueError):
+            gridmod.write_submission(tmp_path / f"invalid-{bad}.tif", candidate, mode="zeros")
+
+    candidate = valid.copy()
+    candidate[110, 110] = np.nan
+    with pytest.raises(ValueError, match="all values finite"):
+        gridmod.write_submission(tmp_path / "nan-zeros.tif", candidate, mode="zeros")
+
+
+def test_nan_mode_checks_finite_values_but_preserves_nan_for_diagnostics(tmp_path):
+    import pytest
+
+    values = np.zeros((gridmod.HEIGHT, gridmod.WIDTH), np.float32)
+    values[0, 0] = np.nan
+    values[1, 1] = 0.25
+    path = tmp_path / "diagnostic.tif"
+    gridmod.write_submission(path, values, mode="nan")
+    import rasterio
+    with rasterio.open(path) as src:
+        written = src.read(1)
+        assert np.isnan(written[0, 0])
+        assert written[1, 1] == np.float32(0.25)
+    values[1, 1] = 1.1
+    with pytest.raises(ValueError, match="no silent clipping"):
+        gridmod.write_submission(tmp_path / "out-of-range-nan.tif", values, mode="nan")
+
+
 def test_shape_crs_transform_are_pinned():
     import rasterio
     p = gridmod.DATA_DIR / "sample_submission.tif"

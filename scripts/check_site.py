@@ -93,6 +93,40 @@ def check(root=ROOT):
     assert audit['complete_accessible_scan'] and not audit['source_errors']
     assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    extension=json.loads((root/'evidence/registry_live_delta.json').read_text())
+    delta=json.loads((root/'evidence/orientation_surface_delta_uniqueness.json').read_text())
+    added={row['sha256'] for row in extension['new_grid_raster_rows'].values()}
+    assert extension['complete_accessible_scan'] and len(added)==2
+    assert extension['current_audit_raster_count']==total
+    assert extension['candidate_sha256']==digest
+    assert delta['candidate_file_sha256']==digest
+    assert delta['registry_rasters_expected']==delta['registry_rasters_checked']==len(added)
+    assert {row['sha256'] for row in delta['rows']}==added
+    assert delta['complete_accessible_scan'] and delta['unique']
+    assert delta['duplicate_count']==extension['new_raster_comparison_summary']['duplicate_count']==0
+    earlier=json.loads((root/'evidence/orientation_surface_delta_uniqueness_20261010T2001.json').read_text())
+    earlier_extension=json.loads((root/'evidence/registry_live_delta_20261010T2001.json').read_text())
+    prior_snapshot=json.loads((root/'evidence/registry_refreshed_20261010T2001.json').read_text())
+    prior_audit=json.loads((root/'evidence/orientation_surface_uniqueness_20261010T2001.json').read_text())
+    assert earlier['registry_rasters_checked']==earlier['registry_rasters_expected']==17
+    assert earlier['complete_accessible_scan'] and not earlier['unique']
+    assert earlier_extension['new_grid_rasters_added']==17
+    assert prior_snapshot['n_unique_grid_rasters']==prior_audit['registry_rasters_checked']==696
+    snapshots={row['repo']:row['commit'] for row in index['snapshots']}
+    assert len(snapshots)==57
+    sites=json.loads((root/'evidence/site_inventory.json').read_text())
+    assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
+    classification=json.loads((root/'evidence/registry_classification.json').read_text())
+    assert classification['grid_rasters_checked']==total
+    assert classification['auxiliary_inputs']==4
+    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
+    relative=structure['relative_strike']
+    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
+    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
+    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
+    assert structure['withheld_positive_pixels']==11321
+    assert structure['model_fit_performed'] is False
+    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
     canary=json.loads((root/'evidence/orientation_canary.json').read_text())
     assert len(canary['features'])==14
     for feature in canary['features'].values():

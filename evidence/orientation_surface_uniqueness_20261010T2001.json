@@ -7,8 +7,8 @@
   "rho_limit": 0.9,
   "overlap_limit": 0.7,
   "jaccard_limit": 0.5,
-  "registry_rasters_expected": 698,
-  "registry_rasters_checked": 698,
+  "registry_rasters_expected": 696,
+  "registry_rasters_checked": 696,
   "complete_accessible_scan": true,
   "missing_or_invalid": 0,
   "source_errors": [],
@@ -13585,26 +13585,6 @@
     },
     {
       "repo": "GEMSDOE52",
-      "submission": "GEMSDOE52:docs/downloads/h83-candidate.tif",
-      "file": "/home/user/57GEMSDOE/.cache/registry/605caf858986627cb70e58795e79c6b0a1a1f519.tif",
-      "sha256": "d9cfccf0e1aa4e28094a6039fda9e65be5e8ff102e321b33745df149f477f378",
-      "decoded_sha256": "d5d857068c32183650b92172dbba169259e167f80027a3929961fd989a9aec73",
-      "their_dots": 37654,
-      "my_dots_within_3px_of_theirs": 0.023118265905364734,
-      "their_dots_within_3px_of_mine": 0.5715461836723854,
-      "spearman_full_footprint": 0.00484000561491066,
-      "jaccard_dot_sets": 0.007396788088426204,
-      "identical_bytes": false,
-      "identical_decoded_predictions": false,
-      "duplicate_by_rho": false,
-      "duplicate_by_overlap": false,
-      "duplicate_by_jaccard": false,
-      "sources": [
-        "GEMSDOE52:docs/downloads/h83-candidate.tif"
-      ]
-    },
-    {
-      "repo": "GEMSDOE52",
       "submission": "GEMSDOE52:submission/gems52-h72-v4-pure-h19-5-ring-37654px-20261009T164250Z-6a772f2ee9a1.tif",
       "file": "/home/user/57GEMSDOE/.cache/registry/6ac784e9bfaa3735253942af73c544a9d051ce8e.tif",
       "sha256": "760f124bee6a1752912fc5a37608fc06fbde58fb3b09406c59f099bd0de51c5b",
@@ -13621,26 +13601,6 @@
       "duplicate_by_jaccard": false,
       "sources": [
         "GEMSDOE52:submission/gems52-h72-v4-pure-h19-5-ring-37654px-20261009T164250Z-6a772f2ee9a1.tif"
-      ]
-    },
-    {
-      "repo": "GEMSDOE52",
-      "submission": "GEMSDOE52:submission/gems52-h83-structural-concordance-37654px-20261010T200049Z.tif",
-      "file": "/home/user/57GEMSDOE/.cache/registry/86b71dde0039b2a6c79ca7342c1519c1828f89c1.tif",
-      "sha256": "274db602ec8b91cb6a2793e9f512321f32326298aa8ed031ebd478e21426f5cd",
-      "decoded_sha256": "4d9fa073a60f821c11368619699ccc9efc1522b9e14f9b5bda71b56211875004",
-      "their_dots": 37493,
-      "my_dots_within_3px_of_theirs": 0.16929317307242497,
-      "their_dots_within_3px_of_mine": 0.6408129517509935,
-      "spearman_full_footprint": 0.012387903557960796,
-      "jaccard_dot_sets": 0.008224216215820196,
-      "identical_bytes": false,
-      "identical_decoded_predictions": false,
-      "duplicate_by_rho": false,
-      "duplicate_by_overlap": false,
-      "duplicate_by_jaccard": false,
-      "sources": [
-        "GEMSDOE52:submission/gems52-h83-structural-concordance-37654px-20261010T200049Z.tif"
       ]
     },
     {
@@ -13989,20 +13949,20 @@
   "candidate_rank_variation": true,
   "scope": "SHA256-pinned complete prior registry extended with current public-main trees for every listed repository; only newly changed Git blobs were downloaded and compared. The current candidate is excluded as its own output. Private, unlinked, inaccessible and later-written files remain outside scope.",
   "phase": "surface",
-  "reviewed_utc": "2026-10-10T20:14:20.742662+00:00",
+  "reviewed_utc": "2026-10-10T20:01:44.479937+00:00",
   "submission_slots_used": 0,
   "incremental_extension": {
-    "base_rasters": 696,
-    "newly_discovered_rasters": 2,
-    "deduplicated_rasters": 698
+    "base_rasters": 679,
+    "newly_discovered_rasters": 17,
+    "deduplicated_rasters": 696
   },
   "aggregation": {
     "method": "incremental exact extension of a complete prior compare_to_registry result",
-    "base_registry_rasters": 696,
-    "new_registry_rasters": 2,
+    "base_registry_rasters": 679,
+    "new_registry_rasters": 17,
     "base_candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "current_candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "latest_public_main_commits_checked": 57,
-    "changed_public_main_commits": 2
+    "changed_public_main_commits": 10
   }
 }

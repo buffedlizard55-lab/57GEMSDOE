@@ -39,5 +39,57 @@
     "first_run_conclusion": "success",
     "final_head_verification": "pending on push"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "current_session_20261010": {
+    "status": "three implementation/review passes complete for the 2026-10-10 continuation",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Repair holdout-structure packaging and keep histogram arrays distinct from total-positive counts; preserve no-fit/no-score scope.",
+        "result": "Rebuilt fixed seed-20 receipt; histogram totals and distance quantiles reproduced; targeted structure and writer tests passed."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Line-review and test the incremental registry merge; check all current public-main heads and validate newly discovered grid blobs.",
+        "result": "Checked all 57 current public-main commits. The first hash-verified extension added 17 unique rasters; after main advanced, a second scan found 2 more. Final accessible inventory: 698 exact rows with no scan/download errors. The latest two-raster delta alone has no trigger; the accumulated surface still fails the literal STOP gate."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Refresh the 57-site inventory, publish explicit descriptive histogram and updated registry receipts, review old site-generator risk, then run delivery QA and full tests.",
+        "result": "Refreshed the 57-site inventory after both main updates, published the descriptive structure histogram and dated registry lineage, retired the stale side-effecting site generator, and fixed the build-time loop-variable regression found by delivery QA. Final static QA and the full test suite are recorded below; current code has not been re-rendered in a browser because none is installed.",
+        "browser_retested": false,
+        "browser_retest_limitation": "No browser executable is installed in this environment. A prior browser QA receipt exists for 2026-10-09; current code received static HTML/link/delivery QA only."
+      }
+    ],
+    "experiments_used": 3,
+    "new_experiments_this_continuation": 0,
+    "submission_slots_used": 0,
+    "production_final_dots": 0,
+    "registry_rasters_checked": 698,
+    "current_main_repositories_checked": 57,
+    "new_grid_rasters_added": 2,
+    "final_static_qa": {
+      "pages_checked": 28,
+      "links_pass": true,
+      "tiff_format_pass": true,
+      "zip_exactly_one_tiff": true,
+      "run_card_consistent": true,
+      "submission_cleared": false
+    },
+    "final_test_count": {
+      "collected": 94,
+      "passed": 92,
+      "skipped": 2,
+      "warnings": 1
+    },
+    "completed_utc": "2026-10-10T20:14:30+00:00",
+    "cumulative_grid_rasters_added_since_679": 19
+  },
+  "final_registry_rasters_checked": 698,
+  "final_current_head_extensions": {
+    "initial_new_rasters": 17,
+    "latest_new_rasters": 2,
+    "cumulative_added_since_679": 19,
+    "latest_extension_has_no_new_duplicate_trigger": true
+  }
 }

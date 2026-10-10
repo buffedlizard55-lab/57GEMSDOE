@@ -46,6 +46,130 @@ def _jaccard(a, b):
     return float((a & b).sum() / u) if u else 0.0
 
 
+def summarize_registry_rows(rows, *, registry_rasters_expected, complete_accessible_scan,
+                            source_errors, candidate_meta, scope):
+    """Apply the same literal thresholds to already hash-verified comparison rows.
+
+    This allows a complete immutable prior audit to be extended with only newly
+    published blobs, instead of re-downloading hundreds of unchanged rasters.
+    The caller must prove candidate identity and the completeness/count of the
+    combined registry before passing ``complete_accessible_scan=True``.
+    """
+    rows = list(rows)
+    source_errors = list(source_errors or [])
+    expected = int(registry_rasters_expected)
+    checked = [r for r in rows if 'error' not in r]
+    errors = [r for r in rows if 'error' in r]
+    complete = bool(complete_accessible_scan and expected == len(rows)
+                    and not errors and not source_errors)
+    flags = [r for r in checked if any(r.get(k, False) for k in (
+        'duplicate_by_rho', 'duplicate_by_overlap', 'duplicate_by_jaccard',
+        'identical_bytes', 'identical_decoded_predictions'))]
+    rank_rows = [r for r in checked if r.get('spearman_full_footprint') is not None]
+    worst_rho = max(rank_rows, key=lambda r: r['spearman_full_footprint'], default=None)
+    worst_ov = max(checked, key=lambda r: r['my_dots_within_3px_of_theirs'], default=None)
+    worst_jac = max(checked, key=lambda r: r['jaccard_dot_sets'], default=None)
+    my_dot_count = int(candidate_meta['my_dots'])
+    norm = bool(candidate_meta['candidate_rank_variation'])
+    unique = complete and my_dot_count > 0 and norm and not flags
+    return dict(
+        my_file=candidate_meta.get('my_file'), evidence_class='REGISTRY-MEASUREMENT',
+        my_dots=my_dot_count,
+        candidate_decoded_sha256=candidate_meta.get('candidate_decoded_sha256'),
+        candidate_file_sha256=candidate_meta.get('candidate_file_sha256'),
+        rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
+        registry_rasters_expected=expected, registry_rasters_checked=len(checked),
+        complete_accessible_scan=complete, missing_or_invalid=len(errors),
+        source_errors=source_errors,
+        worst_spearman_full_footprint=(worst_rho['spearman_full_footprint'] if worst_rho else None),
+        worst_rho_submission=(worst_rho['submission'] if worst_rho else None),
+        worst_dot_overlap=(worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None),
+        worst_overlap_submission=(worst_ov['submission'] if worst_ov else None),
+        worst_jaccard_dot_sets=(worst_jac['jaccard_dot_sets'] if worst_jac else None),
+        worst_jaccard_submission=(worst_jac['submission'] if worst_jac else None),
+        byte_unique_among_checked=bool(checked) and not any(r.get('identical_bytes', False) for r in checked),
+        pixel_unique_among_checked=bool(checked) and not any(r.get('identical_decoded_predictions', False) for r in checked),
+        duplicate_count=len(flags), unique=bool(unique), rows=rows,
+        verdict='promote-to-selector-only' if unique else 'negative',
+        stop_required=bool(flags or not complete or not my_dot_count or not norm),
+        candidate_rank_variation=norm,
+        scope=scope)
+
+
+def merge_registry_audits(previous, extension, *, registry_rasters_expected,
+                          complete_accessible_scan=True, scope=None):
+    """Extend a full prior raster audit with a checked delta and keep fail-closed.
+
+    Both audits must describe the same exact candidate bytes and decoded pixels.
+    Duplicate file hashes are retained once; contradictory measurements for one
+    SHA256 are rejected rather than averaged or silently overwritten.
+    """
+    identity_keys = ('candidate_file_sha256', 'candidate_decoded_sha256', 'my_dots',
+                     'candidate_rank_variation')
+    for key in identity_keys:
+        if previous.get(key) != extension.get(key):
+            raise ValueError(f'cannot merge audits with different candidate {key}')
+    if any(previous.get(key) != extension.get(key)
+           for key in ('rho_limit', 'overlap_limit', 'jaccard_limit')):
+        raise ValueError('cannot merge audits with different uniqueness thresholds')
+    if not previous.get('complete_accessible_scan'):
+        raise ValueError('base audit is not a complete accessible registry scan')
+    if not extension.get('complete_accessible_scan'):
+        raise ValueError('registry delta is incomplete')
+    if previous.get('missing_or_invalid') or extension.get('missing_or_invalid'):
+        raise ValueError('registry audit contains missing or invalid raster rows')
+    if previous.get('source_errors') or extension.get('source_errors'):
+        raise ValueError('registry audit contains source errors')
+
+    merged = {}
+    for row in [*previous['rows'], *extension['rows']]:
+        if 'error' in row:
+            raise ValueError('cannot extend a registry audit with an errored row')
+        digest = row.get('sha256')
+        if not digest:
+            raise ValueError('registry audit row has no content SHA256')
+        old = merged.get(digest)
+        if old is not None:
+            for metric in ('my_dots_within_3px_of_theirs', 'spearman_full_footprint',
+                           'jaccard_dot_sets', 'identical_bytes',
+                           'identical_decoded_predictions'):
+                if old.get(metric) != row.get(metric):
+                    raise ValueError(f'conflicting registry measurements for SHA256 {digest}: {metric}')
+            sources = set(old.get('sources', []))
+            if old.get('submission'):
+                sources.add(old['submission'])
+            if row.get('submission'):
+                sources.add(row['submission'])
+            sources.update(row.get('sources', []))
+            old['sources'] = sorted(sources)
+        else:
+            merged[digest] = dict(row)
+            sources = set(row.get('sources', []))
+            if row.get('submission'):
+                sources.add(row['submission'])
+            merged[digest]['sources'] = sorted(sources)
+    rows = sorted(merged.values(), key=lambda r: (r.get('repo', ''), r.get('submission', ''), r['sha256']))
+    meta = {k: previous.get(k) for k in identity_keys}
+    meta['my_file'] = previous.get('my_file')
+    expected = int(registry_rasters_expected)
+    complete = bool(complete_accessible_scan and len(rows) == expected)
+    result = summarize_registry_rows(
+        rows, registry_rasters_expected=expected,
+        complete_accessible_scan=complete,
+        source_errors=[], candidate_meta=meta,
+        scope=scope or 'Immutable complete prior audit merged with all newly discovered public-main raster blobs; inaccessible/private/unlinked sources remain outside scope.',
+    )
+    result['phase'] = extension.get('phase', previous.get('phase'))
+    result['reviewed_utc'] = extension.get('reviewed_utc')
+    result['submission_slots_used'] = int(previous.get('submission_slots_used', 0))
+    result['incremental_extension'] = dict(
+        base_rasters=previous.get('registry_rasters_checked'),
+        newly_discovered_rasters=extension.get('registry_rasters_checked'),
+        deduplicated_rasters=expected,
+    )
+    return result
+
+
 def surface_rho(mine, theirs, valid):
     m = np.asarray(mine, np.float32)[valid]
     t = np.asarray(theirs, np.float32)[valid]
@@ -156,33 +280,21 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             rows.append({**base, 'error':str(e)})
         if progress:
             progress(i+1,len(records),rows[-1])
-    checked = [r for r in rows if 'error' not in r]
-    errors = [r for r in rows if 'error' in r]
-    flags = [r for r in checked if any(r[k] for k in ('duplicate_by_rho','duplicate_by_overlap','duplicate_by_jaccard','identical_bytes','identical_decoded_predictions'))]
-    complete = inventory_complete and bool(records) and not errors and not source_errors
-    rank_rows = [r for r in checked if r['spearman_full_footprint'] is not None]
-    worst_rho = max(rank_rows, key=lambda r:r['spearman_full_footprint'], default=None)
-    worst_ov = max(checked,key=lambda r:r['my_dots_within_3px_of_theirs'],default=None)
-    worst_jac = max(checked,key=lambda r:r['jaccard_dot_sets'],default=None)
-    unique = complete and my_dot_count > 0 and norm > 0 and not flags
-    return dict(evidence_class='REGISTRY-MEASUREMENT', my_dots=my_dot_count,
-        candidate_decoded_sha256=decoded_digest, candidate_file_sha256=file_sha256,
-        rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
-        registry_rasters_expected=len(records), registry_rasters_checked=len(checked),
-        complete_accessible_scan=complete, missing_or_invalid=len(errors), source_errors=source_errors,
-        worst_spearman_full_footprint=worst_rho['spearman_full_footprint'] if worst_rho else None,
-        worst_rho_submission=worst_rho['submission'] if worst_rho else None,
-        worst_dot_overlap=worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None,
-        worst_overlap_submission=worst_ov['submission'] if worst_ov else None,
-        worst_jaccard_dot_sets=worst_jac['jaccard_dot_sets'] if worst_jac else None,
-        worst_jaccard_submission=worst_jac['submission'] if worst_jac else None,
-        byte_unique_among_checked=bool(checked) and not any(r['identical_bytes'] for r in checked),
-        pixel_unique_among_checked=bool(checked) and not any(r['identical_decoded_predictions'] for r in checked),
-        duplicate_count=len(flags), unique=bool(unique), rows=rows,
-        verdict='promote-to-selector-only' if unique else 'negative',
-        stop_required=bool(flags or not complete or not my_dot_count or norm == 0),
-        candidate_rank_variation=norm > 0,
-        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.')
+    complete = inventory_complete and bool(records) and not source_errors
+    return summarize_registry_rows(
+        rows,
+        registry_rasters_expected=len(records),
+        complete_accessible_scan=complete,
+        source_errors=source_errors,
+        candidate_meta=dict(
+            my_file=None,
+            my_dots=my_dot_count,
+            candidate_decoded_sha256=decoded_digest,
+            candidate_file_sha256=file_sha256,
+            candidate_rank_variation=norm > 0,
+        ),
+        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.',
+    )
 
 
 def compare_to_registry(mine_path, registry_index, footprint, **kwargs):
@@ -191,8 +303,10 @@ def compare_to_registry(mine_path, registry_index, footprint, **kwargs):
         if src.count != 1:
             raise ValueError('candidate must be single band')
         mine = src.read(1)
-    return dict(my_file=str(mine_path), **compare_array_to_registry(mine, registry_index, footprint,
-                file_sha256=_sha(mine_path), **kwargs))
+    result = compare_array_to_registry(mine, registry_index, footprint,
+        file_sha256=_sha(mine_path), **kwargs)
+    result['my_file'] = str(mine_path)
+    return result
 
 
 def saturation_certificate(registry_path, footprint, catalogue=None):

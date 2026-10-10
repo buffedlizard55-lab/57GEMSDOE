@@ -1,6 +1,6 @@
 {
   "evidence_class": "REGISTRY-MEASUREMENT",
-  "generated_utc": "2026-10-10T20:14:20.753573+00:00",
+  "generated_utc": "2026-10-10T20:01:44.491256+00:00",
   "owner": "buffedlizard55-lab",
   "repos_scanned": [
     "11GEMSDOE",
@@ -112,7 +112,7 @@
     },
     {
       "repo": "57GEMSDOE",
-      "commit": "bf6d9260e96e581766095ea3cafecd661a854bbc"
+      "commit": "5309c85a6334c5715791c548dafc2fabdacc8568"
     },
     {
       "repo": "5GEMSDOE",
@@ -276,7 +276,7 @@
     },
     {
       "repo": "GEMSDOE52",
-      "commit": "ebb1d343f8f5a5a33a5835776add16b668f6fbea"
+      "commit": "22091610117447c174b65d074d0df73d2a8b2e27"
     },
     {
       "repo": "GEMSDOE53",
@@ -308,7 +308,7 @@
       4508550
     ]
   },
-  "n_unique_grid_rasters": 698,
+  "n_unique_grid_rasters": 696,
   "complete_accessible_scan": true,
   "skipped": [
     {
@@ -1851,17 +1851,6 @@
         "GEMSDOE38:docs/downloads/gems38-realdata-A-20261005-736488e5ab49-nan.tif"
       ],
       "repo_first": "GEMSDOE38"
-    },
-    {
-      "repo_first": "GEMSDOE52",
-      "blob": "86b71dde0039b2a6c79ca7342c1519c1828f89c1",
-      "sources": [
-        "GEMSDOE52:submission/gems52-h83-structural-concordance-37654px-20261010T200049Z.tif"
-      ],
-      "source_commit": "ebb1d343f8f5a5a33a5835776add16b668f6fbea",
-      "sha256": "274db602ec8b91cb6a2793e9f512321f32326298aa8ed031ebd478e21426f5cd",
-      "bytes": 1558064,
-      "cache_file": ".cache/registry/86b71dde0039b2a6c79ca7342c1519c1828f89c1.tif"
     },
     {
       "sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
@@ -7064,18 +7053,6 @@
       "repo_first": "12GEMSDOE"
     },
     {
-      "repo_first": "GEMSDOE52",
-      "blob": "605caf858986627cb70e58795e79c6b0a1a1f519",
-      "sources": [
-        "GEMSDOE52:docs/downloads/h83-candidate.tif",
-        "GEMSDOE52:submission/gems52-h83-structcon-geotherm-37654px-20261010T200310Z.tif"
-      ],
-      "source_commit": "ebb1d343f8f5a5a33a5835776add16b668f6fbea",
-      "sha256": "d9cfccf0e1aa4e28094a6039fda9e65be5e8ff102e321b33745df149f477f378",
-      "bytes": 81076,
-      "cache_file": ".cache/registry/605caf858986627cb70e58795e79c6b0a1a1f519.tif"
-    },
-    {
       "sha256": "da4193e3a2e0470908b5bd1e28de97f25ee1ce15c57c959d0b623414d200692a",
       "bytes": 810344,
       "blob": "63a57a2b6b1656eb01febf8ed8889185243a25d6",
@@ -8191,12 +8168,20 @@
     }
   ],
   "later_main_commit": "d6e7675ede4417cfb6cfdedb52620a1b596e6231",
-  "latest_main_commit_scan_utc": "2026-10-10T20:14:20.753573+00:00",
+  "latest_main_commit_scan_utc": "2026-10-10T20:01:44.491256+00:00",
   "incremental_extension": {
-    "base_registry_rasters": 696,
-    "added_unique_grid_rasters": 2,
+    "base_registry_rasters": 679,
+    "added_unique_grid_rasters": 17,
     "changed_repositories": [
+      "12GEMSDOE",
+      "55GEMSDOE",
+      "56GEMSDOE",
       "57GEMSDOE",
+      "GEMSDOE23",
+      "GEMSDOE25",
+      "GEMSDOE27",
+      "GEMSDOE28",
+      "GEMSDOE32",
       "GEMSDOE52"
     ],
     "current_candidate_excluded_by_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a"

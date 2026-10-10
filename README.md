@@ -8,7 +8,9 @@
 
 **[↓ Download the new GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip)** · [Complete JSON run card](evidence/run_card_current.json)
 
-This is a newly fitted **soft research surface**, not a copy or modification of a prior submission. Byte/pixel identity is distinct against all 679 audited grid rasters, but **the literal uniqueness protocol FAILED**: worst forward overlap is 1.0 (limit 0.70), with 78 triggered comparisons. Worst full-footprint Spearman is 0.821258 (limit 0.90). A dense previous surface is a universal overlap blocker under `finite value > 0` support. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
+This is a newly fitted **soft research surface**, not a copy or modification of a prior submission. Byte/pixel identity is distinct against all 698 audited grid rasters, but **the literal uniqueness protocol FAILED**: worst forward overlap is 1.0 (limit 0.70), with 80 triggered comparisons. Worst full-footprint Spearman is 0.821258 (limit 0.90). A dense previous surface is a universal overlap blocker under `finite value > 0` support. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
+
+On 2026-10-10, all 57 listed repositories' current public-main commits were checked twice as main advanced. The first update added 17 hash-verified rasters (delta maximum forward overlap 0.779153; 2 triggers); a subsequent update found 2 more rasters (no new delta triggers). Both used the same candidate and literal thresholds. The union audit is complete for its stated accessible-public scope (698 rasters), not private/unlinked or later-written files. See the [latest delta inventory](evidence/registry_live_delta.json), [latest two-raster measurements](evidence/orientation_surface_delta_uniqueness.json), [first 17-raster delta](evidence/orientation_surface_delta_uniqueness_20261010T2001.json), [intermediate 696-raster audit](evidence/orientation_surface_uniqueness_20261010T2001.json), and [complete current measurements](evidence/orientation_surface_uniqueness.json). The current surface failed before placement; no final dots were generated.
 
 Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, every cell finite, range `[0, 0.7537760735]`, zero positive mass on the known catalogue or outside the footprint. This is bridge-template compatibility, **not authenticated official-template identity or organizer acceptance**. The cause of the owner's reported range error is unproven; all-finite zero-fill is a precaution, not a claim that the portal rejects outside-footprint NaN.
 
@@ -33,7 +35,9 @@ The downloadable TIFF matches the **soft-surface method**, not the binary test-f
 
 All **14 feature-alone leakage canaries** were tested using `max(AUC, 1−AUC)` per fold. Maximum discriminative AUC is **0.825867** (diagnostic, not DTI), below 0.90. A clean canary reduces specific risks; it does not certify the absence of all leakage or new-fault domain shift.
 
-Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orientation_canary.json), [structure](evidence/orientation_structure.json), [all per-raster checks](evidence/orientation_surface_uniqueness.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
+**HOLDOUT-STRUCTURE (descriptive, not a score):** on the fixed seed-20 buffered draw, 11,321 withheld-positive pixels were present and 10,811 had measurable local axial strike at coherence >0.2. Pixel-weighted relative-strike medians are 13.44° withheld versus 6.40° visible reference; among each side’s valid angle samples, the 0–7.5° bin contains 30.4% versus 55.3%, respectively. The reference is censored to the nearest different-component trace among 13 nearest queried visible pixels (including self); the samples are not segment-weighted. No significance test or DTI conclusion was run, and the structure-only receipt changed no fit, score, dot placement or promotion decision. See [full descriptive receipt](evidence/orientation_structure.json) and its [method-page distribution](https://buffedlizard55-lab.github.io/57GEMSDOE/method.html).
+
+Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orientation_canary.json), [structure](evidence/orientation_structure.json), [all 698 per-raster checks](evidence/orientation_surface_uniqueness.json), [latest two-raster delta comparisons](evidence/orientation_surface_delta_uniqueness.json), [first 17-raster delta](evidence/orientation_surface_delta_uniqueness_20261010T2001.json), [current-head inventory extension](evidence/registry_live_delta.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
 
 ## The important review finding
 
@@ -64,6 +68,8 @@ python3 -m venv .venv
 PYTHON=.venv/bin/python bash scripts/download_competition_data.sh --cache-bands
 .venv/bin/python scripts/prepare_data.py
 .venv/bin/python scripts/refresh_registry.py
+.venv/bin/python scripts/refresh_registry_delta.py
+.venv/bin/python scripts/refresh_site_inventory.py
 OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientation_experiments.py --build-research-surface --minutes 65
 .venv/bin/python scripts/build_site.py
 .venv/bin/python scripts/check_site.py
@@ -78,7 +84,7 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
 - [Four pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. Relative magnetic strike tested; multi-scale bends, two-host superposition and sense transitions not run.
-- [57 pinned sibling sites](evidence/site_inventory.json); [679 conservative grid-raster inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
+- [57 current public-main site pins](evidence/site_inventory.json); [698-raster current public-head inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 
