@@ -1,0 +1,67 @@
+{
+  "hypothesis": "H6-1: remove E2 relay+bend allocations within 2 px of the fold-visible catalogue; compare against equal-count fixed-seed random pruning.",
+  "mechanism": "Known-trace proximity has no intrinsic scoring credit; pruning tests whether near-trace allocations are redundant while detached splays and relay strands retain hidden-fault credit.",
+  "named_non_fault_process_that_could_mimic_it": "Cartographic line thickness, digitization offsets, and regional mapping-density variation can create apparent near-trace redundancy without a mechanical secondary strand.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.13525762125316024,
+    "ci95": [
+      0.11849271351344956,
+      0.15309928607781778
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 2153.6318045580256,
+    "fpw": 32174.584668149862,
+    "fnw": 9167.368195441974
+  },
+  "holdout_dti_ci95": [
+    0.11849271351344956,
+    0.15309928607781778
+  ],
+  "comparison": {
+    "against": "equal-count fixed-seed random pruning",
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": 0.00010805751066667035,
+    "ci95": [
+      -7.568312867391177e-07,
+      0.00023509666481877836
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "leakage_canary": {
+    "feature": "distance to fold-visible catalogue",
+    "auc_per_fold": [
+      0.2065489378575143,
+      0.22593914343050275,
+      0.25234330666490346,
+      0.29294824076923076
+    ],
+    "auc_mean": 0.24444490718053782,
+    "auc_min": 0.2065489378575143,
+    "auc_max": 0.29294824076923076,
+    "discriminative_auc_mean": 0.7555550928194622,
+    "discriminative_auc_max": 0.7934510621424857,
+    "leakage_threshold": 0.9,
+    "leakage_flag": false
+  },
+  "correlation_overlap_vs_registry": {
+    "surface": null,
+    "final_dots": null,
+    "reason": "The promotion rule failed before registry gating; no live candidate was built. The retained E2 surface had already failed the literal universal-support overlap gate."
+  },
+  "raster_sha256": null,
+  "validator_output": null,
+  "submission_name": null,
+  "submission_note": null,
+  "verdict": "negative",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "experiments_used": 1,
+  "submission_slots_used": 0,
+  "reason": "Paired H6-1 minus random-prune HOLDOUT-DTI 95% CI includes zero; per instructions, no weekly submission candidate was built.",
+  "evaluator_version": "gems57-pooled-hide-v2",
+  "withheld_positive_pixels": 11321,
+  "source_evidence": "evidence/h6_1_proximity_pruning_holdout.json"
+}

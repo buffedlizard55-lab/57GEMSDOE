@@ -27,7 +27,9 @@ PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orie
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'feed_refresh_status',
           'attribute_audit_20261010', 'holdout_scope_reconciliation_20261010', 'session6_hypotheses',
-          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'h6_1_proximity_pruning_holdout', 'session7_hypotheses', 'run_card_session7',
+          'review_passes_session7']
 
 
 def esc(value):
@@ -260,6 +262,15 @@ def build(root=ROOT, make_preview=True):
     raw = card['holdout_dti']
     dots = card['holdout_dot_dti']
     panel = download_panel(card)
+    h6 = evidence['h6_1_proximity_pruning_holdout']
+    h6_score = h6['scores']['proximity_prune']
+    h6_delta = h6['paired_differences']['random_prune']
+    latest_experiment = f'''<section class="warning"><div class="eyebrow">LATEST EXPERIMENT · H6-1 · NEGATIVE</div>
+<h2>No new submission TIFF was cleared.</h2>
+<p>Visible-catalogue proximity pruning produced <strong>HOLDOUT-DTI {number(h6_score['dti'], 6)}</strong>, 95% CI {interval(h6_score['ci95'])}, on {h6_score['withheld_positive_pixels']:,} withheld positives with evaluator <code>{esc(h6_score['evaluator_version'])}</code>. Its paired gain over equal-count fixed-seed random pruning was <strong>{number(h6_delta['delta'], 6)}</strong>, 95% CI [{h6_delta['ci95'][0]:.8f}, {h6_delta['ci95'][1]:.8f}]. The lower bound is below zero, so the predeclared promotion rule failed.</p>
+<p><strong>Download: NO. Submit: NO.</strong> Following the instruction not to spend a slot on a candidate that did not beat the holdout control, no live raster was built and no slot was used. This directly conflicts with the simultaneous demand to produce a cleared unique TIFF; the evidence-first stop rule controls rather than fabricating clearance.</p>
+<p>{link('data/h6_1_proximity_pruning_holdout.json', 'Experiment receipt')} · {link('data/session7_hypotheses.json', 'Ranked hypotheses')} · {link('data/run_card_session7.json', 'Session-7 run card')}</p></section>'''
+    panel += latest_experiment
     disclaimer = evidence_notice(card)
     names = {'distance_only': 'Distance only (control)',
              'anatomy': 'Single-host visible anatomy (repaired control)',
