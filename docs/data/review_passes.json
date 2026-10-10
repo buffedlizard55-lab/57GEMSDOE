@@ -184,7 +184,7 @@
     "completed_utc": "2026-10-10T22:39:43Z",
     "pull_request": 29,
     "branch": "arena/779294eb-57gemsdoe",
-    "state_at_review": "OPEN; base main; local merge and provenance edits validated; push/merge pending",
+    "state_at_review": "OPEN; base main; validated merge commit pushed to the intended branch; GitHub reported no status checks/workflow runs and mergeability UNKNOWN; merge action pending",
     "passes": [
       {
         "pass_number": 1,
@@ -200,7 +200,7 @@
         "pass_number": 3,
         "scope": "Post-build, test, delivery-safety and PR review.",
         "status": "complete locally; remote merge pending",
-        "result": "Full pytest: 152 collected, 150 passed, 0 failed, 2 skipped because the ignored 419 MB feature TIFF and .cache band are absent from this snapshot. compileall PASS; 197 JSON files parsed; git diff --check PASS. scripts/check_site.py PASS: 31 pages, links and format/ZIP identity pass, research_download_cleared=false and submission_cleared=false. The retained TIFF SHA256 remains cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648; no TIFF bytes changed. PR #29 is open on the intended branch with base main; no remote check run was reported before push."
+        "result": "Full pytest: 152 collected, 150 passed, 0 failed, 2 skipped because the ignored 419 MB feature TIFF and .cache band are absent from this snapshot. compileall PASS; 197 JSON files parsed; git diff --check PASS. scripts/check_site.py PASS: 31 pages, links and format/ZIP identity pass, research_download_cleared=false and submission_cleared=false. The retained TIFF SHA256 remains cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648; no TIFF bytes changed. The validated merge commit is pushed to PR #29 on the intended branch, but gh pr checks and gh run list reported no remote checks; GitHub mergeability remains UNKNOWN."
       }
     ],
     "validation": {
@@ -225,6 +225,13 @@
         "research_download_cleared": false,
         "submission_cleared": false,
         "retained_tiff_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648"
+      },
+      "pr_status_after_push": {
+        "state": "OPEN",
+        "base": "main",
+        "head": "arena/779294eb-57gemsdoe",
+        "checks_reported": 0,
+        "mergeable": "UNKNOWN"
       }
     },
     "experiments": 0,
@@ -232,6 +239,6 @@
     "new_tiffs": 0,
     "submission_slots_used": 0,
     "organizer_submissions": 0,
-    "verdict": "negative; HOLD; no retained TIFF cleared; ready to publish after remote PR checks/merge"
+    "verdict": "negative; HOLD; no retained TIFF cleared; remote merge action pending after successful local validation"
   }
 }

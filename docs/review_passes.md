@@ -81,6 +81,6 @@ This review is distinct from the archived 2026-10-09 review above. Scope: preser
 - `.venv/bin/python -m pytest -q --junitxml=evidence/tests-pr29.xml`: **152 collected, 150 passed, 0 failed, 2 skipped**. Both skips require the ignored 419 MB feature TIFF or `.cache` band file absent from this checkout snapshot; prior hash receipts remain historical and no refetch was performed.
 - `compileall`, JSON parsing (197 files), and `git diff --check`: pass.
 - `scripts/check_site.py`: **31 pages**, links and local format/ZIP identity pass; `research_download_cleared=false`, `submission_cleared=false`. The retained audit TIFF SHA256 remains `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`.
-- At this review point PR #29 is open against `main`; remote checks and the merge remain pending the push of the validated branch.
+- At this review point PR #29 is open against `main` and the validated merge commit is pushed to the intended branch. GitHub reported no status checks or workflow runs and still returned `mergeable=UNKNOWN`; the explicit merge action remains pending.
 
 Machine-readable record: `evidence/review_passes.json` → `pr29_provenance_cleanup_20261010`. Final merge outcome will be added there after GitHub reports it.
