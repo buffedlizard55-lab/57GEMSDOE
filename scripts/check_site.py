@@ -232,14 +232,29 @@ def check(root: Path = ROOT) -> dict:
     report = card.get("registry_comparison", {})
     cache = report.get("current_cache_preflight", {})
     expected = report.get("indexed_matching_grid_rasters")
-    cache_ok = (
+    # Either the pre-session 0/679 HOLD state, or a session-6 verified state that must
+    # agree with the measured profile evidence. Both keep HOLD; neither clears a candidate.
+    incomplete_ok = (
         cache.get("status") == "HOLD / INCOMPLETE"
         and cache.get("verified_rasters") == 0
         and cache.get("missing_cache_files") == expected
-        and expected == 679
     )
+    verified_ok = False
+    profile_path = root / "evidence" / "registry_profile_session6.json"
+    try:
+        profile_summary = json.loads(profile_path.read_text(encoding="utf-8"))["summary"]
+        verified_ok = (
+            str(cache.get("status", "")).startswith("VERIFIED")
+            and cache.get("verified_rasters") == expected == profile_summary["indexed"] == 679
+            and cache.get("missing_cache_files") == profile_summary["errors"] == 0
+            and cache.get("sha256_mismatches") == profile_summary["sha256_pin_mismatches"] == 0
+            and cache.get("git_blob_sha1_mismatches") == profile_summary["git_blob_sha1_mismatches"] == 0
+        )
+    except (OSError, json.JSONDecodeError, KeyError):
+        verified_ok = False
+    cache_ok = (incomplete_ok or verified_ok) and expected == 679
     if not cache_ok:
-        errors.append("current 679-raster cache preflight is not recorded as 0/679 HOLD")
+        errors.append("current 679-raster cache preflight is neither the recorded 0/679 HOLD state nor a verified state matching evidence/registry_profile_session6.json")
     if "not organizer-complete" not in str(card.get("registry_scope", "")).lower():
         errors.append("current run card overstates or omits the public registry's non-organizer-complete scope")
     audit_scope_path = root / "registry" / "audit_scope.json"
@@ -265,7 +280,7 @@ def check(root: Path = ROOT) -> dict:
         "public_receipts_withdrawn": public_receipts_withdrawn,
         "session4_withdrawn": session4_withdrawn,
         "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-        "cache_preflight": f"0/{expected} verified",
+        "cache_preflight": f"{cache.get('verified_rasters')}/{expected} verified",
         "final_dots": "not generated",
         "submission_cleared": False,
     }
@@ -283,7 +298,8 @@ def main() -> int:
     result = check()
     print(f"PASS: {result['pages_checked']} HTML pages; internal links resolve; HOLD is prominent; "
           "no active download links; current cards/ledger/hypotheses are consistent; historical receipts and unsafe publisher are withdrawn; "
-          "universal overlap blocker recorded; 0/679 cache verified")
+          "universal overlap blocker recorded; "
+          f"{result['cache_preflight']} cache")
     return 0
 
 

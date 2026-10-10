@@ -39,3 +39,12 @@ Date: 2026-10-09 (UTC)
 - Kept main's newer `metric.max_cover` return contract (distance grid) and routed active `fitting.run_cell` scoring through the shared evaluator. Targeted evaluator/pipeline tests: **16 passed**; after the final Session 5 merge, the full suite again passed: **89 passed, 2 skipped**.
 - Repaired the inventory wording across README, site, run cards, and gate tooling. The evidence is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Session 5's 19 local raster re-check is an even narrower cache slice, not a replacement for that index.
 - The Session 5 witness is a raster measurement, not a score; it corroborates the existing STOP and is not a new registry scan performed during this integration. No new experiment or organizer submission was run.
+
+
+## Session 6 (2026-10-10) — three passes
+
+Full record: `evidence/review_passes.json` (entries `session-6-1` to `session-6-3`).
+
+- **Pass 1 (implement and verify):** re-fetched all 679 indexed rasters with blob, SHA256 and grid checks (0 errors); reran the literal gate on that complete cache (78 firings, reproducing the historical scan); verified the owner-reported 0.2708 to 0.2778 file containment (2,545 removed dots, all 1.41-2.00 px from the catalogue); updated the card, ledger and site.
+- **Pass 2 (review):** fixed a stale checker guard that would have failed the verified state, a boundary error in one of my own tests, loose partition and overlap wording in the ledger, and stale cache statements in four documents. Full list in the JSON record.
+- **Pass 3 (re-check against the request):** no candidate TIFF is offered, because the literal rule cannot be satisfied and the protocol requires a stop. Status remains HOLD, with no holdout run, because the feature stack is unreachable.

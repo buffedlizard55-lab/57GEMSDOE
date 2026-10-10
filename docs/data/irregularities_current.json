@@ -224,6 +224,101 @@
         "scripts/check_site.py"
       ],
       "remaining": "Historical TIFF/ZIP bytes remain in docs/downloads for provenance and tests and have no active page links or authorization. A direct static asset URL may still resolve; the HOLD is an authorization decision, not access control."
+    },
+    {
+      "id": "IR-S6-01",
+      "severity": "critical",
+      "status": "OPEN — owner protocol decision required; no candidate can clear the literal gate",
+      "finding": "The literal uniqueness rule defines a 'dot' as any finite value > 0. Dense soft rasters therefore saturate it: 53 of 679 indexed rasters cover at least 50% of the 5,167,373-cell footprint, and 17GEMSDOE E-proba-multiscale covers 100%. The fresh full-registry scan (679/679 SHA-verified) reproduces 78 overlap firings, 52 at exactly 1.0.",
+      "resolution": "No change to the rule (owner-only authority). The saturation certificate proves every nonempty in-footprint candidate has forward overlap 1.0 with the E-proba witness. Options for the owner, to be pre-registered before any candidate is built: (B) binarise each registry raster to its declared dot budget, or (C) exclude dense soft surfaces from the overlap test while keeping the rank test. Candidate B is a suggestion only; it has NOT been tested against owner-scored rasters.",
+      "evidence": [
+        "evidence/session6_mechanism_and_witness.json",
+        "evidence/uniqueness_session6_full_registry.json",
+        "evidence/registry_profile_session6.json",
+        "scripts/session6_registry_audit.py",
+        "scripts/check_uniqueness_full.py"
+      ],
+      "remaining": "A decision by the owner is required. Until then the verdict is HOLD."
+    },
+    {
+      "id": "IR-S6-02",
+      "severity": "high",
+      "status": "OPEN — flagged for review",
+      "finding": "The owner's own rule would also reject real scored submissions. In the repository's uniqueness_decision analysis, the owner-reported 0.2708 (h27-4-r1-solo-d2-8) and 0.2750 (anderson-geothermal-pinn-38854) rasters each have forward overlap 1.0 against the owner-reported 0.2778 raster (live_02778_b2prune.tif). The analysis measures the literal rule against owner-scored files.",
+      "resolution": "Recorded, not altered. Any future rule revision must be tested against owner-scored rasters before adoption.",
+      "evidence": [
+        "evidence/uniqueness_decision.json",
+        "scripts/uniqueness_decision.py"
+      ],
+      "remaining": "Owner decision (see IR-S6-01)."
+    },
+    {
+      "id": "IR-S6-03",
+      "severity": "high",
+      "status": "OPEN — flagged for review",
+      "finding": "The official reference solution writes continuous sigmoid probabilities over the grid and notes that thresholding may help ('it may be advantageous to threshold this map'). Sigmoid values are positive almost everywhere, so under the literal finite > 0 definition a reference-style submission counts as nearly fully dense.",
+      "resolution": "Verified from the official DrivenData repository (github.com/drivendataorg/gems-prize-reference-solution, unet-mc-cv-reference-solution.ipynb, cells 16-20). Documented; no rule change.",
+      "evidence": [
+        "https://github.com/drivendataorg/gems-prize-reference-solution/blob/main/unet-mc-cv-reference-solution.ipynb"
+      ],
+      "remaining": "Owner decision; tie to IR-S6-01."
+    },
+    {
+      "id": "IR-S6-04",
+      "severity": "high",
+      "status": "OPEN — registry hygiene",
+      "finding": "The uniqueness corpus includes non-prediction rasters. Of the 53 dense rasters (>= 50% footprint positive): 32 are auxiliary by path (30 float32 diagnostics, mostly GEMSDOE48 Dempster-Shafer 'diagnostics'/'mtheta'/'plausibility'/'unassigned' files; 2 uint8 ID/mask rasters); 4 are uint8 derived context/mask rasters; 17 are float32 non-auxiliary soft fields. Path classification is a heuristic. Also 14 rasters have positive cells outside the footprint and 11 contain values outside [0,1].",
+      "resolution": "Recorded in evidence/registry_profile_session6.json; the gate was not changed to exclude them. Removing all 36 auxiliary or uint8 derived rasters would still leave 17 dense float32 soft fields, so the block would persist (the witness is among the 17).",
+      "evidence": [
+        "evidence/registry_profile_session6.json"
+      ],
+      "remaining": "Owner review of the corpus definition."
+    },
+    {
+      "id": "IR-S6-05",
+      "severity": "critical",
+      "status": "OPEN — data access limitation",
+      "finding": "Holdout validation cannot run. data/official/training_features.tif is absent. The feature stack link (Dropbox, gems-geodawn-numerical-features.tif) returns HTTP 000 from this sandbox, and the DrivenData data tab is login-gated (HTTP 000 from this sandbox). docs.nlr.gov, gdr.openei.org and the github.io pages are also unreachable from here.",
+      "resolution": "No holdout result was produced in this session. The stored HOLDOUT-DTI figures remain historical, and their evaluator hashes are unchanged.",
+      "evidence": [
+        "data/README.md",
+        "evidence/session6_mechanism_and_witness.json"
+      ],
+      "remaining": "Requires an authorised, hash-pinned copy of the competition features obtained through an allowed route."
+    },
+    {
+      "id": "IR-S6-06",
+      "severity": "high",
+      "status": "OPEN — leaderboard claim conflict",
+      "finding": "The brief says 0.3195 is the highest score right now. The saved organizer snapshot (evidence/leaderboard_snapshot.json, retrieved 2026-10-09) lists 0.3774 at rank 1 and 0.3195 at rank 7. The live DrivenData leaderboard could not be re-fetched from this sandbox.",
+      "resolution": "Recorded: 0.3774 is the top public DTI in the snapshot; 0.3195 is rank 7. The snapshot is not a submission receipt.",
+      "evidence": [
+        "evidence/leaderboard_snapshot.json"
+      ],
+      "remaining": "Re-check the live leaderboard from an unrestricted machine."
+    },
+    {
+      "id": "IR-S6-07",
+      "severity": "medium",
+      "status": "verified at file level; causal link NOT established",
+      "finding": "Owner-reported 0.2708 to 0.2778 pair: the 37,654-dot 0.2778 raster is an exact subset of the 40,199-dot 0.2708 raster (added 0). The 2,545 removed dots all lie 1.41 to 2.00 px from the mapped catalogue, and no removed dot is on it. Kept dots are at least 2.24 px away.",
+      "resolution": "Measured with gems57 grid conventions. Explains what changed in the file, not why the score changed; no organizer receipt ties the score to these bytes.",
+      "evidence": [
+        "evidence/session6_mechanism_and_witness.json"
+      ],
+      "remaining": "Organizer receipt needed for ORGANIZER-CONFIRMED status."
+    },
+    {
+      "id": "IR-S6-08",
+      "severity": "medium",
+      "status": "FIXED this session — registry cache now verified",
+      "finding": "The previous cache preflight recorded 0/679 rasters present. This session re-fetched all 679 indexed rasters with immutable git-blob SHA1, pinned SHA256, single-band, EPSG:32611 and pinned-transform checks. All 679 passed; 0 errors.",
+      "resolution": "Cache lives under .cache/registry (gitignored, never committed). Evidence: evidence/registry_profile_session6.json and scripts/session6_registry_audit.py.",
+      "evidence": [
+        "evidence/registry_profile_session6.json",
+        "scripts/session6_registry_audit.py"
+      ],
+      "remaining": "Only the public owner-repository inventory is covered; private or unlinked rasters are not."
     }
   ]
 }

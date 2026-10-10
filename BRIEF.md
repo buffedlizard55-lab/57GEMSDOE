@@ -4,7 +4,7 @@
 scan covered 679 rasters and fired the literal forward-overlap stop in 78
 comparisons (maximum 3-pixel overlap 1.0 on soft-surface finite-positive
 support, not final dots); it is historical, not a current cache revalidation.
-The current cache preflight found 0/679 indexed rasters present. A session-5
+Session 6 (2026-10-10) superseded the cache state: all 679/679 indexed rasters were re-fetched and blob/SHA256/grid-verified, and the literal gate reproduces 78 firings on that complete cache. The owner must decide how soft registry rasters count as dots (IR-S6-01). A session-5
 witness audit independently verified one in-scope 17GEMSDOE raster whose
 3-pixel support covers every allowable candidate cell; under the literal
 >70% rule, any nonempty candidate is blocked while it remains in scope. That

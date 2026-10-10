@@ -12,6 +12,14 @@ Historical TIFF/ZIP files remain in the repository for provenance; a direct stat
 resolve. That is not download authorization. No weekly slot was used. The current decision is
 <b>negative / not promoted</b>.</p>
 </div>
+<div class="card"><h3>Session 6 (2026-10-10): what was verified</h3><ul>
+<li>Registry: 679/679 indexed rasters re-fetched and verified (immutable git-blob SHA1, pinned SHA256, competition grid). 0 missing. Evidence: <code>evidence/registry_profile_session6.json</code>.</li>
+<li>Literal overlap gate re-run on the complete cache: 78 firings, reproducing the historical scan. Evidence: <code>evidence/uniqueness_session6_full_registry.json</code>.</li>
+<li>Universal blocker: 17GEMSDOE E-proba-multiscale covers the whole footprint, so every nonempty candidate has forward overlap 1.0 with it. Block persists after removing auxiliary-looking rasters (53 dense rasters in total).</li>
+<li><b>Owner decision required (IR-S6-01):</b> how a soft registry raster's “dots” are defined. No candidate can clear the literal rule until that is decided. Nothing has been built or submitted.</li>
+<li>Holdout not run: <code>training_features.tif</code> is absent and its link is unreachable from the audit environment (IR-S6-05).</li>
+<li>Leaderboard: the saved organizer snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7 (IR-S6-06).</li>
+</ul></div>
 <h2>Executive status</h2>
 <div class="card"><dl class="kv">
 <dt>Download / submission</dt><dd><b>NOT CLEARED</b></dd>
@@ -25,8 +33,8 @@ resolve. That is not download authorization. No weekly slot was used. The curren
 <dt>Withheld positives</dt><dd>11321</dd>
 <dt>Evaluator</dt><dd>gems57-pooled-hide-v2</dd>
 <dt>Registry index size</dt><dd>679</dd>
-<dt>Registry scope</dt><dd>679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.</dd>
-<dt>Registry cache preflight</dt><dd>HOLD / INCOMPLETE — 0/679 verified; 679 missing</dd>
+<dt>Registry scope</dt><dd>679-entry indexed public owner-repository inventory, now fully re-fetched and SHA/blob-verified in session 6 (0 errors). Not organizer-complete: private, unlinked, closed-branch-only, external, unavailable or later-written rasters may be absent.</dd>
+<dt>Registry cache preflight</dt><dd>VERIFIED — session 6 (2026-10-10) — 679/679 verified; 0 missing</dd>
 <dt>Literal overlap gate</dt><dd>HOLD / STOP; forward-overlap gate fired before placement; max pre-placement positive-support overlap within 3 px 1.000000; 78 firings</dd>
 <dt>Independent universal-overlap witness</dt><dd>17GEMSDOE raster SHA256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be; covers every allowable cell. Any nonempty candidate has measured 3-px forward overlap 1.0 while this witness remains in scope. This is not a score or full-cache revalidation.</dd>
 </dl></div>
@@ -34,15 +42,16 @@ resolve. That is not download authorization. No weekly slot was used. The curren
 HOLDOUT-DTI reading whose source hashes do not match the current tree; it is not current-code clearance or a live-score projection. The indexed public-inventory
 report records 78 forward-overlap firings (78 itemized) on the
 soft surface's finite-positive support, not final dots; it therefore does not clear the literal
-stop rule. Current cache verification is HOLD / INCOMPLETE. The publisher is retired; any future replacement must verify every indexed raster and disclose that this inventory is not organizer-complete.
+stop rule. Current cache verification is VERIFIED — session 6 (2026-10-10). The publisher is retired; any future replacement must verify every indexed raster and disclose that this inventory is not organizer-complete.
 See <a href="run-card.html">the run card</a>.</div>
 <h2>What must happen before a future build</h2>
 <ol>
 <li>Generate a current-code, source/input-hash-pinned spatial holdout result and an independent
 selector receipt. The recorded three-experiment budget is exhausted; this is not authorization to
 run one now.</li>
-<li>Restore and SHA256-verify every raster in the indexed registry. Missing cache entries mean the
-uniqueness gate cannot run.</li>
+<li>Registry cache: done in session 6 (every indexed raster re-fetched and blob/SHA256/grid-verified).
+The remaining gate problem is the owner's dot definition for soft registry rasters (IR-S6-01); a
+fresh registry check is needed for any future candidate.</li>
 <li>Run the continuous-surface comparison, pre-placement dot comparison, and final-dot comparison.
 Stop at the protocol thresholds; do not retune after a firing.</li>
 <li>Only then may the fail-closed writer package one validated GeoTIFF and a one-TIFF ZIP. A weekly
@@ -51,5 +60,5 @@ slot still requires a separate selector decision.</li>
 <p>See the <a href="executive-summary.html">executive submission guide</a> and the
 <a href="hypotheses.html">ranked untried hypotheses</a>.</p>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:55 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

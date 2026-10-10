@@ -146,7 +146,7 @@ A historical prior version is retained separately as <code>evidence/run_card_his
   &quot;verdict&quot;: &quot;negative&quot;,
   &quot;okay_to_download&quot;: false,
   &quot;okay_to_submit&quot;: false,
-  &quot;verdict_reason&quot;: &quot;The historical 679-raster pre-placement scan fired the literal forward-overlap stop; an independently SHA-verified 17GEMSDOE witness covers every allowable cell and makes the &gt;70% rule unsatisfiable for any nonempty candidate while it remains in scope. The complete local cache is still 0/679, so there is no current full-inventory revalidation. Do not download, build, or submit.&quot;,
+  &quot;verdict_reason&quot;: &quot;Held. The literal gate was re-run on a complete, hash-verified 679-raster cache (session 6) and reproduces the 78 forward-overlap firings. The 17GEMSDOE E-proba-multiscale raster covers 100% of the footprint, so every nonempty in-footprint candidate has overlap 1.0 with it (saturation certificate). The block persists after removing auxiliary-looking rasters. Owner must decide the dot definition for soft registry rasters before any candidate is built. Do not download, build, or submit.&quot;,
   &quot;recorded_sense&quot;: {
     &quot;tested&quot;: true,
     &quot;retained&quot;: false,
@@ -165,7 +165,7 @@ A historical prior version is retained separately as <code>evidence/run_card_his
   &quot;submission_slots_used&quot;: 0,
   &quot;generated_utc&quot;: &quot;2026-10-10T07:46:18Z&quot;,
   &quot;registry_reviewed_utc&quot;: &quot;2026-10-09T21:01:12.836328+00:00&quot;,
-  &quot;registry_scope&quot;: &quot;679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.&quot;,
+  &quot;registry_scope&quot;: &quot;679-entry indexed public owner-repository inventory, now fully re-fetched and SHA/blob-verified in session 6 (0 errors). Not organizer-complete: private, unlinked, closed-branch-only, external, unavailable or later-written rasters may be absent.&quot;,
   &quot;current_audit_status&quot;: &quot;HOLD \u2014 NOT OK TO DOWNLOAD OR SUBMIT&quot;,
   &quot;current_run_card&quot;: &quot;evidence/run_card.json&quot;,
   &quot;audit_date_utc&quot;: &quot;2026-10-10&quot;,
@@ -228,25 +228,16 @@ A historical prior version is retained separately as <code>evidence/run_card_his
     &quot;max_jaccard_dot_sets_diagnostic_only&quot;: 0.6366446695387807,
     &quot;verdict&quot;: &quot;HOLD / STOP \u2014 forward overlap threshold fired before placement; final-dot comparison was correctly not run&quot;,
     &quot;current_cache_preflight&quot;: {
-      &quot;status&quot;: &quot;HOLD / INCOMPLETE&quot;,
+      &quot;status&quot;: &quot;VERIFIED \u2014 session 6 (2026-10-10)&quot;,
       &quot;indexed_rasters&quot;: 679,
-      &quot;verified_rasters&quot;: 0,
-      &quot;missing_cache_files&quot;: 679,
-      &quot;sha256_mismatches&quot;: null,
-      &quot;hash_check_status&quot;: &quot;NOT RUN \u2014 no indexed cache files were present to hash&quot;,
+      &quot;verified_rasters&quot;: 679,
+      &quot;missing_cache_files&quot;: 0,
+      &quot;sha256_mismatches&quot;: 0,
+      &quot;git_blob_sha1_mismatches&quot;: 0,
+      &quot;hash_check_status&quot;: &quot;PASS \u2014 every indexed raster re-fetched into .cache/registry (gitignored) with immutable git-blob SHA1, pinned SHA256, single-band, EPSG:32611 and pinned-transform checks&quot;,
       &quot;registry_index_sha256&quot;: &quot;5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310&quot;,
-      &quot;checked_at_utc&quot;: &quot;2026-10-10&quot;,
-      &quot;missing_path_preview&quot;: [
-        &quot;.cache/registry/2a266668251f1f2f1013972329f484886e3b412a.tif&quot;,
-        &quot;.cache/registry/919b5c0a590b544b33a54068822afb8e21c0144d.tif&quot;,
-        &quot;.cache/registry/cf12b308d762ad013dce425384f26664cd79d940.tif&quot;,
-        &quot;.cache/registry/6b230be4c06cc176014f717fb87ff85b4c58d5a4.tif&quot;,
-        &quot;.cache/registry/b3985f8ae58eea2f4fb5fdbf0e1fff43b1cfe710.tif&quot;,
-        &quot;.cache/registry/ab2cedff6f0a8b5c6ed8da1737ab000a9056725a.tif&quot;,
-        &quot;.cache/registry/7bd014f31a7ce8f29579ba789fd6edf845f406ce.tif&quot;,
-        &quot;.cache/registry/57732c697e2aa7c50c8ce35fa3d8866aee103abf.tif&quot;
-      ],
-      &quot;result&quot;: &quot;The complete pinned registry lists 679 rasters; none of the indexed cache paths exists in this checkout. No current cache hashes or grids could be verified; the fail-closed builder stops before fitting or TIFF creation.&quot;
+      &quot;checked_at_utc&quot;: &quot;2026-10-10T20:50:50.894729+00:00&quot;,
+      &quot;evidence_file&quot;: &quot;evidence/registry_profile_session6.json&quot;
     },
     &quot;historical_644_inventory_report&quot;: {
       &quot;status&quot;: &quot;older reports for the prior -zeros.tif candidate; not the current 679-raster surface comparison&quot;,
@@ -290,7 +281,19 @@ A historical prior version is retained separately as <code>evidence/run_card_his
       &quot;implication&quot;: &quot;Every nonempty legal candidate has forward 3-px overlap 1.0 with this witness; the literal 0.70 stop threshold cannot be cleared while this raster remains in the comparison set.&quot;,
       &quot;scope_note&quot;: &quot;A specific witness was re-fetched and verified; this does not change the full local-cache preflight of 0/679.&quot;
     },
-    &quot;inventory_scope_disclosure&quot;: &quot;Public owner-repository inventory only; not organizer-complete. See registry/audit_scope.json.&quot;
+    &quot;inventory_scope_disclosure&quot;: &quot;Public owner-repository inventory only; not organizer-complete. See registry/audit_scope.json.&quot;,
+    &quot;session6_full_registry_gate&quot;: {
+      &quot;evidence_class&quot;: &quot;REGISTRY-MEASUREMENT \u2014 literal gate rerun on complete verified cache; not a score&quot;,
+      &quot;evidence_file&quot;: &quot;evidence/uniqueness_session6_full_registry.json&quot;,
+      &quot;registry_rasters_checked&quot;: 679,
+      &quot;complete_accessible_scan&quot;: true,
+      &quot;forward_overlap_firings&quot;: 78,
+      &quot;worst_spearman_full_footprint&quot;: 0.8212578086422125,
+      &quot;worst_dot_overlap&quot;: 1.0,
+      &quot;unique&quot;: false,
+      &quot;reproduces_historical_scan&quot;: true
+    },
+    &quot;dense_registry_rasters_ge_50pct_footprint&quot;: 53
   },
   &quot;validator_result&quot;: {
     &quot;evidence_status&quot;: &quot;historical local on-disk format/range receipt; not current revalidation, uniqueness clearance, organizer acceptance, or authorization to download&quot;,
@@ -376,7 +379,8 @@ A historical prior version is retained separately as <code>evidence/run_card_his
       &quot;status&quot;: &quot;PENDING FINAL POST-MERGE RUN&quot;,
       &quot;historical_pre_merge_result&quot;: &quot;101 collected; 99 passed, 2 skipped; run before merging current main and not final validation&quot;
     },
-    &quot;site_build_and_check&quot;: &quot;PENDING FINAL POST-MERGE REBUILD/CHECK&quot;
+    &quot;site_build_and_check&quot;: &quot;PASS \u2014 scripts/build_site.py then scripts/check_site.py --build (28 HTML pages; links resolve; HOLD prominent; 679/679 verified cache; no active download links)&quot;,
+    &quot;session6_verification_script&quot;: &quot;scripts/session6_registry_audit.py&quot;
   },
   &quot;historical_artifact_review&quot;: {
     &quot;evidence_class&quot;: &quot;HISTORICAL LOCAL FORMAT REVIEW \u2014 not uniqueness clearance or download authorization&quot;,
@@ -411,8 +415,44 @@ A historical prior version is retained separately as <code>evidence/run_card_his
     &quot;okay_to_download&quot;: false,
     &quot;okay_to_submit&quot;: false,
     &quot;organizer_acceptance&quot;: false
-  }
+  },
+  &quot;session6_verification&quot;: {
+    &quot;evidence_class&quot;: &quot;REPOSITORY-AUDIT \u2014 no experiments, holdouts, builds, downloads of competition data, or submissions&quot;,
+    &quot;generated_utc&quot;: &quot;2026-10-10T20:50:50.894729+00:00&quot;,
+    &quot;experiments_run&quot;: 0,
+    &quot;holdout_run&quot;: false,
+    &quot;holdout_blocker&quot;: &quot;training_features.tif absent; Dropbox feature link unreachable from sandbox (HTTP 000)&quot;,
+    &quot;registry&quot;: {
+      &quot;indexed&quot;: 679,
+      &quot;verified&quot;: 679,
+      &quot;dense_ge_50pct&quot;: 53,
+      &quot;positive_outside_footprint&quot;: 14,
+      &quot;values_outside_0_1&quot;: 11
+    },
+    &quot;witness_universal_blocker&quot;: true,
+    &quot;witness_sha256&quot;: &quot;ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be&quot;,
+    &quot;owner_reported_pair_containment&quot;: {
+      &quot;base_positive&quot;: 40199,
+      &quot;target_positive&quot;: 37654,
+      &quot;target_subset_of_base&quot;: true,
+      &quot;removed_vs_base&quot;: 2545,
+      &quot;removed_on_catalogue&quot;: 0,
+      &quot;removed_distance_px_min&quot;: 1.4142135623730951,
+      &quot;removed_distance_px_max&quot;: 2.0,
+      &quot;target_distance_px_min&quot;: 2.23606797749979,
+      &quot;note&quot;: &quot;OWNER-REPORTED labels; file containment measured; causal score link not established&quot;
+    },
+    &quot;leaderboard_snapshot_conflict&quot;: &quot;Brief says 0.3195 is highest; organizer snapshot (retrieved 2026-10-09) shows 0.3774 rank 1 and 0.3195 rank 7 (evidence/leaderboard_snapshot.json).&quot;,
+    &quot;reference_solution_output&quot;: &quot;Official reference notebook writes continuous sigmoid probabilities (positive almost everywhere) over the grid; thresholding suggested as an option.&quot;,
+    &quot;tests&quot;: &quot;pytest (CI command) passed in session 6 after all edits: exit 0. Includes tests/test_session6_audit.py (8 tests; synthetic + committed-evidence pins).&quot;,
+    &quot;owner_decision_required&quot;: [
+      &quot;IR-S6-01 dot definition for soft registry rasters (options B or C); pre-register before any candidate build&quot;,
+      &quot;IR-S6-04 corpus definition (auxiliary rasters)&quot;,
+      &quot;IR-S6-05 holdout data access&quot;
+    ]
+  },
+  &quot;generated_utc_session6&quot;: &quot;2026-10-10T20:50:50.894729+00:00&quot;
 }</pre>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:55 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

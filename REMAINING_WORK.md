@@ -14,7 +14,7 @@ inherited finite-positive support (treated as “dots” by the gate), with 78 f
 The overlap gate failed before placement, so final dots were not generated. The scan is historical.
 Two older `-zeros.tif` reports use different 644- and 655-raster snapshots (114/50 and 98/98
 overlap firings/itemized respectively); both also fail and neither is the current comparison. A
-fresh cache preflight found **0 of 679** indexed rasters present; no current cache hashes or grids
+fresh cache preflight (session 6 supersedes this) now verifies **679 of 679**; no current cache hashes or grids
 could be verified. No candidate fitting or TIFF creation occurred during that preflight.
 
 A session-5 independent witness check re-fetched and SHA256-verified the in-scope 17GEMSDOE
@@ -45,7 +45,7 @@ snapshot is not a submission-page receipt for exact bytes. No gain estimate is s
 domain under the required 3-pixel support rule, so any nonempty candidate fails the >70% test.
 Do not exclude it, alter the threshold, or apply a density/reverse-overlap exception without an
 explicit owner protocol revision. Under the unchanged rule, the gate is unsatisfiable.
-2. **Registry:** the present checkout has 0/679 cache files. Any future public-inventory audit
+2. **Registry (session 6: resolved for this checkout):** all 679 indexed rasters are now re-fetched and verified; the blocker is the dot definition (item 1), not the cache. Any future public-inventory audit
 would need every indexed file in `evidence/registry_refreshed.json` restored and SHA256/grid
 verified; the historical scan and one re-fetched witness do not replace that check. Even a complete
 local copy of this 679-entry public owner-repository inventory would not establish

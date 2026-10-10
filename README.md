@@ -6,6 +6,16 @@
 
 ## Submission status — **HOLD**
 
+> **Session 6 (2026-10-10) — what changed, verified line by line**
+>
+> - **Registry cache is now complete.** All **679 / 679** indexed public-owner rasters were re-fetched and verified (immutable git-blob SHA1, pinned SHA256, EPSG:32611 grid, pinned transform). 0 errors. Evidence: [`evidence/registry_profile_session6.json`](evidence/registry_profile_session6.json), script [`scripts/session6_registry_audit.py`](scripts/session6_registry_audit.py).
+> - **The literal gate reproduces** on that complete cache: 78 forward-overlap firings, worst overlap 1.0, worst rank correlation 0.821258 ([`evidence/uniqueness_session6_full_registry.json`](evidence/uniqueness_session6_full_registry.json)).
+> - **Why it blocks everything:** the 17GEMSDOE E-proba-multiscale raster has a positive value in all 5,167,373 footprint cells, so every nonempty candidate has overlap 1.0 with it ([`evidence/session6_mechanism_and_witness.json`](evidence/session6_mechanism_and_witness.json)). 53 of 679 rasters cover at least half the footprint.
+> - **Owner decision required (IR-S6-01):** the rule counts any finite value > 0 as a dot. The official reference output is a sigmoid map that is positive almost everywhere, so this rule cannot separate dense submissions from one another. A protocol change is needed before any candidate can be cleared. No candidate was built, downloaded, or submitted.
+> - **0.2778 mechanism (file level, owner-reported):** the 0.2778 raster is an exact subset of the owner-reported 0.2708 raster (40,199 → 37,654 dots). The 2,545 removed dots all lie 1.41–2.00 px from the mapped catalogue. This explains the file change, not the score; no organizer receipt is available.
+> - **Leaderboard conflict (IR-S6-06):** the saved organizer snapshot lists 0.3774 at rank 1 and 0.3195 at rank 7, so 0.3195 is not the top score.
+> - **Holdout still blocked (IR-S6-05):** the feature stack is absent and its link is unreachable from this environment. No experiment was run this session.
+
 > **NOT OK TO DOWNLOAD OR SUBMIT. There is no cleared submission file.**
 > Historical TIFF/ZIP bytes remain at `docs/downloads/` for audit and a direct URL may still resolve;
 > that is not download authorization. Do not use any retained artifact.
@@ -19,7 +29,7 @@ as “dots” by the literal gate) was 1.0, exceeding the 0.70 stop threshold in
 full-footprint Spearman was 0.821258, below its 0.90 threshold. The overlap
 rule fired, so the candidate was **not cleared** and no final dots were
 generated. That scan is historical, not a current cache revalidation: the
-current cache preflight found **0 of 679** indexed rasters present. A separate
+current cache preflight found **0 of 679** indexed rasters present (superseded in session 6: 679 of 679 now verified). A separate
 2026-10-10 witness audit re-fetched and SHA-verified the in-scope
 `17GEMSDOE_E-proba-multiscale` raster (SHA256
 `ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be`). Its
@@ -100,6 +110,12 @@ finite and in `[0,1]`, uses zero outside the valid footprint, and never silently
 clips or fills model output. Grid: EPSG:32611, 3730 × 3292, 100 m, pinned
 sample transform. Local validation is not organizer acceptance.
 
+## Working principles (focal point for every session)
+
+- **Maximize P(Win)** — in every decision, weigh tradeoffs and risk, and choose the path that maximizes the probability this project succeeds, without loosening the protocol.
+- **Own the outcome** — own results end to end, act on problems within our means, and treat failure and success as signals for improvement.
+- **Verify, do not assume** — every number is labelled HOLDOUT-DTI, ORGANIZER-CONFIRMED, OWNER-REPORTED or a measurement; sources are linked for manual review; irregularities are flagged in `evidence/irregularities_current.json`.
+
 ## Standing protocol (reread `BRIEF.md` before every session)
 
 1. Stay strictly in the fault-zone-anatomy lane.
@@ -141,6 +157,7 @@ chat; current audit status and evidence above supersede historical claims.
 | `scripts/run_cv.py` | Spatial CV instrument (not run during this audit) |
 | `scripts/build_submission.py` | Retired fail-closed stub; creates no candidate TIFF or ZIP while HOLD remains |
 | `scripts/build_r2_submission.py` | Retired session-2 publisher; its write-before-check/same-lane exception source is archived under `evidence/history/` |
+| `scripts/session6_registry_audit.py` | Session 6: re-verifies all 679 indexed rasters (blob SHA1, SHA256, grid), profiles dense/auxiliary rasters, saturation witness, owner-reported 0.2708→0.2778 containment. Writes `evidence/registry_profile_session6.json` and `evidence/session6_mechanism_and_witness.json`. |
 | `scripts/build_site.py` / `scripts/check_site.py` | Generate the HOLD-first executive site and check internal links/status gates |
 | `docs/research/hypotheses.md` | Ranked, source-grounded untried hypotheses |
 | `evidence/run_card.json` | Current audit run card; HOLD verdict |

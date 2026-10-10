@@ -58,6 +58,13 @@ def load_card() -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def irregularity_ledger() -> list:
+    path = EVIDENCE / "irregularities_current.json"
+    if not path.is_file():
+        return []
+    return json.loads(path.read_text(encoding="utf-8")).get("irregularities", [])
+
+
 def esc(value) -> str:
     return html.escape(str(value))
 
@@ -111,8 +118,18 @@ def build_status(card: dict) -> str:
     verified = cache.get("verified_rasters", "NOT VERIFIED")
     missing = cache.get("missing_cache_files", "NOT VERIFIED")
     cache_status = cache.get("status", "NOT VERIFIED")
+    gate = registry.get("session6_full_registry_gate", {})
+    s6 = {"dense_ge_50pct": registry.get("dense_registry_rasters_ge_50pct_footprint", "NOT AVAILABLE")}
     return f"""
 {hold_banner()}
+<div class="card"><h3>Session 6 (2026-10-10): what was verified</h3><ul>
+<li>Registry: {esc(cache.get('verified_rasters', 'NOT VERIFIED'))}/{esc(indexed)} indexed rasters re-fetched and verified (immutable git-blob SHA1, pinned SHA256, competition grid). {esc(cache.get('missing_cache_files', 'NOT VERIFIED'))} missing. Evidence: <code>evidence/registry_profile_session6.json</code>.</li>
+<li>Literal overlap gate re-run on the complete cache: {esc(gate.get('forward_overlap_firings', 'NOT AVAILABLE'))} firings, reproducing the historical scan. Evidence: <code>evidence/uniqueness_session6_full_registry.json</code>.</li>
+<li>Universal blocker: 17GEMSDOE E-proba-multiscale covers the whole footprint, so every nonempty candidate has forward overlap 1.0 with it. Block persists after removing auxiliary-looking rasters ({esc(s6.get('dense_ge_50pct', 'NOT AVAILABLE'))} dense rasters in total).</li>
+<li><b>Owner decision required (IR-S6-01):</b> how a soft registry raster's “dots” are defined. No candidate can clear the literal rule until that is decided. Nothing has been built or submitted.</li>
+<li>Holdout not run: <code>training_features.tif</code> is absent and its link is unreachable from the audit environment (IR-S6-05).</li>
+<li>Leaderboard: the saved organizer snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7 (IR-S6-06).</li>
+</ul></div>
 <h2>Executive status</h2>
 <div class="card"><dl class="kv">
 <dt>Download / submission</dt><dd><b>NOT CLEARED</b></dd>
@@ -142,8 +159,9 @@ See <a href="run-card.html">the run card</a>.</div>
 <li>Generate a current-code, source/input-hash-pinned spatial holdout result and an independent
 selector receipt. The recorded three-experiment budget is exhausted; this is not authorization to
 run one now.</li>
-<li>Restore and SHA256-verify every raster in the indexed registry. Missing cache entries mean the
-uniqueness gate cannot run.</li>
+<li>Registry cache: done in session 6 (every indexed raster re-fetched and blob/SHA256/grid-verified).
+The remaining gate problem is the owner's dot definition for soft registry rasters (IR-S6-01); a
+fresh registry check is needed for any future candidate.</li>
 <li>Run the continuous-surface comparison, pre-placement dot comparison, and final-dot comparison.
 Stop at the protocol thresholds; do not retune after a firing.</li>
 <li>Only then may the fail-closed writer package one validated GeoTIFF and a one-TIFF ZIP. A weekly
@@ -380,8 +398,15 @@ def build_irregularities(card: dict) -> str:
     verified = cache.get("verified_rasters", "NOT VERIFIED")
     missing = cache.get("missing_cache_files", "NOT VERIFIED")
     cache_status = cache.get("status", "NOT VERIFIED")
+    s6_rows = "".join(
+        f"<tr><td><b>{esc(item.get('id'))}</b> · {esc(item.get('severity'))}</td>"
+        f"<td>{esc(item.get('finding'))}<br><i>Status:</i> {esc(item.get('status'))}. "
+        f"<i>Next:</i> {esc(item.get('remaining', item.get('resolution', '')))}</td></tr>"
+        for item in irregularity_ledger() if str(item.get("id", "")).startswith("IR-S6-"))
     return f"""
 {hold_banner()}
+<h2>Session 6 findings (ledger: evidence/irregularities_current.json)</h2>
+<table><tr><th>ID · severity</th><th>Finding, status, next step</th></tr>{s6_rows}</table>
 <h2>Audit findings and fail-closed controls</h2>
 <table><tr><th>Finding</th><th>Consequence / control</th></tr>
 <tr><td>Historical holdout artifact lacks current evaluator/input source hashes.</td><td>Keep as historical HOLDOUT-DTI only; do not use it as current clearance.</td></tr>
