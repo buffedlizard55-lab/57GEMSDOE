@@ -1,10 +1,11 @@
 # Data manifest — current availability, bridge pins, and sources
 
-**No new data were downloaded, restored, or prepared in this audit.** The competition
-`training_features.tif` is absent from this checkout. Earlier receipts report a 19-band
+**Session 7 (2026-10-10) update:** `training_features.tif` was restored with `scripts/prepare_data.py --fetch`. The SHA256 matches the pin (`4371c82e…23bc5`, 19 bands), and the band cache was regenerated with `--cache-bands`. The bridge hash proves byte identity with the bridge only; it is not an organizer receipt. The earlier "absent" statement is superseded. The rest of this file describes the Session-6 audit.
+
+**Earlier audit (Session 6):** no new data were downloaded, restored, or prepared in that audit. The competition
+`training_features.tif` was absent from that checkout. Earlier receipts report a 19-band
 bridge file, but that historical receipt does not establish present availability or
-independent official-origin authentication. Do not run a new preparation/experiment without
-renewed authorization; the experiment budget is spent.
+independent official-origin authentication.
 
 ## Competition-grid bridge files
 
