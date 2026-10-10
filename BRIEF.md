@@ -1,3 +1,11 @@
+# Current audit status — 2026-10-10 UTC
+
+**HOLD — not cleared to download or submit.** The previous candidate's literal
+full-registry overlap gate fired; no new experiments, GeoTIFF builds, downloads,
+or submissions were performed in this audit. The three-experiment / two-hour
+budget is spent. The current cache preflight verified 0/644 indexed rasters;
+see `evidence/run_card.json`.
+
 # Standing brief — the task prompt, verbatim
 
 Re-read this at the start of every session. It is the specification this
@@ -101,7 +109,8 @@ repository is built against; the README summarises it, this file *is* it.
 > a .zip file containing a single GeoTIFF, with your predictions. It must match
 > the submission format's CRS, shape, and geotransform.*
 
-→ root cause and fix: `IR-57-NAN-01` in
+→ The portal error's cause remains unproven (`IR-57-NAN-02`); the writer uses
+an all-finite `[0,1]` local policy without claiming this was the cause. See
 [`docs/irregularities.html`](docs/irregularities.html).
 
 ## Quality bar
@@ -138,7 +147,7 @@ repository is built against; the README summarises it, this file *is* it.
 
 ## Owner-reported scores quoted in the brief
 
-These are **ORGANIZER-CONFIRMED** numbers as pasted by the task owner. Two
-different "highest score" values appear in the brief (0.3774 and 0.3195); the
-conflict is registered as `IR-57-BRIEF-01` and neither is treated as a target
-this repo claims to beat.
+These are **OWNER-REPORTED** numbers as pasted by the task owner; no submission-page
+receipt is present in this repository, so none is `ORGANIZER-CONFIRMED`. The
+reported 0.2778 and conflicting "highest score" values 0.3774 and 0.3195 remain
+unverified and are not presented as verified targets this repo can beat.

@@ -32,6 +32,8 @@ from gems57.anatomy import FEATURES                              # noqa: E402
 from gems57.fitting import (canary, cell_geometry, fit_model,    # noqa: E402
                             pooled, run_cell, sample_train)
 from gems57.holdout import FOLD_NAMES, build_holdout             # noqa: E402
+from gems57.evaluator_provenance import (CV_VERSION, cv_implementation_hashes,
+                                         cv_input_hashes)         # noqa: E402
 
 EVID = ROOT / "evidence"
 IDX = {n: i for i, n in enumerate(FEATURES)}
@@ -71,14 +73,26 @@ def main() -> None:
               f"discriminative_max={r['discriminative_auc_max']:.4f}{flag}")
     geoms_canary.clear()
     gc.collect()
+    provenance = {
+        "evaluator_version": CV_VERSION,
+        "evaluator_implementation_sha256": cv_implementation_hashes(),
+        "evaluator_input_sha256": cv_input_hashes(),
+    }
     if a.canary_only:
         EVID.mkdir(exist_ok=True)
-        (EVID / f"canary_{a.mode}.json").write_text(json.dumps(can, indent=2))
+        canary_payload = dict(evidence_class="MEASUREMENT", **provenance,
+                              mode=a.mode, canary=can)
+        (EVID / f"canary_{a.mode}.json").write_text(json.dumps(canary_payload, indent=2))
         print(f"wrote evidence/canary_{a.mode}.json")
         return
 
     # ---- 2. leave-one-quadrant-out CV --------------------------------------
-    out = {"mode": a.mode, "n_cells": len(cells), "canary": can, "variants": {}}
+    out = dict(evidence_class="HOLDOUT-DTI", **provenance, mode=a.mode,
+               n_cells=len(cells), max_dots=a.max_dots, floor=a.floor,
+               split_protocol="fixed label-blind quadrants; whole intersecting components hidden; "
+                              "80 px train/evaluation buffer; visible-only features",
+               metric_protocol="pooled DTI alpha=0.2 beta=0.8, 300 m triangular kernel",
+               canary=can, variants={})
     for vname, cols in VARIANTS.items():
         t1 = time.time()
         results = []
@@ -104,6 +118,8 @@ def main() -> None:
               f"CI95(jackknife)=[{ci[0]:.4f},{ci[1]:.4f}] coverage={pl['coverage']:.4f} "
               f"dots={pl['n_dots']} tp={pl['tp']:.0f} fp={pl['fp']:.0f} K={pl['n_truth']}")
 
+    out["withheld_positive_pixels"] = int(
+        out["variants"]["d_only"]["pooled"]["n_truth"])
     EVID.mkdir(exist_ok=True)
     (EVID / f"cv_{a.mode}.json").write_text(json.dumps(out, indent=2))
     print(f"\nwrote evidence/cv_{a.mode}.json   total {time.time()-t0:.1f}s")

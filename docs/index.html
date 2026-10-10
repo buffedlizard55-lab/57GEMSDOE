@@ -1,73 +1,48 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>57GEMSDOE — fault-zone anatomy · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
-<main>
-<h2>Submit in four steps</h2>
-<div class="bad-box" style="border-width:3px"><h3 style="margin-top:0">HOLD - not cleared for submission</h3><p>The literal uniqueness protocol treats a forward dot overlap above 0.70 against one registry raster as drift: log it and stop. That gate fired for <b>114</b> of 644 registry rasters (maximum overlap 1.00). Spearman and Jaccard both pass. The file is kept for review only. Two decisions are needed from the owner before any submission: (a) whether the reverse-overlap reading may clear the gate (it is not in the protocol, so it needs a decision, not a default), or (b) generate a different candidate. See <a href="results.html">results</a> and <code>IR-57-UNIQ-03</code>.</p></div>
-<div class="card">
+<title>Submission status · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
+<nav><a class="on" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
+<div class="alert" role="alert">
+<strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
+<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
+No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+</div>
+<h2>Executive status</h2>
+<div class="card"><dl class="kv">
+<dt>Download / submission</dt><dd><b>NOT CLEARED</b></dd>
+<dt>Weekly slot</dt><dd>Not promoted; selector decision is separate</dd>
+<dt>Experiments this audit</dt><dd>0 — no holdout run or score-producing experiment</dd>
+<dt>Previous candidate SHA256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
+<dt>Historical local format receipt</dt><dd>historical local format/range receipt; not a current revalidation or organizer acceptance</dd>
+<dt>Historic HOLDOUT-DTI</dt><dd>0.227908 · 95% CI [0.18673527927748879, 0.269081068650019]</dd>
+<dt>Withheld positives</dt><dd>22641</dd>
+<dt>Evaluator</dt><dd>UNPINNED-LEGACY: stored run_sense_experiment.py artifact lacks matching implementation/input SHA256 set</dd>
+<dt>Registry index size</dt><dd>644</dd>
+<dt>Registry cache preflight</dt><dd>HOLD / INCOMPLETE — 0/644 verified; 644 missing</dd>
+<dt>Literal overlap gate</dt><dd>HOLD / STOP; not cleared; max forward overlap 1.000000; 114 firings</dd>
+</dl></div>
+<div class="note"><b>Interpretation:</b> the stored 0.227908 value is an unpinned historical
+HOLDOUT-DTI reading, not current-code clearance and not a live-score projection. The full-registry
+report records 114 forward-overlap firings (50 itemized) and therefore does not clear the
+literal stop rule. Current cache verification is HOLD / INCOMPLETE; the builder requires every indexed raster.
+See <a href="run-card.html">the run card</a>.</div>
+<h2>What must happen before a future build</h2>
 <ol>
-<li><b>Download the file.</b>
-<a href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download><code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
-— the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
-<li><b>Go to the submission page:</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
-drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
-<li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></li>
+<li>Generate a current-code, source/input-hash-pinned spatial holdout result and an independent
+selector receipt. The recorded three-experiment budget is exhausted; this is not authorization to
+run one now.</li>
+<li>Restore and SHA256-verify every raster in the indexed registry. Missing cache entries mean the
+uniqueness gate cannot run.</li>
+<li>Run the continuous-surface comparison, pre-placement dot comparison, and final-dot comparison.
+Stop at the protocol thresholds; do not retune after a firing.</li>
+<li>Only then may the fail-closed writer package one validated GeoTIFF and a one-TIFF ZIP. A weekly
+slot still requires a separate selector decision.</li>
 </ol>
-</div>
-
-<div class="bad-box">
-<h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The sample submission in this repository (<code>data/bridge/</code>, see <code>IR-57-BRIDGE-01</code>) carries
-<code>nodata = NaN</code> and <b>7,111,787 NaN cells</b> outside the study-area footprint. <b>Working
-hypothesis (not proven, see <code>IR-57-NAN-02</code>):</b> a range check that reads
-<code>NaN</code> as failing <code>v &gt;= 0</code> and <code>v &lt;= 1</code> would reject a file written with
-that convention, even though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
-<p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
-outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
-<code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
-</div>
-
-<h2>The exact format the portal expects</h2>
-<p>Checked against the files in <code>data/official/</code> and <code>data/bridge/</code>. The sample's provenance is <b>not</b> confirmed as the official DrivenData file (<code>IR-57-BRIDGE-01</code>); the grid itself is confirmed by the description on the competition page:</p>
-<dl class="kv">
-<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
-<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
-<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0) — 100 m pixels</dd>
-<dt>Bounds</dt><dd>left 243350, bottom 4135550, right 572550, top 4508550</dd>
-<dt>Bands / dtype</dt><dd>1 band, float32</dd>
-<dt>Footprint</dt><dd>5,167,373 finite cells of 12,279,160 (the sample submission's finite mask)</dd>
-<dt>Value range</dt><dd>[0, 1] on <b>every</b> cell, finite everywhere</dd>
-</dl>
-
-<h2>Validator receipt for this file</h2>
-<table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<dl class="kv">
-<dt>File</dt><dd>/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>sha256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Bytes</dt><dd>808408</dd>
-<dt>Positive pixels</dt><dd>35341</dd>
-<dt>Min / max</dt><dd>0.0 / 1.0</dd>
-<dt>NaN cells</dt><dd>0</dd>
-<dt>On mapped catalogue</dt><dd>0</dd>
-</dl>
-
-<h2>What the score means</h2>
-<p>The metric is the <b>distance-weighted Tversky index</b> with α = 0.2 (false positives),
-β = 0.8 (false negatives) and a 300 m triangular kernel. False negatives are weighted four times
-more heavily than false positives, so the metric rewards covering real fault pixels over being
-conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
-rather than sprayed. See <a href="method.html">Method</a>.</p>
+<p>See the <a href="executive-summary.html">executive submission guide</a> and the
+<a href="hypotheses.html">ranked untried hypotheses</a>.</p>
 </main>
-<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+No active download or submission is approved.</footer></body></html>

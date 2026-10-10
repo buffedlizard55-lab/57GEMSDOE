@@ -1,64 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>How to submit · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="on" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
-<main>
-<h2>Is it OK to download and submit?</h2>
-<div class="card" style="border-left:6px solid #b00020"><b>HOLD - do not submit this file yet.</b> The file is a fresh, portal-valid raster (all format checks pass), but the literal uniqueness gate fired against registry rasters, so it is not cleared under the protocol. See the banner on the <a href="index.html">front page</a> and <a href="results.html">results</a>.</div>
-
-<h2>Submit in four steps</h2>
-<div class="card">
+<title>Executive submission guide · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
+<nav><a class="" href="index.html">Status</a><a class="on" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
+<div class="alert" role="alert">
+<strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
+<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
+No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+</div>
+<h2>Executive submission guide</h2>
+<p><b>This is a conditional guide, not permission to submit.</b> No current file is cleared. The
+historical `-zeros.tif` has local format checks but fails the literal registry stop rule and must
+not be used.</p>
+<h3>Before any upload is possible</h3>
 <ol>
-<li><b>Download the file.</b>
-<a class="big" href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download>Download <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
-<span class="muted">~0.0 MB &middot;
-sha256 <code>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</code></span></li>
-<li><b>Open the portal.</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
-<i>Participate</i> &rarr; <i>Submissions</i>. You need a DrivenData account joined to the
-competition.</li>
-<li><b>Upload that exact file.</b> Do not re-save it in another program; re-saving can
-rewrite the header and break the grid.</li>
-<li><b>Fill in the name and note</b> (below), then submit.</li>
+<li>Obtain an independently reviewed, version-pinned holdout clearance receipt. Current evidence
+is not version-attested; the three-experiment budget is spent.</li>
+<li>Verify all 644 indexed registry rasters by their recorded SHA256. The current
+cache preflight is HOLD / INCOMPLETE (0/644 verified; 644 missing),
+so the build stops before model fitting.</li>
+<li>Run the build only after both gates clear. It checks the surface, a pre-placement dot proposal,
+and the final dots against every supplied aligned raster; any error or threshold firing stops the
+build.</li>
+<li>Review the generated GeoTIFF and its validation receipt. The writer does not clip or fill
+predictions, and its receipt explicitly says local validation is not organizer acceptance.</li>
+<li>Only after a separate selector says to use a weekly slot, upload the exact validated single-band
+GeoTIFF (or a ZIP with exactly one GeoTIFF) on the competition submission page; record the actual
+organizer receipt before labeling a score `ORGANIZER-CONFIRMED`.</li>
 </ol>
-</div>
-
-<h2>The two text fields</h2>
-<div class="card">
-<p><b>Submission name</b> (the portal generates a timestamped filename; use this label):</p>
-<code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357</code>
-<p style="margin-top:10px"><b>Submission note</b> (123 characters, limit 140) &mdash;
-paste this verbatim:</p>
-<code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code>
-</div>
-
-<h2>What the portal checks, and what this file does</h2>
-<div class="card"><table><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<p class="muted">Checks are run by <code>src/gems57/validate.py</code> against the shipped
-sample raster; full output is in <code>evidence/submission_build_all.json</code>.</p></div>
-
-<h2>What this submission is</h2>
-<div class="card">
-<p>A binary dot field: 35341 pixels set to 1.0, everything else 0.0, on
-the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
-off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
-nothing and the false-negative denominator is fixed.</p>
-<p><b>The one holdout number for this file (HOLDOUT-DTI, not a live score):</b> 0.2279, 95% CI [0.1867, 0.2691], leave-one-quadrant-out, 22,641 withheld positives, evaluator gems57 pooled DTI (alpha 0.2, beta 0.8, 300 m kernel). Measured at the shipped per-cell share. <b>No organizer score exists for this file yet.</b></p>
-<p><b>Read the score with care.</b> The holdout numbers on the results page are measured on
-<i>withheld catalogue pixels</i>, not on the live set. The holdout-to-live rank correlation
-measured across twelve live submissions in the sibling repository is
-<b>&rho; = +0.14</b>, so a high holdout number is <i>not</i> evidence of a high live score.
-See <a href="results.html">Results</a> and
-<a href="run-card.html">Run card</a>.</p>
-</div>
+<h3>Format requirements</h3>
+<ul>
+<li>One band, float32; EPSG:32611; 3730 × 3292; 100 m pixels; exact pinned sample transform.</li>
+<li>Every serialized value finite and in [0,1]. The conservative writer emits zero outside the
+valid footprint and uses no nodata tag; it rejects invalid values rather than silently repairing
+model output.</li>
+<li>No positive mass outside the footprint or on mapped catalogue cells; unique submission name
+and note each no longer than 140 characters.</li>
+</ul>
+<div class="note"><b>Portal error:</b> “Predicted values must be in range [0, 1]”. Its specific root cause
+is not established. The writer therefore applies a conservative local policy: every serialized
+value is finite and in [0,1], including outside the valid footprint. This avoids relying on
+unspecified nodata handling; it does not claim to identify the earlier rejection cause.</div>
+<p><b>Current answer to “can I download and submit?”: No.</b> No file link is provided here.</p>
 </main>
-<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+No active download or submission is approved.</footer></body></html>

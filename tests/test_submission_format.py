@@ -1,4 +1,4 @@
-"""The written GeoTIFF must survive every portal check, and the NaN variant must not."""
+"""Exercise the project's strict finite/[0,1] GeoTIFF preflight policy."""
 import sys
 from pathlib import Path
 
@@ -27,7 +27,7 @@ def test_zeros_mode_passes_and_nan_mode_fails(tmp_path):
     n = tmp_path / "n.tif"
     gridmod.write_submission(n, np.where(foot, vals, np.nan), mode="nan")
     rn = validate(n, foot, cat)
-    # this is exactly the failure mode behind "Predicted values must be in range [0, 1]"
+    # Local all-finite policy rejects the NaN diagnostic; it does not establish the portal's cause.
     assert rn["checks"]["no_nan_anywhere"] is False
     assert rn["all_checks_passed"] is False
 

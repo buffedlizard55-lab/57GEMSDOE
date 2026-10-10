@@ -213,8 +213,9 @@ def pooled(results: list[dict]) -> dict:
     jk_se = float(np.sqrt((m - 1) / m * ((jk - jk.mean()) ** 2).sum())) if m > 1 else 0.0
     return {"pooled_dti": dti, "coverage": cov, "coverage_ci95": [lo, hi],
             "dti_ci95_coverage_only": [d_lo, d_hi],
-            "dti_ci95_quadrant_jackknife": [float(dti - 1.959963985 * jk_se),
-                                            float(dti + 1.959963985 * jk_se)],
+            "dti_ci95_quadrant_jackknife": [
+                max(0.0, float(dti - 1.959963985 * jk_se)),
+                min(1.0, float(dti + 1.959963985 * jk_se))],
             "jackknife_drop_quadrant": {q: float(v) for q, v in zip(quads, jk)},
             "tp": tp, "fp": fp, "fn": fn, "n_truth": n,
             "n_dots": sum(r["n_dots"] for r in results)}

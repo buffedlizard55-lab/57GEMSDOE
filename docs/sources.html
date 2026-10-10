@@ -1,64 +1,47 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sources — GEMSDOE57</title>
-<link rel="stylesheet" href="assets/style.css"></head>
-<body>
-<header class="top"><div class="wrap">
-  <h1>GEMSDOE57 <small>fault-zone anatomy · DrivenData GEMS prize, competition 306</small></h1>
-  <nav><a href="index.html">Download</a><a href="executive-summary.html">Executive summary</a><a href="research.html">Research & run card</a><a href="sources.html" class="on">Sources</a></nav>
-</div></header>
-<main class="wrap">
-
-<h2 style="margin-top:0">Sources — official and verified</h2>
-<div class="card">
-  <p>Only free, publicly available, official/verified sources were used. Every external
-  dataset is sha256-pinned in <code>data/README.md</code> and verified by
-  <code>scripts/prepare_data.py</code>.</p>
-  <table>
-    <tr><th>Source</th><th>What it provides</th><th>Link</th></tr>
-    <tr><td>DrivenData GEMS prize — problem description</td><td>metric math (distance-weighted
-        Tversky, 300 m credit), submission format, worked example</td>
-        <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/">competition page 967</a></td></tr>
-    <tr><td>DrivenData GEMS prize — competition home</td><td>rules, submission flow, leaderboard</td>
-        <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">competition 306</a></td></tr>
-    <tr><td>DrivenData GEMS prize — leaderboard</td><td>current public scores (high 0.3774)</td>
-        <td><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">leaderboard</a></td></tr>
-    <tr><td>NREL / DOE GeoDAWN</td><td>study-area context (Geothermal Data Assimilation for
-        Western Nevada)</td>
-        <td><a href="https://www.energy.gov/eere/geothermal/geodawn-geothermal-data-assimilation-western-nevada">energy.gov GeoDAWN</a></td></tr>
-    <tr><td>Competition PDF (NREL mirror)</td><td>full problem statement</td>
-        <td><a href="https://docs.nlr.gov/docs/fy26/96647.pdf">docs.nlr.gov/docs/fy26/96647.pdf</a></td></tr>
-    <tr><td>USGS Quaternary Fault and Fold Database</td><td>catalogue faults (rasterized in
-        <code>existing_faults.tif</code>)</td>
-        <td><a href="https://www.usgs.gov/programs/earthquake-hazards/faults">usgs.gov faults program</a></td></tr>
-    <tr><td>SGMC — State Geologic Map Compilation (Nevada Bureau of Mines and Geology)</td>
-        <td>independent mapped faults used as the off-catalogue proxy truth</td>
-        <td><a href="https://www.nbmg.unr.edu/geology/geologic-mapping/sgmc.html">nbmg.unr.edu SGMC</a></td></tr>
-    <tr><td>INGENIOUS / GeoDAWN fault database (GBCGE)</td><td>record-level fault segments with
-        sense of slip and slip rate (<code>trace_segments_utm11.csv</code>,
-        <code>qfault_attributes.csv</code>)</td>
-        <td><a href="https://gbcge.org/">gbcge.org</a> (receipt: source zip sha256
-        <code>c7b091c9…</code>, 6,131,182 bytes)</td></tr>
-    <tr><td>EPSG:32611</td><td>CRS definition (WGS 84 / UTM zone 11N)</td>
-        <td><a href="https://epsg.io/32611">epsg.io/32611</a></td></tr>
-    <tr><td>Tchalenko (1970), Geol. Soc. London Spec. Publ. 23</td><td>Riedel shear geometry
-        in fault damage zones</td><td>doi:10.1144/SP023.019</td></tr>
-    <tr><td>Schreurs (2003), J. Struct. Geol. 25</td><td>fault damage-zone growth and
-        splay geometry</td><td>doi:10.1016/S0191-8141(03)00032-6</td></tr>
-    <tr><td>Savage &amp; Brodsky (2011), Geology 39</td><td>damage-zone width scales with
-        displacement</td><td>doi:10.1130/G31613.1</td></tr>
-  </table>
-  <p style="color:var(--mut);font-size:13px">Competition training data (labels, features,
-  sample submission) cannot be downloaded from this sandbox — the DrivenData data page sits
-  behind a login and the Dropbox mirrors are unreachable from here. They were obtained
-  sha256-pinned from the public GEMSDOE sibling repositories (see
-  <code>data/README.md</code>), which carry the official files with recorded hashes.</p>
-</div>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Source record · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
+<nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="on" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
+<h2>Competition and local data</h2>
+<ul>
+<li>Competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a>.
+The data bundle is absent from this checkout except for the pinned files described in
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.</li>
+<li>The `training_features.tif` 105-band stack is not present. No competition features were fetched
+or prepared in this audit.</li>
+<li>INGENIOUS/QFault vector tables under `data/external/` have local receipts; see
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">the data manifest</a>. Attribute availability and missingness must be
+checked before a future feature is used.</li>
+</ul>
+<h2>Official free sources checked for future fault-zone validation</h2>
+<ul>
+<li>USGS, Grauch (2002), <i>High-resolution aeromagnetic survey to image shallow faults, Dixie
+Valley geothermal field, Nevada</i>, Open-File Report 2002-384.
+<a href="https://doi.org/10.3133/ofr02384">Official report record / DOI</a>. The report record was
+reviewed; no data were downloaded.</li>
+<li>Glen &amp; Earney (2024), official USGS/DOE GeoDAWN airborne magnetic/radiometric survey record,
+Geothermal Data Repository <a href="https://gdr.openei.org/submissions/1591">submission 1591</a>.
+The page states public access and CC-BY 4.0 and links to
+<a href="https://doi.org/10.5066/P93LGLVQ">USGS ScienceBase</a>. Catalog/license availability was
+checked; spatial coverage and contest-grid compatibility were not.</li>
+</ul>
+<h2>Mechanistic literature reviewed</h2>
+<ul>
+<li>Wang et al. (2017), stress/strain localization around strike-slip stepovers and bends,
+<a href="https://doi.org/10.1016/j.tecto.2017.10.001">DOI</a>.</li>
+<li>Zhu et al. (2024), review of bend-associated structures and modeling limitations,
+<a href="https://doi.org/10.1016/j.marpetgeo.2024.106983">DOI</a>.</li>
+<li>d'Alessio &amp; Martel (2004), fault terminations and barriers to fault growth,
+<a href="https://doi.org/10.1016/j.jsg.2004.01.010">DOI</a>.</li>
+<li>Savage &amp; Brodsky (2011), displacement and secondary strands in damage zones,
+<a href="https://doi.org/10.1029/2010JB007665">open-access DOI</a>.</li>
+</ul>
+<p>These sources support mechanisms to test; they do not establish a score increase or validate a
+specific raster. See <a href="research/hypotheses.md">the ranked hypothesis notes</a> for caveats
+and proposed controls.</p>
 </main>
-<footer><div class="wrap" style="padding:0">
-GEMSDOE57 · branch <code>arena/af16d287-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
-local template validation only — not organizer upload acceptance.
-</div></footer>
-</body></html>
+<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+No active download or submission is approved.</footer></body></html>

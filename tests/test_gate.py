@@ -1,9 +1,9 @@
-"""The shipped submission must pass the template's format gate.
+"""Historical candidate format checks and the writer's fail-closed contract.
 
-Also pins the writer's fail-closed contract: it REJECTS out-of-range values,
-NaN anywhere, positive mass outside the footprint, and over-long names/notes —
-no silent repair (the earlier "Predicted values must be in range [0, 1]"
-organizer rejection is why callers must normalize before packaging).
+The historical raster passes local format checks but is not cleared by the
+literal full-registry uniqueness gate and must not be downloaded/submitted.
+The writer rejects out-of-range values, NaN, positive mass outside the footprint,
+and over-long names/notes; it never silently repairs model output.
 """
 import numpy as np
 import pytest
@@ -103,8 +103,8 @@ def test_writer_accepts_valid_binary_prediction(tmp_path):
     pred[ys[:100], xs[:100]] = 1.0
     out = tmp_path / "ok.tif"
     rec = write_submission(out, pred, SAMPLE, valid, note="test note", name="test")
-    assert rec["ok"] if "ok" in rec else True
-    assert rec["validator"]["ok"]
-    assert rec["validator"]["n_nonzero"] == 100
+    assert rec["validator"]["all_checks_passed"]
+    assert rec["validator"]["emitted_positive_pixels"] == 100
+    assert rec["approved_for_weekly_slot"] is False
     assert (tmp_path / "ok.zip").exists()
     assert (tmp_path / "ok.json").exists()

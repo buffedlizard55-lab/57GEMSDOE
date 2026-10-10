@@ -143,7 +143,7 @@ def main():
                               candidate="candidate")
         # SGMC-truth instrument: mask known pixel-exactly, score vs SGMC off-known
         pm = np.where(known, 0.0, p)
-        r = M.dti(pm.astype(np.float32), sgmc_truth)
+        r = M.dti_exact(pm.astype(np.float32), sgmc_truth, valid=valid, known=known)
         results[name] = dict(
             file=rel,
             holdout_dti=s["scores"]["candidate"]["dti"],
@@ -165,6 +165,7 @@ def main():
     payload = dict(
         evidence_class="HOLDOUT-DTI + PROXY-DTI (SGMC-truth)",
         evaluator_version=EH.VERSION,
+        evaluator_implementation_sha256=EH.implementation_hashes(),
         protocol="same folds as exp2; registry rasters scored as-is (masked pixel-exactly "
                  "on visible known faults per fold)",
         withheld_positive_pixels=sum(fd["n_truth"] for fd in fold_dicts),

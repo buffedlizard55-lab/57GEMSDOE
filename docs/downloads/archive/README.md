@@ -1,22 +1,19 @@
-# Archived artifacts — DO NOT SUBMIT
+# Archived artifacts — **DO NOT DOWNLOAD OR SUBMIT**
 
-Every file in this directory is superseded. They are kept for provenance only.
+Every GeoTIFF in this directory is retained only for provenance. The newer
+historical `-zeros.tif` file one directory up is also **not cleared** and must
+not be downloaded or submitted.
 
-The **only** submittable file in this repository is the single `-zeros.tif` one
-directory up:
+No file in `docs/downloads/` is an approved submission. The retained candidate
+failed the literal full-registry overlap gate; see `evidence/run_card.json` and
+`evidence/uniqueness_full_shipped-h57-zeros.json`. A local format pass is not
+uniqueness clearance, organizer acceptance, or a weekly-slot decision.
 
-`docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif`
+Earlier documentation speculated that `NaN` caused a portal range error. The
+actual cause remains unproven (`IR-57-NAN-02`). The current writer is
+fail-closed: it requires already finite `[0,1]` values, rejects mass outside the
+footprint, never clips/fills predictions, and validates the on-disk GeoTIFF and
+single-TIFF ZIP before committing outputs.
 
-## Why these were retired
-
-| File | Reason it is not submittable |
-| --- | --- |
-| `57GEMSDOE-faultzone-anatomy-12000dots-nan.tif` | Carries `NaN` outside the footprint. The portal rejects it with *"Predicted values must be in range [0, 1]"* because `NaN` satisfies neither `v >= 0` nor `v <= 1`. `IR-57-NAN-01`. |
-| `57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif` | Superseded by a later build. 12,000 dots is well below the budget the registry's live evidence supports. |
-| `gems57-faultzone-anatomy-60000px-*.tif` | Superseded. 60,000 dots sits in the band where **Spearman(dot count, live score) = -0.8104** says scores fall off; the shipped build is capped at 40,000. `IR-57-BUDGET-01`. |
-| `*-nan.zip`, `*.zip` | Zipped variants of the above. |
-| `run_card.json` | An earlier lane's run card. The current one is [`evidence/run_card.json`](../../../evidence/run_card.json). |
-| `*-audit.json`, `*.receipt.json` | Receipts for the builds above. |
-
-None of these were submitted to the competition. No submission slot was spent on
-any of them.
+No item in this archive was submitted in this session. No weekly submission
+slot was spent.

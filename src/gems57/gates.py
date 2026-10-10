@@ -1,10 +1,10 @@
 """On-disk format and decoded-prediction uniqueness gates.
 
-Range checks use RAW raster values, not NaN-skipping min/max. The all-finite
-policy is our compatibility precaution; the public specification explicitly
-allows null/NaN outside the footprint, so NaN is not claimed to be a proven
-portal defect. Source-grid metadata must exactly match the reference even in
-small test fixtures. No fixture-grid bypass of CRS/transform comparison.
+Range checks use RAW raster values, not NaN-skipping min/max. The project uses
+an all-finite export policy as a conservative local precaution; organizer
+handling of nodata is not inferred here. Source-grid metadata must exactly match
+the reference even in small test fixtures. No fixture-grid bypass of
+CRS/transform comparison.
 
 All supplied priors are processed: the old `priors[:top]` silently checked only
 eight files. Continuous predictions are compared numerically and by >=0.5
@@ -76,7 +76,7 @@ def format_report(path, sample, epsg=32611, cell=100.0, footprint=None):
         finite = np.isfinite(a)
         out.update(nan_pixels=int(np.isnan(a).sum()), infinity_pixels=int(np.isinf(a).sum()), n_nan=int((~finite).sum()))
         if not finite.all():
-            problems.append(f"{out['n_nan']} NaN/infinite pixels: fail our all-finite export policy (public spec permits outside-footprint NaN)")
+            problems.append(f"{out['n_nan']} NaN/infinite pixels: fail the local all-finite export policy")
         if finite.any():
             lo, hi = float(a[finite].min()), float(a[finite].max())
             out.update(min=lo, max=hi, mean=float(a[finite].mean()), n_nonzero=int(((a > 0) & finite).sum()), mass=float(a[finite].sum(dtype=np.float64)))

@@ -6,10 +6,10 @@ Stages
 ``verify``   re-verify the two competition files by sha256 and geometry
 ``measure``  build the hide-and-recover holdout and measure the withheld
              distance / stepover / along-strike / relative-strike / length
-             distributions (the measurement the lane protocol requires)
-``canary``   leakage canary -- single-feature AUC per fold
-``cv``       leave-one-quadrant-out fit + emit, pooled DTI
-``final``    full-catalogue surface, emission, GeoTIFF write, portal validation
+             distributions (the descriptive measurement required by the lane)
+
+Fitting, validation, uniqueness checks, and packaging have separate scripts;
+this driver intentionally exposes only the two stages it implements.
 
 Every number printed here is a HOLDOUT-DTI instrument reading unless it is
 labelled ORGANIZER-CONFIRMED (copied from a submission-page receipt); owner-pasted scores are OWNER-REPORTED.  Nothing
@@ -84,8 +84,8 @@ def stage_verify(_a) -> None:
 
 
 # --------------------------------------------------------------------------- #
-def get_holdout(rebuild: bool = False):
-    """Build the holdout fresh each run.
+def get_holdout():
+    """Build the holdout fresh for a descriptive measurement.
 
     Caching the context to disk was tried and dropped: 16 cells of full-grid
     masks exceed the 3 GB sandbox when serialised.  Rebuilding costs ~20 s.
@@ -109,7 +109,7 @@ def full_domain(ctx, cell) -> np.ndarray:
 
 
 def stage_measure(a) -> None:
-    ctx = get_holdout(a.rebuild)
+    ctx = get_holdout()
     per_cell = {}
     agg = {"distance": [], "stepover": [], "along_strike": [], "segment_length": [], "joint": []}
     side = {"n_withheld_left": 0, "n_withheld_right": 0,
@@ -160,7 +160,7 @@ def stage_measure(a) -> None:
 
     out = {
         "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, "
-                      "15 px collar, 12 px domain erosion, visible-faults-only features",
+                      "12 px domain erosion, visible-faults-only features",
         "n_cells": len(ctx.cells),
         "n_withheld_total": n_hid, "n_domain_total": n_dom,
         "base_rate": n_hid / max(n_dom, 1),
@@ -233,8 +233,7 @@ def stage_measure(a) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["verify", "measure", "canary", "cv", "final", "unique"])
-    ap.add_argument("--rebuild", action="store_true")
+    ap.add_argument("stage", choices=["verify", "measure"])
     ap.add_argument("--mode", default="", choices=["", "all", "detached"],
                     help="restrict to one withholding mode")
     a = ap.parse_args()

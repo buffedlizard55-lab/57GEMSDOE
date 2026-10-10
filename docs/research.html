@@ -1,124 +1,21 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Research &amp; run card — GEMSDOE57</title>
-<link rel="stylesheet" href="assets/style.css"></head>
-<body>
-<header class="top"><div class="wrap">
-  <h1>GEMSDOE57 <small>fault-zone anatomy · DrivenData GEMS prize, competition 306</small></h1>
-  <nav><a href="index.html">Download</a><a href="executive-summary.html">Executive summary</a><a href="research.html" class="on">Research & run card</a><a href="sources.html">Sources</a></nav>
-</div></header>
-<main class="wrap">
-
-<h2 style="margin-top:0">Research — hypothesis, evidence, run card</h2>
-
-<div class="card">
-  <h3 style="margin-top:0">Hypothesis (this lane)</h3>
-  <p>Expert-mapped new faults (the hidden truth) concentrate as secondary strands in the damage zones of known USGS/INGENIOUS faults: subparallel splays and parallel strands whose distance from the primary trace, azimuth relative to its strike, and along-strike position (beyond-tip extensions) follow shear-zone mechanics, with zone width growing with fault length (displacement proxy). The organizers confirmed a new fault is any fault pixel not already captured by USGS/INGENIOUS, including newly mapped geometry of an existing system, so splays and parallel strands count (thread 11536).</p>
-  <h3>Mechanism</h3>
-  <p>Per-fault intensity I(p) = f(d/s(L)) * g(phi), where f is the empirical radial density, g the empirical offset-azimuth density, and s(L) the empirical length scaling (displacement proxy), ALL fitted on the hide-and-recover holdout (random whole-segment folds, 300 m truth buffer, features rebuilt from visible faults only, visible+INGENIOUS faults masked pixel-exactly, pooled DTI alpha=0.2 beta=0.8 R=300 m). No textbook Riedel/Tchalenko angle is hard-coded. Sense of slip is conditioned where the INGENIOUS database records it (RL/LL/N) and kept marginal where it does not (the holdout cannot resolve it: nearest-visible sense unk=38063, N=214, RL=53, LL=9). Emission: binary top-k dots off known faults, k swept on the holdout. The d&lt;3 px band (removed by the holdout's 300 m truth buffer) is extended from the SGMC off-catalogue population and flagged as such.</p>
-  <h3>Named non-fault process that could mimic it</h3>
-  <p>Anthropogenic and geomorphic lineaments that parallel mapped faults in the alluvial basins of the northwestern Great Basin: roads, fence lines and powerline alignments, and pluvial-lake shorelines / alluvial-fan risers that follow basin structure subparallel to fault strikes. These cluster near and parallel to mapped fault scarps and would be predicted by the same halo geometry without being faults.</p>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research status · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
+<nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="on" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
+<div class="alert" role="alert">
+<strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
+<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
+No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
 </div>
-
-<div class="card">
-  <h3 style="margin-top:0">Holdout result <span class="tag hold">HOLDOUT-DTI</span></h3>
-  <dl class="kv">
-    <dt>Evaluator</dt><dd><code>gems52-pooled-hide-v1 (template evaluate_holdout.py + holdout.py + metric.py, vendored unmodified from GEMSDOE52@main)</code></dd>
-    <dt>Protocol</dt><dd>random whole-segment folds (4), 300 m truth buffer, prevalence-thinned (0.2% of footprint per fold), features rebuilt from visible faults only, visible USGS+INGENIOUS faults masked pixel-exactly, pooled DTI, paired spatial-block bootstrap (20 km blocks, 1000 draws)</dd>
-    <dt>Withheld positives</dt><dd>38,339 px</dd>
-    <dt>DTI @ 60k dots</dt><dd><b>0.0580</b> [0.0507, 0.0663] (95% CI)</dd>
-    <dt>Controls @ 60k</dt><dd>random 0.0492 ·
-        uniform-halo 0.0117 ·
-        distance-only 0.0486 ·
-        no-φ 0.0559</dd>
-    <dt>Leakage canary</dt><dd>max single-feature AUC 0.6538 &lt; 0.90 → no leakage</dd>
-    <dt>Budget sweep</dt><dd>60k dots (50k: 0.0536, 80k: 0.0574, 120k: 0.0507)</dd>
-  </dl>
-</div>
-
-<div class="card">
-  <h3 style="margin-top:0">Live proxy — SGMC-truth DTI <span class="tag prox">PROXY-DTI</span></h3>
-  <p>Truth: 79,025 SGMC pixels captured by neither USGS nor INGENIOUS — real off-catalogue
-  faults, the closest legal proxy for the hidden test set (not a holdout, not an organizer
-  score).</p>
-  <table>
-    <tr><th>Raster</th><th class="num">SGMC-truth DTI</th></tr>
-    <tr><td><b>this lane @ 60k dots</b></td><td class="num"><b>0.0457</b></td></tr>
-    <tr><td>this lane @ 120k dots (sweep still rising)</td><td class="num">0.0650</td></tr>
-    <tr><td>h19-5 (LIVE 0.1922)</td><td class='num'>0.1450</td></tr><tr><td>d15 (LIVE 0.2477)</td><td class='num'>0.1410</td></tr><tr><td>tip-h32-1 (LIVE 0.2649)</td><td class='num'>0.1213</td></tr><tr><td>h27-4 (LIVE 0.2708)</td><td class='num'>0.1093</td></tr><tr><td>anderson (LIVE 0.2750)</td><td class='num'>0.0944</td></tr><tr><td>h33-2-b2 (LIVE 0.2778)</td><td class='num'>0.0931</td></tr>
-  </table>
-  <p>The lane's fitted halo covers real off-catalogue faults 2-3x less efficiently than the geophysics-ML incumbents; the SGMC sweep is still rising at 120k while the holdout peaks at 60k - the two instruments disagree on budget, flagged for the selector.</p>
-</div>
-
-<div class="card">
-  <h3 style="margin-top:0">Registry drift check (663 rasters) — MEASUREMENT</h3>
-  <dl class="kv">
-    <dt>Max |Spearman|</dt><dd>0.6271 (limit 0.90) —
-        <code>siblings/7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif</code></dd>
-    <dt>Duplicates by correlation</dt><dd>0</dd>
-    <dt>Duplicates by overlap (bidirectional)</dt><dd>0</dd>
-    <dt>sha256 duplicates</dt><dd>0</dd>
-    <dt>Verdict</dt><dd><b>UNIQUE - no registry raster within the drift limits (mechanical one-directional overlap firings logged as coverage-saturation artifacts, see saturation_firings)</b></dd>
-  </dl>
-  <p style="font-size:13px;color:var(--mut)">duplicate iff forward dot overlap within 3 px &gt; 0.70 AND reverse &gt; 0.50 vs a dot-scale registry raster (&lt;= 500k positive px); mechanical one-directional firings are saturation artifacts and are logged for review.
-  Mechanical one-directional firings (61) are
-  coverage-saturation artifacts: dense registry emissions (206k–452k dots) whose 3-px-dilated
-  coverage saturates the halo, with reverse overlap 0.07–0.10 and rank correlation ≈ 0.
-  Flagged for review; full list in <code>evidence/uniqueness.json</code>.</p>
-</div>
-
-<div class="card">
-  <h3 style="margin-top:0">Parallel-session drift check (PR #1, same lane) — MEASUREMENT</h3>
-  <p>A parallel session ran this same lane and merged first (12k-dot synthetic-strand
-  emission). The registry scan predates that merge, so the two rasters are checked
-  directly in <code>evidence/uniqueness_parallel.json</code>:</p>
-  <table>
-    <tr><th>Check</th><th class="num">Value</th><th class="num">Limit</th></tr>
-    <tr><td>Spearman(this surface, their raster)</td><td class="num">+0.0321</td><td class="num">0.90</td></tr>
-    <tr><td>Forward overlap (my dots within 3 px of theirs)</td><td class="num">0.0296</td><td class="num">0.70</td></tr>
-    <tr><td>Reverse overlap (their dots within 3 px of mine)</td><td class="num">0.2273</td><td class="num">—</td></tr>
-    <tr><td>sha256 identical</td><td class="num">no</td><td class="num">—</td></tr>
-  </table>
-  <p><b>Verdict: UNIQUE</b> — the two emissions occupy different parts of the damage zone
-  (this session: fitted 60-px halo, median 5.7 px from known faults; parallel session:
-  &lt;15 px synthetic strands, median 2.8 px). Both are valid, distinct artifacts.</p>
-</div>
-
-<div class="card">
-  <h3 style="margin-top:0">Run card</h3>
-  <dl class="kv">
-    <dt>Submission</dt><dd><code>GEMSDOE57-FZA-60000px</code> — <code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></dd>
-    <dt>Note (≤140 ch)</dt><dd><code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code></dd>
-    <dt>Raster sha256</dt><dd><code>a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</code></dd>
-    <dt>Validator</dt><dd><b>PASS</b> — single band float32; EPSG:32611; 3730x3292; transform/bounds match sample_submission.tif; 100 m resolution; 0 NaN/inf pixels inside the footprint (all-finite export); values in [0,1] (min 0.0, max 1.0); 0 emitted pixels outside the footprint; no nodata tag</dd>
-    <dt>Verdict</dt><dd><b>NEGATIVE</b></dd>
-  </dl>
-  <p>The lane is VALIDATED as a real, non-leaking, unique signal: it beats its own controls on the brief's holdout instrument (0.0580 vs random 0.0492 and uniform-halo 0.0117 at 60k dots), the leakage canary is far below threshold (max AUC 0.6538 &lt; 0.90), and the drift check is clean (max |Spearman| 0.6271 &lt; 0.90, no bidirectional duplicates, sha256 unique across 663 registry rasters). But it does NOT beat the current holdout best on the template instrument (d15 scores 0.0844 as-is on the same folds; comparison is conservative for this lane, whose 0.0580 is per-fold-rebuilt while d15 is a frozen artifact scored as-is), and on the SGMC-truth instrument (the better proxy for the live target) it trails the incumbents 2-3x (0.0457 vs 0.0931-0.1450). As a standalone submission it is therefore not expected to beat the incumbent LIVE 0.2778. Promotion to a real slot is a separate selector step; per the session rule, no slot should be spent on this artifact. The submission file is generated, validated and downloadable (the session's highest-urgency deliverable), and the negative result is the deliverable: the fitted damage zone is real structure, but pure catalogue geometry is not enough - the next step is zone-gated geophysical corroboration (hypothesis H2 in docs/research/hypotheses.md).</p>
-  <p>Full run card: <code>evidence/run_card.json</code> · ranked hypotheses:
-  <a href="research/hypotheses.md">docs/research/hypotheses.md</a>.</p>
-</div>
-
-<div class="card">
-  <h3 style="margin-top:0">Next work (ranked backlog)</h3>
-  <ol>
-    <li><b>H2 — zone-gated geophysical corroboration:</b> multiply the fitted halo by a
-        TMI-gradient / elevation-slope ridge strength restricted to the halo. Highest
-        expected gain; validate on the holdout before any slot.</li>
-    <li><b>H3 — along-strike tip-relay targeting:</b> 64.2% of withheld mass is beyond-tip;
-        emit along host strike past mapped tips.</li>
-    <li><b>120k-budget variant:</b> the SGMC sweep is still rising at 120k while the holdout
-        peaks at 60k — the selector needs both instruments' curves.</li>
-    <li><b>H4 — slip-rate-weighted zone width</b> (INGENIOUS SLIPRT2023) replacing the
-        length proxy.</li>
-    <li><b>H5 — USGS vector sense join</b> (data-blocked: earthquake.usgs.gov unreachable
-        from this sandbox).</li>
-  </ol>
-</div>
-
+<h2>Research page updated</h2>
+<p>This URL previously served a legacy page with unversioned score comparisons and an unsupported
+“validated/unique/downloadable” claim. Those claims are retired. See the
+<a href="hypotheses.html">current ranked hypotheses</a>,
+<a href="results.html">current evidence status</a>, and
+<a href="run-card.html">current run card</a>.</p>
 </main>
-<footer><div class="wrap" style="padding:0">
-GEMSDOE57 · branch <code>arena/af16d287-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
-local template validation only — not organizer upload acceptance.
-</div></footer>
-</body></html>
+<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+No active download or submission is approved.</footer></body></html>
