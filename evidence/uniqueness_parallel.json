@@ -1,53 +1,52 @@
 {
- "evidence_class": "MEASUREMENT (drift check vs the parallel session's rasters on main)",
- "context": "PR #1 (arena/a5412310) merged the same lane (fault-zone anatomy, 12k dots, synthetic P/Riedel strands within 15 px of known faults) while this session (arena/af16d287) built a fitted-density 60k-dot halo at 4-10 px. The registry scan predates their merge, so they are checked here.",
- "candidate": {
-  "file": "gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
-  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
-  "dots": 60000,
-  "dots_on_catalogue": 0,
-  "my_dots_d_to_catalogue_px": {
-   "median": 5.656854249492381
-  }
- },
- "limits": {
-  "spearman": 0.9,
-  "dot_overlap": 0.7
- },
- "parallel_rasters": [
-  {
-   "raster": "57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
-   "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
-   "dots": 12000,
-   "dots_on_catalogue": 0,
-   "their_dots_d_to_catalogue_px": {
-    "median": 2.8284271247461903,
-    "frac_le_3px": 0.5678333333333333,
-    "frac_le_15px": 0.9751666666666666
-   },
-   "spearman_my_surface_vs_their_raster": 0.032142889001201894,
-   "forward_overlap_my_dots_within_3px_of_theirs": 0.029583333333333333,
-   "reverse_overlap_their_dots_within_3px_of_mine": 0.22725,
-   "duplicate_by_correlation": false,
-   "duplicate_by_overlap": false
+  "evidence_class": "MEASUREMENT (drift check vs the parallel session's rasters)",
+  "context": "The parallel session ran the same lane (fault-zone anatomy) from the same prompt. Its rasters are kept in docs/downloads/archive/ and in the registry; this script checks the CURRENT submission against them.",
+  "candidate": {
+    "file": "docs/downloads/archive/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+    "sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+    "dots": 40000,
+    "dots_on_catalogue": 0,
+    "my_dots_d_to_catalogue_px": {
+      "median": 3.1622776601683795
+    }
   },
-  {
-   "raster": "57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
-   "sha256": "20e6e869a2206c27961b0eb20ad7ed09d68ed9e8c5456ccbaa4755d4331cc544",
-   "dots": 12000,
-   "dots_on_catalogue": 0,
-   "their_dots_d_to_catalogue_px": {
-    "median": 2.8284271247461903,
-    "frac_le_3px": 0.5678333333333333,
-    "frac_le_15px": 0.9751666666666666
-   },
-   "spearman_my_surface_vs_their_raster": 0.032142889001201894,
-   "forward_overlap_my_dots_within_3px_of_theirs": 0.029583333333333333,
-   "reverse_overlap_their_dots_within_3px_of_mine": 0.22725,
-   "duplicate_by_correlation": false,
-   "duplicate_by_overlap": false
+  "limits": {
+    "spearman": 0.9,
+    "dot_overlap_fwd": 0.7,
+    "dot_overlap_rev": 0.5
+  },
+  "parallel_rasters": [
+    {
+      "raster": "57GEMSDOE__parallel-12000dots-zeros.tif",
+      "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+      "dots": 12000,
+      "dots_on_catalogue": 0,
+      "their_dots_d_to_catalogue_px": {
+        "median": 2.8284271247461903,
+        "frac_le_3px": 0.5678333333333333,
+        "frac_le_15px": 0.9751666666666666
+      },
+      "spearman_my_surface_vs_their_raster": 0.006473331698332776,
+      "forward_overlap_my_dots_within_3px_of_theirs": 0.033825,
+      "reverse_overlap_their_dots_within_3px_of_mine": 0.11808333333333333,
+      "duplicate_by_correlation": false,
+      "duplicate_by_overlap": false
+    }
+  ],
+  "verdict": "negative — the prior parallel-only comparison is not clearance; literal dense-witness overlap is 1.0",
+  "runtime_s": 1.9525048732757568,
+  "historical_verdict": "UNIQUE - distinct from the parallel session's rasters (rank correlation and bidirectional overlap within limits)",
+  "historical_unique": true,
+  "unique": false,
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
   }
- ],
- "verdict": "UNIQUE - distinct from the parallel session's rasters (rank correlation ~0, forward overlap <= 0.03, reverse <= 0.23)",
- "runtime_s": 3.9672045707702637
 }

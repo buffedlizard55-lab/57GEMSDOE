@@ -78,6 +78,18 @@ def test_current_tiff_zip_links_and_card_are_consistent():
     assert result['current_card_consistent'] and not result['submission_cleared']
 
 
+def test_historical_clearance_flags_never_create_overview_download_links():
+    panel=script('build_site').download_panel({
+        'okay_to_download':True,'okay_to_submit':False,
+        'file':'archive/old.tif','zip_file':'archive/old.zip',
+        'validator_output':{'bytes':1},'raster_sha256':'old',
+        'submission_note_chars':1,'submission_note':'old',
+    })
+    assert 'NOT CLEARED' in panel and 'Download: NOT CLEARED' in panel
+    assert 'Download for research: OK' not in panel
+    assert 'href="downloads/' not in panel
+
+
 def test_feed_parser_accepts_only_a_real_sorted_table():
     parse=script('refresh_feed').parse_leaderboard
     html='<table><tr><th>Rank</th><th>Team</th><th>Participant</th><th>Score</th></tr><tr><td>#1</td><td></td><td>first</td><td>0.3774</td></tr><tr><td>#2</td><td></td><td>second</td><td>0.3361</td></tr></table>'

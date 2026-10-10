@@ -24,11 +24,15 @@
     "verdict": "NEGATIVE (does not beat shipped anatomy)"
   },
   "correlation_overlap_vs_registry": {
-    "n_registry_rasters": 15,
-    "unique": true,
-    "worst_spearman": 0.012247510134110818,
-    "worst_jaccard": 0.009545379944198261,
-    "worst_overlap": 0.34833333333333333
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "db2c4dcc93793ca450ebc45c5e47edb99b6434131b144b6a23991bb03d4b4093",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
   },
   "raster_sha256": "db2c4dcc93793ca450ebc45c5e47edb99b6434131b144b6a23991bb03d4b4093",
   "validator_output": {
@@ -56,9 +60,27 @@
   "historical_verdict_reason": "All format checks pass, unique vs 15 registry rasters",
   "okay_to_download": false,
   "okay_to_submit": false,
-  "download_status": "NOT CLEARED — archived for provenance only",
+  "download_status": "NOT CLEARED — archive provenance only",
   "submission_status": "NOT SUBMITTED — no organizer receipt exists",
   "weekly_slot_selected": false,
   "release_role": "historical H57-K experiment output; archived, not cleared",
-  "superseded_by": "evidence/run_card_current.json"
+  "superseded_by": "evidence/run_card_current.json",
+  "historical_correlation_overlap_vs_registry": {
+    "n_registry_rasters": 15,
+    "unique": true,
+    "worst_spearman": 0.012247510134110818,
+    "worst_jaccard": 0.009545379944198261,
+    "worst_overlap": 0.34833333333333333
+  },
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "db2c4dcc93793ca450ebc45c5e47edb99b6434131b144b6a23991bb03d4b4093",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
+  }
 }

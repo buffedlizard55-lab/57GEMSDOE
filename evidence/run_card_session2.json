@@ -33,18 +33,15 @@
     "unique_by_protocol_literal": false
   },
   "correlation_overlap_vs_registry": {
-    "n_registry_rasters": 15,
-    "rho_limit": 0.9,
-    "jaccard_limit": 0.5,
-    "overlap_limit": 0.7,
-    "worst_spearman_full_footprint": 0.01070177139044915,
-    "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_jaccard_dot_sets": 0.009534650570199256,
-    "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "worst_dot_overlap_3px": 0.35720551201154466,
-    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
-    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
-    "unique": true
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
   },
   "raster_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
   "validator_output": {
@@ -80,5 +77,34 @@
     }
   },
   "verdict": "HOLD (format checks pass; literal uniqueness forward-overlap gate fired; not cleared)",
-  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
+  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above.",
+  "historical_correlation_overlap_vs_registry": {
+    "n_registry_rasters": 15,
+    "rho_limit": 0.9,
+    "jaccard_limit": 0.5,
+    "overlap_limit": 0.7,
+    "worst_spearman_full_footprint": 0.01070177139044915,
+    "worst_rho_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_jaccard_dot_sets": 0.009534650570199256,
+    "worst_jaccard_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_dot_overlap_3px": 0.35720551201154466,
+    "worst_overlap_submission": "topo-gap-closure-t-v2-on-d1-5",
+    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
+    "unique": true
+  },
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
+  },
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists"
 }

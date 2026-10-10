@@ -59,7 +59,7 @@
   "approved_for_weekly_slot": false,
   "promoted": false,
   "submission_slots_used": 0,
-  "status": "research-only; local format validation is not organizer acceptance",
+  "status": "ARCHIVE ONLY — NOT CLEARED; local format validation is not organizer acceptance",
   "metadata": {
     "lane": "fault-zone anatomy",
     "mode": "all",
@@ -70,5 +70,9 @@
       "d_perp",
       "d_par_abs"
     ]
-  }
+  },
+  "okay_to_download": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "okay_to_submit": false,
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists"
 }

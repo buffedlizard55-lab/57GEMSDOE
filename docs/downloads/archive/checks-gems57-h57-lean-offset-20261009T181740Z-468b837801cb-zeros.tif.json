@@ -1,5 +1,5 @@
 {
-  "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+  "file": "docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
   "bytes": 118108,
   "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
   "meta": {
@@ -50,5 +50,10 @@
   "all_checks_passed": true,
   "on_catalogue_positive_pixels": 0,
   "in_footprint_positive_pixels": 40000,
-  "footprint_fraction": 0.007740877231041769
+  "footprint_fraction": 0.007740877231041769,
+  "okay_to_download": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "okay_to_submit": false,
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+  "archive_status": "historical validation metadata only; no current release"
 }

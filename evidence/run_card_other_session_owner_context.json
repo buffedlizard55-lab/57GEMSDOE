@@ -42,21 +42,19 @@
     },
     "n_overlap_firings_one_directional_literal_gate": 98,
     "informational_two_sided_true_duplicates_not_a_clearance_rule": 0,
-    "unique_by_protocol_literal": false
+    "unique_by_protocol_literal": false,
+    "current_disposition": "FAIL — literal forward-overlap gate"
   },
   "correlation_overlap_vs_registry": {
-    "n_registry_rasters": 16,
-    "rho_limit": 0.9,
-    "jaccard_limit": 0.5,
-    "overlap_limit": 0.7,
-    "worst_spearman_full_footprint": 0.2766141133066089,
-    "worst_rho_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
-    "worst_jaccard_dot_sets": 0.16369337225646016,
-    "worst_jaccard_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
-    "worst_dot_overlap_3px": 0.58955,
-    "worst_overlap_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
-    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
-    "unique": true
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
   },
   "raster_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
   "validator_output": {
@@ -112,14 +110,60 @@
       "firings": 98,
       "unique_by_protocol_literal": false
     },
-    "two_sided_clearance_rule": {
+    "historical_two_sided_clearance_rule": {
       "rule": "duplicate = forward >0.70 AND reverse >0.50 (a real copy); forward-only firings vs dense rasters = documented saturation",
       "two_sided_true_duplicates": 0,
       "spearman_duplicates": 0,
       "clear": true
+    },
+    "current_literal_rule": {
+      "rho_limit": 0.9,
+      "forward_overlap_limit": 0.7,
+      "condition": "FAIL if full-surface Spearman > 0.90 OR > 70% of candidate dots fall within 3 px of any one registry raster",
+      "reverse_overlap_exemption": false,
+      "same_lane_exemption": false,
+      "result": "FAIL — the full-registry scan recorded 98 one-directional firings; the dense witness independently makes overlap 1.0 for every nonempty allowable candidate"
     }
   },
-  "owner_decision_2026_10_09": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence",
-  "verdict": "promote",
-  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
+  "verdict": "negative — literal full-registry forward-overlap gate; historical artifact only",
+  "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above.",
+  "historical_verdict": "promote",
+  "historical_correlation_overlap_vs_registry": {
+    "n_registry_rasters": 16,
+    "rho_limit": 0.9,
+    "jaccard_limit": 0.5,
+    "overlap_limit": 0.7,
+    "worst_spearman_full_footprint": 0.2766141133066089,
+    "worst_rho_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "worst_jaccard_dot_sets": 0.16369337225646016,
+    "worst_jaccard_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "worst_dot_overlap_3px": 0.58955,
+    "worst_overlap_submission": "h57-anatomy-enechelon (this lane's previous ship, HOLDOUT-DTI 0.2517)",
+    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
+    "unique": true
+  },
+  "artifact_path": "docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+  "historical_owner_decision_2026_10_09_superseded": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence",
+  "current_protocol_decision": "Apply the literal forward-overlap gate. No reverse-overlap or same-lane exemption absent an explicit protocol revision.",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+  "weekly_slot_selected": false,
+  "submission_slots_used": 0,
+  "release_role": "historical research artifact; archive provenance only",
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+    "full_registry_scan_evidence": "correlation_overlap_full_registry in this receipt",
+    "one_directional_forward_overlap_firings": 98,
+    "registry_grid_rasters_scanned": 655
+  }
 }

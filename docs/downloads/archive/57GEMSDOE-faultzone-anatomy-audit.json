@@ -30,5 +30,9 @@
   "distance_model": "W = min(15, 2.6 * L^0.22) px, fitted log-log slope 0.22, intercept 0.955, mean nearest neighbor distance 5.7px median 3.6px",
   "orientation_model": "relative angle mean 16.9 deg median 12.0 deg, 44% <=10deg (parallel), 58% <=15deg, 84% <=30deg, fitted from nearest neighbor pairs",
   "width_vs_length": "Spearman 0.25-0.27, slope 0.22-0.29, plateau ~7-8px for L>=20",
-  "dot_budget_shrink": "from typical 40000 to 12000 due to only 5-6% of withheld faults inside 30px/30deg zone in quadrant holdout"
+  "dot_budget_shrink": "from typical 40000 to 12000 due to only 5-6% of withheld faults inside 30px/30deg zone in quadrant holdout",
+  "okay_to_download": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "okay_to_submit": false,
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists"
 }

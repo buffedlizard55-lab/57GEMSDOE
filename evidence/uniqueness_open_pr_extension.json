@@ -21,7 +21,7 @@
   "byte_unique_among_checked": true,
   "pixel_unique_among_checked": true,
   "duplicate_count": 0,
-  "unique": true,
+  "unique": false,
   "rows": [
     {
       "repo": "57GEMSDOE",
@@ -92,8 +92,31 @@
       "duplicate_by_jaccard": false
     }
   ],
-  "verdict": "promote-to-selector-only",
-  "stop_required": false,
+  "verdict": "negative — superseded by the full accessible-registry literal gate review",
+  "stop_required": true,
   "candidate_rank_variation": true,
-  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only."
+  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.",
+  "historical_verdict": "promote-to-selector-only",
+  "historical_unique": true,
+  "current_literal_registry_review": {
+    "my_dots": 2714823,
+    "registry_rasters_expected": 670,
+    "registry_rasters_checked": 670,
+    "worst_spearman_full_footprint": 0.8072750785381169,
+    "worst_rho_submission": "57GEMSDOE:docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif",
+    "worst_dot_overlap": 1.0,
+    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
+    "duplicate_count": 77,
+    "verdict": "negative",
+    "stop_required": true,
+    "reviewed_utc": "2026-10-09T20:38:13.929685+00:00",
+    "evidence_file": "evidence/uniqueness_current_review.json",
+    "dense_witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "forward_overlap_to_dense_witness": 1.0,
+    "same_lane_exemption": false
+  },
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists"
 }

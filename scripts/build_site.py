@@ -28,7 +28,8 @@ PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orie
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
-          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'session5_witness_verification', 'independent_candidate_check', 'run_card_r2_shipped8']
 
 
 def esc(value):
@@ -120,27 +121,14 @@ def load_h57b_run_card(root=ROOT):
     return json.loads((Path(root) / 'evidence' / 'run_card.json').read_text())
 
 
-def download_panel(card):
-    if card.get('okay_to_download') is not True or card.get('okay_to_submit') is not False:
-        return '''<section class="download-panel" aria-labelledby="download-title">
+def download_panel(_historical_card=None):
+    # Historical receipt flags must never restore an artifact link on the current overview.
+    return '''<section class="download-panel" aria-labelledby="download-title">
 <div class="eyebrow">CURRENT STATUS · NO CLEARED ARTIFACT</div><h1 id="download-title">H57-B is on HOLD.</h1>
 <p class="hero-sub">No H57-B GeoTIFF was generated or format-validated.</p>
 <div class="permissions"><span class="permission no">Download: NOT CLEARED</span><span class="permission no">Submit: NO</span></div>
 <p class="hold-reason"><strong>DO NOT DOWNLOAD OR SUBMIT.</strong> H57-B failed the literal final-dot overlap gate before a file was written. The separately retained H57-K research surface passed local format checks but failed the literal registry uniqueness gate; it is archived for provenance only.</p>
 <p><a class="text-link" href="h57b.html">Read H57-B evidence and the single run card →</a></p></section>'''
-    filename = Path(card['file']).name
-    zipname = Path(card['zip_file']).name
-    validator = card['validator_output']
-    return f'''<section class="download-panel" aria-labelledby="download-title">
-<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 9, 2026</div><h1 id="download-title">A new file. An honest verdict.</h1>
-<p class="hero-sub">Learned magnetic-edge orientation around visible faults.<br>Fresh predictions—not a copy of an earlier submission.</p>
-<div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
-<p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> the mandatory forward-overlap gate failed. No demonstrated binary holdout gain. No production dots placed; no weekly slot used.</p>
-<div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>↓ Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
-<a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
-<details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">{esc(filename)}</p><p class="mono">SHA256 {esc(card['raster_sha256'])}</p>
-<p>Suggested note ({card['submission_note_chars']} / 140 characters):</p><p class="mono" id="submission-note">{esc(card['submission_note'])}</p><button class="copy-button" type="button" data-copy="submission-note">Copy note</button>
-<p class="small">The filename's ID hashes decoded pixels. The SHA256 above hashes the actual downloaded TIFF. {link('data/run_card.json', 'Download complete run card')}.</p></details></section>'''
 
 
 def evidence_notice(card):
@@ -252,7 +240,7 @@ def build(root=ROOT, make_preview=True):
 <p>The previously generated H57-K file is an <strong>archived soft research surface</strong>, not those test-fold dots; its literal uniqueness gate failed, so it is not cleared to download or submit. Its method's HOLDOUT-DTI is <strong>{number(raw['dti'])}</strong>, 95% CI {interval(raw['ci95'])}. Do not attach the binary score to that TIFF.</p>{disclaimer}
 <p>{link('results.html', 'Inspect all comparisons →')}</p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display of the archived H57-K relative-strand research surface on the bridged competition grid" width="600" height="680"><figcaption>Archived H57-K research surface · north ↑ · EPSG:32611. Downsampled maximum with nonlinear display colors; historical only, not cleared, not ground truth or a vent map.</figcaption></figure></section>
 <section class="card"><div class="eyebrow">REVIEW FOUND A REAL BUG</div><h2>Every valid host strike had been reset to zero.</h2><p>A reversed finite-value fallback corrupted the earlier host-relative geometry. It is fixed, with regressions for east–west offsets and hidden-value invariance. Earlier orientation interpretations and the interrupted run are invalidated, not recycled as evidence.</p><p>{link('irregularities.html', 'IR-57-STRIKE-01 and other audit findings →')}</p></section>
-<section><div class="eyebrow">PRIOR H57-K UNIVERSAL-BLOCKAGE CERTIFICATE · HISTORICAL</div><h2>Why the earlier overlap rule could not clear a nonempty candidate</h2><p>One earlier dense soft raster is positive over the entire footprint. Under the inherited literal definition of a dot—<code>finite prediction &gt; 0</code>—every allowable nonempty candidate has forward overlap 1.0 with it. This is a measured obstruction, not permission to invent a density or reverse-overlap exemption.</p><p>{link('data/uniqueness_saturation_certificate.json', 'Hash-verified saturation certificate')} · {link('data/orientation_surface_uniqueness.json', 'All per-raster checks')}</p></section>
+<section class="card"><div class="eyebrow">SESSION-5 INDEPENDENT REGISTRY RE-CHECK · 2026-10-10</div><h2>The literal forward-overlap gate blocks every nonempty candidate.</h2><p>The SHA-pinned dense witness has {evidence['session5_witness_verification']['witness']['positive_pixels']:,} positive cells and covers every allowable cell. Its forward overlap with the recorded 40,000-dot H57-R2 raster is {evidence['session5_witness_verification']['forward_overlap_sparse40k_vs_witness']:.1%}; the support certificate proves that any nonempty allowable candidate has overlap 1.0. No same-lane or reverse-overlap exemption applies.</p><p>A separate local check of H57-R2 against {evidence['independent_candidate_check']['registry_scope']} measured forward overlap {evidence['independent_candidate_check']['candidates'][0]['worst_forward_overlap_non_self']:.6f} against its earlier same-repository build, already above the 0.70 limit. This local audit is partial and is not clearance. H57-R2 and all earlier TIFFs remain archived; no current download or submission is cleared.</p><p>{link('data/session5_witness_verification.json', 'SHA-verified Session-5 witness receipt')} · {link('data/independent_candidate_check.json', 'Local candidate diagnostic (not a full inventory)')} · {link('data/run_card_r2_shipped8.json', 'Negative H57-R2 run card')} · {link('data/uniqueness_saturation_certificate.json', 'Universal-support certificate')} · {link('archive.html', 'Archive index — NOT CLEARED')}</p></section>
 <section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div><h2>Leaderboard context</h2><p><strong id="leaderboard-top">{number(evidence['leaderboard_snapshot']['top_public_dti'])}</strong> <span id="leaderboard-context">top public DTI in the last successful organizer snapshot</span></p><p id="feed-status" aria-live="polite">Checked on 2026-10-09. Date-precision snapshot; open the official board for current context.</p><p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')}</p><p class="small">Scheduled Pages builds refresh this public feed. Failures retain the prior snapshot with a visible freshness warning. Neither the team's remaining slots nor its private score is known.</p></section>'''
 
     executive = panel + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>No file is cleared to download or submit.</strong> The archived H57-K TIFF passed local format checks but failed the literal uniqueness gate; H57-B generated no TIFF. Local format PASS is not organizer acceptance, uniqueness clearance or permission to use a weekly slot.</div>

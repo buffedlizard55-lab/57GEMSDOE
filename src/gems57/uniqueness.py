@@ -17,6 +17,8 @@ from .metric import RADIUS_PX
 
 RHO_LIMIT = 0.90
 OVERLAP_LIMIT = 0.70
+# Retained solely as a descriptive benchmark for old evidence; Jaccard is not
+# part of the user's literal duplicate/drift gate.
 JACCARD_LIMIT = 0.50
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -413,7 +415,7 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
                 'identical_decoded_predictions':bool(their_decoded==decoded_digest),
                 'duplicate_by_rho':bool(rho is not None and rho > RHO_LIMIT),
                 'duplicate_by_overlap':bool(ov > OVERLAP_LIMIT),
-                'duplicate_by_jaccard':bool(jac > JACCARD_LIMIT)}
+                'jaccard_over_diagnostic_reference':bool(jac > JACCARD_LIMIT)}
             rows.append(row)
         except (OSError, ValueError, rasterio.errors.RasterioError) as e:
             rows.append({**base, 'error':str(e)})
@@ -421,7 +423,9 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             progress(i+1,len(records),rows[-1])
     checked = [r for r in rows if 'error' not in r]
     errors = [r for r in rows if 'error' in r]
-    flags = [r for r in checked if any(r[k] for k in ('duplicate_by_rho','duplicate_by_overlap','duplicate_by_jaccard','identical_bytes','identical_decoded_predictions'))]
+    # The protocol gate is exactly Spearman > 0.90 OR candidate-forward 3 px
+    # overlap > 0.70. Jaccard and byte/pixel identity remain diagnostics only.
+    flags = [r for r in checked if r['duplicate_by_rho'] or r['duplicate_by_overlap']]
     complete = inventory_complete and bool(records) and not errors and not source_errors
     rank_rows = [r for r in checked if r['spearman_full_footprint'] is not None]
     worst_rho = max(rank_rows, key=lambda r:r['spearman_full_footprint'], default=None)
@@ -430,7 +434,9 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
     unique = complete and my_dot_count > 0 and norm > 0 and not flags
     return dict(evidence_class='REGISTRY-MEASUREMENT', my_dots=my_dot_count,
         candidate_decoded_sha256=decoded_digest, candidate_file_sha256=file_sha256,
-        rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
+        rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT,
+        jaccard_diagnostic_reference=JACCARD_LIMIT,
+        protocol='duplicate iff Spearman > 0.90 OR candidate-forward 3 px overlap > 0.70; no reverse-overlap exemption',
         registry_rasters_expected=len(records), registry_rasters_checked=len(checked),
         complete_accessible_scan=complete, missing_or_invalid=len(errors), source_errors=source_errors,
         worst_spearman_full_footprint=worst_rho['spearman_full_footprint'] if worst_rho else None,

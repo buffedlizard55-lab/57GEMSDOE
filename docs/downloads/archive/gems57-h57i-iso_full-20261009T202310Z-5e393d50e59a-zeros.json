@@ -59,12 +59,12 @@
   "approved_for_weekly_slot": false,
   "promoted": false,
   "submission_slots_used": 0,
-  "status": "HISTORICAL FORMAT RECEIPT ONLY — NOT CLEARED to download or submit; literal full-registry dot-overlap gate failed.",
+  "status": "ARCHIVE ONLY — NOT CLEARED; local format validation is not organizer acceptance",
   "metadata": {
     "arm": "iso_full",
     "n_dots": 37654
   },
-  "historical_status": "OK TO DOWNLOAD AND SUBMIT; local format validation is not organizer acceptance; no weekly slot spent by this repo",
+  "historical_status": "Superseded: earlier partial-registry clearance was withdrawn after full-registry review; NOT CLEARED.",
   "okay_to_download": false,
   "okay_to_submit": false,
   "download_status": "NOT CLEARED — archive provenance only",

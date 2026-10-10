@@ -303,6 +303,19 @@
     "footprint_fraction": 0.007740877231041769
   },
   "uniqueness": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
+  },
+  "promote": false,
+  "runtime_s": 573.4315993785858,
+  "historical_uniqueness": {
     "my_file": "docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
     "my_dots": 40000,
     "rho_limit": 0.9,
@@ -558,6 +571,26 @@
       }
     ]
   },
-  "promote": true,
-  "runtime_s": 573.4315993785858
+  "historical_promote": true,
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+  "weekly_slot_selected": false,
+  "submission_slots_used": 0,
+  "release_role": "historical research artifact; archive provenance only",
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": null,
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+    "full_registry_scan_evidence": "evidence/run_card_other_session_owner_context.json",
+    "one_directional_forward_overlap_firings": 98,
+    "registry_grid_rasters_scanned": 655
+  }
 }

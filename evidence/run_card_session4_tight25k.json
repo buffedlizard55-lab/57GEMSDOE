@@ -14,10 +14,15 @@
     "label": "HOLDOUT-DTI - local instrument, NOT projected live score"
   },
   "uniqueness": {
-    "unique": true,
-    "worst_rho": 0.009382015444375256,
-    "worst_jaccard": 0.007715923284345197,
-    "worst_overlap": 0.36464
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
   },
   "raster_sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
   "validator": {
@@ -38,9 +43,26 @@
   "historical_verdict": "PROMOTE",
   "okay_to_download": false,
   "okay_to_submit": false,
-  "download_status": "NOT CLEARED — archived for provenance only",
+  "download_status": "NOT CLEARED — archive provenance only",
   "submission_status": "NOT SUBMITTED — no organizer receipt exists",
   "weekly_slot_selected": false,
   "release_role": "historical H57-K experiment output; archived, not cleared",
-  "superseded_by": "evidence/run_card_current.json"
+  "superseded_by": "evidence/run_card_current.json",
+  "historical_uniqueness": {
+    "unique": true,
+    "worst_rho": 0.009382015444375256,
+    "worst_jaccard": 0.007715923284345197,
+    "worst_overlap": 0.36464
+  },
+  "current_literal_registry_review": {
+    "status": "FAIL — literal forward-overlap gate; no same-lane or reverse-overlap exemption",
+    "unique": false,
+    "forward_overlap_to_dense_witness": 1.0,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "support_definition": "finite prediction > 0 within the allowable domain",
+    "witness_covers_every_allowable_cell": true,
+    "candidate_sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
+    "download_status": "NOT CLEARED — archive provenance only",
+    "submission_status": "NOT SUBMITTED — no organizer receipt exists"
+  }
 }

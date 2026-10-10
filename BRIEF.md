@@ -10,7 +10,9 @@ The preregistered H57-B arm comparison is non-comparable because the candidate e
 
 The older H57-K orientation analysis is historical and separate; it also does not clear an artifact. Its corrected repeat found no demonstrated binary HOLDOUT-DTI gain. Do not reuse its earlier local download wording.
 
-Integration verification: 92 tests passed, 2 skipped, 0 failures; 30-page site check passed. The run-card SHA-256 remained `27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923` across the guarded site build.
+The integrated Session-5 independent audit finds a literal universal blocker: the SHA-pinned dense witness covers every allowable cell, so any nonempty candidate has 1.0 forward overlap. The historical 40,000-dot H57-R2 file separately measured 0.711325 on a 19-raster local check. Same-lane candidates receive no exemption; the partial check is not clearance. All such TIFFs remain archive-only. See [the witness receipt](evidence/session5_witness_verification.json) and [the local diagnostic](evidence/independent_candidate_check.json).
+
+Integration verification after conflict resolution: 95 tests passed, 2 skipped, 0 failures; 30-page site check passed with `submission_cleared: false` and no direct download files. Existing `PendingDeprecationWarning`s remain for Affine `*` matrix multiplication in `faultzone.py`/Rasterio. The run-card SHA-256 remained `27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923` across the guarded site build.
 
 ## Non-negotiable protocol
 
@@ -22,7 +24,7 @@ Integration verification: 92 tests passed, 2 skipped, 0 failures; 30-page site c
 6. Every feature alone: `max(AUC,1−AUC)>0.90` is leakage until resolved. Passing canaries is not proof of zero leakage.
 7. Three experiments or two hours per session. Negative results count. Real slots are a **separate selector step**, never chosen/spent here.
 8. End with one JSON run card: hypothesis, mechanism, named mimic, holdout/CI, registry checks, TIFF SHA256, validator, unique filename/note ≤140 characters and promote/negative verdict.
-9. Prominent real TIFF/ZIP download and explicit download/submission permission on the overview and executive summary. Never upload a webpage or JSON receipt.
+9. If and only if a real TIFF/ZIP is cleared, link that exact artifact and display its permission on the overview and executive summary. Under HOLD, provide no direct artifact link and state NOT CLEARED. Never upload a webpage or JSON receipt.
 10. Three implementation/review passes, auditable source/irregularity tables, clean Pages site, PR then merge, and next-session limitations. Work autonomously; never ask for passwords/tokens.
 
 **Maximize P(Win):** demand paired evidence and preserve scarce slots. **Own the Outcome:** fix tools, restore data, publish failures and keep status truthful.

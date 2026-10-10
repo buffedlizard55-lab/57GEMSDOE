@@ -38,6 +38,14 @@ and submission are **NOT CLEARED**. Its byte-level receipt in
 active release/download link; the site's separate archive index lists historical paths as plain text
 with an explicit NOT CLEARED status.
 
+**Independent Session 5 re-check:** the 40,000-dot H57-R2 historical TIFF measured 0.711325
+forward overlap against a same-repository earlier raster on the recorded 19-file diagnostic; that
+is already over 0.70 and receives no same-lane exemption. More decisively, the SHA-verified dense
+witness in [`evidence/session5_witness_verification.json`](evidence/session5_witness_verification.json)
+contains every allowed cell, so every nonempty candidate has overlap 1.0 under the literal support
+definition. The 19-file audit is explicitly partial, not a clearance. H57-R2 is now archived; its
+former promotion wording is retained only in historical fields; current clearance remains false.
+
 ## Prior H57-K research run — historical HOLDOUT-DTI (not H57-B, no download clearance)
 
 **HOLDOUT-DTI only** — evaluator `gems57-pooled-hide-v2`, buffered whole-component LOQO, **11,321 withheld positive pixels**, pooled α=0.2 / β=0.8 / 300 m triangular kernel; 1,000 paired draws over 153 physical 20 km clusters. CIs are conditional on catalogue labels, fixed fitted folds and budgets, not forecasts of live/private scores.
@@ -61,7 +69,7 @@ Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orie
 
 The first new attempt was stopped; its [aborted receipt/log](evidence/orientation_attempt1-aborted.json) is explicitly untrusted. The same three predeclared hypotheses were repeated only after the tooling repair. Earlier 0.2279/0.2517 readings and claims that constant orientation features might help in interaction are **not valid current mechanism evidence**. Historical artifacts remain for learning, not recommendations. Unsafe in-sample/oracle-budget builders and relaxed uniqueness helpers are retired.
 
-Other shared repairs: metric/evaluator API mismatch, missing `fn`, vector endpoint sampling, zero-based sense-record indexing, exact finite-support/Euclidean-radius uniqueness, and missing-registry fail-closed behavior. [Audit ledger](evidence/irregularities_current.json).
+Other shared repairs: metric/evaluator API mismatch, missing `fn`, vector endpoint sampling, zero-based sense-record indexing, exact finite-support/Euclidean-radius uniqueness, and missing-registry fail-closed behavior. [Audit ledger](evidence/irregularities_current.json). The historical session-2 rebuild script is retained for provenance, was not executed here, writes only to the archive, and now applies the literal full-registry gate with same-lane rasters included; Jaccard and reverse overlap are diagnostics only.
 
 ## Why the reported GEMSDOE32 0.2778 is not a scientific explanation
 

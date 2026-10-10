@@ -9,6 +9,7 @@ from affine import Affine
 
 from gems57.grid import CRS_EPSG, TRANSFORM
 from gems57.uniqueness import (JACCARD_LIMIT, OVERLAP_LIMIT, RHO_LIMIT,
+                               compare_array_to_registry,
                                compare_dots_to_registry,
                                compare_surface_to_registry,
                                dot_overlap, surface_rho)
@@ -53,7 +54,7 @@ def test_dot_union_rho_is_undefined_when_one_support_contains_the_other():
     assert r["jaccard_dot_sets"] == pytest.approx(1.0)
 
 
-def test_a_90_percent_copy_is_flagged_by_jaccard():
+def test_jaccard_similarity_is_a_diagnostic_not_a_gate():
     a = _sparse(4, 4000).astype(np.float32)
     b = a.copy()
     ys, xs = np.nonzero(b)
@@ -62,8 +63,8 @@ def test_a_90_percent_copy_is_flagged_by_jaccard():
     b[ys[:k], xs[:k]] = False
     b[rng.integers(0, SHAPE[0], k), rng.integers(0, SHAPE[1], k)] = True
     r = surface_rho(a, b, np.ones(SHAPE, bool))
-    # measured: rho_full = 0.8985 (just under the bar), jaccard = 0.8198.
-    # Jaccard is what catches a near-copy; rho only reaches 1.0 on an exact one.
+    # This is only a descriptive set-similarity measurement; the protocol
+    # thresholds full-footprint rho and candidate-forward 3 px overlap.
     assert r["spearman_full_footprint"] == pytest.approx(0.8985, abs=0.01)
     assert r["jaccard_dot_sets"] == pytest.approx(0.8198, abs=0.01)
     assert r["jaccard_dot_sets"] > JACCARD_LIMIT
@@ -100,6 +101,30 @@ def _write_registry(path, raster, submission="prior", transform=TRANSFORM):
             "sources": [f"owner/repo:{submission}"],
         }]}))
     return index_path
+
+
+def test_jaccard_above_diagnostic_reference_alone_does_not_fail_literal_gate(tmp_path):
+    mine = np.zeros(SHAPE, np.float32)
+    prior = np.zeros(SHAPE, np.float32)
+    # 134 shared dots out of 200 in each map yield Jaccard > 0.50, while
+    # exactly 67% of candidate dots overlap within 3 px. Spacing by 10 px
+    # prevents unintended neighbours; full-footprint rho remains below 0.90.
+    points = [(20 + (i // 30) * 10, 20 + (i % 30) * 10) for i in range(266)]
+    for y, x in points[:200]:
+        mine[y, x] = 1.0
+    for y, x in points[:134] + points[200:266]:
+        prior[y, x] = 1.0
+    index = _write_registry(tmp_path / "prior.tif", prior)
+    result = compare_array_to_registry(mine, index, np.ones(SHAPE, bool))
+    row = result["rows"][0]
+    assert row["jaccard_dot_sets"] > JACCARD_LIMIT
+    assert row["jaccard_over_diagnostic_reference"]
+    assert row["my_dots_within_3px_of_theirs"] == pytest.approx(0.67)
+    assert abs(row["spearman_full_footprint"]) < RHO_LIMIT
+    assert not row["duplicate_by_rho"] and not row["duplicate_by_overlap"]
+    assert result["unique"] and result["duplicate_count"] == 0
+    assert "jaccard_diagnostic_reference" in result
+    assert "jaccard_limit" not in result
 
 
 def test_literal_preplacement_rho_gate_detects_an_exact_surface_copy(tmp_path):
