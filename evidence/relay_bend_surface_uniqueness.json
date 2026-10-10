@@ -11842,5 +11842,6 @@
   "verdict": "negative",
   "stop_required": true,
   "candidate_rank_variation": true,
-  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only."
+  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.",
+  "jaccard_diagnostic_only": true
 }

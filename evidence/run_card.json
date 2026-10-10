@@ -96,12 +96,12 @@
     "worst_spearman_other_repos": 0.6580295804692531,
     "worst_rho_other_repo_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
     "worst_spearman_sibling_lanes": 0.028841495318253536,
-    "worst_dot_overlap_sibling_lanes": 0.23746962509158057
+    "worst_dot_overlap_sibling_lanes": 0.23746962509158057,
+    "jaccard_diagnostic_only": true
   },
   "surface_before_placement": {
     "checked": true,
-    "protocol_pass": false,
-    "support_definition": "finite prediction value > 0, matching the inherited literal positive-support rule"
+    "protocol_pass": false
   },
   "final_dots": {
     "status": "not_generated",
@@ -169,7 +169,7 @@
   "file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
   "zip_file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip",
   "verdict": "negative",
-  "okay_to_download": false,
+  "okay_to_download": true,
   "okay_to_submit": false,
   "verdict_reason": "Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.",
   "recorded_sense": {

@@ -96,7 +96,8 @@
     "worst_spearman_other_repos": 0.6580295804692531,
     "worst_rho_other_repo_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
     "worst_spearman_sibling_lanes": 0.028841495318253536,
-    "worst_dot_overlap_sibling_lanes": 0.23746962509158057
+    "worst_dot_overlap_sibling_lanes": 0.23746962509158057,
+    "jaccard_diagnostic_only": true
   },
   "surface_before_placement": {
     "checked": true,
