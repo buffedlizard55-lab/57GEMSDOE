@@ -35,7 +35,7 @@ Date: 2026-10-09 (UTC)
 
 ## Main-line integration validation — 2026-10-10
 
-- Integrated PR #8 head `58840b86` with `origin/main` `621b6748`, preserving the newer main-line H57 run card, candidate, and evidence. The older PR #8 artifact and its research slate are labeled as historical; no candidate was rebuilt.
-- Kept main's newer `metric.max_cover` return contract (distance grid) and routed active `fitting.run_cell` scoring through the shared evaluator. Targeted evaluator/pipeline tests: **16 passed**; full suite: **89 passed, 2 skipped**.
-- Repaired the indexed inventory wording across README, site, run cards, and gate tooling. It is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent.
-- No registry scan, new experiment, or organizer submission was run during integration.
+- Integrated PR #8 head `58840b86` with current `origin/main` `5309c85a` (including Session 5 / PR #18), preserving the newer main-line H57 run card, candidate, and witness-verification evidence. The older PR #8 artifact and its research slate are labeled historical; no candidate was rebuilt.
+- Kept main's newer `metric.max_cover` return contract (distance grid) and routed active `fitting.run_cell` scoring through the shared evaluator. Targeted evaluator/pipeline tests: **16 passed**; after the final Session 5 merge, the full suite again passed: **89 passed, 2 skipped**.
+- Repaired the inventory wording across README, site, run cards, and gate tooling. The evidence is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Session 5's 19 local raster re-check is an even narrower cache slice, not a replacement for that index.
+- The Session 5 witness is a raster measurement, not a score; it corroborates the existing STOP and is not a new registry scan performed during this integration. No new experiment or organizer submission was run.

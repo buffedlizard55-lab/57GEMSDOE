@@ -18,6 +18,14 @@ Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, tr
   > Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.
 - Do **not** upload HTML, a JSON receipt, a PDF or a repository ZIP. Our ZIP contains exactly one TIFF and is round-trip verified.
 
+## Session 5 status (2026-10-10) — independent re-check, still HOLD
+
+- **Download for research: OK. Submit to competition: NO (unchanged).** No file is cleared by the literal uniqueness gate.
+- Independent re-check (`scripts/independent_candidate_check.py` → [evidence/independent_candidate_check.json](evidence/independent_candidate_check.json)): the sparse 40k TIFF has forward overlap **0.7113** against its own session-1 build (`57GEMSDOE__h57-anatomy-enechelon-zeros.tif`), above the 0.70 limit; the dense surface has worst local forward overlap 0.2375 but fails the universal blocker below.
+- **Universal blocker verified:** the sibling raster `17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif` (git blob `374c88b1…`, sha256 `ab0a0a62…`, 5,167,373 positive cells) was re-fetched from its public repo and matches the saved certificate hash. Forward overlap of **any** candidate against it is 1.0 ([evidence/session5_witness_verification.json](evidence/session5_witness_verification.json)). The literal 0.70 gate therefore cannot be satisfied while this raster is in the comparison set. This is a protocol decision for the owner (for example, excluding dense continuous priors from the dot-overlap screen), not something to tune around.
+- Test suite re-run: pass (2 skipped). All 12 repo TIFFs re-read with rasterio: EPSG:32611, 3730×3292, matching transform, finite, values in [0,1].
+- **Irregularities flagged:** the stated "0.3195 is the highest" conflicts with the retrieved public board (top 0.3774; 0.3195 is rank 7; 0.2778 is rank 17 — [leaderboard snapshot](evidence/leaderboard_snapshot.json), retrieved 2026-10-09). The 0.2778 value is owner-reported, not receipt-verified.
+
 ## What the corrected holdout actually says
 
 **HOLDOUT-DTI only** — evaluator `gems57-pooled-hide-v2`, buffered whole-component LOQO, **11,321 withheld positive pixels**, pooled α=0.2 / β=0.8 / 300 m triangular kernel; 1,000 paired draws over 153 physical 20 km clusters. CIs are conditional on catalogue labels, fixed fitted folds and budgets, not forecasts of live/private scores.
