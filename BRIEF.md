@@ -2,6 +2,10 @@
 
 Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of **every** session. The historical request is preserved for requirements and context, not word-for-word certified chat fidelity or score verification.
 
+## Current outcome, 2026-10-10 (Session 7 — read first)
+
+Status unchanged from main (PR #23): **Research download: NO pending explicit owner authorization. Submit: NO.** Session 7 restored and hash-verified the feature stack, reproduced the Session-5 holdout (0 numeric differences), and found that the holdout collar makes near-trace dots unobservable (IR-S7-04). The uniqueness gate is still blocked by a dense prior (IR-S7-01), which needs an owner ruling. See [README Session 7](README.md) and [REMAINING_WORK.md](REMAINING_WORK.md).
+
 ## Current outcome, 2026-10-10 (Session-6 follow-up)
 
 **Research download: NO pending explicit owner authorization (IR-S6-10). Competition submission: NO.** The Session-5 TIFF/ZIP remain in the repository for audit only; the README and site provide no TIFF/ZIP download links. A direct static URL may still resolve, but availability is not permission. The current [run card](evidence/run_card_current.json) is negative and records `okay_to_download=false`, `okay_to_submit=false`.

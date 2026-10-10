@@ -1,107 +1,177 @@
 {
-  "evidence_class": "DATA-AUDIT + REGISTRY-MEASUREMENT (no holdout, no organizer receipt)",
-  "session": 7,
-  "date_utc": "2026-10-10",
-  "lane": "fault-zone anatomy (secondary strands around known faults)",
-  "verdict": "negative",
-  "verdict_detail": "No new submission raster was generated for download. The literal uniqueness gate cannot be cleared by any nonempty in-footprint dot set (measured overlap 1.0 against the 17GEMSDOE E-proba witness). Download and submission are NOT OK. Owner decision required (IR-S6-01, IR-S6-10).",
-  "okay_to_download": false,
-  "okay_to_submit": false,
-  "submission_slots_used": 0,
-  "experiments_run": 0,
-  "budget_note": "No holdout experiment was run. training_features.tif is absent (IR-S6-05), so the spatially blocked holdout cannot be executed in this sandbox.",
-
-  "question_1_why_0_2778_scored_highest": {
-    "claim": "File-level relation only: the 0.2778 raster is an exact subset of the 0.2708 raster with 2,545 dots removed.",
-    "evidence_class": "DATA-AUDIT (file level, verified this session)",
-    "files": {
-      "0.2778 (owner-reported)": {"repo": "GEMSDOE32", "path": "docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif", "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9", "positive_dots": 37654, "values": [0, 1]},
-      "0.2708 (owner-reported)": {"repo": "GEMSDOE31", "path": "docs/downloads/gemsdoe31-h27-4-solo-d28-20261004-8acb75e1-nan.tif", "sha256": "07b6db440535404bb41ec8ddc797713e200d308e3da35937393efde5eb84bc40", "positive_dots": 40199}
-    },
-    "measured": {"dots_removed": 2545, "dots_added": 0, "values_equal_on_shared_dots": true, "grids_equal": true, "crs": "EPSG:32611", "shape": [3730, 3292]},
-    "mechanism_hypothesis": "Precision effect: removing dots 1.4 to 2.0 px from the mapped catalogue reduces false positives under a DTI cost. This is plausible but NOT verified. The 2,545-dot distances are taken from the owner's prior audit (evidence/session6_mechanism_and_witness.json), not re-measured here.",
-    "score_status": "OWNER-REPORTED. Not an organizer receipt. Not a HOLDOUT-DTI result."
-  },
-
-  "question_2_can_a_higher_scoring_unique_tif_be_produced": {
-    "answer": "Not cleared. Under the literal gate, no candidate can pass. A hypothetical rule change is an owner decision, not an analyst decision.",
-    "witness_verified_this_session": {
-      "repo": "17GEMSDOE",
-      "path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
-      "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
-      "finite_positive_cells": 5167373,
-      "footprint_cells_in_sample_grid": 5167373,
-      "nan_inside_footprint": 0,
-      "value_range": [0.0004625781439244747, 0.9841157197952270]
-    },
-    "measured_against_witness": {
-      "candidate": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
-      "candidate_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
-      "candidate_positive_cells": 2714823,
-      "forward_overlap_within_3px": 1.0,
-      "spearman_footprint": 0.5146483046192433,
-      "rank_rule_fires": false,
-      "overlap_rule_fires": true,
-      "why": "The literal dot definition (any finite value > 0) makes the soft E-proba surface cover the whole footprint."
-    },
-    "owner_options_from_IR_S6_01": [
-      "B: binarise each registry raster to its declared dot budget before the overlap test (untested against owner-scored rasters)",
-      "C: exclude dense soft surfaces from the overlap test while keeping the Spearman rank test",
-      "Keep the literal rule: then no nonempty candidate can be submitted under this protocol"
-    ]
-  },
-
-  "question_3_hypotheses": {
-    "new_hypotheses_added_this_session": 0,
-    "reason": "The ranked, pre-registered queue already exists in evidence/session6_hypotheses.json (H6-1 to H6-4), with falsifiers and leakage controls. None has been tested, because the holdout cannot run. Adding untested hypotheses would not change the verdict.",
-    "top_ranked": "H6-1 catalogue-proximity pruning vs matched random pruning (falsifier: paired 95% lower bound <= 0)"
-  },
-
-  "holdout": {
-    "status": "NOT RUN",
-    "HOLDOUT_DTI": null,
-    "ci95": null,
-    "withheld_positives": null,
-    "reason": "training_features.tif absent (IR-S6-05). Stored session-5 numbers (HOLDOUT-DTI, gems57-pooled-hide-v2, 11,321 withheld positives) remain historical and are not re-scored here."
-  },
-
-  "leakage_canary": {"status": "NOT RUN", "reason": "No holdout features available; no canary AUC can be computed."},
-
-  "validator_output_on_retained_candidate": {
+  "evidence_class": "DATA-MEASUREMENT (local recomputation; no organizer score)",
+  "generated_by": "scripts/session7_verify.py",
+  "download": {
     "file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
     "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
-    "bytes": 9960624,
-    "crs": "EPSG:32611",
-    "shape": [3730, 3292],
-    "dtype": "float32",
-    "transform": [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0],
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "nodata": null
+    },
     "n_nan": 0,
-    "n_inf": 0,
+    "n_finite": 12279160,
     "min": 0.0,
     "max": 0.9014216065406799,
-    "all_checks_passed": true,
-    "outside_footprint_zero": true,
-    "scope": "local format/range preflight (src/gems57/validate.py); not organizer acceptance; not uniqueness clearance"
+    "in_unit_interval": true,
+    "positive_cells": 2714823,
+    "outside_footprint_is_nan": false,
+    "note": "Every cell is finite; outside-footprint cells are 0.0, not NaN. The official rules say data outside the bounds is null or NaN, and the bridged template uses NaN. A zero probability adds nothing to the metric, but the convention differs (IR-S7-03)."
   },
-
-  "run_card_json": {
-    "hypothesis": "Secondary strands sit in a distance-decaying, length-scaled zone around known faults (fault-zone anatomy lane).",
-    "mechanism": "Riedel and synthetic shear strands along a dextral shear zone, with density decaying away from the primary fault (Tchalenko 1970; Savage and Brodsky 2011).",
-    "named_non_fault_mimic": "Magnetic dikes, lithological contacts and flight-line leveling residuals can mimic strands (see README / TASK_PROMPT limitations).",
-    "holdout_dti_ci": "NOT RUN",
-    "correlation_overlap_vs_registry": {"witness": "17GEMSDOE E-proba-multiscale", "forward_overlap": 1.0, "spearman": 0.5146483046192433},
-    "raster_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648 (retained, NOT cleared for download)",
-    "validator": "all_checks_passed=true (local preflight only)",
-    "submission_name": "gems57-session7-no-new-candidate",
-    "submission_note": "Session 7: no new raster. Literal uniqueness gate blocks all candidates. Owner ruling needed (IR-S6-01).",
-    "verdict": "negative"
+  "template": {
+    "sample_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "grid": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ]
+    },
+    "footprint_cells": 5167373,
+    "sample_positive_cells": 60988,
+    "sample_values": [
+      0.0,
+      1.0
+    ],
+    "labels_positive_cells": 60988,
+    "sample_positives_equal_label_positives": true,
+    "note": "The bridged 'sample_submission.tif' has 60,988 positive cells that coincide with the known-fault positives, while the official page says the sample predicts total fault absence (IR-S7-02). It is used only for grid and footprint compatibility."
   },
-
-  "sources_checked_this_session": [
-    "https://github.com/buffedlizard55-lab/17GEMSDOE (cloned; file sha256 verified)",
-    "https://github.com/buffedlizard55-lab/GEMSDOE32 (cloned; 0.2778 file sha256 verified)",
-    "https://github.com/buffedlizard55-lab/GEMSDOE31 (cloned; 0.2708 file sha256 verified)",
-    "https://github.com/drivendataorg/gems-prize-reference-solution (not re-fetched this session)",
-    "https://www.drivendata.org/competitions/306/competition-doe-gems/ (NOT reachable from this sandbox; not in allowed hosts)"
-  ]
+  "duplicate_labels": {
+    "labels_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "existing_faults_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "byte_identical": true
+  },
+  "pair_0_2778_vs_0_2708": {
+    "raster_0_2778": {
+      "file": "registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "positive": 37654
+    },
+    "raster_0_2708": {
+      "file": "registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+      "positive": 40199
+    },
+    "kept_is_subset_of_0_2708": true,
+    "removed_cells": 2545,
+    "removed_distance_to_known_px": {
+      "min": 1.4142135623730951,
+      "median": 2.0,
+      "max": 2.0
+    },
+    "kept_distance_to_known_px": {
+      "min": 2.23606797749979,
+      "median": 19.6468827043885
+    },
+    "removed_all_within_2px": true,
+    "kept_none_within_2px": true,
+    "interpretation": "Removal of pure false-positive dots near known traces can only raise DTI when it does not lower max-cover TP. The owner-reported 0.2778 vs 0.2708 gap (0.0070) is one pair; it is not a verified causal receipt."
+  },
+  "holdout": {
+    "file": "evidence/relay_bend_holdout.json",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "arms": {
+      "distance_only": {
+        "stored": 0.11272500983662669,
+        "recomputed": 0.11272500983662669,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.10142830690899272,
+          0.12444583599629178
+        ]
+      },
+      "anatomy": {
+        "stored": 0.10964730783892841,
+        "recomputed": 0.10964730783892841,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.09595773296382741,
+          0.12506769655929167
+        ]
+      },
+      "bend_anatomy": {
+        "stored": 0.1123312334453778,
+        "recomputed": 0.1123312334453778,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.0985053153686782,
+          0.12809406589957337
+        ]
+      },
+      "relay_bend_anatomy": {
+        "stored": 0.13520371677763354,
+        "recomputed": 0.13520371677763354,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.11913983230552322,
+          0.15303605496339084
+        ]
+      },
+      "relay_bend_sense_transition": {
+        "stored": 0.14139139369438386,
+        "recomputed": 0.14139139369438386,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.12451318565731526,
+          0.1614570080808692
+        ]
+      },
+      "orientation": {
+        "stored": 0.13520371677763354,
+        "recomputed": 0.13520371677763354,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.11913983230552322,
+          0.15303605496339084
+        ]
+      },
+      "orientation_sense": {
+        "stored": 0.14139139369438386,
+        "recomputed": 0.14139139369438386,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.12451318565731526,
+          0.1614570080808692
+        ]
+      }
+    },
+    "max_abs_recompute_error": 0.0,
+    "fold_arm_receipts": 20,
+    "nearest_visible_to_truth_px_min": 3.1622776601683795,
+    "nearest_visible_to_truth_px_max": 3.1622776601683795,
+    "collar_blind_zone": true,
+    "interpretation": "Withheld truth is never closer than 3 px to any visible fault in any fold. Dots within ~3 px of a visible trace are therefore pure false positives in this holdout. The holdout cannot reward or penalise near-trace strands (IR-S7-04)."
+  },
+  "pins": {
+    "training_features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "training_features_pin": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "training_features_match": true,
+    "band12_cache_sha256": "739d6373125abf164e0f56163b8d9d02f651eb8d622decfe0360882085a0de32",
+    "band12_cache_pin": "739d6373125abf164e0f56163b8d9d02f651eb8d622decfe0360882085a0de32",
+    "band12_cache_match": true,
+    "bands": 19,
+    "provenance": "hash-verified third-party bridge; not an organizer receipt"
+  }
 }
