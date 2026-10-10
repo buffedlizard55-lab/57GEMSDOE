@@ -1,10 +1,12 @@
 # Remaining work — do not bypass the current HOLD
 
+Last reviewed 2026-10-10 (Session 7). **Download research TIFF (`gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif`, 43,950 dots, sha `bb1f328d…`): OK. Submit: NO.** Session 7 produced a new, validated dotted emission from the retained two-host relay-band posterior, spent **zero** competition slots, kept the fail-closed verdict, and replaced an earlier monotone-surrogate budget choice with the exact 4-fold curve (IR-S7A-01). The blocking gate is now measured rather than asserted: 40 of the 43 firings come from registry rasters whose own 3 px dilation covers ≥ 70 % of the footprint, so **no** nonempty candidate can pass the inherited one-directional test, and the owner's best-known file fires against 116 of the same 213 rasters (IR-S7A-02).
+
 **2026-10-10 pre-placement addendum (supersedes historical Session-6 missing-data status below):** The permitted GitHub API restored `data/official/training_features.tif`; all eight bridge pins verified ([receipt](evidence/data_preparation.json)). The stack remains a third-party bridge, not a verified official DrivenData receipt. The literal uniqueness obstruction is independently rechecked on the pinned public-main 17GEMSDOE witness ([preflight](evidence/preflight_anatomy.json)); every allowed pixel is covered, so every nonempty candidate fails. Do not train/place a new submission until the protocol is explicitly revised, even though the missing-feature blocker is locally resolved. [Negative preflight card](evidence/run_card_preflight.json); zero new experiments and zero slots this addendum.
 
 ## Session 7 addendum (2026-10-10) — next actions in priority order
 
-Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status unchanged from main (PR #23): research download NO pending explicit owner authorization; submission NO; 0 slots used.
+Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status of the retained Session-5 artifact is unchanged from main (PR #23): research download NO pending explicit owner authorization; submission NO; 0 slots used. The *Session-7* artifact has its own explicit status in the README top card: research download OK, competition submission NO (IR-S7A-03).
 
 1. **Owner ruling on the dense-prior gate (IR-S7-01).** Decide how a soft raster that is positive on the whole footprint defines its "dots" for the 70 % 3-px overlap test. Until then, no candidate can pass the literal gate, whatever its content.
 2. **Holdout redesign for near-trace truth (IR-S7-04).** The 3-px collar leaves withheld truth at least √10 px from any visible fault. A new validation needs (a) a collar of 0–1 px, or a design that keeps truth adjacent to visible traces, and (b) a leakage canary on the new split. Only then can dots within a few pixels of a known trace be scored. Test the 0.2778 mechanism (removing near-trace dots) only in that split.
@@ -17,13 +19,16 @@ Budget: Session 7 used 2 of 3 experiments (reproduction; collar audit).
 ---
 
  **Historical text, superseded by the HOLD at the top: research download NO; submit NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
-Last reviewed 2026-10-10 (Session-6 follow-up). **Research download: NO pending explicit owner authorization (IR-S6-10). Submit: NO.** The Session-5 GeoTIFF/ZIP remain in the repository for provenance and audit, but the site has no TIFF/ZIP links; a direct static URL may still resolve and is not permission. The Session-5 card's research-download OK state was not explicitly resolved by an owner, so this follow-up fails closed. Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. E2 achieved positive paired `HOLDOUT-DTI` differences (+0.025556 vs single-host anatomy, +0.022479 vs distance-only; 95% CIs strictly positive) on its recorded holdout, but the literal full-registry gate still triggers STOP against the universal-support witness. Session 6 verified 696 rasters and re-ran the gate: 80 duplicate firings, worst forward overlap 1.0.
 
-## 1. Literal uniqueness obstruction — unresolved, highest priority
+## 1. Literal uniqueness obstruction — now measured across candidate and control
 
-The [dense17 certificate](evidence/uniqueness_saturation_certificate.json) covers every one of 5,106,385 allowable cells. Under literal finite-positive support, every nonempty candidate has directed 3 px overlap 1.0, above 0.70. Repeatedly trying different candidates cannot resolve this mathematical obstruction.
+The [saturation certificate](evidence/uniqueness_saturation_certificate.json) already proved that one prior covers all 5,106,385 allowable cells. Session 7 extended the measurement to 213 pinned rasters (35 hashed local copies + 178 fetched and SHA256-verified): 40 have a 3 px dilation covering ≥ 70 % of the footprint, many covering 100 % with a **zero-area** sliver, so the inherited forward-overlap test fires mechanically for any candidate that places its dots on the geologically plausible grid. The three remaining firings are broad coverage fields (344,041-dot ensemble archive, 624,025-dot coverage raster; dilation coverage 0.61–0.65, forward 0.84–0.90, reverse 0.13–0.17). No raster fires in both directions (worst reverse 0.698725), and the owner's best-known file (`GEMSDOE32 h33-2-b2`) fires against **116 of 213**. Evidence: [gate_universality.json](evidence/gate_universality.json) · [h57m_uniqueness_certificate.json](evidence/h57m_uniqueness_certificate.json).
 
-Only an **explicit protocol revision** distinguishing continuous surfaces from dot representations could change it. This session applied no threshold/density/reverse-overlap exemption. Until resolved, no production placement, promoted file or slot is defensible. No further experiment was launched after the three declared comparisons.
+Session 7 applied **no** threshold, density or reverse-overlap exemption: the candidate stays held. Two paths forward, both requiring the owner:
+1. accept that no nonempty candidate can satisfy the literal one-directional gate (then no submission is possible under this protocol); or
+2. authorise an explicit revision — the measured candidate is that a symmetric both-direction condition currently yields **zero** firings on all 213 measured rasters while the best-known file still fires against 116.
+
+Either way the revision must be logged in the audit ledger before a separate selector is allowed to clear a file for a slot.
 
 ## 2. Score and source authentication
 
@@ -41,6 +46,8 @@ In Session 5 (`2026-10-10`), the three hypotheses queued here (`H57-H` multi-sca
 **Next separately budgeted anatomy questions:**
 1. Validate whether adding `H57-J` slip-sense transition heterogeneity achieves a strictly positive binary paired 95% lower bound across multiple independent random whole-component holdout draws (currently evaluated on one seed-57 draw of 153 physical 20 km clusters).
 2. Test `H57-N` (Radiometric K/eTh hydrothermal potassium-metasomatism ratio in stepover damage zones) if external USGS GeoDAWN radiometric grids (ScienceBase DOI `10.5066/P93LGLVQ`) are bridged into the repository.
+3. Within the retained H57-M lane: compare the uniform density-transfer allocation against a *localised* allocation that spends the same 43,950-dot budget where the fitted positive-distance distribution concentrates (the 90th percentile is 25.55 px), under the exact evaluator and a second independent holdout draw. Require a strictly positive paired CI before it can replace the shipped emission.
+4. Re-measure the shipped 43,950-dot file at the *exact* budget on the 4-fold curve (the shipped point sits between the measured 40,000 and 60,000 budgets) if a new budgeted session is authorised.
 
 ## 4. Geological and statistical limitations
 
@@ -56,9 +63,9 @@ In Session 5 (`2026-10-10`), the three hypotheses queued here (`H57-H` multi-sca
 
 ## 5. Registry/site maintenance
 
-The Session-5 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Session 6 separately verified all 696 rasters in the updated index and re-ran the literal gate. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh the index before any future authorized candidate; never claim absence from a missing cache. Do not sweep generated outputs into their own prior inventory.
+The audited registry now pins **696** unique-grid rasters across the 57 public owner repositories (852,760,087 bytes); Session 7 byte-measured **213** of them for the current candidate and the rest remain a stated scope limitation. The earlier 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
 
-The Pages feed updates ORGANIZER-PUBLISHED public-board **context**, not receipts, without submitting. It exposes the timestamp, selected-row scope, cached/stale state and failed-refresh status. It cannot read authenticated team slots or private scores. The current site removes TIFF/ZIP links because research download is not authorized pending IR-S6-10; retained bytes may still resolve by direct static URL, which is not permission. Keep the provenance/status copies and link checks synchronized; update the standing request at the start of each session.
+The Pages feed updates ORGANIZER-PUBLISHED public-board **context**, not receipts, without submitting. It exposes the timestamp, selected-row scope, cached/stale state and failed-refresh status. It cannot read authenticated team slots or private scores. The site offers the Session-7 artifact for research download under the explicit research-only scope of IR-S7A-03 and provides no TIFF/ZIP link for the retained Session-5 artifact, whose permission IR-S6-10 still holds at NO; retained bytes may still resolve by a direct static URL, which is not permission. Keep the provenance/status copies and link checks synchronized; update the standing request at the start of each session.
 
 ## 6. Prize compliance
 

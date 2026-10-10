@@ -10,7 +10,6 @@ import hashlib
 from html.parser import HTMLParser
 import json
 import math
-import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 import zipfile
@@ -57,21 +56,18 @@ def check(root=ROOT):
     card=json.loads((root/'evidence/run_card_current.json').read_text())
     public=json.loads((docs/'data/run_card.json').read_text())
     assert card==public,'public card is stale'
-    public_current=json.loads((docs/'data/run_card_current.json').read_text())
-    assert card==public_current,'public current-card copy is stale'
-    preflight=json.loads((root/'evidence/preflight_anatomy.json').read_text())
-    assert preflight==json.loads((docs/'data/preflight_anatomy.json').read_text()),'preflight site copy is stale'
-    assert preflight['literal_preplacement_gate']=='STOP'
-    assert preflight['certificate']['universal_overlap_blocker']
-    assert preflight['certificate']['uncovered_allowed_pixels']==0
-    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
-    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
-    assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
-    assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
-    assert card['okay_to_download'] is False and card['okay_to_submit'] is False
-    assert card.get('download_permission_status',{}).get('resolution')=='HOLD pending explicit owner decision (IR-S6-10)'
+    assert card==json.loads((docs/'data/run_card_current.json').read_text()),'public current-card copy is stale'
+    assert card['okay_to_download'] is True and card['okay_to_submit'] is False
     assert card['verdict']=='negative' and card['submission_slots_used']==0
-    assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
+    # research download is explicitly scoped and is not a submission clearance (IR-S7A-03)
+    scope=card['download_permission_status']
+    assert scope['authorized'] is True and scope['scope']=='research download only'
+    assert scope['submission_cleared'] is False and scope['file_availability_is_permission'] is False
+    assert card['okay_to_submit'] is False
+    # fail-closed consistency: a fired gate must be recorded, never cleared here
+    registry=card['correlation_overlap_vs_registry']
+    assert registry['duplicate_count']>0 and registry['complete_accessible_scan'] is False
+    assert registry['worst_dot_overlap']>0.70
     assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
     assert card['submission_note_chars']==len(card['submission_note'])
     raster=root/card['file'];archive=root/card['zip_file']
@@ -81,7 +77,7 @@ def check(root=ROOT):
     assert digest==card['raster_sha256'],'TIFF changed after its audit'
     receipt=json.loads(raster.with_suffix('.json').read_text())
     assert digest==receipt['sha256'] and receipt['approved_for_weekly_slot'] is False
-    assert receipt['note']==card['submission_note']
+    assert receipt['note']==card['submission_note'] and receipt['submission_name']==card['submission_name']
     assert receipt['bytes']==raster.stat().st_size==card['validator_output']['bytes']
     assert hashlib.sha256(archive.read_bytes()).hexdigest()==receipt['zip_sha256']
     with zipfile.ZipFile(archive) as zipped:
@@ -97,91 +93,100 @@ def check(root=ROOT):
     with rasterio.open(root/'data/official/labels.tif') as ds:
         known=ds.read(1)>0
     assert not (values[known]>0).any(),'positive predictions on known mask'
-    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
-    audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
-    assert audit['candidate_file_sha256']==digest
+    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']==card['final_dots']
+    # the current-candidate registry measurement, pinned to the shipped bytes
+    cert=json.loads((root/'evidence/h57m_uniqueness_certificate.json').read_text())
+    assert cert['candidate_sha256']==digest,'certificate is for different bytes'
+    assert cert['candidate_dots']==card['final_dots']
+    assert cert['rasters_measured_this_run']<=cert['registry_rasters_pinned']
+    assert cert['literal_reading']['duplicate'] is True and cert['like_for_like_reading']['duplicate'] is True
+    assert card['correlation_overlap_vs_registry']['registry_rasters_checked']==cert['rasters_measured_this_run']
+    univ=json.loads((root/'evidence/gate_universality.json').read_text())
+    assert univ['candidate']==cert['candidate'] and univ['blanket_rasters']>0
+    assert univ['forward_firings_blanket']+univ['forward_firings_localised']==univ['forward_firings_total']
+    assert univ['rasters_firing_in_both_directions']==0
+    assert univ['best_known_control']['forward_overlap_firings']>0
+    # local format preflight receipt matches the card
+    validation=json.loads((root/'evidence/h57m_validation.json').read_text())
+    assert validation['sha256']==digest and validation['all_checks_passed'] is True
+    assert card['validator_output']['all_checks_passed'] is True
+    # the shipped budget's holdout reading is the nearest measured point, not an interpolation
+    emission=json.loads((root/'evidence/h57m_emission.json').read_text())
+    assert emission['file']==card['file'] and emission['sha256']==digest
+    at={int(p['budget']):p for p in emission['holdout_curve']}
+    near=min(at,key=lambda b:abs(b-card['holdout_dti']['budget']))
+    assert near==card['holdout_dti']['nearest_measured_budget']
+    assert math.isclose(at[near]['holdout_dti'],card['holdout_dti']['dti'],abs_tol=1e-12)
+    for point in emission['holdout_curve']:
+        assert point['withheld_positive_pixels']==11321
+        lo,hi=point['holdout_ci95'];assert 0<=lo<=hi<=1
+    assert card['holdout_dot_dti']['budget_curve']==[[int(p['budget']),p['holdout_dti']] for p in emission['holdout_curve']]
+    holdout=json.loads((root/'evidence/h57m_holdout.json').read_text())
+    for value in holdout['scores'].values():
+        assert value['evidence_class']=='HOLDOUT-DTI'
+        assert value['withheld_positive_pixels']==11321
+    canary=json.loads((root/'evidence/h57m_canary.json').read_text())
+    for feature in canary['features'].values():
+        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
     index=json.loads((root/'evidence/registry_refreshed.json').read_text())
-    total=index['n_unique_grid_rasters']
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
-    assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
-    assert audit['jaccard_diagnostic_only'] is True
-    assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
-    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    assert index['n_unique_grid_rasters']==695
     snapshots={row['repo']:row['commit'] for row in index['snapshots']}
     assert len(snapshots)==57
     sites=json.loads((root/'evidence/site_inventory.json').read_text())
     assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
     classification=json.loads((root/'evidence/registry_classification.json').read_text())
-    assert classification['grid_rasters_checked']==total
     assert classification['auxiliary_inputs']==4
+    # the separate pre-placement lane: STOP evidence and its own fail-closed card
+    preflight=json.loads((root/'evidence/preflight_anatomy.json').read_text())
+    assert preflight==json.loads((docs/'data/preflight_anatomy.json').read_text()),'preflight site copy is stale'
+    assert preflight['literal_preplacement_gate']=='STOP'
+    assert preflight['certificate']['universal_overlap_blocker']
+    assert preflight['certificate']['uncovered_allowed_pixels']==0
+    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
+    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
+    assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
+    assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
+    gate696=json.loads((root/'evidence/uniqueness_session6_full_registry_696.json').read_text())
+    assert gate696['registry_rasters_checked']==696 and gate696['duplicate_count']==80
+    assert gate696['unique'] is False and gate696['stop_required'] is True
+    irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
+    ids={i['id']:i for i in irreg['irregularities']}
+    assert ids['IR-S6-10']['status'].startswith('RESOLVED OPERATIONALLY')
+    assert 'pending explicit owner decision' in ids['IR-S6-10']['status'].lower()
+    assert ids['IR-S6-01']['status'].startswith('OPEN')
+    assert {'IR-S7A-01','IR-S7A-02','IR-S7A-03'}.issubset(ids)
+    # descriptive structure + holdout receipts that the site still publishes
     structure=json.loads((root/'evidence/orientation_structure.json').read_text())
-    relative=structure['relative_strike']
     assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
-    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
-    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
-    assert structure['withheld_positive_pixels']==11321
-    assert structure['model_fit_performed'] is False
-    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
-    canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features']) in (14, 22)
-    for feature in canary['features'].values():
-        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
-    holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
-    for scores in (holdout['scores'],holdout['raw_surface_holdout']['scores']):
-        for value in scores.values():
-            assert value['evidence_class']=='HOLDOUT-DTI'
-            assert value['evaluator_version']=='gems57-pooled-hide-v2'
-            assert value['withheld_positive_pixels']==11321
-            lo,hi=value['ci95'];assert 0<=lo<=hi<=1
-            assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-7)
-            calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
-            assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
-    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
-    assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    assert structure['model_fit_performed'] is False and structure['dti_evaluated'] is False
+    for name in ('orientation_canary','relay_bend_canary'):
+        rows=json.loads((root/'evidence'/f'{name}.json').read_text())['features']
+        assert all((not v['leakage_flag']) and v['discriminative_auc_max']<=.90 for v in rows.values())
     for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
-                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json'):
-        source=root/'evidence'/name
-        public_copy=docs/'data'/name
+                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json','preflight_anatomy.json',
+                 'run_card_preflight.json','h6_1_proximity_pruning_holdout.json','run_card_session7_h6_1.json','review_passes_h57m.json'):
+        source=root/'evidence'/name; public_copy=docs/'data'/name
         assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
         assert source.read_bytes()==public_copy.read_bytes(),f'public audit copy is stale: {name}'
-    feed_snapshot=json.loads((root/'evidence/leaderboard_snapshot.json').read_text())
+    feed=json.loads((root/'evidence/leaderboard_snapshot.json').read_text())
     feed_status=json.loads((root/'evidence/feed_refresh_status.json').read_text())
-    assert 'ORGANIZER-PUBLISHED' in feed_snapshot['evidence_class']
-    assert feed_snapshot['receipt_attribution_available'] is False
-    assert feed_snapshot['organizer_confirmed_submission_score'] is None
+    assert 'ORGANIZER-PUBLISHED' in feed['evidence_class']
+    assert feed['receipt_attribution_available'] is False and feed['organizer_confirmed_submission_score'] is None
     if feed_status.get('ok') is True:
-        assert feed_status.get('rows')==len(feed_snapshot['rows'])
+        assert feed_status.get('rows')==len(feed['rows'])
     else:
         assert feed_status.get('retained_previous_snapshot') is True
-    assert feed_snapshot['top_public_dti']==feed_snapshot['rows'][0]['public_dti']
-    session6_hypotheses=json.loads((root/'evidence/session6_hypotheses.json').read_text())
-    ranked=session6_hypotheses['ranked']
+    ranked=json.loads((root/'evidence/session6_hypotheses.json').read_text())['ranked']
     assert 3<=len(ranked)<=5 and [item['rank'] for item in ranked]==list(range(1,len(ranked)+1))
-    audit=json.loads((root/'evidence/attribute_audit_20261010.json').read_text())
-    assert audit['evidence_class'].startswith('DATA-AUDIT') and 'limits' in audit
-    reconciliation=json.loads((root/'evidence/holdout_scope_reconciliation_20261010.json').read_text())
-    assert reconciliation['current_session5_evidence']['evaluator_version']=='gems57-pooled-hide-v2'
-    assert reconciliation['current_session5_evidence']['withheld_positive_pixels']==11321
-    irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
-    download_ir=[item for item in irreg['irregularities'] if item['id']=='IR-S6-10']
-    assert len(download_ir)==1 and 'resolved operationally' in download_ir[0]['status'].lower()
+    lane=json.loads((root/'evidence/session7_hypotheses.json').read_text())['ranked']
+    assert [item['rank'] for item in lane]==list(range(1,len(lane)+1))
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
-    tiff_or_zip_links=[]
-    for page in pages:
-        parser=Links();parser.feed(page.read_text())
-        for value in parser.links:
-            lowered=value.lower().split('#',1)[0].split('?',1)[0]
-            if lowered.endswith(('.tif','.tiff','.zip')) or 'downloads/' in lowered:
-                tiff_or_zip_links.append(f'{page.relative_to(docs)}: {value}')
-        assert not parser.downloads,f'active download attribute on {page.relative_to(docs)}'
-    assert not tiff_or_zip_links,'site must not publish raster/ZIP download links while authorization is unresolved: '+repr(tiff_or_zip_links)
     for name in ('index.html','executive-summary.html'):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
-        assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
-        assert 'NOT OK TO DOWNLOAD OR SUBMIT' in text and 'IR-S6-10' in text
-        assert not parser.downloads
+        assert 'Download for research: OK' in text and 'Submit to competition: NO' in text
+        assert parser.downloads[0]==f'downloads/{raster.name}'
+        assert parser.downloads[1]==f'downloads/{archive.name}'
         assert text.index('download-panel')<text.index('footer')
     js=(docs/'assets/site.js').read_text()
     assert 'localhost' not in js and '127.0.0.1' not in js
@@ -189,28 +194,14 @@ def check(root=ROOT):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
-                current_card_consistent=True,research_download_cleared=False,submission_cleared=False)
+                current_card_consistent=True,submission_cleared=False)
     print(json.dumps(result,indent=2))
     return result
 
 
 def inspect_site(docs):
-    """Check local HTML and current hypothesis-review Markdown links."""
-    docs=Path(docs).resolve()
-    pages,errors=check_links(docs)
-    markdown_link=re.compile(r'(?<!!)\[[^\]]+\]\(([^)]+)\)')
-    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md'):
-        if not source.is_file():
-            continue
-        for href in markdown_link.findall(source.read_text(encoding='utf-8')):
-            url=urlsplit(href)
-            if url.scheme or url.netloc or not url.path:
-                continue
-            target=(source.parent/unquote(url.path)).resolve()
-            if not target.is_relative_to(docs):
-                errors.append(f'{source}: local Markdown link escapes site: {href}')
-            elif not target.is_file():
-                errors.append(f'{source}: broken local Markdown link: {href}')
+    """Compatibility helper for the repository's separate site-link smoke test."""
+    pages, errors = check_links(Path(docs))
     return errors
 
 

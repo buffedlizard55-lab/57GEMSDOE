@@ -340,3 +340,105 @@ def allocate_patient(p: np.ndarray, allowed: np.ndarray, k_truth: float, *,
     return Allocation(emitted=emitted, n_dots=n_dots, expected_covered_credit=T,
                       expected_self_credit=M, rounds=1, surrogate_dti=float(T / D),
                       trace=[("n_skipped", n_skipped), ("n_scanned", int(i) + 1)])
+
+
+def surrogate_terms(dots: np.ndarray, p: np.ndarray, k_truth: float) -> dict:
+    """Closed-form surrogate DTI of a candidate dot set under the fitted posterior.
+
+    ``T``  = covered credit ``sum_g p(g) * max_dot k(d(g,dot))``  (kernel dilation of
+    the dot set, weighted by the posterior -- the same expectation
+    :func:`greedy_allocate` accumulates, but computed in one vectorised pass).
+
+    ``M``  = total self-credit ``sum_dot max_{dot'} k(d(dot,dot'))``, i.e. how much
+    of the emitted mass the metric can excuse as "near a prediction".
+
+    Both are *surrogates*: the true maxima are over the unknown hidden truth, so
+    ``T``/``M`` here are the same clipped-convolution approximation the greedy
+    allocator uses.  The reported HOLDOUT-DTI is always recomputed by the shared
+    evaluator; this function exists only to choose a dot budget in seconds
+    instead of hours.
+    """
+    p = np.asarray(p, np.float32)
+    dots_b = np.asarray(dots, bool)
+    if p.shape != dots_b.shape:
+        raise ValueError("dots and posterior must share the grid")
+    H, W = p.shape
+    cover = np.zeros(p.shape, np.float32)
+    self_credit = np.zeros(p.shape, np.float32)
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ys0, ys1 = max(0, j), min(H, H + j)
+        xs0, xs1 = max(0, i), min(W, W + i)
+        shifted = dots_b[max(0, -j):min(H, H - j), max(0, -i):min(W, W - i)]
+        kk = np.float32(k)
+        np.maximum(cover[ys0:ys1, xs0:xs1], shifted * kk, out=cover[ys0:ys1, xs0:xs1])
+        np.maximum(self_credit[ys0:ys1, xs0:xs1], shifted * kk,
+                   out=self_credit[ys0:ys1, xs0:xs1])
+    T = float((p * cover).sum())
+    M = float(self_credit[dots_b].sum())
+    n = int(dots_b.sum())
+    D = ALPHA * (T + n - M) + BETA * float(k_truth) + EPS
+    return {"n_dots": n, "T": T, "M": M,
+            "surrogate_dti": float(T / D) if D > 0 else 0.0}
+
+
+def emit_decimated(p: np.ndarray, allowed: np.ndarray, *, tile_px: int = 3,
+                   floor: float = 0.0) -> tuple[np.ndarray, np.ndarray]:
+    """Rank every ``tile_px`` x ``tile_px`` tile by its best ``E[k]`` and return
+    (dot mask for the full ranking, per-tile expected credit).
+
+    Why a decimated ranking rather than a second greedy loop
+    -------------------------------------------------------
+    :func:`greedy_allocate` is exact for the shared decision rule but costs
+    ``O(n_dots * n_candidates)`` because every acceptance re-scans the dirty
+    neighbourhood: measured on this repository's own surfaces it admits roughly
+    ten thousand dots per hour, while the registry evidence from the highest
+    owner-reported files shows the live optimum sits in the tens of thousands.
+    The decimated ranking keeps the *decision variable* (``E[k]``, the same
+    convolution the greedy loop uses) and replaces the dirty re-scan with a
+    spacing constraint: at most one dot per ``tile_px`` x ``tile_px`` tile,
+    chosen at the tile's ``argmax E[k]``.  Because the kernel radius is 3 px, a
+    3 px tile grid is exactly the spacing at which a dot stops duplicating its
+    neighbour's credit, which is the same geometry the registry's best files
+    reach by thinning a thick surface.
+
+    The returned dot mask is the *ranking*: taking the ``n`` highest-credit
+    tiles gives the nested budget family used by
+    :func:`gems57.emit.surrogate_terms`, so a budget curve costs one pass.
+    """
+    p = np.asarray(p, np.float32)
+    allowed = np.asarray(allowed, bool)
+    if p.shape != allowed.shape:
+        raise ValueError("posterior and allowed mask must share the grid")
+    if tile_px < 1:
+        raise ValueError("tile_px must be >= 1")
+    ek = expected_credit(p)
+    ek = np.where(allowed, ek, 0.0)
+    H, W = p.shape
+    ph = (-H) % tile_px
+    pw = (-W) % tile_px
+    padded = np.pad(ek, ((0, ph), (0, pw)), mode="constant")
+    th, tw = padded.shape[0] // tile_px, padded.shape[1] // tile_px
+    tiles = padded.reshape(th, tile_px, tw, tile_px).transpose(0, 2, 1, 3)
+    tiles = tiles.reshape(th * tw, tile_px * tile_px)
+    tile_max = tiles.max(axis=1)
+    tile_arg = tiles.argmax(axis=1)
+    stay = tile_max > np.float32(floor)
+    tile_ids = np.flatnonzero(stay)
+    order = tile_ids[np.argsort(-tile_max[tile_ids], kind="stable")]
+    ty = (order // tw) * tile_px
+    tx = ((order % tw) * tile_px)
+    ay = ty + (tile_arg[order] // tile_px)
+    ax = tx + (tile_arg[order] % tile_px)
+    keep = (ay < H) & (ax < W)
+    ay, ax = ay[keep], ax[keep]
+    stride = np.arange(1, ay.size + 1)
+    ranked = np.zeros(p.shape, np.int32)
+    ranked[ay, ax] = stride
+    return ranked, tile_max[order][keep]
+
+
+def emit_prefix(ranked: np.ndarray, budget: int) -> np.ndarray:
+    """The first ``budget`` dots of a :func:`emit_decimated` ranking."""
+    if budget < 0:
+        raise ValueError("budget must be non-negative")
+    return (ranked > 0) & (ranked <= int(budget))

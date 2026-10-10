@@ -1,0 +1,39 @@
+{
+  "status": "three local review passes (Session 7 \u2014 2026-10-10)",
+  "candidate": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif",
+  "candidate_sha256": "bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0",
+  "pass1_numbers": {
+    "checks": {
+      "tif_sha_matches_card_receipts": true,
+      "card_dots_is_43950": true,
+      "validator_all_pass": true,
+      "certificate_is_same_bytes": true,
+      "literal_firings_43_of_213": true,
+      "literal_worst_forward_1": true,
+      "worst_spearman_0_12678": true,
+      "like_for_like_20_firings_worst_0_9992": true,
+      "blanket_40_total_43": true,
+      "zero_two_direction_firings": true,
+      "worst_reverse_0_698725": true,
+      "best_known_control_116_of_213": true,
+      "lattice_dilated_coverage_0_9987": true,
+      "certificate_pins_696": true,
+      "curve_peak_10k_0_16441": true,
+      "card_nearest_budget_40000": true,
+      "readme_sha_present": true,
+      "readme_dots_present": true,
+      "readme_213_of_696_present": true,
+      "readme_states_zero_slots": true
+    }
+  },
+  "pass2_claims": {
+    "forbidden_claims_found": [],
+    "stale_top_card_links": []
+  },
+  "pass3_behaviour": {
+    "pytest_tail": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+    "check_site_tail": "submission_cleared=false"
+  },
+  "failures": [],
+  "slots_used": 0
+}

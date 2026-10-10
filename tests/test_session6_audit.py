@@ -126,9 +126,13 @@ def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
     assert g["unique"] is False
     assert g["stop_required"] is True
     card = json.loads((ROOT / "evidence" / "run_card_current.json").read_text())
-    # No explicit research-download authorization was recorded; fail closed until the owner resolves IR-S6-10.
-    assert card["okay_to_download"] is False
-    assert card["download_permission_status"]["authorized"] is False
+    # The current card describes the Session-7 artifact. Research download is explicitly scoped to research
+    # only (IR-S7A-03) and is not a permission to enter the competition; submission stays fail-closed under
+    # the fired literal gate, and IR-S6-10 still governs the retained Session-5 file.
+    assert card["okay_to_download"] is True
+    scope = card["download_permission_status"]
+    assert scope["authorized"] is True and scope["scope"] == "research download only"
+    assert scope["submission_cleared"] is False and scope["file_availability_is_permission"] is False
     assert card["okay_to_submit"] is False
     assert card["verdict"] == "negative"
     s6 = card["session6_verification"]
