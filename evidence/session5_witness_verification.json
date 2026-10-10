@@ -1,0 +1,20 @@
+{
+  "evidence_class": "RASTER-MEASUREMENT (not a score)",
+  "session": "5 (2026-10-10)",
+  "witness": {
+    "repo": "buffedlizard55-lab/17GEMSDOE",
+    "path": "docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "git_blob_sha": "374c88b1da2b803e2ed160de467fd71ae114010d",
+    "bytes": 25065181,
+    "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "positive_pixels": 5167373,
+    "matches_certificate_sha256": true,
+    "fetch_method": "gh api git/blobs (api.github.com), base64-decoded locally"
+  },
+  "forward_overlap_dense_surface_vs_witness": 1.0,
+  "forward_overlap_sparse40k_vs_witness": 1.0,
+  "conclusion": "Witness covers every allowable cell; any nonempty candidate has forward overlap 1.0. The literal 0.70 gate is unsatisfiable while this raster is in the comparison set.",
+  "source_urls": [
+    "https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif"
+  ]
+}
