@@ -15,6 +15,8 @@ Three predeclared experiments, all completed:
 
 Also measured from bytes this session ([evidence/live_submission_patterns.json](evidence/live_submission_patterns.json)): across 15 owner-reported registry entries, ρ(dots, reported score) = **−0.8104** (p = 0.00025) and ρ(median dot-to-catalogue distance, score) = **+0.7663**; the 0.2778 file is the 0.2708 file minus exactly 2,545 dots all ≤ 2.00 px from the catalogue, with every kept dot ≥ 2.236 px away (`equals_base_pruned_at_2px: true`). Confounded by construction, so it informs the support shape and is not a causal estimate.
 
+**Merge state:** PR #36 (this branch) is open and CONFLICTING against a concurrently merged Session-7 H57-M release; both cards are negative and neither spent a slot. Resolution procedure: IR-58-07. Do not force-merge either card.
+
 ## Prior outcome, 2026-10-10 (Session 5, superseded as the current release)
 
 **New TIFF generated (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`). Download for research: OK. Submit: NO.**

@@ -125,6 +125,8 @@ Three predeclared experiments, zero slots, one new TIFF (`gems57-h58-damagezone-
 - **Catalogue-flank suppression is unmeasurable on the current collar** (flank0 ≡ flank2, Δ = 0.0000 for every arm) — §1's and IR-58-02's instrument limit, not a free policy.
 - **The anatomy arm set did not beat `distance_only` after binary allocation** on this draw (0.09456 vs 0.11004) while beating it 3× on the soft surface. Any future claim must state which representation it is about.
 
+**Step 0 — integration, before any science.** PR #36 is open and `CONFLICTING`: a concurrent session merged the Session-7 H57-M release onto main, and both sessions wrote `evidence/run_card_current.json`, the generated `docs/` tree, `scripts/build_site.py`, `scripts/check_site.py`, `README.md`, `BRIEF.md`, `REMAINING_WORK.md` and two shared tests (28 conflicted files). Nothing was force-merged; the full procedure is IR-58-07. Both releases are negative, both spent zero slots, and both independently measured the same universal-blocker obstruction in the drift gate — so the merge is an editorial decision about which release is "current", not a fight over results.
+
 **Priority queue for the next session (each is one experiment; the 3-experiment / 2-hour cap still applies):**
 1. **Budget alignment (IR-58-01), do this first.** Re-measure the shipped arm with the writer's cap basis (or emit at the holdout basis, 29,889 dots) so the published HOLDOUT-DTI describes the delivered bytes. No geology risk, pure integrity, ~35 min.
 2. **Predeclare a paired test against `distance_only` for whatever arm ships.** This session's rule paired the candidate only against the reference, which is why the most interesting gap (−0.0155) has no CI.

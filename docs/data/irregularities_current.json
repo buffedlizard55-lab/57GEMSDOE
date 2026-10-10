@@ -476,6 +476,18 @@
       "manual_review": [
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/scripts/check_site.py"
       ]
+    },
+    {
+      "id": "IR-58-07",
+      "severity": "high",
+      "status": "OPEN \u2014 merge order decision needed from the owner",
+      "finding": "Two sessions worked the same task concurrently from commit fab2657 and both wrote the same shared artifacts. origin/main now carries the Session-7 H57-M release (evidence/run_card_current.json -> docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif, also negative, download OK, submit NO, 3 experiments, 0 slots), while this branch carries the H58 release. Merging origin/main into arena/4fa187dd-57gemsdoe conflicts in 28 files, including evidence/run_card_current.json, scripts/build_site.py, scripts/check_site.py, README.md, BRIEF.md, REMAINING_WORK.md, evidence/irregularities_current.json and two shared tests, and the whole docs/ tree is generated from the card. PR #36 was therefore left OPEN rather than force-merged.",
+      "resolution": "No silent overwrite of the other session's current card. Both releases remain individually reproducible, and both reach the same structural conclusion independently: H58 measured 45 universal-blocker priors over 695 rasters, and the H57-M card carries its own gate_universality receipt. That convergence is evidence about the protocol, not a coincidence to average away.",
+      "remaining": "Owner/editorial decision, then one mechanical pass: (1) decide which release is 'current' and move the other to a named historical card file referenced by the archive page; (2) take the newer build_site.py/check_site.py pair and re-run both releases' receipts through it, or keep one generator with a per-release evidence prefix; (3) union the irregularity ledgers and README/BRIEF/REMAINING_WORK addenda (all additive); (4) regenerate docs/ with scripts/build_site.py and re-run scripts/check_site.py plus pytest before merging. Note the H57-M filename embeds the literal string 'gems57-h57m' where its sibling convention embeds a 12-hex array-hash prefix, so the shared naming helper needs one assertion before either file is called content-addressed by name.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/pull/36",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json"
+      ]
     }
   ]
 }
