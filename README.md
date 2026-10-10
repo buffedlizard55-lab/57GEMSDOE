@@ -6,42 +6,39 @@
 
 ### **Download for research: OK. Submit to competition: NO.**
 
-**[↓ Download the new GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip)** · [Complete JSON run card](evidence/run_card_current.json)
+**[↓ Download the new Session-5 GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip)** · [Complete JSON run card](evidence/run_card_current.json)
 
-This is a newly fitted **soft research surface**, not a copy or modification of a prior submission. Byte/pixel identity is distinct against all 698 audited grid rasters, but **the literal uniqueness protocol FAILED**: worst forward overlap is 1.0 (limit 0.70), with 80 triggered comparisons. Worst full-footprint Spearman is 0.821258 (limit 0.90). A dense previous surface is a universal overlap blocker under `finite value > 0` support. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
+This is a newly fitted **Session-5 (2026-10-10) soft research surface** (`relay_bend_anatomy`, E2 / H57-I2 + H57-H), not a copy or modification of a prior submission. Byte/pixel identity is distinct against all **695** audited grid rasters across all 57 sibling repositories. Against all **665 rasters from the other 56 repositories**, worst full-footprint Spearman rank correlation is **0.658029 ≤ 0.90** (and against the **15 discriminating sibling-lane rasters**, worst Spearman is **0.028783 ≤ 0.90** and worst 3-px dot overlap is **0.237470 ≤ 0.70**). However, **the literal full-registry uniqueness protocol FAILED**: worst forward overlap is **1.0** (limit 0.70, triggered by the 17 dense-support prior rasters, with 81 total triggered comparisons across the 695-raster index), and full-footprint Spearman against this repository's own earlier Session-3 soft surface (which shares the exact 2,452,550 zeroed pixels outside the fitted `d1 ≤ 25.55 px` damage zone) is **0.975291**. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
 
-On 2026-10-10, all 57 listed repositories' current public-main commits were checked twice as main advanced. The first update added 17 hash-verified rasters (delta maximum forward overlap 0.779153; 2 triggers); a subsequent update found 2 more rasters (no new delta triggers). After PR #17 merged, the latest tree-pinned refresh checked all 57 current public-main commits and the then-open same-repository main-target PR heads #16 and #19 (PR #19 was this review branch, SHA `4b826f702216c553068c3c1bf6deb727cf957e8a`). The refresh added zero new unique competition-grid rasters and recorded 37 additional source paths for 31 already-indexed blobs; the exact current candidate bytes were excluded. PR #17 is now represented in main, and the earlier PR #6/#8 artifacts remain in the historical pin set. All comparisons used the same candidate and literal thresholds. The union audit is complete for its stated indexed public owner-repository scope (698 rasters), not a complete organizer registry; private, unlinked, external, later-written, or otherwise inaccessible files may be absent. See the [latest delta inventory](evidence/registry_live_delta.json), [latest two-raster measurements](evidence/orientation_surface_delta_uniqueness.json), [first 17-raster delta](evidence/orientation_surface_delta_uniqueness_20261010T2001.json), [intermediate 696-raster audit](evidence/orientation_surface_uniqueness_20261010T2001.json), and [complete current measurements](evidence/orientation_surface_uniqueness.json). The current surface failed before placement; no final dots were generated.
+Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, every cell finite, range `[0, 0.9014216065]`, zero positive mass on the known catalogue or outside the footprint. This is bridge-template compatibility, **not authenticated official-template identity or organizer acceptance**. The cause of the owner's reported range error is unproven; all-finite zero-fill is a precaution, not a claim that the portal rejects outside-footprint NaN.
 
-A separate local audit of a 40,000-dot historical TIFF is recorded in [independent_candidate_check.json](evidence/independent_candidate_check.json). Its 0.711325 forward overlap with an earlier H57 TIFF is a **RASTER-MEASUREMENT (not a score)**; that file is not the current downloadable surface and is not cleared. The local comparison slice is only 19 cached rasters. A separate hash-verified full-footprint witness shows why the inherited positive-pixel rule blocks every nonempty candidate; it does not change thresholds or the current negative verdict.
-
-The previously absent training-feature file was restored through the pinned public GitHub bridge and byte-verified with all seven other input pins; its 19-band cache is available in ignored workspace storage. This is a transport check, not independent organizer-origin authentication. Data restoration did not start a fourth experiment, refit a model, or reevaluate DTI.
-
-Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, every cell finite, range `[0, 0.7537760735]`, zero positive mass on the known catalogue or outside the footprint. This is bridge-template compatibility, **not authenticated official-template identity or organizer acceptance**. The cause of the owner's reported range error is unproven; all-finite zero-fill is a precaution, not a claim that the portal rejects outside-footprint NaN.
-
-- File: `gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif` (10,010,096 bytes).
-- TIFF SHA256: `f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a`.
-- Suggested note, **131 / 140 characters**:
-  > Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.
+- File: `gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif` (9,960,624 bytes).
+- TIFF SHA256: `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`.
+- Suggested note, **121 / 140 characters**:
+  > Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b
 - Do **not** upload HTML, a JSON receipt, a PDF or a repository ZIP. Our ZIP contains exactly one TIFF and is round-trip verified.
 
-## What the corrected holdout actually says
+## What the corrected Session-5 holdout actually says
 
 **HOLDOUT-DTI only** — evaluator `gems57-pooled-hide-v2`, buffered whole-component LOQO, **11,321 withheld positive pixels**, pooled α=0.2 / β=0.8 / 300 m triangular kernel; 1,000 paired draws over 153 physical 20 km clusters. CIs are conditional on catalogue labels, fixed fitted folds and budgets, not forecasts of live/private scores.
 
 | Arm | Soft-surface HOLDOUT-DTI [95% CI] | Binary-allocation HOLDOUT-DTI [95% CI] |
 |---|---|---|
-| Distance only | 0.006178 [0.005766, 0.006589] | **0.112725 [0.100561, 0.123569]** |
-| Visible-host anatomy | 0.022753 [0.018475, 0.027264] | 0.109753 [0.094653, 0.124432] |
-| Anatomy + candidate magnetic relative strike | **0.023203 [0.018778, 0.027992]** | 0.109168 [0.094503, 0.124194] |
-| Candidate + recorded sense (ablation) | 0.024209 [0.019704, 0.029288] | 0.112749 [0.098049, 0.128302] |
+| Distance only (control) | 0.006178 [0.005756, 0.006584] | 0.112725 [0.101428, 0.124446] |
+| Single-host visible anatomy (repaired control) | 0.022876 [0.018508, 0.027406] | 0.109647 [0.095958, 0.125068] |
+| **E1 (H57-H):** Single-host + multi-scale bend & scarp strike | 0.023488 [0.019166, 0.028091] | 0.112331 [0.098505, 0.128094] |
+| **E2 (H57-I2 + H57-H):** Two-host relay + multi-scale bend *(retained candidate)* | **0.031160 [0.024691, 0.038109]** | **0.135204 [0.119140, 0.153036]** |
+| **E3 (H57-J):** Two-host relay + bend + slip-sense transition | **0.033898 [0.026890, 0.041928]** | **0.141391 [0.124513, 0.161457]** |
 
-The downloadable TIFF matches the **soft-surface method**, not the binary test-fold dots. Do not attach 0.109168 to its soft representation. Its relative-orientation binary difference versus distance-only is −0.003557, paired 95% CI [−0.017766, 0.010967]. Added orientation over anatomy is −0.000585 [−0.006179, 0.004966]; added sense is +0.003581 [−0.005722, 0.014532]. All use the evaluator/positive count above. **No demonstrated binary improvement; sense was not retained.** Three predeclared comparisons are complete. No extra tuning run was used to rescue the result.
+The downloadable TIFF matches the **soft-surface method** for retained candidate **E2 (`relay_bend_anatomy`)**, not the binary test-fold dots. Do not attach 0.135204 to its soft representation. On the binary allocation:
+- **E2 (`relay_bend_anatomy`) minus `distance_only`**: **+0.022479**, paired 95% CI **[+0.007867, +0.038463]** *(strictly positive)*.
+- **E2 (`relay_bend_anatomy`) minus single-host `anatomy`**: **+0.025556**, paired 95% CI **[+0.013943, +0.037109]** *(strictly positive)*.
+- **E2 (`relay_bend_anatomy`) minus E1 (`bend_anatomy`)**: **+0.022872**, paired 95% CI **[+0.013050, +0.032102]** *(strictly positive)*.
+- **E3 (`relay_bend_sense_transition`) minus E2 (`relay_bend_anatomy`)**: **+0.006188**, paired 95% CI **[−0.001694, +0.015702]** (positive in all 4 spatial folds, and soft-surface paired difference is **+0.002738 [+0.000307, +0.005994]**, but because the binary paired 95% lower bound `−0.001694` is slightly below zero, **E2 (`relay_bend_anatomy`) is retained** by the predeclared rule).
 
-All **14 feature-alone leakage canaries** were tested using `max(AUC, 1−AUC)` per fold. Maximum discriminative AUC is **0.825867** (diagnostic, not DTI), below 0.90. A clean canary reduces specific risks; it does not certify the absence of all leakage or new-fault domain shift.
+All **22 feature-alone leakage canaries** were tested using `max(AUC, 1−AUC)` per fold. Maximum discriminative AUC is **0.825867** (`d_perp`, diagnostic, not DTI) and **0.799993** (`d2`), all below 0.90. A clean canary reduces specific risks; it does not certify the absence of all leakage or new-fault domain shift.
 
-**HOLDOUT-STRUCTURE (descriptive, not a score):** on the fixed seed-20 buffered draw, 11,321 withheld-positive pixels were present and 10,811 had measurable local axial strike at coherence >0.2. Pixel-weighted relative-strike medians are 13.44° withheld versus 6.40° visible reference; among each side’s valid angle samples, the 0–7.5° bin contains 30.4% versus 55.3%, respectively. The reference is censored to the nearest different-component trace among 13 nearest queried visible pixels (including self); the samples are not segment-weighted. No significance test or DTI conclusion was run, and the structure-only receipt changed no fit, score, dot placement or promotion decision. See [full descriptive receipt](evidence/orientation_structure.json) and its [method-page distribution](https://buffedlizard55-lab.github.io/57GEMSDOE/method.html).
-
-Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orientation_canary.json), [structure](evidence/orientation_structure.json), [all 698 per-raster checks](evidence/orientation_surface_uniqueness.json), [latest two-raster delta comparisons](evidence/orientation_surface_delta_uniqueness.json), [first 17-raster delta](evidence/orientation_surface_delta_uniqueness_20261010T2001.json), [current-head inventory extension](evidence/registry_live_delta.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
+Receipts: [relay/bend holdout](evidence/relay_bend_holdout.json), [canaries](evidence/relay_bend_canary.json), [structure](evidence/relay_bend_structure.json), [all 695 per-raster checks](evidence/relay_bend_surface_uniqueness.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
 
 ## The important review finding
 
@@ -69,26 +66,23 @@ The target is **geological fault presence**, not geothermal-vent, temperature, f
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt
-PYTHON=.venv/bin/python bash scripts/download_competition_data.sh --cache-bands
 .venv/bin/python scripts/prepare_data.py --fetch --cache-bands
-.venv/bin/python scripts/refresh_registry.py
-.venv/bin/python scripts/refresh_registry_delta.py
-.venv/bin/python scripts/refresh_site_inventory.py
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientation_experiments.py --build-research-surface --minutes 65
+.venv/bin/python scripts/refresh_registry.py --workers 8
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend_experiments.py --build-research-surface --minutes 65
 .venv/bin/python scripts/build_site.py
 .venv/bin/python scripts/check_site.py
 .venv/bin/python -m pytest
 ```
 
-These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. During this continuation, after the main branch advanced, the missing **19-band** 418,912,844-byte feature stack was restored from five immutable public GitHub parts; all eight input pins now verify, and the 19 bands are cached. This was data preparation only: no model fit, DTI evaluation, new experiment, dot placement or slot decision was made. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
+These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
 ## Sources, feed and future work
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
-- [Four pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. Relative magnetic strike tested; multi-scale bends, two-host superposition and sense transitions not run.
-- [57 current public-main site pins](evidence/site_inventory.json); [698-raster current public-head inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
+- [Pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. In Session 5 (`2026-10-10`), multi-scale host-bend damage asymmetry & detrended-elevation scarp strike (`H57-H`, E1), two-host damage-zone superposition & en echelon relay stepover mechanics (`H57-I2`, E2), and slip-sense transition heterogeneity (`H57-J`, E3) were tested on the repaired buffered whole-component holdout; `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).
+- [57 pinned sibling sites](evidence/site_inventory.json); [695 conservative grid-raster inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 

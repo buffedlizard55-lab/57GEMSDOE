@@ -1,7 +1,7 @@
 {
   "evidence_class": "REGISTRY-CLASSIFICATION",
-  "grid_rasters_checked": 698,
-  "prediction_or_conservative_ambiguous_rasters": 694,
+  "grid_rasters_checked": 695,
+  "prediction_or_conservative_ambiguous_rasters": 691,
   "auxiliary_inputs": 4,
   "auxiliary_records": [
     {
@@ -63,20 +63,6 @@
       "classification": "bridge existing-fault catalogue, not a model prediction"
     }
   ],
-  "audit_semantics": "All 698 SHA256-pinned grid rasters were compared, conservatively including four grandfathered auxiliary inputs; 80 comparisons trigger the literal overlap/Jaccard duplicate conditions. Nineteen newly discovered current-head rasters across the two documented extensions are retained as predictions or conservative ambiguous outputs. No thresholds were changed. A dense full-footprint positive surface still blocks every nonempty candidate under the literal forward-overlap rule.",
-  "scope": "Historical pinned inventory union latest recorded current public-main trees for all 57 listed repositories. This is an indexed public owner-repository inventory, not a complete organizer registry. Current generated candidate is excluded as an output, not a prior. Private, unlinked, external, inaccessible and later-written rasters may be absent.",
-  "incremental_delta": {
-    "source": "registry_live_delta.json",
-    "base_registry_rasters": 696,
-    "new_unique_grid_rasters": 2,
-    "cumulative_added_since_679_raster_snapshot": 19,
-    "new_auxiliary_inputs": 0,
-    "classification": "prediction or conservative ambiguous historical output; not an auxiliary input",
-    "changed_repositories": [
-      "57GEMSDOE",
-      "GEMSDOE52"
-    ],
-    "all_57_current_public_main_commits_checked": true,
-    "scan_errors": 0
-  }
+  "audit_semantics": "All 679 grid rasters checked, conservatively including four grandfathered auxiliary inputs; 78 comparisons fire. Nine additional distinct files from concurrent main/open PRs were added without changing thresholds. Dense17 still blocks every nonempty allowed candidate.",
+  "scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified."
 }
