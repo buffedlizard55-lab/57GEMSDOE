@@ -22,6 +22,15 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 cross-check (branch arena/5730a1c2-57gemsdoe)
+
+Independent re-check of the main Session-7 claims in the section below, from public clones and a live fetch (not a new candidate; no slot; no download):
+
+- **Subset relation re-verified:** the 0.2778 raster (GEMSDOE32, sha256 `c55bafc4…`) is a subset of the 0.2708 raster, with 2,545 dots removed and none added. Two 0.2708-labelled files exist (GEMSDOE28 sha256 `ab023001…`, GEMSDOE31 sha256 `07b6db44…`). They are pixel-identical but have different bytes, so byte-level identity is not a reliable key for "the 0.2708 file" (IR-S7B-05).
+- **Dense-prior blocker re-verified:** 17GEMSDOE E-proba-multiscale (sha256 `ab0a0a62…`) is positive on all 5,167,373 footprint cells. Measured overlap of the retained candidate inside it: 1.0. Spearman 0.515, so the rank rule does not fire.
+- **Public board re-verified** with a live fetch of the DrivenData leaderboard: #1 0.3774, #8 DARD 0.3195, #22 extradr19 0.2778. These are public-board values, not file receipts.
+- **Ledger:** [evidence/session7_arena_verification.json](evidence/session7_arena_verification.json) · IR-S7B-01 to IR-S7B-05 in [evidence/irregularities_current.json](evidence/irregularities_current.json). Matching items in main's ledger: IR-S7-01 (dense prior), IR-S7-03 (0-vs-NaN fill), and its duplicate-label check.
+
 ## Session 7 (2026-10-10) — independent verification, owner decision needed
 
 **Status: HOLD. Download: NO. Submit: NO.** This session generated **no candidate raster**, used **no submission slot** and ran **no experiment**. Its purpose was to test, from raw files, the claim that blocks every candidate.

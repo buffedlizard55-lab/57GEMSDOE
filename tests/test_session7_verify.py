@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+
+import pytest
 import sys
 from pathlib import Path
 
@@ -42,6 +44,11 @@ def test_holdout_receipts_recompute_and_collar_blind_zone_is_reported():
     assert abs(h["nearest_visible_to_truth_px_min"] - 10 ** 0.5) < 1e-9
 
 
+@pytest.mark.skipif(
+    not (ROOT / "data/official/training_features.tif").exists()
+    or not (ROOT / "evidence/feature_cache.json").exists(),
+    reason="training_features.tif / band cache are gitignored and absent in CI; run scripts/prepare_data.py --fetch --cache-bands to check pins",
+)
 def test_pins_match_and_evidence_file_is_current():
     p = S7.check_pins()
     assert p["training_features_match"] is True and p["band12_cache_match"] is True
