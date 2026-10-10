@@ -14,6 +14,16 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 (2026-10-10) — re-verification, still HOLD
+
+**Status: NOT OK TO DOWNLOAD OR SUBMIT. No new submission TIF was generated for download.** Run card: [evidence/session7_verification.json](evidence/session7_verification.json). Ledger: IR-S7-01 to IR-S7-04 in [evidence/irregularities_current.json](evidence/irregularities_current.json).
+
+- **Why 0.2778 (owner-reported) scored higher than 0.2708:** the 0.2778 file is an exact subset of the 0.2708 file (2,545 dots removed, none added, values equal on shared dots). I verified this from public GitHub clones with sha256 checks. The score link is owner-reported; the mechanism (removed dots 1.4–2.0 px from the catalogue) is a plausible precision effect, **not a verified cause**.
+- **Can a unique higher-scoring TIF be produced now?** Not under the current rule. I cloned 17GEMSDOE and verified its E-proba raster (sha256 `ab0a0a62…`) is positive on all 5,167,373 footprint cells. Any in-footprint candidate therefore has overlap 1.0 under the literal gate. Measured Spearman of the retained candidate against it is 0.515, so the rank rule does not fire. Only the owner can change how soft rasters define a dot (IR-S6-01).
+- **Holdout:** not run. `training_features.tif` is still absent (IR-S6-05). No HOLDOUT-DTI number was produced in this session.
+- **Label-file irregularity (IR-S7-01, critical):** `data/official/labels.tif` and `data/official/existing_faults.tif` are byte-identical (sha256 `7ba308cc…`). Label-based claims must not cite the bridge `labels.tif` as the organizer target until it is authenticated.
+- **Owner decisions needed:** (1) the dot definition for soft registry rasters (IR-S6-01 options B or C, or keep the literal rule); (2) whether research download is authorized (IR-S6-10). Until both are recorded, the answer to "is it OK to download and submit?" is **no**.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
