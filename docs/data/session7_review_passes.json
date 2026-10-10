@@ -1,13 +1,13 @@
 {
   "schema": "gems57.session7-review-passes.v1",
   "evidence_class": "IMPLEMENTATION / CODE-REVIEW / REQUIREMENTS-RECHECK LOG; not a score",
-  "reviewed_utc": "2026-10-10T22:17:15Z",
+  "reviewed_utc": "2026-10-10T22:24:38Z",
   "branch": "arena/af4634cc-57gemsdoe",
   "passes": [
     {
       "pass": 1,
       "name": "Pre-register, implement, and verify interfaces",
-      "status": "PASS",
+      "status": "PASS_WITH_SCOPE_CORRECTION",
       "checks": [
         "Registered four ranked fault-zone-anatomy hypotheses; authorized only S7-1 for one holdout attempt.",
         "Audited shared fold-geometry, buffered-component split, canary, allocator, exact evaluator, and pooled spatial-block bootstrap interfaces.",
@@ -18,7 +18,7 @@
     {
       "pass": 2,
       "name": "Line-by-line scientific and leakage review; fix defects before trusting the run",
-      "status": "PASS",
+      "status": "PASS_WITH_CROSS_BRANCH_DISCLOSURE",
       "findings_and_resolutions": [
         {
           "finding": "Greedy allocation candidates were limited by the fitted zone only through p=0 outside the zone; convolutional expected credit could still cause a dot to be placed just outside that zone.",
@@ -39,20 +39,30 @@
         {
           "finding": "The 696-raster full index was stale for four public-main heads; four open PR raster inventories were also not scanned.",
           "resolution": "Recorded a current 57-repository main-head check and open PR heads. The unchanged indexed universal-support witness is sufficient to STOP before production placement, not to claim a fresh full scan or candidate uniqueness PASS."
+        },
+        {
+          "finding": "A post-run fetch of origin/main showed PR #27 had merged the H6-1 2-px proximity-prune-versus-equal-count-random holdout at 22:00:49Z, before the branch-local S7-1 run. The local branch was still based at 5fd64ec and its pre-run audit had not fetched its own origin/main. The intervention family was therefore not repository-novel, despite the initial slate wording.",
+          "resolution": "Preserved the H6-1 and S7-1 receipts separately; documented that they use different base allocators but the same underlying catalog/holdout; marked the novelty claim superseded; did not pool scores, promote either arm, or rerun either experiment."
+        },
+        {
+          "finding": "The merged H6-1 receipt also contained an evaluator-hash-matched unpruned E2 score of 0.1352037 on 11,321 positives, a current comparable best omitted from the branch-local pre-run gate audit. It exceeds S7-1 proximal DTI 0.1010050 by 0.0341987 pointwise.",
+          "resolution": "Recorded the upstream best in the S7-1 receipt as post-run cross-branch context. Evaluator hashes match for the shared scoring modules. The point gap is descriptive only (no paired cross-model test was computed); S7-1 already fails the registered matched-random test. No promotion, pooling, or rerun."
         }
       ]
     },
     {
       "pass": 3,
       "name": "Recheck the original request, evidence labels, delivery gates, and site",
-      "status": "PASS",
+      "status": "PASS_WITH_FINAL_DISCLOSURE",
       "checks": [
         "The one S7-1 buffered holdout ran once: evaluator gems57-pooled-hide-v2, 11,321 withheld positives, alpha=0.2, beta=0.8, 300 m triangular kernel, 1,000 paired spatial-block draws; no test truth chose emission.",
         "All 13 feature-only canaries passed; maximum discriminative AUC was 0.8258665. Distance and relative-strike distributions are recorded as HOLDOUT-STRUCTURE, not scores.",
         "The registered proximal-minus-random contrast was -0.0000020031 [95% CI -0.0000156476, +0.0000164644]; it does not support S7-1. No follow-up hypothesis ran.",
         "The literal uniqueness blocker was not relaxed. No full production surface, production dots, candidate TIFF, TIFF SHA, candidate registry scan, validator, or submission slot was produced/used.",
         "README and the generated Overview, Download & Submit, and Session 7 pages state prominently that no new TIFF exists and neither research download nor competition submission is authorized.",
-        "scripts/check_site.py passed on 32 pages; the full pytest suite passed; git diff --check passed; no TIFF/ZIP was added or changed."
+        "scripts/check_site.py passed on 32 pages; the full pytest suite passed; git diff --check passed; no TIFF/ZIP was added or changed.",
+        "Post-merge audit found an already-merged H6-1 matched-pruning holdout in origin/main (PR #27); this branch-local S7-1 test is a different base allocator but not a novel or independent hypothesis test. Both paired proximal-minus-random intervals cross zero; the receipts remain separate.",
+        "Cross-branch reconciliation also found a hash-matched current E2 best at 0.1352037; S7-1 proximal is 0.1010050. This point comparison is descriptive only, with no paired cross-model inference."
       ]
     }
   ],
@@ -63,7 +73,12 @@
     "okay_to_submit": false,
     "submission_slots_used": 0,
     "score_projection": null,
-    "verdict": "negative"
+    "verdict": "negative",
+    "hypothesis_novelty": "not repository-novel; initial pre-run claim superseded by cross-branch audit",
+    "independent_replication": false,
+    "no_rerun_after_discovery": true,
+    "current_best_comparison": "S7-1 proximal point DTI is below hash-matched H6-1 unpruned E2; no paired cross-model statistic claimed"
   },
-  "external_source_note": "The geometry-only test used hash-pinned local bridge inputs. Existing official organizer, competition, USGS, and scientific-source URLs remain linked in the research note; no new external page or data fetch was performed for this run."
+  "external_source_note": "The geometry-only test used hash-pinned local bridge inputs. Existing official organizer, competition, USGS, and scientific-source URLs remain linked in the research note; no new external page or data fetch was performed for this run.",
+  "cross_branch_reconciliation_utc": "2026-10-10T22:24:38Z"
 }

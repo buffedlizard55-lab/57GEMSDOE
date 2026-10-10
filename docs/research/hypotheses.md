@@ -1,5 +1,7 @@
 # Fault-zone-anatomy hypotheses — ranked, untried
 
+**2026-10-10 update:** The earlier “feature stack absent” status below describes the Session-6 checkout. The 19-band bridge stack has since been restored and hash-verified via GitHub ([receipt](../data/data_preparation.json)); independent official origin is unverified. The [new pinned-witness preflight](../data/preflight_anatomy.json) proves universal literal overlap STOP, so none of the ranked hypotheses below has been rerun or authorized for a new TIFF. The first candidate remains topology-conditioned branch-end/junction strands; the rankings are qualitative, not score projections.
+
 **Status: HOLD — no candidate is authorized for download or submission.** The three-experiment / two-hour budget is spent. Session 6 re-verified all 696 rasters in the current public index; a universal-support witness makes the literal >70% 3-pixel gate unsatisfiable for every nonempty candidate while it remains in scope. The shortlist below was not implemented or evaluated in this follow-up audit.
 
 The priorities below are qualitative. There is no evidence-based numerical expected DTI gain or gain probability. “Potential” means relative next-test priority, not a predicted score. The candidate list is based on the latest read-only attribute audit in [`attribute_audit_20261010.json`](../data/attribute_audit_20261010.json); that audit did not join attributes to visible hosts or run a model.

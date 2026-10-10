@@ -1,131 +1,94 @@
 {
-  "schema": "gems57.session7-hypotheses.v1",
-  "evidence_class": "PRE-REGISTRATION (hypotheses only; no new holdout result or submission slot at registration)",
-  "created_utc": "2026-10-10",
-  "scope": "Fault-zone-anatomy lane only. Tested families excluded: host bend/scarp strike (H57-H), two-host relay (H57-I2), slip-sense transition (H57-J), broad candidate-edge orientation, length-width normalization, and prior sense/distance ablations. The first item was previously proposed as H6-1 but had no current-instrument matched holdout test; it is the only hypothesis to be tested in this session.",
-  "evidence_limits": [
-    "The 0.2778 and 0.2708 labels are OWNER-REPORTED from repository evidence, not ORGANIZER-CONFIRMED exact-file receipts.",
-    "The current official competition feature TIFF and cached band arrays are absent. The selected geometry-only test does not require them; no geophysical band will be rebuilt or silently substituted.",
-    "A local holdout recovers withheld catalogued fault components, not independent newly mapped live faults; positive results would not be live-score forecasts."
-  ],
-  "ranking_basis": "Qualitative expected-value priority combines plausible DTI direction, evidence relevance, implementation cost, and whether required data are locally available. These are not numerical score projections.",
-  "validation_plan": {
-    "candidate": "S7-1",
-    "evaluator_version": "gems57-pooled-hide-v2",
-    "split": "buffered-whole-components-loqo-v2",
-    "seed": 20,
-    "withholding": "whole catalogue components, label-blind eroded quadrants, 3 px feature-context buffer",
-    "catalogue_features": "visible faults only; exact unhidden mapped-fault mask at scoring",
-    "metric": "pooled DTI, alpha=0.2, beta=0.8, 300 m triangular kernel",
-    "leakage_canary": "max(AUC, 1-AUC) per feature; any value >0.90 stops the hypothesis",
-    "intervention": "From the same training-only anatomy ranking, prune predictions whose distance to the visible catalogue is <=2 px; compare with an equal-count random prune in each held-out quadrant. The 2 px radius is fixed from the prior file-level audit before this holdout; no threshold sweep.",
-    "emission": "Training-fold prevalence and training-fold fitted zone only; no test-positive count chooses the budget or locations.",
-    "promotion_rule": "S7-1 is scientifically retained only if its paired 95% CI lower bound is >0 versus matched-random pruning and it is not weaker than the current comparable holdout best under the same instrument. No competition slot is selected or used.",
-    "stop_rule": "If the literal full-registry pre-placement uniqueness rule fires, log the duplicate and stop before production-dot placement."
-  },
-  "pre_run_gate_audit": {
-    "evidence_class": "PRE-RUN AUDIT (no S7-1 score)",
-    "checked_utc": "2026-10-10T22:01:25.044895+00:00",
-    "input_pins": "Bridged fault grid, sample grid, and geometry CSV SHA256 pins verified; runner will recheck before fitting.",
-    "registry": "The 696-raster baseline index is stale for four public main heads; four open PR heads were found but their raster contents were not scanned. The indexed universal-support witness remains in unchanged 17GEMSDOE main, so any nonempty allowed dot set still fails the literal 0.70 overlap gate. No candidate scan or production placement is authorized.",
-    "historical_comparator": {
-      "arm": "relay_bend_sense_transition",
-      "same_version_string_seed_and_split": true,
-      "saved_evaluate_holdout_sha256": "90ec4a7a4787dd9db0e3f8e5ad2ca12df25aca608ec6dae81f443c1f04040c55",
-      "current_evaluate_holdout_sha256": "ad86640b46f3c5fc6b1aceec4c4bfc82d03e35008b37ab2a8ad6076e6810ff3a",
-      "promotion_comparator_usable": false,
-      "reason": "Evaluator implementation hash mismatch; version string alone does not establish comparability."
-    },
-    "zone_budget_caveat": "A training-positive 90th-percentile zone contains approximately 90% of training positives by construction; this yields about a 10% training-only cap shrink but does not adapt to test-fold support shift."
-  },
+  "evidence_class": "PRE-IMPLEMENTATION RANKING plus post-test status; qualitative expectations are not scores",
+  "session": "7 (2026-10-10)",
+  "ranking_record": "H6-1 was pre-registered before its implementation in evidence/session6_hypotheses.json. The remaining geological candidates were not implemented in this session.",
+  "novelty_scope": "Not previously tested in this repository; not a claim of global scientific novelty.",
   "ranked": [
     {
       "rank": 1,
-      "id": "S7-1",
-      "hypothesis": "At a fixed per-fold dot count, suppressing candidate predictions within 2 px of the visible known-fault catalogue improves DTI more than removing the same number of randomly selected predictions.",
+      "id": "H6-1",
+      "hypothesis": "Visible-catalogue proximity pruning removes redundant near-trace allocations without removing new-strand credit.",
       "layers": [
-        "data/official/existing_faults.tif (bridged binary mapped-fault geometry)",
-        "visible-only distance/anatomy features and fitted intensity from src/gems57/anatomy.py"
+        "visible fold-specific existing_faults.tif",
+        "retained E2 relay+bend probability surface",
+        "shared greedy binary allocation"
       ],
-      "physical_signature": "A fitted near-trace exclusion band in the emitted dot allocation; no edge transform and no assumed Riedel angle.",
-      "why_it_might_find_new_faults": "The task penalizes dots without nearby new-fault pixels, while the organizer permits new geometry near a known trace. The holdout therefore tests, rather than assumes, whether the closest 200 m of candidate allocation is mostly redundant or still recovers real strands.",
-      "difference_from_implemented": "Distance is already an anatomy predictor and scripts/proximal_sweep.py reports a model surrogate, but no current buffered holdout has compared a fixed-radius, equal-count proximal prune against a matched-random prune. This is H6-1 from the previous slate, now testable without the missing geophysical stack.",
-      "expected_gain": "Low-to-moderate and highly uncertain; the owner-reported nested-raster change makes the test worth running, but catalogue hide-and-recover may favor close continuations.",
-      "implementation_cost": "Low; one shared-model fit per spatial fold plus paired allocations/evaluator calls.",
-      "data_status": "Required bridge-grid files are present. No new external data required; official-origin identity remains unverified in this checkout.",
-      "non_fault_mimic": "Digitization offsets, trace generalization, and map-resolution mismatch can make a real secondary strand appear close to or far from the catalogue.",
-      "sources": [
-        "evidence/session6_mechanism_and_witness.json",
-        "evidence/session6_hypotheses.json",
-        "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4",
-        "https://community.drivendata.org/t/where-do-you-draw-the-line/11536/2"
-      ]
+      "physical_signature": "Euclidean distance transform to the visible catalogue; remove allocated cells at distance <=2 pixels and compare with an equal-count fixed-seed random prune.",
+      "why_missing_faults_not_catalogued_faults": "The organizer clarified that proximity to a known trace earns no credit by itself. The test asks whether near-trace allocations are catalogue redundancy while detached relay/splay allocations retain recoverable hidden-strand signal.",
+      "difference_from_repo": "Earlier file-level evidence compared two owner-reported live rasters. No fold-visible, equal-count random-pruning holdout test existed.",
+      "expected_dti_improvement": "Highest prior plausibility, but expected magnitude small because E2 allocation already masks known pixels.",
+      "implementation_cost": "Low; one CPU experiment, no external data.",
+      "official_sources": [
+        "https://community.drivendata.org/t/scoring-clarification-are-known-usgs-ingenious-faults-masked-when-scoring-and-are-they-in-the-final-round-label-set/11516/4"
+      ],
+      "data_obtainability": "All required hash-pinned local layers verified.",
+      "status": "TESTED; NOT PROMOTED and INCONCLUSIVE for the motivating near-catalogue regime because the holdout feature collar excludes withheld truth within 3 px of visible context. See evidence/h6_1_proximity_pruning_holdout.json."
     },
     {
       "rank": 2,
-      "id": "S7-2",
-      "hypothesis": "A visible-host slip-rate term, fit jointly with distance, component length, relative orientation and available sense, improves the damage-zone intensity over length alone.",
+      "id": "H6-2",
+      "hypothesis": "Visible fault-tip termination anatomy predicts short growth splays and relay breaches beyond mapped component ends.",
       "layers": [
-        "data/external/trace_segments_utm11.csv: slip_mm_yr, sense, endpoints",
-        "data/external/qfault_attributes.csv: SLIPRTNUM and SLIPSENSE",
-        "data/official/existing_faults.tif: visible support"
+        "visible existing_faults.tif connected components",
+        "local visible strike",
+        "component length displacement proxy",
+        "detrended elevation scarp tangent"
       ],
-      "physical_signature": "Cross-validated residual variation in perpendicular distance/strand density by recorded rate after conditioning on visible-host length; the width law and orientation distribution are fit on training folds, not imposed.",
-      "why_it_might_find_new_faults": "If present-day rate distinguishes active hosts whose secondary structures are more expressed, it can prioritize unrecorded nearby strands instead of extending every trace equally.",
-      "difference_from_implemented": "The current anatomy uses log visible-component length as a noisy displacement proxy; the repository's prior slate described slip-rate scaling but no current buffered holdout or leak-safe rate-to-raster join has been verified.",
-      "expected_gain": "Moderate but uncertain; rate is not cumulative displacement and may not explain damage-zone width.",
-      "implementation_cost": "Medium-high; host/record matching, units/missingness audit, visible-only join and fold-wise canaries are prerequisites.",
-      "data_status": "CSV extracts are present and hash-pinned as local bridge data; joins to rasterized hosts and independent official-origin authentication are unresolved. Not viable until those audits pass.",
-      "non_fault_mimic": "Reporting and mapping effort covary with assigned slip rate; a rate association may reflect survey/catalogue completeness rather than fracture damage.",
-      "sources": [
-        "evidence/attribute_audit_20261010.json",
-        "data/external/qfaults_8_README_fielddefinitions_qfaults_ingenious_nad83conus117_2023-06-27.txt",
-        "https://gdr.openei.org/submissions/1391"
-      ]
+      "physical_signature": "Signed along-strike distance beyond each visible component endpoint, endpoint tangent persistence, and endpoint-local scarp concordance, all measured against matched mid-wall controls.",
+      "why_missing_faults_not_catalogued_faults": "Regional maps can capture the mature master trace while omitting immature splays or relay breaches extending from a mapped termination.",
+      "difference_from_repo": "The repo models nearest-host offsets, bends, two-host relays and slip transitions, but has no endpoint-distance or endpoint-versus-mid-wall term.",
+      "expected_dti_improvement": "Medium; direct fault-growth mechanism but endpoint artifacts are common.",
+      "implementation_cost": "Medium; local CPU geometry only.",
+      "non_fault_mimic": "Map-sheet clipping, digitization endpoints, and eroded range-front scarps.",
+      "official_sources": [
+        "https://www.lyellcollection.org/doi/abs/10.1144/GSL.SP.2003.210.01.03"
+      ],
+      "data_obtainability": "All required layers are local; no new external data.",
+      "status": "UNTRIED; next eligible experiment."
     },
     {
       "rank": 3,
-      "id": "S7-3",
-      "hypothesis": "Explicit visible-network branch order and junction-angle context adds information about secondary-strand concentration beyond distance, local density, host bend and two-host relay features.",
+      "id": "H6-3",
+      "hypothesis": "Branch-density gradients around long visible faults identify horsetail damage zones while rejecting uniformly dense mapped networks.",
       "layers": [
-        "data/official/existing_faults.tif",
-        "visible-only fault network topology derived from the binary trace mask",
-        "recorded sense from data/external/trace_segments_utm11.csv only where a visible trace record supports it"
+        "visible existing_faults.tif",
+        "component length",
+        "multi-radius visible-fault density at 300 m, 900 m, and 1500 m",
+        "recorded slip sense where available"
       ],
-      "physical_signature": "Skeleton-graph node degree, local branch-angle dispersion and junction-distance surfaces, with angular distributions estimated from training-fold withheld segments.",
-      "why_it_might_find_new_faults": "Stress interactions around mapped intersections and branch nodes can localize small splays that are missed by a smooth isotropic distance halo.",
-      "difference_from_implemented": "Existing density, multi-scale bend and two-host relay features do not encode graph node degree/branch order explicitly; generic bend and relay families are excluded from this hypothesis.",
-      "expected_gain": "Small-to-moderate; junctions are localized, and pixel-skeleton topology is sensitive to map rasterization.",
-      "implementation_cost": "Medium; skeleton stability tests, visible-only graph construction, per-feature canaries and spatially blocked ablation required.",
-      "data_status": "Uses present bridge geometry; no new external data required. Official raster provenance remains the bridge limitation.",
-      "non_fault_mimic": "Rasterization corners, digitization vertices and map joins can create artificial graph nodes.",
-      "sources": [
-        "evidence/relay_bend_holdout.json",
-        "https://community.drivendata.org/t/where-do-you-draw-the-line/11536/2",
+      "physical_signature": "Radial derivative of visible branch density and local orientation entropy, conditioned on host length and strike-slip sense; no textbook angle is imposed.",
+      "why_missing_faults_not_catalogued_faults": "A mapped long master fault may be surrounded by an incompletely mapped outward-fanning population of short secondary strands whose density decays across the damage zone.",
+      "difference_from_repo": "The existing anatomy has one 500 m density count; it does not model a fitted multi-radius density gradient or axial orientation entropy.",
+      "expected_dti_improvement": "Medium-low; mechanistically aligned but partly correlated with E2 relay geometry.",
+      "implementation_cost": "Medium; CPU convolutions and visible-only orientation histograms.",
+      "non_fault_mimic": "Dense lithologic contacts and cartographic generalization around complex bedrock exposures.",
+      "official_sources": [
         "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JB007665"
-      ]
+      ],
+      "data_obtainability": "All required catalogue geometry is local; recorded-sense provenance remains a documented third-party bridge caveat.",
+      "status": "UNTRIED."
     },
     {
       "rank": 4,
-      "id": "S7-4",
-      "hypothesis": "Within the already fitted fault-zone support, a radiometric K/eTh alteration contrast modifies strand intensity in relay/damage corridors.",
+      "id": "H6-4",
+      "hypothesis": "Flight-line-aligned magnetic-edge suppression improves the precision of strand corroboration inside fitted fault damage zones.",
       "layers": [
-        "Official USGS GeoDAWN airborne radiometric potassium (K) and equivalent thorium (eTh) grids",
-        "visible-only fault-zone geometry and recorded sense where available"
+        "GeoDAWN TMI band 14",
+        "visible fault strike and fitted damage-zone distance",
+        "survey flight-line azimuth metadata",
+        "detrended-elevation edge tangent"
       ],
-      "physical_signature": "Multiscale K/eTh contrast or robust local edge relative to the nearest visible host, evaluated only inside a zone fitted from training-fold holdouts.",
-      "why_it_might_find_new_faults": "Fault-hosted fluid circulation may alter potassium relative to relatively immobile thorium and expose concealed secondary structures; an alteration contrast is corroborating evidence, not proof of a fault.",
-      "difference_from_implemented": "The current H57-H experiment used detrended elevation and existing H57 work tested magnetic-edge orientation; this is a radiometric ratio, spatially restricted to the fault-anatomy lane, not an unrestricted whole-footprint detector.",
-      "expected_gain": "Potentially moderate, but too uncertain to rank as an actionable model without raster overlap and leakage testing.",
-      "implementation_cost": "High; official binary retrieval, licensing/metadata audit, CRS/coverage registration, derived-band validation and a new holdout run.",
-      "data_status": "BLOCKED / NOT VIABLE NOW. Official catalogue record: https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and (ScienceBase DOI 10.5066/P93LGLVQ). The current sandbox has no official K/eTh raster; coverage, downloadability, grid overlap and license of a specific file were not verified. The competition feature page https://www.drivendata.org/competitions/306/competition-doe-gems/data/ is login-gated in the saved audit; its 19-band bridge stack is also absent.",
-      "non_fault_mimic": "Lithologic potassium variation, weathering and radiometric flight-line/terrain-clearance artifacts can mimic alteration near structures.",
-      "sources": [
-        "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
-        "https://doi.org/10.5066/P93LGLVQ",
-        "https://www.drivendata.org/competitions/306/competition-doe-gems/data/",
-        "data/README.md"
-      ]
+      "physical_signature": "Down-weight coherent magnetic gradients parallel to the documented acquisition direction when no co-located elevation edge exists; retain off-axis or cross-layer-concordant edges.",
+      "why_missing_faults_not_catalogued_faults": "A concealed secondary fault can offset magnetized units without a mapped scarp; suppression targets acquisition artifacts rather than merely rediscovering visible fault traces.",
+      "difference_from_repo": "The repo tested magnetic-edge relative strike but never an explicit flight-line artifact suppression term or cross-layer edge veto.",
+      "expected_dti_improvement": "Low-medium; likely precision gain, limited by 400 m line spacing versus 100 m pixels.",
+      "implementation_cost": "Medium; official feature band is local and cached; metadata direction is documented.",
+      "non_fault_mimic": "Magnetic dikes, lithologic contacts, leveling residuals, and variable terrain clearance.",
+      "official_sources": [
+        "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and"
+      ],
+      "data_obtainability": "The hash-pinned TMI band is local. Official page access was previously recorded; this sandbox currently restricts outbound hosts, so no new retrieval was claimed.",
+      "status": "UNTRIED."
     }
   ]
 }

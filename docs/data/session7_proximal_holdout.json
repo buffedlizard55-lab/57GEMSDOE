@@ -994,5 +994,54 @@
     "scikit_learn": "1.9.1",
     "rasterio": "1.4.4",
     "threadpoolctl": "3.7.0"
+  },
+  "cross_branch_context": {
+    "evidence_class": "POST-RUN CROSS-BRANCH RECONCILIATION; not a new score or reanalysis",
+    "origin_main_head_at_reconciliation": "b4a0cbf052dc115f555fbbdab44e762da7a836e2",
+    "prior_experiment_pr": "https://github.com/buffedlizard55-lab/57GEMSDOE/pull/27",
+    "prior_experiment_merge_utc": "2026-10-10T22:00:49Z",
+    "prior_experiment_receipt": "evidence/h6_1_proximity_pruning_holdout.json",
+    "prior_preregistration": "evidence/session7_hypotheses.json (H6-1)",
+    "pre_run_discovery_gap": "The Arena branch remained at 5fd64ec and did not fetch origin/main before its 22:01:25Z pre-run audit. PR #27 had merged H6-1 to main at 22:00:49Z; the same 2-px proximity-prune-versus-equal-count-random hypothesis family had therefore already been tested in the repository before this S7-1 run.",
+    "relationship": "Conceptually overlapping, not an exact reproduction: main H6-1 pruned the retained E2 relay+bend allocator; this S7-1 receipt pruned a separately fitted visible-anatomy allocator. Both use the same evaluator, buffered whole-component split and 11,321 withheld positives; they are not independent because they reuse the same catalogue and holdout. Randomization seeds and base allocations differ.",
+    "prior_h6_1_proximity_dti": 0.13525762125316024,
+    "prior_h6_1_random_dti": 0.13514956374249357,
+    "prior_h6_1_proximity_minus_random": 0.00010805751066667035,
+    "prior_h6_1_proximity_minus_random_ci95": [
+      -7.568312867391177e-07,
+      0.00023509666481877836
+    ],
+    "prior_h6_1_promotion_rule_passed": false,
+    "prior_holdout_scope_limitation": {
+      "nearest_visible_to_any_withheld_truth_px": 3.1622776601683795,
+      "feature_context_buffer_px": 3,
+      "implication": "The buffered holdout contains no withheld truth within 3 px of visible catalogue context. It can evaluate the allocator after <=2 px pruning, but it cannot identify the live near-catalogue new-fault regime that motivated H6-1. Treat failure to promote as inconclusive for that regime, not proof that proximity pruning never helps live labels."
+    },
+    "interpretation": "S7-1 was not a repository-novel hypothesis; the pre-run slate novelty statement is superseded by this correction. Keep the two model-specific receipts separate, do not pool or call this an independent replication, and do not rerun either experiment. Both matched-random superiority intervals cross zero; neither supports promotion.",
+    "branch_pre_run_audit_utc": "2026-10-10T22:01:25.044895+00:00",
+    "s7_1_receipt_generated_utc": "2026-10-10T22:07:13Z",
+    "current_comparable_best_after_main_fetch": {
+      "source_receipt": "evidence/h6_1_proximity_pruning_holdout.json",
+      "arm": "unpruned retained E2 relay+bend allocation",
+      "evaluator_implementation_hash_match": {
+        "evaluate_holdout.py": true,
+        "holdout.py": true,
+        "metric.py": true,
+        "spatial.py": true
+      },
+      "evaluator_hashes_match": true,
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "split_version": "buffered-whole-components-loqo-v2",
+      "withheld_positive_pixels": 11321,
+      "dti": 0.13520371677763354,
+      "ci95": [
+        0.1184581439660435,
+        0.1530614621597544
+      ],
+      "s7_1_proximal_dti": 0.10100502589572131,
+      "s7_1_minus_best_point_difference_descriptive_only": -0.03419869088191223,
+      "paired_cross_model_test_performed": false,
+      "interpretation": "This current-instrument E2 result was already available in origin/main before S7-1 ran, but the stale branch did not capture it in the pre-run audit. S7-1 also fails its registered matched-random superiority test; its proximal point DTI is below this comparable current best. No paired cross-model statistic is asserted."
+    }
   }
 }

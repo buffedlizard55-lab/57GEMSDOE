@@ -59,6 +59,15 @@ def check(root=ROOT):
     assert card==public,'public card is stale'
     public_current=json.loads((docs/'data/run_card_current.json').read_text())
     assert card==public_current,'public current-card copy is stale'
+    preflight=json.loads((root/'evidence/preflight_anatomy.json').read_text())
+    assert preflight==json.loads((docs/'data/preflight_anatomy.json').read_text()),'preflight site copy is stale'
+    assert preflight['literal_preplacement_gate']=='STOP'
+    assert preflight['certificate']['universal_overlap_blocker']
+    assert preflight['certificate']['uncovered_allowed_pixels']==0
+    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
+    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
+    assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
+    assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
     assert card['okay_to_download'] is False and card['okay_to_submit'] is False
     assert card.get('download_permission_status',{}).get('resolution')=='HOLD pending explicit owner decision (IR-S6-10)'
     assert card['verdict']=='negative' and card['submission_slots_used']==0
@@ -143,9 +152,21 @@ def check(root=ROOT):
     assert session7['historical_holdout_reference']['comparable_for_promotion'] is False
     assert session7['registry_gate']['forward_dot_overlap_implied']==1.0
     assert session7['submission_slots_used']==0
+    cross_branch=session7['cross_branch_context']
+    assert cross_branch['prior_h6_1_promotion_rule_passed'] is False
+    assert cross_branch['prior_h6_1_proximity_minus_random_ci95'][0] <= 0 <= cross_branch['prior_h6_1_proximity_minus_random_ci95'][1]
+    assert 'not a repository-novel hypothesis' in cross_branch['interpretation']
+    current_best=cross_branch['current_comparable_best_after_main_fetch']
+    assert current_best['evaluator_hashes_match'] is True
+    assert current_best['paired_cross_model_test_performed'] is False
+    assert current_best['dti'] > current_best['s7_1_proximal_dti']
+    proximal_slate=json.loads((root/'evidence/session7_proximal_hypotheses.json').read_text())
+    assert proximal_slate['post_run_cross_branch_audit']['action'].startswith('Preserve the original')
+    review=json.loads((root/'evidence/session7_review_passes.json').read_text())
+    assert review['final_decision']['independent_replication'] is False
     for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
                  'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json',
-                 'session7_hypotheses.json','session7_registry_precheck.json','session7_review_passes.json'):
+                 'session7_hypotheses.json','session7_proximal_hypotheses.json','session7_registry_precheck.json','session7_review_passes.json'):
         source=root/'evidence'/name
         public_copy=docs/'data'/name
         assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
@@ -186,16 +207,18 @@ def check(root=ROOT):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
         assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
         assert 'NOT OK TO DOWNLOAD OR SUBMIT' in text and 'IR-S6-10' in text
-        assert 'S7-1' in text and 'no production surface/dots' in text
-        assert 'Paired proximal-minus-random difference' in text
+        assert 'S7-1' in text and 'The matched-pruning result is negative' in text
+        assert 'Proximal minus random' in text and 'not an independent replication' in text
         assert not parser.downloads
-        assert text.index('latest-holdout')<text.index('download-panel')<text.index('footer')
+        assert text.index('session7-proximal')<text.index('download-panel')<text.index('footer')
     latest=(docs/'session-7-verification.html').read_text()
     assert 'Research verdict: negative' in latest
     assert 'NOT OK TO DOWNLOAD OR SUBMIT' in latest
     assert 'candidate-specific full-registry uniqueness/correlation scan' in latest
     assert 'session7_registry_precheck.json' in latest
+    assert 'session7_proximal_hypotheses.json' in latest
     assert 'session7_review_passes.json' in latest
+    assert '0.135204' in latest and '0.101005' in latest
     js=(docs/'assets/site.js').read_text()
     assert 'localhost' not in js and '127.0.0.1' not in js
     for name in ('research.html','sources.html','results.html','irregularities.html'):

@@ -1,0 +1,206 @@
+{
+  "evidence_class": "REGISTRY-MEASUREMENT (reproduced from raw rasters; not a score)",
+  "session": "7 (2026-10-10)",
+  "rule": "inherited literal support: finite and > 0 pixels are dots; forward 3 px overlap > 0.70 blocks",
+  "competition_grid": {
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "allowed_cells": 5167373
+  },
+  "witness": {
+    "file": "17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "sha256_matches_certificate": true,
+    "allowed_cells": 5167373,
+    "positive_cells": 5167373,
+    "allowed_cells_covered_by_positive": 5167373,
+    "allowed_fraction_covered": 1.0,
+    "outside_footprint_positive": 0,
+    "nan_cells": 7111787,
+    "min": 0.0004625781439244747,
+    "max": 0.984115719795227,
+    "universal_overlap_blocker": true
+  },
+  "conclusion": "Any nonempty candidate confined to the allowed footprint has forward 3 px overlap 1.0 with the witness, so the literal gate cannot be passed by any candidate. Changing this requires an explicit owner protocol revision (support definition), not a different candidate.",
+  "gemsdoe32_subset_check": {
+    "files": {
+      "candidate": "GEMSDOE32__h33-2-b2-zeros.tif",
+      "nested_base": "GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "candidate_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "base_sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8"
+    },
+    "candidate_positive": 37654,
+    "base_positive": 40199,
+    "candidate_is_subset_of_base": true,
+    "removed_vs_base": 2545,
+    "removed_dist_to_catalogue_px_min": 1.4142135623730951,
+    "removed_dist_to_catalogue_px_max": 2.0,
+    "kept_dist_to_catalogue_px_min": 2.23606797749979,
+    "owner_reported_score_used_only_for_bar": 0.2778,
+    "dti_bar_k_gt": 0.05556,
+    "dti_bar_equivalent_distance_px_lt": 2.8333199999999996,
+    "note": "Metric bar from src/gems57/metric.py: a non-redundant dot is worth keeping only if k > alpha*DTI. This is a mechanism check on files, not a score; owner-reported 0.2778 has no organizer receipt."
+  },
+  "local_registry_rasters": [
+    {
+      "file": "19GEMSDOE__h19-4-multiline-corroborated.tif",
+      "sha256": "ad52f4c2704f2a8721f74b736dc139b6b9e11cbf6130c3b971b91cfb3661ac84",
+      "same_grid": true,
+      "positive_cells": 123779,
+      "allowed_fraction_covered": 0.023953951069527978,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "19GEMSDOE__h19-5-powerlaw-budget-multiline.tif",
+      "sha256": "ef2ae808eb7179861b9f1ff753fd3ded625ace7b7c158e29cec45bbd8fa3cfaa",
+      "same_grid": true,
+      "positive_cells": 121131,
+      "allowed_fraction_covered": 0.023441504996833014,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+      "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+      "same_grid": true,
+      "positive_cells": 60000,
+      "allowed_fraction_covered": 0.011611315846562654,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "57GEMSDOE__h57-anatomy-enechelon-zeros.tif",
+      "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
+      "same_grid": true,
+      "positive_cells": 35341,
+      "allowed_fraction_covered": 0.006839258555556179,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+      "sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+      "same_grid": true,
+      "positive_cells": 40000,
+      "allowed_fraction_covered": 0.007740877231041769,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "57GEMSDOE__parallel-12000dots-zeros.tif",
+      "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+      "same_grid": true,
+      "positive_cells": 12000,
+      "allowed_fraction_covered": 0.0023222631693125308,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif",
+      "sha256": "3e0730e8d4f7db095dd80246a98cba3bc0fc9a28f436b91db27ca34df4d0d1ce",
+      "same_grid": true,
+      "positive_cells": 60069,
+      "allowed_fraction_covered": 0.0116246688597862,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE25__dotted-h19-5-d2-8.tif",
+      "sha256": "3e78737f0da8dd2ca66cc6caac0ce8eeefcd6715707f8d1bd3091845cd9bcc30",
+      "same_grid": true,
+      "positive_cells": 44090,
+      "allowed_fraction_covered": 0.00853238192791579,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif",
+      "sha256": "a9bf76b57453a5b3af74c8eef837df53c29a0931162aa540b8763220b36ba3bb",
+      "same_grid": true,
+      "positive_cells": 61328,
+      "allowed_fraction_covered": 0.011868312970633241,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+      "same_grid": true,
+      "positive_cells": 40199,
+      "allowed_fraction_covered": 0.007779388095266202,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif",
+      "sha256": "26748e4b4721277b093c776f7ca72920023d0ee6e9514ee38e677c8010f4068e",
+      "same_grid": true,
+      "positive_cells": 42294,
+      "allowed_fraction_covered": 0.008184816540242015,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE28__h36-1-rung30-blind-r1.tif",
+      "sha256": "7c74270ad48fa0b865163853046a6d3815967c5bf37bbda5b74ca7fa22583a32",
+      "same_grid": true,
+      "positive_cells": 37660,
+      "allowed_fraction_covered": 0.007288035913025826,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE28__h38-1-hf-euler-r30-r1.tif",
+      "sha256": "529d9e1bd80b54957ca16398e47bfc51b1e32eaee8fc89d6dfbddbd7036c5ffc",
+      "same_grid": true,
+      "positive_cells": 37860,
+      "allowed_fraction_covered": 0.007326740299181035,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE29__wormrank-d28.tif",
+      "sha256": "3ea61e719af4c0d0df9f8d279560ae4a6b5063cca0a43991c8f66a56cb63c51f",
+      "same_grid": true,
+      "positive_cells": 41338,
+      "allowed_fraction_covered": 0.007999809574420116,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE30__d28-poisson300m-offcat-44090.tif",
+      "sha256": "8cf893ead5667df21d3288a9968c35fd5385c425b029d82ee71d311715b129fd",
+      "same_grid": true,
+      "positive_cells": 44090,
+      "allowed_fraction_covered": 0.00853238192791579,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE32__h33-2-b2-zeros.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "same_grid": true,
+      "positive_cells": 37654,
+      "allowed_fraction_covered": 0.007286874781441169,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE33__h33d-analog-tip-stepover-r30.tif",
+      "sha256": "87f857d505e23247e991ccfab2cbe9f49a04df4f9c8028dce7ea261554690757",
+      "same_grid": true,
+      "positive_cells": 41865,
+      "allowed_fraction_covered": 0.008101795631939092,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE36__anderson-geothermal-pinn-38854.tif",
+      "sha256": "e15891020b9c57056ac7fa874a5e506fbd6ed9314a4ea8e73af0753887a3708a",
+      "same_grid": true,
+      "positive_cells": 38854,
+      "allowed_fraction_covered": 0.0075191010983724224,
+      "outside_footprint_positive": 0
+    },
+    {
+      "file": "GEMSDOE49__gate_ortho_w0.25-40k.tif",
+      "sha256": "3722e26fbf9129874be1fb8c687825803952c57ef1154ed0a21029596bc412f1",
+      "same_grid": true,
+      "positive_cells": 40000,
+      "allowed_fraction_covered": 0.007740877231041769,
+      "outside_footprint_positive": 0
+    }
+  ],
+  "not_claimed": [
+    "organizer acceptance or rejection of any file",
+    "leaderboard placement or private score",
+    "HOLDOUT-DTI of any candidate"
+  ]
+}

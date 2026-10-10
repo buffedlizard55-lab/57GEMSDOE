@@ -50,7 +50,7 @@ def test_pruned_arms_noop_when_no_proximal_dots():
 
 
 def test_session7_preregistration_is_lane_scoped_and_names_one_candidate():
-    slate = json.loads((ROOT / "evidence/session7_hypotheses.json").read_text())
+    slate = json.loads((ROOT / "evidence/session7_proximal_hypotheses.json").read_text())
     assert slate["validation_plan"]["candidate"] == "S7-1"
     assert len(slate["ranked"]) == 4
     assert slate["ranked"][0]["id"] == "S7-1"
@@ -101,7 +101,9 @@ def test_run_card_keeps_unrun_artifact_gates_null_and_note_short():
 def test_three_pass_review_log_is_complete_and_fail_closed():
     review = json.loads((ROOT / "evidence/session7_review_passes.json").read_text())
     assert len(review["passes"]) == 3
-    assert all(item["status"] == "PASS" for item in review["passes"])
+    assert all(item["status"].startswith("PASS") for item in review["passes"])
+    assert review["final_decision"]["independent_replication"] is False
+    assert review["final_decision"]["no_rerun_after_discovery"] is True
     assert review["final_decision"]["new_tiff_sha256"] is None
     assert review["final_decision"]["okay_to_download"] is False
     assert review["final_decision"]["okay_to_submit"] is False
@@ -141,6 +143,18 @@ def test_saved_session7_receipt_math_gates_and_provenance_are_consistent():
     assert len(report["pipeline_implementation_sha256"]) == 11
     assert "src/gems57/grid.py" in report["pipeline_implementation_sha256"]
     assert report["provenance_receipt_correction"]["runner_sha256_at_holdout_execution"] == report["pipeline_implementation_sha256"]["scripts/run_session7_proximal.py"]
+    cross_branch = report["cross_branch_context"]
+    assert cross_branch["prior_experiment_pr"].endswith("/pull/27")
+    assert cross_branch["prior_h6_1_promotion_rule_passed"] is False
+    assert cross_branch["prior_h6_1_proximity_minus_random_ci95"][0] <= 0 <= cross_branch["prior_h6_1_proximity_minus_random_ci95"][1]
+    assert "do not pool" in cross_branch["interpretation"]
+    prior = json.loads((ROOT / "evidence/h6_1_proximity_pruning_holdout.json").read_text())
+    assert np.isclose(cross_branch["prior_h6_1_proximity_minus_random"], prior["paired_differences"]["random_prune"]["delta"])
+    assert cross_branch["prior_h6_1_proximity_minus_random_ci95"] == prior["paired_differences"]["random_prune"]["ci95"]
+    current_best = cross_branch["current_comparable_best_after_main_fetch"]
+    assert current_best["evaluator_hashes_match"] is True
+    assert current_best["paired_cross_model_test_performed"] is False
+    assert current_best["dti"] > current_best["s7_1_proximal_dti"]
     assert report["implementation_sha256"] == report["evaluator_implementation_hashes"]
     assert report["environment_sha256"]["requirements-lock.txt"]
     assert report["runtime_environment"]["python"] == "3.11.2"
