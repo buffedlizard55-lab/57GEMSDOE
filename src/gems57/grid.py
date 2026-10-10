@@ -87,28 +87,35 @@ def load_grid(data_dir: Path | None = None) -> Grid:
 
 
 def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> dict:
-    """Write a portal-legal single-band GeoTIFF.
+    """Serialize a pre-normalized array on the pinned grid without repairing it.
 
-    ``mode="zeros"`` -- every cell finite, outside-footprint cells set to 0.0 and
-    no nodata tag.  This is the only mode that survives the portal check
-    *"Predicted values must be in range [0, 1]"*, because ``NaN`` is neither
-    ``>= 0`` nor ``<= 1``.  The competition's own ``sample_submission.tif``
-    carries 7,111,787 NaN cells, so a submission written by copying its nodata
-    convention fails that check; see ``docs/executive-summary`` and irregularity
-    ``IR-57-NAN-01``.
+    ``mode="zeros"`` is the only submission-compatible mode: callers must pass
+    an all-finite field already in ``[0,1]`` (normally with cells outside the
+    footprint explicitly set to zero). Out-of-range and non-finite values are
+    rejected; nothing is clipped or silently replaced.
 
-    ``mode="nan"`` is produced for comparison/diagnostics only and must NOT be
-    submitted.
+    ``mode="nan"`` is retained for local diagnostics only. The organizer's
+    nodata handling is not inferred here, and a prior portal range error does
+    not establish NaN as its cause. Prefer the stricter all-finite zeros policy
+    for any future candidate.
     """
-    values = np.asarray(values, np.float32)
+    values = np.asarray(values)
     if values.shape != (HEIGHT, WIDTH):
         raise ValueError(f"values shape {values.shape} != {(HEIGHT, WIDTH)}")
+    if not np.issubdtype(values.dtype, np.number):
+        raise ValueError("values must be numeric")
     if mode == "zeros":
-        out = np.where(np.isfinite(values), values, 0.0).astype(np.float32)
-        np.clip(out, 0.0, 1.0, out=out)
+        if not np.isfinite(values).all():
+            raise ValueError("submission values must be finite everywhere; no silent fill")
+        if (values < 0.0).any() or (values > 1.0).any():
+            raise ValueError("submission values must already be in [0,1]; no clipping")
+        out = values.astype(np.float32, copy=False)
         nodata = None
     elif mode == "nan":
-        out = values.astype(np.float32)
+        finite = np.isfinite(values)
+        if np.isinf(values).any() or (values[finite] < 0.0).any() or (values[finite] > 1.0).any():
+            raise ValueError("diagnostic values must be finite/[0,1] except for NaN cells")
+        out = values.astype(np.float32, copy=False)
         nodata = float("nan")
     else:
         raise ValueError("mode must be 'zeros' or 'nan'")
@@ -122,7 +129,6 @@ def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> 
         dst.write(out, 1)
         dst.set_band_description(1, "predicted_new_fault_probability")
     return {"path": str(path), "mode": mode, "nodata": nodata}
-
 
 def read_geotiff(path: str | Path) -> dict:
     """Everything a validator can complain about, re-derived from the bytes on disk.
@@ -171,7 +177,7 @@ def write_geotiff(path: str | Path, arr: np.ndarray, *, nodata: float | None = N
     if arr.shape != SHAPE:
         raise ValueError(f"submission must be {SHAPE}, got {arr.shape}")
     if not np.isfinite(arr).all():
-        raise ValueError("submission contains NaN/inf; the portal requires finite values")
+        raise ValueError("submission contains NaN/inf; the local all-finite export policy rejects it")
     if arr.min() < 0.0 or arr.max() > 1.0:
         raise ValueError(f"submission out of range: min={arr.min()} max={arr.max()}")
     tr = Affine(*[float(v) for v in tuple(TRANSFORM)[:6]])

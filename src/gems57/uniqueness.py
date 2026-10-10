@@ -158,13 +158,16 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             progress(i+1,len(records),rows[-1])
     checked = [r for r in rows if 'error' not in r]
     errors = [r for r in rows if 'error' in r]
-    flags = [r for r in checked if any(r[k] for k in ('duplicate_by_rho','duplicate_by_overlap','duplicate_by_jaccard','identical_bytes','identical_decoded_predictions'))]
+    # Only the protocol's rank-correlation and forward 3-pixel overlap thresholds
+    # are stop rules. Jaccard and exact byte/pixel identity remain diagnostics;
+    # identity is ordinarily implied by the literal overlap/rank checks anyway.
+    protocol_flags = [r for r in checked if r['duplicate_by_rho'] or r['duplicate_by_overlap']]
     complete = inventory_complete and bool(records) and not errors and not source_errors
     rank_rows = [r for r in checked if r['spearman_full_footprint'] is not None]
     worst_rho = max(rank_rows, key=lambda r:r['spearman_full_footprint'], default=None)
     worst_ov = max(checked,key=lambda r:r['my_dots_within_3px_of_theirs'],default=None)
     worst_jac = max(checked,key=lambda r:r['jaccard_dot_sets'],default=None)
-    unique = complete and my_dot_count > 0 and norm > 0 and not flags
+    unique = complete and my_dot_count > 0 and norm > 0 and not protocol_flags
     return dict(evidence_class='REGISTRY-MEASUREMENT', my_dots=my_dot_count,
         candidate_decoded_sha256=decoded_digest, candidate_file_sha256=file_sha256,
         rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
@@ -178,11 +181,12 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
         worst_jaccard_submission=worst_jac['submission'] if worst_jac else None,
         byte_unique_among_checked=bool(checked) and not any(r['identical_bytes'] for r in checked),
         pixel_unique_among_checked=bool(checked) and not any(r['identical_decoded_predictions'] for r in checked),
-        duplicate_count=len(flags), unique=bool(unique), rows=rows,
-        verdict='promote-to-selector-only' if unique else 'negative',
-        stop_required=bool(flags or not complete or not my_dot_count or norm == 0),
+        duplicate_count=len(protocol_flags), unique=bool(unique), rows=rows,
+        jaccard_diagnostic_only=True,
+        verdict='passes-indexed-thresholds; separate selector and scope review required' if unique else 'negative',
+        stop_required=bool(protocol_flags or not complete or not my_dot_count or norm == 0),
         candidate_rank_variation=norm > 0,
-        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.')
+        scope='Hash-verified indexed public owner-repository entries only; not organizer-complete, and not inaccessible/private/unlinked/external files. Reverse overlap, Jaccard, and exact identity are diagnostics only.')
 
 
 def compare_to_registry(mine_path, registry_index, footprint, **kwargs):

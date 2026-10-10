@@ -1,18 +1,60 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Results · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
-<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
-<body><a class="skip-link" href="#main">Skip to content</a>
-<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
-<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html" aria-current="page">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
-<main id="main"><div class="eyebrow">THREE PREDECLARED EXPERIMENTS · ZERO SUBMISSIONS</div><h1>Negative is a deliverable.</h1><p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>gems57-pooled-hide-v2</code> · 11,321 withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>
-<div class="table-scroll"><table><thead><tr><th scope="col">Method</th><th scope="col">Soft-surface HOLDOUT-DTI [95% CI]</th><th scope="col">Binary-allocation HOLDOUT-DTI [95% CI]</th><th scope="col">Withheld positives</th></tr></thead><tbody><tr><td>Distance only</td><td>0.0062 [0.0058, 0.0066]</td><td>0.1127 [0.1006, 0.1236]</td><td>11,321</td></tr><tr><td>Visible-host anatomy</td><td>0.0228 [0.0185, 0.0273]</td><td>0.1098 [0.0947, 0.1244]</td><td>11,321</td></tr><tr><td>Anatomy + relative magnetic tangent</td><td>0.0232 [0.0188, 0.0280]</td><td>0.1092 [0.0945, 0.1242]</td><td>11,321</td></tr><tr><td>Candidate + recorded sense (ablation)</td><td>0.0242 [0.0197, 0.0293]</td><td>0.1127 [0.0980, 0.1283]</td><td>11,321</td></tr></tbody></table></div><p class="small">Each arm uses the same fold masks and nominal 10,000-dot per-quadrant cap, shrunk by its training-only fitted-zone fraction. These are different representations, not interchangeable scores. Conditional CI: 1,000 paired draws from 153 physical 20 km clusters; catalogue labels and fitted models are held fixed.</p>
-<h2>The comparisons that matter</h2><div class="table-scroll"><table><thead><tr><th scope="col">Comparison</th><th scope="col">Paired HOLDOUT-DTI difference</th><th scope="col">95% CI</th><th scope="col">Verdict</th></tr></thead><tbody><tr><td>Candidate minus distance-only (binary)</td><td>-0.0036</td><td>[-0.0178, 0.0110]</td><td>No demonstrated improvement</td></tr><tr><td>Candidate minus anatomy (binary)</td><td>-0.0006</td><td>[-0.0062, 0.0050]</td><td>No demonstrated added orientation value</td></tr><tr><td>Recorded-sense addition (binary)</td><td>0.0036</td><td>[-0.0057, 0.0145]</td><td>Not significant; sense not retained</td></tr></tbody></table></div>
-<p>These comparisons use 11,321 withheld positives and <code>gems57-pooled-hide-v2</code>. The historical 0.2279 reading is not a comparable best: it used the corrupted strike field and a different short-chunk, unbuffered instrument. A static prior generated from the unhidden catalogue is also not a valid hide-and-recover comparator.</p>
-<h2>Soft surfaces do not rescue a negative dot result</h2><p>Relative orientation improves the soft-surface point estimate against distance-only, but its added soft value over anatomy is 0.0005, 95% CI [-0.0005, 0.0014]. That includes zero. No unpredeclared representation switch is used to claim promotion.</p>
-<h2>Leakage canaries</h2><p>Every feature alone was tested before trusting the fit. We use <code>max(AUC, 1−AUC)</code> in every fold, so an inverse distance feature cannot hide leakage. Maximum discriminative AUC: 0.8259; all 14 are below 0.90. Passing this check does not prove all possible leakage absent.</p><div class="table-scroll"><table><thead><tr><th scope="col">Feature</th><th scope="col">Max discriminative fold AUC (diagnostic)</th><th scope="col">Canary</th></tr></thead><tbody><tr><td><code>d</code></td><td>0.7935</td><td>PASS (< 0.90)</td></tr><tr><td><code>d_perp</code></td><td>0.8259</td><td>PASS (< 0.90)</td></tr><tr><td><code>d_par_abs</code></td><td>0.6192</td><td>PASS (< 0.90)</td></tr><tr><td><code>side</code></td><td>0.5359</td><td>PASS (< 0.90)</td></tr><tr><td><code>log_len</code></td><td>0.6573</td><td>PASS (< 0.90)</td></tr><tr><td><code>sin2</code></td><td>0.5200</td><td>PASS (< 0.90)</td></tr><tr><td><code>cos2</code></td><td>0.5417</td><td>PASS (< 0.90)</td></tr><tr><td><code>coherence</code></td><td>0.6373</td><td>PASS (< 0.90)</td></tr><tr><td><code>density</code></td><td>0.5785</td><td>PASS (< 0.90)</td></tr><tr><td><code>sense_sgn</code></td><td>0.5522</td><td>PASS (< 0.90)</td></tr><tr><td><code>sense_side</code></td><td>0.5224</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_relative_cos2</code></td><td>0.5265</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_log_gradient</code></td><td>0.5555</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_coherence</code></td><td>0.5226</td><td>PASS (< 0.90)</td></tr></tbody></table></div>
-<h2>Indexed public-inventory gate</h2><div class="table-scroll"><table><thead><tr><th scope="col">Measurement (not DTI)</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Accessible grid rasters checked</td><td>679</td></tr><tr><td>Worst full-footprint tied-rank Spearman</td><td>0.8213</td></tr><tr><td>Worst candidate-to-prior ≤3 px forward overlap</td><td>1.0000</td></tr><tr><td>Triggered comparisons</td><td>78</td></tr><tr><td>Byte / decoded-pixel identity</td><td>Distinct from all checked entries</td></tr><tr><td>Literal protocol</td><td><strong>FAIL → STOP</strong></td></tr><tr><td>Production final dots</td><td>Not generated: pre-placement gate failed</td></tr></tbody></table></div>
-<p>The 679-raster audit conservatively includes four historical auxiliary input rasters; 675 are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. This is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent.</p><p><a href="data/orientation_holdout.json">HOLDOUT-DTI receipt</a> · <a href="data/orientation_surface_uniqueness.json">Per-raster inventory measurements</a> · <a href="data/registry_classification.json">Input/prediction classification</a></p></main>
-<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-09 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
-<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Results and score interpretation · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
+<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
+<nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
+<div class="alert" role="alert">
+<strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
+<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
+Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
+resolve. That is not download authorization. No weekly slot was used. The current decision is
+<b>negative / not promoted</b>.</p>
+</div>
+<h2>Results: historical evidence, not current clearance</h2>
+<div class="card"><h3>Local holdout reading</h3>
+<p><span class="tag">HOLDOUT-DTI</span> <b>0.023203</b>, 95% CI
+[0.018777925030160507, 0.02799187291971626], 11321
+withheld positives. Evaluator record: <code>gems57-pooled-hide-v2</code>.</p>
+<p>This is a historical instrument reading whose stored evaluator source hashes do not match the
+current tree. It is not current-code validation, not a live-score projection, and does not clear
+the candidate.</p></div>
+<div class="card"><h3>Separate binary-allocation HOLDOUT-DTI</h3>
+<p><span class="tag">HOLDOUT-DTI</span> 0.109168,
+95% CI [0.09450251109316313, 0.12419365163463253],
+11321
+withheld positives; evaluator <code>gems57-pooled-hide-v2</code>.
+This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
+<div class="card"><h3>Indexed public-inventory comparison</h3>
+<p>Recorded public owner-repository inventory: 679 indexed rasters;
+not organizer-complete. Max Spearman 0.821258; max Jaccard diagnostic
+0.636645 (not a stop threshold); maximum pre-placement positive-support overlap within 3 px
+1.000000 (finite surface values &gt; 0, not final dots);
+78 firings above
+0.700000. Only
+78 firings are itemized.
+Literal verdict: <b>HOLD / STOP; forward-overlap gate fired before placement</b>.</p>
+<p>The protocol says log and stop. Reverse-overlap or saturation exceptions are not silently applied.</p></div>
+<h2>Reported live-score figures</h2>
+<p>The historical <b>0.2778</b> figure is labeled
+<b>OWNER-REPORTED; no organizer submission-page receipt in this repository</b>. Conflicting
+reported highs [0.3195, 0.3774] are not verified by a
+submission-page receipt tied to exact bytes. No `ORGANIZER-CONFIRMED` score is available here.</p>
+<div class="card"><h3>What the available 0.2778 artifact audit suggests</h3>
+<p>The separate raster audit found the named H33-2-B2 artifact is an exact 2-pixel catalogue-flank
+prune of a 40,199-positive base: 2,545 cells were removed, none added, leaving 37,654. Sparse
+thinning and pruning dots with little unique new-truth coverage could plausibly lower false-positive
+cost under max-cover DTI. Hidden truth and an organizer receipt tying the score to exact bytes are
+unavailable, so this is a plausible mechanism—not a causal explanation for 0.2778. See
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/best_submission_audit.json">the raster audit</a>.</p></div>
+<div class="note"><b>Improvement:</b> possible in principle, but no expected gain or probability can be estimated from the evidence here. The universal overlap witness currently blocks every nonempty candidate under the unchanged literal rule, and the experiment budget is spent.</div>
+<h2>Could a future candidate improve?</h2>
+<p>Possibly, but the available evidence cannot establish a probability or expected gain. The local
+holdout and a reported live score are different instruments; the old candidate also fails the
+uniqueness gate. The experiment budget is spent, so this audit makes no gain claim and runs no new
+experiment. The next step is an independently authorized, version-pinned validation—not a score
+projection.</p>
+</main>
+<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+No active download or submission is approved.</footer></body></html>

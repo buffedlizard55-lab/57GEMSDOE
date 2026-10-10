@@ -1,67 +1,121 @@
 {
-  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (qualitative expectations, not scores)",
-  "predeclared_in_chat_before_code": true,
-  "novelty_scope": "Compared with the inspected implementations in this repository. No claim of global scientific novelty or exhaustive novelty across every sibling method.",
+  "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — qualitative priorities, not scores",
+  "status": "RESEARCH SHORTLIST ONLY; NOT IMPLEMENTED OR RUN; three-experiment/two-hour budget spent",
+  "novelty_scope": "Compared with the inspected fault-zone-anatomy implementations and experiments recorded in this repository; no claim of global novelty.",
+  "ranking_basis": "Mechanistic relevance to missed secondary strands, plausible incremental value, data readiness, and implementation cost. No numerical DTI gain is estimated.",
+  "current_blocker": "A separately SHA-verified raster in the 679-entry inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization.",
   "candidates": [
     {
       "rank": 1,
-      "id": "H57-G",
-      "hypothesis": "Candidate-edge relative strike in the fitted damage zone",
-      "layers": ["Cached numerical feature stack, band 14 short name tmi", "Visible existing_faults.tif geometry", "Recorded INGENIOUS sense where matched"],
-      "signature": "Gaussian scalar derivatives supply an axial magnetic-edge tangent and coherence. A fitted interaction uses cos(2*(candidate strike - primary strike)), distance and mapped component length.",
-      "why_missing_faults": "A secondary strand may offset magnetized units even when it has no mapped surface trace. Its candidate strike can be consistent with the locally measured anatomy of visible-host systems.",
-      "difference_from_repo": "Existing phi describes the offset vector from a host, not a candidate strand's orientation. This adds catalogue-independent candidate-to-host strike evidence without copying a prior raster.",
-      "non_fault_mimic": "Magnetized dikes, lithologic contacts and airborne leveling stripes",
-      "expected_improvement": "Highest of these four, but unquantified and uncertain",
-      "implementation_cost": "Medium; CPU only, cached stack restored automatically",
-      "obtainability": "Verified: all five public bridge parts and the assembled stack passed hash checks; official origin remains unauthenticated",
-      "official_source": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
-      "status": "TESTED; see orientation_holdout.json"
+      "id": "FZA-U1",
+      "hypothesis": "Segment-pair stepover and bend geometry predicts connector, tip, or subparallel secondary strands.",
+      "layers": [
+        "Visible existing-fault raster and pinned trace-segment vectors",
+        "Gap width, overlap, segment endpoints, and host orientation",
+        "Recorded sense only when a reliable visible-only join supports a releasing/restraining classification"
+      ],
+      "physical_signature": "Predeclared geometric classes for narrow-gap connectors versus wider-step tip/subparallel zones; no hard-coded textbook shear angle.",
+      "why_it_may_find_missing_faults": "Short linking or subparallel strands may occur between or beside mapped host segments rather than on an existing catalogue trace.",
+      "difference_from_inspected_work": "Tests a segment-pair geometry rule with distinct connector/tip outcomes, not the tested nearest-host distance/offset/length baseline, candidate magnetic-edge strike, or sense-only ablation. Detailed endpoint and gap definitions must be frozen before any future holdout evaluation.",
+      "named_non_fault_mimic": "Alluvial-fan risers, drainage lineaments, magnetic/lithologic contacts, or map generalization can align near fault segments.",
+      "qualitative_priority": "Highest of this shortlist; expected DTI effect unknown.",
+      "implementation_cost": "Medium; vector pairing and leakage-safe visible-only geometry need tests.",
+      "data_readiness": "Local trace vectors are present; provenance and host-sense missingness still require audit.",
+      "sources": [
+        {
+          "citation": "Wang et al. (2017), Strain partitioning and stress perturbation around stepovers and bends of strike-slip faults: Numerical results, Tectonophysics 721, 211–226.",
+          "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
+          "checked_takeaway": "Models show stress/strain localization around bends and stepovers; narrow and wider steps can localize deformation differently. Mechanism support only, not a DTI claim."
+        },
+        {
+          "citation": "Zhu et al. (2024), An overview of structures associated with bends of strike-slip faults, Marine and Petroleum Geology 167, 106983.",
+          "url": "https://doi.org/10.1016/j.marpetgeo.2024.106983",
+          "checked_takeaway": "Structures vary with angle, displacement, stress regime, and analogue/numerical setup; no universal bend rule is assumed."
+        }
+      ],
+      "future_test_gate": "Only after renewed authorization: preregister visible-only pair rules, then whole-segment hide-and-recover, pixel-exact masking, pooled DTI, canary, and registry checks."
     },
     {
       "rank": 2,
-      "id": "H57-H",
-      "hypothesis": "Multi-scale host-bend damage asymmetry",
-      "layers": ["Visible catalogue strike tensors at two smoothing scales", "Mapped component length", "Matched recorded sense"],
-      "signature": "Axial turning difference and local curvature modify an empirically fitted cross-strike zone; no predetermined stress-lobe angle.",
-      "why_missing_faults": "Bends could concentrate secondary deformation beside a host rather than on its already mapped centerline.",
-      "difference_from_repo": "Current features include one tensor coherence and strike, but no multi-scale turning field. This is not the previously proposed endpoint-lobe test.",
-      "non_fault_mimic": "Cartographic smoothing and contour-following trace generalization",
-      "expected_improvement": "Medium, uncertain",
-      "implementation_cost": "Low; catalogue only",
-      "obtainability": "All required cached data are present",
-      "official_source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JB007665",
-      "status": "NOT RUN; three-experiment cap and stop gate honored"
+      "id": "FZA-U2",
+      "hypothesis": "Fault-tip relay and termination anatomy differs from the mid-fault damage-zone wall and predicts some missed secondary strands.",
+      "layers": [
+        "Visible fault raster and vector endpoints",
+        "Signed along-strike tip distance and neighboring-segment linkage"
+      ],
+      "physical_signature": "Matched tip-neighborhood versus mid-wall recovery, evaluated on both sides and with relay/linkage kept distinct from termination.",
+      "why_it_may_find_missing_faults": "Some secondary strands may form relay/link structures near segment ends, while other tips may be barriers or growth-arrest zones.",
+      "difference_from_inspected_work": "Tests signed endpoint-relative position and segment linkage rather than unsigned nearest-fault distance, an isotropic halo, or the previously tested candidate-strike term.",
+      "named_non_fault_mimic": "Alluvial-fan margins, dry washes, road corridors, and mapped trace truncation can create apparent tip lineaments.",
+      "qualitative_priority": "Second; expected DTI effect unknown.",
+      "implementation_cost": "Low to medium; careful vector endpoint matching and matched controls required.",
+      "data_readiness": "Existing vector trace endpoints are present; no new raster is required.",
+      "sources": [
+        {
+          "citation": "d’Alessio & Martel (2004), Fault terminations and barriers to fault growth, Journal of Structural Geology 26, 1885–1896.",
+          "url": "https://doi.org/10.1016/j.jsg.2004.01.010",
+          "checked_takeaway": "Small faults near a major fault-system tip can diffuse stress and inhibit growth; tip enrichment is not assumed to be universally beneficial."
+        },
+        {
+          "citation": "Wang et al. (2017), Tectonophysics 721, 211–226.",
+          "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
+          "checked_takeaway": "Wider stepovers can localize strain near segment tips in the modeled settings; this motivates a bidirectional test, not a gain prediction."
+        }
+      ],
+      "future_test_gate": "Hide whole components and compare tip versus matched mid-wall held-out positives without truth-informed endpoint definitions; reject leakage or unstable tip-class results."
     },
     {
       "rank": 3,
-      "id": "H57-I",
-      "hypothesis": "Two-host damage-zone superposition",
-      "layers": ["Nearest two distinct visible fault components", "Their distance, length and strike"],
-      "signature": "Joint relative distances and host-strike disagreement identify overlap between empirically fitted damage contributions from distinct mapped strands.",
-      "why_missing_faults": "Short linking strands may occupy overlap between neighboring host zones rather than the maximum of a nearest-host-only halo.",
-      "difference_from_repo": "The existing intensity uses a single nearest component. This proposes an explicit two-host interaction, not another isotropic dilation.",
-      "non_fault_mimic": "A mapped lithologic boundary situated between unrelated structural lineaments",
-      "expected_improvement": "Medium, uncertain",
-      "implementation_cost": "Medium; distinct-host neighbor retrieval needs careful tests",
-      "obtainability": "All required cached data are present",
-      "official_source": "https://www.lyellcollection.org/doi/abs/10.1144/GSL.SP.2003.210.01.03",
-      "status": "NOT RUN; three-experiment cap and stop gate honored"
+      "id": "FZA-U3",
+      "hypothesis": "A defensible host-maturity or displacement-related covariate changes secondary-strand density and damage-zone decay beyond the current host-length proxy.",
+      "layers": [
+        "Visible trace geometry and component length",
+        "Independently recorded host attributes, only after a documented join and missingness audit"
+      ],
+      "physical_signature": "An empirically estimated change in radial strand density/decay with host maturity or cumulative displacement; present-day slip rate is not silently substituted for cumulative displacement.",
+      "why_it_may_find_missing_faults": "Damage-zone width and secondary-fracture distribution can evolve with host displacement, so reliable maturity metadata could distinguish where strands are likely beyond a simple length proxy.",
+      "difference_from_inspected_work": "Adds one independently justified host covariate to the tested length-based anatomy; it does not treat fault length or slip rate as measured displacement.",
+      "named_non_fault_mimic": "Inherited joints, lithologic contacts, mapping intensity, and catalogue attribute-boundary errors.",
+      "qualitative_priority": "Third; expected DTI effect unknown and data-dependent.",
+      "implementation_cost": "Low to medium if a reliable attribute join exists; otherwise data-blocked.",
+      "data_readiness": "Local attribute tables exist, but host-level coverage, join precision, and cumulative-displacement availability have not been established.",
+      "sources": [
+        {
+          "citation": "Savage & Brodsky (2011), Collateral damage: Evolution with displacement of fracture distribution and secondary fault strands in fault damage zones, JGR: Solid Earth 116, B03405.",
+          "url": "https://doi.org/10.1029/2010JB007665",
+          "checked_takeaway": "Observed fracture/secondary-strand patterns relate to displacement; this does not justify replacing cumulative displacement with fault length or present-day slip rate."
+        }
+      ],
+      "future_test_gate": "First inspect joins and missingness without holdout outcomes; only a prespecified independently supported covariate may enter a later spatial holdout."
     },
     {
       "rank": 4,
-      "id": "H57-J",
-      "hypothesis": "Along-host slip-sense transition anatomy",
-      "layers": ["Visible matched INGENIOUS RL/LL/N attributes", "Local host orientation and length"],
-      "signature": "An empirical transition/heterogeneity indicator conditions secondary-strand distance and orientation rather than assuming a uniform fault-wide handedness.",
-      "why_missing_faults": "Changes in recorded motion might identify zones where distributed transfer between normal and strike-slip strands occurs.",
-      "difference_from_repo": "Previous work tested a single nearest sense flag; it did not test spatial changes in sense along a host.",
-      "non_fault_mimic": "Inconsistent catalogue attribution and record boundaries",
-      "expected_improvement": "Lower; attribute precision and matching are limiting",
-      "implementation_cost": "Low after a reliable visible-only attribute join",
-      "obtainability": "The supplied bridge CSV is present and hash verified; official v2 metadata and CC BY 4.0 license were retrieved",
-      "official_source": "https://gdr.openei.org/submissions/1391",
-      "status": "NOT RUN; single-sense ablation is E3, not validation of this transition hypothesis"
+      "id": "FZA-U4",
+      "hypothesis": "Independent geophysical contrast inside a fixed visible-fault damage-zone halo can corroborate some secondary strands beyond geometry alone.",
+      "layers": [
+        "A fixed halo from visible-only mapped fault geometry",
+        "Magnetic-gradient magnitude/coherence or other officially documented local geophysical bands"
+      ],
+      "physical_signature": "Local edge/gradient support within a preregistered halo; this is not an unconstrained survey-wide geophysical classifier and is distinct from the already-tested candidate magnetic-edge relative-strike feature.",
+      "why_it_may_find_missing_faults": "A strand without a catalogue trace may still offset or juxtapose magnetized units, producing a local geophysical contrast near an existing fault zone.",
+      "difference_from_inspected_work": "Tests within-halo scalar corroboration, not the previously tested candidate magnetic-edge tangent/orientation interaction.",
+      "named_non_fault_mimic": "Magnetic lithologic contacts, surficial drainage, cultural metal, and flight-line leveling artifacts.",
+      "qualitative_priority": "Fourth; expected DTI effect unknown.",
+      "implementation_cost": "High because exact file coverage, CRS, band meaning, and registration must be verified first.",
+      "data_readiness": "The competition feature stack is absent from this checkout. Official GeoDAWN metadata identifies public access and CC BY 4.0, but actual AOI coverage and competition-grid alignment have not been checked; no external raster was downloaded.",
+      "sources": [
+        {
+          "citation": "Grauch (2002), High-resolution aeromagnetic survey to image shallow faults, Dixie Valley geothermal field, Nevada, USGS Open-File Report 2002-384.",
+          "url": "https://doi.org/10.3133/ofr02384",
+          "checked_takeaway": "Official report record documents an aeromagnetic shallow-fault imaging analogue; it does not establish coverage or alignment with the contest grid."
+        },
+        {
+          "citation": "Glen & Earney (2024), GeoDAWN airborne magnetic and radiometric surveys of the northwestern Great Basin, GDR submission 1591 / USGS ScienceBase DOI 10.5066/P93LGLVQ.",
+          "url": "https://gdr.openei.org/submissions/1591",
+          "checked_takeaway": "Public catalog record and CC BY 4.0 availability were checked; spatial overlap, usable files, CRS, and grid compatibility remain unverified."
+        }
+      ],
+      "future_test_gate": "Only after an authorized official file is obtained and coverage/grid provenance verified: preregister the fixed halo and transforms, recompute with whole-segment hiding, then apply canary and registry gates."
     }
   ]
 }
