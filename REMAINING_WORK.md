@@ -1,180 +1,62 @@
-# Remaining work and limitations
+# Current status and remaining work — 2026-10-10
 
-Everything on this page is a gap I know about and did **not** close. It is written so that the
-next session can pick it up without re-deriving anything, and so that no reader mistakes an open
-item for a finished one.
+## Decision first
 
-Numbered items with an `IR-57-*` tag are cross-referenced on the
-[irregularities page](https://buffedlizard55-lab.github.io/57GEMSDOE/irregularities.html).
+**H57-B remains HOLD.** It is a fault-zone-anatomy hypothesis tested on the repository's buffered whole-branch hide-and-recover instrument. The original preregistered contrast is non-comparable because candidate and control emitted different dot counts. A later matched-mass replay is a post-hoc sensitivity, not confirmation. The in-memory final-dot map failed the literal registry-overlap rule. **No H57-B TIF was generated, format-validated, cleared, downloaded, or submitted. No weekly slot was selected.**
 
----
+The remaining experiment budget is exhausted. Do not run another model/feature/hyperparameter experiment, select a weekly slot, or generate a TIF under the current HOLD. This file records status and limitations; it is not authorization to continue experiments.
 
-## 1. The single largest limitation: the holdout does not rank live scores
+## H57-B evidence
 
-**This is the limitation that governs everything else.**
+All score-like values below are **HOLDOUT-DTI** from evaluator `gems57-buffered-whole-branch-pooled-v2.0`, with 22,276 withheld positives and paired 20 km spatial-block 95% confidence intervals. These are local measurements on withheld mapped branches, **not live scores or leaderboard projections**.
 
-The holdout instrument withholds *catalogue* pixels. Those pixels are physically attached to
-visible traces, so the near-field distance features are almost definitionally informative.
-A genuinely uncatalogued fault need not be attached to anything.
+### Preregistered 10,000-per-cell run — non-comparable
 
-The sibling repository calibrated this instrument against 12 owner-reported live scores and
-measured a rank correlation of **&rho; = +0.14** for the `catalogue_hidden` variant (its
-`drift_corrected_holdout_mean` did better at +0.53, but that variant is not what this lane uses).
-A correlation of +0.14 means the holdout ordering carries almost no information about the live
-ordering.
+| Arm | HOLDOUT-DTI | 95% CI | Emitted dots |
+|---|---:|---:|---:|
+| H57-B tip-distance feature | 0.1882084 | [0.1760057, 0.2014529] | 71,191 |
+| `no_side` control | 0.1303988 | [0.1188650, 0.1419912] | 80,000 |
 
-Consequences, stated plainly:
+Counts differed in four of eight cells. The preregistered arm comparison therefore cannot identify a causal feature gain and cannot promote. Do not interpret the nominal difference as confirmatory.
 
-- The HOLDOUT-DTI numbers in this repository are **local instrument readings**. They are not
-  projections of a live score and must never be presented as one.
-- The `anatomy_full` vs `d_only` gap (+0.0673 in mode `all`, +0.0721 in `detached`, disjoint
-  jackknife CIs) is real *on the instrument*. Whether it survives the transfer to live faults is
-  unknown and cannot be settled without spending a submission slot.
-- This is also why the dot budget was capped by live evidence rather than by the holdout's own
-  optimum (`IR-57-BUDGET-01`).
+### Matched-mass replay — post-hoc sensitivity only
 
-**What would fix it:** a live A/B pair. Two rasters differing only in the feature set, submitted on
-consecutive slots, would give one real observation of transfer. That costs two slots and was
-explicitly out of budget for this run.
+The later replay used a common 6,772-per-cell cap selected after the initial run was observed. Candidate HOLDOUT-DTI was **0.1712803** [0.1585123, 0.1843726], versus `no_side` **0.1103187** [0.0994158, 0.1222397]. The paired difference was **+0.0609616** [ +0.0520292, +0.0703759 ]. This favorable sensitivity is conditional on a post-hoc cap; the interval does not represent cap-selection uncertainty. It is not a confirmatory result and does not repair the preregistered comparison.
 
----
+The maximum single-feature discriminative AUC was 0.8392, below the 0.90 leakage screen. This is the canary result for the tested visible-catalogue features, not proof that catalogue hide-and-recover transfers to genuinely uncatalogued faults. The named non-fault mimics are road/dry-wash endings, map-sheet breaks, and digitization endpoints.
 
-## 2. Hypotheses that were specified but never validated
+### Literal registry gates
 
-Five hypotheses are written up on the hypotheses page. Only one was taken to a holdout measurement.
+- **Before placement:** all 667 indexed single-band, grid-shaped rasters were checked. The surface gate passed; maximum full-footprint Spearman was 0.4229688817.
+- **After placement:** the 27,088-dot in-memory map first fired at 0.7270747194 of candidate dots within 3 px of `13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif`, exceeding the literal 0.70 limit. The final-dot scan stopped at its first firing; it was not a complete list of final-dot comparisons.
+- No reverse-overlap exemption or Jaccard gate was used. The SHA-256 `323af960dbef0bc85a42001d0da19b73da8b1a509a6f21966e257ddb38d0be67` is for the in-memory decoded array, **not** for a raster file.
 
-| ID | Status | What is missing |
-|---|---|---|
-| **H57-A** en echelon stepover anatomy | **SHIPPED** | See limitation 3 — the measured structure is real but contributes less than expected. |
-| **H57-B** trace-termination stress lobe | **NOT RUN** | Needs a tip-detection feature (endpoints of the skeletonised trace, local curvature at the tip) and a second feature block. Roughly one session of work. The registry already occupies this space with `h32-1-prethin-tip-euler` (0.2649) and `h38-1-hf-euler-r30-r1` (0.2707), so the marginal value is unproven. |
-| **H57-C** damage-zone width proportional to fault length | **FOLDED IN, WEAK** | Entered as `log_len`. Its discriminative AUC is 0.5527 — barely better than a coin flip, because component length is a poor displacement proxy on 1-px-wide traces whose components are truncated by the withholding itself. `IR-57-LEN-01`. |
-| **H57-D** strike-selective gap filling | **NOT RUN** | Justified rather than tested. `sin2` and `cos2` score *exactly* 0.5000 alone, so they are rank-degenerate as marginals and can only act in interaction. A GBM can in principle learn that interaction, but nothing here demonstrates that it did. Needs an explicit interaction feature (e.g. `|sin(2Δθ)|` gated on distance) and a paired holdout run. |
-| **H57-F** recorded sense of slip (INGENIOUS `sense`) as opt-in features | **TESTED, NEGATIVE** | Session 2, experiment 1 of 3, LOQO at shipped density: `no_side_plus_sense` 0.2292 vs `no_side` 0.2279 (paired mean +0.0016, sd 0.0049, positive in 3/4 quadrants, not significant). `evidence/exp_sense_loqo_all.json`. Not promoted; no slot used. |
-| **H57-E** scarp curvature inside the fitted zone | **BLOCKED** | Needs the 420 MB `gems-geodawn-numerical-features.tif` stack or the 1 m DEM. Neither is reachable from this sandbox (no DrivenData auth, Dropbox and `*.github.io` off the allowlist). |
+The machine-readable gate reports are [`evidence/uniqueness_h57b_surface.json`](evidence/uniqueness_h57b_surface.json) and [`evidence/uniqueness_h57b_dots.json`](evidence/uniqueness_h57b_dots.json). The single authoritative decision card is [`evidence/run_card.json`](evidence/run_card.json); it records a null raster-file SHA, validator not run, download **NOT CLEARED**, submission **NOT SUBMITTED**, and no slot selected. Draft-only name: `gems57-h57b-tip-distance-6772-323af960dbef`. Draft-only note (116 characters): “Fault-zone anatomy H57-B tip-distance; matched-mass sensitivity only. HOLD: not cleared, no upload or slot selected.”
 
----
+## Historical context — not current H57-B results
 
-## 3. The headline mechanism is not what drives the measured gain
+- H57-A measured local hide-and-recover DTI for withheld catalogue pixels. At its shipped-density setting, the old `no_side` reading was 0.2279 [0.1867, 0.2691], with 22,641 withheld positives. Higher-density readings (0.2508/0.2517) were at about twice the old file's density. None is a live score or H57-B result.
+- H57-F's recorded-sense feature was inconclusive/negative: historical `no_side_plus_sense` 0.2292 versus 0.2279; mean paired difference +0.0016, positive in three of four quadrants but not significant.
+- The older raster in `docs/downloads/` is historical and remains HOLD. Its prior 644-raster scan is superseded by the refreshed 667-raster registry and is not current clearance.
+- The official DrivenData leaderboard snapshot fetched 2026-10-09 listed #1 at 0.3774, #7 at 0.3195, and #16 at 0.2778. It does not attribute entries to a raster or method. Repository holdout values and sibling-repository projections do not explain or predict those leaderboard entries; no claim is made that new work will beat them.
 
-This is the finding I would most want a reviewer to notice, because it contradicts the lane's own
-framing.
+## Transfer limitation
 
-The measured anatomy **is** real and is reported on the method page:
+The hide-and-recover instrument withholds whole mapped branches. Those hidden catalogue pixels can remain physically connected to visible faults; genuinely uncatalogued faults need not be. The matched-mass H57-B result therefore cannot establish transfer to the hidden competition truth. The sibling-repository calibration of this instrument against owner-reported scores had only +0.14 rank correlation for the corresponding `catalogue_hidden` variant (12 scores); this is weak, confounded calibration evidence, not a correction factor or score projection.
 
-- joint stepover &times; along-strike enrichment peaks at **0.0326** (13.9&times; base rate) at
-  stepover 0–1 px &times; along-strike 3–4 px — the en echelon signature;
-- relative-strike excess at **15–45&deg;** against a 6.2&deg; cross-component null.
+## Engineering and documentation status
 
-But the ablation says the anisotropic geometry is *not* what produces the gain:
+- `scripts/build_submission.py` is an unsafe legacy in-sample builder. Its CLI now exits before doing work and writes no raster. It is not a promotion path.
+- `scripts/build_site.py` renders `evidence/run_card.json` read-only; it does not reconstruct or overwrite that card. The generated pages state the HOLD, with no current download link.
+- The README reproduce section is limited to data-pin verification, site generation, and tests; it does not replay the exhausted experiments or invoke the legacy builder.
+- The full test suite passed in this branch (one test skipped because optional training data was absent). The site generator ran successfully, `git diff --check` passed, and the run-card SHA-256 was unchanged by site generation.
 
-| Feature set | mode `all` | mode `detached` |
-|---|---|---|
-| `d_only` | 0.1845 | 0.1816 |
-| `d_perp_par` (adds stepover + along-strike) | 0.1867 (**+0.0022**) | 0.1847 (**+0.0031**) |
-| `anatomy_full` | 0.2517 (**+0.0673**) | 0.2538 (**+0.0721**) |
-| `no_side` | 0.2508 | 0.2556 |
+## Future work — blocked, not authorized here
 
-Adding stepover and along-strike to distance alone buys **+0.002**, inside the noise. The +0.067
-comes from the *remaining* features — local fault `density` (AUC 0.7289), trace `coherence`
-(0.6278) and `log_len` — i.e. from damage-zone density and trace continuity, not from Riedel
-geometry.
+Any future candidate idea must remain in the fault-zone-anatomy lane, be preregistered under a newly authorized experiment budget, test each feature alone for leakage, use the valid buffered whole-segment holdout, and pass both literal registry gates before a format validator or writer is considered. A candidate must have a genuinely new raster, a file SHA-256, successful format validation, a unique name and a note of at most 140 characters before any download is offered. The weekly-slot selector remains separate. These are gates for a future separately authorized run, not a plan to spend a slot now.
 
-So the honest summary is: *this lane measured a real en echelon structure, and then measured that
-the structure does not pay for itself on this instrument.* That is a negative result and it is
-recorded as one rather than being smoothed over.
+## Source trail
 
-**What would settle it:** an ablation that adds stepover/along-strike to the *full* feature set
-rather than to distance alone, to test whether they are redundant with `density` rather than
-useless.
-
----
-
-## 4. `side` was dropped on a measurement that is within noise
-
-The sense-of-slip feature was dropped because `no_side` scored 0.2556 vs `anatomy_full` 0.2538 in
-`detached`, and 0.2508 vs 0.2517 in `all`. Those two comparisons point in **opposite directions**
-and both are far inside the jackknife CIs.
-
-The independent evidence for dropping it is the direct asymmetry measurement: log(right/left) =
-**+0.0392**, i.e. no usable unilateral preference in the withheld data. That justifies dropping a
-feature that encodes a handedness the data does not show — but the DTI comparison alone would not
-have.
-
----
-
-## 5. The dot budget is capped by extrapolation, not by measurement
-
-The cap of 40,000 comes from Spearman(dot count, live score) = **&minus;0.8104** (p = 0.00025) over
-15 registry rasters. That is live evidence and it is strong, but:
-
-- n = 15, and dot count is confounded with method quality. The two 120k-dot rasters are early
-  multi-line experiments that may have been poor for reasons unrelated to their budget.
-- The holdout's own optimum is 69,133, and shipping at 40,000 costs measured holdout DTI. Both
-  numbers are on the results page so the cost is visible.
-- The true live `K` is unknown, so `n/K` on the live set cannot be computed. The whole
-  DTI-versus-budget curve is expressed in `n/K` and cannot be positioned on the live set.
-
----
-
-## 6. Things that are known-wrong or unverified in the inputs
-
-- **`IR-57-OFF-01`** — the shared template's comment claims 29 offsets and &Sigma;k = 19.876275.
-  Measured here: **25** offsets, &Sigma;k = **9.380298**. The template's *code* is right; only its
-  comment is wrong.
-- **`IR-57-LEN-01`** — `log_len` is whole-component size, not true fault length. Components are
-  truncated by the grid and by the withholding, so it is a noisy length proxy at best.
-- **`IR-57-NULL-01`** — the relative-strike null is built from nearest *different-component* visible
-  pixels via a `cKDTree` with k = 13. The choice of k = 13 was not tuned and no sensitivity analysis
-  was run.
-- **`IR-57-FOLD-01`** — folds are spatial quadrants. Fault systems cross quadrant boundaries, so the
-  four folds are not fully independent. The quadrant-jackknife CI is the honest interval, but it
-  still assumes exchangeability of quadrants.
-- **No `training_features.tif`.** The lane uses the catalogue and the grid only. Every
-  geophysical-predictor feature the reference solution relies on (magnetotellurics, gravity,
-  seismicity) is absent. This caps what the lane can achieve and is the reason H57-E is blocked.
-
----
-
-## 7. Engineering gaps
-
-- **`build_submission.py` re-runs the whole 4-setting flank sweep every time** (~13 minutes) even
-  though the answer has been stable at 0 px across three runs. It should cache or accept a
-  `--flank` override.
-- **The build is not resumable.** A crash after the allocation step loses all measurements and
-  forces a full re-run — which is exactly what happened once during this work.
-- **No test covers `scripts/`.** The 24 tests cover `src/gems57/` only. `build_submission.py` has
-  crashed twice on stale references, and both times the tests stayed green. The scripts need at
-  least a smoke test that runs the evidence-writing path on a tiny synthetic grid.
-- **The site is generated, never hand-edited** — which is correct, but `build_site.py` has no test
-  either, and it accumulated three separate `NameError` crashes during this work for the same
-  reason.
-- **`out/` and `docs/downloads/` hold large rasters.** `docs/downloads/` must be committed for
-  GitHub Pages to serve the artifact, so the `.tif` is deliberately in Git; `out/` should not be.
-
----
-
-## 8. What I would do next, in order
-
-**Session 2 update (2026-10-09).** Done: shipped-density LOQO measurement (0.2279),
-H57-F tested (negative), TRANS-01 row/column fix, CAP-01 per-cell share fix, validator re-run
-against the receipt (identical), labels corrected (OWNER-REPORTED, IR-57-LABEL-01). Not done:
-the LOQO replacement of `build_submission.py` (IR-57-INSAMPLE-01), a shipped-density
-distance-only baseline, and a rebuild of the shipped file under the fixed code. Open items in order:
-
-0. **Distance-only baseline at shipped density** (`d_only`, same LOQO harness). Without it, the
-   gain of the anatomy model over distance cannot be claimed at the shipped density. Cheap: one run.
-0b. **Replace the in-sample holdout** in `scripts/build_submission.py` with LOQO (IR-57-INSAMPLE-01).
-00. **OWNER DECISION (blocks submission): IR-57-UNIQ-03.** The literal forward-overlap gate fired for
-    114 of 644 registry rasters. Either accept a reverse-overlap clearance rule (a protocol change,
-    owner's call) or generate a different candidate. Also itemize the 64 unlisted firings (rerun
-    `scripts/check_uniqueness_full.py`, about 1 hour single-threaded).
-0c. **Rebuild the shipped file** under the fixed code and check that the features are unchanged
-    (the edits are default-off, but the rebuild is the only proof).
-1. **Spend two slots on the transfer question** (limitation 1). Without that observation nothing
-   else can be prioritised sensibly.
-2. **Run the H57-B tip-lobe hypothesis**, since terminations are the one structural feature the
-   registry has repeatedly found worth something (0.2649, 0.2707).
-3. **Run the redundancy ablation** in limitation 3 before writing off the en echelon geometry.
-4. **Build H57-D's explicit interaction feature** — it is cheap and the 0.5000 marginal AUCs mean
-   there is information there that a marginal-only view cannot see.
-5. **Add a script-level smoke test** (limitation 7) before touching the pipeline again.
+- Official [DrivenData competition description and metric](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/).
+- Official [leaderboard](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) snapshot dated 2026-10-09.
+- Mechanistic background: Schreurs (2003), https://doi.org/10.1144/GSL.SP.2003.210.01.03; Tchalenko (1970), https://doi.org/10.1130/0016-7606(1970)81%5B1625%3ASBSZOD%5D2.0.CO%3B2; Faulds, Henry & Hinz (2005), https://doi.org/10.1130/G21274.1; Savage & Brodsky (2011), https://doi.org/10.1029/2010JB007665. These sources motivate hypotheses; they do not establish competition-performance gains.

@@ -55,6 +55,10 @@ SENSE_FEATURES = (
     "sense_side",   # sense_sgn * side: handedness-relative side of the strand (fitted, not assumed)
 )
 
+TIP_FEATURES = (
+    "tip_distance",  # distance to a visible branch terminal, excluding termini within the holdout buffer
+)
+
 FEATURES = (
     "d",            # Euclidean distance to nearest visible fault (px)
     "d_perp",       # cross-strike stepover (px)
@@ -87,6 +91,16 @@ class FoldGeometry:
     visible: np.ndarray
     n_hidden: int
     seg: SegmentTable = field(repr=False)
+    feature_names: tuple[str, ...] = ()
+
+
+def _terminal_pixels(mask: np.ndarray) -> np.ndarray:
+    """8-neighbour branch endpoints in a one-pixel mapped-fault raster."""
+    m = np.asarray(mask, bool)
+    neighbours = ndi.convolve(m.astype(np.int16), np.ones((3, 3), np.int16),
+                              mode="constant") - m.astype(np.int16)
+    # Include isolated one-pixel fragments as terminations, but not junctions.
+    return m & (neighbours <= 1)
 
 
 def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
@@ -98,13 +112,30 @@ def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
                   domain: np.ndarray, key: str,
-                  sense_src: np.ndarray | None = None) -> FoldGeometry:
-    """Build the feature matrix for one fold cell using **visible faults only**.
+                  sense_src: np.ndarray | None = None, *,
+                  include_tip: bool = False,
+                  tip_source: np.ndarray | None = None,
+                  tip_exclusion: np.ndarray | None = None,
+                  tip_buffer_px: int = 3) -> FoldGeometry:
+    """Build fold features from visible faults only.
 
-    ``sense_src`` is the unmasked int8 sense raster (see
-    ``faultzone.trace_sense_raster``).  It is restricted to *visible* pixels before
-    any use, so a withheld segment's sense cannot reach a feature (leakage rule).
+    ``visible`` is already restricted to the visible catalogue and excludes the
+    Euclidean holdout buffer.  Optional recorded-sense pixels are restricted to
+    this mask.  ``tip_source`` is the exact visible mask before buffering;
+    candidate terminal pixels within ``tip_buffer_px`` of any ``tip_exclusion``
+    pixel are removed so cutting a held branch cannot manufacture a tip feature.
     """
+    visible = np.asarray(visible, bool)
+    hidden = np.asarray(hidden, bool)
+    domain = np.asarray(domain, bool)
+    if visible.shape != grid.shape or hidden.shape != grid.shape or domain.shape != grid.shape:
+        raise ValueError("visible, hidden and domain must match the competition grid")
+    feature_names = list(FEATURES)
+    if include_tip:
+        feature_names.extend(TIP_FEATURES)
+    if sense_src is not None:
+        feature_names.extend(SENSE_FEATURES)
+
     strike, coh = local_strike(visible, smooth_px=3.0)
     seg, n_seg = segments(visible, max_len_px=12)[:2]
     tab = segment_table(seg, n_seg)
@@ -116,8 +147,9 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     active = domain & ~visible
     ys, xs = np.nonzero(active)
     if ys.size == 0:
-        return FoldGeometry(key, ys, xs, np.zeros((0, len(FEATURES)), np.float32),
-                            np.zeros(0, np.int8), visible, 0, tab)
+        return FoldGeometry(key, ys, xs, np.zeros((0, len(feature_names)), np.float32),
+                            np.zeros(0, np.int8), visible, 0, tab,
+                            tuple(feature_names))
 
     ay, ax = iy[ys, xs], ix[ys, xs]
     dy = (ys - ay).astype(np.float32)
@@ -146,6 +178,17 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         coh[ay, ax],
         dens[ys, xs],
     ]
+    if include_tip:
+        source = np.asarray(visible if tip_source is None else tip_source, bool)
+        tips = _terminal_pixels(source)
+        if tip_exclusion is not None and np.asarray(tip_exclusion, bool).any():
+            to_exclusion = ndi.distance_transform_edt(~np.asarray(tip_exclusion, bool))
+            tips &= to_exclusion > int(tip_buffer_px)
+        if tips.any():
+            tip_dist = ndi.distance_transform_edt(~tips).astype(np.float32)
+        else:
+            tip_dist = np.full(visible.shape, float(max(visible.shape)), np.float32)
+        cols.append(tip_dist[ys, xs])
     if sense_src is not None:
         # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
         src = visible & (sense_src > 0)
@@ -160,7 +203,8 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
 
     y = hidden[ys, xs].astype(np.int8)
     return FoldGeometry(key=key, rows=ys, cols=xs, X=X, y=y, visible=visible,
-                        n_hidden=int(y.sum()), seg=tab)
+                        n_hidden=int(y.sum()), seg=tab,
+                        feature_names=tuple(feature_names))
 
 
 # --------------------------------------------------------------------------- #

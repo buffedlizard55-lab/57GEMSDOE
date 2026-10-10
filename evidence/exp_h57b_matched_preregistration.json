@@ -1,0 +1,16 @@
+{
+  "record_type": "post-hoc analysis plan written before the matched-mass sensitivity replay; not a preregistration of the original experiment and not a measurement",
+  "experiment_id": "H57-B-terminal-distance-matched-mass",
+  "reason": "The original preregistered per-cell cap was not saturated by the candidate in four of eight cells, so the arm-to-arm DTI contrast was not comparable at equal realized mass.",
+  "derived_after_initial_outcome": true,
+  "pre_registered_before_any_h57b_data": false,
+  "cap_selection_used_dti_scores": false,
+  "fixed_cap_derivation": {
+    "source": "evidence/exp_h57b_holdout_cap10000_unmatched.json",
+    "rule": "minimum realized candidate dots across its eight held-out cells; no manual tuning",
+    "per_cell_cap": 6772
+  },
+  "unchanged": ["hypothesis", "feature construction", "all training seeds", "holdout branches", "buffer", "model parameters", "controls", "evaluator", "confidence interval method"],
+  "changed": "Only the maximum dot cap is set to the deterministic common per-cell count so all arms can be scored at matched realized mass.",
+  "promotion_rule": "The same preregistered rule remains: paired 95% CI lower bound above zero versus no_side, exact dot counts matched in every cell, and no feature-only canary above 0.90. This replay is the final allowed experiment in the three-experiment session budget; no further model/hyperparameter sweeps will follow."
+}

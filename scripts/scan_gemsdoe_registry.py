@@ -82,7 +82,8 @@ def cmd_index(clones: Path, cache: Path) -> None:
 
     cache.mkdir(parents=True, exist_ok=True)
     seen: dict[str, dict] = {}
-    skipped = {"not_grid": 0, "too_large_or_missing": 0, "self": 0}
+    skipped = {"not_grid": 0, "not_single_band_submission": 0,
+               "too_large_or_missing": 0, "self": 0}
     for r in REPOS:
         if r == SELF:
             continue
@@ -98,6 +99,10 @@ def cmd_index(clones: Path, cache: Path) -> None:
             parts = meta.split()
             if len(parts) < 4 or not path.lower().endswith((".tif", ".tiff")):
                 continue
+            lower_path = path.lower()
+            if "external/" in lower_path:
+                skipped["lazy_excluded_nonsubmission"] = skipped.get("lazy_excluded_nonsubmission", 0) + 1
+                continue
             blob, size = parts[2], parts[3]
             if size == "-":
                 skipped["too_large_or_missing"] += 1
@@ -106,7 +111,7 @@ def cmd_index(clones: Path, cache: Path) -> None:
                 if int(size) > MAX_LAZY_BLOB:
                     skipped["over_lazy_ceiling"] = skipped.get("over_lazy_ceiling", 0) + 1
                     continue
-                if any(k in path for k in LAZY_EXCLUDE):
+                if any(k in lower_path for k in LAZY_EXCLUDE):
                     skipped["lazy_excluded_nonsubmission"] = skipped.get("lazy_excluded_nonsubmission", 0) + 1
                     continue
                 skipped["lazy_fetched"] = skipped.get("lazy_fetched", 0) + 1
@@ -118,20 +123,29 @@ def cmd_index(clones: Path, cache: Path) -> None:
             local = cache / f"{sha[:16]}.tif"
             local.write_bytes(data)
             with rasterio.open(local) as ds:
-                ok = (ds.height, ds.width) == GRID and str(ds.crs) == "EPSG:32611"
-            if not ok:
+                on_grid = (ds.height, ds.width) == GRID and str(ds.crs) == "EPSG:32611"
+                single_band = ds.count == 1
+                transform = [float(v) for v in tuple(ds.transform)[:6]]
+                dtypes = list(ds.dtypes)
+            if not on_grid:
                 local.unlink()
                 skipped["not_grid"] += 1
                 continue
+            if not single_band:
+                local.unlink()
+                skipped["not_single_band_submission"] += 1
+                continue
             seen[sha] = {"sha256": sha, "bytes": len(data), "blob": blob, "cache_file": str(local),
-                         "sources": [f"{r}:{path}"], "repo_first": r}
+                         "sources": [f"{r}:{path}"], "repo_first": r,
+                         "transform": transform, "dtypes": dtypes}
     # provenance-only self check: our own shipped files are listed but not compared
     recs = sorted(seen.values(), key=lambda x: x["repo_first"])
     out = {
         "owner": OWNER,
         "repos_scanned": [r for r in REPOS if r != SELF and (clones / r).exists()],
         "repos_unreachable_or_missing": [r for r in REPOS if not (clones / r).exists()],
-        "grid": {"shape": list(GRID), "crs": "EPSG:32611"},
+        "grid": {"shape": list(GRID), "crs": "EPSG:32611",
+                 "transform": [100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0]},
         "max_blob_bytes": MAX_BLOB,
         "n_unique_grid_rasters": len(recs),
         "skipped": skipped,

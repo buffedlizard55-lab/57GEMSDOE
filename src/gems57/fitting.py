@@ -16,14 +16,17 @@ estimate, not a random split.
 
 from __future__ import annotations
 
+from itertools import chain
+
 import numpy as np
+from scipy import ndimage as ndi
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
 
 from .anatomy import FEATURES, fold_geometry
-from .emit import expected_credit, greedy_allocate
-from .holdout import Cell, HoldoutContext
-from .metric import dti_binary
+from .emit import greedy_allocate
+from .holdout import BUFFER_PX, Cell, HoldoutContext
+from . import evaluate_holdout
 
 NEG_PER_CELL = 60_000
 GBM_KW = dict(max_depth=6, max_iter=220, learning_rate=0.08,
@@ -31,19 +34,35 @@ GBM_KW = dict(max_depth=6, max_iter=220, learning_rate=0.08,
               early_stopping=False, random_state=0)
 
 
-def _full(ctx: HoldoutContext, cell: Cell) -> np.ndarray:
-    m = np.zeros(ctx.grid.shape, bool)
-    m[cell.bbox] = cell.active
-    return m
+def _full(ctx: HoldoutContext, cell: Cell, *, training: bool = False) -> np.ndarray:
+    mask = cell.train_active if training else cell.active
+    full = np.zeros(ctx.grid.shape, bool)
+    full[cell.bbox] = mask
+    return full
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None):
-    """Feature geometry of one fold cell.  ``sense_src`` opts in to the recorded-sense
-    features (``anatomy.SENSE_FEATURES``); ``None`` keeps the shipped 9-column matrix."""
-    dom = _full(ctx, cell)
-    g = fold_geometry(ctx.grid, ctx.visible(cell.key),
-                      ctx.hidden_by_cell[cell.key], dom, cell.key, sense_src=sense_src)
-    return g
+def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None, *,
+                  training: bool = False, include_tip: bool = False,
+                  feature_exclude: tuple[str, ...] = ()):
+    """Build one fold's visible-only features.
+
+    ``training`` applies the 3 px negative-label collar.  ``feature_exclude``
+    names the outer test-fold cells whose hidden branches must also be removed
+    from this training cell's feature source (and from the tip buffer).
+    """
+    domain = _full(ctx, cell, training=training)
+    feature_visible = ctx.visible(cell.key)
+    tip_source = ctx.visible_exact(cell.key)
+    tip_exclusion = ctx.hidden_by_cell[cell.key].copy()
+    for key in feature_exclude:
+        excluded = ctx.hidden_by_cell[key]
+        feature_visible = feature_visible & ~excluded & (ndi.distance_transform_edt(~excluded) > BUFFER_PX)
+        tip_source = tip_source & ~excluded
+        tip_exclusion |= excluded
+    return fold_geometry(ctx.grid, feature_visible, ctx.hidden_by_cell[cell.key],
+                         domain, cell.key, sense_src=sense_src,
+                         include_tip=include_tip, tip_source=tip_source,
+                         tip_exclusion=tip_exclusion, tip_buffer_px=BUFFER_PX)
 
 
 def sample_train(rng, geoms: list, neg_per_cell: int = NEG_PER_CELL):
@@ -83,6 +102,43 @@ def fit_model(geoms: list, seed: int = 0, cols: list[int] | None = None):
     return clf, scale, base
 
 
+def fit_model_from_cells(ctx: HoldoutContext, cells: list[Cell], seed: int = 0,
+                         cols: list[int] | None = None, *,
+                         include_tip: bool = False,
+                         feature_excludes: dict[str, tuple[str, ...]] | None = None,
+                         sense_src=None, neg_per_cell: int = NEG_PER_CELL):
+    """Fit from context cells while releasing each full feature matrix immediately."""
+    rng = np.random.default_rng(seed)
+    Xs, ys, ws = [], [], []
+    exclusions = feature_excludes or {}
+    for cell in cells:
+        g = cell_geometry(ctx, cell, sense_src=sense_src, training=True,
+                          include_tip=include_tip,
+                          feature_exclude=exclusions.get(cell.key, ()))
+        pos = g.y == 1
+        if not pos.any():
+            raise ValueError(f"training cell {cell.key} has no withheld positive pixels")
+        Xs.append(g.X[pos]); ys.append(np.ones(int(pos.sum()), np.int8))
+        ws.append(np.ones(int(pos.sum()), np.float64))
+        neg = np.flatnonzero(~pos)
+        if neg.size > neg_per_cell:
+            neg = rng.choice(neg, size=neg_per_cell, replace=False)
+        Xs.append(g.X[neg]); ys.append(np.zeros(neg.size, np.int8))
+        weight = float((~pos).sum()) / max(neg.size, 1)
+        ws.append(np.full(neg.size, weight, np.float64))
+        del g
+    X, y, w = np.vstack(Xs), np.concatenate(ys), np.concatenate(ws)
+    if cols is not None:
+        X = X[:, cols]
+    clf = HistGradientBoostingClassifier(**GBM_KW)
+    clf.fit(X, y, sample_weight=w)
+    p_all = clf.predict_proba(X)[:, 1]
+    base = float((y * w).sum() / w.sum())
+    mean_p = float((p_all * w).sum() / w.sum())
+    scale = base / max(mean_p, 1e-12)
+    return clf, scale, base
+
+
 def predict_surface(clf, scale: float, g, shape: tuple[int, int],
                     cols: list[int] | None = None) -> np.ndarray:
     """Per-cell probability of being a withheld/new fault pixel, on the full grid."""
@@ -95,75 +151,85 @@ def predict_surface(clf, scale: float, g, shape: tuple[int, int],
     return full
 
 
-def canary(geoms: list) -> dict:
-    """Single-feature AUC per fold (no fitting, so no fitting-induced leakage).
-
-    A feature whose AUC exceeds 0.90 is treated as leakage until proven
-    otherwise (parallel-run protocol rule 4).  The test is applied to the
-    **discriminative** AUC ``max(auc, 1 - auc)``, because an AUC of 0.11 is just
-    as informative as 0.89 -- it only means the feature is inversely ranked.
-    Reporting the raw value alone would let a strongly predictive inverse
-    feature pass a naive "> 0.90" screen.
-
-    ``d`` is expected to be highly discriminative -- it is the physical signal
-    the lane is built on -- but it must not be near-perfect, which would mean the
-    withheld mask itself is recoverable from a feature.
-    """
-    out = {}
-    names = list(FEATURES)
-    if geoms and geoms[0].X.shape[1] > len(FEATURES):
-        from .anatomy import SENSE_FEATURES
-        names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
-    for j, name in enumerate(names):
-        aucs = []
-        for g in geoms:
+def canary(geoms) -> dict:
+    """Stream single-feature AUCs; discriminative AUC >0.90 is a leakage flag."""
+    iterator = iter(geoms)
+    first = next(iterator, None)
+    if first is None:
+        return {}
+    names = tuple(first.feature_names or FEATURES)
+    aucs = {name: [] for name in names}
+    for g in chain((first,), iterator):
+        if g.X.shape[1] != len(names) or tuple(g.feature_names or FEATURES) != names:
+            raise ValueError("feature matrix widths/names do not match across folds")
+        for j, name in enumerate(names):
             if (g.y == 1).sum() < 10 or (g.y == 0).sum() < 10:
                 continue
-            v = g.X[:, j]
-            # subsample negatives so the AUC is computable quickly
-            rng = np.random.default_rng(1)
             pos = np.flatnonzero(g.y == 1)
             neg = np.flatnonzero(g.y == 0)
             if neg.size > 200_000:
-                neg = rng.choice(neg, 200_000, replace=False)
+                neg = np.random.default_rng(1).choice(neg, 200_000, replace=False)
             idx = np.concatenate([pos, neg])
-            aucs.append(roc_auc_score(g.y[idx], v[idx]))
-        disc = [max(a, 1.0 - a) for a in aucs]
-        out[name] = {"auc_per_fold": [float(a) for a in aucs],
-                     "auc_mean": float(np.mean(aucs)) if aucs else None,
-                     "auc_min": float(np.min(aucs)) if aucs else None,
-                     "auc_max": float(np.max(aucs)) if aucs else None,
+            aucs[name].append(float(roc_auc_score(g.y[idx], g.X[idx, j])))
+    out = {}
+    for name, values in aucs.items():
+        disc = [max(a, 1.0 - a) for a in values]
+        out[name] = {"auc_per_fold": values,
+                     "auc_mean": float(np.mean(values)) if values else None,
+                     "auc_min": float(np.min(values)) if values else None,
+                     "auc_max": float(np.max(values)) if values else None,
                      "discriminative_auc_mean": float(np.mean(disc)) if disc else None,
-                     "discriminative_auc_max": float(np.max(disc)) if disc else None,
+                     "discriminative_auc_max": float(max(disc)) if disc else None,
                      "leakage_threshold": 0.90,
-                     "leakage_flag": bool(np.max(disc) > 0.90) if disc else False}
+                     "leakage_flag": bool(max(disc) > 0.90) if disc else False}
     return out
+
+
+def predict_surface_crop(clf, scale: float, g, cell: Cell,
+                         cols: list[int] | None = None) -> np.ndarray:
+    """Predict only the padded fold crop, avoiding a full-grid surface allocation."""
+    p = np.zeros(cell.active.shape, np.float32)
+    if g.X.shape[0]:
+        Xin = g.X[:, cols] if cols is not None else g.X
+        values = clf.predict_proba(Xin)[:, 1].astype(np.float32) * np.float32(scale)
+        np.clip(values, 0.0, 1.0, out=values)
+        y = g.rows - int(cell.bbox[0].start)
+        x = g.cols - int(cell.bbox[1].start)
+        p[y, x] = values
+    return p
 
 
 def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
              *, max_dots: int = 120_000, floor: float = 0.015,
-             cols: list[int] | None = None, g=None) -> dict:
-    """Predict, allocate and score one fold cell."""
+             cols: list[int] | None = None, g=None,
+             include_tip: bool = False) -> dict:
+    """Predict, allocate and score one fold cell with the shared evaluator."""
     own_g = g is None
     if own_g:
-        g = cell_geometry(ctx, cell)
-    p = predict_surface(clf, scale, g, ctx.grid.shape, cols)
-    allowed = np.zeros(ctx.grid.shape, bool)
-    allowed[cell.bbox] = cell.active
-    alloc = greedy_allocate(p, allowed, k_truth=float(cell.n_truth),
+        g = cell_geometry(ctx, cell, include_tip=include_tip)
+    p = predict_surface_crop(clf, scale, g, cell, cols)
+    alloc = greedy_allocate(p, cell.active, k_truth=float(cell.n_truth),
                             floor=floor, max_dots=max_dots)
-    emitted_full = alloc.emitted
-    # score on the crop
-    res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
-                     valid=cell.active)
+    fold = {"region": cell.region, "visible": cell.visible,
+            "truth": _truth_crop(ctx, cell)}
+    result, terms = evaluate_holdout.evaluate(
+        alloc.emitted, fold, cell.region,
+        origin=(int(cell.bbox[0].start), int(cell.bbox[1].start)),
+        global_shape=ctx.grid.shape, block_side=200)
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
-        "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],
-        "tp": res["tp"], "fp": res["fp"], "fn": res["fn"],
+        "evidence_class": result["evidence_class"],
+        "evaluator_version": result["evaluator_version"],
+        "withheld_positive_count": result["withheld_positive_count"],
+        "n_dots": alloc.n_dots, "dti": result["dti"],
+        "coverage": result["coverage"], "tp": result["tp"],
+        "fp": result["fp"], "fn": result["fn"],
         "expected_covered_credit": alloc.expected_covered_credit,
-        "p_mean": float(p[allowed].mean()), "p_max": float(p.max()),
+        "p_mean": float(p[cell.active].mean()) if cell.active.any() else 0.0,
+        "p_max": float(p.max()),
+        "spatial_terms": terms,
     }
-    del p, allowed, alloc, emitted_full
+    del p, alloc, fold, result, terms
     if own_g:
         del g
     return out

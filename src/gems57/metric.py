@@ -69,6 +69,7 @@ ALPHA: float = 0.2
 BETA: float = 0.8
 RADIUS_PX: float = 3.0      # 300 m at the 100 m competition grid
 PIXEL_M: float = 100.0
+RADIUS_M: float = RADIUS_PX * PIXEL_M
 EPS: float = 1e-12
 
 
@@ -120,8 +121,13 @@ def marginal_accept(dT: float, k_self: float, T: float, M: float, n: int,
 
 
 def dti_from_components(tp: float, fp: float, fn: float,
-                        alpha: float = ALPHA, beta: float = BETA) -> float:
-    return float(tp / (tp + alpha * fp + beta * fn + EPS))
+                        alpha: float = ALPHA, beta: float = BETA):
+    """DTI from additive components; accepts scalars or aligned NumPy arrays."""
+    value = np.asarray(tp, dtype=np.float64) / (
+        np.asarray(tp, dtype=np.float64)
+        + alpha * np.asarray(fp, dtype=np.float64)
+        + beta * np.asarray(fn, dtype=np.float64) + EPS)
+    return float(value) if value.ndim == 0 else value
 
 
 def dti_binary(pred_bool, truth, valid=None, known=None,
@@ -158,36 +164,107 @@ def dti_binary(pred_bool, truth, valid=None, known=None,
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
+def _dti_vectors(pred, truth, active):
+    """Shared exact-metric primitive: truth credits and emitted-pixel FP weights."""
+    p = np.asarray(pred, dtype=np.float64)
+    g = np.asarray(truth, bool) & np.asarray(active, bool)
+    if p.ndim != 2 or g.shape != p.shape or np.asarray(active).shape != p.shape:
+        raise ValueError("pred, truth and active must be aligned 2D arrays")
+    vals = p[active]
+    if not np.isfinite(vals).all() or (vals < 0).any() or (vals > 1).any():
+        raise ValueError("predictions inside the scored domain must be finite and in [0, 1]")
+    yy, xx = np.nonzero(g)
+    py, px = np.nonzero((p > 0) & active)
+    n = int(yy.size)
+    credit = np.zeros(n, np.float64)
+    if n:
+        H, W = p.shape
+        for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+            ny, nx = yy + j, xx + i
+            ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
+            credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+        dg = distance_transform_edt(~g)
+        fp_values = (p[py, px].astype(np.float64)
+                     * (1.0 - kernel(dg[py, px])))
+    else:
+        fp_values = p[py, px].astype(np.float64)
+    return yy, xx, credit, py, px, fp_values
+
+
+def dti_spatial_terms(pred, truth, valid=None, known=None, *, origin=(0, 0),
+                      global_shape=None, block_side=200,
+                      alpha: float = ALPHA, beta: float = BETA):
+    """Exact DTI and additive terms grouped by fixed physical spatial blocks.
+
+    Coordinates in ``origin`` place a cropped fold inside ``global_shape``;
+    repeated folds/draws therefore land in the same clusters before bootstrap.
+    Each returned row is ``(TP_w, FP_w, FN_w, withheld_positive_count)``.
+    The arithmetic is shared with :func:`dti_exact`, not a second metric.
+    """
+    p = np.asarray(pred)
+    g = np.asarray(truth, bool)
+    if p.ndim != 2 or g.shape != p.shape:
+        raise ValueError("pred and truth must be aligned 2D arrays")
+    valid_ = np.ones(p.shape, bool) if valid is None else np.asarray(valid, bool)
+    known_ = np.zeros(p.shape, bool) if known is None else np.asarray(known, bool)
+    if valid_.shape != p.shape or known_.shape != p.shape:
+        raise ValueError("grid shape mismatch")
+    if int(block_side) <= 0:
+        raise ValueError("block_side must be positive")
+    oy, ox = map(int, origin)
+    if min(oy, ox) < 0:
+        raise ValueError("origin must be non-negative")
+    if global_shape is None:
+        global_shape = (oy + p.shape[0], ox + p.shape[1])
+    gh, gw = map(int, global_shape)
+    if gh <= 0 or gw <= 0 or oy + p.shape[0] > gh or ox + p.shape[1] > gw:
+        raise ValueError("crop origin/shape is outside global_shape")
+    active = valid_ & ~known_
+    yy, xx, credit, py, px, fp_values = _dti_vectors(p, g, active)
+    n_truth, n_emit = int(yy.size), int(py.size)
+    tp, fp = float(credit.sum()), float(fp_values.sum())
+    fn = float(n_truth) - tp
+    result = dict(tp=tp, fp=fp, fn=fn, n_truth=n_truth, n_emitted=n_emit,
+                  dti=dti_from_components(tp, fp, fn, alpha, beta),
+                  coverage=float(tp / n_truth) if n_truth else 0.0)
+
+    ncols = (gw + int(block_side) - 1) // int(block_side)
+    nrows = (gh + int(block_side) - 1) // int(block_side)
+    terms = np.zeros((nrows * ncols, 4), np.float64)
+    if n_truth:
+        gy, gx = yy + oy, xx + ox
+        ids = (gy // block_side) * ncols + (gx // block_side)
+        terms[:, 0] = np.bincount(ids, weights=credit, minlength=len(terms))
+        terms[:, 2] = np.bincount(ids, weights=1.0 - credit, minlength=len(terms))
+        terms[:, 3] = np.bincount(ids, minlength=len(terms))
+    if n_emit:
+        gy, gx = py + oy, px + ox
+        ids = (gy // block_side) * ncols + (gx // block_side)
+        terms[:, 1] = np.bincount(ids, weights=fp_values, minlength=len(terms))
+    # Keep the total formula tied to the aggregate terms used by the bootstrap.
+    totals = terms.sum(axis=0)
+    expected = np.asarray([tp, fp, fn, n_truth], np.float64)
+    np.testing.assert_allclose(totals, expected, rtol=1e-11, atol=1e-7)
+    return result, terms
+
+
 def dti_exact(pred, truth, valid=None, known=None,
               alpha: float = ALPHA, beta: float = BETA) -> dict:
     """Exact DTI for arbitrary soft predictions in [0, 1] (max over the kernel)."""
-    pred = np.asarray(pred, np.float64)
+    pred = np.asarray(pred)
     truth = np.asarray(truth, bool)
     valid_ = np.ones(pred.shape, bool) if valid is None else np.asarray(valid, bool)
     known_ = np.zeros(pred.shape, bool) if known is None else np.asarray(known, bool)
+    if pred.shape != truth.shape or valid_.shape != pred.shape or known_.shape != pred.shape:
+        raise ValueError("grid shape mismatch")
     active = valid_ & ~known_
-    vals = pred[active]
-    if not np.isfinite(vals).all() or (vals < 0).any() or (vals > 1).any():
-        raise ValueError("predictions inside the scored domain must be finite and in [0, 1]")
-    p = np.where(active, pred, 0.0)
-    g = active & truth
-    yy, xx = np.nonzero(g)
-    n = int(yy.size)
-    if n == 0:
-        return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0,
-                    n_emitted=int((p > 0).sum()), dti=0.0, coverage=0.0)
-    H, W = p.shape
-    credit = np.zeros(n, np.float64)
-    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
-        ny, nx = yy + j, xx + i
-        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
-        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
-    tp = float(credit.sum())
-    fn = float(n) - tp
-    dg = distance_transform_edt(~g)
-    fp = float((p * (1.0 - kernel(dg))).sum())
-    return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=int((p > 0).sum()),
-                dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
+    yy, xx, credit, py, px, fp_values = _dti_vectors(pred, truth, active)
+    tp, fp = float(credit.sum()), float(fp_values.sum())
+    n_truth = int(yy.size)
+    fn = float(n_truth) - tp
+    return dict(tp=tp, fp=fp, fn=fn, n_truth=n_truth, n_emitted=int(py.size),
+                dti=dti_from_components(tp, fp, fn, alpha, beta),
+                coverage=float(tp / n_truth) if n_truth else 0.0)
 
 
 def dti_bruteforce(pred, truth, alpha: float = ALPHA, beta: float = BETA,

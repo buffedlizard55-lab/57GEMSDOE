@@ -9,28 +9,44 @@
 
 ---
 
-## ⬇ ONE-CLICK SUBMISSION FILE
+## Download / submission status — NOT CLEARED (2026-10-09)
 
-> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
-> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
-> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
-> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
-> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+> **Do not download or submit an H57-B candidate. No new GeoTIFF was generated.**
+> The in-memory candidate fails the literal final-dot registry gate; the format validator
+> was therefore not run. No weekly slot was selected, no upload was made, and no organizer
+> receipt exists. The single authoritative run card is [`evidence/run_card.json`](evidence/run_card.json).
 
-**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
-`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
+The tested lane remains fault-zone anatomy. On the **original preregistered** 10,000-dot-per-cell
+run, the H57-B candidate emitted 71,191 dots versus 80,000 for `no_side` across eight holdout
+cells, so the arm contrast is **non-comparable and cannot promote**. Its measured values are still
+labelled `HOLDOUT-DTI` (evaluator `gems57-buffered-whole-branch-pooled-v2.0`, 22,276 withheld
+positives, paired 20 km spatial-block 95% CI); they are not leaderboard scores.
 
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
+A later **post-hoc matched-mass sensitivity** used exactly 6,772 dots per cell in all three arms.
+It measured candidate `HOLDOUT-DTI` 0.17128 (95% CI [0.15851, 0.18437]) versus `no_side` 0.11032
+([0.09942, 0.12224]), paired difference +0.06096 ([+0.05203, +0.07038]). The cap was derived
+from the first run's candidate counts after seeing that run; its interval is conditional on that
+selected cap. This result is favorable sensitivity evidence, **not confirmatory** and not promotion
+eligibility. The pre-run expectation (+0.005 to +0.020) was exceeded; this is recorded, not treated
+as evidence of leaderboard transfer.
 
-The exact filename, sha256, check receipt and the suggested submission note are
-printed at the top of [`docs/index.html`](docs/index.html) and in
-[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+The feature-only canary was clean (maximum discriminative AUC 0.8392; threshold 0.90). The
+full-catalogue emission surface passed the pre-placement check (maximum full-footprint Spearman
+0.42297 over all 667 indexed rasters). The 27,088-dot in-memory map then failed the literal final
+dot gate: 72.71% of its dots were within 3 px of
+`13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif` (limit 70%). The scan
+stopped at its first firing. No reverse-overlap exemption or Jaccard gate was used. See
+[`evidence/uniqueness_h57b_surface.json`](evidence/uniqueness_h57b_surface.json) and
+[`evidence/uniqueness_h57b_dots.json`](evidence/uniqueness_h57b_dots.json).
+
+The older file `gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif` remains in
+`docs/downloads/` for historical review only. Its old 644-raster audit is stale relative to the
+refreshed 667-raster archive; the file remains **HOLD** and this README deliberately provides no
+download link. Its former format receipt is not a validation receipt for H57-B.
+
+**Proposed name (draft only):** `gems57-h57b-tip-distance-6772-323af960dbef`
+
+**Draft note (116 characters; not assigned):** `Fault-zone anatomy H57-B tip-distance; matched-mass sensitivity only. HOLD: not cleared, no upload or slot selected.`
 
 ---
 
@@ -82,39 +98,35 @@ The full task prompt is reproduced verbatim at the bottom of this file and in
 
 ---
 
-## Session 2 status (2026-10-09) — what is measured now
+## Prior H57-A / H57-F status (historical; H57-B is above)
 
-* **Shipped configuration, measured at its own density** (per-cell cap 10,000;
-  LOQO, mode `all`; 22,641 withheld positives): `no_side` HOLDOUT-DTI **0.2279**,
-  95% CI [0.1867, 0.2691]. This is the number to quote for the shipped file.
-  Source: [`evidence/exp_sense_loqo_all.json`](evidence/exp_sense_loqo_all.json).
-* **The 0.2508 / 0.2517 figures earlier in this README were measured at about 2x
-  shipped density (~136k dots).** They are kept below, labelled as such. They are
-  not the shipped configuration (`IR-57-SHIP-01`).
-* **Recorded sense of slip was tested and is NEGATIVE** (experiment 1 of 3, H57-F):
-  `no_side_plus_sense` 0.2292 vs 0.2279; paired difference +0.0016 mean, positive in
-  3 of 4 quadrants, not significant. Sense is not in the shipped file.
-* **Shipped file re-validated against its receipt**: sha256 `8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482`,
-  808,408 B, 15/15 checks, 0 on-catalogue dots, 35,341 dots. Identical to
-  `docs/downloads/checks-…-zeros.tif.json`.
-* **Full-registry uniqueness gate — NOT CLEARED (HOLD).** 644 rasters, both directions
-  ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
-  * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
-  * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
-    literal rule treats this as drift. The file lists only 50 of the 114 firings.
-  * The reverse-overlap reading (below 0.5 for every itemized firing) would clear it,
-    but that exemption is **not in the protocol**. It needs an owner decision.
-  * An earlier version of the script called the file UNIQUE using that exemption.
-    The verdict has been corrected (`IR-57-UNIQ-02`).
-* **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
-* **Labels corrected:** the 15-raster budget correlation uses *owner-reported*
-  scores, not organizer receipts (`IR-57-LABEL-01`). The build's holdout numbers are
-  *in-sample* (`IR-57-INSAMPLE-01`).
+* The older H57-A file remains in `docs/downloads/` for historical review; it is **not cleared**.
+  Its old 15-check local format receipt applies only to that existing file, not to H57-B. The old
+  644-raster uniqueness scan is superseded by a refreshed 667-raster index; do not use the old
+  result as current clearance.
+* The earlier shipped-density H57-A reading (per-cell cap 10,000; mode `all`; 22,641 withheld
+  positives) was `HOLDOUT-DTI` 0.2279, 95% CI [0.1867, 0.2691], from
+  [`evidence/exp_sense_loqo_all.json`](evidence/exp_sense_loqo_all.json). It is a local reading,
+  not a leaderboard score and not the H57-B result.
+* The earlier 0.2508 / 0.2517 H57-A figures were measured at about 2x shipped density (~136k dots)
+  and are not the shipped configuration (`IR-57-SHIP-01`).
+* Recorded sense of slip (H57-F) was historically inconclusive/negative: `no_side_plus_sense` 0.2292
+  vs 0.2279; mean paired difference +0.0016, positive in 3/4 quadrants but not significant. It was
+  not carried into the existing file.
+* The initial legacy uniqueness result (114 forward-overlap firings among 644 rasters) is a
+  historical hold. Reverse overlap is not an exemption. The new H57-B final-dot check independently
+  fails the same literal one-way rule at 72.71% vs a 70% limit.
+* No weekly slot has been selected, no submission made, and no organizer receipt exists.
 
-## Headline result
+**Official leaderboard snapshot fetched 2026-10-09:** #1 xiaofanhu 0.3774; #7 DARD 0.3195;
+#16 extradr19 0.2778. The leaderboard does not identify which raster or method produced a
+participant's score. These entries are not targets this repository claims it can beat.
+
+## Historical H57-A metric analysis (not a current candidate)
 
 Hide-and-recover holdout, leave-one-quadrant-out. **Every number below is a
-`HOLDOUT-DTI` instrument reading. None of them is a projected live score.**
+`HOLDOUT-DTI` instrument reading. None of them is a projected live score. H57-B's current
+status is summarized at the top of this README and in the run card.**
 
 **Shipped density (per-cell cap 10,000, mode `all`, 22,641 withheld positives):**
 
@@ -148,37 +160,27 @@ and it **does not pay for itself on this instrument**. That is recorded as a
 negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
 over.
 
-### Why 0.2778 scored highest, and whether higher is achievable
+### Metric mechanics and the evidence gap around public scores
 
-`DTI = T / (0.2(T + n - M) + 0.8K)`. Two consequences, both verified against the
-brute-force implementation:
+`DTI = T / (0.2(T + n - M) + 0.8K)`. Two arithmetic facts are verified against
+the brute-force implementation:
 
 1. **The ceiling is 1.0, not 0.5556.** A perfect prediction has `n = M = T = K`,
-   so `D = 0.2K + 0.8K = K`. (0.05556 is a different number entirely: the
-   marginal acceptance bar `alpha * DTI` at DTI = 0.2778.)
-2. **At the real base rate DTI tracks coverage — but only while the dot budget
-   stays near `K`.** At the measured base rate 0.00221, a *random* pixel lands
-   within 3 px of a true one only 2.1% of the time. Measured with the exact
-   metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
-   **0.1809** at `n/K = 6`.
+   so `D = 0.2K + 0.8K = K`. (0.05556 is a different number: the marginal
+   acceptance bar `alpha * DTI` at DTI = 0.2778.)
+2. **At a fixed truth field, dot budget affects DTI.** At the measured base rate
+   0.00221, a random pixel lands within 3 px of a true one only 2.1% of the time.
+   In the exact synthetic metric calculation, coverage 0.2778 is worth **0.3162**
+   at `n/K = 0.5` and **0.1809** at `n/K = 6`. This is metric arithmetic, not
+   a forecast of any team's score.
 
-What the repos document for the 0.2778 file (`GEMSDOE32`, H33-2-B2, 37,654 dots,
-verified in its `README.md`): a **local** holdout gain of **+0.004870** over a 0.2708
-base (4/4 quadrants), and a **projected** live score of 0.2747 (the repo's own
-projection, not a measurement). The live 0.2778 was owner-reported after that.
-So the 0.2778 score comes from a small holdout-validated tweak on a base near
-0.27, with a dot count in the 37–42k band.
-
-*Inference, not a measurement:* the 0.3774 high would need roughly 40% coverage
-at a matched budget by the same arithmetic. That is a projection, not a score.
-The repo does not demonstrate a higher score. The budget half of the argument is
-supported by **owner-reported** scores (`IR-57-LABEL-01`): Spearman(dot count,
-owner-reported live score) = **−0.8104** (p = 0.00025, n = 15, re-derived in this
-session from `registry/registry_index.json`), and the two rasters above 120,000 dots
-hold the two worst scores (0.1922, 0.1894). The correlation is confounded with
-other differences between submissions, so it is evidence, not proof. That is why this lane's
-holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
-costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
+Separately, the `GEMSDOE32` README reports for H33-2-B2 (37,654 dots) a local
+holdout gain of +0.004870 over a 0.2708 base and a projected live score of 0.2747;
+the latter is that repository's projection, not a measurement. The official
+leaderboard snapshot lists a 0.2778 entry at #16, but no receipt or artifact-level
+record here links that entry to H33-2-B2. These distinct facts do not establish
+why the public entry scored as it did, and they do not explain the current #1 at
+0.3774. No DTI projection or leaderboard-beating claim is made here.
 
 **Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
 
@@ -200,8 +202,11 @@ costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
 | [`src/gems57/uniqueness.py`](src/gems57/uniqueness.py) | rank-correlation and 3 px dot overlap vs the registry |
 | [`scripts/run_lane.py`](scripts/run_lane.py) | `verify` / `measure` stages |
 | [`scripts/run_cv.py`](scripts/run_cv.py) | canary + CV + ablation |
-| [`scripts/build_submission.py`](scripts/build_submission.py) | final surface, emission, validation, uniqueness |
-| [`scripts/build_site.py`](scripts/build_site.py) | regenerates `docs/` from the evidence JSONs |
+| [`scripts/audit_h57b_candidate.py`](scripts/audit_h57b_candidate.py) | fixed H57-B surface/dot registry gates in memory; writes no TIF |
+| [`scripts/check_uniqueness_full.py`](scripts/check_uniqueness_full.py) | literal full-archive surface or final-dot gate |
+| [`scripts/scan_gemsdoe_registry.py`](scripts/scan_gemsdoe_registry.py) | refreshes the public sibling-repository raster index |
+| [`scripts/build_submission.py`](scripts/build_submission.py) | legacy in-sample builder; disabled for promotion use |
+| [`scripts/build_site.py`](scripts/build_site.py) | regenerates docs without rewriting the run card |
 | [`evidence/`](evidence/) | every measurement, machine-readable |
 | [`registry/`](registry/) | 15 earlier submission rasters, provenance-indexed |
 | [`data/bridge/`](data/bridge/) | the two competition files, sha256-verified |
@@ -210,13 +215,15 @@ costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
 
 ```bash
 pip install -r requirements.txt
-python scripts/run_lane.py verify            # re-verify the two data files by sha256
-python scripts/run_lane.py measure           # withhold structure measurement
-python scripts/run_cv.py  --mode all         # leakage canary + LOQO CV + ablation
-python scripts/build_submission.py --mode all
-python scripts/build_site.py
+python scripts/run_lane.py verify   # re-verify the two pinned data files by SHA-256
+python scripts/build_site.py        # renders the committed card and evidence; does not rewrite the card
 pytest -q
 ```
+
+The H57-B holdout and registry audits are frozen evidence in `evidence/`; replaying them would
+consume the exhausted experiment budget and is not needed to render or review the current verdict.
+`build_submission.py` is a legacy in-sample selector and is **disabled**; do not run it to create a
+candidate or download artifact. The current H57-B remains HOLD; see `evidence/run_card.json`.
 
 ## Verified data provenance
 

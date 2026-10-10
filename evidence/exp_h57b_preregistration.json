@@ -1,0 +1,42 @@
+{
+  "record_type": "pre-registration; not a measurement",
+  "experiment_id": "H57-B-terminal-distance",
+  "hypothesis": "Withheld whole fault branches are enriched near termini of visible branches, after removing cut-induced endpoints within the holdout collar.",
+  "mechanism": "One distance-to-filtered-terminal feature appended to the repository's no_side anatomy baseline.",
+  "named_non_fault_mimic": "Road and dry-wash termini, map-sheet breaks, and digitization endpoints.",
+  "predicted_direction_and_range_not_score": {
+    "contrast": "candidate HOLDOUT-DTI minus matched no_side HOLDOUT-DTI",
+    "expected_direction": "positive",
+    "rough_absolute_range": [0.005, 0.02],
+    "qualification": "Pre-run expectation only; zero or negative is plausible. This is not a measured score and is not a leaderboard projection."
+  },
+  "arms": {
+    "primary_control": "no_side",
+    "secondary_control": "d_only",
+    "candidate": "h57b_tip_distance"
+  },
+  "matched_budget": {
+    "per_cell_cap": 10000,
+    "allocator": "shared greedy DTI max-coverage",
+    "rule": "realized counts must match per holdout cell; otherwise contrast is non-comparable and cannot promote"
+  },
+  "holdout": {
+    "whole_between_junction_branches": true,
+    "chunking": false,
+    "quadrants": ["NW", "NE", "SW", "SE"],
+    "draw_seeds": [20, 21],
+    "quadrant_boundary_erosion_px": 12,
+    "feature_and_training_negative_buffer_px": 3,
+    "scoring_visible_fault_mask": "pixel-exact",
+    "scoring_buffer_excludes_near_truth_negatives": false,
+    "metric": {"alpha": 0.2, "beta": 0.8, "triangular_radius_m": 300},
+    "uncertainty": "paired physical 20 km spatial-block bootstrap 95% CI"
+  },
+  "canary": {
+    "each_feature_tested_alone": true,
+    "discriminative_auc_threshold": 0.9,
+    "rule": "AUC above threshold is leakage until proven otherwise; no promotion if any feature is flagged."
+  },
+  "promotion_rule": "Positive paired 95% CI lower bound versus no_side, matched realized dot counts, and a clean feature canary; this only enables separate registry/format gates and does not select a weekly slot.",
+  "experiment_budget": {"maximum_experiments": 3, "maximum_wall_time_hours": 2, "planned_experiments": 1}
+}

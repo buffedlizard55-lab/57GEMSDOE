@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Regenerate ``docs/`` from the evidence JSONs.
+"""Regenerate ``docs/`` from committed evidence, with fail-closed run-card status.
 
-No number on the site is typed by hand: every value is read from
-``evidence/*.json`` and ``registry/registry_index.json`` at build time, so the
-site cannot drift from the measurements.  Missing evidence is rendered as
-``PENDING`` rather than guessed.
+Measured values are loaded from ``evidence/*.json`` and
+``registry/registry_index.json`` at build time. Explanatory text also includes
+protocol thresholds, historical context, and cited public-source snapshots.
+Missing measurements are rendered as ``PENDING`` rather than guessed.
 """
 
 from __future__ import annotations
@@ -133,8 +133,8 @@ def page(title: str, body: str, active: str) -> str:
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
 <nav>{nav}</nav>
 <main>{body}</main>
-<footer>Generated {stamp} by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated {stamp} by <code>scripts/build_site.py</code> from committed evidence.
+Measured values come from evidence files; protocol thresholds, historical context, and date-bounded public-source snapshots are stated inline.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>
@@ -142,177 +142,98 @@ Every number on this site is read from a measurement file at build time.
 
 
 # --------------------------------------------------------------------------- #
-def uniq_hold_block() -> str:
-    """Banner driven by evidence/uniqueness_full_shipped-h57-zeros.json (literal gate)."""
-    u = load("uniqueness_full_shipped-h57-zeros.json") or {}
-    if not u:
-        return ('<div class="bad-box"><b>HOLD (PENDING):</b> the full-registry uniqueness scan has no '
-                'result file. Do not submit.</div>')
-    if u.get("unique_by_protocol"):
-        return ""
-    n = u.get("n_overlap_firings_one_directional")
-    mx = (u.get("max_dot_overlap_fwd_3px") or {}).get("value")
-    mxs = f"{mx:.2f}" if isinstance(mx, (int, float)) else "?"
-    return ('<div class="bad-box" style="border-width:3px"><h3 style="margin-top:0">HOLD - not cleared for submission</h3>'
-            '<p>The literal uniqueness protocol treats a forward dot overlap above 0.70 against one registry raster as '
-            f'drift: log it and stop. That gate fired for <b>{esc(str(n))}</b> of '
-            f'{esc(str((u.get("registry") or {}).get("n_unique_grid_rasters")))} registry rasters (maximum overlap '
-            f'{esc(mxs)}). Spearman and Jaccard both pass. The file is '
-            'kept for review only. Two decisions are needed from the owner before any submission: '
-            '(a) whether the reverse-overlap reading may clear the gate (it is not in the protocol, so it needs a '
-            'decision, not a default), or (b) generate a different candidate. See '
-            '<a href="results.html">results</a> and <code>IR-57-UNIQ-03</code>.</p></div>')
+def submission_status_html() -> str:
+    """Render the current run card as a fail-closed download/submission decision."""
+    card = load("run_card.json") or {}
+    artifact = card.get("artifact", {})
+    holdout = card.get("holdout", {})
+    primary = holdout.get("primary_preregistered_run", {})
+    sensitivity = holdout.get("matched_mass_sensitivity_not_confirmatory", {})
+    registry = card.get("registry", {})
+    surface = registry.get("pre_placement_surface", {})
+    dots = registry.get("final_dots", {})
+    firing = dots.get("first_firing") or {}
+    cleared = artifact.get("download_status") == "CLEARED TO DOWNLOAD"
+    if not card:
+        return ('<div class="bad-box"><b>NOT CLEARED:</b> no current run card is available. '
+                'Do not download or submit any candidate.</div>')
+    if cleared:
+        path = artifact.get("download_path")
+        if path:
+            return (f'<div class="ok-box"><b>Cleared to download only:</b> '
+                    f'<a href="{esc(path)}" download>{esc(Path(path).name)}</a>. '
+                    'This is not organizer acceptance or a weekly-slot selection.</div>')
+        return ('<div class="bad-box"><b>NOT CLEARED:</b> run card says cleared but no validated '
+                'download path is recorded. Fail closed; do not submit.</div>')
+
+    maxrho = surface.get("max_spearman_full_footprint") or {}
+    overlap = firing.get("my_dots_within_3px_of_theirs")
+    overlap_text = (f"{100*overlap:.2f}%" if isinstance(overlap, (int, float)) else "not measured")
+    prior = firing.get("submission", "not measured")
+    c = sensitivity.get("candidate", {})
+    ctrl = sensitivity.get("control_no_side", {})
+    delta = sensitivity.get("paired_candidate_minus_control", {})
+    delta_ci = delta.get("ci95") or [None, None]
+    c_ci = c.get("ci95") or [None, None]
+    return f"""
+<h2>Download / submission status</h2>
+<div class="bad-box" style="border-width:3px">
+<h3 style="margin-top:0">NOT CLEARED — do not download or submit</h3>
+<p>No new candidate GeoTIFF was generated. The in-memory H57-B final-dot map has a literal
+3-px forward-overlap of <b>{esc(overlap_text)}</b> with <code>{esc(prior)}</code>, above the
+<b>70%</b> stop threshold. The surface gate passed (full-footprint max Spearman
+<b>{fmt(maxrho.get("value"), 3)}</b>; {esc(surface.get("n_registry_checked", "?"))} of
+{esc(surface.get("n_registry_indexed", "?"))} indexed rasters checked), but the final-dot gate
+failed and stopped at its first firing. No reverse-overlap exemption or Jaccard gate was applied.</p>
+<p>The original 10,000-dot-cap preregistered result is not comparable: realized counts differed in
+four of eight cells. A later equal-mass reading is only a post-hoc sensitivity (candidate
+HOLDOUT-DTI <b>{fmt(c.get("dti"), 5)}</b>, 95% CI [{fmt(c_ci[0], 5)}, {fmt(c_ci[1], 5)}],
+with {esc(c.get("withheld_positive_count", "?"))} withheld positives; paired difference
+<b>{fmt(delta.get("delta"), 5)}</b>, 95% CI [{fmt(delta_ci[0], 5)}, {fmt(delta_ci[1], 5)}]).
+It is not confirmatory and cannot clear the original preregistration.</p>
+<p><b>Validator:</b> not run; no TIF exists. <b>Download:</b> not cleared.
+<b>Submission:</b> not submitted; no receipt. <b>Weekly slot:</b> not selected.</p>
+</div>
+<p>Proposed name (draft only): <code>{esc(artifact.get("submission_name", "PENDING"))}</code><br>
+Proposed note ({esc(artifact.get("submission_note_characters", "?"))} characters; not assigned):
+<code>{esc(artifact.get("submission_note", "PENDING"))}</code></p>
+<p>The earlier <code>gems57-h57-anatomy-…-zeros.tif</code> remains a historic HOLD artifact in
+<code>docs/downloads/</code>; its old 644-raster scan is not a current clearance. This page
+intentionally provides no download link. See the <a href="run-card.html">current run card</a>.</p>
+"""
 
 
 def build_index(build, cv_all, uniq_src) -> str:
-    build = build or {}
-    z = build.get("zeros_tif") or {}
-    name = build.get("submission_name")
-    fname = f"{name}-zeros.tif" if name else "PENDING"
-    checks = z.get("checks", {})
-    if checks:
-        crows = "".join(
-            f'<tr><td><code>{esc(k)}</code></td><td>{verdict(v)}</td></tr>'
-            for k, v in checks.items())
-    else:
-        crows = '<tr><td colspan="2">PENDING</td></tr>'
-    note = build.get("submission_note", "PENDING")
-    return f"""
-<h2>Submit in four steps</h2>
-{uniq_hold_block()}
-<div class="card">
-<ol>
-<li><b>Download the file.</b>
-<a href="downloads/{esc(fname)}" download><code>{esc(fname)}</code></a>
-— the <b><code>-zeros.tif</code></b> variant. Do not use the <code>-nan.tif</code> one.</li>
-<li><b>Go to the submission page:</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
-drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
-<li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Paste the note</b> and submit:<br><code>{esc((build or {}).get("submission_note","PENDING"))}</code></li>
-</ol>
-</div>
-
-<div class="bad-box">
-<h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The sample submission in this repository (<code>data/bridge/</code>, see <code>IR-57-BRIDGE-01</code>) carries
-<code>nodata = NaN</code> and <b>7,111,787 NaN cells</b> outside the study-area footprint. <b>Working
-hypothesis (not proven, see <code>IR-57-NAN-02</code>):</b> a range check that reads
-<code>NaN</code> as failing <code>v &gt;= 0</code> and <code>v &lt;= 1</code> would reject a file written with
-that convention, even though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
-<p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
-outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
-<code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
-</div>
-
-<h2>The exact format the portal expects</h2>
-<p>Checked against the files in <code>data/official/</code> and <code>data/bridge/</code>. The sample's provenance is <b>not</b> confirmed as the official DrivenData file (<code>IR-57-BRIDGE-01</code>); the grid itself is confirmed by the description on the competition page:</p>
-<dl class="kv">
-<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
-<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
-<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0) — 100 m pixels</dd>
-<dt>Bounds</dt><dd>left 243350, bottom 4135550, right 572550, top 4508550</dd>
-<dt>Bands / dtype</dt><dd>1 band, float32</dd>
-<dt>Footprint</dt><dd>5,167,373 finite cells of 12,279,160 (the sample submission's finite mask)</dd>
-<dt>Value range</dt><dd>[0, 1] on <b>every</b> cell, finite everywhere</dd>
-</dl>
-
-<h2>Validator receipt for this file</h2>
-<table><tr><th>Check</th><th>Result</th></tr>{crows}</table>
-<dl class="kv">
-<dt>File</dt><dd>{esc(z.get("file","PENDING"))}</dd>
-<dt>sha256</dt><dd>{esc(z.get("sha256","PENDING"))}</dd>
-<dt>Bytes</dt><dd>{esc(z.get("bytes","PENDING"))}</dd>
-<dt>Positive pixels</dt><dd>{esc(z.get("emitted_positive_pixels","PENDING"))}</dd>
-<dt>Min / max</dt><dd>{esc(z.get("min","PENDING"))} / {esc(z.get("max","PENDING"))}</dd>
-<dt>NaN cells</dt><dd>{esc(z.get("n_nan","PENDING"))}</dd>
-<dt>On mapped catalogue</dt><dd>{esc(z.get("on_catalogue_positive_pixels","PENDING"))}</dd>
-</dl>
-
-<h2>What the score means</h2>
-<p>The metric is the <b>distance-weighted Tversky index</b> with α = 0.2 (false positives),
-β = 0.8 (false negatives) and a 300 m triangular kernel. False negatives are weighted four times
-more heavily than false positives, so the metric rewards covering real fault pixels over being
-conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
-rather than sprayed. See <a href="method.html">Method</a>.</p>
+    return submission_status_html() + """
+<h2>What the experiment measured</h2>
+<p>H57-B tests a single visible-branch-terminal distance feature in the fault-zone-anatomy lane.
+The hide-and-recover targets are whole mapped fault branches, not independent unmapped faults.
+All numerical results are labelled <span class="tag hold">HOLDOUT-DTI</span>, not leaderboard
+scores. Full protocol, bootstrap intervals, canary AUCs and limitations are in
+<code>evidence/exp_h57b_holdout.json</code> and
+<code>evidence/exp_h57b_holdout_matched6772.json</code>.</p>
+<h2>Format notes for any future eligible raster</h2>
+<p>The local writer/validator requires a single-band float32 GeoTIFF on the pinned EPSG:32611,
+3730 × 3292 grid, values in [0,1], finite everywhere, with zero mass outside the footprint.
+Passing those local checks is not organizer acceptance. No current H57-B file reached the writer.
+</p>
 """
 
 
 def exec_ok_card() -> str:
-    u = load("uniqueness_full_shipped-h57-zeros.json") or {}
-    if u.get("unique_by_protocol"):
-        return ('<div class="card okcard"><b>Yes - unique under the literal gates and portal-valid.</b> '
-                'It passes the full-registry uniqueness screen and every format check.</div>')
-    return ('<div class="card" style="border-left:6px solid #b00020"><b>HOLD - do not submit this file yet.</b> '
-            'The file is a fresh, portal-valid raster (all format checks pass), but the literal uniqueness gate '
-            'fired against registry rasters, so it is not cleared under the protocol. '
-            'See the banner on the <a href="index.html">front page</a> and '
-            '<a href="results.html">results</a>.</div>')
+    return submission_status_html()
 
 
 def build_exec(build) -> str:
-    build = build or {}
-    z = build.get("zeros_tif") or {}
-    name = build.get("submission_name")
-    fname = f"{name}-zeros.tif" if name else "PENDING"
-    note = build.get("submission_note", "PENDING")
-    sha = build.get("sha256_zeros_tif") or z.get("sha256") or "PENDING"
-    checks = z.get("checks", {})
-    if checks:
-        crows = "".join(
-            f'<tr><td><code>{esc(k)}</code></td><td>{verdict(v)}</td></tr>'
-            for k, v in checks.items())
-    else:
-        crows = '<tr><td colspan="2">PENDING</td></tr>'
-    return f"""
-<h2>Is it OK to download and submit?</h2>
-{exec_ok_card()}
-
-<h2>Submit in four steps</h2>
-<div class="card">
-<ol>
-<li><b>Download the file.</b>
-<a class="big" href="downloads/{esc(fname)}" download>Download <code>{esc(fname)}</code></a>
-<span class="muted">~{fmt((z.get('size_bytes') or 0) / 1024.0, 1)} MB &middot;
-sha256 <code>{esc(str(sha))}</code></span></li>
-<li><b>Open the portal.</b>
-<a href="{COMPETITION}" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
-<i>Participate</i> &rarr; <i>Submissions</i>. You need a DrivenData account joined to the
-competition.</li>
-<li><b>Upload that exact file.</b> Do not re-save it in another program; re-saving can
-rewrite the header and break the grid.</li>
-<li><b>Fill in the name and note</b> (below), then submit.</li>
-</ol>
-</div>
-
-<h2>The two text fields</h2>
-<div class="card">
-<p><b>Submission name</b> (the portal generates a timestamped filename; use this label):</p>
-<code>{esc(str(name))}</code>
-<p style="margin-top:10px"><b>Submission note</b> ({len(note)} characters, limit 140) &mdash;
-paste this verbatim:</p>
-<code>{esc(str(note))}</code>
-</div>
-
-<h2>What the portal checks, and what this file does</h2>
-<div class="card"><table>{crows}</table>
-<p class="muted">Checks are run by <code>src/gems57/validate.py</code> against the shipped
-sample raster; full output is in <code>evidence/submission_build_all.json</code>.</p></div>
-
-<h2>What this submission is</h2>
-<div class="card">
-<p>A binary dot field: {fmt(z.get('emitted_positive_pixels'), 0)} pixels set to 1.0, everything else 0.0, on
-the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
-off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
-nothing and the false-negative denominator is fixed.</p>
-<p><b>The one holdout number for this file (HOLDOUT-DTI, not a live score):</b> 0.2279, 95% CI [0.1867, 0.2691], leave-one-quadrant-out, 22,641 withheld positives, evaluator gems57 pooled DTI (alpha 0.2, beta 0.8, 300 m kernel). Measured at the shipped per-cell share. <b>No organizer score exists for this file yet.</b></p>
-<p><b>Read the score with care.</b> The holdout numbers on the results page are measured on
-<i>withheld catalogue pixels</i>, not on the live set. The holdout-to-live rank correlation
-measured across twelve live submissions in the sibling repository is
-<b>&rho; = +0.14</b>, so a high holdout number is <i>not</i> evidence of a high live score.
-See <a href="results.html">Results</a> and
-<a href="run-card.html">Run card</a>.</p>
-</div>
+    return submission_status_html() + """
+<h2>What the status means</h2>
+<ul>
+<li><b>HOLDOUT-DTI</b> is a local hide-and-recover instrument reading, not a live score or
+leaderboard projection.</li>
+<li><b>Registry uniqueness</b> is evaluated before allocation on the surface and after allocation
+on final dots. The literal forward-overlap rule is applied as written; no reverse exemption.</li>
+<li><b>ORGANIZER-CONFIRMED</b> is reserved for a submission-page receipt. No receipt exists.</li>
+</ul>
 """
 
 
@@ -386,6 +307,7 @@ def build_method(meas, cv_all, cv_det) -> str:
         side["rate_right"] = side["n_withheld_right"] / side["n_domain_right"]
         side["log_ratio_R_over_L"] = _m.log(side["rate_right"] / side["rate_left"])
     return f"""
+<p class="note"><b>Historical H57-A method measurements.</b> These hide-and-recover summaries are not the H57-B result and do not estimate a live leaderboard score. H57-B's separate HOLDOUT-DTI evidence and HOLD decision are on the Results and Run card pages.</p>
 <h2>1. The metric, and what it implies</h2>
 <p>Distance-weighted Tversky index, α = 0.2, β = 0.8, triangular kernel
 <code>k(d) = max(1 − d/300 m, 0)</code>, i.e. 3 px on this 100 m grid. There are exactly
@@ -517,17 +439,17 @@ HYP = [
   "none can express an en echelon array. Verified by the uniqueness check: worst |rho| and worst "
   "3-px dot overlap are reported on the run card.",
   "High", "Low — catalogue only, no external data"),
- ("H57-B", "Trace-termination stress lobe", "NOT RUN",
-  "Catalogue segment endpoints; optionally the 100 m numerical feature stack",
-  "Second-derivative / curvature transform at mapped trace terminations, then an intensity lobe "
-  "oriented on the fitted tip azimuth.",
-  "A mapped trace terminates where the mapper lost it. The stress lobe at a tip is where a relay "
-  "or stepover strand nucleates, so terminations are enriched in unmapped continuations relative "
-  "to trace midpoints.",
-  "GEMSDOE33's h33d-analog-tip-stepover used a fixed cone angle. Here the tip azimuth and lobe "
-  "width would be fitted the same way as H57-A, and the tip set would be defined on visible faults "
-  "only, per fold.",
-  "Medium", "Medium — needs a reliable endpoint detector on a 1-px raster"),
+ ("H57-B", "Filtered branch-terminal proximity", "TESTED: HOLD",
+  "Catalogue geometry only; distance to termini of visible between-junction branches",
+  "One learned distance-to-filtered-terminal feature appended to the no_side anatomy baseline; "
+  "termini near withheld branches are removed with the 3-px collar.",
+  "Visible branch termini may mark relays, splays or covered continuations; the experiment tests "
+  "that enrichment on whole-branch hide-and-recover folds.",
+  "No fixed cone angle or hand-set lobe. Adds one feature to the no_side baseline; this is a tested "
+  "mechanism hypothesis, not a novelty claim.",
+  "Pre-run expected +0.005 to +0.020 DTI; primary run was non-comparable, matched-cap sensitivity "
+  "+0.06096 HOLDOUT-DTI (post-hoc; not confirmatory). Literal final-dot overlap 0.7271 > 0.70; HOLD.",
+  "Low. Mimics include road/dry-wash termini, map-sheet breaks and digitization endpoints."),
  ("H57-C", "Damage-zone width scaling with mapped length", "FOLDED INTO H57-A",
   "Catalogue connected-component size as a displacement proxy",
   "Per-fault zone width w(L) fitted from component length, instead of one global distance kernel.",
@@ -570,6 +492,7 @@ def build_hypotheses() -> str:
         badge = {"SHIPPED": '<span class="tag org">SHIPPED</span>',
                  "FOLDED INTO H57-A": '<span class="tag">FOLDED IN</span>',
                  "NOT RUN": '<span class="tag hold">NOT RUN</span>',
+                 "TESTED: HOLD": '<span class="tag bad">TESTED — HOLD</span>',
                  "BLOCKED ON DATA": '<span class="tag bad">BLOCKED</span>'}[status]
         rows += f"""<tr><td><b>{esc(hid)}</b><br>{esc(name)}<br>{badge}</td>
 <td>{esc(layers)}</td><td>{esc(sig)}</td><td>{esc(why)}</td><td>{esc(diff)}</td>
@@ -582,7 +505,7 @@ is assessed against the 15 sibling submissions pulled into
 <table>
 <tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th>
 <th>Why it catches a fault the catalogue lacks</th><th>How it differs from existing work</th>
-<th class="n">Expected gain</th><th>Cost</th></tr>
+<th>Pre-run expectation / measured status</th><th>Cost / limitation</th></tr>
 {rows}
 </table>
 <h2>Order of work</h2>
@@ -592,7 +515,7 @@ claim — that secondary strands sit at a measurable stepover and along-strike o
 on the hide-and-recover holdout alone.</li>
 <li><b>H57-C</b> came free as a feature, after the length-proxy bug was fixed.</li>
 <li><b>H57-D</b> is the cheapest remaining increment and needs no new data.</li>
-<li><b>H57-B</b> needs a careful endpoint detector; deferred.</li>
+<li><b>H57-B</b> was tested with a filtered branch-terminal distance feature; the primary run was non-comparable and the post-hoc matched-mass sensitivity is not confirmatory. It remains HOLD after a literal overlap firing.</li>
 <li><b>H57-E</b> is blocked. The specific free official source needed is the GeodAWN airborne
 magnetic and radiometric survey / 1 m DEM set linked from
 <a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov</a>
@@ -600,8 +523,9 @@ and the competition's own <code>gems-geodawn-numerical-features.tif</code>. Both
 USGS page is outside this sandbox's network allowlist, and the feature stack is present in the
 bridge repositories as five ~90 MB parts that this session does not pull.</li>
 </ol>
-<div class="note"><b>No submission slot was spent on any hypothesis that had not beaten the
-holdout bar first.</b> The brief's rule is respected: validation precedes promotion.</div>
+<div class="note"><b>No weekly slot has been selected and no submission has been made.</b>
+H57-B remains HOLD: its original preregistered contrast was non-comparable, its matched-mass
+sensitivity was post-hoc, and its final-dot overlap exceeded the literal 0.70 gate.</div>
 """
 
 
@@ -696,7 +620,8 @@ def build_results(cv_all, cv_det, build, rb=None) -> str:
                   f'<td class="n">{pl.get("n_dots","PENDING")}</td></tr>')
     sel = (build or {}).get("selected_flank_px", "PENDING")
     return f"""
-<h2>Holdout results</h2>
+<h2>Historical holdout results — H57-A</h2>
+<p class="small">These earlier measurements are not the H57-B result and not a current candidate or live-score projection. H57-B is reported in its own section below.</p>
 {block(cv_all, "all")}
 {block(cv_det, "detached")}
 <p class="small">Leave-one-quadrant-out: the model applied to a quadrant is trained only on the
@@ -723,45 +648,30 @@ The leave-one-quadrant-out reading of the shipped configuration is the number to
 bought with measured holdout DTI because the live evidence says the holdout is wrong here
 (&rho; = +0.14, IR-57-BUDGET-01).</p>
 
-<h2>Why 0.2778 won, and whether higher is achievable</h2>
-<p>Substituting the binary algebra, <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>, where
+<h2>Metric mechanics; no leaderboard prediction</h2>
+<p>The exact metric is <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>, where
 <code>T</code> is covered truth credit, <code>n</code> the dot count, <code>M</code> the dots' total
-self-credit and <code>K</code> the number of true new-fault pixels. Two things follow.</p>
-<p><b>1. The ceiling is 1.0, not 0.5556.</b> A perfect prediction has <code>n = M = T = K</code>, so
-<code>D = 0.2K + 0.8K = K</code> and <code>DTI = 1</code>. Verified against the brute-force
-implementation. (0.05556 is a different number: it is the marginal acceptance bar
-<code>alpha * DTI</code> at DTI = 0.2778.)</p>
-<p><b>2. At the real base rate, DTI is close to the covered fraction of the truth — but only while
-the dot budget stays comparable to <code>K</code>.</b> The grid is sparse: with ~5,660 true pixels in
-~2.56 M cells the base rate is 0.00221, and a <i>random</i> pixel lands within 3 px of a true one
-only {esc(str(round((rb or {}).get("random_hit_prob", 0.021), 4)))} of the time. Measured with the exact
-metric on synthetic fields at that density:</p>
-{curve_block(rb)}
-<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3162</b> at half the truth count
-in dots and only <b>0.1809</b> at six times it. That is the whole story of 0.2778. It is roughly
-<b>28% coverage of the live truth set achieved at a near-matched dot budget</b> — and the reason
-nothing sprayed more dots beat it is that beyond <code>n &asymp; 2K</code> every extra dot costs
-0.2 in the denominator while returning far less than 0.2 in credit.</p>
-<p><b>Is higher achievable?</b> Yes, and the route is arithmetic rather than clever: DTI tracks
-coverage roughly one-for-one while <code>n &lesssim; 2K</code>, so the 0.3774 high-water mark implies
-about 40% coverage at a matched budget. Beating 0.2778 therefore needs roughly ten points more
-coverage at the same budget. This lane measured a real coverage gain over distance-only
-({fmt(_gain(cv_all))} DTI, mode <code>all</code>; {fmt(_gain(cv_det))} mode <code>detached</code>, with
-disjoint confidence intervals), which is the right direction — but on <i>withheld catalogue
-pixels</i>, which cling to visible traces. Whether that transfers to genuinely uncatalogued faults
-is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
-does. No projected live score is claimed anywhere on this site.</p>
+self-credit and <code>K</code> the number of true new-fault pixels. A perfect prediction has
+<code>n = M = T = K</code>, so the metric ceiling is 1.0. The table above is a synthetic arithmetic
+sensitivity to coverage and dot budget; it is not an empirical forecast.</p>
+<p>The public <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">leaderboard snapshot</a>
+fetched 2026-10-09 lists #1 at 0.3774 and #7 at 0.3195. It does not identify the artifact or method
+behind those entries. This repository cannot infer how much coverage they achieved or claim that
+this lane can beat them. Historical H57-A holdout readings concern withheld catalogue pixels only;
+current H57-B status is reported below as a separate HOLDOUT-DTI sensitivity and registry audit.</p>
+
 """
 
 
 IRREG = [
- ("IR-57-NAN-01", "Submission rejected by the portal", "FIXED",
-  "The site's download failed with “Predicted values must be in range [0, 1]”. The competition's "
-  "sample_submission.tif carries nodata = NaN and 7,111,787 NaN cells outside the study-area "
-  "footprint; NaN satisfies neither v >= 0 nor v <= 1.",
-  "Write the zeros variant: every one of the 12,279,160 cells finite and in [0, 1], outside-"
-  "footprint cells set to 0.0, no nodata tag. src/gems57/grid.py mode='zeros'. The NaN variant is "
-  "still written for diagnostics and is labelled NOT SUBMITTABLE on the site."),
+ ("IR-57-NAN-01", "Range-validation rejection; causal diagnosis unverified", "SAFE WORKAROUND; NOT CLEARED",
+  "An earlier portal attempt returned “Predicted values must be in range [0, 1]”. The provided "
+  "sample raster contains NaN outside the footprint, while the competition specification describes "
+  "out-of-bounds cells as null or NaN. The exact cause of that rejection was not established (see "
+  "IR-57-NAN-02); it must not be attributed to NaN as a verified cause.",
+  "The local zeros writer can produce finite values in [0, 1] with zero outside the footprint, a "
+  "conservative format workaround for any future eligible candidate. No current H57-B file exists, "
+  "has been validated, or is cleared for download/submission."),
  ("IR-57-TPL-01", "Shared template's DTI prose is wrong", "CORRECTED HERE, REPORTED UPSTREAM",
   "The shared template's metric module asserts that for a binary dot field FP_w = n - TP_w, so the "
   "denominator collapses to alpha*n + beta*|G|. That is false: TP_w sums over truth cells and M "
@@ -821,23 +731,25 @@ IRREG = [
   "per_cap = budget // 4. The shipped file's own holdout DTI is measured directly in "
   "scripts/run_sense_experiment.py (IR-57-SHIP-01). The 0.2793 figure is withdrawn and must not be "
   "quoted as the shipped file's score."),
- ("IR-57-UNIQ-02", "Full-registry scan dropped the firing list and reported a verdict from an exemption", "FIXED (literal verdict; list complete in code; 50 of 114 firings itemized in the saved JSON)",
+ ("IR-57-UNIQ-02", "Full-registry scan dropped the firing list and reported a verdict from an exemption", "HISTORICAL REPORT CORRECTED; 64 FIRINGS REMAIN UNITEMIZED",
   "The first run of check_uniqueness_full.py saved only the first 50 forward-overlap firings, while its summary counted 114. Its verdict "
   "called the shipped file UNIQUE by a reverse-overlap exemption (rev < 0.5 = 'mechanical saturation') that is not in the protocol.",
-  "The verdict was recomputed from the saved counts by the literal rule (unique_by_protocol=false); the script now keeps every firing. The 64 unitemized firings need a rerun to list."),
- ("IR-57-UNIQ-03", "Shipped file is DRIFT-FLAGGED by the literal uniqueness gate", "FLAGGED, OPEN - HOLD",
-  "Spearman max 0.180 (gate 0.90) and Jaccard max 0.083 (gate 0.50) pass. The forward-overlap gate (> 0.70 of my dots within 3 px of one registry raster) fires for 114 of 644 registry rasters, max 1.00. Among the 50 itemized, reverse overlap is 0.03-0.21 (none >= 0.50). Against a uniform-random placement of the same dot count, 26 of 50 are within 0.05 of chance, but 22 exceed it, so density alone does not explain all of them.",
-  "Not cleared. The protocol says log and stop. Owner decision needed: accept a reverse-overlap clearance rule (a protocol change) or generate a different candidate. The file is not to be submitted until this is decided."),
+  "The historical verdict is false under the literal rule (unique_by_protocol=false); the old report still lacks 64 firing details. No reverse-overlap exemption applies. The current H57-B audit separately checks the 667-raster surface and stops on its first final-dot firing."),
+ ("IR-57-UNIQ-03", "Shipped file is DRIFT-FLAGGED by the literal uniqueness gate", "HOLD; HISTORICAL FILE",
+  "Spearman max 0.180 (below the 0.90 threshold); Jaccard max 0.083 is diagnostic only, not a gate. The forward-overlap gate (> 0.70 of candidate dots within 3 px of one registry raster) fired for 114 of 644 registry rasters, max 1.00. Among the 50 itemized, reverse overlap is 0.03-0.21; reverse overlap does not exempt the candidate.",
+  "Not cleared and not a current candidate. The literal protocol is applied without exemptions: log and stop on a firing. Any future replacement must pass its holdout and both registry gates; no protocol change or reverse-overlap clearance is made here."),
+
  ("IR-57-LABEL-01", "Owner-reported scores were labelled ORGANIZER-CONFIRMED", "FIXED (relabelled OWNER-REPORTED)",
   "The budget correlation (Spearman -0.8104, n = 15) and the brief's 0.3774 / 0.3195 quotes come from owner-pasted "
   "scores with no submission-page receipt. The label ORGANIZER-CONFIRMED is reserved for receipts.",
   "Re-derived this session from registry/registry_index.json (owner_reported_score). README and this page relabelled."),
- ("IR-57-INSAMPLE-01", "Build's holdout numbers are in-sample (labelled in build_submission.py and here; LOQO build replacement NOT done)", "FLAGGED, LABELLED, OPEN",
-  "scripts/build_submission.py fits the intensity on all 8 holdout cells and then scores the same "
-  "8 cells (flank sweep and capped holdout). Those numbers are optimistic. The leave-one-quadrant-out "
-  "numbers in scripts/run_cv.py and scripts/run_sense_experiment.py are the honest ones.",
-  "Not changed in this session. Any quoted holdout DTI must come from a LOQO run and be labelled as "
-  "such. Recommended next step: make build_submission select flank and budget under LOQO."),
+ ("IR-57-INSAMPLE-01", "Legacy builder's holdout numbers are in-sample", "FLAGGED; BUILDER DISABLED",
+  "The legacy scripts/build_submission.py fit the intensity on all 8 holdout cells and then scored the same "
+  "8 cells (flank sweep and capped holdout). Those results are optimistic and are not valid confirmatory "
+  "HOLDOUT-DTI readings.",
+  "The CLI now exits before doing work, so it cannot write a candidate TIF. The README reproduce path uses "
+  "the in-memory H57-B audit, which writes no raster. Legacy evidence remains historical; no LOQO "
+  "replacement builder was implemented."),
  ("IR-57-SHIP-01", "The shipped file's own holdout DTI had never been measured", "MEASURED (see results)",
   "Earlier pages quoted 0.2517 and 0.2508 as the holdout DTI of the shipped configuration. Those were "
   "measured at the run_cv per-cell cap of 120,000 (136,467 dots over 8 cells, about 68k per draw), "
@@ -867,30 +779,27 @@ IRREG = [
   "cause of the user's rejection was not established.",
   "The zeros variant stays the submitted file, because it satisfies both readings: every value finite and "
   "in [0, 1]. The NaN explanation is recorded as a hypothesis, not as the cause."),
- ("IR-57-UNIQ-01", "Uniqueness evidence cited files not in the repository", "FIXED",
-  "evidence/uniqueness.json and uniqueness_parallel.json cite siblings/... paths that are not in this "
-  "repository. The registry in registry/ held 15 rasters.",
-  "scripts/scan_gemsdoe_registry.py builds the full registry from every reachable GEMSDOE repository: "
-  "644 unique grid-shaped rasters (evidence/registry_full_index.json). scripts/check_uniqueness_full.py "
-  "checks a candidate against all of them. 23 large non-submission rasters (feature stacks, DEM and "
-  "aux layers, diagnostics) were not fetched; the count is in the index."),
+ ("IR-57-UNIQ-01", "Uniqueness evidence cited files not in the repository", "FIXED; SCOPE DISCLOSED",
+  "The earlier full index reported 644 rasters. A refreshed scan of all 56 public sibling-repository HEADs, "
+  "with single-band validation and explicit non-submission filtering, now indexes 667 unique same-shape/CRS rasters. "
+  "Fifteen off-grid rasters and 44 known external/non-submission files are recorded as skipped; one same-CRS "
+  "transform-offset raster is reprojected to the pinned grid for comparison.",
+  "The current H57-B surface gate checked all 667; final dots stopped at the first literal overlap failure, "
+  "as required. The archive is public/accessibly cloned but is not a complete list of private or organizer submissions."),
  ("IR-57-TEST-01", "Test suite failed on main", "FIXED",
   "Five tests failed: pandas was imported but absent from requirements.txt; the gate tests pointed at a "
   "file moved to docs/downloads/archive/ and asserted an out-of-date emitted count; the data-pin test "
   "requires training_features.tif, which the sandbox cannot reach.",
   "pandas added to requirements.txt; gate tests point at the shipped file and its checks receipt; the "
   "data-pin test skips with its reason when the 419 MB file is absent."),
- ("IR-57-LEAD-01", "Leaderboard page cannot be read", "FLAGGED",
-  "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/ returns an empty "
-  "'Loading...' page to the fetch tool. The 0.3774 and 0.3195 highs in the brief remain owner-reported and "
-  "unverified.",
-  "Owner to paste the current leaderboard receipt. No rank or live score is projected."),
- ("IR-57-BRIEF-01", "Conflicting leaderboard highs in the brief", "FLAGGED",
-  "The task brief states both \"Current competition leaderboard GEMSDOE high score: 0.3774\" and "
-  "\"0.3195 is the highest score right now\". The DrivenData leaderboard is outside this sandbox's "
-  "network allowlist and cannot be read here.",
-  "Neither number is treated as a target this repository claims to beat. Owner-reported scores are "
-  "recorded as OWNER-REPORTED with their source repository, and no live score is projected."),
+ ("IR-57-LEAD-01", "Official leaderboard snapshot", "VERIFIED SNAPSHOT; METHOD UNATTRIBUTED",
+  "The official DrivenData leaderboard was fetched on 2026-10-09: #1 xiaofanhu 0.3774, #7 DARD 0.3195, "
+  "#16 extradr19 0.2778. The page does not identify the raster or method behind a participant's score.",
+  "Snapshot is date-bounded and is not an organizer receipt for any local artifact. No live score or ranking is projected for this lane."),
+ ("IR-57-BRIEF-01", "Conflicting leaderboard highs in the brief", "RESOLVED AS-OF 2026-10-09",
+  "The brief gives both 0.3774 and 0.3195 as the highest score. The official page resolves their ranks "
+  "for the 2026-10-09 snapshot: 0.3774 is #1; 0.3195 is #7.",
+  "Neither leaderboard entry establishes the underlying method or file. The project makes no claim that its holdout result will beat either entry."),
  ("IR-57-FOLD-01", "Holdout produced zero withheld pixels", "FIXED",
   "The first fold design removed from the candidate pool every segment touching a 15 px dilation of "
   "the fold quadrant. Dilating a region contains the region, so every in-fold segment touched the "
@@ -921,11 +830,11 @@ IRREG = [
   "itself, gate_ortho and h19-4-multiline — different lanes, live 0.2376 vs 0.1894, Jaccard 0.022 — "
   "give rho = -0.9408. abs() therefore flags all 15 registry rasters as duplicates of each other. "
   "It is also NaN whenever one support contains the other, so it cannot detect an exact re-export.",
-  "The operative rank statistic is now Spearman over the full footprint, signed: +1.0000 for an exact "
-  "copy and 0.0003-0.0109 for all 15 distinct registry rasters, so the 0.90 bar separates cleanly. "
-  "Set agreement is carried by Jaccard (limit 0.50; a 90% copy scores 0.8198) and by 3 px dot "
-  "overlap (limit 0.70). The dot-union rho is still reported, never thresholded. Shipped raster: "
-  "worst rho 0.0109, worst Jaccard 0.0096, worst overlap 0.3578 — unique on all three."),
+  "The operative rank statistic is tie-aware Spearman over the full footprint, signed: +1 for an exact "
+  "copy, with the literal threshold rho > 0.90. The second literal gate is one-way candidate-dot proximity: "
+  "more than 70% of candidate dots within 3 px of one prior raster is a failure. Jaccard is diagnostic only, "
+  "not a gate; there is no reverse-overlap exemption unless the owner changes the protocol. The old shipped "
+  "raster remains HOLD under its historical archive scan."),
  ("IR-57-BUDGET-01", "The holdout-optimal dot budget contradicts the live evidence", "RESOLVED BY EVIDENCE",
   "The allocator's holdout optimum is 69,623 dots per draw, roughly 6x the withheld truth count. But "
   "Spearman(dot count, owner-reported live score) over the 15 registry rasters is -0.8104: the "
@@ -937,89 +846,117 @@ IRREG = [
   "visible rather than hidden. The holdout-to-live rank correlation for this instrument is only "
   "+0.14 (12 live scores, sibling repository), which is why live evidence outranks holdout evidence "
   "on this decision."),
+ ("IR-57-H57B-01", "H57-B primary cap is non-comparable; matched sensitivity is post-hoc", "HOLD; NO PROMOTION",
+  "At the preregistered 10,000 per-cell cap, H57-B emitted 71,191 dots versus 80,000 for no_side; "
+  "the arms differed in four of eight cells. The initial contrast is non-comparable. A later 6,772 "
+  "per-cell replay matched counts and produced a +0.06096 paired HOLDOUT-DTI difference, but the cap "
+  "was derived after the first output was observed. The pre-run expectation was +0.005 to +0.020.",
+  "The replay is disclosed as favorable post-hoc sensitivity only; its CI is conditional on that cap. "
+  "No further experiment was run, and H57-B is not confirmatory or promotion-eligible."),
+ ("IR-57-REG-02", "Archive index included non-submission and transform-misaligned rasters", "FIXED; SCOPE DISCLOSED",
+  "The first refreshed scan exposed a 3-band Q-fault external asset and a same-CRS raster with a shifted "
+  "transform. The former is not a valid single-band submission; the latter covers a different extent.",
+  "The scanner now excludes the external asset, indexes 667 unique single-band same-shape/CRS rasters, "
+  "records 56/56 public sibling repositories, and nearest-neighbour reprojects the one transform-offset "
+  "raster onto the pinned competition grid. Off-grid/non-submission exclusions are recorded in the index."),
+ ("IR-57-UNIQ-04", "H57-B final-dot overlap exceeds the literal lane limit", "HOLD; STOPPED",
+  "The pre-placement surface passed across all 667 indexed rasters (max Spearman 0.42297). The in-memory "
+  "27,088-dot map had 72.707% of its dots within 3 px of one prior raster, above the 70% limit.",
+  "Stopped at the first literal firing; no reverse-overlap exemption and no Jaccard gate were used. "
+  "No candidate TIF was generated, no validator receipt exists, and download/submission are not cleared."),
 ]
 
 
 def build_session2() -> str:
-    """Session-2 evidence: the shipped-density holdout, the recorded-sense experiment and the
-    full-registry uniqueness scan.  Every number is read from its evidence file at build time."""
-    exp = load("exp_sense_loqo_all.json") or {}
-    uq = load("uniqueness_full_shipped-h57-zeros.json") or {}
-    if exp.get("variants"):
-        rows = ""
-        for v, r in exp["variants"].items():
-            pl = r["pooled"]
-            ci = pl["dti_ci95_quadrant_jackknife"]
-            rows += (f"<tr><td><code>{esc(v)}</code></td><td class=\"n\">{fmt(pl['pooled_dti'])}</td>"
-                     f"<td class=\"n\">[{fmt(ci[0])}, {fmt(ci[1])}]</td><td class=\"n\">{pl['n_truth']}</td>"
-                     f"<td class=\"n\">{pl['n_dots']}</td><td class=\"n\">{fmt(pl['coverage'])}</td></tr>")
-        pq = exp["paired_no_side_plus_sense_minus_no_side"]
-        diffs = ", ".join(f"{q} {d:+.4f}" for q, d in pq["per_quadrant_diff"].items())
-        can = exp.get("canary", {})
-        canrows = "".join(
-            f"<tr><td><code>{esc(k)}</code></td><td class=\"n\">{fmt(r['discriminative_auc_max'])}</td>"
-            f"<td>{verdict(not r['leakage_flag'])}</td></tr>" for k, r in can.items())
-        exp_html = f"""
-<table>
-<tr><th>Feature set (mode all, leave-one-quadrant-out)</th><th class="n">HOLDOUT-DTI</th>
-<th class="n">95% CI (quadrant jackknife)</th><th class="n">withheld positives</th>
-<th class="n">dots (8 cells)</th><th class="n">coverage</th></tr>
-{rows}
-</table>
-<p class="muted">Per-cell cap {exp.get('per_cell_cap')} dots = the shipped live share (40,000 cap / 4 quadrants).
-Evaluator: gems57 pooled DTI, alpha 0.2, beta 0.8, R = 3 px. HOLDOUT-DTI is a local instrument reading, not a
-projected live score.</p>
-<p><b>Paired difference, sense minus no-sense, per quadrant:</b> {esc(diffs)}.
-Mean {pq['mean_diff']:+.4f}, sd {pq['sd_diff']:.4f}, positive in {pq['n_quadrants_positive']} of 4 quadrants.</p>
-<div class="note"><b>Verdict for H57-F (recorded sense of slip): NEGATIVE on this instrument.</b> The mean
-gain is +0.0016 with quadrant signs that disagree, which is inside the noise. The sense features are
-themselves clean on the leakage canary. The canary's flag on <code>d</code> and <code>d_perp</code> is
-the pre-existing IR-57-CANARY-02 and is not a sense result. Not promoted; no submission slot was used.</div>
-<h3>Leakage canary, single features, this run</h3>
-<table><tr><th>Feature</th><th class="n">max discriminative AUC</th><th>below 0.90</th></tr>{canrows}</table>
-"""
-    else:
-        exp_html = "<p>PENDING: evidence/exp_sense_loqo_all.json not found.</p>"
-    if uq.get("candidate"):
-        uq_html = f"""
-<h3>Uniqueness against every accessible GEMSDOE raster</h3>
-<p>Candidate <code>{esc(uq['candidate']['file'])}</code> (sha256 <code>{esc(uq['candidate']['sha256'])}</code>,
-{uq['candidate']['dots']} dots) against <b>{uq['registry']['n_unique_grid_rasters']}</b> unique grid-shaped
-rasters from <b>{uq['registry']['repos_scanned']}</b> GEMSDOE repositories (scan of
-<code>evidence/registry_full_index.json</code>).</p>
-<table>
-<tr><th>Gate (parallel-run protocol)</th><th class="n">limit</th><th class="n">worst observed</th><th>vs</th></tr>
-<tr><td>full-footprint Spearman</td><td class="n">0.90</td><td class="n">{uq['max_spearman_full_footprint']['value']:.4f}</td><td>{esc(uq['max_spearman_full_footprint']['raster'])}</td></tr>
-<tr><td>Jaccard of dot sets</td><td class="n">0.50</td><td class="n">{uq['max_jaccard']['value']:.4f}</td><td>{esc(uq['max_jaccard']['raster'])}</td></tr>
-<tr><td>dots within 3 px (forward)</td><td class="n">0.70</td><td class="n">{uq['max_dot_overlap_fwd_3px']['value']:.4f}</td><td>{esc(uq['max_dot_overlap_fwd_3px']['raster'])}</td></tr>
-</table>
-<p>Forward-overlap firings under the literal gate: <b>{uq['n_overlap_firings_one_directional']}</b>
-(the first 50 are itemized in the JSON). Informational only, not a clearance rule: firings with reverse overlap
-below 0.5: {uq['informational_two_sided_true_duplicates']}. Literal verdict: <b>{esc(uq['verdict'])}</b>.
-The file is <b>not cleared</b> (see IR-57-UNIQ-03).</p>
-"""
-    else:
-        uq_html = "<p>PENDING: full-registry uniqueness scan not finished.</p>"
+    """Current H57-B evidence and literal registry disposition from the run card."""
+    primary = load("exp_h57b_holdout.json") or {}
+    matched = load("exp_h57b_holdout_matched6772.json") or {}
+    surface = load("uniqueness_h57b_surface.json") or {}
+    dots = load("uniqueness_h57b_dots.json") or {}
+    run_card = load("run_card.json") or {}
+    def score(run, arm):
+        return run.get("pooled_summary", {}).get("scores", {}).get(arm, {})
+    def ci_text(rec):
+        ci = rec.get("ci95") or [None, None]
+        return f"[{fmt(ci[0], 5)}, {fmt(ci[1], 5)}]"
+    p_c, p_b = score(primary, "h57b_tip_distance"), score(primary, "no_side")
+    m_c, m_b = score(matched, "h57b_tip_distance"), score(matched, "no_side")
+    pair = matched.get("pooled_summary", {}).get("paired_differences", {}).get("no_side", {})
+    pair_ci = pair.get("ci95") or [None, None]
+    firing = dots.get("first_firing") or {}
+    card_art = run_card.get("artifact", {})
+    overlap = firing.get("my_dots_within_3px_of_theirs")
     return f"""
-<h2>Session 2 — measured, not projected</h2>
-<p>This block was added on 2026-10-09 after a line-by-line review of the repository. Earlier
-pages quoted the holdout DTI at a dot density about twice the one that shipped. The numbers below are
-the first measured at the shipped density.</p>
-{exp_html}
-{uq_html}
+<h2>H57-B — filtered branch-terminal proximity</h2>
+<p>One added feature measures distance to visible branch termini after removing cut-induced
+endpoints inside the 3-px holdout collar. The named mimics are road/dry-wash endings, map-sheet
+breaks and digitization endpoints. All scores below are <span class="tag hold">HOLDOUT-DTI</span>
+from evaluator <code>{esc(m_c.get('evaluator_version', 'PENDING'))}</code>, with
+<b>{esc(m_c.get('withheld_positive_count', 'PENDING'))}</b> withheld positives and paired
+20-km spatial-block 95% intervals. None is a live score.</p>
+
+<h3>Original preregistered run — 10,000 cap per cell</h3>
+<table><tr><th>Arm</th><th class="n">HOLDOUT-DTI</th><th class="n">95% CI</th><th class="n">Dots (8 cells)</th></tr>
+<tr><td>H57-B + tip distance</td><td class="n">{fmt(p_c.get('dti'),5)}</td><td class="n">{ci_text(p_c)}</td><td class="n">{sum(primary.get('variants',{}).get('h57b_tip_distance',{}).get('dot_counts_by_cell',{}).values())}</td></tr>
+<tr><td>no_side control</td><td class="n">{fmt(p_b.get('dti'),5)}</td><td class="n">{ci_text(p_b)}</td><td class="n">{sum(primary.get('variants',{}).get('no_side',{}).get('dot_counts_by_cell',{}).values())}</td></tr></table>
+<div class="note"><b>Non-comparable; cannot promote.</b> The candidate did not match realized dots
+in four of eight cells (71,191 candidate vs 80,000 control dots), violating the preregistered
+comparison rule. Do not interpret the nominal difference as a causal feature gain.</div>
+
+<h3>Equal-mass sensitivity — cap 6,772 per cell</h3>
+<table><tr><th>Arm</th><th class="n">HOLDOUT-DTI</th><th class="n">95% CI</th></tr>
+<tr><td>H57-B + tip distance</td><td class="n">{fmt(m_c.get('dti'),5)}</td><td class="n">{ci_text(m_c)}</td></tr>
+<tr><td>no_side control</td><td class="n">{fmt(m_b.get('dti'),5)}</td><td class="n">{ci_text(m_b)}</td></tr>
+<tr><td>Paired candidate − control</td><td class="n">{fmt(pair.get('delta'),5)}</td><td class="n">[{fmt(pair_ci[0],5)}, {fmt(pair_ci[1],5)}]</td></tr></table>
+<p><b>Post-hoc sensitivity only, not confirmatory.</b> The equal-mass cap was derived from the
+first run's candidate counts after that run had been observed. It did not use the DTI scores, and
+the features, seeds, model settings and folds did not change, but cap-selection uncertainty is not
+represented by the bootstrap CI. The preregistered primary result remains HOLD. The preregistered
+pre-run range was +0.005 to +0.020; the sensitivity difference (+0.06096) is outside that range
+and is reported as an irregularity, not rationalized as a live-score gain.</p>
+
+<h3>Leakage canary and registry gates</h3>
+<p>All single-feature discriminative AUCs were below 0.90; maximum
+<b>{fmt(run_card.get('holdout',{}).get('feature_canary',{}).get('maximum_discriminative_auc'),4)}</b>.
+The pre-placement surface passed: max Spearman {fmt((surface.get('max_spearman_full_footprint') or {}).get('value'),4)}
+across {esc(surface.get('n_registry_checked','?'))}/{esc(surface.get('n_registry_indexed','?'))}
+indexed rasters. The final in-memory map emitted {esc(dots.get('candidate_dots','?'))} dots and
+failed the literal one-way overlap gate: <b>{fmt(overlap,4)}</b> within 3 px of
+<code>{esc(firing.get('submission','PENDING'))}</code> (limit 0.70). The scan stopped after the first
+firing as required; no reverse-overlap exemption and no Jaccard gate were used.</p>
+<p>Registry scope: {esc((run_card.get('registry',{}).get('inventory') or {}).get('n_unique_grid_rasters','?'))}
+unique single-band, grid-shaped rasters across 56 public sibling repositories; this is an accessible
+GitHub archive, not a guaranteed complete list of private/organizer submissions. One transform-offset
+raster was reprojected to the pinned grid; multiband and known external/non-submission assets were not
+included.</p>
+
+<div class="bad-box"><b>FINAL VERDICT: HOLD.</b> No candidate TIF was generated; local format validation was
+not run; no download is cleared; no submission was made and no weekly slot was selected. Draft name
+<code>{esc(card_art.get('submission_name','PENDING'))}</code> and the {esc(card_art.get('submission_note_characters','?'))}-character note
+are not assigned. See <a href="run-card.html">the single run card</a>.</div>
 """
 
 
 def build_session2_hyp() -> str:
-    return """
-<h2>Session 2 candidate, tested</h2>
+    card = load("run_card.json") or {}
+    h = card.get("holdout", {}).get("matched_mass_sensitivity_not_confirmatory", {})
+    d = h.get("paired_candidate_minus_control", {})
+    ci = d.get("ci95") or [None, None]
+    return f"""
+<h2>Session 2 candidates tested</h2>
 <table>
 <tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th><th>Result</th></tr>
-<tr><td><b>H57-F</b> recorded sense of slip conditions the strand side</td>
+<tr><td><b>H57-B</b> filtered branch-terminal proximity</td>
+<td>Visible catalogue geometry only; endpoint distance after a 3-px cut-artifact filter</td>
+<td>Withheld whole branches may cluster near true relays or splays at visible termini.</td>
+<td><span class="tag bad">HOLD</span> Original cap run was non-comparable. Post-hoc matched-mass
+sensitivity: paired HOLDOUT-DTI difference {fmt(d.get('delta'),5)}, 95% CI
+[{fmt(ci[0],5)}, {fmt(ci[1],5)}], not confirmatory. Final-dot overlap failed the literal registry gate.</td></tr>
+<tr><td><b>H57-F</b> recorded sense of slip conditions strand side</td>
 <td>INGENIOUS trace <code>sense</code> column (RL / LL / N), rasterised to visible pixels only</td>
-<td>Handedness-relative side of the strand, sense_sgn times side (fitted, not a textbook angle)</td>
-<td><span class="tag bad">NEGATIVE</span> mean paired gain +0.0016 over four quadrants, signs disagree.
-See the results page. Not promoted.</td></tr>
+<td>Handedness-relative side of the strand, sense_sgn times side (fitted, not assumed)</td>
+<td><span class="tag bad">NEGATIVE</span> historical paired gain +0.0016 over four quadrants, signs disagree.
+Not promoted; no submission slot was used.</td></tr>
 </table>
 """
 
@@ -1027,9 +964,10 @@ See the results page. Not promoted.</td></tr>
 def build_irregularities() -> str:
     rows = ""
     for iid, title, status, desc, res in IRREG:
-        badge = ('<span class="tag bad">FLAGGED</span>' if "FLAGGED" in status
-                 else '<span class="tag org">FIXED</span>' if "FIXED" in status
-                 else '<span class="tag">REPORTED</span>')
+        css_class = ("bad" if any(flag in status for flag in
+                                   ("FLAGGED", "HOLD", "DISABLED", "OPEN", "NOT CLEARED"))
+                     else "org" if "FIXED" in status else "")
+        badge = f'<span class="tag {css_class}">{esc(status)}</span>'
         rows += (f'<tr><td><code>{esc(iid)}</code><br>{badge}</td><td><b>{esc(title)}</b></td>'
                  f'<td>{esc(desc)}</td><td>{esc(res)}</td></tr>')
     return f"""
@@ -1102,120 +1040,27 @@ by the task owner; the file identity is verified by sha256 against the blob in t
 """
 
 
-def build_runcard(build, cv_all, meas) -> str:
-    z = (build or {}).get("zeros_tif") or {}
-    uq = (build or {}).get("uniqueness", {})
-    # holdout number for the SHIPPED configuration: measured at the shipped per-cell share
-    # (scripts/run_sense_experiment.py, variant no_side).  The 120k-cap run_cv number is
-    # kept in evidence/cv_all.json but is not the shipped density (IR-57-SHIP-01).
-    exp = load("exp_sense_loqo_all.json") or {}
-    pl = (exp.get("variants", {}).get("no_side", {}) or {}).get("pooled", {})
-    ci = pl.get("dti_ci95_quadrant_jackknife") or [None, None]
-    uqf = load("uniqueness_full_shipped-h57-zeros.json") or {}
-    side = dict((meas or {}).get("side", {}))
-    # rates derived from the stored counts (withheld / domain per side); not separately stored
-    if side.get("n_domain_left") and side.get("n_domain_right") and "rate_left" not in side:
-        import math as _m
-        side["rate_left"] = side["n_withheld_left"] / side["n_domain_left"]
-        side["rate_right"] = side["n_withheld_right"] / side["n_domain_right"]
-        side["log_ratio_R_over_L"] = _m.log(side["rate_right"] / side["rate_left"])
-    card = {
-        "hypothesis": ("Secondary strands around mapped faults are not isotropic: they sit at a "
-                       "fitted cross-strike stepover and along-strike offset from the nearest "
-                       "visible trace, so a per-fault intensity built from distance, component "
-                       "length and offset geometry locates fault pixels the catalogue lacks."),
-        "mechanism": ("Distributed shear produces en echelon Riedel shears and synthetic splays; "
-                      "damage-zone width grows with displacement (Savage & Brodsky 2011). "
-                      "Operationally: a gradient-boosted intensity over the eight shipped catalogue-geometry "
-                      "features (side dropped), calibrated to the withheld base rate, then lazy-greedy "
-                      "max-coverage allocation at the exact DTI marginal bar."),
-        "named_non_fault_process_that_could_mimic_it": (
-            "Withheld catalogue pixels are parts of mapped systems, so part of the measured "
-            "near-field enrichment is mapping continuity (a mapper stopping mid-system), not "
-            "mechanics. The detached withholding mode (>= 400 m from any other component) is the "
-            "control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) "
-            "aligning with the regional strike sets, which this lane cannot test without the DEM."),
-        "holdout_dti": {
-            "instrument": ("hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, "
-                           "12 px domain erosion, visible-only features, pooled DTI "
-                           "alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out, per-cell cap 10,000 "
-                           "(shipped density), features = shipped 8 (side dropped)"),
-            "evaluator_version": "gems57 pooled DTI, scripts/run_sense_experiment.py",
-            "withheld_positive_pixels": pl.get("n_truth"),
-            "pooled_dti": pl.get("pooled_dti"),
-            "ci95_quadrant_jackknife": ci,
-            "coverage": pl.get("coverage"),
-            "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score",
-        },
-        "correlation_overlap_full_registry": {
-            "n_unique_grid_rasters": uqf.get("registry", {}).get("n_unique_grid_rasters"),
-            "max_spearman_full_footprint": uqf.get("max_spearman_full_footprint"),
-            "max_jaccard": uqf.get("max_jaccard"),
-            "max_dot_overlap_fwd_3px": uqf.get("max_dot_overlap_fwd_3px"),
-            "n_overlap_firings_one_directional_literal_gate": uqf.get("n_overlap_firings_one_directional"),
-            "informational_two_sided_true_duplicates_not_a_clearance_rule": uqf.get("informational_two_sided_true_duplicates"),
-            "unique_by_protocol_literal": uqf.get("unique_by_protocol"),
-        },
-        "correlation_overlap_vs_registry": {
-            "n_registry_rasters": len(uq.get("rows", [])),
-            "rho_limit": uq.get("rho_limit"),
-            "jaccard_limit": uq.get("jaccard_limit"),
-            "overlap_limit": uq.get("overlap_limit"),
-            "worst_spearman_full_footprint": uq.get("worst_spearman_full_footprint"),
-            "worst_rho_submission": uq.get("worst_rho_submission"),
-            "worst_jaccard_dot_sets": uq.get("worst_jaccard_dot_sets"),
-            "worst_jaccard_submission": uq.get("worst_jaccard_submission"),
-            "worst_dot_overlap_3px": uq.get("worst_dot_overlap"),
-            "worst_overlap_submission": uq.get("worst_overlap_submission"),
-            "dot_union_rho_note": ("reported but NOT thresholded: structurally near -1 for "
-                                   "any two sparse binary rasters, see IR-57-RHO-01"),
-            "unique": uq.get("unique"),
-        },
-        "raster_sha256": z.get("sha256"),
-        "validator_output": {
-            "no_nan_anywhere": z.get("checks", {}).get("no_nan_anywhere"),
-            "in_footprint_all_finite": z.get("checks", {}).get("in_footprint_all_finite"),
-            "range_0_1_guaranteed": z.get("checks", {}).get("range_0_1_guaranteed"),
-            "crs_shape_transform_match": all(z.get("checks", {}).get(k, False) for k in
-                                             ("crs_epsg_32611", "dimensions_3730x3292",
-                                              "transform_matches_sample_submission")),
-            "zero_dots_on_mapped_catalogue": z.get("checks", {}).get("zero_dots_on_mapped_catalogue"),
-            "all_checks_passed": z.get("all_checks_passed"),
-            "n_checks": len(z.get("checks", {})),
-        },
-        "submission_name": (build or {}).get("submission_name"),
-        "submission_note": (build or {}).get("submission_note"),
-        "sense_of_slip": {
-            "available_in_provided_database": True,
-            "source": "data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02",
-            "measured_log_ratio_right_over_left": side.get("log_ratio_R_over_L"),
-            "encoded_in_shipped_file": False,
-            "tested_as_opt_in_features": True,
-            "tested_result": exp.get("paired_no_side_plus_sense_minus_no_side"),
-        },
-        "verdict": "PENDING" if not build else (
-            "promote" if (z.get("all_checks_passed") and uqf.get("unique_by_protocol")) else
-            "HOLD (format checks pass; literal uniqueness forward-overlap gate fired; not cleared)"),
-        "verdict_scope": ("eligible for the separate selector step only; not a slot choice, not a live "
-                          "score. The holdout number is the shipped-density reading above."),
-    }
-    card_txt = json.dumps(card, indent=2)
-    (ROOT / "evidence" / "run_card.json").write_text(card_txt + "\n", encoding="utf-8")
+def build_runcard(build=None, cv_all=None, meas=None) -> str:
+    """Render the committed single run card; never reconstruct or overwrite it."""
+    card = load("run_card.json") or {}
+    if not card:
+        return '<h2>Run card</h2><p class="bad-box">PENDING — evidence/run_card.json is missing.</p>'
+    card_txt = json.dumps(card, indent=2, allow_nan=False)
+    artifact = card.get("artifact", {})
     return f"""
-<h2>Run card</h2>
-<p>One JSON card, per parallel-run protocol rule 5. Machine-readable copy:
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
-target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
+<h2>Current run card</h2>
+<p>The authoritative machine-readable decision is
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"><code>evidence/run_card.json</code></a>.
+This page renders that file and does not regenerate or modify it.</p>
 <pre>{esc(card_txt)}</pre>
 <h2>How to read it</h2>
 <ul>
-<li><b>holdout_dti</b> is a <span class="tag hold">HOLDOUT-DTI</span> reading. It is <b>not</b> a
-projected live score, and no live score is claimed anywhere in this repository.</li>
-<li><b>verdict</b> is <code>promote</code> only if the validator passes every check <i>and</i> the
-uniqueness screen is clear. Promotion to an actual weekly slot is a separate selector step and is
-not done here.</li>
-<li><b>sense_of_slip.encoded = false</b> because the provided database has no such field
-(<code>IR-57-SLIP-01</code>).</li>
+<li><b>HOLDOUT-DTI</b> is a local hide-and-recover measurement, not a live score or leaderboard projection.</li>
+<li>The H57-B primary cap run was non-comparable; the later matched-mass reading is explicitly
+post-hoc sensitivity and is not confirmatory.</li>
+<li>The current final-dot map fails the literal forward 3-px overlap gate. No GeoTIFF was generated,
+no file is cleared to download, and no submission slot was selected.</li>
+<li>The proposed name and note are drafts only. <b>{esc(artifact.get("submission_status", "PENDING"))}</b>.</li>
 </ul>
 """
 

@@ -1,22 +1,16 @@
-# Archived artifacts — DO NOT SUBMIT
+# Archived artifacts — historical only, DO NOT SUBMIT
 
-Every file in this directory is superseded. They are kept for provenance only.
+**There is no currently cleared submission artifact in this repository.** H57-B is on HOLD; no
+new H57-B raster was generated, no current file-format validation was run, and nothing is cleared
+to download or submit. No weekly slot was selected.
 
-The **only** submittable file in this repository is the single `-zeros.tif` one
-directory up:
+The former file one directory above,
+`docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif`, is also
+**HOLD and not cleared**. Its old format receipt applies only to that historical file; its prior
+644-raster uniqueness scan is stale against the refreshed 667-raster archive. The current project
+status and single H57-B run card are at [`docs/index.html`](../../index.html) and
+[`evidence/run_card.json`](../../../evidence/run_card.json).
 
-`docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif`
-
-## Why these were retired
-
-| File | Reason it is not submittable |
-| --- | --- |
-| `57GEMSDOE-faultzone-anatomy-12000dots-nan.tif` | Carries `NaN` outside the footprint. The portal rejects it with *"Predicted values must be in range [0, 1]"* because `NaN` satisfies neither `v >= 0` nor `v <= 1`. `IR-57-NAN-01`. |
-| `57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif` | Superseded by a later build. 12,000 dots is well below the budget the registry's live evidence supports. |
-| `gems57-faultzone-anatomy-60000px-*.tif` | Superseded. 60,000 dots sits in the band where **Spearman(dot count, live score) = -0.8104** says scores fall off; the shipped build is capped at 40,000. `IR-57-BUDGET-01`. |
-| `*-nan.zip`, `*.zip` | Zipped variants of the above. |
-| `run_card.json` | An earlier lane's run card. The current one is [`evidence/run_card.json`](../../../evidence/run_card.json). |
-| `*-audit.json`, `*.receipt.json` | Receipts for the builds above. |
-
-None of these were submitted to the competition. No submission slot was spent on
-any of them.
+Files in this archive are retained for provenance only. Their old validation receipts do not
+clear any other artifact. The previous explanation that NaN alone caused a portal rejection was
+not established; see `IR-57-NAN-02` on the current irregularities page.

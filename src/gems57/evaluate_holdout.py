@@ -1,107 +1,152 @@
-"""Shared pooled hide-and-recover evaluator, not a new/private metric implementation.
+"""Shared pooled hide-and-recover evaluator.
 
-Delegates official-formula arithmetic and visible-pixel masking to the template's
-holdout.score / metric.max_cover. Spatial block terms are bookkeeping for a
-conditional bootstrap, not a new scoring rule. No translated synthetic truth.
+All local scores in this module are labelled HOLDOUT-DTI.  The metric arithmetic
+is delegated to ``gems57.metric``; spatial blocks only provide paired uncertainty
+estimates conditional on the catalogue and fitted fold predictions.
 """
 from __future__ import annotations
+
 import hashlib
 from pathlib import Path
+
 import numpy as np
-from . import holdout, metric
 
-VERSION = 'gems52-pooled-hide-v1'
+from . import metric
 
-
-def implementation_hashes():
-    return {name: hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest()
-            for name in ('evaluate_holdout.py', 'holdout.py', 'metric.py', 'spatial.py')}
+VERSION = "gems57-buffered-whole-branch-pooled-v2.0"
 
 
-def evaluate(prediction, fold, valid, block_side=200):
-    """Exact fold score plus additive (TPw, FPw, FNw, truth count) per spatial cluster."""
-    if block_side <= 0:
-        raise ValueError('block_side must be positive')
+def implementation_hashes() -> dict[str, str]:
+    """File hashes needed to identify the exact local evaluator implementation."""
+    names = ("evaluate_holdout.py", "holdout.py", "metric.py", "spatial.py", "network.py")
+    base = Path(__file__).parent
+    return {name: hashlib.sha256((base / name).read_bytes()).hexdigest()
+            for name in names}
+
+
+def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
+             global_shape=None):
+    """Exact fold DTI plus additive (TPw, FPw, FNw, withheld count) per spatial block.
+
+    ``fold`` must provide pixel-exact ``visible`` and ``truth`` masks, plus the
+    scored ``region``.  ``valid`` may further restrict that region.  ``origin``
+    maps a cropped fold to global grid coordinates; this makes equal 20 km cells
+    from different folds/draws merge before bootstrap resampling.
+    """
     p = np.asarray(prediction)
-    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
-        raise ValueError('predictions must be finite in [0,1] before masking')
-    result = holdout.score(p, fold, valid, restrict_to_region=True, extra=False)
-    p = np.where(valid & fold['region'] & ~fold['visible'], p, 0).astype(np.float32)
-    truth = valid & fold['region'] & fold['truth']
-    if not truth.any():
-        raise ValueError('a holdout fold must contain positives')
-    covers, q, _ = metric.max_cover(p, truth)
-    h, w = truth.shape
-    ncols = (w + block_side - 1) // block_side
-    nrows = (h + block_side - 1) // block_side
-    terms = np.zeros((ncols * nrows, 4), np.float64)
-    y, x = np.nonzero(truth)
-    ids = (y // block_side) * ncols + (x // block_side)
-    for j, v in ((0, covers), (2, 1.0 - covers), (3, np.ones(len(y)))):
-        terms[:, j] = np.bincount(ids, weights=v, minlength=len(terms))
-    y, x = np.nonzero(p > 0)
-    ids = (y // block_side) * ncols + (x // block_side)
-    terms[:, 1] = np.bincount(ids, weights=p[y, x].astype(float) * (1.0 - q[y, x]), minlength=len(terms))
-    totals = terms.sum(axis=0)
-    np.testing.assert_allclose(totals, [result['tpw'], result['fpw'], result['fnw'], result['n_truth']], rtol=1e-11, atol=1e-7)
-    result.update(evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
-                  spatial_bootstrap_cluster_m=block_side * metric.PIXEL_M)
+    if p.ndim != 2:
+        raise ValueError("prediction must be a 2D array")
+    required = ("region", "visible", "truth")
+    if any(name not in fold for name in required):
+        raise ValueError("fold must include region, visible and truth masks")
+    region = np.asarray(fold["region"], bool)
+    visible = np.asarray(fold["visible"], bool)
+    truth = np.asarray(fold["truth"], bool)
+    valid_ = np.asarray(valid, bool)
+    if any(a.shape != p.shape for a in (region, visible, truth, valid_)):
+        raise ValueError("prediction, fold masks and valid must be aligned")
+    if np.any(visible & truth):
+        raise ValueError("withheld truth must not overlap the visible-catalogue mask")
+    scored_region = region & valid_
+    result, terms = metric.dti_spatial_terms(
+        p, truth, valid=scored_region, known=visible, origin=origin,
+        global_shape=global_shape, block_side=block_side)
+    if result["n_truth"] <= 0:
+        raise ValueError("a holdout fold must contain withheld positive pixels")
+    result.update(
+        evidence_class="HOLDOUT-DTI",
+        evaluator_version=VERSION,
+        withheld_positive_count=int(result["n_truth"]),
+        pooled=False,
+        alpha=metric.ALPHA,
+        beta=metric.BETA,
+        triangular_radius_m=metric.RADIUS_M,
+        spatial_block_side_px=int(block_side),
+        spatial_block_size_m=int(block_side) * metric.PIXEL_M,
+    )
     return result, terms
 
 
 def from_terms(terms):
-    a = np.asarray(terms, dtype=float)
-    tp, fp, fn = a[..., 0], a[..., 1], a[..., 2]
-    den = tp + metric.ALPHA * fp + metric.BETA * fn
-    return np.divide(tp, den, out=np.zeros_like(tp), where=den > 0)
+    """Vectorized DTI of one or more rows of additive metric terms."""
+    a = np.asarray(terms, dtype=np.float64)
+    if a.shape[-1] != 4:
+        raise ValueError("metric terms must end with TPw, FPw, FNw, withheld count")
+    return metric.dti_from_components(a[..., 0], a[..., 1], a[..., 2])
 
 
-def pooled_summary(terms_by_arm, draws=1000, seed=520810, candidate='disagreement'):
-    """Pool terms first; paired percentile CI resamples physical 20 km blocks.
+def pooled_summary(terms_by_arm, draws=2000, seed=520810,
+                   candidate="h57b_tip_distance"):
+    """Pool terms first, then paired-bootstrap physical spatial clusters.
 
-    Each arm has identical block coordinates/order and evaluation masks. Contributions
-    from the same physical block across folds are merged BEFORE resampling, so overlap
-    in a component tail is not mistaken for an independent new spatial cluster.
+    Input arrays share the fixed global block order returned by ``evaluate``.
+    Contributions from the same physical block across folds/draws are already
+    merged by summing rows before this function is called.  Intervals are
+    conditional on fitted folds, fixed emission budgets and catalogue labels;
+    they are not leaderboard intervals.
     """
     names = list(terms_by_arm)
     if not names or candidate not in terms_by_arm:
-        raise ValueError('candidate and at least one arm required')
-    if draws < 20:
-        raise ValueError('too few bootstrap draws')
-    arrays = {n: np.asarray(v, float) for n, v in terms_by_arm.items()}
+        raise ValueError("candidate arm and at least one comparator are required")
+    if int(draws) < 100:
+        raise ValueError("at least 100 spatial bootstrap draws are required")
+    arrays = {name: np.asarray(value, dtype=np.float64)
+              for name, value in terms_by_arm.items()}
     shape = next(iter(arrays.values())).shape
     if len(shape) != 2 or shape[1] != 4 or any(a.shape != shape for a in arrays.values()):
-        raise ValueError('aligned per-spatial-block arrays of four terms required')
+        raise ValueError("all arms need aligned per-spatial-block arrays of four terms")
     if any(not np.isfinite(a).all() or (a < -1e-8).any() for a in arrays.values()):
-        raise ValueError('invalid metric terms')
-    # Include negative-only clusters carrying FP weight for any comparator.
+        raise ValueError("metric terms must be finite and non-negative")
     active = np.any(np.stack([a.sum(axis=1) > 0 for a in arrays.values()]), axis=0)
-    arrays = {n: a[active] for n, a in arrays.items()}
-    nb = int(active.sum())
-    if nb < 2:
-        raise ValueError('need at least two nonempty spatial clusters')
+    arrays = {name: a[active] for name, a in arrays.items()}
+    n_clusters = int(active.sum())
+    if n_clusters < 2:
+        raise ValueError("need at least two non-empty spatial blocks")
+
+    totals = {name: a.sum(axis=0) for name, a in arrays.items()}
     rng = np.random.default_rng(seed)
-    picks = rng.integers(0, nb, size=(draws, nb))
-    boot = {n: from_terms(a[picks].sum(axis=1)) for n, a in arrays.items()}
-    summaries = {}
-    for n, a in arrays.items():
-        t = a.sum(axis=0)
-        summaries[n] = dict(evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
-            dti=float(from_terms(t)), ci95=[float(x) for x in np.quantile(boot[n], [.025, .975])],
-            withheld_positive_pixels=int(round(t[3])), tpw=float(t[0]), fpw=float(t[1]), fnw=float(t[2]))
-    controls = [n for n in names if n != candidate]
-    best = max(controls, key=lambda n: summaries[n]['dti']) if controls else None
-    differences = {}
-    for n in controls:
-        delta = boot[candidate] - boot[n]
-        differences[n] = dict(evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
-            delta=summaries[candidate]['dti'] - summaries[n]['dti'],
-            ci95=[float(x) for x in np.quantile(delta, [.025, .975])],
-            withheld_positive_pixels=summaries[candidate]['withheld_positive_pixels'])
-    return dict(evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
-        alpha=metric.ALPHA, beta=metric.BETA, triangular_radius_m=metric.R_M,
-        pooled=True, scores=summaries, best_comparable_control=best,
-        paired_differences=differences, bootstrap=dict(method='paired physical spatial-cluster percentile',
-            clusters=nb, draws=draws, seed=seed, confidence=.95,
-            caveat='Conditional on fitted folds, catalogue labels and fixed budgets; not a leaderboard interval.'),
-        implementation_sha256=implementation_hashes())
+    picks = rng.integers(0, n_clusters, size=(int(draws), n_clusters))
+    boot = {name: from_terms(a[picks].sum(axis=1))
+            for name, a in arrays.items()}
+
+    scores = {}
+    for name, total in totals.items():
+        scores[name] = dict(
+            evidence_class="HOLDOUT-DTI",
+            evaluator_version=VERSION,
+            pooled=True,
+            dti=float(from_terms(total)),
+            ci95=[float(x) for x in np.quantile(boot[name], [0.025, 0.975])],
+            withheld_positive_count=int(round(total[3])),
+            withheld_positive_pixels=int(round(total[3])),
+            tpw=float(total[0]), fpw=float(total[1]), fnw=float(total[2]),
+        )
+
+    controls = [name for name in names if name != candidate]
+    best_control = max(controls, key=lambda n: scores[n]["dti"]) if controls else None
+    paired = {}
+    for name in controls:
+        delta = boot[candidate] - boot[name]
+        paired[name] = dict(
+            evidence_class="HOLDOUT-DTI",
+            evaluator_version=VERSION,
+            delta=float(scores[candidate]["dti"] - scores[name]["dti"]),
+            ci95=[float(x) for x in np.quantile(delta, [0.025, 0.975])],
+            withheld_positive_count=scores[candidate]["withheld_positive_count"],
+        )
+    return dict(
+        evidence_class="HOLDOUT-DTI",
+        evaluator_version=VERSION,
+        alpha=metric.ALPHA,
+        beta=metric.BETA,
+        triangular_radius_m=metric.RADIUS_M,
+        scores=scores,
+        best_comparable_control=best_control,
+        paired_differences=paired,
+        bootstrap=dict(method="paired physical spatial-block percentile",
+                       block_side_px=200, block_size_m=20_000,
+                       clusters=n_clusters, draws=int(draws), seed=int(seed),
+                       confidence=0.95,
+                       caveat="Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval."),
+        implementation_sha256=implementation_hashes(),
+    )

@@ -8,57 +8,42 @@
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
 <nav><a class="" href="index.html">Home</a><a class="on" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
-<h2>Is it OK to download and submit?</h2>
-<div class="card" style="border-left:6px solid #b00020"><b>HOLD - do not submit this file yet.</b> The file is a fresh, portal-valid raster (all format checks pass), but the literal uniqueness gate fired against registry rasters, so it is not cleared under the protocol. See the banner on the <a href="index.html">front page</a> and <a href="results.html">results</a>.</div>
-
-<h2>Submit in four steps</h2>
-<div class="card">
-<ol>
-<li><b>Download the file.</b>
-<a class="big" href="downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif" download>Download <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code></a>
-<span class="muted">~0.0 MB &middot;
-sha256 <code>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</code></span></li>
-<li><b>Open the portal.</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/" target="_blank" rel="noopener">DrivenData competition #306</a> &rarr;
-<i>Participate</i> &rarr; <i>Submissions</i>. You need a DrivenData account joined to the
-competition.</li>
-<li><b>Upload that exact file.</b> Do not re-save it in another program; re-saving can
-rewrite the header and break the grid.</li>
-<li><b>Fill in the name and note</b> (below), then submit.</li>
-</ol>
+<h2>Download / submission status</h2>
+<div class="bad-box" style="border-width:3px">
+<h3 style="margin-top:0">NOT CLEARED — do not download or submit</h3>
+<p>No new candidate GeoTIFF was generated. The in-memory H57-B final-dot map has a literal
+3-px forward-overlap of <b>72.71%</b> with <code>13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif</code>, above the
+<b>70%</b> stop threshold. The surface gate passed (full-footprint max Spearman
+<b>0.423</b>; 667 of
+667 indexed rasters checked), but the final-dot gate
+failed and stopped at its first firing. No reverse-overlap exemption or Jaccard gate was applied.</p>
+<p>The original 10,000-dot-cap preregistered result is not comparable: realized counts differed in
+four of eight cells. A later equal-mass reading is only a post-hoc sensitivity (candidate
+HOLDOUT-DTI <b>0.17128</b>, 95% CI [0.15851, 0.18437],
+with 22276 withheld positives; paired difference
+<b>0.06096</b>, 95% CI [0.05203, 0.07038]).
+It is not confirmatory and cannot clear the original preregistration.</p>
+<p><b>Validator:</b> not run; no TIF exists. <b>Download:</b> not cleared.
+<b>Submission:</b> not submitted; no receipt. <b>Weekly slot:</b> not selected.</p>
 </div>
+<p>Proposed name (draft only): <code>gems57-h57b-tip-distance-6772-323af960dbef</code><br>
+Proposed note (116 characters; not assigned):
+<code>Fault-zone anatomy H57-B tip-distance; matched-mass sensitivity only. HOLD: not cleared, no upload or slot selected.</code></p>
+<p>The earlier <code>gems57-h57-anatomy-…-zeros.tif</code> remains a historic HOLD artifact in
+<code>docs/downloads/</code>; its old 644-raster scan is not a current clearance. This page
+intentionally provides no download link. See the <a href="run-card.html">current run card</a>.</p>
 
-<h2>The two text fields</h2>
-<div class="card">
-<p><b>Submission name</b> (the portal generates a timestamped filename; use this label):</p>
-<code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357</code>
-<p style="margin-top:10px"><b>Submission note</b> (123 characters, limit 140) &mdash;
-paste this verbatim:</p>
-<code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code>
-</div>
-
-<h2>What the portal checks, and what this file does</h2>
-<div class="card"><table><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<p class="muted">Checks are run by <code>src/gems57/validate.py</code> against the shipped
-sample raster; full output is in <code>evidence/submission_build_all.json</code>.</p></div>
-
-<h2>What this submission is</h2>
-<div class="card">
-<p>A binary dot field: 35341 pixels set to 1.0, everything else 0.0, on
-the official EPSG:32611 100 m grid. Dots sit only inside the active footprint; every dot is
-off-catalogue. <b>Nothing is written on a mapped fault</b>, because a dot there scores
-nothing and the false-negative denominator is fixed.</p>
-<p><b>The one holdout number for this file (HOLDOUT-DTI, not a live score):</b> 0.2279, 95% CI [0.1867, 0.2691], leave-one-quadrant-out, 22,641 withheld positives, evaluator gems57 pooled DTI (alpha 0.2, beta 0.8, 300 m kernel). Measured at the shipped per-cell share. <b>No organizer score exists for this file yet.</b></p>
-<p><b>Read the score with care.</b> The holdout numbers on the results page are measured on
-<i>withheld catalogue pixels</i>, not on the live set. The holdout-to-live rank correlation
-measured across twelve live submissions in the sibling repository is
-<b>&rho; = +0.14</b>, so a high holdout number is <i>not</i> evidence of a high live score.
-See <a href="results.html">Results</a> and
-<a href="run-card.html">Run card</a>.</p>
-</div>
+<h2>What the status means</h2>
+<ul>
+<li><b>HOLDOUT-DTI</b> is a local hide-and-recover instrument reading, not a live score or
+leaderboard projection.</li>
+<li><b>Registry uniqueness</b> is evaluated before allocation on the surface and after allocation
+on final dots. The literal forward-overlap rule is applied as written; no reverse exemption.</li>
+<li><b>ORGANIZER-CONFIRMED</b> is reserved for a submission-page receipt. No receipt exists.</li>
+</ul>
 </main>
-<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated 2026-10-10 07:22 UTC by <code>scripts/build_site.py</code> from committed evidence.
+Measured values come from evidence files; protocol thresholds, historical context, and date-bounded public-source snapshots are stated inline.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

@@ -29,16 +29,19 @@ def junctions(mask: np.ndarray) -> np.ndarray:
     return m & (n >= 3)
 
 
-def segments(mask: np.ndarray, max_len_px: int = 12) -> tuple[np.ndarray, int, np.ndarray]:
-    """Split a binary trace mask into segments.
+def segments(mask: np.ndarray, max_len_px: int | None = 12) -> tuple[np.ndarray, int, np.ndarray]:
+    """Split a binary trace mask into between-junction branches.
 
-    Segments are the branches between intersection pixels, further cut into
-    chunks of at most ``max_len_px`` pixels (1.2 km at 100 m) so that strike is
-    locally meaningful and a single long trace is not withheld all at once.
+    When ``max_len_px`` is an integer, long branches are cut into chunks of at
+    most that many pixels (useful for local-strike features).  ``None`` keeps
+    every whole branch intact and is the required mode for whole-segment
+    holdouts.  Junction pixels remain separate (label zero) in either mode.
 
-    Returns ``(seg_id, n_seg, seg_chunk)`` where ``seg_chunk`` groups chunks that
-    belong to the same underlying branch (used only for diagnostics).
+    Returns ``(seg_id, n_seg, branch_id)`` where ``branch_id`` groups chunks
+    from the same underlying branch when chunking is enabled.
     """
+    if max_len_px is not None and int(max_len_px) <= 0:
+        raise ValueError("max_len_px must be a positive integer or None")
     m = np.asarray(mask, bool)
     junc = junctions(m)
     branches, nb = ndi.label(m & ~junc, structure=STRUCT3)
@@ -57,7 +60,7 @@ def segments(mask: np.ndarray, max_len_px: int = 12) -> tuple[np.ndarray, int, n
             continue
         idx = order[a:c]
         n = c - a
-        if n <= max_len_px:
+        if max_len_px is None or n <= max_len_px:
             seg.ravel()[idx] = nxt
             nxt += 1
             continue

@@ -8,107 +8,372 @@
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
 <nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="on" href="run-card.html">Run card</a></nav>
 <main>
-<h2>Run card</h2>
-<p>One JSON card, per parallel-run protocol rule 5. Machine-readable copy:
-<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"
-target="_blank" rel="noopener"><code>evidence/run_card.json</code></a>.</p>
+<h2>Current run card</h2>
+<p>The authoritative machine-readable decision is
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card.json"><code>evidence/run_card.json</code></a>.
+This page renders that file and does not regenerate or modify it.</p>
 <pre>{
-  &quot;hypothesis&quot;: &quot;Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.&quot;,
-  &quot;mechanism&quot;: &quot;Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage &amp; Brodsky 2011). Operationally: a gradient-boosted intensity over the eight shipped catalogue-geometry features (side dropped), calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar.&quot;,
-  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (&gt;= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.&quot;,
-  &quot;holdout_dti&quot;: {
-    &quot;instrument&quot;: &quot;hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out, per-cell cap 10,000 (shipped density), features = shipped 8 (side dropped)&quot;,
-    &quot;evaluator_version&quot;: &quot;gems57 pooled DTI, scripts/run_sense_experiment.py&quot;,
-    &quot;withheld_positive_pixels&quot;: 22641,
-    &quot;pooled_dti&quot;: 0.2279081739637539,
-    &quot;ci95_quadrant_jackknife&quot;: [
-      0.18673527927748879,
-      0.269081068650019
-    ],
-    &quot;coverage&quot;: 0.3287785538228303,
-    &quot;label&quot;: &quot;HOLDOUT-DTI - a local instrument reading, NOT a projected live score&quot;
-  },
-  &quot;correlation_overlap_full_registry&quot;: {
-    &quot;n_unique_grid_rasters&quot;: 644,
-    &quot;max_spearman_full_footprint&quot;: {
-      &quot;value&quot;: 0.18037159651203355,
-      &quot;raster&quot;: &quot;7GEMSDOE:downloads/gems7-strike30x3-v2-2b06d45c5b57.tif&quot;
-    },
-    &quot;max_jaccard&quot;: {
-      &quot;value&quot;: 0.08303660218779071,
-      &quot;raster&quot;: &quot;GEMSDOE45:docs/downloads/gems45-h46-kmtip-survival-20261006-zeros.tif&quot;
-    },
-    &quot;max_dot_overlap_fwd_3px&quot;: {
-      &quot;value&quot;: 1.0,
-      &quot;raster&quot;: &quot;17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif&quot;
-    },
-    &quot;n_overlap_firings_one_directional_literal_gate&quot;: 114,
-    &quot;informational_two_sided_true_duplicates_not_a_clearance_rule&quot;: 0,
-    &quot;unique_by_protocol_literal&quot;: false
-  },
-  &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;n_registry_rasters&quot;: 15,
-    &quot;rho_limit&quot;: 0.9,
-    &quot;jaccard_limit&quot;: 0.5,
-    &quot;overlap_limit&quot;: 0.7,
-    &quot;worst_spearman_full_footprint&quot;: 0.01070177139044915,
-    &quot;worst_rho_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;worst_jaccard_dot_sets&quot;: 0.009534650570199256,
-    &quot;worst_jaccard_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;worst_dot_overlap_3px&quot;: 0.35720551201154466,
-    &quot;worst_overlap_submission&quot;: &quot;topo-gap-closure-t-v2-on-d1-5&quot;,
-    &quot;dot_union_rho_note&quot;: &quot;reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01&quot;,
-    &quot;unique&quot;: true
-  },
-  &quot;raster_sha256&quot;: &quot;8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482&quot;,
-  &quot;validator_output&quot;: {
-    &quot;no_nan_anywhere&quot;: true,
-    &quot;in_footprint_all_finite&quot;: true,
-    &quot;range_0_1_guaranteed&quot;: true,
-    &quot;crs_shape_transform_match&quot;: true,
-    &quot;zero_dots_on_mapped_catalogue&quot;: true,
-    &quot;all_checks_passed&quot;: true,
-    &quot;n_checks&quot;: 15
-  },
-  &quot;submission_name&quot;: &quot;gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357&quot;,
-  &quot;submission_note&quot;: &quot;57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a&quot;,
-  &quot;sense_of_slip&quot;: {
-    &quot;available_in_provided_database&quot;: true,
-    &quot;source&quot;: &quot;data/external/trace_segments_utm11.csv column sense (INGENIOUS vector); IR-57-SLIP-02&quot;,
-    &quot;measured_log_ratio_right_over_left&quot;: 0.03920300039062278,
-    &quot;encoded_in_shipped_file&quot;: false,
-    &quot;tested_as_opt_in_features&quot;: true,
-    &quot;tested_result&quot;: {
-      &quot;per_quadrant_diff&quot;: {
-        &quot;NW&quot;: 0.0037939165243941475,
-        &quot;NE&quot;: 0.0055511076585393615,
-        &quot;SW&quot;: 0.002465441253495404,
-        &quot;SE&quot;: -0.005565574192837125
+  &quot;record_type&quot;: &quot;single GEMS fault-zone-anatomy run card&quot;,
+  &quot;run_date_local&quot;: &quot;2026-10-09&quot;,
+  &quot;lane&quot;: &quot;fault-zone anatomy only&quot;,
+  &quot;hypothesis&quot;: &quot;Withheld whole fault branches are enriched near visible branch termini after cut-induced endpoints within the 3 px collar are filtered.&quot;,
+  &quot;mechanism&quot;: &quot;Append one learned distance-to-filtered-terminal feature to the no_side anatomy baseline; derive terminals and all other catalogue geometry only from visible faults; do not hand-set an angle or lobe width.&quot;,
+  &quot;named_non_fault_mimic&quot;: &quot;Road and dry-wash terminations, map-sheet or digitization breaks, and other non-fault line endings; no independent geology/topography layer was used to disambiguate them.&quot;,
+  &quot;holdout&quot;: {
+    &quot;primary_preregistered_run&quot;: {
+      &quot;candidate&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;withheld_positive_count&quot;: 22276,
+        &quot;dti&quot;: 0.18820837548411937,
+        &quot;ci95&quot;: [
+          0.17600573051327995,
+          0.2014528523390937
+        ],
+        &quot;bootstrap&quot;: {
+          &quot;method&quot;: &quot;paired physical spatial-block percentile&quot;,
+          &quot;block_side_px&quot;: 200,
+          &quot;block_size_m&quot;: 20000,
+          &quot;clusters&quot;: 153,
+          &quot;draws&quot;: 1000,
+          &quot;seed&quot;: 520810,
+          &quot;confidence&quot;: 0.95,
+          &quot;caveat&quot;: &quot;Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval.&quot;
+        }
       },
-      &quot;mean_diff&quot;: 0.001561222810897947,
-      &quot;sd_diff&quot;: 0.004916399388444914,
-      &quot;n_quadrants_positive&quot;: 3,
-      &quot;canary_clean&quot;: false,
-      &quot;promote_rule&quot;: &quot;positive in &gt;=3 of 4 quadrants AND canary clean&quot;,
-      &quot;promote&quot;: false
+      &quot;control_no_side&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;withheld_positive_count&quot;: 22276,
+        &quot;dti&quot;: 0.13039882271415865,
+        &quot;ci95&quot;: [
+          0.11886499399733688,
+          0.14199116730554776
+        ],
+        &quot;bootstrap&quot;: {
+          &quot;method&quot;: &quot;paired physical spatial-block percentile&quot;,
+          &quot;block_side_px&quot;: 200,
+          &quot;block_size_m&quot;: 20000,
+          &quot;clusters&quot;: 153,
+          &quot;draws&quot;: 1000,
+          &quot;seed&quot;: 520810,
+          &quot;confidence&quot;: 0.95,
+          &quot;caveat&quot;: &quot;Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval.&quot;
+        }
+      },
+      &quot;paired_candidate_minus_control&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;delta&quot;: 0.05780955276996072,
+        &quot;ci95&quot;: [
+          0.05092857796061739,
+          0.06649625428923583
+        ],
+        &quot;withheld_positive_count&quot;: 22276
+      },
+      &quot;realized_dot_counts_matched_across_arms&quot;: false,
+      &quot;verdict&quot;: &quot;HOLD \u2014 primary preregistration requires matched realized counts; candidate emitted fewer dots in four of eight cells, so the arm contrast is non-comparable and cannot promote.&quot;,
+      &quot;interpretation&quot;: &quot;The original 10,000-dot cap was not saturated equally; the candidate emitted fewer dots in four of eight cells. The score is HOLDOUT-DTI, but the arm contrast is non-comparable and cannot promote.&quot;
+    },
+    &quot;matched_mass_sensitivity_not_confirmatory&quot;: {
+      &quot;candidate&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;withheld_positive_count&quot;: 22276,
+        &quot;dti&quot;: 0.17128031026768434,
+        &quot;ci95&quot;: [
+          0.15851229067226788,
+          0.18437259358352637
+        ],
+        &quot;bootstrap&quot;: {
+          &quot;method&quot;: &quot;paired physical spatial-block percentile&quot;,
+          &quot;block_side_px&quot;: 200,
+          &quot;block_size_m&quot;: 20000,
+          &quot;clusters&quot;: 152,
+          &quot;draws&quot;: 1000,
+          &quot;seed&quot;: 520810,
+          &quot;confidence&quot;: 0.95,
+          &quot;caveat&quot;: &quot;Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval.&quot;
+        }
+      },
+      &quot;control_no_side&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;withheld_positive_count&quot;: 22276,
+        &quot;dti&quot;: 0.110318735475735,
+        &quot;ci95&quot;: [
+          0.0994157561483873,
+          0.12223972209143096
+        ],
+        &quot;bootstrap&quot;: {
+          &quot;method&quot;: &quot;paired physical spatial-block percentile&quot;,
+          &quot;block_side_px&quot;: 200,
+          &quot;block_size_m&quot;: 20000,
+          &quot;clusters&quot;: 152,
+          &quot;draws&quot;: 1000,
+          &quot;seed&quot;: 520810,
+          &quot;confidence&quot;: 0.95,
+          &quot;caveat&quot;: &quot;Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval.&quot;
+        }
+      },
+      &quot;paired_candidate_minus_control&quot;: {
+        &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+        &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+        &quot;delta&quot;: 0.060961574791949344,
+        &quot;ci95&quot;: [
+          0.052029184889393974,
+          0.07037593348563204
+        ],
+        &quot;withheld_positive_count&quot;: 22276
+      },
+      &quot;dot_counts_per_cell&quot;: {
+        &quot;d_only&quot;: [
+          6772
+        ],
+        &quot;no_side&quot;: [
+          6772
+        ],
+        &quot;h57b_tip_distance&quot;: [
+          6772
+        ]
+      },
+      &quot;cap_per_cell&quot;: 6772,
+      &quot;numeric_rule_passed&quot;: true,
+      &quot;promotion_eligible&quot;: false,
+      &quot;analysis_role&quot;: &quot;posthoc-matched-sensitivity&quot;,
+      &quot;interpretive_limit&quot;: &quot;The cap was derived from the minimum candidate dot count in the initial unmatched run, after that run had been observed. No DTI score was used to pick the cap and the model/seed/holdout/features were unchanged, but cap-selection uncertainty is not represented by the paired spatial-block CI. Treat as a favorable sensitivity analysis, not a confirmatory preregistered result.&quot;,
+      &quot;interpretation&quot;: &quot;Favorable sensitivity reading, not confirmatory: the common cap was derived from the first run&#x27;s candidate counts after the original result was observed. The paired spatial-block CI is conditional on this selected cap.&quot;
+    },
+    &quot;evaluator_version&quot;: &quot;gems57-buffered-whole-branch-pooled-v2.0&quot;,
+    &quot;withheld_positive_count&quot;: 22276,
+    &quot;confidence_interval_method&quot;: {
+      &quot;method&quot;: &quot;paired physical spatial-block percentile&quot;,
+      &quot;block_side_px&quot;: 200,
+      &quot;block_size_m&quot;: 20000,
+      &quot;clusters&quot;: 152,
+      &quot;draws&quot;: 1000,
+      &quot;seed&quot;: 520810,
+      &quot;confidence&quot;: 0.95,
+      &quot;caveat&quot;: &quot;Conditional on fitted folds, fixed dot caps and visible catalogue labels; not a leaderboard interval.&quot;
+    },
+    &quot;metric&quot;: {
+      &quot;alpha&quot;: 0.2,
+      &quot;beta&quot;: 0.8,
+      &quot;triangular_kernel_radius_m&quot;: 300
+    },
+    &quot;feature_canary&quot;: {
+      &quot;threshold&quot;: 0.9,
+      &quot;maximum_discriminative_auc&quot;: 0.839177516900676,
+      &quot;per_feature&quot;: {
+        &quot;d&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.7709559006787292,
+          &quot;discriminative_auc_max&quot;: 0.839177516900676,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;d_perp&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.7643301014647796,
+          &quot;discriminative_auc_max&quot;: 0.8322148115904366,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;d_par_abs&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.6595104592689793,
+          &quot;discriminative_auc_max&quot;: 0.7041454173166927,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;side&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.5183421169304192,
+          &quot;discriminative_auc_max&quot;: 0.5374594984407485,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;log_len&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.6014526431991413,
+          &quot;discriminative_auc_max&quot;: 0.6302138941277325,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;sin2&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.5,
+          &quot;discriminative_auc_max&quot;: 0.5,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;cos2&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.5,
+          &quot;discriminative_auc_max&quot;: 0.5,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;coherence&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.6214515528837794,
+          &quot;discriminative_auc_max&quot;: 0.6680494334719336,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;density&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.5776533436665691,
+          &quot;discriminative_auc_max&quot;: 0.5977635372695699,
+          &quot;leakage_flag&quot;: false
+        },
+        &quot;tip_distance&quot;: {
+          &quot;discriminative_auc_mean&quot;: 0.7497495783035619,
+          &quot;discriminative_auc_max&quot;: 0.7996280018200728,
+          &quot;leakage_flag&quot;: false
+        }
+      },
+      &quot;clean&quot;: true,
+      &quot;full_result_json&quot;: &quot;evidence/exp_h57b_holdout_matched6772.json&quot;
     }
   },
-  &quot;verdict&quot;: &quot;HOLD (format checks pass; literal uniqueness forward-overlap gate fired; not cleared)&quot;,
-  &quot;verdict_scope&quot;: &quot;eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above.&quot;
+  &quot;registry&quot;: {
+    &quot;inventory&quot;: {
+      &quot;scope&quot;: &quot;public sibling-repository GitHub archive; not an authoritative list of all organizer submissions&quot;,
+      &quot;owner&quot;: &quot;buffedlizard55-lab&quot;,
+      &quot;repos_scanned&quot;: 56,
+      &quot;repos_unreachable_or_missing&quot;: [],
+      &quot;n_unique_grid_rasters&quot;: 667,
+      &quot;skipped&quot;: {
+        &quot;not_grid&quot;: 15,
+        &quot;not_single_band_submission&quot;: 0,
+        &quot;too_large_or_missing&quot;: 0,
+        &quot;self&quot;: 0,
+        &quot;lazy_excluded_nonsubmission&quot;: 44,
+        &quot;lazy_fetched&quot;: 28
+      },
+      &quot;index_path&quot;: &quot;evidence/registry_full_index.json&quot;
+    },
+    &quot;pre_placement_surface&quot;: {
+      &quot;phase&quot;: &quot;pre-placement surface&quot;,
+      &quot;verdict&quot;: &quot;PASS&quot;,
+      &quot;rho_limit&quot;: 0.9,
+      &quot;n_registry_indexed&quot;: 667,
+      &quot;n_registry_checked&quot;: 667,
+      &quot;n_reprojected_priors&quot;: 1,
+      &quot;registry_complete&quot;: true,
+      &quot;short_circuited_on_failure&quot;: false,
+      &quot;max_spearman_full_footprint&quot;: {
+        &quot;value&quot;: 0.42296888171570546,
+        &quot;raster&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T041759Z/submission.tif&quot;,
+        &quot;repo&quot;: &quot;GEMSDOE2&quot;
+      },
+      &quot;candidate_surface_array_sha256&quot;: &quot;ebf11b4605929105c8d786f00a09547e70279335ce11139d5467672cbe960071&quot;,
+      &quot;n_rho_firings&quot;: 0,
+      &quot;first_rho_firing&quot;: null,
+      &quot;errors&quot;: [],
+      &quot;coverage_errors&quot;: []
+    },
+    &quot;final_dots&quot;: {
+      &quot;phase&quot;: &quot;final dots&quot;,
+      &quot;verdict&quot;: &quot;FAIL \u2014 literal rank/forward-overlap gate&quot;,
+      &quot;candidate_dots&quot;: 27088,
+      &quot;rho_limit&quot;: 0.9,
+      &quot;overlap_limit&quot;: 0.7,
+      &quot;overlap_radius_px&quot;: 3.0,
+      &quot;n_registry_indexed&quot;: 667,
+      &quot;n_registry_checked&quot;: 10,
+      &quot;n_reprojected_priors&quot;: 0,
+      &quot;registry_complete&quot;: false,
+      &quot;short_circuited_on_failure&quot;: true,
+      &quot;max_spearman_full_footprint&quot;: {
+        &quot;value&quot;: 0.04032118846206736,
+        &quot;raster&quot;: &quot;11GEMSDOE:docs/downloads/gems-structural-area06-v1.tif&quot;,
+        &quot;repo&quot;: &quot;11GEMSDOE&quot;
+      },
+      &quot;max_dot_overlap_fwd_3px&quot;: {
+        &quot;value&quot;: 0.7270747194329592,
+        &quot;raster&quot;: &quot;13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif&quot;,
+        &quot;repo&quot;: &quot;13GEMSDOE&quot;
+      },
+      &quot;n_rho_firings&quot;: 0,
+      &quot;n_overlap_firings&quot;: 1,
+      &quot;first_firing&quot;: {
+        &quot;submission&quot;: &quot;13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif&quot;,
+        &quot;sources&quot;: [
+          &quot;13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif&quot;,
+          &quot;13GEMSDOE:docs/downloads/archive/session7-superseded-13gems_20261001_r11-greedy-mp_B_nan-outside.tif&quot;,
+          &quot;GEMSDOE54:registry/registry_rasters/r11_greedy_mp.tif&quot;
+        ],
+        &quot;repo&quot;: &quot;13GEMSDOE&quot;,
+        &quot;sha256&quot;: &quot;033df94ceef16350030a69d5cfdec0afe7bc605bb155d8f3b98b203aabf80abd&quot;,
+        &quot;file&quot;: &quot;/tmp/gems_registry_cache/033df94ceef16350.tif&quot;,
+        &quot;source_transform&quot;: [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        &quot;needs_reproject&quot;: false,
+        &quot;spearman_full_footprint&quot;: -0.0034191159258355943,
+        &quot;my_dots_within_3px_of_theirs&quot;: 0.7270747194329592,
+        &quot;their_positive_pixels&quot;: 272853,
+        &quot;duplicate_by_rho&quot;: false,
+        &quot;duplicate_by_overlap&quot;: true
+      },
+      &quot;candidate_decoded_array_sha256&quot;: &quot;323af960dbef0bc85a42001d0da19b73da8b1a509a6f21966e257ddb38d0be67&quot;,
+      &quot;errors&quot;: [],
+      &quot;coverage_errors&quot;: []
+    },
+    &quot;rho_threshold&quot;: 0.9,
+    &quot;candidate_dot_overlap_threshold&quot;: 0.7,
+    &quot;dot_overlap_distance_px&quot;: 3,
+    &quot;reverse_overlap_exemption&quot;: false,
+    &quot;jaccard_gate&quot;: false,
+    &quot;pre_placement_full_report_json&quot;: &quot;evidence/uniqueness_h57b_surface.json&quot;,
+    &quot;final_dots_full_report_json&quot;: &quot;evidence/uniqueness_h57b_dots.json&quot;
+  },
+  &quot;artifact&quot;: {
+    &quot;raster_generated&quot;: false,
+    &quot;raster_sha256&quot;: null,
+    &quot;planned_decoded_array_sha256&quot;: &quot;323af960dbef0bc85a42001d0da19b73da8b1a509a6f21966e257ddb38d0be67&quot;,
+    &quot;proposed_name_basis_sha256&quot;: &quot;323af960dbef0bc85a42001d0da19b73da8b1a509a6f21966e257ddb38d0be67&quot;,
+    &quot;submission_name&quot;: &quot;gems57-h57b-tip-distance-6772-323af960dbef&quot;,
+    &quot;submission_name_status&quot;: &quot;proposed unique label only; no file or slot assigned&quot;,
+    &quot;submission_note&quot;: &quot;Fault-zone anatomy H57-B tip-distance; matched-mass sensitivity only. HOLD: not cleared, no upload or slot selected.&quot;,
+    &quot;submission_note_characters&quot;: 116,
+    &quot;validator_output&quot;: &quot;NOT RUN \u2014 no candidate GeoTIFF was generated because this evidence is not confirmatory under the original preregistration.&quot;,
+    &quot;download_status&quot;: &quot;NOT CLEARED \u2014 no new TIF generated&quot;,
+    &quot;submission_status&quot;: &quot;NOT SUBMITTED \u2014 no organizer receipt exists&quot;,
+    &quot;weekly_slot_selected&quot;: false
+  },
+  &quot;promote_verdict&quot;: &quot;HOLD \u2014 final-dot literal registry gate failed or is incomplete; no raster&quot;,
+  &quot;projection_or_leaderboard_claim&quot;: &quot;None. HOLDOUT-DTI is a local hide-and-recover measurement, not a live score or leaderboard projection.&quot;,
+  &quot;sources_and_limitations&quot;: {
+    &quot;sources&quot;: [
+      {
+        &quot;source&quot;: &quot;DrivenData metric/problem description&quot;,
+        &quot;url&quot;: &quot;https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/&quot;
+      },
+      {
+        &quot;source&quot;: &quot;Schreurs (2003), distributed strike-slip shear zones&quot;,
+        &quot;url&quot;: &quot;https://doi.org/10.1144/GSL.SP.2003.210.01.03&quot;
+      },
+      {
+        &quot;source&quot;: &quot;Tchalenko (1970), shear-zone analogues&quot;,
+        &quot;url&quot;: &quot;https://doi.org/10.1130/0016-7606(1970)81%5B1625%3ASBSZOD%5D2.0.CO%3B2&quot;
+      },
+      {
+        &quot;source&quot;: &quot;Savage &amp; Brodsky (2011), fault damage zones&quot;,
+        &quot;url&quot;: &quot;https://doi.org/10.1029/2010JB007665&quot;
+      }
+    ],
+    &quot;limitations&quot;: [
+      &quot;Truth is withheld mapped catalogue geometry, not the organizer&#x27;s unpublished targets; transfer to unmapped faults is unknown.&quot;,
+      &quot;The H57-B matched-mass sensitivity is post-hoc, despite using unchanged seeds, features, model parameters, and folds; no confirmatory retest was allowed by the experiment budget.&quot;,
+      &quot;The GitHub sibling-repository archive is not a guaranteed complete list of private or organizer submissions.&quot;,
+      &quot;No receipt or organizer confirmation exists; no submission slot was selected or used.&quot;
+    ]
+  },
+  &quot;runtime_seconds&quot;: 291.5240762233734
 }</pre>
 <h2>How to read it</h2>
 <ul>
-<li><b>holdout_dti</b> is a <span class="tag hold">HOLDOUT-DTI</span> reading. It is <b>not</b> a
-projected live score, and no live score is claimed anywhere in this repository.</li>
-<li><b>verdict</b> is <code>promote</code> only if the validator passes every check <i>and</i> the
-uniqueness screen is clear. Promotion to an actual weekly slot is a separate selector step and is
-not done here.</li>
-<li><b>sense_of_slip.encoded = false</b> because the provided database has no such field
-(<code>IR-57-SLIP-01</code>).</li>
+<li><b>HOLDOUT-DTI</b> is a local hide-and-recover measurement, not a live score or leaderboard projection.</li>
+<li>The H57-B primary cap run was non-comparable; the later matched-mass reading is explicitly
+post-hoc sensitivity and is not confirmatory.</li>
+<li>The current final-dot map fails the literal forward 3-px overlap gate. No GeoTIFF was generated,
+no file is cleared to download, and no submission slot was selected.</li>
+<li>The proposed name and note are drafts only. <b>NOT SUBMITTED — no organizer receipt exists</b>.</li>
 </ul>
 </main>
-<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated 2026-10-10 07:22 UTC by <code>scripts/build_site.py</code> from committed evidence.
+Measured values come from evidence files; protocol thresholds, historical context, and date-bounded public-source snapshots are stated inline.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

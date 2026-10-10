@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
-"""Build, validate and uniqueness-check the lane's submission GeoTIFF.
+"""LEGACY in-sample builder; disabled as a promotion path.
 
-Steps
------
-1. Train the fault-zone-anatomy intensity on all holdout cells of the chosen
-   withholding mode.
-2. Measure two emission variants on the holdout -- with and without a hard
-   exclusion of the immediate catalogue flank -- and pick by measurement, not by
-   hand.
-3. Rebuild the surface from the *full* catalogue and allocate dots at the
-   holdout-optimal budget.
-4. Write the portal-legal GeoTIFF (zeros mode) plus a diagnostic NaN variant.
-5. Validate against every portal check and against every registry raster.
+The previous implementation is retained below for audit history only. Do not
+use it to write a candidate: it selects configuration on the same holdout cells
+it scores and writes the TIFF before the final literal registry gate. Its original
+workflow trained on all holdout cells, selected a flank using those same cells,
+then wrote and validated a GeoTIFF before uniqueness was known.
 """
 
 from __future__ import annotations
@@ -78,6 +72,11 @@ def score_variant(ctx, cells, clf, scale, exclude_flank_px: int, *,
 
 
 def main() -> None:
+    raise SystemExit(
+        "Disabled: this legacy builder selects and scores in-sample and writes before the literal "
+        "registry gate. No raster was generated. Use scripts/audit_h57b_candidate.py for the "
+        "current in-memory audit; its HOLD verdict does not clear a download or submission."
+    )
     ap = argparse.ArgumentParser()
     ap.add_argument("--mode", default="all", choices=["all", "detached"])
     ap.add_argument("--max-dots", type=int, default=200_000)

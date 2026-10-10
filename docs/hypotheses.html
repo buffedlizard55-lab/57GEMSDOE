@@ -15,12 +15,12 @@ is assessed against the 15 sibling submissions pulled into
 <table>
 <tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th>
 <th>Why it catches a fault the catalogue lacks</th><th>How it differs from existing work</th>
-<th class="n">Expected gain</th><th>Cost</th></tr>
+<th>Pre-run expectation / measured status</th><th>Cost / limitation</th></tr>
 <tr><td><b>H57-A</b><br>En echelon stepover anatomy<br><span class="tag org">SHIPPED</span></td>
 <td>existing_faults.tif catalogue geometry only (no external layer)</td><td>Joint fitted density of cross-strike stepover × along-strike offset of withheld strands, relative to the local strike of the nearest visible trace.</td><td>A splay is the geometric continuation of a mapped system at a small stepover. The catalogue stops where the mapper stopped — in alluvium, under cover, at a survey boundary — not where the structure stops. The continuation is therefore predictable from the mapped trace&#x27;s own geometry.</td><td>Every sibling lane in the registry allocates as a function of distance alone (isotropic dilation, Poisson discs, ridge ranking). None carries an along-strike/stepover structure, so none can express an en echelon array. Verified by the uniqueness check: worst |rho| and worst 3-px dot overlap are reported on the run card.</td>
-<td class="n">High</td><td>Low — catalogue only, no external data</td></tr><tr><td><b>H57-B</b><br>Trace-termination stress lobe<br><span class="tag hold">NOT RUN</span></td>
-<td>Catalogue segment endpoints; optionally the 100 m numerical feature stack</td><td>Second-derivative / curvature transform at mapped trace terminations, then an intensity lobe oriented on the fitted tip azimuth.</td><td>A mapped trace terminates where the mapper lost it. The stress lobe at a tip is where a relay or stepover strand nucleates, so terminations are enriched in unmapped continuations relative to trace midpoints.</td><td>GEMSDOE33&#x27;s h33d-analog-tip-stepover used a fixed cone angle. Here the tip azimuth and lobe width would be fitted the same way as H57-A, and the tip set would be defined on visible faults only, per fold.</td>
-<td class="n">Medium</td><td>Medium — needs a reliable endpoint detector on a 1-px raster</td></tr><tr><td><b>H57-C</b><br>Damage-zone width scaling with mapped length<br><span class="tag">FOLDED IN</span></td>
+<td class="n">High</td><td>Low — catalogue only, no external data</td></tr><tr><td><b>H57-B</b><br>Filtered branch-terminal proximity<br><span class="tag bad">TESTED — HOLD</span></td>
+<td>Catalogue geometry only; distance to termini of visible between-junction branches</td><td>One learned distance-to-filtered-terminal feature appended to the no_side anatomy baseline; termini near withheld branches are removed with the 3-px collar.</td><td>Visible branch termini may mark relays, splays or covered continuations; the experiment tests that enrichment on whole-branch hide-and-recover folds.</td><td>No fixed cone angle or hand-set lobe. Adds one feature to the no_side baseline; this is a tested mechanism hypothesis, not a novelty claim.</td>
+<td class="n">Pre-run expected +0.005 to +0.020 DTI; primary run was non-comparable, matched-cap sensitivity +0.06096 HOLDOUT-DTI (post-hoc; not confirmatory). Literal final-dot overlap 0.7271 &gt; 0.70; HOLD.</td><td>Low. Mimics include road/dry-wash termini, map-sheet breaks and digitization endpoints.</td></tr><tr><td><b>H57-C</b><br>Damage-zone width scaling with mapped length<br><span class="tag">FOLDED IN</span></td>
 <td>Catalogue connected-component size as a displacement proxy</td><td>Per-fault zone width w(L) fitted from component length, instead of one global distance kernel.</td><td>Savage &amp; Brodsky (JGR 2011) show damage-zone width growing with displacement and then more slowly. A single global width under-weights long, mature faults and over-weights short ones.</td><td>No sibling lane scales its kernel per fault. Implemented here as the log_len feature; note the first implementation used the 12-px segment chunk length, which is a constant and carries no information at all (IR-57-LEN-01).</td>
 <td class="n">Medium</td><td>Very low — already in the feature set</td></tr><tr><td><b>H57-D</b><br>Strike-selective gap filling on the regional fabric<br><span class="tag hold">NOT RUN</span></td>
 <td>Catalogue local strike field (structure tensor)</td><td>Gate the intensity on the local orientation of the mapped fabric so gaps are filled along the regional sets rather than isotropically.</td><td>The catalogue strike histogram is bimodal, peaking at 0-15 deg and 135-180 deg — the two regional sets of the northern Walker Lane / Basin Range boundary. An unmapped fault in this province almost certainly belongs to one of them.</td><td>Isotropic gap-filling lanes (e.g. GEMSDOE27 topo-gap-closure) cannot express this. H57-A already carries strike as sin2/cos2, but the canary shows those two features have a raw AUC of exactly 0.500 alone, so the orientation selectivity is only usable in interaction — which is what makes an explicit gated variant a distinct hypothesis.</td>
@@ -35,7 +35,7 @@ claim — that secondary strands sit at a measurable stepover and along-strike o
 on the hide-and-recover holdout alone.</li>
 <li><b>H57-C</b> came free as a feature, after the length-proxy bug was fixed.</li>
 <li><b>H57-D</b> is the cheapest remaining increment and needs no new data.</li>
-<li><b>H57-B</b> needs a careful endpoint detector; deferred.</li>
+<li><b>H57-B</b> was tested with a filtered branch-terminal distance feature; the primary run was non-comparable and the post-hoc matched-mass sensitivity is not confirmatory. It remains HOLD after a literal overlap firing.</li>
 <li><b>H57-E</b> is blocked. The specific free official source needed is the GeodAWN airborne
 magnetic and radiometric survey / 1 m DEM set linked from
 <a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">usgs.gov</a>
@@ -43,21 +43,28 @@ and the competition's own <code>gems-geodawn-numerical-features.tif</code>. Both
 USGS page is outside this sandbox's network allowlist, and the feature stack is present in the
 bridge repositories as five ~90 MB parts that this session does not pull.</li>
 </ol>
-<div class="note"><b>No submission slot was spent on any hypothesis that had not beaten the
-holdout bar first.</b> The brief's rule is respected: validation precedes promotion.</div>
+<div class="note"><b>No weekly slot has been selected and no submission has been made.</b>
+H57-B remains HOLD: its original preregistered contrast was non-comparable, its matched-mass
+sensitivity was post-hoc, and its final-dot overlap exceeded the literal 0.70 gate.</div>
 
-<h2>Session 2 candidate, tested</h2>
+<h2>Session 2 candidates tested</h2>
 <table>
 <tr><th>Hypothesis</th><th>Layer(s)</th><th>Physical signature</th><th>Result</th></tr>
-<tr><td><b>H57-F</b> recorded sense of slip conditions the strand side</td>
+<tr><td><b>H57-B</b> filtered branch-terminal proximity</td>
+<td>Visible catalogue geometry only; endpoint distance after a 3-px cut-artifact filter</td>
+<td>Withheld whole branches may cluster near true relays or splays at visible termini.</td>
+<td><span class="tag bad">HOLD</span> Original cap run was non-comparable. Post-hoc matched-mass
+sensitivity: paired HOLDOUT-DTI difference 0.06096, 95% CI
+[0.05203, 0.07038], not confirmatory. Final-dot overlap failed the literal registry gate.</td></tr>
+<tr><td><b>H57-F</b> recorded sense of slip conditions strand side</td>
 <td>INGENIOUS trace <code>sense</code> column (RL / LL / N), rasterised to visible pixels only</td>
-<td>Handedness-relative side of the strand, sense_sgn times side (fitted, not a textbook angle)</td>
-<td><span class="tag bad">NEGATIVE</span> mean paired gain +0.0016 over four quadrants, signs disagree.
-See the results page. Not promoted.</td></tr>
+<td>Handedness-relative side of the strand, sense_sgn times side (fitted, not assumed)</td>
+<td><span class="tag bad">NEGATIVE</span> historical paired gain +0.0016 over four quadrants, signs disagree.
+Not promoted; no submission slot was used.</td></tr>
 </table>
 </main>
-<footer>Generated 2026-10-09 16:53 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
+<footer>Generated 2026-10-10 07:22 UTC by <code>scripts/build_site.py</code> from committed evidence.
+Measured values come from evidence files; protocol thresholds, historical context, and date-bounded public-source snapshots are stated inline.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
 </body></html>

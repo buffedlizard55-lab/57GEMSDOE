@@ -310,8 +310,8 @@ def ingenious_record_segments(csv_path, shape, transform):
     inv = ~transform
     H, W = shape
     tmap = np.zeros((H, W), dtype=np.int32)
-    c0, r0 = (inv * (tr.x0.values, tr.y0.values))   # (col, row), see rasterize_traces
-    c1, r1 = (inv * (tr.x1.values, tr.y1.values))
+    c0, r0 = (inv @ (tr.x0.values, tr.y0.values))   # (col, row), see rasterize_traces
+    c1, r1 = (inv @ (tr.x1.values, tr.y1.values))
     pix_rows = []
     for i, (a, b, cc, d) in enumerate(zip(np.asarray(c0).astype(np.int64), np.asarray(r0).astype(np.int64),
                                          np.asarray(c1).astype(np.int64), np.asarray(r1).astype(np.int64)),
