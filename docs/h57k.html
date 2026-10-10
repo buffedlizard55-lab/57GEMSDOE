@@ -1,18 +1,18 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>H57-K candidate · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<title>H57-K candidate · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A retained GeoTIFF is not authorized for download or submission pending an owner decision.">
 <link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
 <body><a class="skip-link" href="#main">Skip to content</a>
 <header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
 <span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html" aria-current="page">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
 <main id="main"><div class="eyebrow">H57-K CANDIDATE · BUILT, VALID, NOT CLEARED</div><h1>A second opinion on the overlap rule.</h1>
-<div class="warning"><strong>Download for review; do not submit.</strong> This file is portal-valid and unique by every statistic that can discriminate, but it fails protocol rule 1 exactly as written. This page does not claim an exemption.</div>
+<div class="warning"><strong>Not authorized for download or submission.</strong> This retained file is portal-valid but fails the literal overlap rule exactly as written. Its diagnostic comparisons do not grant an exemption or access permission.</div>
 <section class="stat-grid"><div class="stat"><span>Local format</span><strong>15/15</strong><small>Every portal check passes</small></div>
 <div class="stat"><span>Dots</span><strong>62,872</strong><small>None on the mapped catalogue</small></div>
 <div class="stat"><span>Worst Spearman</span><strong>0.0246</strong><small>Required &le;0.90 · PASS</small></div>
 <div class="stat"><span>Worst forward overlap</span><strong>41%</strong><small>Discriminating rasters only · literal FAIL</small></div></section>
-<section><h2>Download (review only)</h2><p><a class="button" href="downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif">Download gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif</a> &middot; <a href="downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.zip">single-TIFF .zip</a></p>
-<p class="small">SHA256 <code>749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6</code> · 854,692 bytes. Note (105/140 chars): <code>57GEMSDOE fault-zone anatomy: strand-expression damage zone, 62872 dots, 0 on-catalogue, sha f38e36d82033</code></p></section>
+<section><h2>Retained artifact — audit identity only</h2><p class="mono">gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif</p>
+<p class="small">SHA256 <code>749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6</code> · 854,692 bytes. No file link is provided. Historical note (105/140 chars; not an upload instruction): <code>57GEMSDOE fault-zone anatomy: strand-expression damage zone, 62872 dots, 0 on-catalogue, sha f38e36d82033</code></p></section>
 <section><h2>The science worked; the gate did not.</h2>
 <p>Strand expression &mdash; whether a pixel inside a damage zone actually carries the geophysical signature of a fault &mdash; was added to the lane geometry the prompt asks for, using the official 19-band GeoDAWN stack that no earlier session of this repository had. No angle is hard-coded; every weight is fitted on the holdout.</p>
 <div class="table-scroll"><table><thead><tr><th scope="col">Arm</th><th scope="col">Features</th><th scope="col">HOLDOUT-DTI</th><th scope="col">95% CI</th></tr></thead><tbody><tr><td>d_only</td><td>1</td><td>0.0507</td><td>[0.0358, 0.0655]</td></tr><tr><td>lane8</td><td>8</td><td>0.1024</td><td>[0.0840, 0.1209]</td></tr><tr><td>lane8_geophys</td><td>48</td><td>0.1103</td><td>[0.0917, 0.1290]</td></tr></tbody></table></div>
@@ -32,5 +32,5 @@
 <section><h2>A template bug found and fixed here</h2>
 <p><code>gems57.emit.allocate_by_marginal_bar</code> breaks at the first candidate failing the DTI test, but marginal credit depends on local kernel saturation, not rank, so on this surface's flat plateaus it stopped at 3,405 dots. <code>allocate_patient</code> keeps the identical test and stops only after <code>patience</code> consecutive rejections: 62,872 dots, surrogate DTI 0.0832 &rarr; 0.2927. Fixed once, in the shared template, with regression tests; the original function is retained for callers and comparison.</p></section></main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-10 21:14 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<p>Site built 2026-10-10 21:42 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 <a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

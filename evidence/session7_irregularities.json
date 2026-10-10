@@ -68,8 +68,8 @@
     {
       "id": "IR-S7-10",
       "severity": "OPEN-FROM-S6",
-      "title": "Download-status conflict remains",
-      "detail": "The current status is \"Download for research: OK; Submit to competition: NO\", while the literal gate fails. This session keeps the status unchanged. The owner must explicitly confirm the research download.",
+      "title": "Download-status conflict resolved fail-closed on main",
+      "detail": "Main (PR #23) sets research download to NO pending explicit owner authorization and removes TIFF/ZIP links. Session 7 keeps that status. Any research download needs an explicit owner decision (IR-S6-10).",
       "source": "IR-S6-10 in evidence/irregularities_current.json"
     },
     {

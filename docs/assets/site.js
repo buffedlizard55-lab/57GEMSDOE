@@ -15,39 +15,38 @@ for (const button of document.querySelectorAll('[data-copy]')) {
 }
 
 async function refreshFeedDisplay() {
-  const status = document.getElementById('feed-status');
-  if (!status) return;
+  const statusNode = document.getElementById('feed-status');
+  if (!statusNode) return;
   try {
-    const response = await fetch('data/leaderboard_snapshot.json', {cache: 'no-cache'});
-    if (!response.ok) throw new Error('snapshot not reachable');
-    const snapshot = await response.json();
+    const snapshotResponse = await fetch('data/leaderboard_snapshot.json', {cache: 'no-cache'});
+    if (!snapshotResponse.ok) throw new Error('snapshot not reachable');
+    const snapshot = await snapshotResponse.json();
     const value = snapshot.top_public_dti;
     if (!Number.isFinite(value) || value < 0 || value > 1) throw new Error('invalid snapshot');
-    document.getElementById('leaderboard-top').textContent = value.toFixed(4);
-    const context = document.getElementById('leaderboard-context');
-    if (context) context.textContent = 'top public DTI in the last successful organizer snapshot';
-    if (!snapshot.retrieved_utc) {
-      status.textContent = `Checked ${snapshot.retrieved_date_utc || 'at an unknown time'} (date precision only). This is a cached public snapshot, not a submission receipt.`;
-      status.classList.add('stale');
-    } else {
-      const checked = new Date(snapshot.retrieved_utc);
-      if (!Number.isFinite(checked.getTime())) throw new Error('invalid check timestamp');
-      const age = Date.now() - checked.getTime();
-      const stale = age > 26 * 60 * 60 * 1000 || age < -5 * 60 * 1000;
-      status.classList.toggle('stale', stale);
-      status.textContent = `${stale ? 'STALE — ' : ''}Last successful organizer check: ${checked.toISOString()}. Not a submission-page receipt.`;
+    const top = document.getElementById('leaderboard-top');
+    if (top) top.textContent = value.toFixed(4);
+
+    const statusResponse = await fetch('data/feed_refresh_status.json', {cache: 'no-cache'});
+    const attempt = statusResponse.ok ? await statusResponse.json() : {};
+    const retrieved = new Date(snapshot.retrieved_utc || '');
+    if (!Number.isFinite(retrieved.getTime())) throw new Error('invalid snapshot timestamp');
+    const age = Date.now() - retrieved.getTime();
+    let stale = age > 26 * 60 * 60 * 1000 || age < -5 * 60 * 1000;
+    const method = attempt.method || snapshot.retrieval_method || 'retrieval method not recorded';
+    let message = `${stale ? 'STALE / CLOCK-SKEWED SNAPSHOT — ' : ''}Public snapshot retrieved ${retrieved.toISOString()}. Capture method: ${method}.`;
+    if (attempt.ok === false) {
+      stale = true;
+      message += ` Latest refresh failed; prior snapshot retained=${Boolean(attempt.retained_previous_snapshot)}. ${attempt.error || 'No error detail recorded.'}`;
     }
-    const attempt = await fetch('data/feed_refresh_status.json', {cache: 'no-cache'});
-    if (attempt.ok) {
-      const result = await attempt.json();
-      if (result.ok === false) {
-        status.classList.add('stale');
-        status.textContent += ' Latest automatic refresh failed; retained the last successful snapshot. Open the official board for current context.';
-      }
+    if (attempt.full_table_captured === false || snapshot.raw_html_retained === false) {
+      message += ' Selected rows only; raw organizer HTML was not retained.';
     }
+    message += ' Not a submission-page receipt. Do not infer exact-file attribution or causality.';
+    statusNode.classList.toggle('stale', stale);
+    statusNode.textContent = message;
   } catch {
-    status.classList.add('stale');
-    status.textContent = 'Feed could not be verified. Cached page values are not current or file-specific score evidence; open the official leaderboard.';
+    statusNode.classList.add('stale');
+    statusNode.textContent = 'Feed could not be verified. Cached page values are not current or file-specific score evidence; open the official leaderboard.';
   }
 }
 refreshFeedDisplay();

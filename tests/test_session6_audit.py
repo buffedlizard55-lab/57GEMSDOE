@@ -126,12 +126,15 @@ def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
     assert g["unique"] is False
     assert g["stop_required"] is True
     card = json.loads((ROOT / "evidence" / "run_card_current.json").read_text())
-    # Main's owner-merged card may say research download is OK (IR-S6-10). Submission must stay NO.
+    # No explicit research-download authorization was recorded; fail closed until the owner resolves IR-S6-10.
+    assert card["okay_to_download"] is False
+    assert card["download_permission_status"]["authorized"] is False
     assert card["okay_to_submit"] is False
     assert card["verdict"] == "negative"
     s6 = card["session6_verification"]
     assert s6["literal_gate_on_offered_tif"]["duplicate_count"] == 80
     assert s6["experiments_run"] == 0 and s6["submission_slots_used"] == 0
     ids = {i["id"]: i for i in json.loads((ROOT / "evidence" / "irregularities_current.json").read_text())["irregularities"]}
-    assert ids["IR-S6-10"]["status"].startswith("OPEN")
+    assert ids["IR-S6-10"]["status"].startswith("RESOLVED OPERATIONALLY")
+    assert "pending explicit owner decision" in ids["IR-S6-10"]["status"].lower()
     assert ids["IR-S6-01"]["status"].startswith("OPEN")

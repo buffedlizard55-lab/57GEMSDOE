@@ -2,35 +2,31 @@
 
 **[Open the site](https://buffedlizard55-lab.github.io/57GEMSDOE/)** · [Executive summary / submission guide](https://buffedlizard55-lab.github.io/57GEMSDOE/executive-summary.html) · [Competition #306](https://www.drivendata.org/competitions/306/competition-doe-gems/)
 
-## Download at the beginning — and an unmistakable status
+## Current permission status — read before opening any artifact
 
-### **Download for research: OK. Submit to competition: NO.**
+### **Research download: NO — pending explicit owner authorization. Competition submission: NO.**
 
-**[↓ Download the new Session-5 GeoTIFF](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip)** · [Complete JSON run card](evidence/run_card_current.json)
+The Session-5 GeoTIFF and ZIP remain in the repository as audit evidence, but this README and the generated site provide **no TIFF/ZIP download link**. A direct static URL may still resolve; availability is not permission. The Session-5 card said research download was OK, but Session 6 recorded IR-S6-10 as unresolved because no explicit owner decision reconciled that permission with the failed literal uniqueness gate. This follow-up fails closed: `okay_to_download=false`, `okay_to_submit=false`. Re-enable research download only after an explicit owner decision; this is not a change to the uniqueness protocol.
 
-This is a newly fitted **Session-5 (2026-10-10) soft research surface** (`relay_bend_anatomy`, E2 / H57-I2 + H57-H), not a copy or modification of a prior submission. Byte/pixel identity is distinct against all **695** audited grid rasters across all 57 sibling repositories. Against all **665 rasters from the other 56 repositories**, worst full-footprint Spearman rank correlation is **0.658029 ≤ 0.90** (and against the **15 discriminating sibling-lane rasters**, worst Spearman is **0.028783 ≤ 0.90** and worst 3-px dot overlap is **0.237470 ≤ 0.70**). However, **the literal full-registry uniqueness protocol FAILED**: worst forward overlap is **1.0** (limit 0.70, triggered by the 17 dense-support prior rasters, with 81 total triggered comparisons across the 695-raster index), and full-footprint Spearman against this repository's own earlier Session-3 soft surface (which shares the exact 2,452,550 zeroed pixels outside the fitted `d1 ≤ 25.55 px` damage zone) is **0.975291**. See the [measured certificate](evidence/uniqueness_saturation_certificate.json). No density/reverse-overlap exception was applied. **STOP was honored: no production final dots and zero real submission slots used.**
+The retained file is the Session-5 soft research surface (`relay_bend_anatomy`, E2 / H57-I2 + H57-H), not a production dot set or a new file built in this follow-up. Its TIFF SHA256 is `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`; local format validation passed for one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, finite range `[0, 0.9014216065]`, and zero positive mass on the known catalogue or outside the footprint. That is bridge-template compatibility, **not authenticated official-template identity, organizer acceptance, uniqueness clearance, or download permission**. The reported portal range error's cause remains unproven.
 
-Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, every cell finite, range `[0, 0.9014216065]`, zero positive mass on the known catalogue or outside the footprint. This is bridge-template compatibility, **not authenticated official-template identity or organizer acceptance**. The cause of the owner's reported range error is unproven; all-finite zero-fill is a precaution, not a claim that the portal rejects outside-footprint NaN.
+Session 5's recorded 695-raster scan failed the literal full-registry uniqueness protocol (81 duplicate firings). Session 6 re-verified the current 696-raster index and re-ran the surface gate: **80 duplicate firings, worst forward overlap 1.0**. A verified 17GEMSDOE E-proba-multiscale witness covers the whole allowable footprint, so every nonempty candidate is blocked while the unchanged literal rule and witness remain in scope. No density or reverse-overlap exception was applied; no production final dots were generated, no slot was used, and this follow-up built no candidate.
 
-- File: `gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif` (9,960,624 bytes).
-- TIFF SHA256: `cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648`.
-- Suggested note, **121 / 140 characters**:
-  > Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b
-- Do **not** upload HTML, a JSON receipt, a PDF or a repository ZIP. Our ZIP contains exactly one TIFF and is round-trip verified.
+Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
 
 - **Why did the owner-reported 0.2778 score highest?** File-level only. The 0.2778 raster is an exact subset of the owner-reported 0.2708 raster: it removes 2,545 dots, every one 1.4–2.0 px from the mapped catalogue, and adds nothing. A precision mechanism is plausible, since the DTI cost penalises false positives. It is **not** a verified causal score gain: the scores are owner-reported and there is no organizer file receipt. Source: [evidence/session6_mechanism_and_witness.json](evidence/session6_mechanism_and_witness.json).
-- **Can a higher-scoring, unique GeoTIFF be produced now?** Not cleared. The current index has 696 rasters, and all 696 were re-fetched and SHA/grid-verified (0 errors). The literal gate on the offered TIF gives 80 duplicate firings and worst forward overlap 1.0. The cause is 17GEMSDOE E-proba-multiscale, which covers 100% of the footprint, so every nonempty candidate overlaps it fully. The owner must rule on how soft registry rasters define a "dot" (IR-S6-01) before any candidate can be built. The holdout could not run because `training_features.tif` is unavailable (IR-S6-05). **No new unique submission TIF was produced, and no slot was used.**
-- **Target 0.3195 / 0.3774:** the brief says 0.3195 is highest, but the saved organizer snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7 (IR-S6-06). Neither target is confirmed or tested in this session.
+- **Can a higher-scoring, unique GeoTIFF be produced now?** Not cleared. The current index has 696 rasters, and all 696 were re-fetched and SHA/grid-verified (0 errors). The literal gate rerun on the retained Session-5 TIFF gives 80 duplicate firings and worst forward overlap 1.0. The cause is 17GEMSDOE E-proba-multiscale, which covers 100% of the footprint, so every nonempty candidate overlaps it fully. The owner must rule on how soft registry rasters define a "dot" (IR-S6-01) before any candidate can be built. The holdout could not run because `training_features.tif` is unavailable (IR-S6-05). **No new unique submission TIF was produced, and no slot was used.**
+- **Target 0.3195 / 0.3774:** the later selected-row public snapshot (retrieved 2026-10-10 20:40 UTC) shows 0.3774 at rank 1, DARD 0.3195 at rank 8, and extradr19 0.2778 at rank 22. An earlier snapshot placed DARD at rank 7. These are public-board values, not exact-file receipts; no causal score explanation is established (IR-S6-06).
 - **Ranked untried hypotheses** (pre-registered, none run): [evidence/session6_hypotheses.json](evidence/session6_hypotheses.json). H6-1 ranks first: remove dots within 2 px of the *training* catalogue, compared with matched random pruning, on the spatially blocked holdout. H6-2 is fault-tip termination anatomy. H6-3 is flight-line-aligned magnetic-mimic suppression. H6-4 is a binarised surface for the gate, which needs an owner ruling.
-- **Download status conflict (IR-S6-10):** `main` shows "Download for research: OK" and links the Session-5 TIFF, while the same card records a failed literal gate. Session 6 did not change that status. The owner must either authorise a research-only download explicitly, or set it back to not-OK.
+- **Download status (IR-S6-10):** no explicit owner authorization was recorded to resolve the Session-5 `OK` versus Session-6 hold conflict. This follow-up sets the operational permission to **NO pending an explicit owner decision**, removes TIFF/ZIP page links, and leaves the bytes only for provenance/audit. A direct URL may still resolve; that does not authorize downloading. Submission remains NO.
 
 ## Session 7 (2026-10-10) — verified answers, reproduction, and what blocks a submission
 
-**Status: unchanged. Download for research: OK. Submit to competition: NO.** No new candidate was built and no slot was used. Two experiments ran (budget: 3 / 2 h). Run card: [evidence/run_card_session7.json](evidence/run_card_session7.json) · checks: [evidence/session7_verification.json](evidence/session7_verification.json) · ledger: [evidence/session7_irregularities.json](evidence/session7_irregularities.json).
+**Status: unchanged from main (PR #23). Research download: NO pending explicit owner authorization. Submit to competition: NO.** No new candidate was built and no slot was used. Two experiments ran (budget: 3 / 2 h). Run card: [evidence/run_card_session7.json](evidence/run_card_session7.json) · checks: [evidence/session7_verification.json](evidence/session7_verification.json) · ledger: [evidence/session7_irregularities.json](evidence/session7_irregularities.json).
 
 - **Official format, checked at source.** The DrivenData page says: one float32 layer, EPSG:32611, 100 m, same bounds, values between 0 and 1, data outside the bounds null or NaN ([competition page](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/)). Metric: distance-weighted Tversky, α=0.2, β=0.8, triangular 300 m kernel (same page). The downloadable TIFF passes the range, dtype, CRS, shape and transform checks (min 0.0, max 0.9014, no NaN). **It fills outside the footprint with 0, not NaN** (IR-S7-03). Scoring is unaffected because zero probability adds nothing to the metric, but it must be fixed before any upload.
 - **Why 0.2778 beat 0.2708 (owner-reported, one pair).** The 0.2778 raster is an exact subset of the 0.2708 raster: 37,654 vs 40,199 positive cells, and the 2,545 removed dots all lie 1.41–2.00 px from the known catalogue. No kept dot lies closer than 2.24 px. Under this metric, removing a dot that is not the unique max-cover for any truth pixel lowers FP weight and leaves TP weight unchanged, so DTI rises. That is consistent with those dots being pure false positives on the private labels, but it is not an organizer receipt.
@@ -54,7 +50,7 @@ Local on-disk format checks PASS: one Float32 band, EPSG:32611, 3730 × 3292, tr
 | **E2 (H57-I2 + H57-H):** Two-host relay + multi-scale bend *(retained candidate)* | **0.031160 [0.024691, 0.038109]** | **0.135204 [0.119140, 0.153036]** |
 | **E3 (H57-J):** Two-host relay + bend + slip-sense transition | **0.033898 [0.026890, 0.041928]** | **0.141391 [0.124513, 0.161457]** |
 
-The downloadable TIFF matches the **soft-surface method** for retained candidate **E2 (`relay_bend_anatomy`)**, not the binary test-fold dots. Do not attach 0.135204 to its soft representation. On the binary allocation:
+The retained, non-authorized TIFF records the **soft-surface method** for retained candidate **E2 (`relay_bend_anatomy`)**, not the binary test-fold dots. Do not attach 0.135204 to its soft representation. On the binary allocation:
 - **E2 (`relay_bend_anatomy`) minus `distance_only`**: **+0.022479**, paired 95% CI **[+0.007867, +0.038463]** *(strictly positive)*.
 - **E2 (`relay_bend_anatomy`) minus single-host `anatomy`**: **+0.025556**, paired 95% CI **[+0.013943, +0.037109]** *(strictly positive)*.
 - **E2 (`relay_bend_anatomy`) minus E1 (`bend_anatomy`)**: **+0.022872**, paired 95% CI **[+0.013050, +0.032102]** *(strictly positive)*.
@@ -62,7 +58,7 @@ The downloadable TIFF matches the **soft-surface method** for retained candidate
 
 All **22 feature-alone leakage canaries** were tested using `max(AUC, 1−AUC)` per fold. Maximum discriminative AUC is **0.825867** (`d_perp`, diagnostic, not DTI) and **0.799993** (`d2`), all below 0.90. A clean canary reduces specific risks; it does not certify the absence of all leakage or new-fault domain shift.
 
-Receipts: [relay/bend holdout](evidence/relay_bend_holdout.json), [canaries](evidence/relay_bend_canary.json), [structure](evidence/relay_bend_structure.json), [all 695 per-raster checks](evidence/relay_bend_surface_uniqueness.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
+Evidence: [relay/bend holdout](evidence/relay_bend_holdout.json), [canaries](evidence/relay_bend_canary.json), [structure](evidence/relay_bend_structure.json), [Session-5 695-raster per-raster checks](evidence/relay_bend_surface_uniqueness.json), [Session-6 696-raster recheck](evidence/uniqueness_session6_full_registry_696.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
 
 ## The important review finding
 
@@ -85,28 +81,29 @@ The target is **geological fault presence**, not geothermal-vent, temperature, f
 - **Maximize P(Win):** reject unsupported improvements, fit zones and budgets from training evidence, distinguish representations and preserve real weekly slots.
 - **Own the Outcome:** autonomously restore data, repair shared tools, invalidate corrupted results, publish complete negative evidence and keep download/submission status prominent. No silent protocol relaxation.
 
-## Reproduce, without manual data placement or a GPU
+## Reproduction boundary and local QA
+
+No model or holdout was rerun in this follow-up. The three-experiment / two-hour budget is spent, the uniqueness blocker is unresolved, and Session 6 records `training_features.tif` as unavailable in this checkout. **Do not run the candidate builder, fetch new data, build a new raster, or use a submission slot** without an explicit new budget and owner resolution of the applicable gates. The historical model command is retained in source/evidence for provenance, not as an instruction to run now.
+
+For static QA only (no model, network fetch, or slot use):
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements-lock.txt
-.venv/bin/python scripts/prepare_data.py --fetch --cache-bands
-.venv/bin/python scripts/refresh_registry.py --workers 8
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend_experiments.py --build-research-surface --minutes 65
-.venv/bin/python scripts/build_site.py
+.venv/bin/python scripts/build_site.py --no-preview
 .venv/bin/python scripts/check_site.py
-.venv/bin/python -m pytest
+.venv/bin/python -m pytest -q
 ```
 
-These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
+The prior Session-5 record describes 19 input bands assembled from five immutable public GitHub parts. Those hashes authenticate bridge-byte transport identity, **not independently authenticated official origin**; current feature availability is not assumed from that historical receipt. Large caches remain Git-ignored.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
 ## Sources, feed and future work
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
-- [Pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. In Session 5 (`2026-10-10`), multi-scale host-bend damage asymmetry & detrended-elevation scarp strike (`H57-H`, E1), two-host damage-zone superposition & en echelon relay stepover mechanics (`H57-I2`, E2), and slip-sense transition heterogeneity (`H57-J`, E3) were tested on the repaired buffered whole-component holdout; `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).
-- [57 pinned sibling sites](evidence/site_inventory.json); [696-raster current grid inventory](evidence/registry_refreshed_20261010T2001.json) (the older 695-entry index is [evidence/registry_refreshed.json](evidence/registry_refreshed.json)). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
+- [Session-5 tested comparisons](evidence/relay_bend_holdout.json): multi-scale host-bend damage asymmetry & detrended-elevation scarp strike (`H57-H`, E1), two-host relay mechanics (`H57-I2`, E2), and slip-sense transition heterogeneity (`H57-J`, E3) were tested on the repaired buffered whole-component holdout. E2 achieved positive paired `HOLDOUT-DTI` differences vs single-host anatomy (+0.025556 [0.013943, 0.037109]) and distance-only (+0.022479 [0.007867, 0.038463]) with evaluator `gems57-pooled-hide-v2` and 11,321 withheld positives; this is not an organizer score or uniqueness clearance.
+- [Fault-zone-anatomy shortlist and repository-scoped novelty review](docs/research/hypotheses.md) ranks four untried hypotheses, with physical signatures, data needs, named non-fault mimics, source links and cost. [Session-6 pre-registration](evidence/session6_hypotheses.json) separately records four protocol-ranked candidates; none is run or authorization to start an experiment.
+- [Read-only QFault/INGENIOUS attribute audit](evidence/attribute_audit_20261010.json) reports CSV completeness/types and field definitions only; it does not establish a visible-host join or predictive effect. [Holdout scope reconciliation](evidence/holdout_scope_reconciliation_20261010.json) keeps the leakage-flagged H57-K result distinct from the positive within-Session-5 E2 comparison.
+- [57 pinned sibling sites](evidence/site_inventory.json); [696-raster current grid inventory](evidence/registry_refreshed_20261010T2001.json) (the earlier 695-entry scan is [evidence/registry_refreshed.json](evidence/registry_refreshed.json)). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 

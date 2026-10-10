@@ -1,6 +1,6 @@
 # Archived pre-merge H57 fault-zone-anatomy hypothesis slate
 
-**Status:** historical research backlog from the PR #8 branch, not the active H57 slate or current release card. The newer main-line evidence is authoritative: see the [current hypothesis ledger](../data/hypotheses_current.json), [current run card](../../evidence/run_card_current.json), and [README status/results](../../README.md). Nothing below should be used to label the current artifact or to promote a submission.
+**Status:** historical research backlog from the PR #8 branch, not the active H57 slate or current release card. The newer main-line evidence is authoritative: see the [current hypothesis ledger](../data/hypotheses_current.json), [current run card](../data/run_card_current.json), and [current site status/results](../index.html). Nothing below should be used to label the current artifact or to promote a submission.
 
 ## Baseline and hard gates
 
@@ -22,7 +22,7 @@ These are ranked by expected value subject to lane fit, data readiness, cost, an
 
 ### H57-1 — Sense-conditioned Riedel side and relative azimuth (highest priority)
 
-- **Layers.** `data/official/existing_faults.tif`; `data/external/trace_segments_utm11.csv` (`sense`); `data/external/qfault_attributes.csv` (`SLIPSENSE`). The two vector files are locally present and SHA256-pinned in [`data/README.md`](../../data/README.md). The current official fault raster is binary and has no sense field.
+- **Layers.** `data/official/existing_faults.tif`; `data/external/trace_segments_utm11.csv` (`sense`); `data/external/qfault_attributes.csv` (`SLIPSENSE`). The two vector files are locally present and SHA256-pinned in [current read-only attribute audit](../data/attribute_audit_20261010.json). The current official fault raster is binary and has no sense field.
 - **Physical target.** Mirrored secondary-strand orientation and side relative to the visible host fault, conditional on recorded RL, LL, or N sense. Do not hard-code a textbook angle; estimate the conditional distribution from withheld segments.
 - **Rationale.** A marginal side/azimuth feature can average away a slip-direction-specific pattern. A sense-conditioned feature could separate synthetic and antithetic splays while staying within the existing fault-zone mechanism.
 - **Difference from the pre-merge H57 candidate.** The pre-merge `side` feature was a geometric left/right offset under an arbitrary strike convention; it is **not** a slip-sense feature. That pre-merge candidate did not use the available vector attribute. This candidate must attach sense only to vector trace pixels overlapping the fold's visible catalogue, so a withheld trace cannot leak its label through the full vector record. Unknown/missing sense must remain an explicit unknown, not be imputed from a textbook rule.
@@ -63,7 +63,7 @@ These are ranked by expected value subject to lane fit, data readiness, cost, an
 - **Rationale.** Geometry can constrain *where* to look while geophysics can discriminate candidate strands from an empty halo. This must not become an unconstrained whole-footprint geophysical lane.
 - **Difference from the pre-merge candidate.** The candidate described by this archived slate used catalogue geometry only; this is a within-zone corroborator, not a replacement for the fault-zone prior.
 - **Expected gain / cost.** Potentially high but unmeasured; high cost for data retrieval, normalization, leakage checks, and a fresh spatial OOF run.
-- **Official source and availability.** The official DrivenData data endpoint is [competition #306 data](https://www.drivendata.org/competitions/306/competition-doe-gems/data/). The 418,912,844-byte raster has a hash pin in [`data/README.md`](../../data/README.md), but `data/official/training_features.tif` is absent and the local pin check reports it missing. Therefore this hypothesis is **blocked, not viable yet**. Do not fetch an unverified substitute or claim availability until the official bytes are obtained and the pin matches.
+- **Official source and availability.** The official DrivenData data endpoint is [competition #306 data](https://www.drivendata.org/competitions/306/competition-doe-gems/data/). A 418,912,844-byte raster is listed in the source-repository data manifest, but `data/official/training_features.tif` is absent and the local pin check reports it missing. Therefore this hypothesis is **blocked, not viable yet**. Do not fetch an unverified substitute or claim availability until the official bytes are obtained and the pin matches.
 
 ## Trusted source links and provenance
 
@@ -72,8 +72,8 @@ These are ranked by expected value subject to lane fit, data readiness, cost, an
 - [Competition data page (login may be required)](https://www.drivendata.org/competitions/306/competition-doe-gems/data/)
 - [USGS GeoDAWN survey metadata](https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and)
 - [INGENIOUS project overview](https://gbcge.org/current-projects/ingenious/)
-- [Local source hashes and field inventory](../../data/README.md)
-- [Current validation and negative verdict](../../evidence/run_card.json)
+- [Current local CSV field audit and hashes](../data/attribute_audit_20261010.json)
+- [Current validation and negative verdict](../data/run_card.json)
 
 ## Historical irregularities / stop flags (pre-merge instrument only)
 

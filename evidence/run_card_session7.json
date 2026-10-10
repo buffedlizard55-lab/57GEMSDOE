@@ -67,9 +67,9 @@
   "submission_note": "Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b",
   "submission_note_chars": 121,
   "verdict": "negative",
-  "okay_to_download": true,
+  "okay_to_download": false,
   "okay_to_submit": false,
-  "verdict_reason": "Literal uniqueness gate fails (dense prior, IR-S7-01). Output is not in the official NaN-outside convention (IR-S7-03). Holdout cannot measure near-trace dots (IR-S7-04). Research download only.",
+  "verdict_reason": "Literal uniqueness gate fails (dense prior, IR-S7-01). Output is not in the official NaN-outside convention (IR-S7-03). Holdout cannot measure near-trace dots (IR-S7-04). Research download NOT authorized (main, IR-S6-10, fail-closed).",
   "experiments_used": 2,
   "experiments": [
     {
@@ -86,5 +86,6 @@
   "submission_slots_used": 0,
   "budget_stop": "Stopped after 2 experiments; a third would have needed the holdout redesign that is listed as the next step.",
   "next_step": "Owner ruling on the dense-prior gate (IR-S7-01) and a holdout with a reduced or absent collar for near-trace truth (REMAINING_WORK.md).",
-  "generated_by": "scripts/session7_verify.py + scratch reproduction of scripts/run_relay_bend_experiments.py"
+  "generated_by": "scripts/session7_verify.py + scratch reproduction of scripts/run_relay_bend_experiments.py",
+  "download_status": "NO pending explicit owner authorization (inherited from main, PR #23)"
 }

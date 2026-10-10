@@ -169,9 +169,9 @@
   "file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
   "zip_file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip",
   "verdict": "negative",
-  "okay_to_download": true,
+  "okay_to_download": false,
   "okay_to_submit": false,
-  "verdict_reason": "Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.",
+  "verdict_reason": "Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used. Research download is also not authorized pending explicit owner resolution of IR-S6-10; no TIFF/ZIP link is published.",
   "recorded_sense": {
     "tested": true,
     "retained": false,
@@ -247,7 +247,7 @@
     },
     "causal_score_gain_verified": false,
     "leaderboard_snapshot_conflict": "IR-S6-06: brief says 0.3195 highest; snapshot shows 0.3774 rank 1, 0.3195 rank 7 (evidence/leaderboard_snapshot.json).",
-    "download_status_conflict": "IR-S6-10: main shows 'Download for research: OK' with okay_to_download=true while the literal gate fails. Not changed by session 6; owner must confirm.",
+    "download_status_conflict": "IR-S6-10: Session-5 had okay_to_download=true while Session 6 found owner resolution pending. This follow-up sets the operational field to false and removes site links; it does not claim an owner approval. Re-enable only after an explicit owner decision.",
     "ranked_untried_hypotheses": [
       "H6-1",
       "H6-2",
@@ -267,5 +267,14 @@
       "IR-S6-05 holdout data access (authorised, hash-pinned copy)"
     ],
     "submission_slots_used": 0
+  },
+  "download_permission_status": {
+    "status": "NOT AUTHORIZED PENDING EXPLICIT OWNER DECISION",
+    "resolution": "HOLD pending explicit owner decision (IR-S6-10)",
+    "authorized": false,
+    "source_irregularity": "IR-S6-10",
+    "operational_basis": "The Session-5 card said research download was OK, but Session 6 found no explicit owner decision resolving the conflict. This follow-up fails closed; repository availability is not permission.",
+    "file_availability_is_permission": false,
+    "authorization_actor": "not recorded"
   }
 }

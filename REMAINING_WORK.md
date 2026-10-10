@@ -2,7 +2,7 @@
 
 ## Session 7 addendum (2026-10-10) — next actions in priority order
 
-Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status unchanged: research download OK, submission NO, 0 slots used.
+Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status unchanged from main (PR #23): research download NO pending explicit owner authorization; submission NO; 0 slots used.
 
 1. **Owner ruling on the dense-prior gate (IR-S7-01).** Decide how a soft raster that is positive on the whole footprint defines its "dots" for the 70 % 3-px overlap test. Until then, no candidate can pass the literal gate, whatever its content.
 2. **Holdout redesign for near-trace truth (IR-S7-04).** The 3-px collar leaves withheld truth at least √10 px from any visible fault. A new validation needs (a) a collar of 0–1 px, or a design that keeps truth adjacent to visible traces, and (b) a leakage canary on the new split. Only then can dots within a few pixels of a known trace be scored. Test the 0.2778 mechanism (removing near-trace dots) only in that split.
@@ -14,7 +14,8 @@ Budget: Session 7 used 2 of 3 experiments (reproduction; collar audit).
 
 ---
 
-Last reviewed 2026-10-10 (Session 5). **Download research TIFF (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`): OK. Submit: NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
+ **Download research TIFF (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`): OK. Submit: NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
+Last reviewed 2026-10-10 (Session-6 follow-up). **Research download: NO pending explicit owner authorization (IR-S6-10). Submit: NO.** The Session-5 GeoTIFF/ZIP remain in the repository for provenance and audit, but the site has no TIFF/ZIP links; a direct static URL may still resolve and is not permission. The Session-5 card's research-download OK state was not explicitly resolved by an owner, so this follow-up fails closed. Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. E2 achieved positive paired `HOLDOUT-DTI` differences (+0.025556 vs single-host anatomy, +0.022479 vs distance-only; 95% CIs strictly positive) on its recorded holdout, but the literal full-registry gate still triggers STOP against the universal-support witness. Session 6 verified 696 rasters and re-ran the gate: 80 duplicate firings, worst forward overlap 1.0.
 
 ## 1. Literal uniqueness obstruction — unresolved, highest priority
 
@@ -26,7 +27,7 @@ Only an **explicit protocol revision** distinguishing continuous surfaces from d
 
 No organizer submission-page receipt attributes owner-reported 0.2778 to the exact H33-B2 SHA256. Public participant scores are not file receipts. The current experiment does not demonstrate higher live performance, and HOLDOUT-DTI intervals must not be compared numerically with private/live scores as if calibrated forecasts.
 
-Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Official USGS/GDR metadata is free and linked, but sandbox binary egress does not allow their storage hosts. No credentials should be requested/stored in chat. The CPU model's data-placement blocker is **closed**, not a reason to ask the owner to download 420 MB manually.
+Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Although Session 5 recorded a bridge-assembled 19-band stack, Session 6 reports `training_features.tif` absent in the current checkout and the feature link unreachable; a new holdout cannot run without an authorized, hash-pinned copy through an allowed route. Official USGS/GDR metadata is linked, but binary source coverage/alignment remain unverified. Do not request or store credentials in chat or treat old cache receipts as current access.
 
 ## 3. Session-5 execution of H57-H, H57-I2, and H57-J — and the next backlog question
 
@@ -53,9 +54,9 @@ In Session 5 (`2026-10-10`), the three hypotheses queued here (`H57-H` multi-sca
 
 ## 5. Registry/site maintenance
 
-The audited 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
+The Session-5 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Session 6 separately verified all 696 rasters in the updated index and re-ran the literal gate. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh the index before any future authorized candidate; never claim absence from a missing cache. Do not sweep generated outputs into their own prior inventory.
 
-The Pages feed updates public-board **context** without submitting. It exposes cached/stale and failed-refresh status. It cannot read authenticated team slots or private scores. Keep metadata/hashes and accessible links tested; update the standing request at the start of each session.
+The Pages feed updates ORGANIZER-PUBLISHED public-board **context**, not receipts, without submitting. It exposes the timestamp, selected-row scope, cached/stale state and failed-refresh status. It cannot read authenticated team slots or private scores. The current site removes TIFF/ZIP links because research download is not authorized pending IR-S6-10; retained bytes may still resolve by direct static URL, which is not permission. Keep the provenance/status copies and link checks synchronized; update the standing request at the start of each session.
 
 ## 6. Prize compliance
 
@@ -67,12 +68,14 @@ Review the [official rules](https://docs.nlr.gov/docs/fy26osti/96647.pdf), entra
 
 The integration can push this working branch and merge its PR, but changing
 Pages settings returned HTTP 403 (repository administration scope). Existing
-Pages uses main-root. Identical current TIFF/ZIP/JSON mirrors at `downloads/`
-and the root-to-docs redirect support both legacy and custom artifact layouts.
-The scheduled workflow refreshes public context on the runner, retaining cache
-on errors; custom deployment is checked separately. GitHub run-log downloads
-redirect to an egress-blocked host; check/run status APIs remain accessible.
-Do not request/store tokens to work around these limits.
+Pages uses main-root. TIFF/ZIP/JSON mirrors remain in `downloads/` and
+`docs/downloads/` for provenance and byte-integrity tests; generated pages do
+not link them while IR-S6-10 download authorization is pending. A direct static
+URL may still resolve; that is not access authorization. The scheduled workflow
+refreshes public context on the runner and retains the last snapshot on errors;
+the site publishes freshness/failure status. GitHub run-log downloads redirect
+to an egress-blocked host; check/run status APIs remain accessible. Do not
+request/store tokens to work around these limits.
 
 The current relative magnetic orientation uses axial cos2, not signed angular
 handedness; normal versus unavailable sense is not fully separated. Testing
