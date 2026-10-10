@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""EXPERIMENT 1b (fault-zone anatomy lane): the lane's true holdout.
+"""ARCHIVED H1/H52 EXPERIMENT 1b; not the active H57 workflow.
+
+This legacy random whole-segment measurement uses a different experimental
+path and historical outputs. Keep its artifacts separate from ``run_lane.py`` /
+``run_cv.py``; do not cite them as current H57 evidence or as an organizer score.
+
+EXPERIMENT 1b (fault-zone anatomy lane): the lane's true holdout.
 
 Whole fault SEGMENTS (linked catalogue traces + INGENIOUS record faults) are
 withheld in RANDOM folds.  A spatially-blocked hide cannot see intra-system

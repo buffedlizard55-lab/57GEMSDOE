@@ -208,5 +208,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    raise SystemExit("Historical runner retained for learning, not current buffered/full-registry validation. "
+    raise SystemExit("Historical runner retained for learning, not current buffered/inventory validation. "
                      "No new experiment or slot authorized; read the current README and run card.")

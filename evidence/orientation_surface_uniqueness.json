@@ -13987,9 +13987,9 @@
   "verdict": "negative",
   "stop_required": true,
   "candidate_rank_variation": true,
-  "scope": "SHA256-pinned complete prior registry extended with current public-main trees for every listed repository; only newly changed Git blobs were downloaded and compared. The current candidate is excluded as its own output. Private, unlinked, inaccessible and later-written files remain outside scope.",
+  "scope": "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. Private, unlinked, external, inaccessible and later-written files may be absent.",
   "phase": "surface",
-  "reviewed_utc": "2026-10-10T20:14:20.742662+00:00",
+  "reviewed_utc": "2026-10-10T20:27:04.415004+00:00",
   "submission_slots_used": 0,
   "incremental_extension": {
     "base_rasters": 696,
@@ -13998,11 +13998,13 @@
   },
   "aggregation": {
     "method": "incremental exact extension of a complete prior compare_to_registry result",
-    "base_registry_rasters": 696,
-    "new_registry_rasters": 2,
+    "base_registry_rasters": 698,
+    "new_registry_rasters": 0,
     "base_candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "current_candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "latest_public_main_commits_checked": 57,
-    "changed_public_main_commits": 2
+    "changed_public_main_commits": 0,
+    "current_open_pr_heads_checked": 2,
+    "changed_open_pr_heads": 2
   }
 }

@@ -1,4 +1,4 @@
-"""Shared pooled hide-and-recover evaluator, not a new/private metric implementation.
+"""Shared hide-and-recover evaluator for the H57 spatial-quadrant instrument.
 
 Delegates official-formula arithmetic to metric.max_cover / dti_from_components.
 The inherited holdout.score API was replaced elsewhere while this file still
@@ -9,7 +9,7 @@ from __future__ import annotations
 import hashlib
 from pathlib import Path
 import numpy as np
-from . import holdout, metric
+from . import metric
 
 VERSION = 'gems57-pooled-hide-v2'
 
@@ -19,11 +19,19 @@ def implementation_hashes():
             for name in ('evaluate_holdout.py', 'holdout.py', 'metric.py', 'spatial.py')}
 
 
-def evaluate(prediction, fold, valid, block_side=200):
-    """Exact fold score plus additive (TPw, FPw, FNw, truth count) per spatial cluster."""
+def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
+             global_shape=None):
+    """Exact fold score plus additive terms on globally aligned spatial blocks.
+
+    ``origin`` and ``global_shape`` locate a cropped fold in the common pixel
+    grid. Pass them when combining terms from multiple crop windows; otherwise
+    local block coordinates would not denote the same physical clusters.
+    """
     if block_side <= 0:
         raise ValueError('block_side must be positive')
     p = np.asarray(prediction)
+    if p.ndim != 2:
+        raise ValueError('prediction must be a 2D array')
     if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
         raise ValueError('predictions must be finite in [0,1] before masking')
     valid = np.asarray(valid, bool)
@@ -37,27 +45,36 @@ def evaluate(prediction, fold, valid, block_side=200):
     truth = active & truth_all
     if not truth.any():
         raise ValueError('a holdout fold must contain positives')
+    result = metric.dti_exact(p, truth, valid=active)
     covers, q, _ = metric.max_cover(p, truth)
     tpw = float(covers.sum())
     fpw = float((p * (1.0 - q)).sum())
     fnw = float(truth.sum()) - tpw
-    result = dict(dti=metric.dti_from_components(tpw, fpw, fnw), tpw=tpw, fpw=fpw,
-                  fnw=fnw, n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
-                  emitted=int((p > 0).sum()))
     h, w = truth.shape
-    ncols = (w + block_side - 1) // block_side
-    nrows = (h + block_side - 1) // block_side
+    oy, ox = map(int, origin)
+    gh, gw = map(int, global_shape or (h + oy, w + ox))
+    if oy < 0 or ox < 0 or oy + h > gh or ox + w > gw:
+        raise ValueError('crop origin/global_shape do not contain the evaluation arrays')
+    ncols = (gw + block_side - 1) // block_side
+    nrows = (gh + block_side - 1) // block_side
     terms = np.zeros((ncols * nrows, 4), np.float64)
     y, x = np.nonzero(truth)
-    ids = (y // block_side) * ncols + (x // block_side)
+    gy, gx = y + oy, x + ox
+    ids = (gy // block_side) * ncols + (gx // block_side)
     for j, v in ((0, covers), (2, 1.0 - covers), (3, np.ones(len(y)))):
         terms[:, j] = np.bincount(ids, weights=v, minlength=len(terms))
     y, x = np.nonzero(p > 0)
-    ids = (y // block_side) * ncols + (x // block_side)
+    gy, gx = y + oy, x + ox
+    ids = (gy // block_side) * ncols + (gx // block_side)
     terms[:, 1] = np.bincount(ids, weights=p[y, x].astype(float) * (1.0 - q[y, x]), minlength=len(terms))
     totals = terms.sum(axis=0)
-    np.testing.assert_allclose(totals, [result['tpw'], result['fpw'], result['fnw'], result['n_truth']], rtol=1e-11, atol=1e-7)
-    result.update(evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
+    np.testing.assert_allclose(
+        totals, [result['tp'], result['fp'], result['fn'], result['n_truth']],
+        rtol=1e-11, atol=1e-7)
+    result.update(tpw=result['tp'], fpw=result['fp'], fnw=result['fn'],
+                  n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
+                  emitted=int((p > 0).sum()),
+                  evidence_class='HOLDOUT-DTI', evaluator_version=VERSION,
                   spatial_bootstrap_cluster_m=block_side * metric.PIXEL_M)
     return result, terms
 
@@ -65,7 +82,7 @@ def evaluate(prediction, fold, valid, block_side=200):
 def from_terms(terms):
     a = np.asarray(terms, dtype=float)
     tp, fp, fn = a[..., 0], a[..., 1], a[..., 2]
-    den = tp + metric.ALPHA * fp + metric.BETA * fn
+    den = tp + metric.ALPHA * fp + metric.BETA * fn + metric.EPS
     return np.divide(tp, den, out=np.zeros_like(tp), where=den > 0)
 
 

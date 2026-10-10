@@ -157,7 +157,7 @@ def merge_registry_audits(previous, extension, *, registry_rasters_expected,
         rows, registry_rasters_expected=expected,
         complete_accessible_scan=complete,
         source_errors=[], candidate_meta=meta,
-        scope=scope or 'Immutable complete prior audit merged with all newly discovered public-main raster blobs; inaccessible/private/unlinked sources remain outside scope.',
+        scope=scope or 'Indexed public owner-repository inventory; not a complete organizer registry. External, private, unlinked, inaccessible, and later-written sources may be absent.',
     )
     result['phase'] = extension.get('phase', previous.get('phase'))
     result['reviewed_utc'] = extension.get('reviewed_utc')
@@ -293,7 +293,7 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             candidate_file_sha256=file_sha256,
             candidate_rank_variation=norm > 0,
         ),
-        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.',
+        scope='All hash-verified accessible entries in the indexed public owner-repository inventory; not a complete organizer registry. External/private/unlinked/inaccessible files may be absent. Reverse overlap is diagnostic only.',
     )
 
 

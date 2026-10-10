@@ -25,7 +25,8 @@ def write_submission(path, prediction, sample, footprint, *, note, name, metadat
     # A submission ZIP contains ONLY the one TIFF; notes/evidence are adjacent downloads.
     zp = path.with_suffix('.zip')
     with zipfile.ZipFile(zp, 'w', compression=zipfile.ZIP_DEFLATED) as z:
-        zi = zipfile.ZipInfo(path.name, date_time=(2026, 10, 8, 0, 0, 0))
+        # Stable UTC date for reproducible ZIP metadata (the session build date).
+        zi = zipfile.ZipInfo(path.name, date_time=(2026, 10, 9, 0, 0, 0))
         zi.compress_type = zipfile.ZIP_DEFLATED
         z.writestr(zi, path.read_bytes())
     with zipfile.ZipFile(zp) as z:

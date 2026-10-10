@@ -95,15 +95,25 @@ def check(root=ROOT):
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
     extension=json.loads((root/'evidence/registry_live_delta.json').read_text())
     delta=json.loads((root/'evidence/orientation_surface_delta_uniqueness.json').read_text())
-    added={row['sha256'] for row in extension['new_grid_raster_rows'].values()}
-    assert extension['complete_accessible_scan'] and len(added)==2
+    assert extension['complete_accessible_scan'] and extension['new_grid_rasters_added']==0
+    assert extension['new_grid_raster_rows']=={}
     assert extension['current_audit_raster_count']==total
     assert extension['candidate_sha256']==digest
+    assert not extension['current_main_commit_errors']
+    assert not extension['changed_tree_errors'] and not extension['open_pr_head_discovery_errors']
+    assert not extension['open_pr_tree_errors'] and not extension['fetch_errors']
+    assert extension['current_open_pr_heads']==index['open_pr_heads_checked']
+    assert {row['pr'] for row in extension['current_open_pr_heads']}=={16,17}
+    assert len(extension['new_aliases_for_prior_blobs'])==30
+    source_hashes={source:row['sha256'] for row in index['rasters'] for source in row['sources']}
+    for blob, sources in extension['new_aliases_for_prior_blobs'].items():
+        assert blob in {row['blob'] for row in index['rasters']}
+        assert all(source in source_hashes for source in sources)
     assert delta['candidate_file_sha256']==digest
-    assert delta['registry_rasters_expected']==delta['registry_rasters_checked']==len(added)
-    assert {row['sha256'] for row in delta['rows']}==added
+    assert delta['registry_rasters_expected']==delta['registry_rasters_checked']==2
     assert delta['complete_accessible_scan'] and delta['unique']
-    assert delta['duplicate_count']==extension['new_raster_comparison_summary']['duplicate_count']==0
+    assert delta['duplicate_count']==0
+    assert {row['sha256'] for row in delta['rows']} <= {row['sha256'] for row in index['rasters']}
     earlier=json.loads((root/'evidence/orientation_surface_delta_uniqueness_20261010T2001.json').read_text())
     earlier_extension=json.loads((root/'evidence/registry_live_delta_20261010T2001.json').read_text())
     prior_snapshot=json.loads((root/'evidence/registry_refreshed_20261010T2001.json').read_text())

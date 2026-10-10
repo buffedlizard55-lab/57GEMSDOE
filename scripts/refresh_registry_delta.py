@@ -24,6 +24,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 from gems57 import load_grid
 from gems57.uniqueness import compare_to_registry, merge_registry_audits
@@ -66,6 +67,78 @@ def current_commits(workers: int = 6) -> tuple[dict[str, str], list[dict]]:
             else:
                 commits[repo] = sha
     return commits, errors
+
+
+def current_open_pr_heads() -> tuple[list[dict], list[dict]]:
+    """List same-repository PRs targeting main, pinned to immutable head SHAs."""
+    proc = subprocess.run(
+        [
+            "gh", "pr", "list", "--repo", f"{OWNER}/57GEMSDOE", "--state", "open",
+            "--limit", "1000", "--json",
+            "number,baseRefName,headRefName,headRefOid,headRepository,headRepositoryOwner",
+        ],
+        capture_output=True, text=True, timeout=90,
+    )
+    if proc.returncode:
+        return [], [{"error": proc.stderr.strip()[:240] or "failed to list open pull requests"}]
+    try:
+        rows = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        return [], [{"error": f"invalid open pull request JSON: {exc}"}]
+    if not isinstance(rows, list):
+        return [], [{"error": "open pull request response is not a list"}]
+
+    heads: list[dict] = []
+    errors: list[dict] = []
+    for row in rows:
+        if row.get("baseRefName") != "main":
+            continue
+        owner = (row.get("headRepositoryOwner") or {}).get("login")
+        repo = (row.get("headRepository") or {}).get("name")
+        if owner != OWNER or repo != "57GEMSDOE":
+            errors.append({
+                "pr": row.get("number"),
+                "error": "open main-target PR head is not in the indexed owner repository",
+            })
+            continue
+        commit = row.get("headRefOid")
+        if not isinstance(commit, str) or len(commit) != 40:
+            errors.append({"pr": row.get("number"), "error": "missing immutable PR head commit"})
+            continue
+        heads.append({
+            "pr": int(row["number"]),
+            "repo": "57GEMSDOE",
+            "branch": row.get("headRefName"),
+            "commit": commit,
+        })
+    return sorted(heads, key=lambda row: row["pr"]), errors
+
+
+def open_pr_trees(heads: list[dict], workers: int = 5) -> tuple[dict[int, list], list[dict]]:
+    trees: dict[int, list] = {}
+    errors: list[dict] = []
+
+    def one(head: dict):
+        result = gh_json(
+            f"repos/{OWNER}/57GEMSDOE/git/trees/{head['commit']}?recursive=1"
+        )
+        if result.get("truncated"):
+            raise ValueError("GitHub returned a truncated recursive PR tree")
+        return int(head["pr"]), result.get("tree", [])
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = {pool.submit(one, head): head for head in heads}
+        for future in as_completed(futures):
+            head = futures[future]
+            try:
+                pr, tree = future.result()
+                trees[pr] = tree
+            except Exception as exc:
+                errors.append({
+                    "pr": head["pr"], "commit": head["commit"],
+                    "error": str(exc)[:240],
+                })
+    return trees, errors
 
 
 def changed_trees(changed: dict[str, str], workers: int = 5) -> tuple[dict[str, list], list[dict]]:
@@ -124,16 +197,22 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
     _baseline_is_consistent(registry, baseline, candidate)
 
     commits, commit_errors = current_commits(workers=max(workers, 6))
+    open_pr_heads, open_pr_discovery_errors = current_open_pr_heads()
     old_commits = {row["repo"]: row["commit"] for row in registry["snapshots"]}
     changed = {repo: sha for repo, sha in commits.items() if old_commits.get(repo) != sha}
-    if not changed and not commit_errors:
-        # Idempotent repeat: preserve the original dated 17-raster extension
-        # receipt instead of replacing it with a misleading empty delta.
+    old_open_pr_heads = registry.get("open_pr_heads_checked", [])
+    old_open_refs = {(int(row["pr"]), row["commit"]) for row in old_open_pr_heads}
+    current_open_refs = {(int(row["pr"]), row["commit"]) for row in open_pr_heads}
+    open_pr_heads_changed = old_open_refs != current_open_refs
+    if not changed and not commit_errors and not open_pr_discovery_errors and not open_pr_heads_changed:
+        # Idempotent repeat: preserve the dated measurement instead of replacing
+        # it with an empty delta when neither main nor any open PR head changed.
         result = {
             "evidence_class": "REGISTRY-DELTA-NO-OP",
             "generated_utc": datetime.now(timezone.utc).isoformat(),
             "current_main_commits_checked": len(commits),
             "changed_repositories": [],
+            "current_open_pr_heads_checked": open_pr_heads,
             "new_grid_rasters_added": 0,
             "existing_audit_rasters_checked": baseline["registry_rasters_checked"],
             "complete_accessible_scan": True,
@@ -143,18 +222,25 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
         print(json.dumps(result, indent=2))
         return result
     trees, tree_errors = changed_trees(changed, workers=workers)
+    pr_trees, pr_tree_errors = open_pr_trees(open_pr_heads, workers=workers)
 
     old_by_blob = {record["blob"]: record for record in registry["rasters"]}
     candidate_blob = git_blob_sha1(candidate)
-    candidate_name = candidate.name
     discovered: dict[str, dict] = {}
     aliases_added: dict[str, list[str]] = {}
     excluded_candidate_sources: list[str] = []
     excluded_inputs: list[dict] = []
     too_large: list[dict] = []
 
-    for repo, tree in trees.items():
-        commit = commits[repo]
+    tree_sources = [
+        (repo, commits[repo], tree)
+        for repo, tree in trees.items()
+    ]
+    tree_sources.extend(
+        (f"57GEMSDOE-PR{pr}", next(row["commit"] for row in open_pr_heads if row["pr"] == pr), tree)
+        for pr, tree in pr_trees.items()
+    )
+    for repo, commit, tree in tree_sources:
         for item in tree:
             path = item.get("path", "")
             if item.get("type") != "blob" or not path.lower().endswith((".tif", ".tiff")):
@@ -164,7 +250,9 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
                 continue
             blob = item["sha"]
             source = f"{repo}:{path}"
-            if repo == "57GEMSDOE" and Path(path).name == candidate_name and blob == candidate_blob:
+            # The exact current candidate bytes are never treated as an earlier
+            # prediction, regardless of which public tree exposes that blob.
+            if blob == candidate_blob:
                 excluded_candidate_sources.append(source)
                 continue
             if blob in old_by_blob:
@@ -178,7 +266,7 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
                     too_large.append({"repo": repo, "path": path, "blob": blob, "size": size})
                     continue
                 discovered[blob] = {
-                    "repo_first": repo,
+                    "repo_first": "57GEMSDOE" if repo.startswith("57GEMSDOE-PR") else repo,
                     "blob": blob,
                     "sources": [source],
                     "source_commit": commit,
@@ -220,7 +308,10 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
         else:
             deduplicated_new[digest] = row
 
-    scan_complete = not (commit_errors or tree_errors or too_large or fetch_errors)
+    scan_complete = not (
+        commit_errors or open_pr_discovery_errors or tree_errors or pr_tree_errors
+        or too_large or fetch_errors
+    )
     combined = registry["rasters"] + list(deduplicated_new.values())
     combined_by_sha = {row["sha256"]: row for row in combined}
     combined = sorted(combined_by_sha.values(), key=lambda row: row["sha256"])
@@ -228,9 +319,10 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
 
     # Validate old and new manifests separately; merge their exact per-raster metrics.
     scope = (
-        "SHA256-pinned complete prior registry extended with current public-main trees for every listed repository; "
-        "only newly changed Git blobs were downloaded and compared. The current candidate is excluded as its own output. "
-        "Private, unlinked, inaccessible and later-written files remain outside scope."
+        "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories "
+        "and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. "
+        "This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. "
+        "Private, unlinked, external, inaccessible and later-written files may be absent."
     )
     delta = None
     if deduplicated_new:
@@ -268,6 +360,11 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
         current_candidate_sha256=hashlib.sha256(candidate.read_bytes()).hexdigest(),
         latest_public_main_commits_checked=len(commits),
         changed_public_main_commits=len(changed),
+        current_open_pr_heads_checked=len(open_pr_heads),
+        changed_open_pr_heads=sum(
+            (int(row["pr"]), row["commit"]) not in old_open_refs
+            for row in open_pr_heads
+        ),
     )
 
     now = datetime.now(timezone.utc).isoformat()
@@ -294,6 +391,16 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
             {"repo": repo, "commit": sha} for repo, sha in sorted(commits.items())
         ],
         "current_main_commit_errors": commit_errors,
+        "current_open_pr_heads": open_pr_heads,
+        "previous_open_pr_heads_checked": old_open_pr_heads,
+        "open_pr_head_discovery_errors": open_pr_discovery_errors,
+        "open_pr_tree_errors": pr_tree_errors,
+        "changed_open_pr_heads": [
+            row for row in open_pr_heads if (int(row["pr"]), row["commit"]) not in old_open_refs
+        ],
+        "closed_or_replaced_open_pr_heads": [
+            row for row in old_open_pr_heads if (int(row["pr"]), row["commit"]) not in current_open_refs
+        ],
         "changed_tree_errors": tree_errors,
         "fetch_errors": fetch_errors,
         "too_large_unchecked_tiffs": too_large,
@@ -326,15 +433,20 @@ def refresh(root: Path = ROOT, *, workers: int = 5) -> dict:
             "complete_accessible_scan": True,
             "rasters": combined,
             "latest_main_commit_scan_utc": now,
+            "latest_open_pr_head_scan_utc": now,
+            "open_pr_heads_checked": open_pr_heads,
             "incremental_extension": {
                 "base_registry_rasters": len(registry["rasters"]),
                 "added_unique_grid_rasters": len(deduplicated_new),
                 "changed_repositories": sorted(changed),
+                "open_pr_heads_checked": open_pr_heads,
+                "open_pr_head_rows_replaced": old_open_pr_heads,
                 "current_candidate_excluded_by_sha256": merged_audit["candidate_file_sha256"],
             },
             "scope": (
-                "Historical immutable grid-raster pins union latest checked public-main trees for all 57 listed repositories; "
-                "current candidate excluded from its own check. Private, unlinked, inaccessible and later-written rasters cannot be certified."
+                "Historical immutable grid-raster pins union latest checked public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; "
+                "this is an indexed public owner-repository inventory, not a complete organizer registry. The exact current candidate bytes are excluded from its own check. "
+                "Private, unlinked, external, inaccessible and later-written rasters may be absent."
             ),
         }, indent=2, allow_nan=False) + "\n"
     )

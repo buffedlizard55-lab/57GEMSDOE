@@ -145,6 +145,6 @@
   "experiments_used": 3,
   "submission_slots_used": 0,
   "generated_utc": "2026-10-09T20:00:19.209388+00:00",
-  "registry_reviewed_utc": "2026-10-10T20:14:20.753573+00:00",
-  "registry_scope": "SHA256-pinned complete prior registry extended with current public-main trees for every listed repository; only newly changed Git blobs were downloaded and compared. The current candidate is excluded as its own output. Private, unlinked, inaccessible and later-written files remain outside scope."
+  "registry_reviewed_utc": "2026-10-10T20:27:04.428632+00:00",
+  "registry_scope": "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. Private, unlinked, external, inaccessible and later-written files may be absent."
 }

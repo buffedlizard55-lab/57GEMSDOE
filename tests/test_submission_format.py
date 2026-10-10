@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from gems57 import grid as gridmod
 from gems57.validate import validate
+from gems57.submission_writer import write_submission as write_portal_submission
 
 
 def test_zeros_mode_passes_and_nan_mode_fails(tmp_path):
@@ -74,3 +75,26 @@ def test_shape_crs_transform_are_pinned():
         assert (ds.height, ds.width) == (gridmod.HEIGHT, gridmod.WIDTH)
         assert str(ds.crs) == f"EPSG:{gridmod.EPSG}"
         assert tuple(ds.transform)[:6] == tuple(gridmod.TRANSFORM)[:6]
+
+
+def test_shared_submission_writer_is_fail_closed_and_emits_single_tif_zip(tmp_path):
+    import json
+    import zipfile
+
+    foot = np.zeros((gridmod.HEIGHT, gridmod.WIDTH), bool)
+    foot[100:200, 100:200] = True
+    pred = np.zeros(foot.shape, dtype=np.float32)
+    pred[120:125, 130:135] = 1.0
+    path = tmp_path / "gems57-test-candidate.tif"
+    receipt = write_portal_submission(
+        path, pred, gridmod.DATA_DIR / "sample_submission.tif", foot,
+        name="gems57-test-candidate", note="gems57-test-candidate | fault-zone anatomy")
+
+    assert receipt["validator"]["ok"]
+    assert receipt["promoted"] is False
+    assert receipt["approved_for_weekly_slot"] is False
+    assert receipt["status"].startswith("research-only")
+    assert json.loads(path.with_suffix(".json").read_text())["sha256"] == receipt["sha256"]
+    with zipfile.ZipFile(path.with_suffix(".zip")) as archive:
+        assert archive.namelist() == [path.name]
+        assert archive.read(path.name) == path.read_bytes()

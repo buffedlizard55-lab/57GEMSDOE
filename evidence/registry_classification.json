@@ -64,7 +64,7 @@
     }
   ],
   "audit_semantics": "All 698 SHA256-pinned grid rasters were compared, conservatively including four grandfathered auxiliary inputs; 80 comparisons trigger the literal overlap/Jaccard duplicate conditions. Nineteen newly discovered current-head rasters across the two documented extensions are retained as predictions or conservative ambiguous outputs. No thresholds were changed. A dense full-footprint positive surface still blocks every nonempty candidate under the literal forward-overlap rule.",
-  "scope": "Historical pinned inventory union current public-main trees for all 57 listed repositories, checked 2026-10-10 at the latest recorded refresh. The current generated candidate is excluded as an output, not a prior. Private, unlinked, inaccessible and later-written rasters cannot be certified.",
+  "scope": "Historical pinned inventory union latest recorded current public-main trees for all 57 listed repositories. This is an indexed public owner-repository inventory, not a complete organizer registry. Current generated candidate is excluded as an output, not a prior. Private, unlinked, external, inaccessible and later-written rasters may be absent.",
   "incremental_delta": {
     "source": "registry_live_delta.json",
     "base_registry_rasters": 696,
