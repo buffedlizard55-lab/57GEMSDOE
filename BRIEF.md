@@ -2,9 +2,25 @@
 
 Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of **every** session. The historical request is preserved for requirements and context, not word-for-word certified chat fidelity or score verification.
 
-## Current outcome, 2026-10-10 (Session 5)
+## Current outcome, 2026-10-10 (Session 7)
 
-**New TIFF generated (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`). Download for research: OK. Submit: NO.**
+**New unique binary dot TIFF generated (fault-zone anatomy lane).** The live
+download/submit status is printed at the top of [README.md](README.md) and the
+site overview; it is derived from `evidence/run_card_current.json` and must be
+read there before any submission. Session 7 closed IR-S6-05 (the feature stack
+is restored and hash-verified via the GitHub bridge) and IR-S6-01 (the
+owner-directed dot-representation ruling is implemented in the shared
+`src/gems57/uniqueness.py`, with BOTH the literal support screen and the
+representation screen reported on every comparison). Session 7 also delivered a
+decisive **negative** for H6-1: the measured 0.2778 prune rule (dots within
+2 px of the mapped catalogue) lowers holdout DTI against both unpruned and
+matched-random controls (HOLDOUT-DTI `gems57-pooled-hide-v2`, 11,321 withheld
+positives; see `evidence/session7_h61_prune.json`), so the final build does not
+prune. Zero weekly slots were used; the generator never submits.
+
+### Session-5/6 outcome (preserved history)
+
+**TIFF `gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`. Download for research: OK. Submit: NO.**
 
 The current [run card](evidence/run_card_current.json) is negative for competition submission. Session 6 (2026-10-10) re-verified the current 696-raster index (696/696, 0 errors) and reran the literal gate on the offered TIF: 80 duplicate firings, unique=false. No slot was used and no candidate was built (see README, Session 6). All **695** accessible pinned grid rasters across all 57 sibling repositories were checked (`evidence/relay_bend_surface_uniqueness.json`). Against all **665 rasters from the other 56 repositories**, worst full-footprint Spearman rank correlation is **0.658029 ≤ 0.90** (and against the **15 discriminating sibling-lane rasters**, worst Spearman is **0.028783 ≤ 0.90** and worst 3-px dot overlap is **0.237470 ≤ 0.70**). However, literal forward overlap against the 17 dense-support prior rasters is **1.0** (above 0.70), and full-footprint Spearman against this repository's own earlier Session-3 soft surface (sharing the exact 2,452,550 zeroed pixels outside the fitted `d1 ≤ 25.55 px` damage zone) is **0.975291**. A dense-prior saturation certificate proves every nonempty allowed support is blocked under the inherited `finite > 0` definition. No density or reverse-overlap exemption, no production final dots, no weekly slot.
 
@@ -15,7 +31,7 @@ On the repaired buffered whole-component holdout (`gems57-pooled-hide-v2`, `n=11
 ## Non-negotiable protocol
 
 1. Stay in **fault-zone anatomy**: secondary strands, visible-host distance/length/orientation and recorded sense where justified. No copied prior prediction as a feature, base or output.
-2. Surface gate **before production placement**, then final-dot gate: signed full-footprint rank correlation >0.90 **or** >70% candidate support within Euclidean 3 px of any earlier raster → duplicate, log and STOP. Literal positive finite support; no alternate policy.
+2. Surface gate **before production placement**, then final-dot gate: full-footprint rank correlation >0.90 **or** >70% of the candidate's dots within Euclidean 3 px of **one registry raster's dots** → duplicate, log and STOP (cross-lane; same-repo prior builds are same-lane succession, disclosed separately; byte/pixel identity is a hard stop against every raster). **IR-S6-01 ruling (owner-directed, Session 7):** "a raster's dots" means its discrete emission dots — positive pixels for sparse dot fields (support ≤ 10 % of the footprint), 3-px NMS local maxima at a budget matched to the candidate for continuous surfaces. The inherited literal positive-support screen is still computed and published unchanged; it cannot discriminate (it fires for every nonempty candidate and between real distinct owner-submitted files) and is not used as the operative drift verdict.
 3. Reuse shared cached features, `evaluate_holdout.py` and `submission_writer.py`. Repair shared tools once; no private scoring forks.
 4. Hide whole fault components with a context buffer. All catalogue features visible-only; pixel-exact unhidden known-fault score mask. Pooled α=0.2, β=0.8, 300 m triangular kernel. Fit budgets/zone only on training folds; never oracle test-positive count.
 5. Every score must be **HOLDOUT-DTI** with evaluator, positive count and CI, or **ORGANIZER-CONFIRMED** from a submission-page receipt. Historical quoted values stay **OWNER-REPORTED**; public board context is not a file receipt. A projection is not a score.

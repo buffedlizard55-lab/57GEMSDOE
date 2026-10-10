@@ -1,0 +1,106 @@
+{
+  "evidence_class": "PRE-REGISTRATION (hypotheses only; none of these five run in Session 7; no slot used)",
+  "session": "7 (2026-10-10)",
+  "generated_utc": "2026-10-10",
+  "scope_note": "Ranked, untried fault-zone-anatomy-lane hypotheses for the NEXT separately budgeted session. Excluded because already tested in this repository: H57-H bend/scarp strike, H57-I2 two-host relay, H57-J slip-sense transition, sin2d/cos2d interactions (H57-D negative), the dot-budget sweep, and H6-1 catalogue-proximity pruning (tested in Session 7, evidence/session7_h61_prune.json). H6-2/H6-3 below were pre-registered in Session 6 and never run. All quantities must be labelled HOLDOUT-DTI (gems57-pooled-hide-v2, withheld positives, 95% CI) or ORGANIZER-CONFIRMED; projections are never scores.",
+  "validation_rule": "Test only the top-ranked candidate in the next budget. Spatially blocked hide-and-recover holdout (buffered whole-component LOQO, 153 physical 20 km clusters, paired draws). Retain only on a strictly positive paired 95% lower bound against the matched control. Reject on any feature-alone canary AUC > 0.90 or any cross-lane uniqueness firing. No weekly slot on any result that has not cleared both.",
+  "target_note": "The scored target is geological fault presence (new fault pixels not already in USGS/INGENIOUS), not geothermal-vent or reservoir labels. Fault-permeability pathways are exploration evidence only.",
+  "ranked": [
+    {
+      "rank": 1,
+      "id": "H7-1",
+      "prior_id": "H6-2 / H57-B (pre-registered, never run)",
+      "hypothesis": "Fault-tip termination and splay-root anatomy: the signed along-strike distance to visible component tips, and the fan of damage around them, adds held-out skill beyond distance-to-fault and two-host relay geometry.",
+      "layers": [
+        "data/official/existing_faults.tif (visible-only component endpoints)",
+        "data/external/trace_segments_utm11.csv (INGENIOUS segment terminations)",
+        "band 3 tmi_hg and band 6 tc (magnetic edge continuation across a tip)"
+      ],
+      "physical_signature": "Signed tip-distance transform along the host strike; magnetic tilt-edge continuity that steps past a mapped termination (a splay root) rather than dying with it.",
+      "why_new_faults_not_catalogued": "Organizer thread 11536 makes newly mapped geometry of an existing system count as new fault; growth fronts live at fault tips and relays, while the through-going interior of a mapped trace is already captured pixel-exactly by USGS/INGENIOUS and earns nothing.",
+      "differs_from_repo": "None of the 22 current anatomy/relay/bend features contains an endpoint-distance term; REMAINING_WORK named H57-B (tip-lobe) the cheapest untried anatomy hypothesis. H6-2 was pre-registered but never executed.",
+      "expected_dti_rank": 1,
+      "implementation_cost": "low (visible-only EDTs and endpoint extraction; 2-4 new columns)",
+      "new_external_data_required": null,
+      "falsifier": "Paired 95% lower bound vs relay_bend_anatomy is at or below zero; or skill concentrates on one side of the fault only; or any canary exceeds 0.90."
+    },
+    {
+      "rank": 2,
+      "id": "H7-2",
+      "hypothesis": "Stepover dilatation sign: releasing (transtensional pull-apart) relay corridors between left-stepping dextral hosts carry higher secondary-strand intensity than restraining ones, measurable from detrended topography and isostatic-gravity gradients without any textbook angle.",
+      "layers": [
+        "band 12 det_elev and band 19 det_elev_slope (corridor subsidence and flank scarps)",
+        "band 13 iso_grav_anom and band 5 iso_grav_anom_slope (low-density basin fill)",
+        "band 8 geod_dilaterate (present-day extension)",
+        "existing relay_facing / relay_ratio features as the frame"
+      ],
+      "physical_signature": "Signed cross-corridor profile of (detrended elevation x gravity anomaly) conditioned on relay_facing: negative gravity low centered in the stepover with flanking scarp slopes.",
+      "why_new_faults_not_catalogued": "Pull-apart basins between left-stepping dextral faults (Faulds, Henry and Hinz, northern Walker Lane) are the youngest, most distributed strand habitat and are systematically under-mapped relative to through-going traces.",
+      "differs_from_repo": "relay_ratio and relay_facing encode corridor geometry but not the sign of extension; E3 tested slip-sense transitions, not stepover dilatation. No gravity-topography cross-profile exists in the 22 features.",
+      "expected_dti_rank": 2,
+      "implementation_cost": "medium (cross-corridor profile sampling in the two-host frame; 3-5 columns)",
+      "new_external_data_required": null,
+      "falsifier": "No paired gain over relay_bend_anatomy; or the effect flips under a matched restraining-bend control; canary AUC > 0.90 on any new column."
+    },
+    {
+      "rank": 3,
+      "id": "H7-3",
+      "hypothesis": "Geodetic strain-rate concordance: secondary-strand probability rises where the damage-zone intensity coincides with an anomaly in geodetic shear-rate / second invariant, because the catalogue misses young active strands and geodesy is catalogue-independent.",
+      "layers": [
+        "band 7 geod_shearrate, band 4 geod_2ndinv, band 8 geod_dilaterate",
+        "band 10 deq_n100a15 and band 16 ieq_n100a15 (seismicity context)",
+        "fitted damage-zone intensity from the retained lane features"
+      ],
+      "physical_signature": "Local (1-3 km) z-score of geodetic shear rate interacting multiplicatively with the fitted anatomy intensity; not a flat per-band rank.",
+      "why_new_faults_not_catalogued": "Compiled maps lag young displacement; strain localization marks strands whose slip postdates the compilation, which is exactly the hidden population the organizer scores (thread 11536).",
+      "differs_from_repo": "H57-K fed all 19 bands as flat q/z ranks into one GBM (a negative live result, 0.0106 at 62,872 dots, OWNER-REPORTED); the targeted strain-rate x anatomy interaction was never isolated on the buffered LOQO instrument.",
+      "expected_dti_rank": 3,
+      "implementation_cost": "low-medium (band caches already local; interaction columns only)",
+      "new_external_data_required": null,
+      "falsifier": "Interaction column alone fires the canary (seismicity/distance confound); or paired gain is at or below zero; or the gain survives removal of seismicity bands only via the distance term (rank-redundancy ablation)."
+    },
+    {
+      "rank": 4,
+      "id": "H7-4",
+      "prior_id": "H6-3 (pre-registered, never run)",
+      "hypothesis": "Flight-line-aligned magnetic-mimic suppression: magnetic-gradient lineaments parallel to survey flight-line direction and unmatched by a gravity or scarp edge are leveling artifacts, and down-weighting them improves held-out precision over the unsuppressed magnetic-edge feature.",
+      "layers": [
+        "band 1 mag_anom, band 2 rtp, band 14 tmi, band 9 tmi_vg (magnetic family)",
+        "band 13 iso_grav_anom, band 12 det_elev (independent edge corroboration)",
+        "flight-line azimuth from GeoDAWN survey metadata (USGS/GDR official pages) or a stripe-periodicity estimator on band 3 tmi_hg"
+      ],
+      "physical_signature": "Stripe-parallel anisotropy in tmi_hg without a matching gravity/scarp edge; suppression weight = 1 - |cos(2*(theta_edge - theta_flightline))| * (1 - corroboration).",
+      "why_new_faults_not_catalogued": "It is a precision-side feature: alpha=0.2 FP cost means a mimic removed is worth up to five times a marginal hit; the 0.2778 winner is itself a precision-side construction (dots removed, nothing added).",
+      "differs_from_repo": "No stripe-filtered or flight-line-aware magnetic feature exists in this repository; 17GEMSDOE E-proba-multiscale is a dense surface lane, not mimic suppression.",
+      "expected_dti_rank": 4,
+      "implementation_cost": "medium (flight-line azimuth from official metadata text pages or an internal FFT/structure-tensor stripe estimator; no new raster required)",
+      "new_external_data_required": "Official survey flight-line metadata: USGS GeoDAWN data-series landing page https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and (DOI 10.5066/P93LGLVQ) and GDR/INGENIOUS https://gbcge.org/current-projects/ingenious/ ; both are free official text pages reachable for manual review. If binary grid downloads stay egress-blocked, the stripe-azimuth estimator keeps the hypothesis viable with zero external binaries.",
+      "falsifier": "Suppression removes true-fault signal (withheld recall drops more than precision gains); or the paired lower bound is at or below zero; or the estimated stripe azimuth is not stable across 20 km blocks."
+    },
+    {
+      "rank": 5,
+      "id": "H7-5",
+      "prior_id": "H57-N (never run; feasibility changed)",
+      "hypothesis": "Radiometric K/eTh alteration-halo concordance: potassic-alteration ratios adjacent to stepover damage zones corroborate permeable Quaternary strand habitat and improve precision over the anatomy intensity alone.",
+      "layers": [
+        "GeoDAWN radiometric grids (K, eTh, eU) from ScienceBase DOI 10.5066/P93LGLVQ",
+        "bridged auxiliary raster GEMSDOE40:data/aux/radiometric_u8.tif in the public owner inventory (obtainable through the allowed github.com host; provenance UNVERIFIED until pinned and profiled)",
+        "retained relay/bend damage-zone intensity as the conditioning frame"
+      ],
+      "physical_signature": "K/Th ratio high (potassic micas in hydrothermal alteration) bounded by, not centered on, the mapped trace; intersection with relay corridors.",
+      "why_new_faults_not_catalogued": "Alteration halos mark long-lived permeable structures whose surface trace may be too subtle for compiled maps; used as corroboration it sharpens allocation precision.",
+      "differs_from_repo": "Unused in every variant of this repository; sibling r11f-scarp-radiometric-fusion (0.1589, OWNER-REPORTED) underperformed standalone lidarscarp-ridge (0.1461), which is prior evidence that naive fusion can dilute a strong single-evidence ranking.",
+      "expected_dti_rank": 5,
+      "implementation_cost": "higher (data acquisition, provenance authentication, ratio construction, NODATA screening)",
+      "new_external_data_required": "USGS GeoDAWN radiometric grids, ScienceBase DOI 10.5066/P93LGLVQ (official, free). Checked obtainable: the GeoDAWN landing page is live and the repository inventory shows a bridged radiometric raster (GEMSDOE40:data/aux/radiometric_u8.tif) fetchable via the github.com API; full-fidelity grids would need ScienceBase binary download from an unrestricted machine or a hash-pinned bridge part.",
+      "falsifier": "No paired gain once K/Th is added to the anatomy arm; or the ratio tracks lithologic units (diorite vs basalt) rather than strand proximity in a lithology-stratified check."
+    }
+  ],
+  "named_non_fault_mimics_across_candidates": [
+    "erosional range-front and fluvial-terrace scarps (topography and detrended-elevation terms)",
+    "lithologic contacts and mafic dike swarms (magnetic and gravity-gradient edges)",
+    "flight-line leveling residuals and variable terrain clearance (magnetic stripe artifacts)",
+    "alluvial-basin edges and sediment thickness contrasts (gravity low, conductivity contrast)",
+    "catalogue digitization vertices and map-sheet seams (trace geometry)"
+  ]
+}

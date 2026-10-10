@@ -1,6 +1,6 @@
 {
   "evidence_class": "REGISTRY-MEASUREMENT",
-  "generated_utc": "2026-10-10T19:58:45.875405+00:00",
+  "generated_utc": "2026-10-10T21:37:24.370982+00:00",
   "owner": "buffedlizard55-lab",
   "repos_scanned": [
     "11GEMSDOE",
@@ -68,7 +68,7 @@
     },
     {
       "repo": "12GEMSDOE",
-      "commit": "0125608623a696e85f0fc55c61ef31f458ffdfd3"
+      "commit": "eaf8615fff18f809e919b2ad14be3f93197d3f36"
     },
     {
       "repo": "13GEMSDOE",
@@ -104,7 +104,7 @@
     },
     {
       "repo": "55GEMSDOE",
-      "commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023"
+      "commit": "d145969f74f272199b983521a8519e09b25eefd5"
     },
     {
       "repo": "56GEMSDOE",
@@ -112,7 +112,7 @@
     },
     {
       "repo": "57GEMSDOE",
-      "commit": "5309c85a6334c5715791c548dafc2fabdacc8568"
+      "commit": "fab26573b804978727fcbe73a90237cf55ce198f"
     },
     {
       "repo": "5GEMSDOE",
@@ -276,7 +276,7 @@
     },
     {
       "repo": "GEMSDOE52",
-      "commit": "22091610117447c174b65d074d0df73d2a8b2e27"
+      "commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf"
     },
     {
       "repo": "GEMSDOE53",
@@ -308,59 +308,9 @@
       4508550
     ]
   },
-  "n_unique_grid_rasters": 695,
+  "n_unique_grid_rasters": 705,
   "complete_accessible_scan": true,
   "skipped": [
-    {
-      "repo": "GEMSDOE3",
-      "path": "legacy/data/bridge/example_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE3",
-      "path": "legacy/data/bridge/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE3",
-      "path": "legacy/data/fixture/fixture_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "7GEMSDOE",
-      "path": "external/dem/lidar_scarp_features_u8.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "7GEMSDOE",
-      "path": "tests/fixture/fixture_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE2",
-      "path": "data/bridge/example_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE2",
-      "path": "data/bridge/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE2",
-      "path": "data/evidence/seghold/eval_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE2",
-      "path": "data/evidence/seghold/train_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE2",
-      "path": "data/fixture/fixture_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
     {
       "repo": "GEMSDOE",
       "path": "data/bridge/example_submission.tif",
@@ -397,6 +347,31 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
+      "repo": "GEMSDOE4",
+      "path": "data/bridge/example_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "path": "data/fixture/fixture_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "7GEMSDOE",
+      "path": "external/dem/lidar_scarp_features_u8.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "7GEMSDOE",
+      "path": "tests/fixture/fixture_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
       "repo": "5GEMSDOE",
       "path": "data/bridge/example_submission.tif",
       "reason": "input/auxiliary source raster, not submission"
@@ -412,17 +387,42 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE4",
+      "repo": "GEMSDOE3",
+      "path": "legacy/data/bridge/example_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE3",
+      "path": "legacy/data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE3",
+      "path": "legacy/data/fixture/fixture_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE2",
       "path": "data/bridge/example_submission.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE4",
+      "repo": "GEMSDOE2",
       "path": "data/bridge/existing_faults.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE4",
+      "repo": "GEMSDOE2",
+      "path": "data/evidence/seghold/eval_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE2",
+      "path": "data/evidence/seghold/train_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE2",
       "path": "data/fixture/fixture_labels.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
@@ -524,41 +524,6 @@
     {
       "repo": "GEMSDOE30",
       "path": "data/external/derived_sgmc_faults_100m_u8.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE40",
-      "path": "data/aux/radiometric_u8.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE40",
-      "path": "data/aux/topo_u8.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE40",
-      "path": "data/labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE40",
-      "path": "data/sample_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE51",
-      "path": "data/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE51",
-      "path": "data/labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE51",
-      "path": "data/sample_submission.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
@@ -672,6 +637,41 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
+      "repo": "GEMSDOE51",
+      "path": "data/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE51",
+      "path": "data/labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE51",
+      "path": "data/sample_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE40",
+      "path": "data/aux/radiometric_u8.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE40",
+      "path": "data/aux/topo_u8.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE40",
+      "path": "data/labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE40",
+      "path": "data/sample_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
       "repo": "GEMSDOE54",
       "path": "data/external/derived_sgmc_faults_100m_u8.tif",
       "reason": "input/auxiliary source raster, not submission"
@@ -746,19 +746,19 @@
     },
     {
       "sources": [
-        "GEMSDOE3:legacy/data/evidence/proxy/proxy_window.tif",
-        "GEMSDOE2:data/evidence/proxy/proxy_window.tif",
-        "GEMSDOE:data/evidence/proxy/proxy_window.tif",
-        "5GEMSDOE:data/evidence/proxy/proxy_window.tif"
+        "GEMSDOE:data/evidence/xcat/proxy_window.tif",
+        "5GEMSDOE:data/evidence/xcat/proxy_window.tif",
+        "GEMSDOE3:legacy/data/evidence/xcat/proxy_window.tif",
+        "GEMSDOE2:data/evidence/xcat/proxy_window.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
     {
       "sources": [
-        "GEMSDOE3:legacy/data/evidence/xcat/proxy_window.tif",
-        "GEMSDOE2:data/evidence/xcat/proxy_window.tif",
-        "GEMSDOE:data/evidence/xcat/proxy_window.tif",
-        "5GEMSDOE:data/evidence/xcat/proxy_window.tif"
+        "GEMSDOE:data/evidence/proxy/proxy_window.tif",
+        "5GEMSDOE:data/evidence/proxy/proxy_window.tif",
+        "GEMSDOE3:legacy/data/evidence/proxy/proxy_window.tif",
+        "GEMSDOE2:data/evidence/proxy/proxy_window.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
@@ -770,24 +770,24 @@
     },
     {
       "sources": [
-        "GEMSDOE3:legacy/data/fixture/fixture_features_int16.tif",
-        "7GEMSDOE:tests/fixture/fixture_features_int16.tif",
-        "GEMSDOE2:data/fixture/fixture_features_int16.tif",
         "GEMSDOE:data/fixture/fixture_features_int16.tif",
+        "GEMSDOE4:data/fixture/fixture_features_int16.tif",
+        "7GEMSDOE:tests/fixture/fixture_features_int16.tif",
         "5GEMSDOE:data/fixture/fixture_features_int16.tif",
-        "GEMSDOE4:data/fixture/fixture_features_int16.tif"
-      ],
-      "reason": "not a single-band competition-grid prediction"
-    },
-    {
-      "sources": [
-        "GEMSDOE48:data/pilot/dem3m/x40y427_3m.tif"
+        "GEMSDOE3:legacy/data/fixture/fixture_features_int16.tif",
+        "GEMSDOE2:data/fixture/fixture_features_int16.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
     {
       "sources": [
         "GEMSDOE48:data/pilot/dem3m/x42y425_3m.tif"
+      ],
+      "reason": "not a single-band competition-grid prediction"
+    },
+    {
+      "sources": [
+        "GEMSDOE48:data/pilot/dem3m/x40y427_3m.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
@@ -1850,6 +1850,17 @@
         "GEMSDOE38:docs/downloads/gems38-realdata-A-20261005-736488e5ab49-nan.tif"
       ],
       "repo_first": "GEMSDOE38"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "86b71dde0039b2a6c79ca7342c1519c1828f89c1",
+      "sources": [
+        "GEMSDOE52:submission/gems52-h83-structural-concordance-37654px-20261010T200049Z.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "274db602ec8b91cb6a2793e9f512321f32326298aa8ed031ebd478e21426f5cd",
+      "bytes": 1558064,
+      "cache_file": ".cache/registry/86b71dde0039b2a6c79ca7342c1519c1828f89c1.tif"
     },
     {
       "sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
@@ -3022,6 +3033,17 @@
       "repo_first": "GEMSDOE46"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "e0f7bb93c77fa0b0ce6c640c55589ea96803728f",
+      "sources": [
+        "55GEMSDOE:docs/downloads/h57-tensor-flank-r15-uneroded-registry56-n200-20261009T200831Z-nan.tif"
+      ],
+      "source_commit": "d145969f74f272199b983521a8519e09b25eefd5",
+      "sha256": "57dd4ba81c6fe553166cb193f4ae40e6547f4abe5a8fdabeb9154f648d761326",
+      "bytes": 1480411,
+      "cache_file": ".cache/registry/e0f7bb93c77fa0b0ce6c640c55589ea96803728f.tif"
+    },
+    {
       "sha256": "57f8ad5491f7e0da75eafcd19bcdc538bf0d82fc6825e0c2654804ec23116fc0",
       "bytes": 23503130,
       "blob": "344868de7437a271cbefc17c5f93fd9e282f2ef9",
@@ -3625,6 +3647,18 @@
         "GEMSDOE52:submission/gems52-h62-buriedcorr-37626px.tif"
       ],
       "repo_first": "GEMSDOE52"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "6253b8aa98cec125c44b33b26313b9a81d4ccde9",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h84-candidate.tif",
+        "GEMSDOE52:submission/gems52-h84-hva-ellipse-B-37654px-20261010T204630Z.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "6bb18056c521a1a6a7bcefa75f3be7cb37653b8066efd4252a8b5c096b90b73e",
+      "bytes": 141678,
+      "cache_file": ".cache/registry/6253b8aa98cec125c44b33b26313b9a81d4ccde9.tif"
     },
     {
       "sha256": "6bcf9de850471535816e1a798983a329b4408d39cfa91d4c17511e7fe0158a38",
@@ -4882,7 +4916,8 @@
       "repo_first": "55GEMSDOE",
       "blob": "3b4dca15a32f91f85d584f3b56e18ef33f82d9e6",
       "sources": [
-        "55GEMSDOE:docs/downloads/gems55-tensor_full-n16000-sep3-20261009T211747Z-nan.tif"
+        "55GEMSDOE:docs/downloads/gems55-tensor_full-n16000-sep3-20261009T211747Z-nan.tif",
+        "55GEMSDOE:evidence/historical_artifacts/gems55-tensor_full-n16000-sep3-20261009T211747Z-nan.tif"
       ],
       "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
       "sha256": "927dc17f7f5d890b2f382e266ade5d775474631ee96674f8ff3cbc1f1b7c7693",
@@ -5343,6 +5378,18 @@
         "GEMSDOE44:submissions/GEMS44_n-strand-ssmc_20261006T113858Z_bf3b3914-nan.tif"
       ],
       "repo_first": "GEMSDOE44"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "da58c47f103d14df3c4faa1779b0aa5fcba6b9f1",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h85-candidate.tif",
+        "GEMSDOE52:submission/gems52-h85-geoconc-spaced-37654px-20261010.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "a4a6662009ad2118da8c1b638befb18dff62082757b6c6d89bb207336c17b32a",
+      "bytes": 793702,
+      "cache_file": ".cache/registry/da58c47f103d14df3c4faa1779b0aa5fcba6b9f1.tif"
     },
     {
       "sha256": "a4b8ffa59655d2e4ca1bf77fa27a53c86d168bebb55e8d7ee2bc82720261cb23",
@@ -5980,6 +6027,17 @@
         "GEMSDOE45:docs/downloads/gems45-h51-km-faultzone-20261006.tif"
       ],
       "repo_first": "GEMSDOE45"
+    },
+    {
+      "repo_first": "55GEMSDOE",
+      "blob": "441a6ee29d18f323dd57561a733d248bce9b58cd",
+      "sources": [
+        "55GEMSDOE:docs/downloads/h57-tensor-flank-r15-uneroded-registry56-n200-20261009T200831Z-zeros.tif"
+      ],
+      "source_commit": "d145969f74f272199b983521a8519e09b25eefd5",
+      "sha256": "b8dd3f308b4239fafc9e378809c42e89618a7f814de03bce954870a9b1924915",
+      "bytes": 720851,
+      "cache_file": ".cache/registry/441a6ee29d18f323dd57561a733d248bce9b58cd.tif"
     },
     {
       "sha256": "b9530b70065da1f5e9da82caf4f5aaba3d7175dbbbfb2851e4b2ab2dd13aa4f1",
@@ -6780,6 +6838,18 @@
       "repo_first": "GEMSDOE50"
     },
     {
+      "repo_first": "57GEMSDOE",
+      "blob": "71ad9c01eb180295b90020f47a01e1a632cccbd6",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+        "57GEMSDOE:downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif"
+      ],
+      "source_commit": "fab26573b804978727fcbe73a90237cf55ce198f",
+      "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+      "bytes": 9960624,
+      "cache_file": ".cache/registry/71ad9c01eb180295b90020f47a01e1a632cccbd6.tif"
+    },
+    {
       "sha256": "cfccf7d2d985921a1b27b53a6a8af10824aa8e3111abb155d721e29ff6f0e317",
       "bytes": 698842,
       "blob": "437245c53c1f622da78a70b0047482b6f7ecd4a7",
@@ -7025,6 +7095,17 @@
       "repo_first": "12GEMSDOE"
     },
     {
+      "repo_first": "GEMSDOE52",
+      "blob": "605caf858986627cb70e58795e79c6b0a1a1f519",
+      "sources": [
+        "GEMSDOE52:submission/gems52-h83-structcon-geotherm-37654px-20261010T200310Z.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "d9cfccf0e1aa4e28094a6039fda9e65be5e8ff102e321b33745df149f477f378",
+      "bytes": 81076,
+      "cache_file": ".cache/registry/605caf858986627cb70e58795e79c6b0a1a1f519.tif"
+    },
+    {
       "sha256": "da4193e3a2e0470908b5bd1e28de97f25ee1ce15c57c959d0b623414d200692a",
       "bytes": 810344,
       "blob": "63a57a2b6b1656eb01febf8ed8889185243a25d6",
@@ -7137,6 +7218,18 @@
       "repo_first": "GEMSDOE52"
     },
     {
+      "repo_first": "GEMSDOE52",
+      "blob": "0e8dafa54401c69adc6c146f0a18a44d1801b603",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h83-candidate.tif",
+        "GEMSDOE52:submission/gems52-h83-offcatalogue-cotrain-37654px-e3-20261010T202956Z.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "de580306e2cb6460fced1b745d1d40ff9735fb5497d493a56cca7630ad2a0ef7",
+      "bytes": 140798,
+      "cache_file": ".cache/registry/0e8dafa54401c69adc6c146f0a18a44d1801b603.tif"
+    },
+    {
       "sha256": "deda0533e4aa041e3877f58a8d6b9d0f8930fec6db1f66934f649a6583c71201",
       "bytes": 169213,
       "blob": "5e02dda181f30749fefa57b021fe377415cbf9ab",
@@ -7155,6 +7248,18 @@
         "GEMSDOE48:docs/downloads/GEMSDOE48-H54-ds-core-lidar-20261007-dedc43dc0167.tif"
       ],
       "repo_first": "GEMSDOE48"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "e9758979254849ce67ee5b58cd9a874f7a8d25e3",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h83-candidate-template-nan.tif",
+        "GEMSDOE52:submission/gems52-h83-offcatalogue-cotrain-37654px-e3-20261010T202956Z-template-nan.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "dee4ee5ee364ae2dae4b684e9f35cbf0a07216b75f13369630bc24cc5d65efd2",
+      "bytes": 1582635,
+      "cache_file": ".cache/registry/e9758979254849ce67ee5b58cd9a874f7a8d25e3.tif"
     },
     {
       "sha256": "dee5c5c6bc390ed39638f1638819c10d4e1ae52537c4a900930651dfd19754b7",
@@ -8120,6 +8225,18 @@
         "55GEMSDOE:evidence/historical_artifacts/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-zeros.tif"
       ],
       "repo_first": "55GEMSDOE"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "2184f622c4565675c68cf9c92e7084c4d8b3b454",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h86-candidate.tif",
+        "GEMSDOE52:submission/gems52-h86-h83conc-spaced-37654px-20261010T205209Z.tif"
+      ],
+      "source_commit": "620b0ed7a4005f5a790bd608a39faa0a35e8ccdf",
+      "sha256": "fff75cb886ebd236af609346d1553b16623e37dc569eeda258951a3ef2cb4f44",
+      "bytes": 128032,
+      "cache_file": ".cache/registry/2184f622c4565675c68cf9c92e7084c4d8b3b454.tif"
     },
     {
       "sha256": "fffa7524b3f6e5a3b58f90b33aa9bc37982e214915ee3a16ca981feb2aa6cae3",

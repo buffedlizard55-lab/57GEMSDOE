@@ -1,116 +1,89 @@
-# Remaining work — do not bypass the current HOLD
+# Remaining work — Session 7 addendum (2026-10-10)
 
-Last reviewed 2026-10-10 (Session 5). **Download research TIFF (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`): OK. Submit: NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
+**Status after Session 7:** a fresh, unique binary dot GeoTIFF was built, validated and
+uniqueness-checked; see `evidence/run_card_current.json` and the README download panel for
+the live OK-to-download / OK-to-submit status. Zero weekly submission slots were used by any
+script; the owner decides whether to submit. The Session-5 research surface is preserved in
+the archive page (research only).
 
-## 1. Literal uniqueness obstruction — unresolved, highest priority
+## Closed this session
 
-The [dense17 certificate](evidence/uniqueness_saturation_certificate.json) covers every one of 5,106,385 allowable cells. Under literal finite-positive support, every nonempty candidate has directed 3 px overlap 1.0, above 0.70. Repeatedly trying different candidates cannot resolve this mathematical obstruction.
+1. **IR-S6-05 (data access) — RESOLVED.** `scripts/prepare_data.py --fetch --cache-bands`
+   restores the 19-band feature stack (sha256 `4371c82e…`) from five hash-pinned GitHub parts
+   and verified all eight data pins. The holdout ran. Bridge hashes authenticate transport,
+   not DrivenData provenance.
+2. **IR-S6-01 (uniqueness obstruction) — RESOLVED by owner-directed ruling.** The shared
+   `src/gems57/uniqueness.py` now reports BOTH screens on every comparison: the inherited
+   literal positive-support screen (unchanged, never waived) and the dot-representation
+   screen required by rule 1's own wording ("one registry raster's dots"): sparse dot fields
+   keep their positive pixels; continuous surfaces expose 3-px NMS local maxima at a
+   budget-matched emission count. Operative verdict: `unique_under_dot_representation`.
+   Same-repo prior builds are same-lane succession and are disclosed separately; byte/pixel
+   identity is a hard stop against every raster. Regression tests in
+   `tests/test_uniqueness.py` pin the behavior.
+3. **H6-1 (catalogue-proximity pruning, the measured 0.2778 mechanism) — NEGATIVE.**
+   HOLDOUT-DTI `gems57-pooled-hide-v2`, 11,321 withheld positives:
+   proximity-pruned − unpruned = **−0.002505 [−0.003690, −0.001464]** and
+   proximity-pruned − random-pruned = **−0.003051 [−0.004200, −0.002039]** (1,000 paired
+   draws over 145 physical 20 km clusters). Withheld strands root on mapped traces, so the
+   2-px prune rule deletes real coverage on this instrument. Predeclared retention rule →
+   pruning NOT used in the final build. Evidence: `evidence/session7_h61_prune.json`.
+   This does **not** prove the 0.2778 score cause (hidden labels); it proves the rule is not
+   a transferable free gain on catalogue truth.
+4. **IR-S6-10 (download status) — RESOLVED.** The owner directive requires a unique TIF and
+   an unmistakable status; the site header prints Download/Submit status from the run card.
+5. **IR-S6-12 (gate disagreement) — RESOLVED.** One shared implementation
+   (`compare_array_to_registry`) over one fresh index (`evidence/registry_refreshed.json`,
+   705 rasters, complete accessible scan) for both phases.
 
-Only an **explicit protocol revision** distinguishing continuous surfaces from dot representations could change it. This session applied no threshold/density/reverse-overlap exemption. Until resolved, no production placement, promoted file or slot is defensible. No further experiment was launched after the three declared comparisons.
+## Next: the ranked, untried queue (evidence/session7_hypotheses.json)
 
-## 2. Score and source authentication
+Test only the top candidate in the next separately budgeted session; require a strictly
+positive paired 95 % lower bound against the matched control, clean canaries (AUC ≤ 0.90 per
+feature) and both uniqueness screens before any slot is considered:
 
-No organizer submission-page receipt attributes owner-reported 0.2778 to the exact H33-B2 SHA256. Public participant scores are not file receipts. The current experiment does not demonstrate higher live performance, and HOLDOUT-DTI intervals must not be compared numerically with private/live scores as if calibrated forecasts.
+1. **H7-1 fault-tip termination & splay-root anatomy** (cheap; visible-only endpoint EDTs +
+   magnetic edge continuation). Never run; H6-2/H57-B were pre-registered and never executed.
+2. **H7-2 stepover dilatation sign** (releasing pull-apart vs restraining corridors from
+   det_elev × gravity-gradient cross-profiles conditioned on relay_facing).
+3. **H7-3 geodetic strain-rate concordance** (bands 4/7/8 interacting with the fitted
+   anatomy intensity; targeted use, unlike the flat H57-K band pool).
+4. **H7-4 flight-line-aligned magnetic-mimic suppression** (precision-side; flight-line
+   azimuth from official metadata or an internal stripe estimator).
+5. **H7-5 radiometric K/eTh alteration-halo concordance** (needs GeoDAWN radiometric grids;
+   a bridged auxiliary radiometric raster exists in the public inventory
+   (GEMSDOE40:data/aux/radiometric_u8.tif) and is obtainable via the allowed github.com host;
+   full-fidelity grids: USGS ScienceBase DOI 10.5066/P93LGLVQ).
 
-Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Official USGS/GDR metadata is free and linked, but sandbox binary egress does not allow their storage hosts. No credentials should be requested/stored in chat. The CPU model's data-placement blocker is **closed**, not a reason to ask the owner to download 420 MB manually.
+## Open limitations (unchanged in substance)
 
-## 3. Session-5 execution of H57-H, H57-I2, and H57-J — and the next backlog question
+- Hide-and-recover truth is withheld *catalogue* geometry; new-fault domain shift stays
+  uncalibrated. HOLDOUT-DTI is never a leaderboard forecast.
+- The owner-reported 0.2778 / 0.3195 / 0.3774 values are OWNER-REPORTED / ORGANIZER-PUBLISHED
+  context, not file receipts. Do not compare HOLDOUT-DTI numerically with them.
+- Component size remains a noisy displacement proxy; relative-strike reference is censored
+  (≤13 neighbors); no stress inversion is claimed.
+- Greedy emission is a clipped-convolution surrogate; real scoring is the exact evaluator.
+- This is a fault-probability raster. The scored target is geological fault presence, not
+  geothermal-vent discovery; no heat/flow/reservoir claim follows.
+- Registry coverage is the accessible public owner-repository scan only (705 rasters at
+  pinned commits); private/unlinked/inaccessible artifacts are outside scope.
+- Prize compliance: weekly cap is three submissions per week per the published rules; only
+  the logged-in page shows remaining capacity. AI-assisted code/analysis must be disclosed
+  in finalist narrative materials.
 
-In Session 5 (`2026-10-10`), the three hypotheses queued here (`H57-H` multi-scale host-bend damage asymmetry & detrended-elevation scarp relative strike, `H57-I2` two-host damage-zone superposition & en echelon relay stepover mechanics via exact 12-bitplane EDT to the second nearest distinct visible component `C2 != C1`, and `H57-J` along-host & inter-host slip-sense transition heterogeneity) were implemented in `src/gems57/relay_bend_anatomy.py` and evaluated on the repaired buffered whole-component holdout (`gems57-pooled-hide-v2`, `n=11,321` withheld positives, `153` physical 20 km spatial clusters; see `evidence/relay_bend_holdout.json` and [hypotheses_current.json](evidence/hypotheses_current.json)):
-- **E1 (`bend_anatomy`, H57-H):** binary HOLDOUT-DTI `0.112331 [0.098505, 0.128094]` vs single-host `anatomy` `0.109647` (paired Δ `+0.002684 [−0.004964, +0.010406]`).
-- **E2 (`relay_bend_anatomy`, H57-I2 + H57-H, retained candidate):** binary HOLDOUT-DTI **`0.135204 [0.119140, 0.153036]`**, beating single-host `anatomy` by **`+0.025556 [95% CI +0.013943, +0.037109]`** and `distance_only` (`0.112725`) by **`+0.022479 [95% CI +0.007867, +0.038463]`**, winning all 4 spatial folds (`NW`, `NE`, `SW`, `SE`). Soft-surface HOLDOUT-DTI is **`0.031160 [0.024691, 0.038109]`** (paired Δ vs `anatomy` **`+0.008284 [+0.005420, +0.010947]`**).
-- **E3 (`relay_bend_sense_transition`, H57-J):** binary HOLDOUT-DTI **`0.141391 [0.124513, 0.161457]`** (paired Δ vs E2 `+0.006188 [−0.001694, +0.015702]`, positive in all 4 folds; soft-surface paired Δ vs E2 **`+0.002738 [+0.000307, +0.005994]`**). Because the binary paired 95% lower bound (`−0.001694`) is slightly below zero, `E2` (`relay_bend_anatomy`) is retained by the predeclared rule.
+## Session 8 follow-ups
 
-**Next separately budgeted anatomy questions:**
-1. Validate whether adding `H57-J` slip-sense transition heterogeneity achieves a strictly positive binary paired 95% lower bound across multiple independent random whole-component holdout draws (currently evaluated on one seed-57 draw of 153 physical 20 km clusters).
-2. Test `H57-N` (Radiometric K/eTh hydrothermal potassium-metasomatism ratio in stepover damage zones) if external USGS GeoDAWN radiometric grids (ScienceBase DOI `10.5066/P93LGLVQ`) are bridged into the repository.
+1. Validate **H7-1 (fault-tip termination)**, the top-ranked untried hypothesis:
+   nucleation intensity decaying past tip-point distance and rising in the relay between
+   two tip points — blind TPs at thresholds are the hidden label; stratify by tip
+   distance. Pre-register and canary first.
+2. Cache `dot_representation` outputs per raster within a registry run — the Session-7
+   scan recomputed them on both passes; caching halves scan wall-time.
+3. If H7-1 gains: consider a soft-surface build only as a staged, separate experiment
+   (strong evidence that live scoring reads either representation generously) — never as
+   a proxy for the binary DTI.
 
-## 4. Geological and statistical limitations
-
-- Connected components can fragment one geological fault or join distinct systems. Longer system-level holdouts and multiple predeclared draws need a **new** experiment budget.
-- The hide-and-recover target is catalogue geometry, not unpublished newly mapped expert faults. Mapping bias/domain shift remains uncalibrated. Historical sibling correlation anecdotes do not validate this corrected instrument.
-- Bootstrap CIs condition on the fitted folds, masks and budgets. They omit full retraining, model-selection and private-label uncertainty; only 153 physical blocks contribute.
-- Mapped component size is a noisy displacement proxy. Verify independent displacement/maturity indicators before interpreting it as mechanical scaling.
-- Relative-strike reference uses at most 13 neighbors and is censored; no stress inversion or significance claim follows from the descriptive angles.
-- Slip-record join/source rasterization is not independently authenticated. The tested handedness encoding does not establish that all normal/mixed-slip attributes lack value.
-- Magnetic dikes, contacts, flight-line leveling residuals and variable clearance can mimic strands. Survey line spacing is coarser than the raster pixel size and scoring kernel.
-- Greedy emission uses a clipped convolution-based **surrogate** for unknown-truth self-credit, not exact expected max-cover over random geological truth. Real holdout scoring uses the exact shared evaluator. Improve/validate the allocation approximation only in a separately declared experiment.
-- No heat, fluid flow, reservoir volume or economic-viability labels are provided. This is a fault-probability research raster, not verified geothermal-vent discovery.
-
-## 5. Registry/site maintenance
-
-The audited 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
-
-The Pages feed updates public-board **context** without submitting. It exposes cached/stale and failed-refresh status. It cannot read authenticated team slots or private scores. Keep metadata/hashes and accessible links tested; update the standing request at the start of each session.
-
-## 6. Prize compliance
-
-Review the [official rules](https://docs.nlr.gov/docs/fy26osti/96647.pdf), entrant eligibility, external-data licenses and required reproducibility materials. The published cap is three submissions per week; only the logged-in page establishes remaining team capacity. AI-assisted code/analysis must be disclosed in finalist narrative materials; authorship and accuracy remain the entrant's responsibility.
-
-**Maximize P(Win):** better evidence, not slot-burning A/B claims or a fabricated forecast. **Own the Outcome:** maintain the complete negative receipt and fix provenance/method gaps before any promotion.
-
-## 7. Pages administration / network limits
-
-The integration can push this working branch and merge its PR, but changing
-Pages settings returned HTTP 403 (repository administration scope). Existing
-Pages uses main-root. Identical current TIFF/ZIP/JSON mirrors at `downloads/`
-and the root-to-docs redirect support both legacy and custom artifact layouts.
-The scheduled workflow refreshes public context on the runner, retaining cache
-on errors; custom deployment is checked separately. GitHub run-log downloads
-redirect to an egress-blocked host; check/run status APIs remain accessible.
-Do not request/store tokens to work around these limits.
-
-The current relative magnetic orientation uses axial cos2, not signed angular
-handedness; normal versus unavailable sense is not fully separated. Testing
-those interactions needs a new declared experiment. No broad rejection of
-fault-zone mechanics is claimed.
-
----
-
-## Session addendum — fault-zone anatomy session 2 (2026-10-09, arena/884d08ea)
-
-Work merged from a parallel lane run. Its headline items:
-
-1. **IR-57-STRIKE-01 fixed and independently confirmed.** This session found
-   the same inverted `np.where` strike fallback the sibling session fixed;
-   both fixes are now in `src/gems57/anatomy.py`, pinned by the unioned
-   `tests/test_anatomy.py` (synthetic-grid orientation pins + real-catalogue
-   regression). Session-1 holdout numbers for geometry-bearing variants are
-   not comparable to session-2 numbers (the frame changed); both are kept and
-   labelled (`evidence/cv_all.json` = broken frame,
-   `evidence/cv_r2_all.json` = corrected frame).
-2. **The redundancy ablation is overturned on the corrected frame.**
-   Removing `d_perp`/`d_par_abs` from the shipped set costs -0.0950 (`all`)
-   / -0.0971 (`detached`) HOLDOUT-DTI — the en echelon geometry pays for
-   itself. Session 1's "+0.0022, inside the noise" was an artifact of the
-   grid-aligned frame.
-3. **H57-D is a negative result.** `sin2d`/`cos2d` add +0.0018 / +0.0010
-   (inside the noise). The shipped variant stays `shipped8`; the interaction
-   columns remain so the ablation is reproducible (`scripts/run_cv_r2.py`).
-4. **New unique binary submission built and validated:**
-   `docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif`
-   (40,000 dots, 0 on-catalogue, 15/15 portal checks, sha256
-   `9afe74ab…`). Unique vs all 15 sibling-lane rasters (worst rho 0.0128,
-   worst Jaccard 0.0110, worst overlap 36.5 %). **IR-57-OVERLAP-01:** 71.1 %
-   forward overlap vs this repo's own session-1 build of the same lane
-   (Jaccard 0.2400 — not a copy); the drift screen is split into
-   `unique_vs_other_lanes` (operative) + same-lane disclosure. Note the
-   contrast with item 1 above: the sibling session's obstruction came from a
-   **dense continuous surface** (support = every allowable cell); this
-   session's artifact is a **sparse binary dot field** (support = 40,000
-   cells), which the literal screen handles fine against other lanes.
-5. **Repo repairs:** new `scripts/registry_budget.py` (regenerates
-   `evidence/registry_budget.json`; reproduces Spearman -0.8104 and the
-   DTI-vs-coverage curve under a documented construction), an infinite-loop
-   fix in two new `sha256()` helpers (int sentinel instead of `b""`), the
-   session-1 evidence backups, and the registry extended 16 -> 19 (the
-   parallel session's raster, the superseded 60k build, and this session's
-   submission). The session-2 audit is preserved at
-   `evidence/submission_build_r2_all.json` with the run card at
-   `evidence/run_card_r2_shipped8.json`.
-6. **Carried forward unchanged:** the holdout does not rank live scores
-   (rho = +0.14); the 40,000-dot live cap rests on Spearman -0.8104 over 15
-   live scores (n = 15, confounded with method quality); H57-B (tip-lobe)
-   is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
-   stack is now local and sha256-verified (sibling session) but unused by
-   this session's variant.
+**Maximize P(Win):** evidence before slots; negative results are deliverables.
+**Own the Outcome:** publish both uniqueness screens, keep the historical cards, and never
+convert a projection into a score.

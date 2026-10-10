@@ -1,0 +1,241 @@
+{
+  "evidence_class": "REGISTRY-MEASUREMENT",
+  "question": "Does a firing registry raster cover so much of the allowed domain within 3 px that ANY candidate would exceed the 0.70 overlap threshold against it?",
+  "definition": "allowed domain = footprint minus the known-fault catalogue; coverage = fraction of allowed pixels within Euclidean 3 px of one of the raster's positive pixels",
+  "limit": 0.7,
+  "rows": [
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_nan-outside.tif",
+      "their_dots": 206895,
+      "overlap": 0.9991747715885647,
+      "allowed_coverage_fraction": 0.9996478918060429,
+      "any_candidate_expected_overlap_lower_bound": 0.9996478918060429,
+      "spearman": -0.0001162757563761441
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+      "their_dots": 206895,
+      "overlap": 0.9991747715885647,
+      "allowed_coverage_fraction": 0.9996478918060429,
+      "any_candidate_expected_overlap_lower_bound": 0.9996478918060429,
+      "spearman": -0.0001162757563761441
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-plus-20260929T183249Z_allfinite.tif",
+      "their_dots": 380365,
+      "overlap": 0.9572060123784262,
+      "allowed_coverage_fraction": 0.9504451779487837,
+      "any_candidate_expected_overlap_lower_bound": 0.9504451779487837,
+      "spearman": 0.021796493271826513
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-plus-20260929T183249Z.tif",
+      "their_dots": 380365,
+      "overlap": 0.9572060123784262,
+      "allowed_coverage_fraction": 0.9504451779487837,
+      "any_candidate_expected_overlap_lower_bound": 0.9504451779487837,
+      "spearman": 0.021796493271826513
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r8-ensemble-20260930T014614Z_allfinite.tif",
+      "their_dots": 452679,
+      "overlap": 0.9319481284998526,
+      "allowed_coverage_fraction": 0.8482519434002724,
+      "any_candidate_expected_overlap_lower_bound": 0.8482519434002724,
+      "spearman": 0.01634549758669057
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r8-ensemble-20260930T014614Z.tif",
+      "their_dots": 452679,
+      "overlap": 0.9319481284998526,
+      "allowed_coverage_fraction": 0.8482519434002724,
+      "any_candidate_expected_overlap_lower_bound": 0.8482519434002724,
+      "spearman": 0.01634549758669057
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-20260929T183221Z_allfinite.tif",
+      "their_dots": 507776,
+      "overlap": 0.9270557029177718,
+      "allowed_coverage_fraction": 0.9601175782867919,
+      "any_candidate_expected_overlap_lower_bound": 0.9601175782867919,
+      "spearman": 0.010527334440427385
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-20260929T183221Z.tif",
+      "their_dots": 507776,
+      "overlap": 0.9270557029177718,
+      "allowed_coverage_fraction": 0.9601175782867919,
+      "any_candidate_expected_overlap_lower_bound": 0.9601175782867919,
+      "spearman": 0.010527334440427385
+    },
+    {
+      "submission": "GEMSDOE53:docs/downloads/gems53-h8-tiprelay-ridgeconcord-pr2-n80000-20261009-49bec522-nan-outside.tif",
+      "their_dots": 80000,
+      "overlap": 0.919304450338933,
+      "allowed_coverage_fraction": 0.23699740618852672,
+      "any_candidate_expected_overlap_lower_bound": 0.23699740618852672,
+      "spearman": 0.04917423531500192
+    },
+    {
+      "submission": "GEMSDOE53:docs/downloads/gems53-h8-tiprelay-ridgeconcord-pr2-n80000-20261009-49bec522-zeros.tif",
+      "their_dots": 80000,
+      "overlap": 0.919304450338933,
+      "allowed_coverage_fraction": 0.23699740618852672,
+      "any_candidate_expected_overlap_lower_bound": 0.23699740618852672,
+      "spearman": 0.04917423531500192
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z_allfinite.tif",
+      "their_dots": 344041,
+      "overlap": 0.9147067491895078,
+      "allowed_coverage_fraction": 0.7451917550282636,
+      "any_candidate_expected_overlap_lower_bound": 0.7451917550282636,
+      "spearman": 0.021942838573862408
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z.tif",
+      "their_dots": 344041,
+      "overlap": 0.9147067491895078,
+      "allowed_coverage_fraction": 0.7451917550282636,
+      "any_candidate_expected_overlap_lower_bound": 0.7451917550282636,
+      "spearman": 0.021942838573862408
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r14-union-tips10-lat6_zerofill.tif",
+      "their_dots": 192231,
+      "overlap": 0.8869142351900973,
+      "allowed_coverage_fraction": 0.9954176976471614,
+      "any_candidate_expected_overlap_lower_bound": 0.9954176976471614,
+      "spearman": 0.03148438369379618
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r14-union-tips10-lat6_nan-outside.tif",
+      "their_dots": 192231,
+      "overlap": 0.8869142351900973,
+      "allowed_coverage_fraction": 0.9954176976471614,
+      "any_candidate_expected_overlap_lower_bound": 0.9954176976471614,
+      "spearman": 0.03148438369379618
+    },
+    {
+      "submission": "15GEMSDOE:docs/downloads/gems-cleanup-a-20260928T195952Z-curv_scarp.tif",
+      "their_dots": 362327,
+      "overlap": 0.8833185971117006,
+      "allowed_coverage_fraction": 0.964802693098934,
+      "any_candidate_expected_overlap_lower_bound": 0.964802693098934,
+      "spearman": -0.0033134918738185414
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-20260928T040920Z.tif",
+      "their_dots": 338755,
+      "overlap": 0.8382552313586796,
+      "allowed_coverage_fraction": 0.8341108239977988,
+      "any_candidate_expected_overlap_lower_bound": 0.8341108239977988,
+      "spearman": 0.004875991221069805
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-composite-20260928T040920Z_allfinite.tif",
+      "their_dots": 338755,
+      "overlap": 0.8382552313586796,
+      "allowed_coverage_fraction": 0.8341108239977988,
+      "any_candidate_expected_overlap_lower_bound": 0.8341108239977988,
+      "spearman": 0.004875991221069805
+    },
+    {
+      "submission": "GEMSDOE53:docs/submissions/gems53-h1-thin_bin_q0p1-20261008-aefc7582.tif",
+      "their_dots": 56605,
+      "overlap": 0.7396993810786914,
+      "allowed_coverage_fraction": 0.24208358750857994,
+      "any_candidate_expected_overlap_lower_bound": 0.24208358750857994,
+      "spearman": 0.028344843807595676
+    },
+    {
+      "submission": "5GEMSDOE:data/evidence/leaderboard_anchor/pindrop-v4-discovery-37f9d5b855.tif",
+      "their_dots": 155021,
+      "overlap": 0.7333922782198644,
+      "allowed_coverage_fraction": 0.9103724063109225,
+      "any_candidate_expected_overlap_lower_bound": 0.9103724063109225,
+      "spearman": -0.00022331634338227272
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif",
+      "their_dots": 272853,
+      "overlap": 0.7330386089006778,
+      "allowed_coverage_fraction": 0.8456358069358264,
+      "any_candidate_expected_overlap_lower_bound": 0.8456358069358264,
+      "spearman": -0.00395999306492021
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
+      "their_dots": 272853,
+      "overlap": 0.7330386089006778,
+      "allowed_coverage_fraction": 0.8456358069358264,
+      "any_candidate_expected_overlap_lower_bound": 0.8456358069358264,
+      "spearman": -0.00395999306492021
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r11-greedy-mp.tif",
+      "their_dots": 272853,
+      "overlap": 0.7330386089006778,
+      "allowed_coverage_fraction": 0.8456358069358264,
+      "any_candidate_expected_overlap_lower_bound": 0.8456358069358264,
+      "spearman": -0.00395999306492021
+    },
+    {
+      "submission": "13GEMSDOE:docs/downloads/archive/13gems-r11-greedy-mp_allfinite.tif",
+      "their_dots": 272853,
+      "overlap": 0.7330386089006778,
+      "allowed_coverage_fraction": 0.8456358069358264,
+      "any_candidate_expected_overlap_lower_bound": 0.8456358069358264,
+      "spearman": -0.00395999306492021
+    },
+    {
+      "submission": "5GEMSDOE:data/evidence/leaderboard_anchor/pindrop-v4-nodes-f347b70daa.tif",
+      "their_dots": 155021,
+      "overlap": 0.7294429708222812,
+      "allowed_coverage_fraction": 0.9137135174883994,
+      "any_candidate_expected_overlap_lower_bound": 0.9137135174883994,
+      "spearman": -0.0002795009640248045
+    },
+    {
+      "submission": "8GEMSDOE:docs/downloads/submission.tif",
+      "their_dots": 427862,
+      "overlap": 0.7250810492189802,
+      "allowed_coverage_fraction": 0.20948342124614575,
+      "any_candidate_expected_overlap_lower_bound": 0.20948342124614575,
+      "spearman": 0.026635463933703717
+    },
+    {
+      "submission": "GEMSDOE10:docs/downloads/gems10-h25-ctx-ridge-20260927T232947704150Z-6452ae1d00.tif",
+      "their_dots": 174232,
+      "overlap": 0.7171824344238137,
+      "allowed_coverage_fraction": 0.3090432860036993,
+      "any_candidate_expected_overlap_lower_bound": 0.3090432860036993,
+      "spearman": 0.03050455682329936
+    },
+    {
+      "submission": "GEMSDOE54:docs/downloads/gems54-cgrc-relay-v1-nan.tif",
+      "their_dots": 32369,
+      "overlap": 0.7161508989095196,
+      "allowed_coverage_fraction": 0.15953007851934392,
+      "any_candidate_expected_overlap_lower_bound": 0.15953007851934392,
+      "spearman": 0.03812772619695189
+    },
+    {
+      "submission": "GEMSDOE54:docs/downloads/gems54-cgrc-relay-v1.tif",
+      "their_dots": 32369,
+      "overlap": 0.7161508989095196,
+      "allowed_coverage_fraction": 0.15953007851934392,
+      "any_candidate_expected_overlap_lower_bound": 0.15953007851934392,
+      "spearman": 0.03812772619695189
+    },
+    {
+      "submission": "GEMSDOE37:docs/downloads/gemsdoe37-h6-physics-dotted-80k-20261005T055000Z-0bef9211631c.tif",
+      "their_dots": 80000,
+      "overlap": 0.7023577954612438,
+      "allowed_coverage_fraction": 0.31769715757820843,
+      "any_candidate_expected_overlap_lower_bound": 0.31769715757820843,
+      "spearman": 0.02270166587223233
+    }
+  ],
+  "note": "coverage >= 0.70 means the row is non-discriminating (any nonempty placement fires it). Rows with coverage < 0.70 are genuine model agreement, not saturation."
+}

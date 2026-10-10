@@ -1,5 +1,10 @@
 # Preserved standing request and historical report ledger
 
+> **Session 7 note (2026-10-10):** the current standing owner prompt is now embedded verbatim in
+> `README.md` ("Standing owner prompt" section), as the owner directed ("Put this prompt into the
+> repo readme and read it everytime we work on the project"). This file preserves the earlier
+> session's copy for history. Where the two differ, the README copy is current.
+
 This preserves the standing request available from session context and the prior repository brief. It is not a word-for-word certified transcript of the original chat, nor evidence that any quoted score or historical limitation is verified. Current status/evidence at the beginning of README.md take precedence over stale factual claims below. Re-read both before future work.
 
 ---

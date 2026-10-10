@@ -56,11 +56,16 @@ def check(root=ROOT):
     card=json.loads((root/'evidence/run_card_current.json').read_text())
     public=json.loads((docs/'data/run_card.json').read_text())
     assert card==public,'public card is stale'
-    assert card['okay_to_download'] is True and card['okay_to_submit'] is False
-    assert card['verdict']=='negative' and card['submission_slots_used']==0
-    assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
+    assert card['okay_to_download'] is True
+    assert card['verdict'] in ('promote','negative')
+    assert card['okay_to_submit'] is (card['verdict']=='promote')
+    assert card['submission_slots_used']==0
+    assert card['experiments_used']<=3
     assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
     assert card['submission_note_chars']==len(card['submission_note'])
+    dots=card['final_dots']
+    assert dots['status']=='generated' and dots['emitted_pixels']>0
+    assert card['surface_before_placement']['checked'] is True
     raster=root/card['file'];archive=root/card['zip_file']
     digest=hashlib.sha256(raster.read_bytes()).hexdigest()
     for source in (raster, archive, raster.with_suffix('.json')):
@@ -81,40 +86,76 @@ def check(root=ROOT):
     with rasterio.open(raster) as ds:
         assert ds.nodata is None
         values=ds.read(1)
+    assert np.isfinite(values).all(),'submission must be all-finite (portal range error precaution)'
+    assert values.min()>=0.0 and values.max()<=1.0,'values must lie in [0,1]'
     with rasterio.open(root/'data/official/labels.tif') as ds:
         known=ds.read(1)>0
     assert not (values[known]>0).any(),'positive predictions on known mask'
-    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
-    audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
+    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']==dots['emitted_pixels']
+    # dual uniqueness screen: operative dot-representation + literal support, both stored
+    audit=json.loads((root/'evidence/session7_final_uniqueness.json').read_text())
     assert audit['candidate_file_sha256']==digest
     index=json.loads((root/'evidence/registry_refreshed.json').read_text())
     total=index['n_unique_grid_rasters']
     assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
     assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert len(audit['rows'])==total
+    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
     assert audit['jaccard_diagnostic_only'] is True
     assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
-    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    assert 'literal_support_screen' in audit and 'literal_support_screen' in card['correlation_overlap_vs_registry']
+    if card['okay_to_submit']:
+        # operative clearance is cross-lane (same-lane succession may fire the
+        # representation screen; only byte/pixel identity is a same-lane stop)
+        assert card['correlation_overlap_vs_registry']['duplicate_count_dot_representation_other_lanes'] == 0
+        assert card['correlation_overlap_vs_registry']['byte_unique_among_checked'] is True
+        assert card['correlation_overlap_vs_registry']['pixel_unique_among_checked'] is True
+    rows=[r for r in audit['rows'] if 'error' not in r]
+    other=[r for r in rows if not str(r.get('submission','')).startswith('57GEMSDOE:')]
+
+    def rep_stop(r):
+        return bool(r.get('duplicate_by_rho')
+                    or r.get('duplicate_by_overlap_dots', r.get('duplicate_by_overlap', False))
+                    or r.get('identical_bytes') or r.get('identical_decoded_predictions'))
+    worst_ov=max((r['my_dots_within_3px_of_their_dots'] for r in other),default=0.0)
+    worst_rho=max((r['spearman_full_footprint'] for r in other if r['spearman_full_footprint'] is not None),default=0.0)
+    assert abs(worst_ov-card['correlation_overlap_vs_registry']['worst_cross_lane_dot_overlap_representation'])<1e-12
+    assert abs(worst_rho-card['correlation_overlap_vs_registry']['worst_cross_lane_spearman'])<1e-12
+    assert card['correlation_overlap_vs_registry']['duplicate_count_dot_representation_other_lanes']==sum(rep_stop(r) for r in other)
+    if card['okay_to_submit']:
+        assert worst_ov<=0.70 and worst_rho<=0.90, 'cross-lane drift screen failed'
+        assert sum(rep_stop(r) for r in other)==0, 'cross-lane representation screen fired'
+        # same-lane succession may fire the representation screen; only identity is a stop
+        assert all(not r.get('identical_bytes') and not r.get('identical_decoded_predictions') for r in rows)
     snapshots={row['repo']:row['commit'] for row in index['snapshots']}
     assert len(snapshots)==57
     sites=json.loads((root/'evidence/site_inventory.json').read_text())
     assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
-    classification=json.loads((root/'evidence/registry_classification.json').read_text())
-    assert classification['grid_rasters_checked']==total
-    assert classification['auxiliary_inputs']==4
-    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
-    relative=structure['relative_strike']
+    # Session-7 experiment receipt: labels, CIs and the predeclared retention rule
+    s7=json.loads((root/'evidence/session7_h61_prune.json').read_text())
+    assert s7['evidence_class'].startswith('HOLDOUT-DTI')
+    for name,value in s7['scores'].items():
+        assert value['evidence_class']=='HOLDOUT-DTI'
+        assert value['evaluator_version']=='gems57-pooled-hide-v2'
+        assert value['withheld_positive_pixels']==11321
+        lo,hi=value['ci95'];assert 0<=lo<=hi<=1
+        assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-6)
+        calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
+        assert math.isclose(calculated,value['dti'],abs_tol=1e-9)
+    du=s7['paired_differences']['unpruned']
+    assert du['ci95'][1]<0, 'H6-1 was a strictly negative paired result'
+    assert s7['prune_retained_for_final_build'] is False
+    assert dots['prune_retained'] is False
+    assert card['holdout_dti']['h61_prune_retained'] is False
+    # structure + canary on the same draw
+    structure=json.loads((root/'evidence/session7_structure.json').read_text())
     assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
-    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
-    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
-    assert structure['withheld_positive_pixels']==11321
-    assert structure['model_fit_performed'] is False
-    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
-    canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features']) in (14, 22)
+    assert structure['n_withheld']==11321
+    canary=json.loads((root/'evidence/session7_canary.json').read_text())
+    assert len(canary['features'])==22
     for feature in canary['features'].values():
         assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
-    holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
+    holdout=json.loads((root/'evidence/relay_bend_holdout.json').read_text())
     for scores in (holdout['scores'],holdout['raw_surface_holdout']['scores']):
         for value in scores.values():
             assert value['evidence_class']=='HOLDOUT-DTI'
@@ -124,13 +165,17 @@ def check(root=ROOT):
             assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-7)
             calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
             assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
-    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
-    assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['relay_bend_anatomy']['dti']
+    assert card['holdout_dot_dti']['dti']==holdout['scores']['relay_bend_anatomy']['dti']
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     for name in ('index.html','executive-summary.html'):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
-        assert 'Download for research: OK' in text and 'Submit to competition: NO' in text
+        assert 'Download GeoTIFF: OK' in text
+        if card['okay_to_submit']:
+            assert 'Submit to competition: OK' in text
+        else:
+            assert 'Submit to competition: NO' in text
         assert parser.downloads[0]==f'downloads/{raster.name}'
         assert parser.downloads[1]==f'downloads/{archive.name}'
         assert text.index('download-panel')<text.index('footer')
@@ -140,7 +185,7 @@ def check(root=ROOT):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
-                current_card_consistent=True,submission_cleared=False)
+                current_card_consistent=True,submission_cleared=bool(card['okay_to_submit']))
     print(json.dumps(result,indent=2))
     return result
 

@@ -1,5 +1,14 @@
 # Fault-zone-anatomy hypotheses — ranked, not run
 
+> **Session-7 addendum (2026-10-10):** the current ranked, untried queue is
+> [`session7_hypotheses.json`](../data/session7_hypotheses.json)
+> (H7-1 fault-tip termination, H7-2 stepover dilatation sign, H7-3 geodetic
+> strain-rate concordance, H7-4 flight-line mimic suppression, H7-5 radiometric
+> alteration concordance). Session 7 tested H6-1 (catalogue-proximity pruning,
+> the measured 0.2778 mechanism) and delivered a decisive **negative**
+> ([`session7_h61_prune.json`](../data/session7_h61_prune.json)).
+> The page below is preserved as the earlier ranking.
+
 **Status: HOLD.** The candidate is not cleared to download or submit. The
 three-experiment / two-hour budget is spent; this audit ran tests and code review
 only. None of the hypotheses below was implemented or evaluated in this session.

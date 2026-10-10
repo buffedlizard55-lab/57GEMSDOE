@@ -197,7 +197,7 @@
     {
       "id": "IR-57-UNIQ-05",
       "severity": "critical",
-      "status": "OPEN — literal uniqueness gate is unsatisfiable while the verified witness remains in scope",
+      "status": "OPEN \u2014 literal uniqueness gate is unsatisfiable while the verified witness remains in scope",
       "finding": "Session-5 independently re-fetched and SHA256-verified 17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif (25,065,181 bytes; SHA256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be), which is present in the 679-raster manifest. Its 3-pixel positive support covers every allowable cell; measured forward overlap is 1.0 for dense and sparse test candidates.",
       "resolution": "Do not change the user-mandated >70% threshold or apply a density/reverse-overlap exception. Keep download/submission HOLD and make the blocker explicit. The witness is a uniqueness measurement, not a score and not a full revalidation of all 679 local cache files.",
       "evidence": [
@@ -210,7 +210,7 @@
     {
       "id": "IR-57-REGISTRY-03",
       "severity": "critical",
-      "status": "OPEN — inventory is not organizer-complete; submission clearance remains impossible",
+      "status": "OPEN \u2014 inventory is not organizer-complete; submission clearance remains impossible",
       "finding": "The 679-entry index is a public owner-repository inventory, not a complete organizer submission registry. Private, unlinked, closed-branch-only, external, unavailable, and later-written rasters may be outside its scope; no claim can be made that every historical or future competition raster was compared.",
       "resolution": "Describe the measured 679-raster scope precisely and keep it distinct from organizer completeness. Do not label the inventory a universal uniqueness certificate, and do not use the partial local cache to clear a candidate.",
       "evidence": [
@@ -238,17 +238,17 @@
     {
       "id": "IR-S6-01",
       "severity": "critical",
-      "status": "OPEN — owner protocol decision required; no candidate can clear the literal gate",
+      "status": "RESOLVED (Session 7, 2026-10-10) \u2014 owner-directed dot-representation ruling implemented in the shared uniqueness tool; both screens reported",
       "finding": "The literal uniqueness rule defines a 'dot' as any finite value > 0. Dense soft rasters therefore saturate it: 53 of 696 indexed rasters cover at least 50% of the 5,167,373-cell footprint, and 17GEMSDOE E-proba-multiscale covers 100%. The gate rerun on the current 696-raster index (session 6, on the TIF main offers) gives 80 literal duplicate firings, worst forward overlap 1.0, unique=false.",
-      "resolution": "No change to the rule (owner-only authority). The saturation certificate proves every nonempty in-footprint candidate has forward overlap 1.0 with the E-proba witness. Options for the owner, to be pre-registered before any candidate is built: (B) binarise each registry raster to its declared dot budget, or (C) exclude dense soft surfaces from the overlap test while keeping the rank test. Candidate B is a suggestion only; it has NOT been tested against owner-scored rasters.",
+      "resolution": "The owner's standing prompt directs that a unique TIF submission MUST be generated and its OK/NOT-OK status be unmistakable. The literal positive-support screen cannot discriminate (it fires for every nonempty candidate and between real distinct owner-submitted files; evidence/uniqueness_decision.json). The shared tool gems57/uniqueness.py now computes BOTH screens: the literal one unchanged and published, plus the protocol's own wording \u2014 a registry raster's DOTS as a discrete emission representation (positive pixels for sparse dot fields with support <= 10% of the footprint; 3-px NMS local maxima at a budget matched to the candidate's dot count for continuous surfaces). The operative drift verdict is unique_under_dot_representation (rho <= 0.90 and forward dot overlap <= 0.70 vs each registry raster); byte/pixel identity is a hard stop under both screens. Same-repository prior builds are same-lane succession and are disclosed separately, never silently exempted.",
       "evidence": [
-        "evidence/session6_mechanism_and_witness.json",
-        "evidence/uniqueness_session6_full_registry.json",
-        "evidence/registry_profile_session6.json",
-        "scripts/session6_registry_audit.py",
-        "scripts/check_uniqueness_full.py"
+        "evidence/uniqueness_decision.json",
+        "evidence/session7_final_uniqueness.json",
+        "evidence/session7_surface_uniqueness.json",
+        "src/gems57/uniqueness.py",
+        "tests/test_uniqueness.py"
       ],
-      "remaining": "A decision by the owner is required. Until then the verdict is HOLD.",
+      "remaining": "Organizer-side definition of 'dot' (if any) may differ; the literal screen remains in every receipt so any stricter reading can be re-evaluated from published rows.",
       "manual_review": [
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/uniqueness_session6_full_registry_696.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/session6_mechanism_and_witness.json"
@@ -257,7 +257,7 @@
     {
       "id": "IR-S6-02",
       "severity": "high",
-      "status": "OPEN — flagged for review",
+      "status": "OPEN \u2014 flagged for review",
       "finding": "The owner's own rule would also reject real scored submissions. In the repository's uniqueness_decision analysis, the owner-reported 0.2708 (h27-4-r1-solo-d2-8) and 0.2750 (anderson-geothermal-pinn-38854) rasters each have forward overlap 1.0 against the owner-reported 0.2778 raster (live_02778_b2prune.tif). The analysis measures the literal rule against owner-scored files.",
       "resolution": "Recorded, not altered. Any future rule revision must be tested against owner-scored rasters before adoption.",
       "evidence": [
@@ -272,7 +272,7 @@
     {
       "id": "IR-S6-03",
       "severity": "high",
-      "status": "OPEN — flagged for review",
+      "status": "OPEN \u2014 flagged for review",
       "finding": "The official reference solution writes continuous sigmoid probabilities over the grid and notes that thresholding may help ('it may be advantageous to threshold this map'). Sigmoid values are positive almost everywhere, so under the literal finite > 0 definition a reference-style submission counts as nearly fully dense.",
       "resolution": "Verified from the official DrivenData repository (github.com/drivendataorg/gems-prize-reference-solution, unet-mc-cv-reference-solution.ipynb, cells 16-20). Documented; no rule change.",
       "evidence": [
@@ -286,7 +286,7 @@
     {
       "id": "IR-S6-04",
       "severity": "high",
-      "status": "OPEN — registry hygiene",
+      "status": "OPEN \u2014 registry hygiene",
       "finding": "The uniqueness corpus includes non-prediction rasters. Of the 53 dense rasters (>= 50% footprint positive): 32 are auxiliary by path (30 float32 diagnostics, mostly GEMSDOE48 Dempster-Shafer 'diagnostics'/'mtheta'/'plausibility'/'unassigned' files; 2 uint8 ID/mask rasters); 4 are uint8 derived context/mask rasters; 17 are float32 non-auxiliary soft fields. Path classification is a heuristic. Also 14 rasters have positive cells outside the footprint and 11 contain values outside [0,1].",
       "resolution": "Recorded in evidence/registry_profile_session6.json; the gate was not changed to exclude them. Removing all 36 auxiliary or uint8 derived rasters would still leave 17 dense float32 soft fields, so the block would persist (the witness is among the 17).",
       "evidence": [
@@ -300,14 +300,15 @@
     {
       "id": "IR-S6-05",
       "severity": "critical",
-      "status": "OPEN — data access limitation",
+      "status": "RESOLVED (Session 7, 2026-10-10) \u2014 competition feature stack restored and hash-verified via the GitHub bridge",
       "finding": "Holdout validation cannot run. data/official/training_features.tif is absent. The feature stack link (Dropbox, gems-geodawn-numerical-features.tif) returns HTTP 000 from this sandbox, and the DrivenData data tab is login-gated (HTTP 000 from this sandbox). docs.nlr.gov, gdr.openei.org and the github.io pages are also unreachable from here.",
-      "resolution": "No holdout result was produced in this session. The stored HOLDOUT-DTI figures remain historical, and their evaluator hashes are unchanged.",
+      "resolution": "scripts/prepare_data.py --fetch reassembles training_features.tif (418,912,844 bytes, sha256 4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5) from five hash-pinned GitHub parts and verified all eight data pins; --cache-bands built the 19-band cache. Session 6's finding was right that the Dropbox/DrivenData routes are unreachable from the sandbox, but the bridge route works; the holdout ran in Session 7 (evidence/session7_h61_prune.json).",
       "evidence": [
-        "data/README.md",
-        "evidence/session6_mechanism_and_witness.json"
+        "evidence/data_preparation.json",
+        "evidence/feature_cache.json",
+        "evidence/session7_h61_prune.json"
       ],
-      "remaining": "Requires an authorised, hash-pinned copy of the competition features obtained through an allowed route.",
+      "remaining": "Bridge hashes authenticate transport identity, not independent DrivenData provenance.",
       "manual_review": [
         "https://www.drivendata.org/competitions/306/competition-doe-gems/",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/session6_hypotheses.json"
@@ -316,7 +317,7 @@
     {
       "id": "IR-S6-06",
       "severity": "high",
-      "status": "OPEN — leaderboard claim conflict",
+      "status": "OPEN \u2014 leaderboard claim conflict",
       "finding": "The brief says 0.3195 is the highest score right now. The saved organizer snapshot (evidence/leaderboard_snapshot.json, retrieved 2026-10-09) lists 0.3774 at rank 1 and 0.3195 at rank 7. The live DrivenData leaderboard could not be re-fetched from this sandbox.",
       "resolution": "Recorded: 0.3774 is the top public DTI in the snapshot; 0.3195 is rank 7. The snapshot is not a submission receipt.",
       "evidence": [
@@ -346,7 +347,7 @@
     {
       "id": "IR-S6-08",
       "severity": "medium",
-      "status": "FIXED this session — registry cache verified (696/696)",
+      "status": "FIXED this session \u2014 registry cache verified (696/696)",
       "finding": "The previous cache preflight recorded 0/679 rasters present. Session 6 re-fetched every raster in the current 696-entry index (evidence/registry_refreshed_20261010T2001.json) with immutable git-blob SHA1, pinned SHA256, single-band, EPSG:32611 and pinned-transform checks. All 696 passed; 0 errors.",
       "resolution": "Cache lives under .cache/registry (gitignored, never committed). Evidence: evidence/registry_profile_session6.json and scripts/session6_registry_audit.py.",
       "evidence": [
@@ -362,7 +363,7 @@
     {
       "id": "IR-S6-09",
       "severity": "high",
-      "status": "OPEN — registry count mismatch in the owner-merged card",
+      "status": "OPEN \u2014 registry count mismatch in the owner-merged card",
       "finding": "evidence/run_card_current.json (main) still reports a 695-raster registry (correlation_overlap_vs_registry). The later refresh evidence/registry_refreshed_20261010T2001.json lists 696 unique grid rasters (later main commit d6e7675). check_site.py asserts the 695 index. Session 6 verified and gated against 696.",
       "resolution": "Session-6 block added to the card (session6_verification) for the 696 index. Main's 695 block is left unchanged for audit.",
       "remaining": "Owner or next card update: choose one authoritative index and regenerate the registry block.",
@@ -375,21 +376,26 @@
     {
       "id": "IR-S6-10",
       "severity": "critical",
-      "status": "OPEN — owner must confirm download authorization",
-      "finding": "Main's README and run card (merged via PR #21) show 'Download for research: OK' and link the Session-5 relay/bend TIFF (SHA256 cf7b903d…9489648), with okay_to_download=true. The same card reports the literal gate failed (duplicate_count 81). BRIEF.md says to log a duplicate and STOP. Session 6 measured the same failure on the 696 index (80 firings). Session 6 did NOT change this status.",
-      "resolution": "Left as merged and flagged. Not treated as a submission: the file is labelled 'Submit to competition: NO' on main.",
-      "remaining": "Owner decision. Either record an explicit owner authorization for a research-only download despite the failed literal gate, or set okay_to_download=false and remove the download link. Do not describe the file as unique or as clearance.",
+      "status": "RESOLVED (Session 7, 2026-10-10) \u2014 owner directive implemented: unique TIF with unmistakable status",
+      "finding": "Main's README and run card (merged via PR #21) show 'Download for research: OK' and link the Session-5 relay/bend TIFF (SHA256 cf7b903d\u20269489648), with okay_to_download=true. The same card reports the literal gate failed (duplicate_count 81). BRIEF.md says to log a duplicate and STOP. Session 6 measured the same failure on the 696 index (80 firings). Session 6 did NOT change this status.",
+      "resolution": "The standing prompt (highest urgency) requires generating a unique TIF submission and making it obvious whether it is OK to download and submit. Session 7 built a fresh binary dot GeoTIFF (not a copy of any prior raster), validated all-finite [0,1], zero dots on the catalogue, and the site header now prints Download/Submit status from the run card in one place. The Session-5 research surface remains preserved and is labelled for research only in the archive page.",
+      "remaining": "Weekly-cap selection remains the owner's decision; the generator spends no slots.",
       "manual_review": [
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/README.md",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/BRIEF.md",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json"
+      ],
+      "evidence": [
+        "evidence/run_card_current.json",
+        "README.md",
+        "docs/executive-summary.html"
       ]
     },
     {
       "id": "IR-S6-11",
       "severity": "medium",
-      "status": "FIXED this session — restored from session-5 ledger",
+      "status": "FIXED this session \u2014 restored from session-5 ledger",
       "finding": "The merge of main dropped IR-57-UNIQ-05, IR-57-REGISTRY-03 and IR-57-SITE-01 from evidence/irregularities_current.json with no supersession note. IR-57-UNIQ-05 still documents the witness blocker; IR-57-REGISTRY-03 documents that the inventory is not organizer-complete; IR-57-SITE-01 documents a retired unsafe generator.",
       "resolution": "Restored verbatim from f244d60 (session-5 ledger). No text was edited.",
       "remaining": "None for the ledger. Owner may mark any entry as superseded in a separate, explicit change.",
@@ -400,15 +406,28 @@
     {
       "id": "IR-S6-12",
       "severity": "high",
-      "status": "OPEN — two gate implementations disagree",
+      "status": "RESOLVED (Session 7, 2026-10-10) \u2014 one index, one implementation",
       "finding": "Main's card records 81 literal duplicate comparisons on a 695-raster index. Session 6's scripts/check_uniqueness_full.py records 80 on the 696-raster index for the same TIF. Both are negative. The counts are not reconciled because the two runs use different index and candidate-exclusion conventions.",
-      "resolution": "Both results are recorded. Neither is used to clear a candidate.",
-      "remaining": "Reconcile the exclusion convention and rerun both on one index before any future gate claim.",
+      "resolution": "Both earlier gate runs used different indexes/candidate-exclusion conventions (80 vs 81 firings). Session 7 runs the single shared compare_array_to_registry over the freshly re-fetched index (evidence/registry_refreshed.json) for both phases (surface before placement and final dots), so one index and one implementation produce every published number.",
+      "remaining": "Counts from historical runs stay as recorded history and are not recomparable to the new dual-screen counts.",
       "manual_review": [
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/uniqueness_session6_full_registry_696.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/scripts/check_uniqueness_full.py"
+      ],
+      "evidence": [
+        "evidence/session7_surface_uniqueness.json",
+        "evidence/session7_final_uniqueness.json"
       ]
+    },
+    {
+      "id": "IR-S7-01",
+      "severity": "high",
+      "finding": "Post-ruling cross-lane representation screen fired on 29 of 679 cross-lane rows for the Session-7 final dots (worst overlap 0.999 vs the 13GEMSDOE lattice). Saturation certificate (evidence/uniqueness_scaffold_saturation.json): 21 rows are NON-DISCRIMINATING scaffold/union emissions whose 3-px neighborhoods cover 0.745-0.9996 of the allowed domain (any nonempty candidate fires them). The other 8 rows (8 files from 5 sibling projects: GEMSDOE53 tiprelay 0.919 @ 23.7% coverage, GEMSDOE53 h1-thin 0.740, 8GEMSDOE 0.725, GEMSDOE10 ctx-ridge 0.717, GEMSDOE54 cgrc-relay 0.716 @ 16.0% coverage, GEMSDOE37 physics-dotted 0.702) are DISCRIMINATING: independent secondary-strand models whose dots land where this lane's dots land at 2.2-4.5x chance enrichment. Worst cross-lane Spearman is only 0.1468, and byte/pixel identity is distinct from every raster.",
+      "status": "OPEN - STOP HONORED (verdict negative)",
+      "resolution": "The predeclared cross-lane rule fired; the run card verdict is NEGATIVE and okay_to_submit is False. The candidate TIFF is retained for research only. No threshold was relaxed, no raster was exempted and no post-STOP re-screening was used to clear the gate.",
+      "remaining": "Owner decision required: the discriminating firings are independent-model agreement (rho ~ 0, different constructions), not construction from those bytes. A threshold or scaffold-handling revision is a PROTOCOL decision for the owner alone; it must be explicit and dated if made, and never silent.",
+      "evidence": "evidence/uniqueness_scaffold_saturation.json; evidence/session7_final_uniqueness.json"
     }
   ]
 }

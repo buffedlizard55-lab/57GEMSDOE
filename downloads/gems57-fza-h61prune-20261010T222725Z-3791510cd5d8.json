@@ -1,0 +1,136 @@
+{
+  "file": "gems57-fza-h61prune-20261010T222725Z-3791510cd5d8.tif",
+  "sha256": "b6201a4aa3e63dbc74e32d0393728d0a29d3a2c592c049223ca7c4b55514b6da",
+  "bytes": 92615,
+  "submission_name": "gems57-fza-h61prune-20261010T222725Z-3791510cd5d8",
+  "note": "Fault-zone anatomy E2+H6-1: relay/bend fit, zone 26px, 33930 dots, proximal prune off; 3791510c",
+  "note_chars": 95,
+  "validator": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-fza-h61prune-20261010T222725Z-3791510cd5d8.tif",
+    "bytes": 92615,
+    "sha256": "b6201a4aa3e63dbc74e32d0393728d0a29d3a2c592c049223ca7c4b55514b6da",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "n_infinite": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0027632182464003563,
+    "emitted_positive_pixels": 33930,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 33930,
+    "footprint_fraction": 0.0065661991112311805
+  },
+  "template_report": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/gems57-fza-h61prune-20261010T222725Z-3791510cd5d8.tif",
+    "bytes": 92615,
+    "sha256": "b6201a4aa3e63dbc74e32d0393728d0a29d3a2c592c049223ca7c4b55514b6da",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0027632182464003563,
+    "n_nonzero": 33930,
+    "mass": 33930.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-fza-h61prune-20261010T222725Z-3791510cd5d8.zip",
+  "zip_sha256": "112404c457de59fab88b036643bc2bb8ef9b72e9cbe92ed8eb7d361d76c9371d",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "locally validated within separately recorded inventory scope; not organizer acceptance or slot approval",
+  "metadata": {
+    "kind": "binary dot allocation (submittable)",
+    "session": "session-7-2026-10-10",
+    "selected_arm": "relay_bend_anatomy",
+    "hypothesis_id": "E2 (H57-I2+H57-H) + E1 (H6-1)",
+    "proximal_prune_px": 2.0,
+    "proximal_prune_retained": false,
+    "proximal_dropped": 4,
+    "fitted_zone_px": 25.553865432739258,
+    "training_fraction_inside_zone": 0.9000088331419486,
+    "budget_base": 37700,
+    "budget_after_zone_shrink": 33930,
+    "k_estimate_from_training": 11948.192419955802,
+    "greedy_stop_reason": "marginal bar or budget cap",
+    "no_prior_raster_used_to_build_predictions": true,
+    "holdout_evidence": "session7_h61_prune.json"
+  }
+}

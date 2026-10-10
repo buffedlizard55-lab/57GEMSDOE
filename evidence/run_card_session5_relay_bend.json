@@ -1,0 +1,271 @@
+{
+  "hypothesis": "Secondary strands concentrate at multi-scale host bends (H57-H) and inside two-host en echelon stepover relay zones between distinct fault systems (H57-I2), corroborated by detrended-elevation scarp relative strike and conditioned on slip-sense transitions (H57-J).",
+  "mechanism": "Multi-scale structure-tensor turning (300 m vs 900 m) and exact 12-bitplane two-host Euclidean distance transforms identify relay corridors and bend-wall damage zones strictly from visible faults, coupled with label-free detrended-elevation scarp tangents. No textbook Riedel angle is imposed.",
+  "named_non_fault_process_that_could_mimic_it": "Erosional range-front scarps, fluvial terrace margins, lithologic contacts situated between unrelated fault systems, and cartographic digitization vertices can mimic multi-scale trace bends and relay stepover geometry without secondary fault slip.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.031159854641644204,
+    "ci95": [
+      0.024691006152132863,
+      0.03810944921363519
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 346.3834801632157,
+    "fpw": 9951.307151391367,
+    "fnw": 10974.616519836785,
+    "representation": "soft pre-placement surface (matches downloaded TIFF method)",
+    "split_version": "buffered-whole-components-loqo-v2",
+    "canary_clean": true,
+    "selected_arm": "relay_bend_anatomy"
+  },
+  "holdout_dot_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.13520371677763354,
+    "ci95": [
+      0.11913983230552322,
+      0.15303605496339084
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 2153.6318045580256,
+    "fpw": 32206.325324965805,
+    "fnw": 9167.368195441974,
+    "representation": "holdout binary allocation ONLY; production dots were not generated",
+    "selected_arm": "relay_bend_anatomy"
+  },
+  "paired_orientation_minus_anatomy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": 0.02555640893870513,
+    "ci95": [
+      0.013943366750616887,
+      0.03710882091013755
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "paired_bend_minus_anatomy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": 0.0026839256064493944,
+    "ci95": [
+      -0.004963871413615349,
+      0.01040613643964517
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "paired_relay_minus_bend": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": 0.022872483332255736,
+    "ci95": [
+      0.01305049452795725,
+      0.03210233238554293
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "paired_soft_relay_minus_anatomy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": 0.008284214231133156,
+    "ci95": [
+      0.005420358009747388,
+      0.010947349984586187
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "correlation_overlap_vs_registry": {
+    "registry_rasters_expected": 695,
+    "registry_rasters_checked": 695,
+    "complete_accessible_scan": true,
+    "worst_spearman_full_footprint": 0.9753151923476495,
+    "worst_rho_submission": "57GEMSDOE:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "worst_dot_overlap": 1.0,
+    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
+    "duplicate_count": 81,
+    "byte_unique_among_checked": true,
+    "pixel_unique_among_checked": true,
+    "unique": false,
+    "discriminating_other_lanes": {
+      "n_other_lane_rasters": 15,
+      "worst_spearman_other_lanes": 0.028841495318253536,
+      "worst_overlap_other_lanes": 0.23746962509158057,
+      "worst_jaccard_other_lanes": 0.029241220672120947
+    },
+    "n_other_repo_rasters": 665,
+    "worst_spearman_other_repos": 0.6580295804692531,
+    "worst_rho_other_repo_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
+    "worst_spearman_sibling_lanes": 0.028841495318253536,
+    "worst_dot_overlap_sibling_lanes": 0.23746962509158057,
+    "jaccard_diagnostic_only": true
+  },
+  "surface_before_placement": {
+    "checked": true,
+    "protocol_pass": false
+  },
+  "final_dots": {
+    "status": "not_generated",
+    "reason": "literal surface gate requires stop",
+    "emitted_pixels": 0
+  },
+  "raster_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+  "validator_output": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+    "bytes": 9960624,
+    "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 0.9014216065406799,
+    "mean": 0.0007488319533877075,
+    "emitted_positive_pixels": 2714823,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 2714823,
+    "footprint_fraction": 0.5253777886752127
+  },
+  "submission_name": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec",
+  "submission_note": "Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b",
+  "submission_note_chars": 121,
+  "file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+  "zip_file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip",
+  "verdict": "negative",
+  "okay_to_download": true,
+  "okay_to_submit": false,
+  "verdict_reason": "Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.",
+  "recorded_sense": {
+    "tested": true,
+    "retained": false,
+    "paired_difference": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "delta": 0.006187676916750318,
+      "ci95": [
+        -0.0016937951896787019,
+        0.015701673226549834
+      ],
+      "withheld_positive_pixels": 11321
+    },
+    "soft_paired_difference": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "delta": 0.0027379403745161623,
+      "ci95": [
+        0.0003069096496624412,
+        0.005994069506400139
+      ],
+      "withheld_positive_pixels": 11321
+    }
+  },
+  "experiments_used": 3,
+  "submission_slots_used": 0,
+  "generated_utc": "2026-10-10T20:35:00.673249+00:00",
+  "registry_reviewed_utc": "2026-10-10T20:35:00.673273+00:00",
+  "registry_scope": "All 695 SHA256-verified competition-grid rasters across all 57 GEMSDOE repositories at their latest public-main commits plus historical pins. Current generated candidate excluded as an output, not a prior.",
+  "session6_verification": {
+    "evidence_class": "REPOSITORY-AUDIT — session 6. No experiment, holdout, slot use or submission. Measurements are not scores.",
+    "generated_utc": "2026-10-10T21:10:00+00:00",
+    "experiments_run": 0,
+    "holdout_run": false,
+    "holdout_blocker": "IR-S6-05: training_features.tif absent; Dropbox feature link unreachable from the sandbox.",
+    "registry_index": "evidence/registry_refreshed_20261010T2001.json",
+    "registry": {
+      "indexed": 696,
+      "fetched_and_verified": 696,
+      "errors": 0,
+      "sha256_pin_mismatches": 0,
+      "git_blob_sha1_mismatches": 0,
+      "dense_rasters_ge_50pct_footprint": 53,
+      "rasters_with_positive_outside_footprint": 14,
+      "rasters_with_values_outside_0_1": 11
+    },
+    "literal_gate_on_offered_tif": {
+      "candidate": "downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+      "candidate_file_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+      "registry_rasters_checked": 696,
+      "complete_accessible_scan": true,
+      "duplicate_count": 80,
+      "worst_spearman_full_footprint": 0.8180518194375755,
+      "worst_dot_overlap": 1.0,
+      "unique": false,
+      "verdict": "negative",
+      "stop_required": true,
+      "evidence_file": "evidence/uniqueness_session6_full_registry_696.json"
+    },
+    "witness_universal_blocker": true,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "covered_allowed_fraction": 1.0,
+    "owner_reported_pair_containment": {
+      "base_positive": 40199,
+      "target_positive": 37654,
+      "target_subset_of_base": true,
+      "added_vs_base": 0,
+      "removed_vs_base": 2545,
+      "removed_on_catalogue": 0,
+      "removed_distance_px_min": 1.4142135623730951,
+      "removed_distance_px_max": 2.0,
+      "target_distance_px_min": 2.23606797749979
+    },
+    "causal_score_gain_verified": false,
+    "leaderboard_snapshot_conflict": "IR-S6-06: brief says 0.3195 highest; snapshot shows 0.3774 rank 1, 0.3195 rank 7 (evidence/leaderboard_snapshot.json).",
+    "download_status_conflict": "IR-S6-10: main shows 'Download for research: OK' with okay_to_download=true while the literal gate fails. Not changed by session 6; owner must confirm.",
+    "ranked_untried_hypotheses": [
+      "H6-1",
+      "H6-2",
+      "H6-3",
+      "H6-4"
+    ],
+    "evidence_files": [
+      "evidence/session6_hypotheses.json",
+      "evidence/session6_mechanism_and_witness.json",
+      "evidence/registry_profile_session6.json",
+      "evidence/uniqueness_session6_full_registry_696.json",
+      "evidence/irregularities_current.json"
+    ],
+    "owner_decisions_required": [
+      "IR-S6-01 dot definition for soft registry rasters (options B or C)",
+      "IR-S6-10 research-download authorization vs stop rule",
+      "IR-S6-05 holdout data access (authorised, hash-pinned copy)"
+    ],
+    "submission_slots_used": 0
+  }
+}

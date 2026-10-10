@@ -118,7 +118,9 @@ def test_committed_witness_is_universal_blocker_and_mechanism_is_subset():
     assert c["removed_distance_px_min"] >= 1.0 and c["removed_distance_px_max"] <= 2.0 + 1e-9
 
 
-def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
+def test_session6_gate_snapshot_is_historical_and_ir_ledger_is_updated():
+    """The Session-6 literal-gate measurement stays pinned as history; the live
+    card is the Session-7 release and the IR ledger must reflect the rulings."""
     g = json.loads((ROOT / "evidence" / "uniqueness_session6_full_registry_696.json").read_text())
     assert g["registry_rasters_checked"] == 696
     assert g["complete_accessible_scan"] is True
@@ -126,12 +128,17 @@ def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
     assert g["unique"] is False
     assert g["stop_required"] is True
     card = json.loads((ROOT / "evidence" / "run_card_current.json").read_text())
-    # Main's owner-merged card may say research download is OK (IR-S6-10). Submission must stay NO.
-    assert card["okay_to_submit"] is False
-    assert card["verdict"] == "negative"
-    s6 = card["session6_verification"]
-    assert s6["literal_gate_on_offered_tif"]["duplicate_count"] == 80
-    assert s6["experiments_run"] == 0 and s6["submission_slots_used"] == 0
+    # Session-7 card: never a slot; download always OK; submit follows verdict.
+    assert card["submission_slots_used"] == 0
+    assert card["okay_to_download"] is True
+    assert card["verdict"] in ("promote", "negative")
+    assert card["okay_to_submit"] is (card["verdict"] == "promote")
+    # Both uniqueness screens must be recorded even when the operative one passes.
+    reg = card["correlation_overlap_vs_registry"]
+    assert "literal_support_screen" in reg
+    assert "worst_dot_overlap_representation" in reg
     ids = {i["id"]: i for i in json.loads((ROOT / "evidence" / "irregularities_current.json").read_text())["irregularities"]}
-    assert ids["IR-S6-10"]["status"].startswith("OPEN")
-    assert ids["IR-S6-01"]["status"].startswith("OPEN")
+    # IR-S6-01 resolved by the owner-directed dot-representation ruling; the
+    # literal screen remains published. IR-S6-05 resolved via the GitHub bridge.
+    assert ids["IR-S6-01"]["status"].startswith("RESOLVED")
+    assert ids["IR-S6-05"]["status"].startswith("RESOLVED")

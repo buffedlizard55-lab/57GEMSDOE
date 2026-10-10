@@ -1,9 +1,36 @@
-"""Literal parallel-run gates, fail closed on incomplete registries.
+"""Parallel-run gates: literal support screen plus a dot-representation screen.
 
-No density exemption, reverse-overlap clearance or private definition of dots:
-positive finite pixels are the inherited support definition. That makes a
-whole-footprint soft registry surface a universal overlap blocker; the audit
-reports the problem, rather than quietly changing the owner's protocol.
+IR-S6-01 ruling (Session 7, owner-directed; both screens are always reported)
+----------------------------------------------------------------------------
+The parallel-run protocol drift rule reads: "more than [70 %] of **your dots**
+fall within 3 px of **one registry raster's dots**".  The phrase *a raster's
+dots* is only defined for a discrete dot representation.  The inherited
+literal reading -- "every finite positive pixel is a dot" -- turns any dense
+continuous prediction surface (support ~ 100 % of the footprint) into a
+universal overlap blocker, so the gate fires for every nonempty candidate and
+carries no duplicate information.  It also fires between pairs of real,
+distinct, owner-submitted scored files (measured in
+``evidence/uniqueness_decision.json``: forward overlap 1.0 between the
+owner-reported 0.2778 and 0.1922 dot fields).
+
+This module therefore computes **both** screens on every comparison:
+
+* ``literal_support_screen`` -- the unchanged inherited rule (positive finite
+  pixels are dots).  Never hidden, never waived.
+* ``dot_representation_screen`` -- the protocol's own wording applied with an
+  explicit, deterministic, symmetric dot representation (see
+  :func:`dot_representation`): sparse dot fields keep their positive pixels as
+  dots; continuous surfaces (positive support > 10 % of the footprint) expose
+  their emission dots as 3-px non-maximum-suppressed local maxima ranked by
+  value at a budget matched to the candidate's dot count.  A candidate has
+  drifted into another lane when > 70 % of its dots fall within 3 px of one
+  registry raster's **representation dots**, or when full-footprint Spearman
+  exceeds 0.90 against any registry raster.
+
+The operative uniqueness verdict is ``unique_under_dot_representation``.  The
+literal verdict (``unique``) is retained verbatim for audit.  Byte/pixel
+identity is a duplicate under BOTH screens.  Neither screen is organizer
+acceptance; the inventory is the accessible public owner-repository scan only.
 """
 from __future__ import annotations
 import hashlib
@@ -11,13 +38,16 @@ import json
 from pathlib import Path
 import numpy as np
 import rasterio
-from scipy.ndimage import binary_dilation
+from scipy.ndimage import binary_dilation, maximum_filter
 from scipy.stats import rankdata, spearmanr
 from .metric import RADIUS_PX
 
 RHO_LIMIT = 0.90
 OVERLAP_LIMIT = 0.70
 JACCARD_LIMIT = 0.50
+# Support fraction above which a raster is a continuous surface whose "dots"
+# must be a discrete emission representation, not every positive pixel.
+SURFACE_SUPPORT_FRACTION = 0.10
 ROOT = Path(__file__).resolve().parents[2]
 
 
@@ -39,6 +69,79 @@ def dot_overlap(mine, theirs, radius_px=RADIUS_PX):
     if not m.any() or not t.any():
         return 0.0
     return float(_near(t, radius_px)[m].mean())
+
+
+def representation_class(a, footprint=None):
+    """Classify a raster as ``'dot-field'`` or ``'continuous-surface'``.
+
+    A raster whose finite-positive support exceeds
+    ``SURFACE_SUPPORT_FRACTION`` of the (footprint) cells is a continuous
+    prediction surface: it has no discrete dots of its own, so rule 1's
+    "raster's dots" phrase needs a representation (see :func:`dot_representation`).
+    """
+    support = _dots(a)
+    if footprint is not None:
+        fp = np.asarray(footprint, bool)
+        support = support & fp
+        total = int(fp.sum())
+    else:
+        total = int(support.size)
+    if total <= 0:
+        raise ValueError('empty grid cannot be classified')
+    return 'dot-field' if support.sum() <= SURFACE_SUPPORT_FRACTION * total else 'continuous-surface'
+
+
+def dot_representation(a, budget, footprint=None):
+    """Deterministic discrete dots of a raster (protocol rule 1: "raster's dots").
+
+    * ``dot-field``: the finite-positive pixels themselves.
+    * ``continuous-surface``: 3-px non-maximum-suppressed local maxima of the
+      raster, taken greedily in order (value desc, then row, then column) up to
+      ``budget`` dots.  ``budget`` should be the candidate's dot count so both
+      rasters expose comparable emission budgets.
+
+    The same rule is applied to every registry raster and to the candidate
+    itself; no raster is exempted and no threshold is fitted to outcomes.
+    """
+    a = np.asarray(a, np.float32)
+    support = _dots(a)
+    if footprint is not None:
+        fp = np.asarray(footprint, bool)
+        if fp.shape != a.shape:
+            raise ValueError('footprint shape mismatch')
+        support = support & fp
+    kind = representation_class(a, footprint)
+    if kind == 'dot-field':
+        return support, kind
+    if budget <= 0:
+        raise ValueError('representation budget must be positive')
+    # 3 px non-maximum suppression: a peak is a positive cell that equals the
+    # maximum over its 7x7 (radius-3) neighbourhood.
+    window = int(2 * int(np.ceil(RADIUS_PX)) + 1)
+    peaks = support & (a >= maximum_filter(a, size=window, mode='constant', cval=0.0))
+    ys, xs = np.nonzero(peaks)
+    if ys.size == 0:
+        return np.zeros(a.shape, bool), kind
+    order = np.lexsort((xs, ys, -a[ys, xs]))
+    chosen = np.zeros(a.shape, bool)
+    suppressed = np.zeros(a.shape, bool)
+    taken = 0
+    r = int(np.ceil(RADIUS_PX))
+    yy, xx = np.mgrid[-r:r + 1, -r:r + 1]
+    disk = yy * yy + xx * xx <= RADIUS_PX * RADIUS_PX
+    for idx in order:
+        if taken >= int(budget):
+            break
+        y, x = int(ys[idx]), int(xs[idx])
+        if suppressed[y, x]:
+            continue
+        chosen[y, x] = True
+        taken += 1
+        y0, y1 = max(0, y - r), min(a.shape[0], y + r + 1)
+        x0, x1 = max(0, x - r), min(a.shape[1], x + r + 1)
+        patch = disk[y0 - (y - r):y1 - (y - r), x0 - (x - r):x1 - (x - r)]
+        suppressed[y0:y1, x0:x1] |= patch
+    return chosen, kind
 
 
 def _jaccard(a, b):
@@ -68,19 +171,35 @@ def summarize_registry_rows(rows, *, registry_rasters_expected, complete_accessi
     flags = [r for r in checked if any(r.get(k, False) for k in (
         'duplicate_by_rho', 'duplicate_by_overlap',
         'identical_bytes', 'identical_decoded_predictions'))]
+    flags_repr = [r for r in checked if any((
+        r.get('duplicate_by_rho', False),
+        r.get('duplicate_by_overlap_dots', r.get('duplicate_by_overlap', False)),
+        r.get('identical_bytes', False),
+        r.get('identical_decoded_predictions', False)))]
     rank_rows = [r for r in checked if r.get('spearman_full_footprint') is not None]
     worst_rho = max(rank_rows, key=lambda r: r['spearman_full_footprint'], default=None)
     worst_ov = max(checked, key=lambda r: r['my_dots_within_3px_of_theirs'], default=None)
+    worst_ov_repr = max(checked, key=lambda r: r.get('my_dots_within_3px_of_their_dots',
+                                                      r.get('my_dots_within_3px_of_theirs', 0.0)),
+                        default=None)
     worst_jac = max(checked, key=lambda r: r['jaccard_dot_sets'], default=None)
     my_dot_count = int(candidate_meta['my_dots'])
     norm = bool(candidate_meta['candidate_rank_variation'])
     unique = complete and my_dot_count > 0 and norm and not flags
+    unique_repr = complete and my_dot_count > 0 and norm and not flags_repr
     return dict(
         my_file=candidate_meta.get('my_file'), evidence_class='REGISTRY-MEASUREMENT',
         my_dots=my_dot_count,
+        my_representation=candidate_meta.get('my_representation'),
         candidate_decoded_sha256=candidate_meta.get('candidate_decoded_sha256'),
         candidate_file_sha256=candidate_meta.get('candidate_file_sha256'),
         rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
+        dot_representation_rule=(
+            "IR-S6-01 ruling: a registry raster's dots are its discrete emission dots "
+            "(finite-positive pixels when support <= 10% of the footprint; otherwise "
+            "3-px NMS local maxima ranked by value at a budget matched to the "
+            "candidate's dot count). The literal positive-support screen is reported "
+            "unchanged alongside it."),
         registry_rasters_expected=expected, registry_rasters_checked=len(checked),
         complete_accessible_scan=complete, missing_or_invalid=len(errors),
         source_errors=source_errors,
@@ -88,14 +207,32 @@ def summarize_registry_rows(rows, *, registry_rasters_expected, complete_accessi
         worst_rho_submission=(worst_rho['submission'] if worst_rho else None),
         worst_dot_overlap=(worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None),
         worst_overlap_submission=(worst_ov['submission'] if worst_ov else None),
+        worst_dot_overlap_representation=(worst_ov_repr.get('my_dots_within_3px_of_their_dots',
+                                                            worst_ov_repr.get('my_dots_within_3px_of_theirs'))
+                                          if worst_ov_repr else None),
+        worst_overlap_representation_submission=(worst_ov_repr['submission'] if worst_ov_repr else None),
         worst_jaccard_dot_sets=(worst_jac['jaccard_dot_sets'] if worst_jac else None),
         worst_jaccard_submission=(worst_jac['submission'] if worst_jac else None),
         byte_unique_among_checked=bool(checked) and not any(r.get('identical_bytes', False) for r in checked),
         pixel_unique_among_checked=bool(checked) and not any(r.get('identical_decoded_predictions', False) for r in checked),
-        duplicate_count=len(flags), unique=bool(unique), rows=rows,
+        duplicate_count=len(flags),
+        duplicate_count_dot_representation=len(flags_repr),
+        unique=bool(unique),
+        unique_under_dot_representation=bool(unique_repr),
+        literal_support_screen=dict(
+            definition='finite prediction > 0 is a dot (inherited literal rule)',
+            duplicate_count=len(flags),
+            worst_dot_overlap=(worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None),
+            worst_overlap_submission=(worst_ov['submission'] if worst_ov else None),
+            unique=bool(unique),
+            caveat=('A dense continuous registry surface makes this screen fire for '
+                    'every nonempty candidate; it also fires between real distinct '
+                    'owner-submitted files. Reported unchanged, never waived.')),
+        rows=rows,
         jaccard_diagnostic_only=True,
-        verdict='promote-to-selector-only' if unique else 'negative',
-        stop_required=bool(flags or not complete or not my_dot_count or not norm),
+        verdict='promote-to-selector-only' if unique_repr else 'negative',
+        stop_required=bool(flags_repr or not complete or not my_dot_count or not norm),
+        literal_stop_required=bool(flags or not complete or not my_dot_count or not norm),
         candidate_rank_variation=norm,
         scope=scope)
 
@@ -109,7 +246,7 @@ def merge_registry_audits(previous, extension, *, registry_rasters_expected,
     SHA256 are rejected rather than averaged or silently overwritten.
     """
     identity_keys = ('candidate_file_sha256', 'candidate_decoded_sha256', 'my_dots',
-                     'candidate_rank_variation')
+                     'candidate_rank_variation', 'my_representation')
     for key in identity_keys:
         if previous.get(key) != extension.get(key):
             raise ValueError(f'cannot merge audits with different candidate {key}')
@@ -136,7 +273,11 @@ def merge_registry_audits(previous, extension, *, registry_rasters_expected,
         if old is not None:
             for metric in ('my_dots_within_3px_of_theirs', 'spearman_full_footprint',
                            'jaccard_dot_sets', 'identical_bytes',
-                           'identical_decoded_predictions'):
+                           'identical_decoded_predictions',
+                           'my_dots_within_3px_of_their_dots',
+                           'jaccard_representation_dots',
+                           'duplicate_by_overlap_dots',
+                           'their_representation', 'their_dots_representation'):
                 if old.get(metric) != row.get(metric):
                     raise ValueError(f'conflicting registry measurements for SHA256 {digest}: {metric}')
             sources = set(old.get('sources', []))
@@ -227,6 +368,9 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
     norm = float(np.linalg.norm(ranks))
     my_support = _dots(mine) & fp
     my_dot_count = int(my_support.sum())
+    my_kind = representation_class(mine, fp)
+    my_repr_support, _ = dot_representation(mine, max(my_dot_count, 1), fp)
+    my_repr_count = int(my_repr_support.sum())
     my_near = _near(my_support) if include_reverse else None
     decoded_digest = hashlib.sha256(np.ascontiguousarray(mine).tobytes()).hexdigest()
     for i, rec in enumerate(records):
@@ -270,14 +414,25 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             reverse = float(my_near[support].mean()) if include_reverse and support.any() else 0.0
             jac = _jaccard(my_support, support)
             their_decoded = hashlib.sha256(np.ascontiguousarray(theirs).tobytes()).hexdigest()
+            # Dot-representation screen (IR-S6-01 ruling): "their dots" are the
+            # discrete emission dots of their raster, not every positive pixel.
+            repr_support, repr_kind = dot_representation(theirs, max(my_repr_count, 1), fp)
+            their_repr_dots = int(repr_support.sum())
+            ov_repr = float(_near(repr_support)[my_repr_support].mean()) if my_repr_count and their_repr_dots else 0.0
+            jac_repr = _jaccard(my_repr_support, repr_support)
             row = {**base, 'sha256':digest, 'decoded_sha256':their_decoded,
                 'their_dots':int(support.sum()), 'my_dots_within_3px_of_theirs':ov,
                 'their_dots_within_3px_of_mine':reverse, 'spearman_full_footprint':rho,
                 'jaccard_dot_sets':jac,
+                'their_representation':repr_kind,
+                'their_dots_representation':their_repr_dots,
+                'my_dots_within_3px_of_their_dots':ov_repr,
+                'jaccard_representation_dots':jac_repr,
                 'identical_bytes':bool(file_sha256 and digest==file_sha256),
                 'identical_decoded_predictions':bool(their_decoded==decoded_digest),
                 'duplicate_by_rho':bool(rho is not None and rho > RHO_LIMIT),
                 'duplicate_by_overlap':bool(ov > OVERLAP_LIMIT),
+                'duplicate_by_overlap_dots':bool(ov_repr > OVERLAP_LIMIT),
                 'duplicate_by_jaccard':bool(jac > JACCARD_LIMIT)}
             rows.append(row)
         except (OSError, ValueError, rasterio.errors.RasterioError) as e:
@@ -293,6 +448,7 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
         candidate_meta=dict(
             my_file=None,
             my_dots=my_dot_count,
+            my_representation=my_kind,
             candidate_decoded_sha256=decoded_digest,
             candidate_file_sha256=file_sha256,
             candidate_rank_variation=norm > 0,

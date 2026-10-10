@@ -134,16 +134,25 @@ def test_session5_relay_bend_holdout_and_surface_receipts():
         assert diff["delta"] > 0.02
         assert diff["ci95"][0] > 0.0
 
-    # Research GeoTIFF must match run card and uniqueness audit SHA256
-    tif_path = root / card["file"]
+    # Research GeoTIFF must match the PRESERVED Session-5 card and uniqueness
+    # audit SHA256 (historical receipts stay pinned to historical cards).
+    card5 = json.loads((root / "evidence/run_card_session5_relay_bend.json").read_text())
+    tif_path = root / card5["file"]
     assert tif_path.is_file()
     sha = hashlib.sha256(tif_path.read_bytes()).hexdigest()
-    assert sha == card["raster_sha256"] == uniq["candidate_file_sha256"]
+    assert sha == card5["raster_sha256"] == uniq["candidate_file_sha256"]
     assert uniq["registry_rasters_checked"] == 695
     assert uniq["byte_unique_among_checked"] is True
     assert uniq["pixel_unique_among_checked"] is True
-    assert card["correlation_overlap_vs_registry"]["worst_spearman_other_repos"] <= 0.90
-    assert card["correlation_overlap_vs_registry"]["worst_dot_overlap_sibling_lanes"] <= 0.70
-    assert card["okay_to_download"] is True and card["okay_to_submit"] is False
+    assert card5["correlation_overlap_vs_registry"]["worst_spearman_other_repos"] <= 0.90
+    assert card5["correlation_overlap_vs_registry"]["worst_dot_overlap_sibling_lanes"] <= 0.70
+    assert card5["okay_to_download"] is True and card5["okay_to_submit"] is False
+    assert card5["submission_slots_used"] == 0
+    # The live card stays consistent with the LIVE uniqueness receipt and is
+    # never a slot: download always OK, submit follows its own verdict.
+    live_uniq = json.loads((root / "evidence/session7_final_uniqueness.json").read_text())
+    assert card["raster_sha256"] == live_uniq["candidate_file_sha256"]
+    assert card["okay_to_download"] is True
+    assert card["okay_to_submit"] is (card["verdict"] == "promote")
     assert card["submission_slots_used"] == 0
 
