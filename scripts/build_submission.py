@@ -4,7 +4,7 @@
 This command does not run a parameter sweep or select a weekly slot. It requires
 an explicit selector receipt tied to a current spatial-CV evidence file and the
 exact builder/writer source hashes. It also refuses to fit or write anything
-until all 644 indexed matching-grid rasters are present and hash-verified.
+until every raster in the complete pinned registry is present and hash-verified.
 
 The current repository has no valid clearance receipt and the full registry
 cache is incomplete. Expected behavior today is a fail-closed HOLD before model
@@ -55,6 +55,7 @@ BUILD_IMPLEMENTATION_FILES = (
     "src/gems57/spatial.py",
     "src/gems57/network.py",
     "src/gems57/gates.py",
+    "src/gems57/uniqueness.py",
     "src/gems57/validate.py",
     "src/gems57/submission_writer.py",
 )
@@ -79,12 +80,12 @@ def load_complete_registry(index_path: Path | None = None) -> tuple[list[Path], 
     in scope. Missing, changed, or unindexed cache files make a uniqueness
     decision impossible and stop the build before fitting or writing anything.
     """
-    pinned_index = (EVID / "registry_full_index.json").resolve()
+    pinned_index = (EVID / "registry_refreshed.json").resolve()
     index_path = Path(index_path or pinned_index).resolve()
     if index_path != pinned_index:
-        raise ValueError("registry index must be evidence/registry_full_index.json; custom subsets are forbidden")
+        raise ValueError("registry index must be evidence/registry_refreshed.json; custom subsets are forbidden")
     if not index_path.is_file():
-        raise RuntimeError(f"full-registry index is missing: {index_path}")
+        raise RuntimeError(f"complete registry index is missing: {index_path}")
     manifest = json.loads(index_path.read_text(encoding="utf-8"))
     entries = manifest.get("rasters")
     expected = manifest.get("n_unique_grid_rasters")
@@ -95,8 +96,11 @@ def load_complete_registry(index_path: Path | None = None) -> tuple[list[Path], 
     if manifest.get("grid") != {"shape": [gridmod.HEIGHT, gridmod.WIDTH], "crs": gridmod.CRS_EPSG}:
         raise RuntimeError("registry manifest grid metadata does not match the pinned contest grid")
     unreachable = manifest.get("repos_unreachable_or_missing")
-    if not isinstance(unreachable, list) or unreachable:
-        raise RuntimeError("registry scan is incomplete: one or more source repositories were unavailable")
+    scan_errors = manifest.get("errors")
+    if (manifest.get("complete_accessible_scan") is not True
+            or not isinstance(scan_errors, list) or scan_errors
+            or not isinstance(unreachable, list) or unreachable):
+        raise RuntimeError("registry scan is incomplete or has source errors")
     indexed_shas = [entry.get("sha256") if isinstance(entry, dict) else None for entry in entries]
     if (any(not isinstance(value, str) or len(value) != 64
             or any(ch not in "0123456789abcdef" for ch in value) for value in indexed_shas)
@@ -200,7 +204,7 @@ def load_clearance(path: Path | None = None) -> tuple[dict, dict, dict]:
         raise ValueError("clearance spatial-CV input hashes do not match current grid data")
     if clearance["build_implementation_sha256"] != build_implementation_hashes():
         raise ValueError("clearance builder/writer source hashes do not match current code")
-    registry_index = (EVID / "registry_full_index.json").resolve()
+    registry_index = (EVID / "registry_refreshed.json").resolve()
     if not registry_index.is_file():
         raise FileNotFoundError(f"full-registry index is missing: {registry_index}")
     if clearance["registry_index_sha256"] != sha256_file(registry_index):
@@ -374,7 +378,7 @@ def main() -> None:
 
     # Both authorization and inventory checks happen before any model fit.
     clearance, cv_evidence, pooled = load_clearance(args.clearance)
-    registry_index = EVID / "registry_full_index.json"
+    registry_index = EVID / "registry_refreshed.json"
     registry_paths, _registry_manifest = load_complete_registry(registry_index)
     print(f"clearance verified: {clearance['candidate_id']} / {clearance['variant']}; "
           f"full registry verified: {len(registry_paths)} rasters")
@@ -413,12 +417,14 @@ def main() -> None:
 
     sample = gridmod.DATA_DIR / "sample_submission.tif"
     surface_gate = gates.lane_uniqueness_report(
-        surface, grid.footprint, registry_paths, sample=sample, phase="surface")
+        surface, grid.footprint, sample=sample, phase="surface",
+        registry_index=registry_index)
     _require_clear_gate(surface_gate, "continuous surface")
 
     preview = _topk_preview(surface, allowed, clearance["live_dot_budget"])
     preplacement_gate = gates.lane_uniqueness_report(
-        preview, grid.footprint, registry_paths, sample=sample, phase="dots")
+        preview, grid.footprint, sample=sample, phase="dots",
+        registry_index=registry_index)
     _require_clear_gate(preplacement_gate, "pre-placement dots")
 
     allocation = greedy_allocate(
@@ -428,7 +434,8 @@ def main() -> None:
         raise RuntimeError("selected configuration emitted no dots")
     values = allocation.emitted.astype(np.float32)
     final_gate = gates.lane_uniqueness_report(
-        values, grid.footprint, registry_paths, sample=sample, phase="dots")
+        values, grid.footprint, sample=sample, phase="dots",
+        registry_index=registry_index)
     _require_clear_gate(final_gate, "final dots")
 
     # Nothing is created in docs/downloads until independent holdout clearance,

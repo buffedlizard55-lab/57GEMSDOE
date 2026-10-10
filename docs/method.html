@@ -7,8 +7,10 @@
 <nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="on" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
 <div class="alert" role="alert">
 <strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
-<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
-No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
+Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
+resolve. That is not download authorization. No weekly slot was used. The current decision is
+<b>negative / not promoted</b>.</p>
 </div>
 <h2>Method and validation contract</h2>
 <p>The only permitted lane is fault-zone anatomy: describe likely secondary strands relative to
@@ -20,14 +22,17 @@ visible-only catalogue.</li>
 <li>Mask visible catalogue pixels pixel-exactly from scoring.</li>
 <li>Score pooled distance-weighted Tversky (DTI), alpha 0.2, beta 0.8, triangular 300 m kernel.</li>
 <li>Record evaluator version, implementation/input hashes, withheld-positive count, and a 95% CI.
-The stored historic result has no source-hash match: UNPINNED-LEGACY: stored run_sense_experiment.py artifact lacks matching implementation/input SHA256 set.</li>
+The stored historic result has no source-hash match: gems57-pooled-hide-v2.</li>
 <li>Apply a single-feature canary; AUC &gt; 0.90 means leakage until disproven.</li>
 </ul>
 <h3>Uniqueness stop rule</h3>
-<p>Compare the continuous surface by rank correlation and compare dots by exact 3-pixel proximity
-both before placement and on final dots. Stop if rho &gt; 0.90 or if more than 70% of candidate dots
-are within 3 px of any registry raster. The historical report fires 114 times and is not cleared.
-Do not treat a one-direction overlap exception as a pass.</p>
+<p>Before placement, compare the continuous surface by rank correlation and its inherited positive
+support (finite values &gt; 0) by 3-pixel overlap; separately compare the deterministic pre-placement
+dot proposal. Compare final dots only after those gates pass. Stop if rho &gt; 0.90 or if more than
+70% of candidate support/dots are within 3 px of any registry raster. The historical soft-surface
+report fires 78 times and is not cleared; it is not a final-dot comparison. Jaccard,
+reverse overlap, and exact pixel/byte identity are diagnostics, not extra stop thresholds. Do not
+treat a one-direction overlap exception as a pass.</p>
 <h3>Current code controls</h3>
 <p><code>src/gems57/evaluate_holdout.py</code> shares its per-pixel credit primitive with
 <code>src/gems57/metric.py</code>. <code>src/gems57/evaluator_provenance.py</code> pins code and data
@@ -35,5 +40,5 @@ inputs for future spatial CV. <code>src/gems57/submission_writer.py</code> write
 validates the bytes, refuses overwrites, and never clips/fills predictions. These controls do not
 make an old score or candidate retroactively valid.</p>
 </main>
-<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:08 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

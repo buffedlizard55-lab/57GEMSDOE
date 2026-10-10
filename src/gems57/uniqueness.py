@@ -1,141 +1,222 @@
-"""Uniqueness check against every earlier raster in the registry.
+"""Literal parallel-run gates, fail closed on incomplete registries.
 
-Parallel-run protocol rule 1: a submission has drifted into another lane if its
-rank-correlation with any registry raster exceeds 0.90, or if more than 70 % of
-its dots fall within 3 px of one registry raster's dots.  Both statistics are
-computed here, on the emission surface *before* placement and on the final dots.
+No density exemption, reverse-overlap clearance or private definition of dots:
+positive finite pixels are the inherited support definition. Only the owner's
+rank-correlation and forward 3-pixel-overlap thresholds block; Jaccard, reverse
+overlap, and byte/pixel identity are reported as diagnostics. A whole-footprint
+soft registry surface can therefore remain a universal forward-overlap blocker;
+the audit reports that rather than quietly changing the protocol.
 """
-
 from __future__ import annotations
-
+import hashlib
 import json
 from pathlib import Path
-
 import numpy as np
 import rasterio
-from scipy.ndimage import distance_transform_edt
+from scipy.ndimage import binary_dilation
 from scipy.stats import rankdata, spearmanr
-
 from .metric import RADIUS_PX
 
 RHO_LIMIT = 0.90
 OVERLAP_LIMIT = 0.70
 JACCARD_LIMIT = 0.50
+ROOT = Path(__file__).resolve().parents[2]
 
 
-def _dots(a: np.ndarray) -> np.ndarray:
-    return np.asarray(a) > 0
+def _dots(a):
+    a = np.asarray(a)
+    return np.isfinite(a) & (a > 0)
 
 
-def dot_overlap(mine: np.ndarray, theirs: np.ndarray, radius_px: float = RADIUS_PX) -> float:
-    """Fraction of my dots lying within ``radius_px`` of one of their dots."""
+def _near(support, radius_px=RADIUS_PX):
+    r = int(np.ceil(radius_px))
+    yy, xx = np.mgrid[-r:r+1, -r:r+1]
+    return binary_dilation(support, structure=yy*yy+xx*xx <= radius_px*radius_px)
+
+
+def dot_overlap(mine, theirs, radius_px=RADIUS_PX):
     m, t = _dots(mine), _dots(theirs)
-    if not m.any():
+    if m.shape != t.shape:
+        raise ValueError('overlap grid shape mismatch')
+    if not m.any() or not t.any():
         return 0.0
-    if not t.any():
-        return 0.0
-    d = distance_transform_edt(~t)
-    return float((d[m] <= radius_px).mean())
+    return float(_near(t, radius_px)[m].mean())
 
 
-def _jaccard(a: np.ndarray, b: np.ndarray) -> float:
+def _jaccard(a, b):
     u = int((a | b).sum())
     return float((a & b).sum() / u) if u else 0.0
 
 
-def surface_rho(mine: np.ndarray, theirs: np.ndarray, valid: np.ndarray) -> dict:
-    """Rank correlation of two emission surfaces, plus set-agreement statistics.
-
-    ``IR-57-RHO-01`` -- the dot-union Spearman is *not* a usable duplicate test on
-    sparse binary rasters, and this function no longer treats it as one.
-
-    On the union of two dot supports both arrays are 0/1 indicators of near-
-    disjoint sets, so their rank correlation is the phi coefficient of two
-    negatively associated indicators: a pixel that is *my* dot is unlikely to be
-    *theirs*, which drives rho toward -1.  Measured over the registry itself,
-    ``gate_ortho_w0.25-40k`` and ``h19-4-multiline-corroborated`` -- different
-    lanes, live scores 0.2376 and 0.1894, Jaccard 0.022 -- give rho = -0.9408.
-    Taking ``abs()`` of that flags every sparse raster in the registry as a
-    duplicate of every other one.
-
-    Duplication therefore has to be read off *positive* agreement and off set
-    overlap.  Reported here:
-
-    * ``spearman_full_footprint`` -- the operative rank statistic.  Measured over
-      the registry it is **+1.0 for an exact copy** and 0.0003-0.0109 for all 15
-      distinct rasters, so the protocol's 0.90 threshold separates cleanly.
-    * ``jaccard_dot_sets`` -- |A n B| / |A u B|.  Near 1 for a re-export.
-    * ``spearman_on_dot_union`` -- signed, and **never thresholded**.  Reported so
-      the degeneracy is visible: it sits near -1 for every pair of distinct sparse
-      rasters and is NaN whenever one support contains the other.
-    """
+def surface_rho(mine, theirs, valid):
     m = np.asarray(mine, np.float32)[valid]
     t = np.asarray(theirs, np.float32)[valid]
-    mb, tb = m > 0, t > 0
+    mb, tb = _dots(m), _dots(t)
     union = mb | tb
-    out = {}
-    if union.sum() > 10 and mb[union].any() and tb[union].any() \
-            and not (mb[union].all() or tb[union].all()):
-        with np.errstate(invalid="ignore"):
-            out["spearman_on_dot_union"] = float(spearmanr(m[union], t[union]).statistic)
-    else:
-        # one support contains the other: the statistic is undefined, not 1.0
-        out["spearman_on_dot_union"] = float("nan")
-    out["n_dot_union"] = int(union.sum())
-    out["jaccard_dot_sets"] = _jaccard(mb, tb)
-    out["spearman_full_footprint"] = float(spearmanr(m, t).statistic)
-    return out
+    rho_union = float('nan')
+    if union.sum() > 10 and mb[union].any() and tb[union].any() and not (mb[union].all() or tb[union].all()):
+        rho_union = float(spearmanr(m[union], t[union]).statistic)
+    rho = float(spearmanr(m, t).statistic) if np.ptp(m) and np.ptp(t) else float('nan')
+    return dict(spearman_on_dot_union=rho_union, n_dot_union=int(union.sum()),
+                jaccard_dot_sets=_jaccard(mb,tb), spearman_full_footprint=rho)
 
 
-def compare_to_registry(mine_path: Path, registry_index: Path,
-                        footprint: np.ndarray) -> dict:
-    mine = rasterio.open(mine_path).read(1)
-    idx = json.loads(Path(registry_index).read_text())
+def _sha(path):
+    h = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for c in iter(lambda: stream.read(1 << 20), b''):
+            h.update(c)
+    return h.hexdigest()
+
+
+def records_from_index(index):
+    if isinstance(index, list):
+        return index, False, ["Legacy list has no complete-inventory certificate; diagnostic only"]
+    if not isinstance(index, dict) or 'rasters' not in index:
+        raise ValueError('registry must be a list or a full inventory with rasters')
+    records = [dict(repo=r['repo_first'], submission=r['sources'][0], file=r['cache_file'],
+                    sha256=r['sha256'], sources=r['sources']) for r in index['rasters']]
+    # Historical /tmp inventory never had a completeness certificate; file checks
+    # below still prevent it from passing when all ephemeral caches disappear.
+    complete = index.get('complete_accessible_scan', False)
+    return records, bool(complete), index.get('errors', [])
+
+
+def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=None,
+                              include_reverse=True, progress=None, expected_grid=None):
+    mine = np.asarray(mine, np.float32)
+    fp = np.asarray(footprint, bool)
+    if mine.ndim != 2 or mine.shape != fp.shape or not fp.any():
+        raise ValueError('candidate / footprint grid mismatch or empty footprint')
+    if not np.isfinite(mine).all() or (mine < 0).any() or (mine > 1).any():
+        raise ValueError('candidate must already be finite in [0,1]')
+    if (mine[~fp] > 0).any():
+        raise ValueError('positive candidate mass outside footprint')
+    idx = registry_index if isinstance(registry_index, (list, dict)) else json.loads(Path(registry_index).read_text())
+    records, inventory_complete, source_errors = records_from_index(idx)
     rows = []
-    worst_rho = -2.0
-    worst_overlap = 0.0
-    worst_jaccard = 0.0
-    worst_rho_name = worst_overlap_name = worst_jaccard_name = ""
-    for rec in idx:
-        p = Path(rec["file"])
-        if not p.exists():
-            rows.append({**rec, "error": "missing file"})
-            continue
-        theirs = rasterio.open(p).read(1)
-        theirs = np.where(np.isfinite(theirs), theirs, 0.0)
-        rho = surface_rho(mine, theirs, footprint)
-        ov = dot_overlap(mine, theirs)
-        ov_rev = dot_overlap(theirs, mine)
-        rows.append({
-            "repo": rec["repo"], "submission": rec["submission"],
-            "owner_reported_score": rec["owner_reported_score"],
-            "their_dots": int((theirs > 0).sum()),
-            "my_dots_within_3px_of_theirs": ov,
-            "their_dots_within_3px_of_mine": ov_rev,
-            **rho,
-            # the protocol's rank test: POSITIVE agreement over the footprint
-            "duplicate_by_rho": bool(rho["spearman_full_footprint"] > RHO_LIMIT),
-            "duplicate_by_jaccard": bool(rho["jaccard_dot_sets"] > JACCARD_LIMIT),
-            "duplicate_by_overlap": bool(ov > OVERLAP_LIMIT),
-        })
-        r_u = rho["spearman_full_footprint"]
-        if r_u > worst_rho:
-            worst_rho = r_u; worst_rho_name = rec["submission"]
-        if rho["jaccard_dot_sets"] > worst_jaccard:
-            worst_jaccard = rho["jaccard_dot_sets"]; worst_jaccard_name = rec["submission"]
-        if ov > worst_overlap:
-            worst_overlap = ov; worst_overlap_name = rec["submission"]
-    unique = not any(r.get("duplicate_by_rho") or r.get("duplicate_by_overlap")
-                     or r.get("duplicate_by_jaccard")
-                     for r in rows if "error" not in r)
-    return {
-        "my_file": str(mine_path),
-        "my_dots": int((mine > 0).sum()),
-        "rho_limit": RHO_LIMIT, "overlap_limit": OVERLAP_LIMIT,
-        "worst_spearman_full_footprint": worst_rho, "worst_rho_submission": worst_rho_name,
-        "jaccard_limit": JACCARD_LIMIT,
-        "worst_jaccard_dot_sets": worst_jaccard, "worst_jaccard_submission": worst_jaccard_name,
-        "worst_dot_overlap": worst_overlap, "worst_overlap_submission": worst_overlap_name,
-        "unique": bool(unique),
-        "rows": rows,
-    }
+    values = mine[fp]
+    ranks = rankdata(values).astype(np.float64)
+    ranks -= ranks.mean()
+    norm = float(np.linalg.norm(ranks))
+    my_support = _dots(mine) & fp
+    my_dot_count = int(my_support.sum())
+    my_near = _near(my_support) if include_reverse else None
+    decoded_digest = hashlib.sha256(np.ascontiguousarray(mine).tobytes()).hexdigest()
+    for i, rec in enumerate(records):
+        p = Path(rec['file'])
+        if not p.is_absolute():
+            p = ROOT / p
+        base = dict(repo=rec.get('repo'), submission=rec.get('submission',p.name), file=str(p))
+        try:
+            if not p.exists():
+                raise FileNotFoundError('missing registry file; cannot certify uniqueness')
+            digest = _sha(p)
+            if rec.get('sha256') and digest != rec['sha256']:
+                raise ValueError('registry SHA256 pin mismatch')
+            with rasterio.open(p) as src:
+                if src.count != 1 or src.shape != mine.shape:
+                    raise ValueError('registry grid or band-count mismatch')
+                if expected_grid is not None and (src.shape, src.crs, src.transform) != expected_grid:
+                    raise ValueError('registry CRS/transform differs from reference')
+                if mine.shape == (3730,3292):
+                    from .grid import TRANSFORM
+                    if src.crs is None or src.crs.to_epsg()!=32611 or src.transform != TRANSFORM:
+                        raise ValueError('registry CRS/transform mismatch')
+                theirs = src.read(1).astype(np.float32)
+            theirs = np.where(np.isfinite(theirs), theirs, 0.0)
+            # Outside-footprint values are ignored for support and pixel identity.
+            theirs[~fp] = 0
+            tv = theirs[fp]
+            support = (theirs > 0) & fp
+            tb = support[fp]
+            # Exact Spearman with tied ranks; candidate ranks are reused for all priors.
+            if norm == 0 or np.ptp(tv) == 0:
+                rho = None
+            elif np.all((tv == 0) | (tv == 1)):
+                nt = int(tb.sum()); n = len(tv)
+                rho = float(ranks[tb].sum() / (norm * np.sqrt(nt*(n-nt)/n)))
+            else:
+                tr = rankdata(tv).astype(np.float64)
+                tr -= tr.mean()
+                rho = float(np.dot(ranks,tr)/(norm*np.linalg.norm(tr)))
+            ov = float(_near(support)[my_support].mean()) if my_dot_count else 0.0
+            reverse = float(my_near[support].mean()) if include_reverse and support.any() else 0.0
+            jac = _jaccard(my_support, support)
+            their_decoded = hashlib.sha256(np.ascontiguousarray(theirs).tobytes()).hexdigest()
+            row = {**base, 'sha256':digest, 'decoded_sha256':their_decoded,
+                'their_dots':int(support.sum()), 'my_dots_within_3px_of_theirs':ov,
+                'their_dots_within_3px_of_mine':reverse, 'spearman_full_footprint':rho,
+                'jaccard_dot_sets':jac,
+                'identical_bytes':bool(file_sha256 and digest==file_sha256),
+                'identical_decoded_predictions':bool(their_decoded==decoded_digest),
+                'duplicate_by_rho':bool(rho is not None and rho > RHO_LIMIT),
+                'duplicate_by_overlap':bool(ov > OVERLAP_LIMIT),
+                'duplicate_by_jaccard':bool(jac > JACCARD_LIMIT)}
+            rows.append(row)
+        except (OSError, ValueError, rasterio.errors.RasterioError) as e:
+            rows.append({**base, 'error':str(e)})
+        if progress:
+            progress(i+1,len(records),rows[-1])
+    checked = [r for r in rows if 'error' not in r]
+    errors = [r for r in rows if 'error' in r]
+    # Only the two specified stop thresholds clear/fail this lane. Jaccard and
+    # exact identity remain visible diagnostics, not additional policy gates.
+    flags = [r for r in checked if r['duplicate_by_rho'] or r['duplicate_by_overlap']]
+    complete = inventory_complete and bool(records) and not errors and not source_errors
+    rank_rows = [r for r in checked if r['spearman_full_footprint'] is not None]
+    worst_rho = max(rank_rows, key=lambda r:r['spearman_full_footprint'], default=None)
+    worst_ov = max(checked,key=lambda r:r['my_dots_within_3px_of_theirs'],default=None)
+    worst_jac = max(checked,key=lambda r:r['jaccard_dot_sets'],default=None)
+    unique = complete and my_dot_count > 0 and norm > 0 and not flags
+    return dict(evidence_class='REGISTRY-MEASUREMENT', my_dots=my_dot_count,
+        candidate_decoded_sha256=decoded_digest, candidate_file_sha256=file_sha256,
+        rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
+        jaccard_diagnostic_only=True,
+        registry_rasters_expected=len(records), registry_rasters_checked=len(checked),
+        complete_accessible_scan=complete, missing_or_invalid=len(errors), source_errors=source_errors,
+        worst_spearman_full_footprint=worst_rho['spearman_full_footprint'] if worst_rho else None,
+        worst_rho_submission=worst_rho['submission'] if worst_rho else None,
+        worst_dot_overlap=worst_ov['my_dots_within_3px_of_theirs'] if worst_ov else None,
+        worst_overlap_submission=worst_ov['submission'] if worst_ov else None,
+        worst_jaccard_dot_sets=worst_jac['jaccard_dot_sets'] if worst_jac else None,
+        worst_jaccard_submission=worst_jac['submission'] if worst_jac else None,
+        byte_unique_among_checked=bool(checked) and not any(r['identical_bytes'] for r in checked),
+        pixel_unique_among_checked=bool(checked) and not any(r['identical_decoded_predictions'] for r in checked),
+        duplicate_count=len(flags), unique=bool(unique), rows=rows,
+        verdict='promote-to-selector-only' if unique else 'negative',
+        stop_required=bool(flags or not complete or not my_dot_count or norm == 0),
+        candidate_rank_variation=norm > 0,
+        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Jaccard, reverse overlap, and byte/pixel identity are diagnostics only.')
+
+
+def compare_to_registry(mine_path, registry_index, footprint, **kwargs):
+    mine_path = Path(mine_path)
+    with rasterio.open(mine_path) as src:
+        if src.count != 1:
+            raise ValueError('candidate must be single band')
+        mine = src.read(1)
+    return dict(my_file=str(mine_path), **compare_array_to_registry(mine, registry_index, footprint,
+                file_sha256=_sha(mine_path), **kwargs))
+
+
+def saturation_certificate(registry_path, footprint, catalogue=None):
+    """A witness that proves every nonempty allowed dot set fails the overlap gate."""
+    fp = np.asarray(footprint,bool)
+    allowed = fp if catalogue is None else fp & ~np.asarray(catalogue,bool)
+    if not allowed.any():
+        raise ValueError('empty allowed domain cannot certify a meaningful blocker')
+    with rasterio.open(registry_path) as src:
+        a = src.read(1)
+        if a.shape != fp.shape or src.count != 1:
+            raise ValueError('witness grid mismatch')
+    positive = _dots(a) & fp
+    covered = _near(positive)
+    uncovered = int((allowed & ~covered).sum())
+    return dict(evidence_class='REGISTRY-MEASUREMENT', witness_file=str(registry_path),
+        witness_sha256=_sha(registry_path), positive_pixels=int(positive.sum()),
+        allowed_pixels=int(allowed.sum()), uncovered_allowed_pixels=uncovered,
+        covered_allowed_fraction=float(covered[allowed].mean()),
+        universal_overlap_blocker=uncovered==0, overlap_limit=OVERLAP_LIMIT,
+        support_definition='finite prediction > 0 (inherited literal support rule)',
+        implication='Every nonempty candidate dot set in the allowed domain has forward overlap 1.0 with this prior; therefore it cannot pass the 0.70 gate.' if uncovered==0 else 'No universal blockage established.')

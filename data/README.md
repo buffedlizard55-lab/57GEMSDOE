@@ -1,30 +1,36 @@
-# Data manifest — official competition data and external sources
+# Data manifest — pinned bridge files and external sources
 
-Present files and provenance receipts are sha256-pinned. The competition feature
-stack is not present in this checkout. `scripts/prepare_data.py` verifies available
-pins when invoked; this audit did not download or prepare data.
+Present files and provenance receipts are SHA256-pinned. The competition feature
+raster is not present in this checkout. `scripts/prepare_data.py` verifies
+available pins when invoked; this audit did not download or prepare data.
 
-## Official competition data (`data/official/`)
+## Competition-grid bridge files (`data/official/` and `data/bridge/`)
 
 | File | Bytes | sha256 | Source |
 |---|---|---|---|
 | `labels.tif` | 425,830 | `7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093` | DrivenData competition 306 training labels (GeoDAWN region) |
 | `existing_faults.tif` | 425,830 | `7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093` | same raster as labels (USGS QFaults catalogue, rasterized) |
 | `sample_submission.tif` | 1,599,597 | `2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc` | DrivenData sample submission (defines grid, CRS, bounds) |
-| `training_features.tif` | 418,912,844 | `4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5` | DrivenData training features (105 bands) — **not committed** (gitignored); see below |
+| `training_features.tif` | 418,912,844 | `4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5` | Expected training-feature raster from the pinned bridge — **not committed** (gitignored); see below |
 
-Notes:
+Provenance limits and notes:
 
-- `labels.tif` and `existing_faults.tif` are byte-identical (same sha256): the catalogue
-  raster and the label raster are the same file in the official package.
-- The DrivenData data page sits behind a login and the Dropbox mirrors are unreachable
-  from this sandbox, so the official files were obtained **sha256-pinned from the public
-  GEMSDOE sibling repositories** (`buffedlizard55-lab/GEMSDOE*`), which carry the official
-  files with recorded hashes (6GEMSDOE bridge manifest). This is a provenance bridge, not
-  a modification: every byte is verified against the pin above.
-- `training_features.tif` is gitignored (419 MB). To place it, run
-  `scripts/prepare_data.py` on a machine that can reach the bridge (GitHub) or the
-  competition data page; it re-verifies the sha256 after download.
+- The checked-in copies `data/official/labels.tif` and `data/official/existing_faults.tif`
+  are byte-identical to one another and to the pinned bridge raster. This establishes
+  byte identity within the bridge, **not independent authentication that the bridge is
+  identical to a fresh official DrivenData download**.
+- The DrivenData data tab was observed behind login; no authenticated download or organizer
+  data receipt was available for this audit. The external Dropbox route was not used. The
+  public sibling-repository manifest supplies transport hashes, not an organizer attestation.
+- `training_features.tif` is gitignored (about 419 MB) and is absent from this checkout.
+  The listed size/hash describe the expected bridge file only. The older
+  `evidence/data_preparation.json` and `evidence/feature_cache.json` receipts record a prior
+  verified 19-band bridge file, but are not dated and do not establish current availability.
+  `scripts/prepare_data.py` can verify it if it is placed locally; this audit did not fetch it.
+- The GeoDAWN USGS/DOE catalogue record and its public license were checked for future
+  geophysical validation; exact coverage, CRS/grid overlap, and usable file contents were
+  **not** verified. No GeoDAWN raster was downloaded or used. See
+  [`docs/research/hypotheses.md`](../docs/research/hypotheses.md).
 
 ## External sources (`data/external/`)
 

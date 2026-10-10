@@ -6,40 +6,64 @@ There is no cleared submission file. Do not use the retained historical TIFF. No
 experiments, holdout runs, GeoTIFF builds, downloads, or submissions occurred in this audit;
 the three-experiment / two-hour budget is spent. No weekly slot was used.
 
-The literal full-registry report records a maximum forward 3-pixel dot overlap of 1.0 and 114
-firings above the 0.70 stop threshold (only 50 itemized), so its verdict remains **HOLD / STOP**.
-A separate current-cache preflight found **0 of 644** indexed rasters present; all cache paths
-were missing. No candidate fitting or TIFF creation occurred during that preflight.
+The latest stored complete scan measured the soft candidate against 679 rasters: maximum
+full-footprint Spearman 0.821258; maximum forward 3-pixel overlap 1.0 on the soft surface's
+inherited finite-positive support (treated as “dots” by the gate), with 78 firings above the
+0.70 stop threshold. This was a pre-placement support comparison, not a final-dot comparison.
+The overlap gate failed before placement, so final dots were not generated. The scan is historical.
+Two older `-zeros.tif` reports use different 644- and 655-raster snapshots (114/50 and 98/98
+overlap firings/itemized respectively); both also fail and neither is the current comparison. A
+fresh cache preflight found **0 of 679** indexed rasters present; no current cache hashes or grids
+could be verified. No candidate fitting or TIFF creation occurred during that preflight.
 
-The historical local `HOLDOUT-DTI` value 0.227908 (95% CI [0.186735, 0.269081], 22,641
-withheld positives) is unpinned legacy context, not current-code validation or a live-score
-projection. The 0.2778 figure is owner-reported without an organizer receipt in this repository;
-0.3195 and 0.3774 remain conflicting, unverified reports. No gain estimate is supported.
+A session-5 independent witness check re-fetched and SHA256-verified the in-scope 17GEMSDOE
+`E-proba-multiscale` raster (5,167,373 positive cells). Its 3-pixel support covers every
+allowable cell and gives measured forward overlap 1.0 for dense and sparse test candidates. Under
+the literal >70% overlap rule, every nonempty candidate is blocked while this witness remains in
+scope. This is a registry measurement—not a score, threshold change, or full 679-raster cache
+revalidation. No density or reverse-overlap exception is authorized.
+
+The latest recorded soft-surface `HOLDOUT-DTI` is 0.023203 (95% CI [0.018778, 0.027992],
+11,321 withheld positives, evaluator `gems57-pooled-hide-v2`); its source hashes predate the
+current evaluator code. The separate binary-allocation HOLDOUT-DTI is 0.109168
+(95% CI [0.094503, 0.124194]) and is not the score of that soft TIFF. The older 0.227908
+reading is unpinned legacy context. The 0.2778 figure is owner-reported without an organizer
+receipt tying it to exact bytes. A separate raster audit found the named H33-2-B2 artifact is an
+exact 2-pixel catalogue-flank prune of a 40,199-positive base (2,545 removed, none added; 37,654
+remain). That could plausibly reduce false-positive cost under max-cover DTI, but no causal gain is
+verified. The 0.3195 and 0.3774 figures conflict in the saved reports; the public leaderboard
+snapshot is not a submission-page receipt for exact bytes. No gain estimate is supported.
 
 ## Blocking work (not permission to proceed)
 
-1. **Registry:** restore the 644 cache files for the exact SHA256-pinned full inventory and verify
-every file and grid before any future candidate fitting. A missing or changed entry keeps the
-uniqueness decision blocked.
-2. **Validation:** current-code spatial hide-and-recover evidence must include evaluator version,
+1. **Protocol blocker:** the independently verified 17GEMSDOE witness covers the full allowable
+domain under the required 3-pixel support rule, so any nonempty candidate fails the >70% test.
+Do not exclude it, alter the threshold, or apply a density/reverse-overlap exception without an
+explicit owner protocol revision. Under the unchanged rule, the gate is unsatisfiable.
+2. **Registry:** the present checkout has 0/679 cache files. Any future audit must restore all 679
+files listed in `evidence/registry_refreshed.json` and verify every SHA256 and contest-grid
+alignment; the historical full-scan certificate and one re-fetched witness do not replace this.
+3. **Validation:** current-code spatial hide-and-recover evidence must include evaluator version,
 source/input hashes, withheld-positive count, 95% CI, and a clean single-feature leakage canary.
 The existing experiment budget is spent; no such run is authorized by this document.
-3. **Uniqueness:** apply the literal surface rank-correlation and pre-placement/final 3-pixel dot
-overlap checks against the complete registry. Stop at rho > 0.90 or >70% overlap; no reverse-
-overlap or saturation exception is authorized.
-4. **Selector:** require an independent versioned local-build selector receipt only after the
+4. **Uniqueness:** if the protocol is explicitly revised, apply its authorized surface rank-correlation
+and pre-placement/final 3-pixel overlap checks against the complete registry. Under current
+instructions, stop at rho > 0.90 or >70% overlap; no exception is authorized.
+5. **Selector:** require an independent versioned local-build selector receipt only after the
 validation and registry gates clear. Weekly-slot promotion is a separate decision. No slot may be
 used by the build script.
-5. **Format:** only after all gates clear may the fail-closed writer create a uniquely named,
+6. **Format:** only after all gates clear may the fail-closed writer create a uniquely named,
 validated single-band float32 GeoTIFF and a ZIP containing exactly that TIFF. Local format checks
 are not organizer acceptance.
 
 ## Future research shortlist (unrun)
 
 Four ranked fault-zone-anatomy hypotheses, named non-fault mimics, mechanism evidence, data needs,
-and controls are documented in [`docs/research/hypotheses.md`](docs/research/hypotheses.md). The
-ranking is a future test priority, not a projected DTI gain. Do not implement or evaluate them
-without renewed authorization and budget.
+and controls are documented in [`docs/research/hypotheses.md`](docs/research/hypotheses.md) and
+[`evidence/hypotheses_current.json`](evidence/hypotheses_current.json). The ranking is a future
+research priority, not a projected DTI gain. None is actionable under the current universal
+uniqueness blocker; do not implement or evaluate them without explicit protocol resolution,
+renewed authorization, and a new experiment budget.
 
 ## Source of truth
 

@@ -10,16 +10,28 @@ estimate or a claim that any candidate will improve a score.
 ## Scope and current baseline
 
 Stay inside the fault-zone-anatomy lane: infer where secondary strands may occur
-around the mapped USGS/INGENIOUS fault network. The existing fitted baseline
-already uses nearest-fault distance, local orientation/offset, and a host-size
-proxy. The recorded-sense feature ablation and the previous dot-budget sweep
-have also been run; do not relabel those as untried. Their historical evidence
-is not version-attested under the current evaluator.
+around the mapped USGS/INGENIOUS fault network. The tested baseline uses nearest-fault distance, local orientation/offset, and
+a host-size proxy. The three completed comparisons also tested a candidate
+magnetic-edge relative-strike feature and a recorded-sense ablation; a prior
+dot-budget sweep was run. Do not relabel those exact implementations as
+untried. The latest stored soft-surface `HOLDOUT-DTI` is 0.023203 (95% CI
+[0.018778, 0.027992], 11,321 withheld positives; evaluator
+`gems57-pooled-hide-v2`). A separate binary-allocation test-fold result is
+0.109168 (95% CI [0.094503, 0.124194]); it is not the score of the soft TIFF.
+The stored evaluator hashes predate the current code, and the historical 679-raster
+pre-placement scan fires the literal 3-pixel overlap stop on soft-surface
+finite-positive support (not final dots). Neither value is a live-score projection
+or current clearance. The older 0.227908 result (95% CI [0.186735, 0.269081],
+22,641 positives) is unpinned legacy context.
 
-The old run card records a local `HOLDOUT-DTI` value of 0.227908, 95% CI
-[0.186735, 0.269081], with 22,641 withheld positives. Its artifact lacks a
-source/input hash set matching the current evaluator, so it is historical
-context only. It is not a live-score projection and cannot clear a slot.
+A session-5 independent uniqueness audit also verified a 17GEMSDOE raster in the
+recorded inventory whose 3-pixel positive support covers every allowable cell.
+Measured forward overlap is 1.0 for dense and sparse test candidates; under the
+unchanged literal >70% rule, any nonempty candidate is blocked while it remains
+in scope. This is not a score, not a current full-cache revalidation (0/679
+local cache files are present), and not authorization to alter the threshold.
+The shortlist is scientific future-work context only until an explicit protocol
+decision and renewed experiment budget exist.
 
 ## Ranked shortlist
 
@@ -122,9 +134,11 @@ data-blocked. DTI effect is unknown.
 ### 4. Independent geophysical confirmation, restricted to a fixed fault-zone halo
 
 **Hypothesis.** Within a damage-zone region fixed from visible catalogue geometry,
-magnetic-gradient or terrain-edge support may help distinguish true secondary
-fault traces from the broader geometric halo. This is a within-lane corroborator,
-not an unconstrained geophysical classifier over the whole survey.
+local magnetic-gradient magnitude/coherence may help distinguish secondary
+fault traces from the broader geometric halo. This tests fixed-halo local
+geophysical support—not the already-tested candidate magnetic-edge tangent's
+relative-strike feature. It is a within-lane corroborator, not an unconstrained
+geophysical classifier over the whole survey; incremental value is unknown.
 
 **Lane data.** `training_features.tif` is declared in `data/README.md` but is
 absent from this checkout. An official, publicly accessible USGS/DOE GeoDAWN
@@ -134,11 +148,10 @@ record is marked CC-BY 4.0; the exact data coverage, grid compatibility, and
 usable bands have **not** been checked against the competition footprint. No
 GeoDAWN data were downloaded or used.
 
-**Mechanism/source.** USGS Open-File Report 2002-384 describes using
-high-resolution aeromagnetic anomalies and gradients to interpret shallow
-faults in Dixie Valley, Nevada. The report also cautions through its examples
-that linear anomalies and surface features need interpretation, not automatic
-fault labels.
+**Mechanism/source.** USGS Open-File Report 2002-384 documents a
+high-resolution aeromagnetic survey used to image shallow faults in Dixie
+Valley, Nevada. It is a regional interpretive analogue—not validation of this
+feature, the competition-grid coverage, or contest-grid alignment.
 
 **Named non-fault mimic.** Magnetic contrasts at lithologic contacts, surficial
 drainages, and anthropogenic metallic features can produce lineaments or

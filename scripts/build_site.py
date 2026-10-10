@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / "docs"
 EVIDENCE = ROOT / "evidence"
+HOLD_TEXT = "HOLD — NOT OK TO DOWNLOAD OR SUBMIT"
 
 NAV = [
     ("index.html", "Status"),
@@ -90,8 +91,10 @@ No active download or submission is approved.</footer></body></html>"""
 def hold_banner() -> str:
     return """<div class="alert" role="alert">
 <strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
-<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
-No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
+Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
+resolve. That is not download authorization. No weekly slot was used. The current decision is
+<b>negative / not promoted</b>.</p>
 </div>"""
 
 
@@ -115,18 +118,22 @@ def build_status(card: dict) -> str:
 <dt>Weekly slot</dt><dd>Not promoted; selector decision is separate</dd>
 <dt>Experiments this audit</dt><dd>{esc(card.get('audit_actions', {}).get('new_experiments_run', 0))} — no holdout run or score-producing experiment</dd>
 <dt>Previous candidate SHA256</dt><dd>{esc(card.get('raster_sha256', 'NOT AVAILABLE'))}</dd>
+<dt>Historical artifact name</dt><dd>{esc(card.get('submission_name', 'NOT AVAILABLE'))}</dd>
+<dt>Historical note (not approved)</dt><dd>{esc(card.get('submission_note', 'NOT AVAILABLE'))}</dd>
 <dt>Historical local format receipt</dt><dd>{esc(validator.get('evidence_status', 'NOT AVAILABLE'))}</dd>
-<dt>Historic HOLDOUT-DTI</dt><dd>{number(hold.get('pooled_dti'))} · 95% CI {esc(hold.get('ci95_quadrant_jackknife', []))}</dd>
+<dt>Historic HOLDOUT-DTI</dt><dd>{number(hold.get('pooled_dti'))} · 95% CI {esc(hold.get('ci95_spatial_block_bootstrap', hold.get('ci95', [])))}</dd>
 <dt>Withheld positives</dt><dd>{esc(hold.get('withheld_positive_pixels', 'NOT AVAILABLE'))}</dd>
 <dt>Evaluator</dt><dd>{esc(hold.get('evaluator_version', 'NOT AVAILABLE'))}</dd>
 <dt>Registry index size</dt><dd>{esc(indexed)}</dd>
 <dt>Registry cache preflight</dt><dd>{esc(cache_status)} — {esc(verified)}/{esc(indexed)} verified; {esc(missing)} missing</dd>
-<dt>Literal overlap gate</dt><dd>{esc(registry.get('literal_gate_verdict', 'NOT AVAILABLE'))}; max forward overlap {number(registry.get('max_forward_dot_overlap_within_3px'))}; {esc(firing_count)} firings</dd>
+<dt>Literal overlap gate</dt><dd>{esc(registry.get('literal_gate_verdict', 'NOT AVAILABLE'))}; max pre-placement positive-support overlap within 3 px {number(registry.get('max_forward_dot_overlap_within_3px'))}; {esc(firing_count)} firings</dd>
+<dt>Independent universal-overlap witness</dt><dd>17GEMSDOE raster SHA256 {esc(registry.get('independent_witness_blocker', {}).get('sha256', 'NOT AVAILABLE'))}; covers every allowable cell. Any nonempty candidate has measured 3-px forward overlap 1.0 while this witness remains in scope. This is not a score or full-cache revalidation.</dd>
 </dl></div>
-<div class="note"><b>Interpretation:</b> the stored {dti} value is an unpinned historical
-HOLDOUT-DTI reading, not current-code clearance and not a live-score projection. The full-registry
-report records {esc(firing_count)} forward-overlap firings ({esc(itemized)} itemized) and therefore does not clear the
-literal stop rule. Current cache verification is {esc(cache_status)}; the builder requires every indexed raster.
+<div class="note"><b>Interpretation:</b> the stored {dti} value is a historical
+HOLDOUT-DTI reading whose source hashes do not match the current tree; it is not current-code clearance or a live-score projection. The full-registry
+report records {esc(firing_count)} forward-overlap firings ({esc(itemized)} itemized) on the
+soft surface's finite-positive support, not final dots; it therefore does not clear the literal
+stop rule. Current cache verification is {esc(cache_status)}; the builder requires every indexed raster.
 See <a href="run-card.html">the run card</a>.</div>
 <h2>What must happen before a future build</h2>
 <ol>
@@ -156,8 +163,8 @@ def build_executive(card: dict) -> str:
 {hold_banner()}
 <h2>Executive submission guide</h2>
 <p><b>This is a conditional guide, not permission to submit.</b> No current file is cleared. The
-historical `-zeros.tif` has local format checks but fails the literal registry stop rule and must
-not be used.</p>
+historical soft research-surface GeoTIFF has a local format receipt but fails the literal registry
+stop rule and must not be used.</p>
 <h3>Before any upload is possible</h3>
 <ol>
 <li>Obtain an independently reviewed, version-pinned holdout clearance receipt. Current evidence
@@ -174,6 +181,7 @@ predictions, and its receipt explicitly says local validation is not organizer a
 GeoTIFF (or a ZIP with exactly one GeoTIFF) on the competition submission page; record the actual
 organizer receipt before labeling a score `ORGANIZER-CONFIRMED`.</li>
 </ol>
+<div class="note"><b>Additional blocking uniqueness result:</b> a session-5 independent witness check verified that the 17GEMSDOE positive-support raster covers every allowable candidate cell within 3 px. Under the unchanged literal &gt;70% rule, every nonempty candidate is blocked while this raster remains in scope. Do not exclude it or alter the threshold without explicit owner authorization. The checked witness does not revalidate the other 678 cache files.</div>
 <h3>Format requirements</h3>
 <ul>
 <li>One band, float32; EPSG:32611; 3730 × 3292; 100 m pixels; exact pinned sample transform.</li>
@@ -211,10 +219,13 @@ The stored historic result has no source-hash match: {esc(hold.get('evaluator_ve
 <li>Apply a single-feature canary; AUC &gt; 0.90 means leakage until disproven.</li>
 </ul>
 <h3>Uniqueness stop rule</h3>
-<p>Compare the continuous surface by rank correlation and compare dots by exact 3-pixel proximity
-both before placement and on final dots. Stop if rho &gt; 0.90 or if more than 70% of candidate dots
-are within 3 px of any registry raster. The historical report fires {esc(firing_count)} times and is not cleared.
-Do not treat a one-direction overlap exception as a pass.</p>
+<p>Before placement, compare the continuous surface by rank correlation and its inherited positive
+support (finite values &gt; 0) by 3-pixel overlap; separately compare the deterministic pre-placement
+dot proposal. Compare final dots only after those gates pass. Stop if rho &gt; 0.90 or if more than
+70% of candidate support/dots are within 3 px of any registry raster. The historical soft-surface
+report fires {esc(firing_count)} times and is not cleared; it is not a final-dot comparison. Jaccard,
+reverse overlap, and exact pixel/byte identity are diagnostics, not extra stop thresholds. Do not
+treat a one-direction overlap exception as a pass.</p>
 <h3>Current code controls</h3>
 <p><code>src/gems57/evaluate_holdout.py</code> shares its per-pixel credit primitive with
 <code>src/gems57/metric.py</code>. <code>src/gems57/evaluator_provenance.py</code> pins code and data
@@ -254,6 +265,7 @@ future tests, and source links are in <a href="research/hypotheses.md">docs/rese
 <p>Recorded-sense-only features and the previous distance/offset/length baseline are excluded from
 the “untried” list because they were already tested. The recorded three-experiment budget is
 spent. No implementation, new data download, or holdout result is authorized by this shortlist.</p>
+<div class="note"><b>Not actionable under current uniqueness protocol:</b> the session-5 verified witness covers every allowable candidate cell under the 3-px test, making the literal &gt;70% rule unsatisfiable for any nonempty candidate. This ranking is future research context only; no threshold exception is proposed.</div>
 """
 
 
@@ -266,15 +278,22 @@ def build_results(card: dict) -> str:
 <h2>Results: historical evidence, not current clearance</h2>
 <div class="card"><h3>Local holdout reading</h3>
 <p><span class="tag">HOLDOUT-DTI</span> <b>{number(hold.get('pooled_dti'))}</b>, 95% CI
-{esc(hold.get('ci95_quadrant_jackknife', []))}, {esc(hold.get('withheld_positive_pixels', 'not available'))}
+{esc(hold.get('ci95_spatial_block_bootstrap', hold.get('ci95', [])))}, {esc(hold.get('withheld_positive_pixels', 'not available'))}
 withheld positives. Evaluator record: <code>{esc(hold.get('evaluator_version', 'not available'))}</code>.</p>
-<p>This is a historical instrument reading whose artifact lacks current implementation/input hashes.
-It is not current-code validation, not a live-score projection, and does not clear the candidate.</p></div>
+<p>This is a historical instrument reading whose stored evaluator source hashes do not match the
+current tree. It is not current-code validation, not a live-score projection, and does not clear
+the candidate.</p></div>
+<div class="card"><h3>Separate binary-allocation HOLDOUT-DTI</h3>
+<p><span class="tag">HOLDOUT-DTI</span> {number(card.get('binary_dot_holdout_result', {}).get('pooled_dti'))},
+95% CI {esc(card.get('binary_dot_holdout_result', {}).get('ci95_spatial_block_bootstrap', []))},
+{esc(card.get('binary_dot_holdout_result', {}).get('withheld_positive_pixels', 'not available'))}
+withheld positives; evaluator <code>{esc(card.get('binary_dot_holdout_result', {}).get('evaluator_version', 'not available'))}</code>.
+This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
 <div class="card"><h3>Full-registry uniqueness</h3>
 <p>Recorded inventory: {esc(report.get('indexed_matching_grid_rasters', 'not available'))} indexed rasters;
-max Spearman {number(report.get('max_spearman_full_footprint'))}; max Jaccard
-{number(report.get('max_jaccard'))}; maximum forward dot overlap within 3 px
-{number(report.get('max_forward_dot_overlap_within_3px'))};
+max Spearman {number(report.get('max_spearman_full_footprint'))}; max Jaccard diagnostic
+{number(report.get('max_jaccard'))} (not a stop threshold); maximum pre-placement positive-support overlap within 3 px
+{number(report.get('max_forward_dot_overlap_within_3px'))} (finite surface values &gt; 0, not final dots);
 {esc(report.get('forward_overlap_firings', 'not available'))} firings above
 {number(report.get('stop_threshold_forward_overlap'))}. Only
 {esc(report.get('firings_itemized_in_stored_report', 'not available'))} firings are itemized.
@@ -283,8 +302,16 @@ Literal verdict: <b>{esc(report.get('literal_gate_verdict', 'not available'))}</
 <h2>Reported live-score figures</h2>
 <p>The historical <b>{number(reported.get('value'), 4)}</b> figure is labeled
 <b>{esc(reported.get('classification', 'OWNER-REPORTED; no organizer receipt'))}</b>. Conflicting
-reported highs {esc(reported.get('conflicting_reported_highs', []))} remain unverified. No
-`ORGANIZER-CONFIRMED` score or verified leaderboard ranking is available here.</p>
+reported highs {esc(reported.get('conflicting_reported_highs', []))} are not verified by a
+submission-page receipt tied to exact bytes. No `ORGANIZER-CONFIRMED` score is available here.</p>
+<div class="card"><h3>What the available 0.2778 artifact audit suggests</h3>
+<p>The separate raster audit found the named H33-2-B2 artifact is an exact 2-pixel catalogue-flank
+prune of a 40,199-positive base: 2,545 cells were removed, none added, leaving 37,654. Sparse
+thinning and pruning dots with little unique new-truth coverage could plausibly lower false-positive
+cost under max-cover DTI. Hidden truth and an organizer receipt tying the score to exact bytes are
+unavailable, so this is a plausible mechanism—not a causal explanation for 0.2778. See
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/best_submission_audit.json">the raster audit</a>.</p></div>
+<div class="note"><b>Improvement:</b> possible in principle, but no expected gain or probability can be estimated from the evidence here. The universal overlap witness currently blocks every nonempty candidate under the unchanged literal rule, and the experiment budget is spent.</div>
 <h2>Could a future candidate improve?</h2>
 <p>Possibly, but the available evidence cannot establish a probability or expected gain. The local
 holdout and a reported live score are different instruments; the old candidate also fails the
@@ -295,14 +322,16 @@ projection.</p>
 
 
 def build_sources() -> str:
-    return """
+    return f"""
+{hold_banner()}
 <h2>Competition and local data</h2>
 <ul>
 <li>Competition home and task statement: <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/">DrivenData #306</a>.
 The data bundle is absent from this checkout except for the pinned files described in
 <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">data/README.md</a>.</li>
-<li>The `training_features.tif` 105-band stack is not present. No competition features were fetched
-or prepared in this audit.</li>
+<li>The `training_features.tif` 19-band stack is not present. A historical feature-cache receipt
+records 19 bands and a bridge hash, but it does not establish present-file availability. No
+competition features were fetched or prepared in this audit.</li>
 <li>INGENIOUS/QFault vector tables under `data/external/` have local receipts; see
 <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/data/README.md">the data manifest</a>. Attribute availability and missingness must be
 checked before a future feature is used.</li>
@@ -350,10 +379,13 @@ def build_irregularities(card: dict) -> str:
 <h2>Audit findings and fail-closed controls</h2>
 <table><tr><th>Finding</th><th>Consequence / control</th></tr>
 <tr><td>Historical holdout artifact lacks current evaluator/input source hashes.</td><td>Keep as historical HOLDOUT-DTI only; do not use it as current clearance.</td></tr>
-<tr><td>Full-registry report has {esc(firing_count)} forward-overlap firings above the literal 0.70 threshold; only {esc(itemized)} are itemized.</td><td>HOLD / STOP. No reverse-overlap exception is applied.</td></tr>
+<tr><td>Historical soft-surface positive-support comparison has {esc(firing_count)} forward-overlap firings above the literal 0.70 threshold; only {esc(itemized)} are itemized. This is not a final-dot comparison.</td><td>HOLD / STOP. No reverse-overlap exception is applied.</td></tr>
+<tr><td>A session-5 verified 17GEMSDOE witness has positive support covering every allowable cell within 3 px; any nonempty candidate therefore has forward overlap 1.0.</td><td>Current literal &gt;70% rule is unsatisfiable while this raster remains in scope. Keep HOLD; do not change policy without explicit owner authorization. This single witness is not full-cache revalidation.</td></tr>
 <tr><td>Registry manifest lists {esc(indexed)} rasters; current cache preflight is {esc(cache_status)} ({esc(verified)} verified, {esc(missing)} missing).</td><td>Builder pins the manifest SHA256 and verifies every indexed raster; it fails before fitting if the cache is incomplete.</td></tr>
 <tr><td>Old score comparisons and standalone research/source pages contained unsupported or unversioned claims.</td><td>Replaced with HOLD-first pages; only version-pinned current evidence can be used for future clearance.</td></tr>
+<tr><td>Earlier notes mislabeled the absent feature stack as 105-band/unobtainable; a historic bridge receipt reports 19 bands, but the file is absent now.</td><td>Corrected the count and retained-file status; no current data download/preparation was performed, and the bridge does not independently authenticate official origin.</td></tr>
 <tr><td>Prior “NaN caused the range error” explanation was stronger than the evidence.</td><td>Cause remains unknown (`IR-57-NAN-02`). Writer uses all-finite [0,1] policy without claiming that NaN caused rejection.</td></tr>
+<tr><td>The legacy session-4 publisher could overwrite the run card with a positive banner and active download links from a partial registry.</td><td>Its entry point is retired; exact source is preserved in <code>evidence/history/</code>. Only the current HOLD-first site generator may publish pages.</td></tr>
 <tr><td>Old submission writer silently clipped/fill-repaired model output and did not gate registry before packaging.</td><td>Writer rejects invalid values, stages outputs, validates on-disk TIFF/ZIP, refuses overwrite; build requires independent holdout clearance, complete registry, and three strict uniqueness checks.</td></tr>
 <tr><td>Evaluator API/caller drift included a nonexistent metric call and stale confidence interval/code labels.</td><td>Shared `max_cover` and DTI primitives, source hashes, caller corrections, and unit regression tests added.</td></tr>
 </table>
@@ -384,8 +416,32 @@ def build_legacy_research(card: dict) -> str:
 """
 
 
+def build_archive_page(title: str, details: str) -> str:
+    return f"""
+{hold_banner()}
+<h2>{esc(title)}</h2>
+<p><b>DO NOT SUBMIT any archived output.</b> Historical audit material is retained for provenance
+only. It is not an approved download, submission, or selector decision. The current run card is the
+source of truth.</p>
+{details}
+<p><b>Current status:</b> HOLD — not OK to download or submit. The latest measured surface failed
+the literal forward-overlap gate; the current 679-raster cache preflight is incomplete.</p>
+"""
+
+
+def preserve_legacy_pages() -> None:
+    archive = EVIDENCE / "history"
+    archive.mkdir(parents=True, exist_ok=True)
+    for name in ("archive.html", "h57k.html", "session-3.html", "session-4.html"):
+        source = DOCS / name
+        target = archive / f"site_{name.removesuffix('.html')}_legacy_2026-10-09.html"
+        if source.is_file() and not target.exists():
+            target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 def main() -> None:
     card = load_card()
+    preserve_legacy_pages()
     DOCS.mkdir(exist_ok=True)
     (DOCS / "assets").mkdir(exist_ok=True)
     (DOCS / "assets" / "site.css").write_text(CSS, encoding="utf-8")
@@ -403,10 +459,53 @@ def main() -> None:
         # Standalone legacy URLs remain directly accessible, so they also carry the HOLD.
         "research.html": ("Research status", build_legacy_research(card), "hypotheses.html"),
         "sources.html": ("Source record", build_sources(), "data-sources.html"),
+        "archive.html": ("Historical artifacts", build_archive_page(
+            "Historical artifacts — not approved for download",
+            "<p>Legacy file retained by the repository: <code>gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</code>. "
+            "The research-only raster <code>gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif</code> is also retained. "
+            "Historical bytes and receipts are not current clearance.</p>"), "index.html"),
+        "h57k.html": ("Archived research", build_archive_page(
+            "Archived research candidate", "<p>The prior candidate page is retired. No file link or download permission is provided.</p>"), "index.html"),
+        "session-3.html": ("Archived session", build_archive_page(
+            "Archived session notes", "<p>Historical notes are retained in the repository for provenance; they do not authorize experiments or a slot.</p>"), "index.html"),
+        "session-4.html": ("Archived session", build_archive_page(
+            "Archived H57-I notes — DO NOT SUBMIT", "<p>Historical artifact name: <code>gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif</code>. This is not a current approved output.</p>"), "index.html"),
     }
     for filename, (title, body, active) in pages.items():
         (DOCS / filename).write_text(page(title, body, active), encoding="utf-8")
         print(f"wrote docs/{filename} ({len(body):,} chars)")
+
+    public_data = DOCS / "data"
+    public_data.mkdir(exist_ok=True)
+    card_json = json.dumps(card, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    # Keep the canonical evidence alias and both public card URLs synchronized;
+    # an old *_current.json path must not expose stale approval.
+    (EVIDENCE / "run_card_current.json").write_text(card_json, encoding="utf-8")
+    for filename in ("run_card.json", "run_card_current.json"):
+        (public_data / filename).write_text(card_json, encoding="utf-8")
+    hypotheses_path = EVIDENCE / "hypotheses_current.json"
+    if hypotheses_path.is_file():
+        hypotheses_json = json.dumps(
+            json.loads(hypotheses_path.read_text(encoding="utf-8")),
+            indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+        (public_data / "hypotheses_current.json").write_text(hypotheses_json, encoding="utf-8")
+    irregularities_path = EVIDENCE / "irregularities_current.json"
+    irregularities = json.loads(irregularities_path.read_text(encoding="utf-8"))
+    (public_data / "irregularities_current.json").write_text(
+        json.dumps(irregularities, indent=2, ensure_ascii=False, allow_nan=False) + "\n",
+        encoding="utf-8")
+
+    # Preserve legacy /docs/*.html URLs as safe redirects to the HOLD-first pages.
+    aliases = DOCS / "docs"
+    aliases.mkdir(exist_ok=True)
+    for filename in pages:
+        redirect = f"../{filename}"
+        (aliases / filename).write_text(
+            '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            f'<meta http-equiv="refresh" content="0;url={redirect}">'
+            f'<title>57GEMSDOE — HOLD</title></head><body>'
+            f'<strong>{HOLD_TEXT}</strong><p><a href="{redirect}">Open the current page</a>.</p>'
+            '</body></html>', encoding="utf-8")
 
 
 if __name__ == "__main__":

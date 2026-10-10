@@ -7,40 +7,74 @@
 ## Submission status — **HOLD**
 
 > **NOT OK TO DOWNLOAD OR SUBMIT. There is no cleared submission file.**
-> Do not use the retained historical GeoTIFF at `docs/downloads/`.
+> Historical TIFF/ZIP bytes remain at `docs/downloads/` for audit and a direct URL may still resolve;
+> that is not download authorization. Do not use any retained artifact.
 
-A previous `-zeros.tif` passed local format checks, but it **failed the literal
-full-registry uniqueness gate**: the recorded scan reports 644 indexed rasters,
-a maximum forward 3-pixel dot overlap of 1.0, and 114 firings above the 0.70
-stop threshold. Only 50 firings were itemized. The candidate is not cleared;
-reverse-overlap is not an approved exception. See
-[`evidence/run_card.json`](evidence/run_card.json) and
-[`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json).
+The latest recorded pre-placement comparison measured the candidate against a
+complete 679-raster public inventory. Maximum forward 3-pixel overlap of the
+soft surface's inherited positive support (finite values greater than zero,
+treated as “dots” by the literal gate) was 1.0, exceeding the 0.70 stop
+threshold in 78 comparisons. This is not a final-dot comparison. Maximum
+full-footprint Spearman was 0.821258, below its 0.90 threshold. The overlap
+rule fired, so the candidate was **not cleared** and no final dots were
+generated. That scan is historical, not a current cache revalidation: the
+current cache preflight found **0 of 679** indexed rasters present. A separate
+2026-10-10 witness audit re-fetched and SHA-verified the in-scope
+`17GEMSDOE_E-proba-multiscale` raster (SHA256
+`ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be`). Its
+3-pixel positive support covers every allowable cell; measured forward overlap
+was 1.0 for dense and sparse test candidates. Under the unchanged literal
+>70% rule, any nonempty candidate is blocked while this witness remains in
+scope. This is a registry measurement, not a score, and the specific witness
+check does not verify the other 678 local cache files. Do not download or use
+the retained research-surface TIFF or any archived `-zeros.tif`. See
+[`evidence/run_card.json`](evidence/run_card.json),
+[`evidence/session5_witness_verification.json`](evidence/session5_witness_verification.json),
+and the generated [status site](docs/index.html).
 
-The experiment budget is spent (3 experiments / 2 hours). The full test suite
-passes (52 passed, 1 skipped; 4 pending-deprecation warnings). This audit ran
-unit tests and code checks only—**no new geological experiments, holdout runs,
-GeoTIFF builds, downloads, or submissions**. The future builder now requires an
-independent, version-pinned clearance receipt and a complete hash-verified
-registry before model fitting or file creation. The current cache preflight found
-0 of 644 indexed rasters (all cached paths are missing), so the builder stops
-before fitting or writing any file.
+The three-experiment / two-hour budget is spent. This audit ran tests and
+site checks only; it did not run new geological experiments, holdouts,
+candidate GeoTIFF builds, data downloads, or submissions. The exact historical
+`lean-offset` TIFF was re-read against its receipt and locally passes the
+single-band float32, grid, finite `[0,1]`, and 40,000-dot checks, but it is not
+uniqueness-cleared or authorized to download/submit. The future builder
+requires a current, independently reviewed clearance receipt and every
+hash-verified, grid-aligned raster in the complete pinned registry before
+fitting or writing any file; it currently fails closed.
 
 ### What the reported scores do—and do not—mean
 
+- The latest stored **HOLDOUT-DTI** soft-surface result is `0.023203`, 95% CI
+  `[0.018778, 0.027992]`, with 11,321 withheld positives and evaluator
+  `gems57-pooled-hide-v2`. It describes the surface representation only; its
+  stored source hashes predate the current evaluator code, so it is historical
+  validation, not current-code clearance or a live-score projection.
+- A separate test-fold binary-allocation result is `HOLDOUT-DTI 0.109168`,
+  95% CI `[0.094503, 0.124194]`, on the same withheld-positive count and
+  evaluator. It is not the score of the soft TIFF; no production final dots
+  were generated after the surface stop.
 - The earlier local `0.227908` value, 95% CI `[0.186735, 0.269081]`, and
-  22,641 withheld positives are retained as a **historical HOLDOUT-DTI
-  instrument reading**. Its stored artifact lacks a source/input hash set that
-  matches the current evaluator, so it is not current-code validation and is not
-  a live-score projection.
-- `0.2778` is an **owner-reported historical live score**, not backed by an
-  organizer submission receipt in this repository. The brief also contains
-  conflicting `0.3195` and `0.3774` highs; none is verified here. Do not label
-  any of them `ORGANIZER-CONFIRMED`.
-- Improvement is possible in principle, but this repository cannot estimate or
+  22,641 withheld positives remain unpinned legacy context in
+  [`evidence/run_card_historical_unpinned.json`](evidence/run_card_historical_unpinned.json).
+- `0.2778` is an **owner-reported historical live score**; no submission-page
+  receipt in this repository ties it to exact file bytes. The repository's
+  separate raster audit found the named H33-2-B2 construction is an exact
+  2-pixel catalogue-flank prune of a 40,199-positive base: 2,545 pixels were
+  removed, none added, leaving 37,654. Sparse thinning and removing dots with
+  little unique new-truth coverage could plausibly reduce false-positive cost
+  under max-cover DTI, but the hidden truth and a receipt tying the score to
+  these bytes are unavailable. This is a plausible mechanism, not a causal
+  explanation for 0.2778. See
+  [`evidence/best_submission_audit.json`](evidence/best_submission_audit.json).
+- The brief's 0.3195 and 0.3774 highs conflict with its earlier framing; a
+  saved public leaderboard snapshot is contextual evidence, not a
+  submission-page receipt for exact bytes. None of these figures is labeled
+  `ORGANIZER-CONFIRMED` here.
+- Improvement is possible in principle, but the repository cannot estimate or
   claim it: holdout performance does not establish live performance, the
-  candidate is not cleared, and the experiment budget is spent. No projected
-  score is supplied.
+  reported score is not tied to an organizer receipt here, the literal registry
+  gate is currently blocked by a universal overlap witness, and the experiment
+  budget is spent. No projected score is supplied.
 
 ### Next candidates (not run)
 
@@ -67,8 +101,9 @@ sample transform. Local validation is not organizer acceptance.
    pixel-exact masking, pooled DTI (`alpha=0.2`, `beta=0.8`, 300 m triangular
    kernel). Apply the specified spatial holdout; do not reuse a stale evaluator.
 3. Run the single-feature leakage canary; `AUC > 0.90` is leakage until disproven.
-4. Compare surface rank correlation and 3-pixel dot overlap before placement and
-   again on final dots. Stop if `rho > 0.90` or more than 70% of candidate dots
+4. Compare surface rank correlation and inherited finite-positive-support
+   3-pixel overlap before placement; then compare the pre-placement dot proposal
+   and final dots. Stop if `rho > 0.90` or more than 70% of candidate support/dots
    fall within 3 pixels of any registry raster.
 5. Label metrics `HOLDOUT-DTI` with evaluator version, withheld-positive count,
    and 95% CI, or `ORGANIZER-CONFIRMED` only when copied from an actual
@@ -79,8 +114,10 @@ sample transform. Local validation is not organizer acceptance.
    mimic, holdout result/CI, registry comparison, raster SHA256, validator result,
    submission name/note (≤140 characters), and promote/negative verdict.
 
-The full original task prompt is preserved verbatim in the appendix below and
-in [`BRIEF.md`](BRIEF.md).
+The stored standing task prompt and protocol are reproduced in the appendix
+below and [`BRIEF.md`](BRIEF.md). This is the repository's saved specification,
+not a certified word-for-word transcript of the original chat; current audit
+status and evidence above supersede historical claims.
 
 ## Repository map
 
@@ -112,10 +149,12 @@ record coverage and attribute missingness still require care.
 
 ---
 
-## Appendix — the full task prompt, verbatim
+## Appendix — the saved standing task prompt
 
-Re-read this at the start of every session. It is the specification this
-repository is built against; the README summarises it, this file *is* it.
+Re-read this and `BRIEF.md` at the start of every session. This is the
+repository's preserved task specification, not a certified transcript of the
+original chat. Current audit status and evidence at the beginning of this README
+take precedence over stale historical statements below.
 
 ---
 

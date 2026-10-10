@@ -190,4 +190,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Retired legacy/unbuffered runner: not current validation. "
+                     "Reproduce the declared buffered experiment with scripts/run_orientation_experiments.py; "
+                     "no extra experiment or slot is authorized by this command.")

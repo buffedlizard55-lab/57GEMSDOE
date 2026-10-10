@@ -1,12 +1,19 @@
 # Current audit status — 2026-10-10 UTC
 
-**HOLD — not cleared to download or submit.** The previous candidate's literal
-full-registry overlap gate fired; no new experiments, GeoTIFF builds, downloads,
-or submissions were performed in this audit. The three-experiment / two-hour
-budget is spent. The current cache preflight verified 0/644 indexed rasters;
-see `evidence/run_card.json`.
+**HOLD — not cleared to download or submit.** The latest recorded pre-placement
+scan covered 679 rasters and fired the literal forward-overlap stop in 78
+comparisons (maximum 3-pixel overlap 1.0 on soft-surface finite-positive
+support, not final dots); it is historical, not a current cache revalidation.
+The current cache preflight found 0/679 indexed rasters present. A session-5
+witness audit independently verified one in-scope 17GEMSDOE raster whose
+3-pixel support covers every allowable candidate cell; under the literal
+>70% rule, any nonempty candidate is blocked while it remains in scope. That
+single-witness check does not revalidate all 679 local cache files. No new
+experiments, holdout runs, GeoTIFF builds, data downloads, or submissions were
+performed in this audit; the three-experiment / two-hour budget is spent. See
+`evidence/run_card.json` and `evidence/irregularities_current.json`.
 
-# Standing brief — the task prompt, verbatim
+# Standing brief — preserved task prompt and protocol
 
 Re-read this at the start of every session. It is the specification this
 repository is built against; the README summarises it, this file *is* it.

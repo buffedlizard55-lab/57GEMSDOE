@@ -7,31 +7,48 @@
 <nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
 <div class="alert" role="alert">
 <strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
-<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
-No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
+Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
+resolve. That is not download authorization. No weekly slot was used. The current decision is
+<b>negative / not promoted</b>.</p>
 </div>
 <h2>Results: historical evidence, not current clearance</h2>
 <div class="card"><h3>Local holdout reading</h3>
-<p><span class="tag">HOLDOUT-DTI</span> <b>0.227908</b>, 95% CI
-[0.18673527927748879, 0.269081068650019], 22641
-withheld positives. Evaluator record: <code>UNPINNED-LEGACY: stored run_sense_experiment.py artifact lacks matching implementation/input SHA256 set</code>.</p>
-<p>This is a historical instrument reading whose artifact lacks current implementation/input hashes.
-It is not current-code validation, not a live-score projection, and does not clear the candidate.</p></div>
+<p><span class="tag">HOLDOUT-DTI</span> <b>0.023203</b>, 95% CI
+[0.018777925030160507, 0.02799187291971626], 11321
+withheld positives. Evaluator record: <code>gems57-pooled-hide-v2</code>.</p>
+<p>This is a historical instrument reading whose stored evaluator source hashes do not match the
+current tree. It is not current-code validation, not a live-score projection, and does not clear
+the candidate.</p></div>
+<div class="card"><h3>Separate binary-allocation HOLDOUT-DTI</h3>
+<p><span class="tag">HOLDOUT-DTI</span> 0.109168,
+95% CI [0.09450251109316313, 0.12419365163463253],
+11321
+withheld positives; evaluator <code>gems57-pooled-hide-v2</code>.
+This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
 <div class="card"><h3>Full-registry uniqueness</h3>
-<p>Recorded inventory: 644 indexed rasters;
-max Spearman 0.180372; max Jaccard
-0.083037; maximum forward dot overlap within 3 px
-1.000000;
-114 firings above
+<p>Recorded inventory: 679 indexed rasters;
+max Spearman 0.821258; max Jaccard diagnostic
+0.636645 (not a stop threshold); maximum pre-placement positive-support overlap within 3 px
+1.000000 (finite surface values &gt; 0, not final dots);
+78 firings above
 0.700000. Only
-50 firings are itemized.
-Literal verdict: <b>HOLD / STOP; not cleared</b>.</p>
+78 firings are itemized.
+Literal verdict: <b>HOLD / STOP; forward-overlap gate fired before placement</b>.</p>
 <p>The protocol says log and stop. Reverse-overlap or saturation exceptions are not silently applied.</p></div>
 <h2>Reported live-score figures</h2>
 <p>The historical <b>0.2778</b> figure is labeled
 <b>OWNER-REPORTED; no organizer submission-page receipt in this repository</b>. Conflicting
-reported highs [0.3195, 0.3774] remain unverified. No
-`ORGANIZER-CONFIRMED` score or verified leaderboard ranking is available here.</p>
+reported highs [0.3195, 0.3774] are not verified by a
+submission-page receipt tied to exact bytes. No `ORGANIZER-CONFIRMED` score is available here.</p>
+<div class="card"><h3>What the available 0.2778 artifact audit suggests</h3>
+<p>The separate raster audit found the named H33-2-B2 artifact is an exact 2-pixel catalogue-flank
+prune of a 40,199-positive base: 2,545 cells were removed, none added, leaving 37,654. Sparse
+thinning and pruning dots with little unique new-truth coverage could plausibly lower false-positive
+cost under max-cover DTI. Hidden truth and an organizer receipt tying the score to exact bytes are
+unavailable, so this is a plausible mechanism—not a causal explanation for 0.2778. See
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/best_submission_audit.json">the raster audit</a>.</p></div>
+<div class="note"><b>Improvement:</b> possible in principle, but no expected gain or probability can be estimated from the evidence here. The universal overlap witness currently blocks every nonempty candidate under the unchanged literal rule, and the experiment budget is spent.</div>
 <h2>Could a future candidate improve?</h2>
 <p>Possibly, but the available evidence cannot establish a probability or expected gain. The local
 holdout and a reported live score are different instruments; the old candidate also fails the
@@ -39,5 +56,5 @@ uniqueness gate. The experiment budget is spent, so this audit makes no gain cla
 experiment. The next step is an independently authorized, version-pinned validation—not a score
 projection.</p>
 </main>
-<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:08 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

@@ -21,6 +21,8 @@ def _registry_manifest(entries):
     return {
         "grid": {"shape": [3730, 3292], "crs": "EPSG:32611"},
         "repos_unreachable_or_missing": [],
+        "complete_accessible_scan": True,
+        "errors": [],
         "n_unique_grid_rasters": len(entries),
         "rasters": entries,
     }
@@ -30,7 +32,7 @@ def test_full_registry_missing_cache_fails_closed(tmp_path, monkeypatch):
     evidence_dir = tmp_path / "evidence"
     evidence_dir.mkdir()
     monkeypatch.setattr(build, "EVID", evidence_dir)
-    index = evidence_dir / "registry_full_index.json"
+    index = evidence_dir / "registry_refreshed.json"
     index.write_text(json.dumps(_registry_manifest([
         {"cache_file": str(tmp_path / "missing.tif"), "sha256": "0" * 64},
     ])))
@@ -44,7 +46,7 @@ def test_full_registry_hash_mismatch_fails_closed(tmp_path, monkeypatch):
     monkeypatch.setattr(build, "EVID", evidence_dir)
     raster = tmp_path / "prior.tif"
     raster.write_bytes(b"not a raster; index identity check must fail first")
-    index = evidence_dir / "registry_full_index.json"
+    index = evidence_dir / "registry_refreshed.json"
     index.write_text(json.dumps(_registry_manifest([
         {"cache_file": str(raster), "sha256": "0" * 64},
     ])))
@@ -66,7 +68,7 @@ def test_full_registry_rejects_unaligned_grid_before_fitting(tmp_path, monkeypat
     ) as dst:
         dst.write(np.zeros((1, 1), dtype=np.float32), 1)
     sha = hashlib.sha256(raster.read_bytes()).hexdigest()
-    index = evidence_dir / "registry_full_index.json"
+    index = evidence_dir / "registry_refreshed.json"
     index.write_text(json.dumps(_registry_manifest([
         {"cache_file": str(raster), "sha256": sha},
     ])))
@@ -129,7 +131,7 @@ def test_versioned_clearance_requires_matching_evaluator_and_builder_hashes(tmp_
     }
     evidence_path.write_text(json.dumps(evidence))
     evidence_sha = hashlib.sha256(evidence_path.read_bytes()).hexdigest()
-    registry_index = evidence_dir / "registry_full_index.json"
+    registry_index = evidence_dir / "registry_refreshed.json"
     registry_index.write_text(json.dumps(_registry_manifest([])))
     registry_sha = hashlib.sha256(registry_index.read_bytes()).hexdigest()
     monkeypatch.setattr(build, "cv_implementation_hashes", lambda: {"cv.py": "cv-hash"})

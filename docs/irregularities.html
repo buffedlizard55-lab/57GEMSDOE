@@ -7,21 +7,26 @@
 <nav><a class="" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="on" href="irregularities.html">Audit notes</a></nav><main>
 <div class="alert" role="alert">
 <strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
-<p>There is no cleared submission file. The retained historical GeoTIFF is not approved for download.
-No weekly slot was used. The current decision is <b>negative / not promoted</b>.</p>
+<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
+Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
+resolve. That is not download authorization. No weekly slot was used. The current decision is
+<b>negative / not promoted</b>.</p>
 </div>
 <h2>Audit findings and fail-closed controls</h2>
 <table><tr><th>Finding</th><th>Consequence / control</th></tr>
 <tr><td>Historical holdout artifact lacks current evaluator/input source hashes.</td><td>Keep as historical HOLDOUT-DTI only; do not use it as current clearance.</td></tr>
-<tr><td>Full-registry report has 114 forward-overlap firings above the literal 0.70 threshold; only 50 are itemized.</td><td>HOLD / STOP. No reverse-overlap exception is applied.</td></tr>
-<tr><td>Registry manifest lists 644 rasters; current cache preflight is HOLD / INCOMPLETE (0 verified, 644 missing).</td><td>Builder pins the manifest SHA256 and verifies every indexed raster; it fails before fitting if the cache is incomplete.</td></tr>
+<tr><td>Historical soft-surface positive-support comparison has 78 forward-overlap firings above the literal 0.70 threshold; only 78 are itemized. This is not a final-dot comparison.</td><td>HOLD / STOP. No reverse-overlap exception is applied.</td></tr>
+<tr><td>A session-5 verified 17GEMSDOE witness has positive support covering every allowable cell within 3 px; any nonempty candidate therefore has forward overlap 1.0.</td><td>Current literal &gt;70% rule is unsatisfiable while this raster remains in scope. Keep HOLD; do not change policy without explicit owner authorization. This single witness is not full-cache revalidation.</td></tr>
+<tr><td>Registry manifest lists 679 rasters; current cache preflight is HOLD / INCOMPLETE (0 verified, 679 missing).</td><td>Builder pins the manifest SHA256 and verifies every indexed raster; it fails before fitting if the cache is incomplete.</td></tr>
 <tr><td>Old score comparisons and standalone research/source pages contained unsupported or unversioned claims.</td><td>Replaced with HOLD-first pages; only version-pinned current evidence can be used for future clearance.</td></tr>
+<tr><td>Earlier notes mislabeled the absent feature stack as 105-band/unobtainable; a historic bridge receipt reports 19 bands, but the file is absent now.</td><td>Corrected the count and retained-file status; no current data download/preparation was performed, and the bridge does not independently authenticate official origin.</td></tr>
 <tr><td>Prior “NaN caused the range error” explanation was stronger than the evidence.</td><td>Cause remains unknown (`IR-57-NAN-02`). Writer uses all-finite [0,1] policy without claiming that NaN caused rejection.</td></tr>
+<tr><td>The legacy session-4 publisher could overwrite the run card with a positive banner and active download links from a partial registry.</td><td>Its entry point is retired; exact source is preserved in <code>evidence/history/</code>. Only the current HOLD-first site generator may publish pages.</td></tr>
 <tr><td>Old submission writer silently clipped/fill-repaired model output and did not gate registry before packaging.</td><td>Writer rejects invalid values, stages outputs, validates on-disk TIFF/ZIP, refuses overwrite; build requires independent holdout clearance, complete registry, and three strict uniqueness checks.</td></tr>
 <tr><td>Evaluator API/caller drift included a nonexistent metric call and stale confidence interval/code labels.</td><td>Shared `max_cover` and DTI primitives, source hashes, caller corrections, and unit regression tests added.</td></tr>
 </table>
 <p>The historical raster's local validator receipt is not a current authorization. The run card records
 its SHA and HOLD verdict without presenting it as downloadable.</p>
 </main>
-<footer>Generated 2026-10-10 07:25 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:08 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

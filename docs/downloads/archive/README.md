@@ -4,10 +4,16 @@ Every GeoTIFF in this directory is retained only for provenance. The newer
 historical `-zeros.tif` file one directory up is also **not cleared** and must
 not be downloaded or submitted.
 
-No file in `docs/downloads/` is an approved submission. The retained candidate
-failed the literal full-registry overlap gate; see `evidence/run_card.json` and
-`evidence/uniqueness_full_shipped-h57-zeros.json`. A local format pass is not
-uniqueness clearance, organizer acceptance, or a weekly-slot decision.
+No file in `docs/downloads/` is an approved submission. Historical receipt/card
+JSON files at public paths have been replaced with withdrawal notices; exact
+original bytes are preserved under `evidence/history/`. Their former local
+format passes or `promote` labels are not current approvals. Historical TIFF/ZIP
+bytes remain in the repository for provenance, so a direct static URL may still
+resolve; that is not download authorization. The current retained
+soft surface failed the recorded literal overlap gate; see
+`evidence/run_card.json` and `evidence/orientation_surface_uniqueness.json`.
+A local format pass is not uniqueness clearance, organizer acceptance, or a
+weekly-slot decision.
 
 Earlier documentation speculated that `NaN` caused a portal range error. The
 actual cause remains unproven (`IR-57-NAN-02`). The current writer is

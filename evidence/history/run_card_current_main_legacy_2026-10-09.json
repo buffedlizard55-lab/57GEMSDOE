@@ -1,0 +1,152 @@
+{
+  "hypothesis": "A candidate magnetic edge’s strike relative to its nearest visible fault, conditioned on distance and host length, predicts missing secondary strands better than a catalogue-only halo.",
+  "mechanism": "Label-independent TMI derivatives supply an axial candidate tangent. Visible-only host geometry and an empirical training-distance zone drive a fitted intensity; textbook shear angles are not imposed.",
+  "named_non_fault_process_that_could_mimic_it": "Magnetized dikes, lithologic contacts and east-west flight-line leveling residuals may form magnetic edges without fault displacement.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.023203075374027337,
+    "ci95": [
+      0.018777925030160507,
+      0.02799187291971626
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 259.16790716440863,
+    "fpw": 10304.58136457905,
+    "fnw": 11061.832092835584,
+    "representation": "soft pre-placement surface (matches downloaded TIFF method)",
+    "split_version": "buffered-whole-components-loqo-v2",
+    "canary_clean": true
+  },
+  "holdout_dot_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.10916787041142981,
+    "ci95": [
+      0.09450251109316313,
+      0.12419365163463253
+    ],
+    "withheld_positive_pixels": 11321,
+    "tpw": 1746.1900101871004,
+    "fpw": 32947.09651221608,
+    "fnw": 9574.809989812898,
+    "representation": "holdout binary allocation ONLY; production dots were not generated"
+  },
+  "paired_orientation_minus_anatomy": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "delta": -0.0005852603984091292,
+    "ci95": [
+      -0.006179380950003338,
+      0.004966084594639524
+    ],
+    "withheld_positive_pixels": 11321
+  },
+  "correlation_overlap_vs_registry": {
+    "registry_rasters_expected": 679,
+    "registry_rasters_checked": 679,
+    "complete_accessible_scan": true,
+    "worst_spearman_full_footprint": 0.8212578086422125,
+    "worst_rho_submission": "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
+    "worst_dot_overlap": 1.0,
+    "worst_overlap_submission": "GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif",
+    "duplicate_count": 78,
+    "byte_unique_among_checked": true,
+    "pixel_unique_among_checked": true,
+    "unique": false
+  },
+  "surface_before_placement": {
+    "checked": true,
+    "protocol_pass": false
+  },
+  "final_dots": {
+    "status": "not_generated",
+    "reason": "literal surface gate requires stop",
+    "emitted_pixels": 0
+  },
+  "raster_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+  "validator_output": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "bytes": 10010096,
+    "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 0.7537760734558105,
+    "mean": 0.0007940529612824321,
+    "emitted_positive_pixels": 2714823,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 2714823,
+    "footprint_fraction": 0.5253777886752127
+  },
+  "submission_name": "gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95",
+  "submission_note": "Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.",
+  "submission_note_chars": 131,
+  "file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+  "zip_file": "docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip",
+  "verdict": "negative",
+  "okay_to_download": true,
+  "okay_to_submit": false,
+  "verdict_reason": "Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.",
+  "recorded_sense": {
+    "tested": true,
+    "retained": false,
+    "paired_difference": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "delta": 0.003580783591493636,
+      "ci95": [
+        -0.005722027160876473,
+        0.014532120997528746
+      ],
+      "withheld_positive_pixels": 11321
+    }
+  },
+  "experiments_used": 3,
+  "submission_slots_used": 0,
+  "generated_utc": "2026-10-09T20:00:19.209388+00:00",
+  "registry_reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
+  "registry_scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.",
+  "historical_status_note": "Superseded by evidence/run_card.json on 2026-10-10. Its former research-download permission is withdrawn; do not use as authorization.",
+  "superseded_by": "evidence/run_card.json"
+}
