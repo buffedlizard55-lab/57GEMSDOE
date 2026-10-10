@@ -1,0 +1,127 @@
+{
+  "evidence_class": "SESSION-7 VERIFICATION (measurements, not scores)",
+  "generated_utc": "2026-10-10T22:10:46.939548+00:00",
+  "script": "scripts/verify_session7.py",
+  "containment_0_2778_vs_0_2708": {
+    "evidence_class": "RASTER-MEASUREMENT (owner-reported labels only)",
+    "lower_label": "GEMSDOE28 h27-4-r1-solo-d2-8 (OWNER-REPORTED 0.2708)",
+    "higher_label": "GEMSDOE32 h33-2-b2-zeros (OWNER-REPORTED 0.2778)",
+    "lower_sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+    "higher_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+    "lower_positive_cells": 40199,
+    "higher_positive_cells": 37654,
+    "removed_cells": 2545,
+    "added_cells": 0,
+    "higher_is_subset_of_lower": true,
+    "removed_distance_to_catalogue_px_min": 1.4142135623730951,
+    "removed_distance_to_catalogue_px_max": 2.0,
+    "removed_on_catalogue_cells": 0,
+    "unique_positive_values_lower": [
+      1.0
+    ],
+    "unique_positive_values_higher": [
+      1.0
+    ],
+    "causal_link_to_score": "NOT ESTABLISHED: no organizer receipt; the two scores are owner-reported"
+  },
+  "e_proba_saturation": {
+    "evidence_class": "REGISTRY-MEASUREMENT",
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "witness_source": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "nan_cells": 7111787,
+    "finite_positive_cells": 5167373,
+    "finite_positive_fraction_of_grid": 0.4208246329553487,
+    "allowed_cells": 5106385,
+    "allowed_cells_with_positive_support": 5106385,
+    "allowed_coverage_fraction": 1.0,
+    "literal_gate_overlap_limit": 0.7,
+    "implication": "Under the literal finite>0 support rule, any nonempty candidate placed in the allowed domain has forward overlap 1.0 with this witness, so the literal gate cannot pass. The rule must be ruled by the owner (IR-S7-02)."
+  },
+  "feature_band_hash_reproduction": {
+    "evidence_class": "DATA-MEASUREMENT",
+    "source_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "bands_checked": 19,
+    "bands_matching": 19,
+    "per_band": [
+      {
+        "band": 1,
+        "matches": true
+      },
+      {
+        "band": 2,
+        "matches": true
+      },
+      {
+        "band": 3,
+        "matches": true
+      },
+      {
+        "band": 4,
+        "matches": true
+      },
+      {
+        "band": 5,
+        "matches": true
+      },
+      {
+        "band": 6,
+        "matches": true
+      },
+      {
+        "band": 7,
+        "matches": true
+      },
+      {
+        "band": 8,
+        "matches": true
+      },
+      {
+        "band": 9,
+        "matches": true
+      },
+      {
+        "band": 10,
+        "matches": true
+      },
+      {
+        "band": 11,
+        "matches": true
+      },
+      {
+        "band": 12,
+        "matches": true
+      },
+      {
+        "band": 13,
+        "matches": true
+      },
+      {
+        "band": 14,
+        "matches": true
+      },
+      {
+        "band": 15,
+        "matches": true
+      },
+      {
+        "band": 16,
+        "matches": true
+      },
+      {
+        "band": 17,
+        "matches": true
+      },
+      {
+        "band": 18,
+        "matches": true
+      },
+      {
+        "band": 19,
+        "matches": true
+      }
+    ]
+  },
+  "download_status": "NO (HOLD, IR-S6-10 unchanged)",
+  "submission_status": "NO (literal uniqueness gate unsatisfiable; owner ruling required)",
+  "submission_slots_used": 0
+}

@@ -14,6 +14,21 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 (2026-10-10) — verification PR: status unchanged, decision required
+
+**Status: HOLD. Download: NO. Submit: NO.** This session created no new submission GeoTIFF and used no slot. The uniqueness gate is still not cleared, and the reason is now verified (below), not just asserted.
+
+- **The literal uniqueness gate cannot pass.** The 17GEMSDOE E-proba-multiscale raster (blob `374c88b1`, sha256 `ab0a0a62…`, re-fetched from GitHub this session) is finite and positive on 42.1% of the grid. It covers **100% of the allowed cells** (5,106,385 of 5,106,385). Under the literal `finite > 0` support rule, every nonempty candidate therefore has overlap 1.0 with it. A rule that no candidate can satisfy is an irregularity to be fixed by the owner, not something to route around. Ruling needed: how a soft registry raster defines its "dots" (IR-S7-02).
+- **Official metric and format (re-read this session).** The [DrivenData problem page](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/) defines DTI with α=0.2, β=0.8 and a 300 m triangular kernel. It requires a single-band float32 GeoTIFF with "pixel-wise probabilities or confidence scores between 0 and 1". Dense probability surfaces are therefore a valid submission form under the official rules. The literal dot-overlap rule is a team protocol that the official rules do not impose.
+- **The 0.2778 file is a nested subset of 0.2708.** Measured locally this session: 37,654 ⊂ 40,199 positive cells. 2,545 cells were removed, 0 added, and every removed cell lies 1.41–2.00 px from the bridge catalogue. Both scores are owner-reported, and no organizer receipt links either score to a file. The mechanism is a plausible precision effect, not a verified cause. This is the pre-registered H6-1 test (below).
+- **Feature-band hashes reproduce.** The 19 GeoDAWN bands regenerated from the pinned `training_features.tif` (sha256 `4371c82e…`, restored from the owner's GitHub mirror) match the committed `evidence/feature_cache.json` 19/19 with no diff.
+- **Holdout reproduction was NOT completed.** A full E1–E3 rerun was started and stopped part-way (no fold completed). Its partial overwrites were reverted, so the committed Session-5 numbers are **not** re-verified in this session. Data are now present, so the rerun is the first task next session.
+- **Hypotheses:** the top-ranked H6-1 is still untested (see [evidence/session6_hypotheses.json](evidence/session6_hypotheses.json)). The new 3–5 hypothesis slate is not written up in this PR; it is the next item in [REMAINING_WORK.md](REMAINING_WORK.md).
+
+Reproduce the measured facts with `python scripts/verify_session7.py`. Output: [evidence/session7_verification.json](evidence/session7_verification.json). Full test suite: passes, with one data-dependent skip when the feature stack is absent.
+
+Owner decision needed (blocks every candidate): accept a candidate-normalised definition for soft registry rasters (for example, top-K cells by value, K equal to the candidate's dot count) as the uniqueness "dot" set, or define another rule. Until then, no TIFF is downloadable and nothing is submittable.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).

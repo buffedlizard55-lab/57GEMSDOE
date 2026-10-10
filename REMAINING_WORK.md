@@ -116,3 +116,17 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+---
+
+## Session 7 addendum (2026-10-10, verification PR)
+
+Status unchanged: **Download NO, Submit NO.** No candidate, no slot.
+
+1. **Owner ruling on the "dot" definition for soft registry rasters (blocking, IR-S7-02).** The literal `finite > 0` rule is saturated by 17GEMSDOE E-proba (100% of allowed cells). Proposed for ruling: a candidate-normalised top-K binarisation of each registry raster, with K equal to the candidate's dot count, reported as a labelled diagnostic and never as a clearance.
+2. **Re-run the E1–E3 holdout reproduction end to end (IR-S7-01).** Data are present now. Run `scripts/run_relay_bend_experiments.py` in a background process and check that the committed E2 numbers (0.135204 binary; 0.031160 soft) reproduce before any new claim. Two cores and 3 GB RAM: run one heavy job at a time and do not commit partial evidence.
+3. **Test H6-1 (pre-registered, rank 1)** on the holdout against matched random pruning, with the paired lower bound and canary as the falsifiers. Caveat (IR-S7-04): holdout truth is withheld *known* segments, whereas the competition truth is *new* fault pixels, so proximity-based results may not transfer.
+4. **Write the 3–5 new hypothesis slate** using layers already in the 19-band stack (for example earthquake density/intensity, conductivity surface, geodetic shear rate). Each needs a named mimic and no new external data.
+5. **Only then** build any candidate. It must pass the holdout, the literal gate or the owner-ruled gate, and the validator before any download decision.
+
+Evidence: [evidence/session7_verification.json](evidence/session7_verification.json) · script [scripts/verify_session7.py](scripts/verify_session7.py).
