@@ -151,6 +151,14 @@ def main() -> int:
             best_vs_base=pat["best_vs_base"], caveats=pat["caveats"],
             use=("shape of the support and the ~10k-per-quadrant budget rule only; these are "
                  "owner-reported numbers attached to files by filename, never a forecast")),
+        # Aliases the merged site QA reads: holdout_dti is the soft-surface reading
+        # (the pre-placement representation), sha256 is the delivered bytes, and the
+        # content-distinctness boolean is stated separately from the literal gate so a
+        # reader cannot confuse "not a copy" with "gate cleared".
+        holdout_dti={**surf_score, "representation": "soft pre-placement surface", "arm": arm},
+        sha256=digest,
+        content_distinct_from_all_audited_rasters=bool(
+            gd["byte_unique_among_checked"] and gd["pixel_unique_among_checked"]),
         evaluator_version=hold["evaluator_version"],
         experiments_used=3, submission_slots_used=0,
         generated_utc=datetime.now(timezone.utc).isoformat(),

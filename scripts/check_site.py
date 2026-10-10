@@ -206,6 +206,15 @@ def check(root=ROOT):
     need(dots <= card['final_dots']['cap'], 'emitted dots exceed the declared cap')
 
     # ---- pages: labels, links, ordering, and no orphan numbers ----------------
+    # key aliases the wider site QA depends on must be *equal*, not merely present
+    need(math.isclose(card['holdout_dti']['dti'], card['holdout_surface_dti']['dti'], abs_tol=1e-12),
+         'the holdout_dti alias and the soft-surface reading disagree')
+    need(card['sha256'] == digest, 'the sha256 alias is not the delivered bytes')
+    need(card['content_distinct_from_all_audited_rasters']
+         == bool(gate['byte_unique_among_checked'] and gate['pixel_unique_among_checked']),
+         'content-distinctness is being conflated with the literal gate verdict')
+    need(card['okay_to_submit'] <= bool(gate['unique']),
+         'a submission permission cannot exceed what the gate cleared')
     pages, errors = check_links(docs)
     need(not errors, 'broken links: ' + '\n'.join(errors))
     for name in ('index.html', 'executive-summary.html'):

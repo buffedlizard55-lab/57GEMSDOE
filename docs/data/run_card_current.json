@@ -428,10 +428,27 @@
     ],
     "use": "shape of the support and the ~10k-per-quadrant budget rule only; these are owner-reported numbers attached to files by filename, never a forecast"
   },
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "dti": 0.016748045067157435,
+    "ci95": [
+      0.014226680113209263,
+      0.019424675920107295
+    ],
+    "withheld_positive_pixels": 11360,
+    "tpw": 189.05396648630548,
+    "fpw": 10811.553199372196,
+    "fnw": 11170.946033513696,
+    "representation": "soft pre-placement surface",
+    "arm": "anatomy10__flank2"
+  },
+  "sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+  "content_distinct_from_all_audited_rasters": true,
   "evaluator_version": "gems57-pooled-hide-v2",
   "experiments_used": 3,
   "submission_slots_used": 0,
-  "generated_utc": "2026-10-10T22:21:20.774598+00:00",
+  "generated_utc": "2026-10-10T22:34:33.961652+00:00",
   "okay_to_download": true,
   "okay_to_submit": false,
   "verdict": "negative",
