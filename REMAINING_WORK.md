@@ -1,5 +1,20 @@
 # Remaining work — do not bypass the current HOLD
 
+## Session 7 addendum (2026-10-10) — next actions in priority order
+
+Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status unchanged from main (PR #23): research download NO pending explicit owner authorization; submission NO; 0 slots used.
+
+1. **Owner ruling on the dense-prior gate (IR-S7-01).** Decide how a soft raster that is positive on the whole footprint defines its "dots" for the 70 % 3-px overlap test. Until then, no candidate can pass the literal gate, whatever its content.
+2. **Holdout redesign for near-trace truth (IR-S7-04).** The 3-px collar leaves withheld truth at least √10 px from any visible fault. A new validation needs (a) a collar of 0–1 px, or a design that keeps truth adjacent to visible traces, and (b) a leakage canary on the new split. Only then can dots within a few pixels of a known trace be scored. Test the 0.2778 mechanism (removing near-trace dots) only in that split.
+3. **NaN-outside export (IR-S7-03).** Re-export the same soft surface with NaN outside the study footprint, as in the bridged template, and run the validator and the registry audit on the new bytes before any upload.
+4. **Regenerate the Session-5 holdout receipt (IR-S7-06).** The stored evaluator hash does not match HEAD, though the numbers reproduce exactly. Rerun the holdout in a scratch copy and write the receipt with its current hashes.
+5. **Official-origin checks (IR-S7-02, IR-S7-05).** Obtain a DrivenData download receipt for `labels.tif`, `existing_faults.tif` and `sample_submission.tif` if the account allows. Until then the bridged bytes stay bridge-only.
+
+Budget: Session 7 used 2 of 3 experiments (reproduction; collar audit).
+
+---
+
+ **Download research TIFF (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`): OK. Submit: NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
 Last reviewed 2026-10-10 (Session-6 follow-up). **Research download: NO pending explicit owner authorization (IR-S6-10). Submit: NO.** The Session-5 GeoTIFF/ZIP remain in the repository for provenance and audit, but the site has no TIFF/ZIP links; a direct static URL may still resolve and is not permission. The Session-5 card's research-download OK state was not explicitly resolved by an owner, so this follow-up fails closed. Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. E2 achieved positive paired `HOLDOUT-DTI` differences (+0.025556 vs single-host anatomy, +0.022479 vs distance-only; 95% CIs strictly positive) on its recorded holdout, but the literal full-registry gate still triggers STOP against the universal-support witness. Session 6 verified 696 rasters and re-ran the gate: 80 duplicate firings, worst forward overlap 1.0.
 
 ## 1. Literal uniqueness obstruction — unresolved, highest priority
