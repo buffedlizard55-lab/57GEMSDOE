@@ -1,0 +1,69 @@
+{
+  "schema": "gems57.session7-review-passes.v1",
+  "evidence_class": "IMPLEMENTATION / CODE-REVIEW / REQUIREMENTS-RECHECK LOG; not a score",
+  "reviewed_utc": "2026-10-10T22:17:15Z",
+  "branch": "arena/af4634cc-57gemsdoe",
+  "passes": [
+    {
+      "pass": 1,
+      "name": "Pre-register, implement, and verify interfaces",
+      "status": "PASS",
+      "checks": [
+        "Registered four ranked fault-zone-anatomy hypotheses; authorized only S7-1 for one holdout attempt.",
+        "Audited shared fold-geometry, buffered-component split, canary, allocator, exact evaluator, and pooled spatial-block bootstrap interfaces.",
+        "Pinned and checked the bridge grid and geometry CSV; added deterministic equal-count-pruning tests.",
+        "Ran scripts/run_lane.py verify: both grid SHA256 pins and raster geometry matched."
+      ]
+    },
+    {
+      "pass": 2,
+      "name": "Line-by-line scientific and leakage review; fix defects before trusting the run",
+      "status": "PASS",
+      "findings_and_resolutions": [
+        {
+          "finding": "Greedy allocation candidates were limited by the fitted zone only through p=0 outside the zone; convolutional expected credit could still cause a dot to be placed just outside that zone.",
+          "resolution": "Built an explicit allowed-zone mask, passed it to the shared allocator, and asserted no emitted dot lies outside it before scoring."
+        },
+        {
+          "finding": "The saved historical best shares a version label, seed, and split, but its evaluate_holdout.py hash differs from the current implementation.",
+          "resolution": "Treat it as historical context only; no promotion comparison is claimed and the promotion condition remains false."
+        },
+        {
+          "finding": "The training-positive 90th-percentile zone makes training occupancy approximately 0.90 by construction.",
+          "resolution": "Disclose that the cap shrinks about 10% but is not adaptive to test-fold support shift; never use test labels for the budget."
+        },
+        {
+          "finding": "The first serialized receipt's implementation_sha256 key was overwritten by pooled_summary metadata.",
+          "resolution": "Added an explicit pipeline_implementation_sha256 and environment pin to the saved receipt, with a metadata-only correction note; did not rerun or alter scores."
+        },
+        {
+          "finding": "The 696-raster full index was stale for four public-main heads; four open PR raster inventories were also not scanned.",
+          "resolution": "Recorded a current 57-repository main-head check and open PR heads. The unchanged indexed universal-support witness is sufficient to STOP before production placement, not to claim a fresh full scan or candidate uniqueness PASS."
+        }
+      ]
+    },
+    {
+      "pass": 3,
+      "name": "Recheck the original request, evidence labels, delivery gates, and site",
+      "status": "PASS",
+      "checks": [
+        "The one S7-1 buffered holdout ran once: evaluator gems57-pooled-hide-v2, 11,321 withheld positives, alpha=0.2, beta=0.8, 300 m triangular kernel, 1,000 paired spatial-block draws; no test truth chose emission.",
+        "All 13 feature-only canaries passed; maximum discriminative AUC was 0.8258665. Distance and relative-strike distributions are recorded as HOLDOUT-STRUCTURE, not scores.",
+        "The registered proximal-minus-random contrast was -0.0000020031 [95% CI -0.0000156476, +0.0000164644]; it does not support S7-1. No follow-up hypothesis ran.",
+        "The literal uniqueness blocker was not relaxed. No full production surface, production dots, candidate TIFF, TIFF SHA, candidate registry scan, validator, or submission slot was produced/used.",
+        "README and the generated Overview, Download & Submit, and Session 7 pages state prominently that no new TIFF exists and neither research download nor competition submission is authorized.",
+        "scripts/check_site.py passed on 32 pages; the full pytest suite passed; git diff --check passed; no TIFF/ZIP was added or changed."
+      ]
+    }
+  ],
+  "final_decision": {
+    "research_hypothesis": "negative / not promoted",
+    "new_tiff_sha256": null,
+    "okay_to_download": false,
+    "okay_to_submit": false,
+    "submission_slots_used": 0,
+    "score_projection": null,
+    "verdict": "negative"
+  },
+  "external_source_note": "The geometry-only test used hash-pinned local bridge inputs. Existing official organizer, competition, USGS, and scientific-source URLs remain linked in the research note; no new external page or data fetch was performed for this run."
+}

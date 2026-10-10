@@ -14,6 +14,26 @@ Session 5's recorded 695-raster scan failed the literal full-registry uniqueness
 
 Audit-only references: [current JSON run card](evidence/run_card_current.json) · [IR-S6-10](evidence/irregularities_current.json) · [696-raster gate evidence](evidence/uniqueness_session6_full_registry_696.json) · [retained artifact manifest](docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json). The local submission note remains in the card for provenance; it is **not an upload instruction**.
 
+## Session 7 (2026-10-10 22:04 UTC) — S7-1 holdout result; no submission file
+
+**Latest decision: no new GeoTIFF was generated; download NO; competition submission NO.** The one authorized S7-1 test reuses the current shared buffered whole-component evaluator, seed 20, 11,321 withheld positive pixels, pooled `gems57-pooled-hide-v2` DTI (α=0.2, β=0.8, 300 m triangular kernel), and 1,000 paired spatial-block bootstrap draws. It used about 136 seconds and zero submission slots.
+
+| Arm / contrast | HOLDOUT-DTI | Paired result (95% CI) |
+|---|---:|---:|
+| Base visible-anatomy allocation | 0.100989 [0.085568, 0.117643] | — |
+| Fixed 2 px proximal prune | 0.101005 [0.085576, 0.117672] | vs base +0.0000158 [0.0000032, 0.0000352] |
+| Equal-count random prune | 0.101007 [0.085579, 0.117665] | proximal minus random −0.0000020 [−0.0000156, +0.0000165] |
+
+The canary was clean (maximum discriminative single-feature AUC 0.825867). Only 15 base dots fell within 2 px of visible faults across the four folds (9 / 0 / 5 / 1), so the proximal intervention was tiny. It did **not** beat matched-random pruning: the paired 95% interval crosses zero and its point estimate is slightly negative. S7-1 is therefore a negative research result and is not promoted.
+
+The historical 0.141391 best is not a promotion comparator: although its saved report uses the same evaluator-version string, seed and split, its `evaluate_holdout.py` hash (`90ec4a7a…040c55`) differs from the current implementation (`ad86640b…10ff3a`). Treat the old number as historical context only; do not claim a comparable win/loss. No current-best re-evaluation was added to this one-hypothesis pre-registration.
+
+The registry recheck queried 57 public-main heads at 22:01 UTC and found four newer repository heads plus four open PR heads whose raster contents were not scanned; the 696-raster index is stale as a full inventory. The blocker nevertheless remains decisive: the previously indexed, hash-verified `17GEMSDOE` witness is still at the same main commit and covers 100% of allowed candidate pixels, implying 100% forward dot overlap versus the literal 70% limit. No production surface/dots, candidate uniqueness scan, TIFF SHA, or validator result exists. The holdout score is not a live/public competition score.
+
+Post-run provenance review found a receipt-key collision: `pooled_summary`'s `implementation_sha256` overwrote the runner's complete implementation map. The receipt now stores that map under `pipeline_implementation_sha256` and documents the metadata-only correction; the HOLDOUT-DTI values and gates were not recalculated or changed.
+
+Evidence: [latest site verification / run card](docs/session-7-verification.html) · [S7-1 full holdout receipt](evidence/session7_proximal_holdout.json) · [pre-registration and comparator audit](evidence/session7_hypotheses.json) · [registry freshness / witness recheck](evidence/session7_registry_precheck.json) · [three-pass code/research review](evidence/session7_review_passes.json) · [readable session 7 review](docs/research/session7_hypotheses.md).
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
@@ -69,7 +89,7 @@ The target is **geological fault presence**, not geothermal-vent, temperature, f
 
 ## Reproduction boundary and local QA
 
-No model or holdout was rerun in this follow-up. The three-experiment / two-hour budget is spent, the uniqueness blocker is unresolved, and Session 6 records `training_features.tif` as unavailable in this checkout. **Do not run the candidate builder, fetch new data, build a new raster, or use a submission slot** without an explicit new budget and owner resolution of the applicable gates. The historical model command is retained in source/evidence for provenance, not as an instruction to run now.
+Session 7 used the single pre-registered S7-1 holdout attempt (one hypothesis, four spatial folds, about 136 seconds); it did not consume the three-experiment or two-hour ceiling. The test is now complete and negative. **Do not rerun or add hypotheses, run a full-catalogue candidate builder, fetch data, build a production raster, or use a submission slot** without a new explicit budget and a resolved uniqueness gate. The universal-support witness requires stopping before production surface/dot placement. The 19-band `training_features.tif` remains absent in this checkout; S7-1 did not rebuild or substitute it. The historical model commands are provenance, not instructions to run now.
 
 For static QA only (no model, network fetch, or slot use):
 

@@ -19,7 +19,8 @@ import zlib
 
 ROOT = Path(__file__).resolve().parents[1]
 NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit'),
-       ('results.html', 'Results'), ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
+       ('results.html', 'Results'), ('session-7-verification.html', 'Latest run'),
+       ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
@@ -27,7 +28,8 @@ PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orie
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'feed_refresh_status',
           'attribute_audit_20261010', 'holdout_scope_reconciliation_20261010', 'session6_hypotheses',
-          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'session7_proximal_holdout', 'session7_hypotheses', 'session7_registry_precheck', 'session7_review_passes']
 
 
 def esc(value):
@@ -112,6 +114,21 @@ def page(title, body, active, stamp):
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
 <p>Site built {esc(stamp)}. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 {link('data/run_card.json', 'JSON run card')} · {link('run-card.html', 'Readable card')} · {link('https://github.com/buffedlizard55-lab/57GEMSDOE', 'Repository')}</p></footer></body></html>'''
+
+
+def session7_status_panel(receipt):
+    """Latest experiment and artifact authorization, shown before retained-file details."""
+    proximal = receipt['scores']['proximal_prune']
+    random = receipt['scores']['matched_random_prune']
+    delta = receipt['paired_differences']['matched_random_prune']
+    canary_max = max(v['discriminative_auc_max'] for v in receipt['leakage_canary']['features'].values())
+    registry = receipt['registry_gate']
+    return f'''<section class="card" id="latest-holdout"><div class="eyebrow">LATEST RESULT · SESSION 7 · S7-1</div>
+<h2>Two-pixel pruning did not beat matched-random pruning.</h2>
+<p><strong>HOLDOUT-DTI {proximal['dti']:.6f}</strong>, 95% CI [{proximal['ci95'][0]:.6f}, {proximal['ci95'][1]:.6f}] for proximal pruning; equal-count random pruning is <strong>{random['dti']:.6f}</strong>, 95% CI [{random['ci95'][0]:.6f}, {random['ci95'][1]:.6f}]. Paired proximal-minus-random difference: <strong>{delta['delta']:+.8f}</strong>, 95% CI [{delta['ci95'][0]:+.8f}, {delta['ci95'][1]:+.8f}]. Evaluator <code>{esc(receipt['evaluator_version'])}</code>; {proximal['withheld_positive_pixels']:,} withheld positives. The paired interval crosses zero; the hypothesis is not promoted. Maximum feature-only canary AUC: {canary_max:.6f} (below 0.90; diagnostic only).</p>
+<div class="permissions"><span class="permission no">Download new TIFF: NO — none generated</span><span class="permission no">Submit: NO</span></div>
+<p><strong>Uniqueness stop:</strong> no production surface/dots, TIFF, candidate scan or validator output exists. A prior indexed witness implies {registry['forward_dot_overlap_implied']:.0%} forward overlap for any nonempty allowable dot set (limit {registry['overlap_limit']:.0%}); the 696-raster index is stale for four public-main heads, so this is not a fresh full-registry pass. The historical 0.141391 best is not a promotion comparator because its evaluator source hash differs.</p>
+<p>{link('session-7-verification.html', 'Full S7-1 evidence and run card →')} · {link('data/session7_proximal_holdout.json', 'Machine-readable receipt')} · {link('data/session7_hypotheses.json', 'Pre-registration')}</p></section>'''
 
 
 def download_panel(card):
@@ -221,6 +238,57 @@ def session6_page(root) -> str:
 """
 
 
+def session7_page(receipt: dict) -> str:
+    """Latest S7-1 holdout and fail-closed artifact decision, from its JSON receipt."""
+    scores = receipt['scores']
+    paired = receipt['paired_differences']['matched_random_prune']
+    structure = receipt['withheld_structure']
+    relative = structure['relative_strike']
+    reference = receipt['historical_holdout_reference']
+    registry = receipt['registry_gate']
+    fold_rows = []
+    for fold in receipt['per_fold']:
+        fold_rows.append([
+            esc(fold['fold']),
+            str(fold['withheld_positive_pixels']),
+            str(fold['base_dots']),
+            str(fold['proximal_dots_removed_at_2px']),
+            f"{fold['proximal_prune']['dti']:.6f}",
+            f"{fold['matched_random_prune']['dti']:.6f}",
+        ])
+    canary_rows = [[f"<code>{esc(name)}</code>", number(value['discriminative_auc_max'], 6),
+                    'PASS (< 0.90)' if not value['leakage_flag'] else '<strong>STOP</strong>']
+                   for name, value in receipt['leakage_canary']['features'].items()]
+    dist = structure['distance_positive_quantiles_px']
+    quantiles = structure['distance_quantile_probabilities']
+    dist_text = ', '.join(f"q{int(q*100)}={v:.2f}px" for q, v in zip(quantiles, dist))
+    return f'''<div class="eyebrow">SESSION 7 · 2026-10-10 · ONE PRE-REGISTERED HYPOTHESIS</div>
+<h1>S7-1: proximal pruning versus matched random</h1>
+<p><strong>Research verdict: negative; no submission candidate.</strong> The test ran once on the shared buffered whole-component LOQO split. These are local <strong>HOLDOUT-DTI</strong> instrument readings, not public leaderboard values or organizer-confirmed scores.</p>
+<section class="warning"><strong>NO NEW TIFF. NOT OK TO DOWNLOAD OR SUBMIT.</strong> No full production surface, final dots, GeoTIFF, candidate-specific uniqueness scan, or validator output was created. Submission slots used: 0. The retained Session-5 TIFF elsewhere in the repository is a separate historical audit artifact and has no new download authorization.</section>
+<h2>1 · Paired result</h2>
+<p>Evaluator <code>{esc(receipt['evaluator_version'])}</code>; pooled α={receipt['metric']['alpha']}, β={receipt['metric']['beta']}, {receipt['metric']['triangular_kernel_radius_m']:.0f} m triangular kernel; {receipt['split']['withheld_positive_pixels']:,} withheld positives; {receipt['bootstrap']['draws']:,} paired resamples of {receipt['bootstrap']['clusters']} physical 20 km blocks.</p>
+{table(['Arm / contrast', 'HOLDOUT-DTI', '95% CI', 'Withheld positives'], [
+ ['Base anatomy allocation', f"{scores['base']['dti']:.6f}", interval(scores['base']['ci95']), f"{scores['base']['withheld_positive_pixels']:,}"],
+ ['S7-1 proximal prune', f"{scores['proximal_prune']['dti']:.6f}", interval(scores['proximal_prune']['ci95']), f"{scores['proximal_prune']['withheld_positive_pixels']:,}"],
+ ['Matched-random prune', f"{scores['matched_random_prune']['dti']:.6f}", interval(scores['matched_random_prune']['ci95']), f"{scores['matched_random_prune']['withheld_positive_pixels']:,}"],
+ ['Proximal − base', f"{receipt['paired_differences']['base']['delta']:+.8f}", f"[{receipt['paired_differences']['base']['ci95'][0]:+.8f}, {receipt['paired_differences']['base']['ci95'][1]:+.8f}]", f"{receipt['paired_differences']['base']['withheld_positive_pixels']:,}"],
+ ['Proximal − matched random (registered test)', f"{paired['delta']:+.8f}", f"[{paired['ci95'][0]:+.8f}, {paired['ci95'][1]:+.8f}]", f"{paired['withheld_positive_pixels']:,}"],
+])}
+<p>The registered comparison fails: the paired 95% interval crosses zero and the point estimate is slightly negative. The base allocation contained {sum(f['base_dots'] for f in receipt['per_fold']):,} dots; only {sum(f['proximal_dots_removed_at_2px'] for f in receipt['per_fold'])} fell within 2 px (fold counts {', '.join(str(f['proximal_dots_removed_at_2px']) for f in receipt['per_fold'])}). The small positive proximal-minus-base delta does not establish an advantage over matched random pruning.</p>
+<h2>2 · Fold receipts</h2>{table(['Fold', 'Withheld positives', 'Base dots', 'Proximal dots removed', 'Proximal DTI', 'Random DTI'], fold_rows)}
+<h2>3 · Leakage and descriptive structure</h2><p>The maximum discriminative feature-alone AUC was {max(v['discriminative_auc_max'] for v in receipt['leakage_canary']['features'].values()):.6f}; all canaries are at or below 0.90. This is a leakage screen, not a domain-shift or fault-validity test.</p>
+{table(['Feature', 'Max discriminative AUC', 'Canary'], canary_rows)}
+<p><strong>Distance to nearest visible fault:</strong> withheld-positive pixel quantiles {esc(dist_text)} (100 m/pixel).</p>
+<p><strong>Relative-strike distribution:</strong> {relative['n_withheld_total']:,} valid withheld pixel pairs, median {relative['median_withheld']:.2f}°; visible-reference sample {relative['n_visible_total']:,}, median {relative['median_visible']:.2f}°. These are pixel-weighted, censored HOLDOUT-STRUCTURE diagnostics—not a stress inversion, significance test, or score and not inputs to the emitted holdout predictions.</p>
+<h2>4 · Comparator and registry limitations</h2>
+<p>The saved prior best {esc(reference['arm'])} is {reference['dti']:.6f} [{reference['ci95'][0]:.6f}, {reference['ci95'][1]:.6f}], but cannot serve as a promotion comparator: same version label/seed/split, different evaluator source hash in <code>{', '.join(esc(x) for x in reference['evaluator_hash_mismatches'])}</code>. The historical number is retained as context only; no comparable-best claim is made.</p>
+<p>The last full index contains {registry['indexed_rasters']} rasters at {esc(registry['index_generated_utc'])}; a later check queried 57 public-main heads and found {len(registry['changed_public_main_heads_since_index'])} updated repositories plus {len(registry['open_pull_request_heads_not_content_scanned'])} open PR heads whose raster contents were not scanned. The candidate-specific full-registry uniqueness/correlation scan was not run. The indexed, hash-verified witness <code>{esc(registry['source'])}</code> ({esc(registry['sha256'])}) remains at unchanged 17GEMSDOE main and covers {registry['universal_support_coverage']:.0%} of allowed pixels, implying {registry['forward_dot_overlap_implied']:.0%} forward dot overlap against a {registry['overlap_limit']:.0%} limit. That suffices for STOP before production placement, not for a fresh uniqueness PASS. A post-run metadata audit corrected a serialization collision in the full pipeline hash map; the linked receipt documents this metadata-only correction. HOLDOUT-DTI values were not recalculated.</p>
+<h2>5 · Delivery status and provenance</h2>
+<ul><li>New TIFF SHA256: <code>null</code>; validator: NOT RUN; submission name: none.</li><li>Download authorization: <strong>NO</strong>. Competition submission: <strong>NO</strong>. No slot selected or used.</li><li>Verdict: <strong>negative</strong>; no score projection. The positive base-vs-prune arithmetic does not change the failed pre-registered comparison.</li></ul>
+<p>{link('data/session7_proximal_holdout.json', 'Full JSON receipt')} · {link('data/session7_hypotheses.json', 'Pre-registration')} · {link('data/session7_registry_precheck.json', 'Registry freshness and witness recheck')} · {link('data/session7_review_passes.json', 'Three-pass review log')} · {link('executive-summary.html', 'Download and submission guide')}</p>'''
+
+
 def build(root=ROOT, make_preview=True):
     docs = root / 'docs'
     data = docs / 'data'
@@ -259,7 +327,7 @@ def build(root=ROOT, make_preview=True):
     session6_gate = evidence['uniqueness_session6_full_registry_696']
     raw = card['holdout_dti']
     dots = card['holdout_dot_dti']
-    panel = download_panel(card)
+    panel = session7_status_panel(evidence['session7_proximal_holdout']) + download_panel(card)
     disclaimer = evidence_notice(card)
     names = {'distance_only': 'Distance only (control)',
              'anatomy': 'Single-host visible anatomy (repaired control)',
@@ -280,7 +348,7 @@ def build(root=ROOT, make_preview=True):
 <div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
 <div class="stat"><span>Registry audit</span><strong>{session6_gate['registry_rasters_checked']} checked</strong><small>Session 6 full 696-raster index; Session-5 card retains its separate 695-raster scan</small></div>
 <div class="stat"><span>Worst forward overlap</span><strong>{session6_gate['worst_dot_overlap']:.0%}</strong><small>Required ≤70% · FAIL; universal-support witness</small></div>
-<div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>Three predeclared comparisons completed</small></div></section>
+<div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>One S7-1 hypothesis tested; no file promoted</small></div></section>
 <section class="two-column"><div><div class="eyebrow">THE SCIENTIFIC RESULT (SESSION 5 · OCT 10, 2026)</div><h2>Two-host relay anatomy beats single-host controls on holdout; literal gate still holds submission.</h2>
 <p>The predeclared two-host relay + multi-scale bend candidate (<strong>E2 / H57-I2 + H57-H</strong>) achieves binary-allocation <strong>HOLDOUT-DTI = {number(dots['dti'])}</strong>, 95% CI {interval(dots['ci95'])}, beating single-host repaired anatomy ({number(holdout['scores']['anatomy']['dti'])}) by <strong>+{number(holdout['paired_differences']['anatomy']['delta'])}</strong>, 95% CI {interval(holdout['paired_differences']['anatomy']['ci95'])}, and beating distance-only ({number(holdout['scores']['distance_only']['dti'])}) by <strong>+{number(holdout['paired_differences']['distance_only']['delta'])}</strong>, 95% CI {interval(holdout['paired_differences']['distance_only']['ci95'])}. Adding slip-sense transition heterogeneity (<strong>E3 / H57-J</strong>) raises binary HOLDOUT-DTI to {number(holdout['scores']['relay_bend_sense_transition']['dti'])}, 95% CI {interval(holdout['scores']['relay_bend_sense_transition']['ci95'])}, though its paired binary difference over E2 ({interval(holdout['sense_comparison']['ci95'])}) slightly straddles zero so E2 is retained.</p>
 <p>The TIFF retained in the repository records the <strong>soft research surface</strong> for E2 (<code>relay_bend_anatomy</code>), not test-fold dots, and is <strong>not authorized for download</strong> pending IR-S6-10. Its recorded soft-surface HOLDOUT-DTI is <strong>{number(raw['dti'])}</strong>, 95% CI {interval(raw['ci95'])} (+{number(holdout['raw_surface_holdout']['paired_differences']['anatomy']['delta'])} over single-host anatomy, 95% CI {interval(holdout['raw_surface_holdout']['paired_differences']['anatomy']['ci95'])}). Do not attach the binary score to this TIFF.</p>{disclaimer}
@@ -290,7 +358,7 @@ def build(root=ROOT, make_preview=True):
 {build_public_board(evidence['leaderboard_snapshot'], feed_status)}'''
 
     executive = panel + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>No download or competition submission is authorized.</strong> The TIFF and ZIP remain in the repository for audit, but file availability is not permission. The Session-5 card said research download was OK; Session-6 IR-S6-10 found that no explicit owner decision resolved the conflict. The current run card therefore fails closed: <code>okay_to_download=false</code>, <code>okay_to_submit=false</code>.</div>
-<p>The Session-5 695-raster scan recorded {registry['duplicate_count']} literal duplicate firings. Session 6 separately re-ran the surface gate on the current 696-raster index and recorded {session6_gate['duplicate_count']} firings, worst forward overlap {session6_gate['worst_dot_overlap']:.2f}; the universal-support witness blocks every nonempty in-footprint candidate under the unchanged rule. The Session-5 correlation comparisons remain as historical scan results; they do not clear this gate. A separate owner protocol decision is required before any candidate is built or promoted.</p></section>
+<p>The Session-5 695-raster scan recorded {registry['duplicate_count']} literal duplicate firings. Session 6 re-ran the surface gate on the 696-raster index saved at 20:01 UTC and recorded {session6_gate['duplicate_count']} firings, worst forward overlap {session6_gate['worst_dot_overlap']:.2f}. Session 7's 22:01 UTC head check found four updated public-main heads and four open PR heads whose raster contents were not scanned; therefore that old index is not a fresh full inventory. The hash-verified universal-support witness remains on unchanged 17GEMSDOE main and blocks every nonempty allowed candidate under the unchanged rule. Session 7 built no candidate-specific surface or dot scan. A separate owner protocol decision is required before a future candidate is built or promoted.</p></section>
 <section><h2>Submission steps—for a future, explicitly cleared release only</h2><ol class="steps"><li><strong>Resolve the current authorization and uniqueness holds.</strong> Require an explicit owner decision on IR-S6-01/IR-S6-10, a current full-registry surface and final-dot PASS, clean canaries, and a positive paired holdout gain. A separate selector must clear a real slot.</li>
 <li><strong>Use only a later release explicitly marked OK to download.</strong> This page intentionally provides no TIFF or ZIP link for the retained Session-5 artifact. Do not use a direct static URL or an archived file as a workaround.</li>
 <li><strong>Open the competition submission page only after selector approval.</strong> {link('https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/', 'DrivenData: submissions')}. Log in, accept the official rules and check the logged-in weekly counter. The published rules say three submissions per week; remaining team capacity is unknown here.</li>
@@ -333,12 +401,12 @@ def build(root=ROOT, make_preview=True):
          'Visible-reference angle pixels (count; % of valid sample)'], angle_rows)
     method = f'''<div class="eyebrow">SHARED INSTRUMENT · NO PRIVATE FORKS</div><h1>Measure the anatomy. Don’t assume it.</h1>
 <section><h2>Catalogue-blind candidate evidence, visible-only hosts</h2><p>Band 14 (<code>tmi</code>) is a scalar magnetic field. Gaussian derivatives provide an axial edge tangent, log-gradient magnitude and structure coherence. The angle feature is <code>cos(2 × (candidate strike − primary strike))</code>. It is not the angle of a pixel’s offset from the host.</p><p>The visible catalogue supplies nearest-host distance, cross-/along-strike offsets, axial strike, coherence, density and log component pixel count. Component count is a <strong>noisy mapped-length proxy</strong>, not measured displacement. A histogram-gradient-boosted intensity learns interactions; no textbook Riedel angle, damage-width exponent or assumed dextral sense is inserted.</p><p>Recorded slip sense is used only where a record matches visible context, and its incremental value is explicitly ablated. The final research surface omits it because the paired lower confidence bound is not positive.</p></section>
-<section><h2>Whole-component, buffered hide-and-recover</h2><ol><li>Withhold whole original 8-connected raster fault components, rather than ≤12-pixel chunks. Components may still be fragments of geological systems.</li><li>Remove a 3-pixel (300 m) visible-catalogue context collar around held traces. Apply a 12-pixel quadrant-boundary erosion. Derive all catalogue features only from the globally visible context.</li><li>Leave one quadrant out when fitting each model. Evaluation domains are label-blind. Mask the exact unhidden known catalogue, not its 300 m dilation; the buffer is feature-context removal, not a new scoring mask.</li><li>Fit zone radius from the training withheld-distance 90th percentile and shrink the nominal dot cap by training-positive occupancy in that zone. Estimate positive count from training prevalence only—never oracle test-positive count.</li><li>Pool TPw/FPw/FNw before computing DTI. Resample paired, aligned physical 20 km block terms. Never average quadrant DTI as if it were pooled DTI.</li></ol>{disclaimer}</section>
+<section><h2>Whole-component, buffered hide-and-recover</h2><ol><li>Withhold whole original 8-connected raster fault components, rather than ≤12-pixel chunks. Components may still be fragments of geological systems.</li><li>Remove a 3-pixel (300 m) visible-catalogue context collar around held traces. Apply a 12-pixel quadrant-boundary erosion. Derive all catalogue features only from the globally visible context.</li><li>Leave one quadrant out when fitting each model. Evaluation domains are label-blind. Mask the exact unhidden known catalogue, not its 300 m dilation; the buffer is feature-context removal, not a new scoring mask.</li><li>Fit zone radius from the training withheld-distance 90th percentile and shrink the nominal dot cap by training-positive occupancy in that zone. Because this is the 90th percentile, occupancy is about 0.90 by construction; this is a modest training-only cap shrink, not an adaptive test-fold support estimate. Estimate positive count from training prevalence only—never oracle test-positive count.</li><li>Pool TPw/FPw/FNw before computing DTI. Resample paired, aligned physical 20 km block terms. Never average quadrant DTI as if it were pooled DTI.</li></ol>{disclaimer}</section>
 <section><h2>Descriptive geometry is not a universal shear angle</h2><p>On this fixed buffered holdout, the 10th / 50th / 90th percentiles of withheld-positive nearest-visible-host distance are {number(structure['distance_positive_quantiles_px'][0], 1)}, {number(structure['distance_positive_quantiles_px'][1], 2)}, and {number(structure['distance_positive_quantiles_px'][2], 2)} pixels (100 m per pixel). The saved distance quantiles use probabilities [0.10, 0.50, 0.90, 0.95, 0.99], not quartiles.</p><p>The distribution below is <strong>HOLDOUT-STRUCTURE (descriptive, not a score)</strong>: unsigned axial difference between local raster strikes, folded to 0–90°. It is pixel-weighted, not segment-weighted. Of {structure['withheld_positive_pixels']:,} withheld-positive pixels, {relative['n_withheld_total']:,} have finite local strike with coherence &gt; {relative['minimum_local_coherence']:.1f}; the remaining {structure['withheld_positive_pixels'] - relative['n_withheld_total']:,} do not enter the angle histogram. The visible-reference column contains {relative['n_visible_total']:,} valid pixel-pair samples; each pair uses the nearest different-component visible trace among the 13 nearest queried visible pixels (including the query pixel). Unavailable and low-coherence comparisons are omitted. Percentages in both columns are conditional on each column’s valid angle samples. This censored convenience null is not significance testing, a validated stress inversion, or evidence of a DTI gain.</p>{angle_table}<p>HOLDOUT-STRUCTURE medians are {relative['median_withheld']:.2f}° (withheld) and {relative['median_visible']:.2f}° (visible reference). No inferential test was run. These summaries do not change any fitted model, HOLDOUT-DTI result, production-dot placement or promotion decision.</p><p>{link('data/orientation_structure.json', 'Descriptive distributions and null caveat')} · {link('data/experiment_plan.json', 'Predeclared comparisons')}</p></section>
 <section><h2>Why sparse placement and precision matter</h2><p>For binary predictions, let <em>T</em> be maximum triangular-kernel coverage of truth pixels, <em>M</em> prediction self-credit, <em>N</em> prediction count, and <em>K</em> truth count. The official-formula arithmetic becomes:</p><pre>DTI = T / (0.2 T + 0.2 N − 0.2 M + 0.8 K)</pre><p>Max-cover means overlapping dots cannot repeatedly buy the same coverage. A dot far from every new-fault pixel adds false-positive cost without coverage. A dot near a known trace gets no credit merely for that proximity. This is why geometry, calibration and the emitted dot budget must all be tested—large probabilities and an impressive-looking lineament image are not scores.</p></section>
-<section><h2>Current local QA — no model or data fetch</h2><p>The three-experiment/two-hour budget is spent, the literal uniqueness obstruction is unresolved, and the training feature stack is absent in this checkout. Do not run the candidate builder, fetch data, fit a model, or write a new raster without a new explicit budget and resolved gates. Static checks do not train, download, or submit.</p><pre>.venv/bin/python scripts/build_site.py --no-preview
+<section><h2>Current local QA — no model or data fetch</h2><p>The single registered S7-1 holdout is complete and negative; this session used one hypothesis and about 136 seconds, with zero slots. Do not rerun it or add experiments without a new explicit budget. The literal uniqueness obstruction remains unresolved and the full feature stack is absent. Do not run the candidate builder, fetch data, fit another model, or write a production raster: the verified witness requires a STOP before production placement. Static checks validate evidence and site only.</p><pre>.venv/bin/python scripts/build_site.py --no-preview
 .venv/bin/python scripts/check_site.py
-.venv/bin/python -m pytest -q</pre><p>These commands validate the existing evidence/site only. Historical in-sample/oracle-budget builders remain disabled; the presence of a prior command or file is not authorization.</p></section>'''
+.venv/bin/python -m pytest -q</pre><p>These commands do not train, download, or submit. Historical in-sample/oracle-budget builders remain disabled; the presence of a prior command or file is not authorization.</p></section>'''
 
     hypothesis_rows = []
     for h in evidence['hypotheses_current']['candidates']:
@@ -418,6 +486,7 @@ def build(root=ROOT, make_preview=True):
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
              'session-6-verification.html': ('Session 6 verification', session6_page(root)),
+             'session-7-verification.html': ('Session 7 verification', session7_page(evidence['session7_proximal_holdout'])),
              'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive),
              'h57k.html': ('H57-K candidate', h57k_page)}
     for filename, (title, body) in pages.items():
@@ -428,15 +497,14 @@ def build(root=ROOT, make_preview=True):
     for filename in pages:
         (aliases / filename).write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=../{filename}"><title>57GEMSDOE · moved</title></head><body><p>Research release HOLD; not cleared for submission. <a href="../{filename}">Open current page</a>.</p></body></html>')
     (docs / '.nojekyll').touch()
-    # Mirror this current release only for the existing main-root Pages layout.
-    # Artifact deployment still serves docs/ directly. These are identical delivery
-    # bytes, not new predictions or copied prior submissions.
+    # Never create/copy a raster as a side effect of a site build. The historical
+    # audit mirror may already exist; verify byte identity without rewriting it.
     for suffix in ('.tif', '.zip', '.json'):
         source = (root / card['file']).with_suffix(suffix)
         target = root / 'downloads' / source.name
-        target.parent.mkdir(exist_ok=True)
-        shutil.copyfile(source, target)
-    print(f'Built {len(pages)} evidence-led pages. Download authorization HOLD pending owner decision; submission HOLD. No model run or slot used.')
+        if not target.is_file() or target.read_bytes() != source.read_bytes():
+            raise RuntimeError(f'pre-existing audit mirror is missing or stale: {target}')
+    print(f'Built {len(pages)} evidence-led pages. Latest S7-1 holdout is negative; no new TIFF is authorized for download or submission. Zero slots used; no model run was performed by the site builder.')
     return card
 
 

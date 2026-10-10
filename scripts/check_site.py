@@ -130,8 +130,22 @@ def check(root=ROOT):
             assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
     assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
     assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    session7=json.loads((root/'evidence/session7_proximal_holdout.json').read_text())
+    session7_public=json.loads((docs/'data/session7_proximal_holdout.json').read_text())
+    assert session7==session7_public,'public Session-7 receipt is stale'
+    assert session7['evidence_class']=='HOLDOUT-DTI'
+    assert session7['evaluator_version']=='gems57-pooled-hide-v2'
+    assert session7['scores']['proximal_prune']['withheld_positive_pixels']==11321
+    assert session7['paired_differences']['matched_random_prune']['ci95'][0] <= 0 <= session7['paired_differences']['matched_random_prune']['ci95'][1]
+    assert session7['holdout_promotion_condition_met'] is False
+    assert session7['full_production_surface_built'] is False and session7['production_dots_generated'] is False
+    assert session7['candidate_geoTIFF_sha256'] is None and session7['okay_to_download'] is False and session7['okay_to_submit'] is False
+    assert session7['historical_holdout_reference']['comparable_for_promotion'] is False
+    assert session7['registry_gate']['forward_dot_overlap_implied']==1.0
+    assert session7['submission_slots_used']==0
     for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
-                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json'):
+                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json',
+                 'session7_hypotheses.json','session7_registry_precheck.json','session7_review_passes.json'):
         source=root/'evidence'/name
         public_copy=docs/'data'/name
         assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
@@ -172,8 +186,16 @@ def check(root=ROOT):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
         assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
         assert 'NOT OK TO DOWNLOAD OR SUBMIT' in text and 'IR-S6-10' in text
+        assert 'S7-1' in text and 'no production surface/dots' in text
+        assert 'Paired proximal-minus-random difference' in text
         assert not parser.downloads
-        assert text.index('download-panel')<text.index('footer')
+        assert text.index('latest-holdout')<text.index('download-panel')<text.index('footer')
+    latest=(docs/'session-7-verification.html').read_text()
+    assert 'Research verdict: negative' in latest
+    assert 'NOT OK TO DOWNLOAD OR SUBMIT' in latest
+    assert 'candidate-specific full-registry uniqueness/correlation scan' in latest
+    assert 'session7_registry_precheck.json' in latest
+    assert 'session7_review_passes.json' in latest
     js=(docs/'assets/site.js').read_text()
     assert 'localhost' not in js and '127.0.0.1' not in js
     for name in ('research.html','sources.html','results.html','irregularities.html'):
@@ -190,7 +212,7 @@ def inspect_site(docs):
     docs=Path(docs).resolve()
     pages,errors=check_links(docs)
     markdown_link=re.compile(r'(?<!!)\[[^\]]+\]\(([^)]+)\)')
-    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md'):
+    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md',docs/'research/session7_hypotheses.md'):
         if not source.is_file():
             continue
         for href in markdown_link.findall(source.read_text(encoding='utf-8')):
