@@ -134,7 +134,7 @@
     "data_fetch_performed": false,
     "submission_slots_used": 0,
     "weekly_slot_selected": false,
-    "pr16_github_merge": "pending; branch changes not yet pushed"
+    "pr16_github_merge": "At integration validation time, PR #16 was OPEN on the fixed head branch arena/6fc4c9e2-57gemsdoe. This local test receipt does not assert GitHub merge completion; check the PR page for that operation."
   },
   "h57k_historical_audit_rows": 679,
   "h57k_mainline_review_report_rows": 698,
