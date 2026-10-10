@@ -10,6 +10,7 @@ import hashlib
 from html.parser import HTMLParser
 import json
 import math
+import re
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 import zipfile
@@ -56,7 +57,10 @@ def check(root=ROOT):
     card=json.loads((root/'evidence/run_card_current.json').read_text())
     public=json.loads((docs/'data/run_card.json').read_text())
     assert card==public,'public card is stale'
-    assert card['okay_to_download'] is True and card['okay_to_submit'] is False
+    public_current=json.loads((docs/'data/run_card_current.json').read_text())
+    assert card==public_current,'public current-card copy is stale'
+    assert card['okay_to_download'] is False and card['okay_to_submit'] is False
+    assert card.get('download_permission_status',{}).get('resolution')=='HOLD pending explicit owner decision (IR-S6-10)'
     assert card['verdict']=='negative' and card['submission_slots_used']==0
     assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
     assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
@@ -126,13 +130,49 @@ def check(root=ROOT):
             assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
     assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
     assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
+    for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
+                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json'):
+        source=root/'evidence'/name
+        public_copy=docs/'data'/name
+        assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
+        assert source.read_bytes()==public_copy.read_bytes(),f'public audit copy is stale: {name}'
+    feed_snapshot=json.loads((root/'evidence/leaderboard_snapshot.json').read_text())
+    feed_status=json.loads((root/'evidence/feed_refresh_status.json').read_text())
+    assert 'ORGANIZER-PUBLISHED' in feed_snapshot['evidence_class']
+    assert feed_snapshot['receipt_attribution_available'] is False
+    assert feed_snapshot['organizer_confirmed_submission_score'] is None
+    if feed_status.get('ok') is True:
+        assert feed_status.get('rows')==len(feed_snapshot['rows'])
+    else:
+        assert feed_status.get('retained_previous_snapshot') is True
+    assert feed_snapshot['top_public_dti']==feed_snapshot['rows'][0]['public_dti']
+    session6_hypotheses=json.loads((root/'evidence/session6_hypotheses.json').read_text())
+    ranked=session6_hypotheses['ranked']
+    assert 3<=len(ranked)<=5 and [item['rank'] for item in ranked]==list(range(1,len(ranked)+1))
+    audit=json.loads((root/'evidence/attribute_audit_20261010.json').read_text())
+    assert audit['evidence_class'].startswith('DATA-AUDIT') and 'limits' in audit
+    reconciliation=json.loads((root/'evidence/holdout_scope_reconciliation_20261010.json').read_text())
+    assert reconciliation['current_session5_evidence']['evaluator_version']=='gems57-pooled-hide-v2'
+    assert reconciliation['current_session5_evidence']['withheld_positive_pixels']==11321
+    irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
+    download_ir=[item for item in irreg['irregularities'] if item['id']=='IR-S6-10']
+    assert len(download_ir)==1 and 'resolved operationally' in download_ir[0]['status'].lower()
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
+    tiff_or_zip_links=[]
+    for page in pages:
+        parser=Links();parser.feed(page.read_text())
+        for value in parser.links:
+            lowered=value.lower().split('#',1)[0].split('?',1)[0]
+            if lowered.endswith(('.tif','.tiff','.zip')) or 'downloads/' in lowered:
+                tiff_or_zip_links.append(f'{page.relative_to(docs)}: {value}')
+        assert not parser.downloads,f'active download attribute on {page.relative_to(docs)}'
+    assert not tiff_or_zip_links,'site must not publish raster/ZIP download links while authorization is unresolved: '+repr(tiff_or_zip_links)
     for name in ('index.html','executive-summary.html'):
         text=(docs/name).read_text();parser=Links();parser.feed(text)
-        assert 'Download for research: OK' in text and 'Submit to competition: NO' in text
-        assert parser.downloads[0]==f'downloads/{raster.name}'
-        assert parser.downloads[1]==f'downloads/{archive.name}'
+        assert 'Download for research: NO' in text and 'Submit to competition: NO' in text
+        assert 'NOT OK TO DOWNLOAD OR SUBMIT' in text and 'IR-S6-10' in text
+        assert not parser.downloads
         assert text.index('download-panel')<text.index('footer')
     js=(docs/'assets/site.js').read_text()
     assert 'localhost' not in js and '127.0.0.1' not in js
@@ -140,14 +180,28 @@ def check(root=ROOT):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
-                current_card_consistent=True,submission_cleared=False)
+                current_card_consistent=True,research_download_cleared=False,submission_cleared=False)
     print(json.dumps(result,indent=2))
     return result
 
 
 def inspect_site(docs):
-    """Compatibility helper for the repository's separate site-link smoke test."""
-    pages, errors = check_links(Path(docs))
+    """Check local HTML and current hypothesis-review Markdown links."""
+    docs=Path(docs).resolve()
+    pages,errors=check_links(docs)
+    markdown_link=re.compile(r'(?<!!)\[[^\]]+\]\(([^)]+)\)')
+    for source in (docs/'research/hypotheses.md',docs/'research/hypotheses_h57.md'):
+        if not source.is_file():
+            continue
+        for href in markdown_link.findall(source.read_text(encoding='utf-8')):
+            url=urlsplit(href)
+            if url.scheme or url.netloc or not url.path:
+                continue
+            target=(source.parent/unquote(url.path)).resolve()
+            if not target.is_relative_to(docs):
+                errors.append(f'{source}: local Markdown link escapes site: {href}')
+            elif not target.is_file():
+                errors.append(f'{source}: broken local Markdown link: {href}')
     return errors
 
 

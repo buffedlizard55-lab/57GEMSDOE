@@ -225,8 +225,14 @@ def main():
         raster_sha256=receipt['sha256'],validator_output=validator,
         submission_name=label,submission_note=note,submission_note_chars=len(note),
         file=str(target.relative_to(ROOT)),zip_file=str(target.with_suffix('.zip').relative_to(ROOT)),
-        verdict='negative',okay_to_download=True,okay_to_submit=False,
-        verdict_reason='Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.',
+        verdict='negative',okay_to_download=False,okay_to_submit=False,
+        download_permission_status={
+            'status':'NOT AUTHORIZED PENDING EXPLICIT OWNER DECISION',
+            'resolution':'HOLD pending explicit owner decision (IR-S6-10)',
+            'authorized':False,
+            'file_availability_is_permission':False,
+        },
+        verdict_reason='Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. Download authorization is not granted. No weekly slot used.',
         recorded_sense={'tested':True,'retained':keep_sense,'paired_difference':sense_gain},
         experiments_used=3,submission_slots_used=0,generated_utc=datetime.now(timezone.utc).isoformat())
     save(ROOT/'evidence/run_card_current.json',card)

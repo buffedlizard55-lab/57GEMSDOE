@@ -44,12 +44,12 @@
       "severity": "submission blocker",
       "status": "OPEN; no silent protocol change",
       "finding": "A dense earlier soft raster is positive at every footprint pixel. With the inherited positive-pixel dot definition, every nonempty allowed candidate has forward overlap 1.0, above the literal 0.70 gate.",
-      "resolution": "Publish a hash-verified universal-blockage certificate, apply the literal gate, log duplicate and stop production dot placement. Download is permitted for research; submission is not cleared.",
+      "resolution": "Publish a hash-verified universal-blockage certificate and honor the literal duplicate STOP. Keep both research download and submission HOLD until explicit owner authorization; file presence is not permission.",
       "evidence": [
         "evidence/uniqueness_saturation_certificate.json",
         "evidence/orientation_surface_uniqueness.json"
       ],
-      "remaining": "Only an explicit protocol revision that defines surface versus dot representations could resolve this. No reverse-overlap or density exemption is applied."
+      "remaining": "Only an explicit protocol revision that defines surface versus dot representations could resolve uniqueness. No reverse-overlap or density exemption is applied; download authorization is separately pending IR-S6-10."
     },
     {
       "id": "IR-57-REGISTRY-02",
@@ -192,7 +192,7 @@
         "evidence/relay_bend_holdout.json",
         "evidence/relay_bend_surface_uniqueness.json"
       ],
-      "remaining": "Against all 665 rasters from the other 56 repositories, worst Spearman is 0.6580 <= 0.90 (and against the 15 discriminating sibling-lane rasters worst Spearman is 0.0288, worst 3-px overlap is 0.2375 <= 0.70), but the literal pre-placement gate still fires against the 17 dense-support prior rasters (forward overlap 1.0) and against this repository's own Session-3 soft surface sharing the exact 2,452,550 zeroed pixels outside d1 <= 25.55 px (Spearman 0.9753). Therefore submission remains HOLD (okay_to_download: true, okay_to_submit: false, submission_slots_used: 0)."
+      "remaining": "Against all 665 rasters from the other 56 repositories, worst Spearman is 0.6580 <= 0.90 (and against the 15 discriminating sibling-lane rasters worst Spearman is 0.0288, worst 3-px overlap is 0.2375 <= 0.70), but the literal pre-placement gate still fires against the 17 dense-support prior rasters (forward overlap 1.0) and against this repository's own Session-3 soft surface sharing the exact 2,452,550 zeroed pixels outside d1 <= 25.55 px (Spearman 0.9753). Therefore submission remains HOLD (okay_to_download: false pending IR-S6-10 owner resolution, okay_to_submit: false, submission_slots_used: 0)."
     },
     {
       "id": "IR-57-UNIQ-05",
@@ -317,12 +317,12 @@
       "id": "IR-S6-06",
       "severity": "high",
       "status": "OPEN — leaderboard claim conflict",
-      "finding": "The brief says 0.3195 is the highest score right now. The saved organizer snapshot (evidence/leaderboard_snapshot.json, retrieved 2026-10-09) lists 0.3774 at rank 1 and 0.3195 at rank 7. The live DrivenData leaderboard could not be re-fetched from this sandbox.",
-      "resolution": "Recorded: 0.3774 is the top public DTI in the snapshot; 0.3195 is rank 7. The snapshot is not a submission receipt.",
+      "finding": "The historical brief says 0.3195 is the highest score. The earlier saved organizer snapshot (retrieved 2026-10-09) placed 0.3195 at rank 7; the later selected-row snapshot retrieved 2026-10-10 20:40 UTC places 0.3774 at rank 1, 0.3195 at rank 8, and 0.2778 at rank 22. Public-board rows are not exact-file receipts.",
+      "resolution": "Use the later 2026-10-10 20:40 UTC selected-row snapshot for current repository context; retain the earlier rank-7 observation as historical. Do not infer file identity or causality from matching public values.",
       "evidence": [
         "evidence/leaderboard_snapshot.json"
       ],
-      "remaining": "Re-check the live leaderboard from an unrestricted machine.",
+      "remaining": "Re-check the live leaderboard from an unrestricted machine; ranking may change. Exact file-to-score attribution still requires a submission-page receipt.",
       "manual_review": [
         "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/leaderboard_snapshot.json"
@@ -375,10 +375,10 @@
     {
       "id": "IR-S6-10",
       "severity": "critical",
-      "status": "OPEN — owner must confirm download authorization",
+      "status": "RESOLVED OPERATIONALLY — download not authorized pending explicit owner decision",
       "finding": "Main's README and run card (merged via PR #21) show 'Download for research: OK' and link the Session-5 relay/bend TIFF (SHA256 cf7b903d…9489648), with okay_to_download=true. The same card reports the literal gate failed (duplicate_count 81). BRIEF.md says to log a duplicate and STOP. Session 6 measured the same failure on the 696 index (80 firings). Session 6 did NOT change this status.",
-      "resolution": "Left as merged and flagged. Not treated as a submission: the file is labelled 'Submit to competition: NO' on main.",
-      "remaining": "Owner decision. Either record an explicit owner authorization for a research-only download despite the failed literal gate, or set okay_to_download=false and remove the download link. Do not describe the file as unique or as clearance.",
+      "resolution": "No explicit owner authorization for a research-only download is present in the record. This follow-up fails closed: set okay_to_download=false, remove TIFF/ZIP links from generated pages, and retain the bytes only for provenance/audit. This is not a claim that the owner approved a download or a change to the uniqueness rule.",
+      "remaining": "An explicit owner decision is still required before research download is re-enabled. Until then, file availability/direct URL reachability is not permission; submission remains NO.",
       "manual_review": [
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/README.md",

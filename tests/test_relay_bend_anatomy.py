@@ -144,6 +144,7 @@ def test_session5_relay_bend_holdout_and_surface_receipts():
     assert uniq["pixel_unique_among_checked"] is True
     assert card["correlation_overlap_vs_registry"]["worst_spearman_other_repos"] <= 0.90
     assert card["correlation_overlap_vs_registry"]["worst_dot_overlap_sibling_lanes"] <= 0.70
-    assert card["okay_to_download"] is True and card["okay_to_submit"] is False
+    assert card["okay_to_download"] is False and card["okay_to_submit"] is False
+    assert card["download_permission_status"]["authorized"] is False
+    assert card["download_permission_status"]["file_availability_is_permission"] is False
     assert card["submission_slots_used"] == 0
-
