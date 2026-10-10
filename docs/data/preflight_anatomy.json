@@ -1,0 +1,30 @@
+{
+  "evidence_class": "REGISTRY-MEASUREMENT; not a HOLDOUT-DTI or organizer score",
+  "generated_utc": "2026-10-10T21:50:53.299203+00:00",
+  "source": "https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+  "source_blob_sha1": "374c88b1da2b803e2ed160de467fd71ae114010d",
+  "registry_index": "evidence/registry_refreshed_20261010T2001.json",
+  "registry_index_sha256": "fee36d0985b01559d557ef0b960d79d82d1a624975426ec2329d7a29045ad7b2",
+  "registry_entries_in_pinned_index": 696,
+  "reference_sha256": {
+    "data/bridge/sample_submission.tif": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "data/bridge/existing_faults.tif": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093"
+  },
+  "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+  "certificate": {
+    "evidence_class": "REGISTRY-MEASUREMENT",
+    "witness_file": "/home/user/57GEMSDOE/.cache/registry/374c88b1da2b803e2ed160de467fd71ae114010d.tif",
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "positive_pixels": 5167373,
+    "allowed_pixels": 5106385,
+    "uncovered_allowed_pixels": 0,
+    "covered_allowed_fraction": 1.0,
+    "universal_overlap_blocker": true,
+    "overlap_limit": 0.7,
+    "support_definition": "finite prediction > 0 (inherited literal support rule)",
+    "implication": "Every nonempty candidate dot set in the allowed domain has forward overlap 1.0 with this prior; therefore it cannot pass the 0.70 gate."
+  },
+  "literal_preplacement_gate": "STOP",
+  "implication": "Every nonempty prediction supported within the scored footprint and off the mapped catalogue has 100% of its positive pixels within 3 px of this earlier positive raster. No production dots may be placed under the current literal rule.",
+  "scope": "One SHA/grid-verified public-main prior; suffices for STOP only. Not an organizer submission registry or a full rescan."
+}

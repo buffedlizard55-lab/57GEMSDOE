@@ -106,7 +106,7 @@ def main() -> int:
     ap.add_argument("--submission-name", type=str, default="GEMS57-H57M")
     ap.add_argument("--budget", type=int, default=None,
                     help=("explicit dot budget in place of the (monotone, therefore invalid) "
-                          "surrogate argmax; see IR-S7-01 in the run card"))
+                          "surrogate argmax; see IR-S7A-01 in the run card"))
     ap.add_argument("--note", type=str, default=None)
     a = ap.parse_args()
     start = time.monotonic()
@@ -196,10 +196,10 @@ def main() -> int:
     best = max(surro, key=lambda r: r["surrogate_dti"])
     if a.budget is not None:
         budget = int(a.budget)
-        chosen_by = "explicit density-transfer budget (IR-S7-01: the surrogate curve is monotone)"
+        chosen_by = "explicit density-transfer budget (IR-S7A-01: the surrogate curve is monotone)"
     else:
         budget = int(best["budget"])
-        chosen_by = "argmax surrogate DTI (INVALID: see IR-S7-01)"
+        chosen_by = "argmax surrogate DTI (INVALID: see IR-S7A-01)"
     print(f"[emit] surrogate argmax {best['budget']} (DTI {best['surrogate_dti']:.5f}); "
           f"shipping budget {budget} chosen by: {chosen_by}", flush=True)
 

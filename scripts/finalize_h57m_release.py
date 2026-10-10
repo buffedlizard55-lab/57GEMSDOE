@@ -10,7 +10,7 @@ Reads only measured receipts written earlier in this session:
 * ``evidence/h57m_holdout.json``             evaluator arms for the H57-M lane
 
 It writes ``evidence/run_card_current.json`` (the file the Pages build renders)
-and appends IR-S7-01 / IR-S7-02 to ``evidence/irregularities_current.json``.
+and appends IR-S7A-01 / IR-S7A-02 to ``evidence/irregularities_current.json``.
 Nothing here re-thresholds a gate or promotes a candidate: the verdict stays
 fail-closed because the inherited forward-overlap gate fired.
 """
@@ -55,7 +55,7 @@ def main() -> int:
             "H57-M keeps the retained two-host relay/bend anatomy posterior and changes only the "
             "emission rule: a 43950-dot binary field allocated by the exact-curve optimum of the "
             "hide-and-recover holdout, rescaled from the holdout band area to the production "
-            "allowed area (IR-S7-01 retracts the earlier surrogate-argmax selector)."
+            "allowed area (IR-S7A-01 retracts the earlier surrogate-argmax selector)."
         ),
         "named_non_fault_process_that_could_mimic_it": previous["named_non_fault_process_that_could_mimic_it"],
         "holdout_dti": {
@@ -146,7 +146,7 @@ def main() -> int:
             "localised firings (a 344041-dot ensemble archive and a 624025-dot coverage field, "
             "dilation coverage 0.61-0.65) are not mutual: reverse overlap is 0.13-0.17 and no "
             "raster fires in both directions. Clearing this file needs the owner's explicit "
-            "ruling on how soft/blanket registry rasters define a dot (IR-S6-01 / IR-S7-02); "
+            "ruling on how soft/blanket registry rasters define a dot (IR-S6-01 / IR-S7A-02); "
             "no rule was relaxed here and no submission slot was used."
         ),
         "recorded_sense": previous.get("recorded_sense", {}),
@@ -174,7 +174,7 @@ def main() -> int:
     ids = {i["id"] for i in ledger["irregularities"]}
     new = [
         {
-            "id": "IR-S7-01",
+            "id": "IR-S7A-01",
             "severity": "high",
             "status": "fixed; the retracted artifact was deleted and is not offered",
             "finding": (
@@ -197,7 +197,7 @@ def main() -> int:
             ),
         },
         {
-            "id": "IR-S7-02",
+            "id": "IR-S7A-02",
             "severity": "high",
             "status": "measured; owner ruling required before any file can be cleared",
             "finding": (

@@ -1,6 +1,24 @@
 # Remaining work — do not bypass the current HOLD
 
-Last reviewed 2026-10-10 (Session 7). **Download research TIFF (`gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif`, 43,950 dots, sha `bb1f328d…`): OK. Submit: NO.** Session 7 produced a new, validated dotted emission from the retained two-host relay-band posterior, spent **zero** competition slots, kept the fail-closed verdict, and replaced an earlier monotone-surrogate budget choice with the exact 4-fold curve (IR-S7-01). The blocking gate is now measured rather than asserted: 40 of the 43 firings come from registry rasters whose own 3 px dilation covers ≥ 70 % of the footprint, so **no** nonempty candidate can pass the inherited one-directional test, and the owner's best-known file fires against 116 of the same 213 rasters (IR-S7-02).
+Last reviewed 2026-10-10 (Session 7). **Download research TIFF (`gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif`, 43,950 dots, sha `bb1f328d…`): OK. Submit: NO.** Session 7 produced a new, validated dotted emission from the retained two-host relay-band posterior, spent **zero** competition slots, kept the fail-closed verdict, and replaced an earlier monotone-surrogate budget choice with the exact 4-fold curve (IR-S7A-01). The blocking gate is now measured rather than asserted: 40 of the 43 firings come from registry rasters whose own 3 px dilation covers ≥ 70 % of the footprint, so **no** nonempty candidate can pass the inherited one-directional test, and the owner's best-known file fires against 116 of the same 213 rasters (IR-S7A-02).
+
+**2026-10-10 pre-placement addendum (supersedes historical Session-6 missing-data status below):** The permitted GitHub API restored `data/official/training_features.tif`; all eight bridge pins verified ([receipt](evidence/data_preparation.json)). The stack remains a third-party bridge, not a verified official DrivenData receipt. The literal uniqueness obstruction is independently rechecked on the pinned public-main 17GEMSDOE witness ([preflight](evidence/preflight_anatomy.json)); every allowed pixel is covered, so every nonempty candidate fails. Do not train/place a new submission until the protocol is explicitly revised, even though the missing-feature blocker is locally resolved. [Negative preflight card](evidence/run_card_preflight.json); zero new experiments and zero slots this addendum.
+
+## Session 7 addendum (2026-10-10) — next actions in priority order
+
+Evidence: [evidence/run_card_session7.json](evidence/run_card_session7.json), [evidence/session7_irregularities.json](evidence/session7_irregularities.json). Status of the retained Session-5 artifact is unchanged from main (PR #23): research download NO pending explicit owner authorization; submission NO; 0 slots used. The *Session-7* artifact has its own explicit status in the README top card: research download OK, competition submission NO (IR-S7A-03).
+
+1. **Owner ruling on the dense-prior gate (IR-S7-01).** Decide how a soft raster that is positive on the whole footprint defines its "dots" for the 70 % 3-px overlap test. Until then, no candidate can pass the literal gate, whatever its content.
+2. **Holdout redesign for near-trace truth (IR-S7-04).** The 3-px collar leaves withheld truth at least √10 px from any visible fault. A new validation needs (a) a collar of 0–1 px, or a design that keeps truth adjacent to visible traces, and (b) a leakage canary on the new split. Only then can dots within a few pixels of a known trace be scored. Test the 0.2778 mechanism (removing near-trace dots) only in that split.
+3. **NaN-outside export (IR-S7-03).** Re-export the same soft surface with NaN outside the study footprint, as in the bridged template, and run the validator and the registry audit on the new bytes before any upload.
+4. **Regenerate the Session-5 holdout receipt (IR-S7-06).** The stored evaluator hash does not match HEAD, though the numbers reproduce exactly. Rerun the holdout in a scratch copy and write the receipt with its current hashes.
+5. **Official-origin checks (IR-S7-02, IR-S7-05).** Obtain a DrivenData download receipt for `labels.tif`, `existing_faults.tif` and `sample_submission.tif` if the account allows. Until then the bridged bytes stay bridge-only.
+
+Budget: Session 7 used 2 of 3 experiments (reproduction; collar audit).
+
+---
+
+ **Historical text, superseded by the HOLD at the top: research download NO; submit NO.** Three declared Session-5 comparisons (`E1`: `bend_anatomy`, `E2`: `relay_bend_anatomy`, `E3`: `relay_bend_sense_transition`) are finished, zero slots used. While `E2` (`relay_bend_anatomy`) achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs strictly positive), the literal full-registry pre-placement overlap gate still triggers STOP against the 17 dense-support prior rasters (`dense17`), so the release remains held for research.
 
 ## 1. Literal uniqueness obstruction — now measured across candidate and control
 
@@ -16,7 +34,7 @@ Either way the revision must be logged in the audit ledger before a separate sel
 
 No organizer submission-page receipt attributes owner-reported 0.2778 to the exact H33-B2 SHA256. Public participant scores are not file receipts. The current experiment does not demonstrate higher live performance, and HOLDOUT-DTI intervals must not be compared numerically with private/live scores as if calibrated forecasts.
 
-Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Official USGS/GDR metadata is free and linked, but sandbox binary egress does not allow their storage hosts. No credentials should be requested/stored in chat. The CPU model's data-placement blocker is **closed**, not a reason to ask the owner to download 420 MB manually.
+Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Although Session 5 recorded a bridge-assembled 19-band stack, Session 6 reports `training_features.tif` absent in the current checkout and the feature link unreachable; a new holdout cannot run without an authorized, hash-pinned copy through an allowed route. Official USGS/GDR metadata is linked, but binary source coverage/alignment remain unverified. Do not request or store credentials in chat or treat old cache receipts as current access.
 
 ## 3. Session-5 execution of H57-H, H57-I2, and H57-J — and the next backlog question
 
@@ -47,7 +65,7 @@ In Session 5 (`2026-10-10`), the three hypotheses queued here (`H57-H` multi-sca
 
 The audited registry now pins **696** unique-grid rasters across the 57 public owner repositories (852,760,087 bytes); Session 7 byte-measured **213** of them for the current candidate and the rest remain a stated scope limitation. The earlier 695-grid-raster union comprises 691 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
 
-The Pages feed updates public-board **context** without submitting. It exposes cached/stale and failed-refresh status. It cannot read authenticated team slots or private scores. Keep metadata/hashes and accessible links tested; update the standing request at the start of each session.
+The Pages feed updates ORGANIZER-PUBLISHED public-board **context**, not receipts, without submitting. It exposes the timestamp, selected-row scope, cached/stale state and failed-refresh status. It cannot read authenticated team slots or private scores. The site offers the Session-7 artifact for research download under the explicit research-only scope of IR-S7A-03 and provides no TIFF/ZIP link for the retained Session-5 artifact, whose permission IR-S6-10 still holds at NO; retained bytes may still resolve by a direct static URL, which is not permission. Keep the provenance/status copies and link checks synchronized; update the standing request at the start of each session.
 
 ## 6. Prize compliance
 
@@ -59,12 +77,14 @@ Review the [official rules](https://docs.nlr.gov/docs/fy26osti/96647.pdf), entra
 
 The integration can push this working branch and merge its PR, but changing
 Pages settings returned HTTP 403 (repository administration scope). Existing
-Pages uses main-root. Identical current TIFF/ZIP/JSON mirrors at `downloads/`
-and the root-to-docs redirect support both legacy and custom artifact layouts.
-The scheduled workflow refreshes public context on the runner, retaining cache
-on errors; custom deployment is checked separately. GitHub run-log downloads
-redirect to an egress-blocked host; check/run status APIs remain accessible.
-Do not request/store tokens to work around these limits.
+Pages uses main-root. TIFF/ZIP/JSON mirrors remain in `downloads/` and
+`docs/downloads/` for provenance and byte-integrity tests; generated pages do
+not link them while IR-S6-10 download authorization is pending. A direct static
+URL may still resolve; that is not access authorization. The scheduled workflow
+refreshes public context on the runner and retains the last snapshot on errors;
+the site publishes freshness/failure status. GitHub run-log downloads redirect
+to an egress-blocked host; check/run status APIs remain accessible. Do not
+request/store tokens to work around these limits.
 
 The current relative magnetic orientation uses axial cos2, not signed angular
 handedness; normal versus unavailable sense is not fully separated. Testing
@@ -120,3 +140,21 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+
+---
+
+## Session 7 addendum — 2026-10-10 (verification only; HOLD unchanged)
+
+Evidence: [evidence/literal_gate_witness_verification_20261010.json](evidence/literal_gate_witness_verification_20261010.json), reproduced by `scripts/verify_literal_gate_witness.py` and pinned by `tests/test_literal_gate_witness.py`.
+
+- **IR-S7-01 (correction to Session 6).** `training_features.tif` is **listed** on the GitHub bridge `buffedlizard55-lab/GEMSDOE` (`data/bridge/gems-geodawn-numerical-features.tif.part-000…004` + `manifest.json`, ref `c0c06ac82178f26b94fce3397036ef8f12a2f3a0`) via the authenticated GitHub API; part-000 is 94,371,840 bytes. It was not downloaded. Session 6's "unreachable" note is stale for the GitHub bridge; DrivenData (login) and Dropbox are still unreachable from this sandbox. The bridge gives transport identity only, not official-origin authentication. The gate verdict does not depend on features.
+- **IR-S7-02 (leaderboard prompt conflict).** The prompt's "0.3195 is highest" is contradicted by the repo's organizer-published snapshot (`docs/data/leaderboard_snapshot.json`, 2026-10-10 20:40 UTC, selected rows): 0.3774 rank 1, 0.3195 rank 8. The prompt also lists 0.3774 under the GEMSDOE site as a participant value. Neither is a file receipt. DrivenData cannot be re-fetched from this sandbox.
+- **IR-S7-03 (the one decision that unblocks everything).** The literal support rule (every positive finite pixel is a dot) makes any soft or whole-footprint registry raster a universal blocker. Independently reproduced: 17GEMSDOE E-proba-multiscale covers 5,167,373 / 5,167,373 allowed cells, so every footprint-confined candidate has overlap 1.0. The owner must choose: keep the rule (no candidate can pass), revise the support definition for all candidates and all registry rasters, or exclude the witness with a stated reason. No choice was made here.
+- **GEMSDOE32 mechanism, file level.** Exact subset of the 40,199-dot base; 2,545 removed, all at 1.41–2.00 px from the catalogue; kept dots ≥ 2.236 px. At owner-reported DTI 0.2778 the metric bar is `k > 0.0556`, i.e. within 2.83 px of new truth. Plausible, not verified: holdout test still needed, and this requires IR-S6-05 resolved first.
+- **Experiments run:** 0 of 3. **Hours:** under one. **Candidates generated:** 0. **Slots used:** 0. **Download / submit:** NO.
+
+Next steps, in order (none authorized by this addendum):
+1. Owner ruling on IR-S7-03 (support definition). Until then, no candidate can be promoted.
+2. If the ruling allows: restore the 19-band stack from the bridge with the existing `scripts/download_features.sh` (hash-verified), then run the hypothesis H6-1 (training-catalogue proximity pruning vs matched random pruning) on the spatially blocked holdout, with a leakage canary per feature.
+3. Re-fetch the DrivenData leaderboard from an allowed route, or have the owner paste the current board, to resolve IR-S7-02.

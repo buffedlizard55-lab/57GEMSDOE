@@ -56,8 +56,14 @@ def check(root=ROOT):
     card=json.loads((root/'evidence/run_card_current.json').read_text())
     public=json.loads((docs/'data/run_card.json').read_text())
     assert card==public,'public card is stale'
+    assert card==json.loads((docs/'data/run_card_current.json').read_text()),'public current-card copy is stale'
     assert card['okay_to_download'] is True and card['okay_to_submit'] is False
     assert card['verdict']=='negative' and card['submission_slots_used']==0
+    # research download is explicitly scoped and is not a submission clearance (IR-S7A-03)
+    scope=card['download_permission_status']
+    assert scope['authorized'] is True and scope['scope']=='research download only'
+    assert scope['submission_cleared'] is False and scope['file_availability_is_permission'] is False
+    assert card['okay_to_submit'] is False
     # fail-closed consistency: a fired gate must be recorded, never cleared here
     registry=card['correlation_overlap_vs_registry']
     assert registry['duplicate_count']>0 and registry['complete_accessible_scan'] is False
@@ -130,6 +136,50 @@ def check(root=ROOT):
     assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
     classification=json.loads((root/'evidence/registry_classification.json').read_text())
     assert classification['auxiliary_inputs']==4
+    # the separate pre-placement lane: STOP evidence and its own fail-closed card
+    preflight=json.loads((root/'evidence/preflight_anatomy.json').read_text())
+    assert preflight==json.loads((docs/'data/preflight_anatomy.json').read_text()),'preflight site copy is stale'
+    assert preflight['literal_preplacement_gate']=='STOP'
+    assert preflight['certificate']['universal_overlap_blocker']
+    assert preflight['certificate']['uncovered_allowed_pixels']==0
+    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
+    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
+    assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
+    assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
+    gate696=json.loads((root/'evidence/uniqueness_session6_full_registry_696.json').read_text())
+    assert gate696['registry_rasters_checked']==696 and gate696['duplicate_count']==80
+    assert gate696['unique'] is False and gate696['stop_required'] is True
+    irreg=json.loads((root/'evidence/irregularities_current.json').read_text())
+    ids={i['id']:i for i in irreg['irregularities']}
+    assert ids['IR-S6-10']['status'].startswith('RESOLVED OPERATIONALLY')
+    assert 'pending explicit owner decision' in ids['IR-S6-10']['status'].lower()
+    assert ids['IR-S6-01']['status'].startswith('OPEN')
+    assert {'IR-S7A-01','IR-S7A-02','IR-S7A-03'}.issubset(ids)
+    # descriptive structure + holdout receipts that the site still publishes
+    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
+    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
+    assert structure['model_fit_performed'] is False and structure['dti_evaluated'] is False
+    for name in ('orientation_canary','relay_bend_canary'):
+        rows=json.loads((root/'evidence'/f'{name}.json').read_text())['features']
+        assert all((not v['leakage_flag']) and v['discriminative_auc_max']<=.90 for v in rows.values())
+    for name in ('leaderboard_snapshot.json','feed_refresh_status.json','attribute_audit_20261010.json',
+                 'holdout_scope_reconciliation_20261010.json','session6_hypotheses.json','preflight_anatomy.json',
+                 'run_card_preflight.json','h6_1_proximity_pruning_holdout.json','run_card_session7_h6_1.json','review_passes_h57m.json'):
+        source=root/'evidence'/name; public_copy=docs/'data'/name
+        assert source.is_file() and public_copy.is_file(),f'missing public audit copy: {name}'
+        assert source.read_bytes()==public_copy.read_bytes(),f'public audit copy is stale: {name}'
+    feed=json.loads((root/'evidence/leaderboard_snapshot.json').read_text())
+    feed_status=json.loads((root/'evidence/feed_refresh_status.json').read_text())
+    assert 'ORGANIZER-PUBLISHED' in feed['evidence_class']
+    assert feed['receipt_attribution_available'] is False and feed['organizer_confirmed_submission_score'] is None
+    if feed_status.get('ok') is True:
+        assert feed_status.get('rows')==len(feed['rows'])
+    else:
+        assert feed_status.get('retained_previous_snapshot') is True
+    ranked=json.loads((root/'evidence/session6_hypotheses.json').read_text())['ranked']
+    assert 3<=len(ranked)<=5 and [item['rank'] for item in ranked]==list(range(1,len(ranked)+1))
+    lane=json.loads((root/'evidence/session7_hypotheses.json').read_text())['ranked']
+    assert [item['rank'] for item in lane]==list(range(1,len(lane)+1))
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     for name in ('index.html','executive-summary.html'):

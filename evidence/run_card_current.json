@@ -1,7 +1,7 @@
 {
   "session": "session-7-2026-10-10",
   "hypothesis": "Secondary strands concentrate at multi-scale host bends (H57-H) and inside two-host en echelon stepover relay zones between distinct fault systems (H57-I2), corroborated by detrended-elevation scarp relative strike and conditioned on slip-sense transitions (H57-J).",
-  "mechanism": "H57-M keeps the retained two-host relay/bend anatomy posterior and changes only the emission rule: a 43950-dot binary field allocated by the exact-curve optimum of the hide-and-recover holdout, rescaled from the holdout band area to the production allowed area (IR-S7-01 retracts the earlier surrogate-argmax selector).",
+  "mechanism": "H57-M keeps the retained two-host relay/bend anatomy posterior and changes only the emission rule: a 43950-dot binary field allocated by the exact-curve optimum of the hide-and-recover holdout, rescaled from the holdout band area to the production allowed area (IR-S7A-01 retracts the earlier surrogate-argmax selector).",
   "named_non_fault_process_that_could_mimic_it": "Erosional range-front scarps, fluvial terrace margins, lithologic contacts situated between unrelated fault systems, and cartographic digitization vertices can mimic multi-scale trace bends and relay stepover geometry without secondary fault slip.",
   "holdout_dti": {
     "evidence_class": "HOLDOUT-DTI",
@@ -105,7 +105,7 @@
   },
   "emission_selector": {
     "chosen_budget": 43950,
-    "chosen_by": "explicit density-transfer budget (IR-S7-01: the surrogate curve is monotone)",
+    "chosen_by": "explicit density-transfer budget (IR-S7A-01: the surrogate curve is monotone)",
     "retracted_previous_artifact": "downloads/gems57-h57m-relay-band-20261010T215104Z-gems57-h57m.tif",
     "reason": "the surrogate budget curve is monotone increasing (0.05369 at 2500 dots to 0.47944 at 140000), so its argmax always selects the largest budget; the exact 4-fold curve peaks at 10000 dots (0.16441) and falls to 0.09844 at 140000. The 140000-dot artifact was deleted and is not offered."
   },
@@ -233,7 +233,7 @@
   "verdict": "negative",
   "okay_to_download": true,
   "okay_to_submit": false,
-  "verdict_reason": "Fail-closed. Local format preflight passes and the file is new, but the inherited one-directional forward-overlap gate fires (worst 1.0000; 43 of 213 measured rasters). 40 of those 43 are blanket rasters whose own 3 px dilation covers >=70 % of the footprint, so the gate fires for any candidate that puts dots on the geologically plausible grid; the owner's best-known file fires against 116 of 213. The three localised firings (a 344041-dot ensemble archive and a 624025-dot coverage field, dilation coverage 0.61-0.65) are not mutual: reverse overlap is 0.13-0.17 and no raster fires in both directions. Clearing this file needs the owner's explicit ruling on how soft/blanket registry rasters define a dot (IR-S6-01 / IR-S7-02); no rule was relaxed here and no submission slot was used.",
+  "verdict_reason": "Fail-closed. Local format preflight passes and the file is new, but the inherited one-directional forward-overlap gate fires (worst 1.0000; 43 of 213 measured rasters). 40 of those 43 are blanket rasters whose own 3 px dilation covers >=70 % of the footprint, so the gate fires for any candidate that puts dots on the geologically plausible grid; the owner's best-known file fires against 116 of 213. The three localised firings (a 344041-dot ensemble archive and a 624025-dot coverage field, dilation coverage 0.61-0.65) are not mutual: reverse overlap is 0.13-0.17 and no raster fires in both directions. Clearing this file needs the owner's explicit ruling on how soft/blanket registry rasters define a dot (IR-S6-01 / IR-S7A-02); no rule was relaxed here and no submission slot was used.",
   "recorded_sense": {
     "tested": true,
     "retained": false,
@@ -264,7 +264,7 @@
   "registry_reviewed_utc": "2026-10-10",
   "registry_scope": "696 pinned unique-grid rasters across the 57 public owner repositories; 213 measured for this candidate in this session (evidence/h57m_uniqueness_certificate.json).",
   "session6_verification": {
-    "evidence_class": "REPOSITORY-AUDIT \u2014 session 6. No experiment, holdout, slot use or submission. Measurements are not scores.",
+    "evidence_class": "REPOSITORY-AUDIT — session 6. No experiment, holdout, slot use or submission. Measurements are not scores.",
     "generated_utc": "2026-10-10T21:10:00+00:00",
     "experiments_run": 0,
     "holdout_run": false,
@@ -336,5 +336,17 @@
     "uniqueness_certificate": "evidence/h57m_uniqueness_certificate.json",
     "gate_universality": "evidence/gate_universality.json",
     "holdout": "evidence/h57m_holdout.json"
+  },
+  "download_permission_status": {
+    "status": "AUTHORIZED FOR RESEARCH DOWNLOAD ONLY",
+    "resolution": "research download OK / competition submission NO (IR-S7A-03)",
+    "authorized": true,
+    "scope": "research download only",
+    "source_irregularity": "IR-S7A-03",
+    "operational_basis": "The standing owner instruction for Session 7 requires an easy-to-download TIF and an unmistakable download/submit status. This authorizes research download of the Session-7 artifact only; it does not clear it for competition submission, which stays fail-closed because the inherited uniqueness gate fires on this file under both measured readings (IR-S6-01 / IR-S7A-02).",
+    "file_availability_is_permission": false,
+    "submission_cleared": false,
+    "authorization_actor": "standing owner instruction (repository task prompt)",
+    "gate_status": "literal reading fires (worst forward 1.0, 43 of 213 pinned rasters); like-for-like dot-field reading also fires (worst 0.9992, 20 firings); no rule relaxed, no exemption applied"
   }
 }

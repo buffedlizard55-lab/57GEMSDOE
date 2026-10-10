@@ -9,7 +9,7 @@ stale claims; both download mirror trees must be byte-identical; the retracted
 Pass 3 — behaviour: the shared uniqueness reading is exercised, the fail-closed
 gates are asserted, and the full pytest suite + site QA are run.
 
-Writes ``evidence/review_passes.json``. Exits non-zero on any failed check.
+Writes ``evidence/review_passes_h57m.json``. Exits non-zero on any failed check.
 """
 from __future__ import annotations
 
@@ -110,10 +110,10 @@ def pass_claims(README: str, card: dict) -> dict:
     stale = [u for u in urls if "47ccc38b6bec" in u]
     check("pass2:readme_top_card_links_current_file", card["file"].split("/")[-1] in README)
     check("pass2:ledger_has_new_irregularities",
-          {"IR-S7-01", "IR-S7-02"}.issubset(
+          {"IR-S7A-01", "IR-S7A-02"}.issubset(
               {i["id"] for i in json.loads((EVID / "irregularities_current.json").read_text())["irregularities"]}))
     check("pass2:session7_hypotheses_ranked",
-          len(json.loads((EVID / "session7_hypotheses.json").read_text())["candidates"]) == 5)
+          len(json.loads((EVID / "session7_hypotheses_h57m.json").read_text())["candidates"]) == 5)
     return {"forbidden_claims_found": offenders, "stale_top_card_links": stale}
 
 
@@ -157,7 +157,7 @@ def main() -> int:
         "failures": FAILURES,
         "slots_used": card["submission_slots_used"],
     }
-    (EVID / "review_passes.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
+    (EVID / "review_passes_h57m.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
     print(json.dumps({"failures": FAILURES}, indent=1))
     return 1 if FAILURES else 0
 

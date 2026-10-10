@@ -185,7 +185,7 @@
     }
   ],
   "chosen_budget": 43950,
-  "chosen_by": "explicit density-transfer budget (IR-S7-01: the surrogate curve is monotone)",
+  "chosen_by": "explicit density-transfer budget (IR-S7A-01: the surrogate curve is monotone)",
   "chosen_holdout_dti": [],
   "file": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif",
   "sha256": "bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0",

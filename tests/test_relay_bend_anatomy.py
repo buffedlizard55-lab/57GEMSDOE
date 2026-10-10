@@ -158,4 +158,9 @@ def test_session5_relay_bend_holdout_and_surface_receipts():
         cert["rasters_measured_this_run"]
     assert card["okay_to_download"] is True and card["okay_to_submit"] is False
     assert card["submission_slots_used"] == 0
-
+    assert card["correlation_overlap_vs_registry"]["worst_spearman_full_footprint"] <= 0.90
+    assert card["correlation_overlap_vs_registry"]["rasters_firing_in_both_directions"] == 0
+    assert card["correlation_overlap_vs_registry"]["duplicate_count"] == card["correlation_overlap_vs_registry"]["forward_firings_blanket"] + card["correlation_overlap_vs_registry"]["forward_firings_localised"]
+    scope = card["download_permission_status"]
+    assert scope["authorized"] is True and scope["scope"] == "research download only"
+    assert scope["submission_cleared"] is False and scope["file_availability_is_permission"] is False

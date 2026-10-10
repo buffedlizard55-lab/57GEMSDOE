@@ -274,7 +274,13 @@ def main() -> int:
             file=str(target.relative_to(ROOT)),
             zip_file=str(target.with_suffix(".zip").relative_to(ROOT)),
             verdict="negative",
-            okay_to_download=True,
+            okay_to_download=False,
+            download_permission_status={
+                "status": "NOT AUTHORIZED PENDING EXPLICIT OWNER DECISION",
+                "resolution": "HOLD pending explicit owner decision (IR-S6-10)",
+                "authorized": False,
+                "file_availability_is_permission": False,
+            },
             okay_to_submit=False,
             verdict_reason="Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.",
             recorded_sense={
@@ -645,9 +651,15 @@ def main() -> int:
         file=str(target.relative_to(ROOT)),
         zip_file=str(target.with_suffix(".zip").relative_to(ROOT)),
         verdict="negative",
-        okay_to_download=True,
+        okay_to_download=False,
+        download_permission_status={
+            "status": "NOT AUTHORIZED PENDING EXPLICIT OWNER DECISION",
+            "resolution": "HOLD pending explicit owner decision (IR-S6-10)",
+            "authorized": False,
+            "file_availability_is_permission": False,
+        },
         okay_to_submit=False,
-        verdict_reason="Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF; literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker and binary holdout CI includes zero vs controls. Zero weekly slots used.",
+        verdict_reason="Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF; literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker and binary holdout CI includes zero vs controls. Download authorization is not granted. Zero weekly slots used.",
         recorded_sense={
             "tested": True,
             "retained": keep_sense,

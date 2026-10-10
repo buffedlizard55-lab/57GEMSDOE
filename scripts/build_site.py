@@ -21,12 +21,16 @@ ROOT = Path(__file__).resolve().parents[1]
 NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit'),
        ('results.html', 'Results'), ('h57k.html', 'H57-K candidate'), ('method.html', 'Method'), ('research.html', 'Research'),
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
-PUBLIC = ['run_card_current', 'h57m_uniqueness_certificate', 'gate_universality', 'h57m_validation', 'h57m_emission', 'h57m_holdout', 'session7_hypotheses', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
+PUBLIC = ['run_card_current', 'h57m_uniqueness_certificate', 'gate_universality', 'h57m_validation', 'h57m_emission', 'h57m_holdout',
+          'session7_hypotheses_h57m', 'session7_hypotheses', 'h6_1_proximity_pruning_holdout', 'run_card_session7_h6_1',
+          'review_passes_session7', 'review_passes_h57m', 'preflight_anatomy', 'run_card_preflight', 'run_card_session7',
+          'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification', 'uniqueness_session6_full_registry_696', 'session6_mechanism_and_witness',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
-          'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
-          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'feed_refresh_status',
+          'attribute_audit_20261010', 'holdout_scope_reconciliation_20261010', 'session6_hypotheses',
+          'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
 
 
 def esc(value):
@@ -121,6 +125,7 @@ def download_panel(card):
 <div class="eyebrow">NEW GEOTIFF · GENERATED OCT 10, 2026 (SESSION 7)</div><h1 id="download-title">Relay-band anatomy, budget-optimal dots.</h1>
 <p class="hero-sub">{card['final_dots']:,} dots from the retained two-host relay/bend posterior, emitted at the exact 4-fold-curve optimum and rescaled to the production allowed area.<br>Fresh Session-7 predictions—not a copy of an earlier submission.</p>
 <div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
+<p class="small">Research download is authorized for this file only and is explicitly scoped (IR-S7A-03): it is not a competition clearance, and the retained Session-5 file remains unlinked (IR-S6-10).</p>
 <p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> {esc(card['verdict_reason'])}</p>
 <div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>↓ Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
 <a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
@@ -132,6 +137,40 @@ def download_panel(card):
 def evidence_notice(card):
     score = card['holdout_dti']
     return f'''<p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>{esc(score['evaluator_version'])}</code> · {score['withheld_positive_pixels']:,} withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>'''
+
+
+def build_public_board(snapshot, status):
+    """Render timestamped public-board context without implying receipts or attribution."""
+    retrieved = snapshot.get('retrieved_utc')
+    attempted = status.get('attempted_utc')
+    method = status.get('method') or snapshot.get('retrieval_method') or 'method not recorded'
+    if status.get('ok') is False:
+        error = status.get('error', 'refresh failure details were not recorded')
+        freshness = (
+            '<strong>Latest refresh failed; STALE / CLOCK-SKEWED SNAPSHOT.</strong> '
+            f"Last saved public snapshot: {esc(retrieved or 'unknown')}. "
+            f"Attempted: {esc(attempted or 'unknown')}. Error: {esc(error)}."
+        )
+    else:
+        freshness = (
+            f"Saved public snapshot retrieved {esc(retrieved or 'time not recorded')}; "
+            f"capture method: {esc(method)}."
+        )
+        if status.get('full_table_captured') is False or snapshot.get('raw_html_retained') is False:
+            freshness += ' Selected rows only; raw organizer HTML was not retained.'
+    rows = snapshot.get('rows', [])
+    row_data = [[esc(row.get('rank', '')), esc(row.get('participant_display', 'unknown')),
+                 number(float(row['public_dti'])) if isinstance(row.get('public_dti'), (int, float)) else 'unknown']
+                for row in rows if isinstance(row, dict)]
+    board_table = table(['Public rank', 'Participant display', 'Published DTI'], row_data) if row_data else '<p>No valid public rows in this snapshot.</p>'
+    evidence_class = snapshot.get('evidence_class', 'ORGANIZER-PUBLISHED public leaderboard; not a receipt')
+    return f'''<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div>
+<h2>Leaderboard context—not a score receipt</h2>
+<p><strong id="leaderboard-top">{number(snapshot.get('top_public_dti'))}</strong> <span id="leaderboard-context">top DTI in this saved public-board snapshot</span></p>
+<p id="feed-status" aria-live="polite">{freshness}</p>
+<p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')} · {link('data/feed_refresh_status.json', 'Refresh status')}</p>
+<p class="small">Evidence class: {esc(evidence_class)}. This is not a submission receipt or submission-page receipt, exact-file attribution, private-score source, or complete submission registry. Do not infer attribution or causality. Neither remaining team slots nor private scores are known.</p>
+{board_table}</section>'''
 
 
 def session6_page(root) -> str:
@@ -180,7 +219,7 @@ def session6_page(root) -> str:
 <h2>5 · Holdout and leaderboard</h2>
 <ul>
 <li>No holdout was run this session. <code>training_features.tif</code> is absent, and its link was unreachable from the audit environment (IR-S6-05).</li>
-<li>The leaderboard snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7. The brief's “highest” claim conflicts with that snapshot (IR-S6-06). Snapshot: <code>data/leaderboard_snapshot.json</code>.</li>
+<li>The later selected-row snapshot (2026-10-10 20:40 UTC) shows 0.3774 at rank 1, DARD 0.3195 at rank 8, and extradr19 0.2778 at rank 22; the earlier snapshot listed DARD at rank 7. These are public-board values, not exact-file receipts (IR-S6-06). Snapshot: <code>data/leaderboard_snapshot.json</code>.</li>
 </ul>
 <p>{link('irregularities.html', 'Audit ledger, including IR-S6-01 to IR-S6-12 →')} · {link('executive-summary.html', 'Download and submission guide →')}</p>
 """
@@ -192,6 +231,7 @@ def build(root=ROOT, make_preview=True):
     data.mkdir(parents=True, exist_ok=True)
     evidence = {name: json.loads((root / 'evidence' / f'{name}.json').read_text()) for name in PUBLIC}
     card = evidence['run_card_current']
+    feed_status = evidence['feed_refresh_status']
     h57k = None
     h57k_files = ['h57k_run_card', 'h57k_submission', 'h57k_model_compare',
                   'h57k_proximal_sweep', 'h57k_exact_duplicate_check']
@@ -237,6 +277,20 @@ def build(root=ROOT, make_preview=True):
     canary_rows = [[f'<code>{esc(k)}</code>', number(v['discriminative_auc_max']), 'PASS (< 0.90)' if not v['leakage_flag'] else '<strong>LEAKAGE FLAG</strong>'] for k, v in canary['features'].items()]
     max_auc = max(v['discriminative_auc_max'] for v in canary['features'].values())
 
+    preflight = evidence['preflight_anatomy']
+    session6_gate = evidence['uniqueness_session6_full_registry_696']
+    if (preflight['literal_preplacement_gate'] != 'STOP'
+            or not preflight['certificate']['universal_overlap_blocker']
+            or evidence['run_card_preflight']['okay_to_submit'] is not False):
+        raise ValueError('pre-placement gate evidence is missing or unexpectedly cleared')
+    if card['okay_to_submit'] is not False or card['submission_slots_used'] != 0:
+        raise ValueError('the current card must stay fail-closed for competition submission')
+    if card.get('download_permission_status', {}).get('scope') != 'research download only':
+        raise ValueError('download authorization must be explicitly scoped to research only')
+    fresh_notice = f'''<section class="card"><div class="eyebrow">PRE-PLACEMENT CHECK · 2026-10-10 · SEPARATE LANE, NO TIFF</div>
+<h2>STOP before production placement — measured, not asserted.</h2>
+<p>A SHA/grid-verified raster on public main is finite-positive on all {preflight['certificate']['allowed_pixels']:,} allowable cells. Under the literal one-directional gate, every nonempty in-footprint candidate therefore overlaps its 3-px halo by 100 % (limit 70 %). That pre-placement lane built no TIFF and used no slot; its 696-raster re-run recorded {session6_gate['duplicate_count']} firings, worst forward {session6_gate['worst_dot_overlap']:.2f}. {link('data/preflight_anatomy.json', 'Witness certificate')} · {link('data/run_card_preflight.json', 'Negative preflight run card')}.</p>
+<p>The 19-band bridge feature stack was restored from hash-pinned public GitHub parts (all eight pins verified; official DrivenData origin not independently authenticated). {link('data/data_preparation.json', 'Input receipt')} · {link('research/hypotheses.md', 'Lane hypothesis review')}.</p></section>'''
     index = panel + f'''<section class="stat-grid" aria-label="Current research diagnostics">
 <div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
 <div class="stat"><span>Registry audit</span><strong>{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']}</strong><small>Pinned rasters measured for this file</small></div>
@@ -248,10 +302,10 @@ def build(root=ROOT, make_preview=True):
 <p>The downloadable file is the <strong>Session-7 dotted emission</strong> of the retained posterior (<code>H57-M</code>) — not the soft surface and not test-fold dots. Its 43,950-dot budget sits between the measured 40,000-dot point (<strong>{number(dots['dti'])}</strong>, 95% CI {interval(dots['ci95'])}) and 60,000; the exact curve peaks at 10,000 dots ({number(card['holdout_dti']['measured_peak']['dti'])}). No value is interpolated, and no HOLDOUT-DTI number is a forecast of a live or private score.</p>{disclaimer}
 <p>{link('results.html', 'Inspect all comparisons →')}</p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display of the new two-host relay and bend research surface on the bridged competition grid" width="600" height="680"><figcaption>Actual Session-5 research surface · north ↑ · EPSG:32611. Downsampled maximum with nonlinear display colors; not ground truth, a vent map or the submitted pixel values.</figcaption></figure></section>
 <section class="card"><div class="eyebrow">REVIEW FOUND A REAL BUG</div><h2>Every valid host strike had been reset to zero.</h2><p>A reversed finite-value fallback corrupted the earlier host-relative geometry. It is fixed, with regressions for east–west offsets and hidden-value invariance. Earlier orientation interpretations and the interrupted run are invalidated, not recycled as evidence.</p><p>{link('irregularities.html', 'IR-57-STRIKE-01 and other audit findings →')}</p></section>
-<section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>Session 7 measured the obstruction instead of asserting it. Of the <strong>{registry['registry_rasters_checked']}</strong> pinned rasters measured for the current file, <strong>{registry['blanket_rasters']}</strong> have a 3 px dilation covering ≥70&nbsp;% of the footprint — many cover 100&nbsp;% with a zero-area sliver — so the inherited one-directional test fires for <em>any</em> candidate that places dots on the geologically plausible grid. <strong>{registry['forward_firings_blanket']} of {registry['duplicate_count']}</strong> firings on this file are those blanket rasters; the other <strong>{registry['forward_firings_localised']}</strong> come from broad coverage fields (forward 0.84–0.90, reverse only 0.13–0.17). <strong>{registry['rasters_firing_in_both_directions']}</strong> rasters fire in both directions (worst reverse overlap {number(registry['worst_reverse_overlap'])} &lt; 0.70), and the owner's best-known file (GEMSDOE32 <code>h33-2-b2</code>) fires against <strong>{registry['best_known_control']['forward_overlap_firings']}</strong> of the same set. The rule as literally written cannot separate a good candidate from a duplicate; the ruling is the owner's and no exemption was applied here.</p><p>{link('data/gate_universality.json', 'Gate-universality measurement')} · {link('data/h57m_uniqueness_certificate.json', 'Two-reading certificate')} · {link('data/uniqueness_saturation_certificate.json', 'Hash-verified saturation certificate')}</p></section>
-<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div><h2>Leaderboard context</h2><p><strong id="leaderboard-top">{number(evidence['leaderboard_snapshot']['top_public_dti'])}</strong> <span id="leaderboard-context">top public DTI in the last successful organizer snapshot</span></p><p id="feed-status" aria-live="polite">Checked on 2026-10-09. Date-precision snapshot; open the official board for current context.</p><p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')}</p><p class="small">Scheduled Pages builds refresh this public feed. Failures retain the prior snapshot with a visible freshness warning. Neither the team's remaining slots nor its private score is known.</p></section>'''
+<section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>Session 7 measured the obstruction instead of asserting it. Of the <strong>{registry['registry_rasters_checked']}</strong> pinned rasters measured for the current file, <strong>{registry['blanket_rasters']}</strong> have a 3 px dilation covering ≥70&nbsp;% of the footprint — many cover 100&nbsp;% with a zero-area sliver — so the inherited one-directional test fires for <em>any</em> candidate that places dots on the geologically plausible grid. <strong>{registry['forward_firings_blanket']} of {registry['duplicate_count']}</strong> firings on this file are those blanket rasters; the other <strong>{registry['forward_firings_localised']}</strong> come from broad coverage fields (forward 0.84–0.90, reverse only 0.13–0.17). <strong>{registry['rasters_firing_in_both_directions']}</strong> rasters fire in both directions (worst reverse overlap {number(registry['worst_reverse_overlap'])} &lt; 0.70), and the owner's best-known file (GEMSDOE32 <code>h33-2-b2</code>) fires against <strong>{registry['best_known_control']['forward_overlap_firings']}</strong> of the same set. The rule as literally written cannot separate a good candidate from a duplicate; the ruling is the owner's and no exemption was applied here.</p><p>{link('data/gate_universality.json', 'Gate-universality measurement')} · {link('data/h57m_uniqueness_certificate.json', 'Two-reading certificate')} · {link('data/preflight_anatomy.json', 'Universal-support witness')} · {link('data/uniqueness_saturation_certificate.json', 'Hash-verified saturation certificate')}</p></section>
+{build_public_board(evidence['leaderboard_snapshot'], feed_status)}'''
 
-    executive = panel + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Do not submit this release.</strong> Downloading the actual TIFF or ZIP is safe for review. Local format PASS is not organizer acceptance, uniqueness clearance or permission to use a weekly slot.</div>
+    executive = panel + fresh_notice + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>Research download: OK. Submit: NO.</strong> Downloading the actual TIFF or ZIP is safe for review; do not upload it. Local format PASS is not organizer acceptance or uniqueness clearance for a competition submission, and the fail-closed verdict below is recorded, not hidden.</div>
 <p>{registry['duplicate_count']} registry comparisons triggered a literal duplicate condition across the {registry['registry_rasters_checked']}-raster audit. Against all 665 rasters from the other 56 repositories, worst rank correlation is {number(registry.get('worst_spearman_other_repos', 0.6580))} (below 0.90); against this repository's own earlier Session-3 soft surface (sharing the exact 2,452,550 zeroed pixels outside the fitted <code>d1 ≤ 25.55 px</code> zone), full-footprint Spearman is {number(registry['worst_spearman_full_footprint'])}; worst forward overlap is {registry['worst_dot_overlap']:.2f} (above 0.70 due to the 17 dense-support prior rasters). Pixel and byte identity checks pass across all 695 rasters, but that alone is not the protocol.</p></section>
 <section><h2>Exact submission steps—for a future selector-cleared file</h2><ol class="steps"><li><strong>Check the release card.</strong> Require format PASS, full-registry surface PASS before placement, final-dot PASS, clean canaries and a positive paired holdout gain. A separate selector must clear the real slot.</li>
 <li><strong>Download the .tif, or the single-TIFF .zip.</strong> Do not upload this HTML page, a JSON receipt, a PDF or a ZIP of the repository. Our ZIP is round-trip checked to contain exactly one GeoTIFF.</li>
@@ -312,9 +366,9 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
     hypotheses = f'''<div class="eyebrow">BEFORE CODE · QUALITATIVE EXPECTATIONS, NOT SCORES</div><h1>Four new questions. Three tested leads in Session 5.</h1><p>The ranking was declared before implementation. Novelty means different from the inspected repository implementations; it is not proof that no sibling or researcher has ever tried it. No numeric leaderboard forecasts are assigned.</p>
 {table(['Rank', 'Hypothesis & physical signature', 'Layers', 'Why a missing strand?', 'Difference from existing work', 'Expected improvement / cost', 'Non-fault mimic / status'], hypothesis_rows)}
 <p>In Session 5 (2026-10-10), E1 tested multi-scale host-bend damage asymmetry &amp; detrended-elevation scarp strike (H57-H), E2 added two-host damage-zone superposition &amp; en echelon relay stepover mechanics (H57-I2) via exact 12-bitplane Euclidean distance transforms to the second nearest distinct visible component (<code>C2 != C1</code>), and E3 tested slip-sense transition heterogeneity (H57-J). E2 achieved a statistically significant positive paired gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only).</p><p>Required band/geometry data were obtained and hash verified; source-origin and attribute-matching caveats remain.</p>
-<h2>Session 7 (2026-10-10) — the next five questions, ranked by expected holdout gain per experiment-hour</h2><p>Declared before any Session-7 experiment was run; Session 7 itself spent its budget on the H57-M emission and two measurement passes and ran none of them. A hypothesis is only promoted if its paired holdout CI is strictly positive under the exact evaluator, and no submission slot can be spent before the uniqueness ruling (IR-S7-02).</p>
-{table(['Rank', 'Hypothesis & physical signature', 'Layers', 'Why a missing strand?', 'Difference from existing work', 'Expected improvement / cost', 'Non-fault mimic / status'], [[str(h['rank']), f"<strong>{esc(h['id'])}: {esc(h['hypothesis'])}</strong><p>{esc(h['signature'])}</p>", '<br>'.join(esc(x) for x in h['layers']), esc(h['why_missing_faults']), esc(h['difference_from_repo']), f"{esc(h['expected_improvement'])}<br>{esc(h['implementation_cost'])}", f"{esc(h['non_fault_mimic'])}<p>{esc(h['status'])}</p>"] for h in evidence['session7_hypotheses']['candidates']])}
-<p>{link('data/session7_hypotheses.json', 'Session-7 ranking JSON')}</p>'''
+<h2>Session 7 (2026-10-10) — the next five questions, ranked by expected holdout gain per experiment-hour</h2><p>Declared before any Session-7 experiment was run; Session 7 itself spent its budget on the H57-M emission and two measurement passes and ran none of them. A hypothesis is only promoted if its paired holdout CI is strictly positive under the exact evaluator, and no submission slot can be spent before the uniqueness ruling (IR-S7A-02).</p>
+{table(['Rank', 'Hypothesis & physical signature', 'Layers', 'Why a missing strand?', 'Difference from existing work', 'Expected improvement / cost', 'Non-fault mimic / status'], [[str(h['rank']), f"<strong>{esc(h['id'])}: {esc(h['hypothesis'])}</strong><p>{esc(h['signature'])}</p>", '<br>'.join(esc(x) for x in h['layers']), esc(h['why_missing_faults']), esc(h['difference_from_repo']), f"{esc(h['expected_improvement'])}<br>{esc(h['implementation_cost'])}", f"{esc(h['non_fault_mimic'])}<p>{esc(h['status'])}</p>"] for h in evidence['session7_hypotheses_h57m']['candidates']])}
+<p>{link('data/session7_hypotheses_h57m.json', 'Session-7 (H57-M) ranking JSON')} · the pre-registered parallel lane ranking and its tested top candidate: {link('data/session7_hypotheses.json', 'ranked list')} · {link('data/h6_1_proximity_pruning_holdout.json', 'H6-1 receipt (negative, not promoted)')} · {link('data/run_card_session7_h6_1.json', 'lane run card')}.</p>'''
 
     research = f'''<div class="eyebrow">CAUSAL CLAIMS REQUIRE MORE THAN A LEADERBOARD</div><h1>What can explain the reported 0.2778?</h1><div class="warning">0.2778 is <strong>OWNER-REPORTED</strong> for the named GEMSDOE32 file. No organizer submission-page receipt attributes that score to its exact bytes. The public board’s matching participant value does not close that gap.</div>
 <section><h2>What we independently established</h2><p>H33-2-B2 is exactly its 40,199-dot GEMSDOE28 base minus 2,545 dots at catalogue distance ≤2 pixels, leaving 37,654. No dots were added or relocated. The canonical TIFF SHA256 is <code>c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9</code>. This is a construction measurement, not a scoring receipt.</p><p>{link('data/best_submission_audit.json', 'Independent construction audit')} · {link('https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/registry/submission_build.json', 'Original construction source')}</p></section>

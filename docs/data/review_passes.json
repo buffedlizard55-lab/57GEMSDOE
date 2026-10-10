@@ -67,5 +67,117 @@
     "first_run_conclusion": "success",
     "final_head_verification": "verified locally and via PR merge"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "followup_audit_20261010": {
+    "completed_utc": "2026-10-10T21:13:26Z",
+    "scope": "Three-pass follow-up review of public-source provenance, historical holdout comparability, read-only data audit, shortlist, feed/site integration, and final checks; no modeling run.",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Standing protocol/source review, direct review of older exploration scripts and archived H57 hypotheses, and holdout/evaluator reconciliation",
+        "result": "Reviewed official DrivenData problem/leaderboard, GDR 1391/1591, USGS GeoDAWN and ScienceBase DOI 10.5066/P9YL58W6. H57-K single-feature canaries for d, d_perp and vis_dtip exceed 0.90; own evaluator/input hashes absent. Later results use different folds/representations and do not match current evaluator hashes. No comparable current-code benchmark. Directly inspected explore_zone.py/explore_zone2.py, run_sense_experiment.py/run_orientation_experiments.py, anatomy.py, and archived hypotheses_h57.md: generic sense-by-angle/distance and broad sense+geometry tests were already tried; generic tip-relay/junction/slip-rate were previously proposed but not run; RECNUM was absent from reviewed code/slates. Narrowed rank 1 to explicit visible topology x sense; marked slip-rate as previously proposed/unrun; no global novelty claim."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Read-only attribute evidence, hypothesis shortlist, public feed and site build",
+        "result": "Added pinned CSV completeness inventory, scope reconciliation and four ranked untried hypotheses. Made feed snapshots public with provenance and exact-file caveats; builder copies evidence JSON and scheduled refresh is fail-closed. No spatial join, model, external archive download, or holdout. The shortlist was revised after the novelty review: the already-tried generic sense model is excluded; one topology-conditioned refinement is clearly distinguished from prior broad proposals."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Independent protocol, hold, public claims, test suite, link/feed and code review",
+        "status": "complete",
+        "initial_regression": "One full-suite run exposed a wording assertion requiring the explicit term unsatisfiable; the blocker wording was corrected without changing the gate. A later renderer test expected the phrase not a submission-page receipt while the UI says not a submission receipt; the test expectation was corrected. The final full suite passed."
+      }
+    ],
+    "final_tests": {
+      "command": ".venv/bin/pytest -q -rs",
+      "collected": 115,
+      "passed": 113,
+      "skipped": 2,
+      "skip_reasons": [
+        "tests/test_anatomy.py: training_features.tif not assembled",
+        "tests/test_data_pins.py: 419 MB training_features.tif is gitignored and absent"
+      ]
+    },
+    "site_check": {
+      "command": ".venv/bin/python scripts/check_site.py --build",
+      "status": "PASS",
+      "html_pages": 28,
+      "html_and_markdown_links": "PASS",
+      "active_download_links": 0,
+      "public_feed_and_audit_copies_match": true,
+      "cache_preflight": "0/679",
+      "download_or_submission_clearance": false
+    },
+    "static_checks": {
+      "compileall": "PASS",
+      "git_diff_check": "PASS",
+      "evidence_json_parsing": "PASS"
+    },
+    "experiments": 0,
+    "holdout_runs": 0,
+    "external_archive_downloads": 0,
+    "geotiff_builds": 0,
+    "submission_slots_used": 0,
+    "organizer_submissions": 0,
+    "verdict": "negative; HOLD; not cleared to download or submit"
+  },
+  "merge_reconciliation_20261010": {
+    "completed_utc": "2026-10-10T21:41:38.581145+00:00",
+    "branch": "arena/57b8d44a-57gemsdoe",
+    "integrated_main": "fab2657",
+    "pull_request": 23,
+    "status": "Validated and pushed for merge; this record was written immediately before the explicit GitHub merge action.",
+    "scope": "Resolve PR #23 conflicts against Session-5/Session-6 main, preserve current evidence, close download-permission ambiguity conservatively, refresh static public feed/site and revalidate. No model or holdout run.",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Conflict and evidence reconciliation",
+        "result": "Accepted latest main as source of truth for Session-5/Session-6 run cards, registry, uniqueness, mechanism and pre-registered hypotheses. Retained the read-only QFault attribute audit and feed evidence. Updated historical H57-K reconciliation to distinguish its leakage/provenance limits from Session-5 E2 paired comparisons; no old candidate slate overwrote current evidence."
+      },
+      {
+        "pass_number": 2,
+        "scope": "Permission and site safety review",
+        "result": "IR-S6-10 resolved operationally by failing closed: no explicit owner authorization is recorded, so current okay_to_download=false and okay_to_submit=false. TIFF/ZIP links removed from generated pages and code defaults; retained files remain only for audit, and direct URL availability is explicitly not permission. Literal uniqueness rule unchanged; IR-S6-01 stays open."
+      },
+      {
+        "pass_number": 3,
+        "scope": "Independent static-site, feed, provenance, test and protocol recheck",
+        "result": "Public leaderboard feed shows selected 1–22 rows with retrieval time/method, stale/failed status and no receipt/file-attribution language. Latest snapshot at 20:40 UTC records DARD rank 8; earlier snapshot rank 7 is preserved as historical. Rechecked 696-raster STOP, public/evidence copy parity, visible 4-item fault-anatomy and Session-6 hypothesis slates, format/ZIP byte identity, and no active TIFF/ZIP links."
+      }
+    ],
+    "validation": {
+      "pytest": {
+        "collected": 135,
+        "passed": 133,
+        "failed": 0,
+        "skipped": 2,
+        "skip_reasons": [
+          "training_features.tif not assembled",
+          "419 MB training_features.tif is gitignored and absent"
+        ]
+      },
+      "site_check": {
+        "status": "PASS",
+        "html_pages": 30,
+        "local_links": "PASS",
+        "public_evidence_copies": "PASS",
+        "retained_tiff_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+        "tiff_bytes": 9960624,
+        "zip_exactly_one_tiff": true,
+        "active_tiff_zip_links": 0,
+        "download_authorized": false,
+        "submission_cleared": false
+      },
+      "python_compileall": "PASS",
+      "git_diff_check": "PASS (git diff --cached --check and git diff --check)"
+    },
+    "experiments": 0,
+    "holdout_runs": 0,
+    "external_data_downloads": 0,
+    "new_geotiff_builds": 0,
+    "submission_slots_used": 0,
+    "organizer_submissions": 0,
+    "verdict": "HOLD; not authorized for download or submission; no candidate promoted"
+  }
 }
