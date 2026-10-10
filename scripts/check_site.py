@@ -59,6 +59,15 @@ def check(root=ROOT):
     assert card==public,'public card is stale'
     public_current=json.loads((docs/'data/run_card_current.json').read_text())
     assert card==public_current,'public current-card copy is stale'
+    preflight=json.loads((root/'evidence/preflight_anatomy.json').read_text())
+    assert preflight==json.loads((docs/'data/preflight_anatomy.json').read_text()),'preflight site copy is stale'
+    assert preflight['literal_preplacement_gate']=='STOP'
+    assert preflight['certificate']['universal_overlap_blocker']
+    assert preflight['certificate']['uncovered_allowed_pixels']==0
+    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
+    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
+    assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
+    assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
     assert card['okay_to_download'] is False and card['okay_to_submit'] is False
     assert card.get('download_permission_status',{}).get('resolution')=='HOLD pending explicit owner decision (IR-S6-10)'
     assert card['verdict']=='negative' and card['submission_slots_used']==0
