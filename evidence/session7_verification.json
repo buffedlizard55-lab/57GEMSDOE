@@ -1,0 +1,185 @@
+{
+  "evidence_class": "DATA-MEASUREMENT (local recomputation; no organizer score)",
+  "generated_by": "scripts/session7_verify.py",
+  "download": {
+    "file": "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+    "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "nodata": null
+    },
+    "n_nan": 0,
+    "n_finite": 12279160,
+    "min": 0.0,
+    "max": 0.9014216065406799,
+    "in_unit_interval": true,
+    "positive_cells": 2714823,
+    "outside_footprint_is_nan": false,
+    "note": "Every cell is finite; outside-footprint cells are 0.0, not NaN. The official rules say data outside the bounds is null or NaN, and the bridged template uses NaN. A zero probability adds nothing to the metric, but the convention differs (IR-S7-03)."
+  },
+  "template": {
+    "sample_sha256": "2176d08e485aa2cd2860ce8df539db4faf4d76163b38a4dd8c30a40454d35cbc",
+    "grid": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ]
+    },
+    "footprint_cells": 5167373,
+    "sample_positive_cells": 60988,
+    "sample_values": [
+      0.0,
+      1.0
+    ],
+    "labels_positive_cells": 60988,
+    "sample_positives_equal_label_positives": true,
+    "note": "The bridged 'sample_submission.tif' has 60,988 positive cells that coincide with the known-fault positives, while the official page says the sample predicts total fault absence (IR-S7-02). It is used only for grid and footprint compatibility."
+  },
+  "duplicate_labels": {
+    "labels_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "existing_faults_sha256": "7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093",
+    "byte_identical": true
+  },
+  "pair_0_2778_vs_0_2708": {
+    "raster_0_2778": {
+      "file": "registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif",
+      "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+      "positive": 37654
+    },
+    "raster_0_2708": {
+      "file": "registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+      "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+      "positive": 40199
+    },
+    "kept_is_subset_of_0_2708": true,
+    "removed_cells": 2545,
+    "removed_distance_to_known_px": {
+      "min": 1.4142135623730951,
+      "median": 2.0,
+      "max": 2.0
+    },
+    "kept_distance_to_known_px": {
+      "min": 2.23606797749979,
+      "median": 19.6468827043885
+    },
+    "removed_all_within_2px": true,
+    "kept_none_within_2px": true,
+    "interpretation": "This is a local raster containment and distance measurement only. It does not establish that 0.2778 beat 0.2708 on these bytes, that removed pixels were false positives on hidden labels, or any causal score gain.",
+    "score_attribution_status": "WITHDRAWN / UNVERIFIED: H33-2-B2 is owner-marked UNSCORED; 0.2747 is a projection; 0.2778 is not linked to exact bytes; the 0.2708 file attribution is contradicted.",
+    "owner_score_audit": "evidence/owner_score_reconciliation_session4.json"
+  },
+  "holdout": {
+    "file": "evidence/relay_bend_holdout.json",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "arms": {
+      "distance_only": {
+        "stored": 0.11272500983662669,
+        "recomputed": 0.11272500983662669,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.10142830690899272,
+          0.12444583599629178
+        ]
+      },
+      "anatomy": {
+        "stored": 0.10964730783892841,
+        "recomputed": 0.10964730783892841,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.09595773296382741,
+          0.12506769655929167
+        ]
+      },
+      "bend_anatomy": {
+        "stored": 0.1123312334453778,
+        "recomputed": 0.1123312334453778,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.0985053153686782,
+          0.12809406589957337
+        ]
+      },
+      "relay_bend_anatomy": {
+        "stored": 0.13520371677763354,
+        "recomputed": 0.13520371677763354,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.11913983230552322,
+          0.15303605496339084
+        ]
+      },
+      "relay_bend_sense_transition": {
+        "stored": 0.14139139369438386,
+        "recomputed": 0.14139139369438386,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.12451318565731526,
+          0.1614570080808692
+        ]
+      },
+      "orientation": {
+        "stored": 0.13520371677763354,
+        "recomputed": 0.13520371677763354,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.11913983230552322,
+          0.15303605496339084
+        ]
+      },
+      "orientation_sense": {
+        "stored": 0.14139139369438386,
+        "recomputed": 0.14139139369438386,
+        "withheld_positive_pixels": 11321,
+        "ci95": [
+          0.12451318565731526,
+          0.1614570080808692
+        ]
+      }
+    },
+    "max_abs_recompute_error": 0.0,
+    "fold_arm_receipts": 20,
+    "nearest_visible_to_truth_px_min": 3.1622776601683795,
+    "nearest_visible_to_truth_px_max": 3.1622776601683795,
+    "collar_blind_zone": true,
+    "interpretation": "Withheld truth is never closer than 3 px to any visible fault in any fold. Dots within ~3 px of a visible trace are therefore pure false positives in this holdout. The holdout cannot reward or penalise near-trace strands (IR-S7-04)."
+  },
+  "pins": {
+    "training_features_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "training_features_pin": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
+    "training_features_match": true,
+    "band12_cache_sha256": "739d6373125abf164e0f56163b8d9d02f651eb8d622decfe0360882085a0de32",
+    "band12_cache_pin": "739d6373125abf164e0f56163b8d9d02f651eb8d622decfe0360882085a0de32",
+    "band12_cache_match": true,
+    "bands": 19,
+    "provenance": "hash-verified third-party bridge; not an organizer receipt"
+  },
+  "current_workspace_availability": {
+    "training_features_tif_present": false,
+    "band12_cache_present": false,
+    "status": "NOT LOCALLY REPRODUCIBLE IN THIS WORKSPACE SNAPSHOT",
+    "note": "The large training feature TIFF and .cache are ignored/not persisted in this checkout. Prior hash receipts remain historical evidence; no network fetch was performed to recreate them."
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "evidence_class": "OWNER-REPORT PROVENANCE AUDIT; NO ORGANIZER RECEIPT",
+  "audit_date_utc": "2026-10-10",
+  "findings": {
+    "H33-2-B2": {
+      "owner_repository": "https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md",
+      "owner_status": "UNSCORED",
+      "owner_reported_local_proxy": 0.267921,
+      "owner_reported_local_proxy_delta": 0.004870,
+      "owner_reported_local_proxy_folds": "4/4",
+      "projected_live_value": 0.2747,
+      "projected_live_value_class": "PROJECTION; NOT A SCORE",
+      "exact_file_submission_receipt": null
+    },
+    "0.2778": {
+      "classification": "OWNER-REPORTED / UNVERIFIED",
+      "organizer_confirmed": false,
+      "exact_file_attribution": null,
+      "note": "No submission-page receipt ties this owner-reported value to exact TIFF bytes. It must not be assigned to H33-2-B2."
+    },
+    "0.2708": {
+      "classification": "FILE ATTRIBUTION CONTRADICTED BY OWNER AUDIT",
+      "attribution_to_H27_4_r1_solo_d2_8": false,
+      "note": "The inspected GEMSDOE28 owner source reports no score for the claimed file; the matching public-board row is attributed to participant smashi34 (rank 13), not the claimed file."
+    }
+  },
+  "file_level_observation": "A local raster comparison found a 37,654-positive-pixel raster to be a subset of a 40,199-positive-pixel base after removing 2,545 pixels within 2 px of mapped catalogue traces, with no additions. This geometrical relationship does not establish which file was scored or explain any owner-reported value.",
+  "descriptive_owner_value_analysis": {
+    "included_records": 13,
+    "exclusions": [
+      "H33-2-B2 / 0.2778: owner source marks H33-2-B2 UNSCORED; no exact-file receipt.",
+      "H27-4 / 0.2708: file-score attribution contradicted by owner source and board-row attribution."
+    ],
+    "evidence": "evidence/registry_budget_session4_junction.json",
+    "calibration": "evidence/calibrate_registry_session4.json"
+  },
+  "score_labels": {
+    "HOLDOUT-DTI": "Local detached-mode holdout result with evaluator version, withheld-positive count and 95% interval.",
+    "OWNER-REPORTED": "Claim recorded from owner material; not organizer-confirmed and not an exact-file receipt.",
+    "ORGANIZER-CONFIRMED": "None for the two disputed values; only assign from a submission-page receipt."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "evidence_class": "RASTER-MEASUREMENT (not a score)",
+  "file_sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+  "sources": [
+    "GEMSDOE32:docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
+    "GEMSDOE48:data/families/dotted_b2_prune_02778.tif",
+    "GEMSDOE48:data/raw/dotted_h33_2_b2_zeros.tif",
+    "GEMSDOE51:data/prior/g32_h33b2_prior.tif",
+    "GEMSDOE54:registry/registry_rasters/dotted_b2_prune_02778.tif",
+    "57GEMSDOE:registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif"
+  ],
+  "primary_positive_pixels": 37654,
+  "base_positive_pixels": 40199,
+  "added_vs_base": 0,
+  "removed_vs_base": 2545,
+  "is_exact_prune_of_base": true,
+  "minimum_distance_to_catalogue_px": 2.23606797749979,
+  "remaining_within_2px": 0,
+  "equals_base_pruned_at_2px": true,
+  "no_prior_was_used_for_new_candidate": true,
+  "organizer_submission_receipt": null,
+  "causal_score_gain_verified": false,
+  "explanation": "The local raster construction is a subset relation and a catalogue-near pruning measurement only. It does not identify which file was scored, establish a causal gain, or validate any owner-reported value. The 0.2747 value in inspected owner material is a projection, not a score.",
+  "owner_reported_claim": {
+    "value": 0.2778,
+    "classification": "OWNER-REPORTED / UNVERIFIED",
+    "file_attribution": "not established; owner README marks H33-2-B2 UNSCORED",
+    "organizer_confirmed": false,
+    "submission_page_receipt": null
+  },
+  "score_attribution_status": "File geometry is measured; no score is attributed to these exact bytes. The claimed 0.2708 base mapping is contradicted by owner audit."
+}

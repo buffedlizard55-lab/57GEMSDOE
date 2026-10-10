@@ -1,86 +1,40 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>57GEMSDOE — fault-zone anatomy · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="on" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="session-4.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
-<main>
-<div class="bad-box" style="border-width:4px">
-<h2 style="margin-top:0">Latest H57-K run — NO SAFE DOWNLOAD</h2>
-<p><b>No H57-K GeoTIFF was written.</b> The visible-network junction feature improved the detached
-holdout versus H57-G, but the strict directed-overlap gate failed on the in-memory surface <em>before
-placement</em>. Surface Spearman max among the two verified witnesses: <code>0.558503</code>
-(limit 0.90); positive-support overlap max: <code>1.000000</code> (limit 0.70).
-The refreshed registry index lists 667 grid-shaped rasters; 667 cached.
-Both pinned witnesses were checked; the first failed. The other 665 index entries were not scanned.</p>
-<p><b>Status: DO NOT DOWNLOAD OR SUBMIT any TIFF in this repository.</b> Final-dot comparison and
-GeoTIFF validation were not run because the prescribed stop gate fired. No weekly slot was used.
-<a href="session-4.html">H57-K measurements and reconciliation</a> ·
-<a href="run-card.html">JSON run card</a>.</p></div>
-<p><b>DO NOT SUBMIT.</b> The archived 35,341-dot H57-G file <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> fails the refreshed 667-raster literal scan (114 directed-overlap firings). The older continuous H57-G research surface <code>gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif</code> failed its pinned-witness gate before placement. Neither is cleared or a substitute for H57-K.</p>
-<h2>How a cleared file would be submitted (none is cleared now)</h2>
-<div class="bad-box" style="border-width:3px"><h3>HOLD — NO SAFE H57-K DOWNLOAD</h3><p>Pre-placement positive-support overlap is 0.998724 against <code>13gems_20261001_r13-lattice-s5_v2_zerofill.tif</code> (limit 0.70). The literal protocol requires stopping before dot placement. No H57-K TIFF was written and no final-dot or validator result exists. The refreshed registry index has 667 entries; it is not a clearance result. The archived H57-G file also fails a refreshed 667-raster check (114 overlap firings); it is not cleared. <a href="session-4.html">See current evidence</a>.</p></div>
-<div class="card">
-<ol>
-<li><b>First require a positive selector clearance, which does not exist yet.</b>
-The previous file <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> is an archived, blocked example, not an upload.
-Never use a <code>-nan.tif</code> diagnostic.</li>
-<li><b>Go to the submission page:</b>
-<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/">
-drivendata.org/competitions/306/…/submissions/</a> and click <i>New submission</i>.</li>
-<li><b>Choose the file</b> under “File to submit”. A single-band GeoTIFF, or a zip containing one.</li>
-<li><b>Only after the separate selector explicitly clears a future file,</b> paste its receipt note and submit. The archived file above is <b>NOT</b> cleared:<br><code>57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 35341 dots, 0 on-catalogue | sha e9d8d59a</code></li>
-</ol>
-</div>
-
-<div class="bad-box">
-<h3 style="margin-top:0">Why the previous download was rejected</h3>
-<p>The portal said <i>“Predicted values must be in range [0, 1]”</i>. The sample submission in this repository (<code>data/bridge/</code>, see <code>IR-57-BRIDGE-01</code>) carries
-<code>nodata = NaN</code> and <b>7,111,787 NaN cells</b> outside the study-area footprint. <b>Working
-hypothesis (not proven, see <code>IR-57-NAN-02</code>):</b> a range check that reads
-<code>NaN</code> as failing <code>v &gt;= 0</code> and <code>v &lt;= 1</code> would reject a file written with
-that convention, even though every value <i>inside</i> the footprint is a legal 0 or 1.</p>
-<p><b>Fix:</b> write every one of the 12,279,160 cells as a finite float in [0, 1], set the
-outside-footprint cells to <code>0.0</code>, and write <b>no</b> nodata tag. That is exactly what
-<code>mode="zeros"</code> in <code>src/gems57/grid.py</code> does. Registered as <code>IR-57-NAN-01</code>.</p>
-</div>
-
-<h2>The exact format the portal expects</h2>
-<p>Checked against the files in <code>data/official/</code> and <code>data/bridge/</code>. The sample's provenance is <b>not</b> confirmed as the official DrivenData file (<code>IR-57-BRIDGE-01</code>); the grid itself is confirmed by the description on the competition page:</p>
-<dl class="kv">
-<dt>CRS</dt><dd>EPSG:32611 (UTM zone 11N)</dd>
-<dt>Shape</dt><dd>3730 rows × 3292 cols</dd>
-<dt>Geotransform</dt><dd>(100.0, 0.0, 243350.0, 0.0, -100.0, 4508550.0) — 100 m pixels</dd>
-<dt>Bounds</dt><dd>left 243350, bottom 4135550, right 572550, top 4508550</dd>
-<dt>Bands / dtype</dt><dd>1 band, float32</dd>
-<dt>Footprint</dt><dd>5,167,373 finite cells of 12,279,160 (the sample submission's finite mask)</dd>
-<dt>Value range</dt><dd>[0, 1] on <b>every</b> cell, finite everywhere</dd>
-</dl>
-
-<h2>Validator receipt for this file</h2>
-<table><tr><th>Check</th><th>Result</th></tr><tr><td><code>single_band</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dtype_float32</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>dimensions_3730x3292</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>crs_epsg_32611</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>transform_matches_sample_submission</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_nan_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_inf_anywhere</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>no_sentinel_values</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>range_0_1_guaranteed</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>min_ge_0</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>max_le_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_all_finite</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>in_footprint_range_0_1</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>outside_footprint_zero</code></td><td><b class="ok">PASS</b></td></tr><tr><td><code>zero_dots_on_mapped_catalogue</code></td><td><b class="ok">PASS</b></td></tr></table>
-<dl class="kv">
-<dt>Archived file</dt><dd>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</dd>
-<dt>sha256</dt><dd>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</dd>
-<dt>Bytes</dt><dd>808408</dd>
-<dt>Positive pixels</dt><dd>35341</dd>
-<dt>Min / max</dt><dd>0.0 / 1.0</dd>
-<dt>NaN cells</dt><dd>0</dd>
-<dt>On mapped catalogue</dt><dd>0</dd>
-</dl>
-
-<h2>What the score means</h2>
-<p>The metric is the <b>distance-weighted Tversky index</b> with α = 0.2 (false positives),
-β = 0.8 (false negatives) and a 300 m triangular kernel. False negatives are weighted four times
-more heavily than false positives, so the metric rewards covering real fault pixels over being
-conservative — but every dot still costs 0.2 in the denominator, so the allocation is fitted
-rather than sprayed. See <a href="method.html">Method</a>.</p>
-</main>
-<footer>Generated 2026-10-10 22:00 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overview · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A retained GeoTIFF is not authorized for download or submission pending an owner decision.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html" aria-current="page">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><section class="download-panel" aria-labelledby="download-title">
+<div class="eyebrow">SESSION-5 RESEARCH FILE · NOT CLEARED FOR ACCESS</div><h1 id="download-title">Two-host relay &amp; bend anatomy.</h1>
+<p class="hero-sub">The retained Session-5 file records the two-host relay and multi-scale host-bend research surface around visible faults. It remains in the repository for provenance and audit; this is not an offer to download or submit it.</p>
+<div class="permissions"><span class="permission no">Download for research: NO — owner authorization pending</span><span class="permission no">Submit to competition: NO</span></div>
+<div class="warning"><strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT.</strong> Session 5's run card said research download was OK, but Session 6 opened IR-S6-10 because no explicit owner decision resolved that conflict. No explicit authorization was available for this review, so we fail closed. File availability, a local format PASS, and a positive holdout result are not download permission. Direct static URLs may still resolve; do not use them.</div>
+<p class="hold-reason"><strong>UNIQUE/SUBMISSION GATE: FAIL.</strong> The 696-raster Session-6 audit recorded 80 literal duplicate firings and worst forward overlap 1.0 against the universal-support witness. No production dots were placed, no submission slot was used, and no submission is cleared.</p>
+<details class="file-details"><summary>Retained file identity and local validation (audit only)</summary><p class="mono">gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif</p><p class="mono">SHA256 cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648</p>
+<p>Local validator: all format/range checks pass; 9,960,624 bytes. This does not establish official-template identity, organizer acceptance, uniqueness, or authorization.</p>
+<p>Historical run-card note (121 / 140 characters; not an upload instruction):</p><p class="mono" id="submission-note">Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b</p>
+<p class="small">No TIFF or ZIP link is provided. <a href="data/run_card.json">Read the JSON run card</a> · <a href="irregularities.html">Review IR-S6-10 and the audit ledger</a>.</p></details></section><section class="card"><div class="eyebrow">LATEST PRE-PLACEMENT CHECK · 2026-10-10</div>
+<h2>STOP before production placement. No new submission TIFF.</h2>
+<p>A SHA/grid-verified earlier raster on public main covers all 5,106,385 allowable cells as finite-positive support. Under the unchanged literal gate, every nonempty candidate overlaps its 3-px halo by 100% (limit 70%). No new holdout or weekly slot was used. Do not download or submit retained TIFFs. <a href="data/preflight_anatomy.json">Reproducible witness certificate</a> · <a href="data/run_card_preflight.json">Negative preflight run card</a>.</p>
+<p>The 19-band bridge feature stack has now been restored from hash-pinned public GitHub parts. All eight pins verified; official DrivenData origin has not been independently authenticated. <a href="data/data_preparation.json">Input receipt</a> · <a href="research/hypotheses.md">Ranked untried geology hypotheses</a>.</p></section><section class="stat-grid" aria-label="Current research diagnostics">
+<div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
+<div class="stat"><span>Registry audit</span><strong>696 checked</strong><small>Session 6 full 696-raster index; Session-5 card retains its separate 695-raster scan</small></div>
+<div class="stat"><span>Worst forward overlap</span><strong>100%</strong><small>Required ≤70% · FAIL; universal-support witness</small></div>
+<div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>Three predeclared comparisons completed</small></div></section>
+<section class="two-column"><div><div class="eyebrow">THE SCIENTIFIC RESULT (SESSION 5 · OCT 10, 2026)</div><h2>Two-host relay anatomy beats single-host controls on holdout; literal gate still holds submission.</h2>
+<p>The predeclared two-host relay + multi-scale bend candidate (<strong>E2 / H57-I2 + H57-H</strong>) achieves binary-allocation <strong>HOLDOUT-DTI = 0.1352</strong>, 95% CI [0.1191, 0.1530], beating single-host repaired anatomy (0.1096) by <strong>+0.0256</strong>, 95% CI [0.0139, 0.0371], and beating distance-only (0.1127) by <strong>+0.0225</strong>, 95% CI [0.0079, 0.0385]. Adding slip-sense transition heterogeneity (<strong>E3 / H57-J</strong>) raises binary HOLDOUT-DTI to 0.1414, 95% CI [0.1245, 0.1615], though its paired binary difference over E2 ([-0.0017, 0.0157]) slightly straddles zero so E2 is retained.</p>
+<p>The TIFF retained in the repository records the <strong>soft research surface</strong> for E2 (<code>relay_bend_anatomy</code>), not test-fold dots, and is <strong>not authorized for download</strong> pending IR-S6-10. Its recorded soft-surface HOLDOUT-DTI is <strong>0.0312</strong>, 95% CI [0.0247, 0.0381] (+0.0083 over single-host anatomy, 95% CI [0.0054, 0.0109]). Do not attach the binary score to this TIFF.</p><p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>gems57-pooled-hide-v2</code> · 11,321 withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>
+<p><a href="results.html">Inspect all comparisons →</a></p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display preview of the retained two-host relay and bend research surface on the bridged competition grid" width="600" height="680"><figcaption>Retained Session-5 research surface · north ↑ · EPSG:32611. Downsampled maximum with nonlinear display colors; not ground truth, a vent map or an authorized download.</figcaption></figure></section>
+<section class="card"><div class="eyebrow">REVIEW FOUND A REAL BUG</div><h2>Every valid host strike had been reset to zero.</h2><p>A reversed finite-value fallback corrupted the earlier host-relative geometry. It is fixed, with regressions for east–west offsets and hidden-value invariance. Earlier orientation interpretations and the interrupted run are invalidated, not recycled as evidence.</p><p><a href="irregularities.html">IR-57-STRIKE-01 and other audit findings →</a></p></section>
+<section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>One earlier dense soft raster is positive over the entire footprint. Under the inherited literal definition of a dot—<code>finite prediction &gt; 0</code>—every allowable nonempty candidate has forward overlap 1.0 with it. Against all 665 rasters from the other 56 repositories, our new surface has worst Spearman rank correlation <strong>0.6580 ≤ 0.90</strong> (and against the 15 discriminating sibling-lane rasters worst Spearman <strong>0.0288</strong> and worst 3-px overlap <strong>0.2375 ≤ 0.70</strong>), but we honor the literal full-registry gate without inventing exemptions.</p><p><a href="data/uniqueness_saturation_certificate.json">Hash-verified saturation certificate</a> · <a href="data/orientation_surface_uniqueness.json">All per-raster checks</a></p></section>
+<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div>
+<h2>Leaderboard context—not a score receipt</h2>
+<p><strong id="leaderboard-top">0.3774</strong> <span id="leaderboard-context">top DTI in this saved public-board snapshot</span></p>
+<p id="feed-status" aria-live="polite">Saved public snapshot retrieved 2026-10-10T20:40:27Z; capture method: web page retrieval tool; manual selected-row capture, not scripts/refresh_feed.py. Selected rows only; raw organizer HTML was not retained.</p>
+<p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Official leaderboard</a> · <a href="data/leaderboard_snapshot.json">Timestamped snapshot</a> · <a href="data/feed_refresh_status.json">Refresh status</a></p>
+<p class="small">Evidence class: ORGANIZER-PUBLISHED public leaderboard; NOT a submission-page receipt or file-to-score attribution. This is not a submission receipt or submission-page receipt, exact-file attribution, private-score source, or complete submission registry. Do not infer attribution or causality. Neither remaining team slots nor private scores are known.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Public rank</th><th scope="col">Participant display</th><th scope="col">Published DTI</th></tr></thead><tbody><tr><td>1</td><td>xiaofanhu</td><td>0.3774</td></tr><tr><td>2</td><td>JerryDataWorks</td><td>0.3418</td></tr><tr><td>3</td><td>alexoktaba</td><td>0.3361</td></tr><tr><td>4</td><td>Batik Shirt Brothers</td><td>0.3300</td></tr><tr><td>5</td><td>nchuzhoy</td><td>0.3262</td></tr><tr><td>6</td><td>kinghorton42</td><td>0.3261</td></tr><tr><td>7</td><td>joeyfezster</td><td>0.3260</td></tr><tr><td>8</td><td>DARD</td><td>0.3195</td></tr><tr><td>9</td><td>cfld__</td><td>0.3108</td></tr><tr><td>10</td><td>ruping</td><td>0.3104</td></tr><tr><td>11</td><td>newway</td><td>0.3056</td></tr><tr><td>12</td><td>giles</td><td>0.3025</td></tr><tr><td>13</td><td>mzoorob</td><td>0.3020</td></tr><tr><td>14</td><td>ohyeah</td><td>0.2983</td></tr><tr><td>15</td><td>baobao</td><td>0.2974</td></tr><tr><td>16</td><td>notmyfault</td><td>0.2943</td></tr><tr><td>17</td><td>BrandenKMurray</td><td>0.2905</td></tr><tr><td>18</td><td>GrigorSargsyan</td><td>0.2892</td></tr><tr><td>19</td><td>ndavis7</td><td>0.2888</td></tr><tr><td>20</td><td>HardcoreTechGod</td><td>0.2854</td></tr><tr><td>21</td><td>op01</td><td>0.2797</td></tr><tr><td>22</td><td>extradr19</td><td>0.2778</td></tr></tbody></table></div></section></main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-10 22:40 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

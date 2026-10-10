@@ -1,0 +1,12 @@
+{
+  "attempted_utc": "2026-10-10T20:40:27Z",
+  "url": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+  "ok": true,
+  "rows": 22,
+  "method": "web page retrieval tool; manual selected-row capture, not scripts/refresh_feed.py",
+  "full_table_captured": false,
+  "raw_html_retained": false,
+  "evidence_class": "ORGANIZER-PUBLISHED public leaderboard; NOT a submission-page receipt or exact-file attribution",
+  "retained_previous_snapshot": false,
+  "caveat": "Rows 1–22 only were captured; the snapshot is not a complete public/private registry or file-to-score receipt. The repository workflow is configured for a scheduled raw-HTML refresh, but this manual capture did not run that script."
+}

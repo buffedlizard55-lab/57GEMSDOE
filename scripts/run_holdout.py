@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
-"""EXPERIMENT 2 (fault-zone anatomy lane): fit the intensity on the holdout,
+"""ARCHIVED H1/H52 experiment; not the active H57 workflow.
+
+This legacy script fits the H1 vector-native faultzone model, sweeps its own
+budget/ablations, and historically used ``gems52-pooled-hide-v1``. The shared
+helper it imports has since been repaired/versioned as H57 v2; rerunning this
+script will therefore not reproduce the archived H1 evaluator provenance.
+Do not compare its outputs with ``scripts/run_lane.py`` / ``scripts/run_cv.py``
+or overwrite the H1 archive with a current H57 score.
+
+EXPERIMENT 2 (fault-zone anatomy lane): fit the intensity on the holdout,
 sweep the dot budget, ablate every factor, run the leakage canary, and score
-pooled DTI with the template's evaluator (gems52 evaluate_holdout@pooled-hide-v1).
+pooled DTI with the legacy template evaluator.
 
 Arms (each is top-k binary dots on the fold's visible-only intensity):
   full          f(d/s(L)) * g(phi)          -- the lane's intensity
@@ -339,4 +348,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Retired legacy/unbuffered runner: not current validation. "
+                     "Reproduce the declared buffered experiment with scripts/run_orientation_experiments.py; "
+                     "no extra experiment or slot is authorized by this command.")

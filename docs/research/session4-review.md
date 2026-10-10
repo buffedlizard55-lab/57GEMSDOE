@@ -1,6 +1,6 @@
 # Session 4 — three-pass review log
 
-Review date: 2026-10-10. Scope is the fault-zone-anatomy lane only.
+Review date: 2026-10-10. Scope is the fault-zone-anatomy lane only. This review refers to the **visible-network junction-distance** H57-K run; it is distinct from the mainline H57-K strand-expression artifact. The junction run produced no TIFF; the separate archived mainline TIFF is also not cleared for download or submission.
 
 ## Pass 1 — geology, protocol, and score provenance
 
@@ -10,7 +10,7 @@ Review date: 2026-10-10. Scope is the fault-zone-anatomy lane only.
 
 ## Pass 2 — registry gate and artifact safety
 
-- Re-read `evidence/exp5_junction.json` and `evidence/run_card.json`. H57-K HOLDOUT-DTI is 0.242353 (95% quadrant-jackknife CI 0.205591–0.279115), versus H57-G 0.237423; paired gain +0.004930 (95% CI 0.001497–0.008364). These are local holdout measurements.
+- Re-read `evidence/exp5_junction.json` and the dedicated `evidence/run_card_session4_junction.json`. H57-K HOLDOUT-DTI is 0.242353 (95% quadrant-jackknife CI 0.205591–0.279115), versus H57-G 0.237423; paired gain +0.004930 (95% CI 0.001497–0.008364). These are local holdout measurements.
 - Verified both SHA-pinned witnesses match the refreshed index. Maximum surface Spearman is 0.558503 (<0.90), but candidate-positive support within 3 px is 0.998724 and 1.000000 (>0.70). Placement stopped before dots; no H57-K TIFF, final-dot check, file hash, validator result, safe download, or submission exists.
 - Separately completed the full scan of the archived 35,341-dot H57-G raster: 667 grid rasters, 56 repositories, all reachable/cached; 114 directed-overlap firings, verdict not cleared. This does not constitute a scan or clearance for H57-K.
 

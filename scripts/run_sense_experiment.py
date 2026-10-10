@@ -27,6 +27,7 @@ from __future__ import annotations
 
 import argparse
 import gc
+import hashlib
 import json
 import sys
 import time
@@ -46,6 +47,23 @@ from gems57.holdout import FOLD_NAMES, build_holdout                     # noqa:
 
 EVID = ROOT / "evidence"
 CSV = ROOT / "data" / "external" / "trace_segments_utm11.csv"
+EVALUATOR_VERSION = "gems57-loqo-pooled-v1"
+EVALUATOR_SOURCES = (
+    "scripts/run_sense_experiment.py",
+    "src/gems57/fitting.py",
+    "src/gems57/metric.py",
+    "src/gems57/holdout.py",
+    "src/gems57/anatomy.py",
+    "src/gems57/network.py",
+    "src/gems57/emit.py",
+    "src/gems57/faultzone.py",
+    "src/gems57/grid.py",
+)
+EVALUATOR_INPUTS = (
+    "data/bridge/existing_faults.tif",
+    "data/bridge/sample_submission.tif",
+    "data/external/trace_segments_utm11.csv",
+)
 PER_CELL_CAP = 10_000          # shipped density: 40,000 live cap / 4 quadrants
 FLOOR = 0.015
 IDX = {n: i for i, n in enumerate(FEATURES + SENSE_FEATURES)}
@@ -54,6 +72,30 @@ VARIANTS = {
     "no_side": NO_SIDE,
     "no_side_plus_sense": NO_SIDE + [IDX["sense_sgn"], IDX["sense_side"]],
 }
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with Path(path).open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def evaluator_provenance() -> dict:
+    """Pin the implementation and data inputs for runs produced from now on."""
+    return {
+        "version": EVALUATOR_VERSION,
+        "implementation": "gems57.fitting.pooled + gems57.metric.dti_binary; "
+                          "visible-only fold geometry and greedy allocation",
+        "implementation_sha256": {
+            name: _sha256(ROOT / name) for name in EVALUATOR_SOURCES
+        },
+        "input_sha256": {
+            name: _sha256(ROOT / name) for name in EVALUATOR_INPUTS
+        },
+        "versioning_note": "Applies to this run only; does not attest historical evidence lacking these hashes.",
+    }
 
 
 def main() -> None:
@@ -106,7 +148,8 @@ def main() -> None:
 
     out = {
         "evidence_class": "HOLDOUT-DTI (local instrument reading, NOT a projected live score)",
-        "evaluator": "gems57 pooled DTI alpha=0.2 beta=0.8 R=3px, leave-one-quadrant-out, mode=all",
+        "evaluator": evaluator_provenance(),
+        "evaluator_description": "gems57 pooled DTI alpha=0.2 beta=0.8 R=3px, leave-one-quadrant-out, mode=all",
         "per_cell_cap": a.cap,
         "shipped_density_note": "35,341 dots shipped over the whole footprint (~10,000 per quadrant cell)",
         "floor": FLOOR,
@@ -147,4 +190,6 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Retired legacy/unbuffered runner: not current validation. "
+                     "Reproduce the declared buffered experiment with scripts/run_orientation_experiments.py; "
+                     "no extra experiment or slot is authorized by this command.")

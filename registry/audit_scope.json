@@ -1,0 +1,17 @@
+{
+  "purpose": "local pre-placement surface and final-dot uniqueness checks",
+  "rows": 18,
+  "owner_repository_inventory_rows": 15,
+  "local_archived_prior_rasters": 3,
+  "archive_files": [
+    "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif",
+    "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+    "docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif"
+  ],
+  "score_provenance": "registry_index.json scores are owner-reported only; archive rows have no score",
+  "limitations": [
+    "not a complete organizer registry",
+    "excludes private, unlinked, externally stored, or unavailable rasters",
+    "the related GitHub manifests also have declared exclusions"
+  ]
+}

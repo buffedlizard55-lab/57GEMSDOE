@@ -1,0 +1,54 @@
+{
+ "schema": "gems57.model-compare.v1",
+ "note": "Archived model_T and model_surrogate_dti are historical arithmetic on the session-4 model surface. The 0.2n + 0.8G denominator used G=14,088.747 from withdrawn owner-score-derived modeling; it is not a validated hidden-truth measurement, HOLDOUT-DTI, score, or ranking signal.",
+ "rows": [
+  {
+   "label": "THIS SESSION — h57-k damage zone",
+   "n_dots": 62872,
+   "model_T": 6057.4228515625,
+   "model_surrogate_dti": 0.254029012824872,
+   "owner_reported_score": null
+  },
+  {
+   "label": "h33-h33-2-b2 (owner README: UNSCORED; prior 0.2778 claim unlinked)",
+   "n_dots": 37654,
+   "model_T": 1192.7662353515625,
+   "model_surrogate_dti": 0.06343894615999476,
+   "owner_reported_score": null,
+   "owner_reported_claim": 0.2778,
+   "score_provenance": "Owner README marks H33-2-B2 UNSCORED; 0.2778 is unverified and not tied to exact bytes."
+  },
+  {
+   "label": "h36-1-rung30-blind-r1 (0.2710)",
+   "n_dots": 37660,
+   "model_T": 1330.0699462890625,
+   "model_surrogate_dti": 0.07073712201504463,
+   "owner_reported_score": 0.271
+  },
+  {
+   "label": "d28-poisson300m-offcat (0.2600)",
+   "n_dots": 44090,
+   "model_T": 1579.9180908203125,
+   "model_surrogate_dti": 0.07864593894931336,
+   "owner_reported_score": 0.26
+  },
+  {
+   "label": "h19-5-powerlaw-multiline (0.1922)",
+   "n_dots": 121131,
+   "model_T": 2086.8681640625,
+   "model_surrogate_dti": 0.05878965935831816,
+   "owner_reported_score": 0.1922
+  },
+  {
+   "label": "r13-lattice-s5 (0.0904)",
+   "n_dots": 206895,
+   "model_T": 4572.83642578125,
+   "model_surrogate_dti": 0.08685349707421926,
+   "owner_reported_score": 0.0904
+  }
+ ],
+ "score_anchor_status": "H33-2-B2 and H27-4 score-to-file labels are withdrawn; all values remain local model comparison or unverified owner claims.",
+ "model_anchor_status": "WITHDRAWN: owner-score-derived G; retained only to document historical arithmetic.",
+ "score_provenance_status": "H33-2-B2 is marked UNSCORED; 0.2778 is unverified and unlinked to exact bytes. The H27-4 / 0.2708 attribution is contradicted. No row establishes an organizer-confirmed submission score.",
+ "artifact_clearance": "NOT CLEARED for download or submission; no output from this model comparison authorizes a TIFF."
+}

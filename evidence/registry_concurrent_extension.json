@@ -1,0 +1,51 @@
+{
+  "rasters": [
+    {
+      "sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
+      "bytes": 794562,
+      "blob": "dc9e2b713d11cd951e93c5b313b03ed184ab1168",
+      "cache_file": ".cache/registry/dc9e2b713d11cd951e93c5b313b03ed184ab1168.tif",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif"
+      ],
+      "repo_first": "57GEMSDOE",
+      "source_commit": "803052f483923a8f09a7ea04934e76c334d27ac7"
+    },
+    {
+      "sha256": "efc6fcb9c6187a9b65b5dd3051243952dd861537804f5fa9a76f09acb667cdaf",
+      "bytes": 855880,
+      "blob": "609ff4ba35f74998157ce8f746f9b7640c650077",
+      "cache_file": ".cache/registry/609ff4ba35f74998157ce8f746f9b7640c650077.tif",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif"
+      ],
+      "repo_first": "57GEMSDOE",
+      "source_commit": "803052f483923a8f09a7ea04934e76c334d27ac7"
+    },
+    {
+      "sha256": "66e8ea67c86374ed67075812e6ab7c7b17d5eaa714b521dcd35c57f58454a46e",
+      "bytes": 11395299,
+      "blob": "94106cce41eb878e3744818a71d99affde67028d",
+      "cache_file": ".cache/registry/94106cce41eb878e3744818a71d99affde67028d.tif",
+      "sources": [
+        "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif"
+      ],
+      "repo_first": "57GEMSDOE",
+      "source_commit": "803052f483923a8f09a7ea04934e76c334d27ac7"
+    },
+    {
+      "sha256": "370319133289cd05af980c344252a6bdb974b83f8f41a294b1186bed75ac46d5",
+      "bytes": 112916,
+      "blob": "a9caa7f9c20875ee3851461855ed58fb57306773",
+      "cache_file": ".cache/registry/a9caa7f9c20875ee3851461855ed58fb57306773.tif",
+      "sources": [
+        "57GEMSDOE:docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif"
+      ],
+      "repo_first": "57GEMSDOE",
+      "source_commit": "803052f483923a8f09a7ea04934e76c334d27ac7"
+    }
+  ],
+  "complete_accessible_scan": true,
+  "errors": [],
+  "n_unique_grid_rasters": 4
+}

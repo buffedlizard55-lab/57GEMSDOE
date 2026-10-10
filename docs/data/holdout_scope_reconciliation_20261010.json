@@ -1,0 +1,234 @@
+{
+  "schema": "gems57.holdout-scope-reconciliation.v1",
+  "created_utc": "2026-10-10T20:48:17Z",
+  "evidence_class": "EVIDENCE RECONCILIATION — no new experiment, no new holdout run, not a score",
+  "purpose": "Reconcile the historical H57-K detached geophysics result and earlier orientation records with the later Session-5 relay/bend holdout, without treating unlike folds, outputs, or source provenance as a benchmark comparison.",
+  "comparability_verdict": "H57-K NOT COMPARABLE TO SESSION 5; SESSION-5 E2 POSITIVE ONLY WITHIN ITS RECORDED SPATIAL HOLDOUT",
+  "records": [
+    {
+      "id": "h57k_lane8_geophys",
+      "source_files": [
+        "evidence/h57k_run_card.json",
+        "evidence/exp6_h57k_arms.json",
+        "evidence/exp6_h57k_emission.json"
+      ],
+      "metric": {
+        "label": "HOLDOUT-DTI (historical)",
+        "value": 0.11032707403762744,
+        "ci95": [
+          0.09167666461134383,
+          0.12897748346391105
+        ],
+        "ci_method": "quadrant jackknife",
+        "withheld_positive_count": 22619,
+        "evaluator_version": "NOT RECORDED as a version identifier; the run card records pooled DTI, alpha=0.2, beta=0.8, 300 m triangular kernel, hide-and-recover, detached mode",
+        "cells": 8,
+        "arm": "lane8_geophys",
+        "feature_count": 48,
+        "representation": "Detached holdout model arm; not organizer score and not proof of current-code reproducibility"
+      },
+      "same_fold_control": {
+        "metric": {
+          "label": "HOLDOUT-DTI (historical control)",
+          "value": 0.10241452754554754,
+          "ci95": [
+            0.08396305396939979,
+            0.1208660011216953
+          ],
+          "ci_method": "quadrant jackknife",
+          "withheld_positive_count": 22619,
+          "evaluator_version": "NOT RECORDED as a version identifier; same stored H57-K detached protocol description",
+          "arm": "lane8",
+          "feature_count": 8
+        },
+        "paired_delta_ci_recorded": false,
+        "interpretation": "The stored point values differ, but a paired-difference confidence interval is not recorded. The comparison is not a validated improvement claim because the experiment's leakage canary is not clean and evaluator/input hashes are absent."
+      },
+      "leakage_canary": {
+        "label": "LEAKAGE-CANARY AUC; threshold is 0.90",
+        "source_file": "evidence/exp6_h57k_arms.json",
+        "flagged_features": [
+          {
+            "feature": "d",
+            "discriminative_auc_max": 0.9036967262401232,
+            "leakage_flag": true
+          },
+          {
+            "feature": "d_perp",
+            "discriminative_auc_max": 0.9019133984469071,
+            "leakage_flag": true
+          },
+          {
+            "feature": "vis_dtip",
+            "discriminative_auc_max": 0.9091688009738081,
+            "leakage_flag": true
+          }
+        ],
+        "interpretation": "Under the standing rule, these features count as leakage until resolved; the H57-K arm is not an acceptable validation result as stored."
+      },
+      "provenance": {
+        "evaluator_source_hashes_in_these_h57k_records": null,
+        "input_and_feature_stack_hashes_in_these_h57k_records": null,
+        "current_feature_stack_available": false,
+        "note": "Do not borrow evaluator hashes from evidence/exp6_holdout_strike.json: that is a separate H57-I record, not provenance for H57-K."
+      },
+      "status": "HISTORICAL / LEAKAGE-FLAGGED / NOT CURRENT-CODE VALIDATION"
+    },
+    {
+      "id": "stored_soft_surface_orientation_result",
+      "source_files": [
+        "evidence/run_card.json",
+        "evidence/orientation_holdout.json"
+      ],
+      "metric": {
+        "label": "HOLDOUT-DTI (historical)",
+        "value": 0.023203075374027337,
+        "ci95": [
+          0.018777925030160507,
+          0.02799187291971626
+        ],
+        "ci_method": "paired physical spatial-cluster percentile",
+        "withheld_positive_count": 11321,
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "split_version": "buffered-whole-components-loqo-v2",
+        "representation": "Soft pre-placement surface; not final dots"
+      },
+      "provenance": {
+        "stored_evaluator_source_hashes_present": true,
+        "stored_evaluator_hashes_match_current_tree": false,
+        "status": "historical source-versioned result; not current-code clearance"
+      },
+      "leakage_canary": {
+        "status_as_recorded": "clean for the recorded later orientation experiment",
+        "source_file": "evidence/orientation_canary.json",
+        "caveat": "This does not repair the separate H57-K leakage flags or establish current-code reproducibility."
+      },
+      "status": "HISTORICAL / VERSION-HASH MISMATCH / NOT THE SESSION-5 E2 RESULT"
+    },
+    {
+      "id": "stored_binary_allocation_orientation_result",
+      "source_files": [
+        "evidence/run_card.json",
+        "evidence/orientation_holdout.json"
+      ],
+      "metric": {
+        "label": "HOLDOUT-DTI (historical binary-allocation arm)",
+        "value": 0.10916787041142981,
+        "ci95": [
+          0.09450251109316313,
+          0.12419365163463253
+        ],
+        "ci_method": "paired physical spatial-cluster percentile",
+        "withheld_positive_count": 11321,
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "split_version": "buffered-whole-components-loqo-v2",
+        "representation": "Holdout binary allocation only; production final dots were not generated"
+      },
+      "provenance": {
+        "stored_evaluator_source_hashes_present": true,
+        "stored_evaluator_hashes_match_current_tree": false
+      },
+      "status": "HISTORICAL BINARY-ALLOCATION ARM / NOT THE SESSION-5 E2 RESULT"
+    }
+  ],
+  "why_the_records_cannot_be_ranked_against_each_other": [
+    "H57-K has 22,619 withheld positives over 8 recorded cells; the Session-5 buffered whole-component records use 11,321 positives and a different split/version description.",
+    "H57-K evaluator version and evaluator/input hashes are absent from its own arm/run-card evidence; its d, d_perp, and vis_dtip single-feature canaries cross the 0.90 leakage threshold.",
+    "Earlier orientation soft-surface and binary-allocation values are different representations, and their stored source hashes do not match the current tree; do not substitute them for Session-5 E2.",
+    "Session-5 E2 and its matched controls share the recorded folds/evaluator and have paired physical-cluster confidence intervals; that within-session result does not make historical H57-K comparable.",
+    "The current training_features.tif and feature-array cache are absent, so no Session-5 geophysical run was reproduced during this follow-up."
+  ],
+  "benchmark_conclusion": "The H57-K geophysics result cannot be ranked against Session-5 E2 because its canaries, split, and provenance are deficient. Session-5 E2 is a positive paired HOLDOUT-DTI result versus its matched controls on the recorded spatial holdout (evaluator gems57-pooled-hide-v2, 11,321 withheld positives, 95% CI as stored), but it was not rerun in this follow-up and is not an ORGANIZER-CONFIRMED score or a live/private prediction. Session-6 full-registry evidence still fails the literal uniqueness gate; no candidate is promoted or authorized for download/submission.",
+  "protocol_budget": {
+    "experiments_authorized_max": 3,
+    "recorded_experiments_used": 3,
+    "new_experiments_in_this_reconciliation": 0,
+    "new_holdout_runs_in_this_reconciliation": 0,
+    "submission_slots_used": 0,
+    "next_action": "Stop model work until explicit uniqueness protocol resolution and a new experiment budget; neither is granted by this reconciliation."
+  },
+  "current_session5_evidence": {
+    "evidence_class": "HOLDOUT-DTI; stored Session-5 result, not rerun in this follow-up and not a competition score",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "split_version": "buffered-whole-components-loqo-v2",
+    "withheld_positive_pixels": 11321,
+    "selected_arm": "relay_bend_anatomy (E2; two-host relay + multi-scale host bend)",
+    "binary_allocation": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "dti": 0.13520371677763354,
+      "ci95": [
+        0.11913983230552322,
+        0.15303605496339084
+      ],
+      "withheld_positive_pixels": 11321
+    },
+    "soft_surface": {
+      "evidence_class": "HOLDOUT-DTI",
+      "evaluator_version": "gems57-pooled-hide-v2",
+      "dti": 0.031159854641644204,
+      "ci95": [
+        0.024691006152132863,
+        0.03810944921363519
+      ],
+      "withheld_positive_pixels": 11321
+    },
+    "paired_binary_differences": {
+      "versus_distance_only": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.022478706941006857,
+        "ci95": [
+          0.00786688580393856,
+          0.03846308825323853
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "versus_single_host_anatomy": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.02555640893870513,
+        "ci95": [
+          0.013943366750616887,
+          0.03710882091013755
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "versus_bend_anatomy": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.022872483332255736,
+        "ci95": [
+          0.01305049452795725,
+          0.03210233238554293
+        ],
+        "withheld_positive_pixels": 11321
+      },
+      "E3_sense_transition_versus_E2": {
+        "evidence_class": "HOLDOUT-DTI",
+        "evaluator_version": "gems57-pooled-hide-v2",
+        "delta": 0.006187676916750318,
+        "ci95": [
+          -0.0016937951896787019,
+          0.015701673226549834
+        ],
+        "withheld_positive_pixels": 11321
+      }
+    },
+    "leakage_canary": {
+      "feature_count": 22,
+      "max_discriminative_auc": 0.8258665106604264,
+      "all_below_0_90": true,
+      "scope": "Stored feature-alone canaries for the recorded Session-5 split; not a test of all possible leakage or domain shift."
+    },
+    "registry_gate_after_session6": {
+      "evidence_file": "evidence/uniqueness_session6_full_registry_696.json",
+      "registry_rasters_checked": 696,
+      "duplicate_count": 80,
+      "worst_forward_overlap": 1.0,
+      "unique": false,
+      "promoted": false
+    },
+    "interpretation": "E2 has positive paired HOLDOUT-DTI differences against matched Session-5 controls under one recorded buffered whole-component holdout. This is not an ORGANIZER-CONFIRMED score, a forecast of private/live performance, current-code rerun, or uniqueness clearance. The literal gate remains blocked."
+  }
+}

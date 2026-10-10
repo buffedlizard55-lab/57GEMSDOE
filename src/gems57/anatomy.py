@@ -20,8 +20,6 @@ visible fault.  Features that the data does not support are dropped.
 
 Sense of slip
 -------------
-Sense of slip
--------------
 The protocol asks to condition on recorded sense of slip "where the database
 has it".  The raster catalogue (``existing_faults.tif``) carries no sense field:
 its values are ``{-1 (nodata, outside the study area), 0, 1}``.  The INGENIOUS
@@ -65,6 +63,18 @@ FEATURES = (
     "cos2",         # cyclic strike encoding, cos(2*strike)
     "coherence",    # structure-tensor linearity at the anchor
     "density",      # visible fault pixels within a 5 px (500 m) radius
+    # Explicit orientation x distance interactions (H57-D, session 2,
+    # 2026-10-09).  sin2/cos2 alone are weak marginals, so the orientation
+    # selectivity of the halo is only usable in interaction.  These two
+    # products let the model express "the distance decay depends on the
+    # parent trace's strike" without any hard-coded angle: the fitted
+    # coefficients define the preferred orientations.  Both are computable
+    # from the visible catalogue alone, so the holdout protocol is unchanged.
+    # Measured in scripts/run_cv_r2.py: +0.0018 HOLDOUT-DTI vs the 8-feature
+    # shipped set (inside the noise) -- a negative result, kept addressable
+    # so the ablation stays reproducible.
+    "sin2d",        # sin(2*strike) * d  -- orientation-modulated distance decay
+    "cos2d",        # cos(2*strike) * d  -- orientation-modulated distance decay
 )
 
 # NOTE (bug fixed 2026-10-09): ``log_len`` was originally the length of the
@@ -78,15 +88,24 @@ FEATURES = (
 
 @dataclass
 class FoldGeometry:
-    """Per-pixel geometry of the active domain of one fold cell, from visible faults only."""
+    """Per-pixel geometry of the active domain of one fold cell, from visible faults only.
+
+    ``X`` has one column per entry of ``feature_names``: the catalogue-geometry
+    block (:data:`FEATURES`), optionally followed by the geophysical
+    corroboration block (:data:`gems57.geo.GEO_FEATURES`) when ``fold_geometry``
+    was called with ``geo`` planes.  Geophysical columns are static raster
+    planes, so they cannot leak the withholding mask, but every column is still
+    passed through the leakage canary.
+    """
     key: str
     rows: np.ndarray
     cols: np.ndarray
-    X: np.ndarray                     # (n, len(FEATURES)) float32
+    X: np.ndarray                     # (n, len(feature_names)) float32
     y: np.ndarray                     # 1 = withheld (hidden) truth pixel
     visible: np.ndarray
     n_hidden: int
     seg: SegmentTable = field(repr=False)
+    feature_names: tuple = FEATURES
 
 
 def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
@@ -115,12 +134,20 @@ def junction_distance_px(visible: np.ndarray) -> np.ndarray:
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
                   domain: np.ndarray, key: str,
+                  geo: dict | None = None,
                   sense_src: np.ndarray | None = None) -> FoldGeometry:
     """Build the feature matrix for one fold cell using **visible faults only**.
 
+    Two opt-in blocks may be appended after :data:`FEATURES`, in this order:
+
     ``sense_src`` is the unmasked int8 sense raster (see
     ``faultzone.trace_sense_raster``).  It is restricted to *visible* pixels before
-    any use, so a withheld segment's sense cannot reach a feature (leakage rule).
+    any use, so a withheld segment's sense cannot reach a feature (leakage rule);
+    the appended columns are :data:`SENSE_FEATURES`.
+
+    ``geo`` optionally maps names in :data:`gems57.geo.GEO_FEATURES` to full-grid
+    float32 planes (see :func:`gems57.geo.load_planes`); those columns come last and
+    ``FoldGeometry.feature_names`` records the combined order.
     """
     strike, coh = local_strike(visible, smooth_px=3.0)
     seg, n_seg = segments(visible, max_len_px=12)[:2]
@@ -131,10 +158,14 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
 
     d, iy, ix = nearest_frame(visible)
     active = domain & ~visible
+    names = (tuple(FEATURES)
+             + (SENSE_FEATURES if sense_src is not None else ())
+             + (tuple(geo) if geo else ()))
     ys, xs = np.nonzero(active)
     if ys.size == 0:
-        return FoldGeometry(key, ys, xs, np.zeros((0, len(FEATURES)), np.float32),
-                            np.zeros(0, np.int8), visible, 0, tab)
+        return FoldGeometry(key, ys, xs, np.zeros((0, len(names)), np.float32),
+                            np.zeros(0, np.int8), visible, 0, tab,
+                            feature_names=names)
 
     ay, ax = iy[ys, xs], ix[ys, xs]
     dy = (ys - ay).astype(np.float32)
@@ -145,7 +176,10 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
     s_anchor = strike[ay, ax]
     s_seg = tab.strike[np.clip(anc_seg, 0, len(tab.strike) - 1)]
     s = np.where(np.isfinite(s_anchor), s_anchor, s_seg)
-    s = np.where(np.isfinite(s), 0.0, s)
+    # IR-57-STRIKE-01: the old argument order replaced EVERY finite strike
+    # with zero, making sin2 constant 0/cos2 constant 1 and rotating all offsets
+    # onto a global north/south frame. Invalid strike, not valid strike, falls back.
+    s = np.where(np.isfinite(s), s, 0.0)
 
     d_par, d_perp, side = offset_components(dy, dx, s)
     # displacement proxy: size of the whole mapped component, not the 12 px chunk
@@ -162,22 +196,32 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         np.cos(th2),
         coh[ay, ax],
         dens[ys, xs],
+        np.sin(th2) * d[ys, xs],
+        np.cos(th2) * d[ys, xs],
     ]
     if sense_src is not None:
         # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
         src = visible & (sense_src > 0)
         if src.any():
-            _, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
+            distance, (sy, sx) = ndi.distance_transform_edt(~src, return_indices=True)
             code = sense_src[sy[ay, ax], sx[ay, ax]].astype(np.float64)
+            # Do not assign a distant record to an unrelated visible fault.
+            code[distance[ay, ax] > 1.0] = 0
+            del distance, sy, sx
         else:
             code = np.zeros(ay.shape, np.float64)
         sgn = np.where(code == 2, 1.0, np.where(code == 3, -1.0, 0.0))
         cols += [sgn, sgn * side]
+    if geo:
+        # order of insertion in ``geo`` defines the appended column order;
+        # callers pass a dict built from GEO_FEATURES to keep it canonical
+        for gname in geo:
+            cols.append(geo[gname][ys, xs])
     X = np.stack(cols, axis=1).astype(np.float32)
 
     y = hidden[ys, xs].astype(np.int8)
     return FoldGeometry(key=key, rows=ys, cols=xs, X=X, y=y, visible=visible,
-                        n_hidden=int(y.sum()), seg=tab)
+                        n_hidden=int(y.sum()), seg=tab, feature_names=names)
 
 
 # --------------------------------------------------------------------------- #
@@ -290,7 +334,7 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
     if vy.size > 1:
         from scipy.spatial import cKDTree
         tree = cKDTree(np.stack([vy, vx], 1))
-        _d, idx = tree.query(np.stack([vy, vx], 1), k=13)
+        _d, idx = tree.query(np.stack([vy, vx], 1), k=min(13, len(vy)))
         cid = vcomp[vy, vx]
         nbr_cid = vcomp[vy[idx], vx[idx]]
         other = nbr_cid != cid[:, None]
@@ -305,6 +349,9 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
     h_h, _ = np.histogram(hid, bins=edges) if hid.size else (np.zeros(bins), edges)
     h_v, _ = np.histogram(vis, bins=edges) if vis.size else (np.zeros(bins), edges)
     return {"edges": edges.tolist(),
+            "angle_convention": "unsigned axial difference in degrees, folded to [0,90]",
+            "sample_unit": "fault raster pixel; not segment-weighted",
+            "minimum_local_coherence": 0.2,
             "n_withheld": h_h.astype(float).tolist(),
             "n_visible_reference": h_v.astype(float).tolist(),
             "n_withheld_total": int(hid.size),
@@ -312,4 +359,53 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
             "median_withheld": float(np.median(hid)) if hid.size else None,
             "median_visible": float(np.median(vis)) if vis.size else None,
             "p25_withheld": float(np.percentile(hid, 25)) if hid.size else None,
-            "p75_withheld": float(np.percentile(hid, 75)) if hid.size else None}
+            "p75_withheld": float(np.percentile(hid, 75)) if hid.size else None,
+            "null_caveat": "Visible-reference comparison selects the nearest different-component trace among the 13 nearest queried visible pixels (including self); locations without one and low-coherence pixels are omitted. Pixel-weighted and censored; descriptive only, no significance inferred."}
+
+
+def package_holdout_structure(relative_strike: dict, *, withheld_positive_pixels: int,
+                              distance_positive_quantiles_px: list[float],
+                              distance_domain_quantiles_px: list[float],
+                              pixel_size_m: int = 100) -> dict:
+    """Keep angular histograms nested so counts cannot overwrite bin arrays.
+
+    ``relative_strike_distribution`` uses ``n_withheld`` for the per-bin
+    histogram. The scalar count of all withheld positive pixels has a distinct
+    key here; separating them prevents a reporting collision from erasing the
+    very distribution the experiment is meant to measure.
+    """
+    edges = np.asarray(relative_strike.get("edges"), dtype=np.float64)
+    withheld_bins = np.asarray(relative_strike.get("n_withheld"), dtype=np.float64)
+    visible_bins = np.asarray(relative_strike.get("n_visible_reference"), dtype=np.float64)
+    if edges.ndim != 1 or withheld_bins.shape != (len(edges) - 1,):
+        raise ValueError("relative-strike histogram does not match its bin edges")
+    if visible_bins.shape != withheld_bins.shape:
+        raise ValueError("withheld and visible-reference histograms differ in length")
+    if (not np.isfinite(edges).all() or not np.isfinite(withheld_bins).all()
+            or not np.isfinite(visible_bins).all() or (withheld_bins < 0).any()
+            or (visible_bins < 0).any()):
+        raise ValueError("relative-strike histogram contains invalid values")
+    if int(withheld_bins.sum()) != int(relative_strike.get("n_withheld_total", -1)):
+        raise ValueError("relative-strike withheld histogram total is inconsistent")
+    if int(visible_bins.sum()) != int(relative_strike.get("n_visible_total", -1)):
+        raise ValueError("relative-strike reference histogram total is inconsistent")
+    q_pos = np.asarray(distance_positive_quantiles_px, dtype=np.float64)
+    q_domain = np.asarray(distance_domain_quantiles_px, dtype=np.float64)
+    if q_pos.shape != (5,) or q_domain.shape != (5,):
+        raise ValueError("distance summary must contain the five declared quantiles")
+    if (not np.isfinite(q_pos).all() or not np.isfinite(q_domain).all()
+            or (np.diff(q_pos) < 0).any() or (np.diff(q_domain) < 0).any()):
+        raise ValueError("distance quantiles must be finite and sorted")
+    if int(withheld_positive_pixels) < 0 or int(pixel_size_m) <= 0:
+        raise ValueError("invalid positive count or pixel size")
+    return {
+        "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+        "withheld_positive_pixels": int(withheld_positive_pixels),
+        "relative_strike": relative_strike,
+        "distance_quantile_probabilities": [0.1, 0.5, 0.9, 0.95, 0.99],
+        "distance_positive_quantiles_px": q_pos.tolist(),
+        "distance_domain_quantiles_px": q_domain.tolist(),
+        "null_caveat": relative_strike.get("null_caveat",
+            "Visible-reference comparison is descriptive; no significance is inferred."),
+        "pixel_size_m": int(pixel_size_m),
+    }

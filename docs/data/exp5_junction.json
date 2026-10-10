@@ -1,0 +1,319 @@
+{
+  "hypothesis": "H57-K: topology-aware visible-fault junction distance",
+  "mechanism": "Missing splays or linking strands may be enriched near mapped fault-network junctions, where interacting strands perturb local stress; any distance response is learned from withheld segments, not imposed.",
+  "named_non_fault_process_that_could_mimic_it": "Cartographic line conflation or digitizing/snap-to-node artifacts in the mapped fault network.",
+  "evidence_class": "HOLDOUT-DTI experiment; no live-score projection",
+  "evaluator_version": "gems52-pooled-hide-v1; leave-one-quadrant-out pooled; detached whole-component holdout; shared evaluator checked against binary EDT",
+  "shared_evaluator_hashes": {
+    "evaluate_holdout.py": "faa8fad9a6a7bd6836d4d77764674109f37214ce88c719b6ec19afe517dce94b",
+    "holdout.py": "31a692a1b34fff296b7ad3416f49981ebab4ae2a55c1903c5854c2babd4202bb",
+    "metric.py": "0c7f7c70b686d934050f253c6c9331b34dd6c70ac2d3b8172423c81a6da71542",
+    "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+  },
+  "holdout_protocol": {
+    "mode": "detached",
+    "spatial_folds": "leave-one-quadrant-out; both draws scored in each held-out quadrant",
+    "features_visible_only": true,
+    "visible_fault_masking": "pixel-exact through shared evaluate_holdout.evaluate",
+    "alpha": 0.2,
+    "beta": 0.8,
+    "triangular_kernel_radius_m": 300,
+    "per_cell_dot_cap": 10000,
+    "floor": 0.015
+  },
+  "canary": {
+    "evidence_class": "LEAKAGE-CANARY AUC (not DTI)",
+    "interpretation": "max(AUC, 1-AUC) > 0.90 is leakage until proven otherwise",
+    "features": {
+      "d": {
+        "auc_per_fold": [
+          0.10185771104742054,
+          0.11304080262600592,
+          0.12925397564849125,
+          0.14019706986765157
+        ],
+        "auc_mean": 0.12108738979739232,
+        "auc_min": 0.10185771104742054,
+        "auc_max": 0.14019706986765157,
+        "discriminative_auc_mean": 0.8789126102026077,
+        "discriminative_auc_max": 0.8981422889525794,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_perp": {
+        "auc_per_fold": [
+          0.10349655289213133,
+          0.11716066603134262,
+          0.15956647631021703,
+          0.13764826638965835
+        ],
+        "auc_mean": 0.12946799040583734,
+        "auc_min": 0.10349655289213133,
+        "auc_max": 0.15956647631021703,
+        "discriminative_auc_mean": 0.8705320095941627,
+        "discriminative_auc_max": 0.8965034471078687,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_par_abs": {
+        "auc_per_fold": [
+          0.2489158311620636,
+          0.24216955950868277,
+          0.2289650622022234,
+          0.27135237457679284
+        ],
+        "auc_mean": 0.24785070686244065,
+        "auc_min": 0.2289650622022234,
+        "auc_max": 0.27135237457679284,
+        "discriminative_auc_mean": 0.7521492931375593,
+        "discriminative_auc_max": 0.7710349377977765,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "side": {
+        "auc_per_fold": [
+          0.4969617665450755,
+          0.5076267460821685,
+          0.5060491582848068,
+          0.5351771306555864
+        ],
+        "auc_mean": 0.5114537003919093,
+        "auc_min": 0.4969617665450755,
+        "auc_max": 0.5351771306555864,
+        "discriminative_auc_mean": 0.5129728171193715,
+        "discriminative_auc_max": 0.5351771306555864,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "log_len": {
+        "auc_per_fold": [
+          0.4541030536737884,
+          0.42118615840745444,
+          0.471746850847009,
+          0.4220815435518621
+        ],
+        "auc_mean": 0.4422794016200285,
+        "auc_min": 0.42118615840745444,
+        "auc_max": 0.471746850847009,
+        "discriminative_auc_mean": 0.5577205983799716,
+        "discriminative_auc_max": 0.5788138415925456,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "sin2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "cos2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "coherence": {
+        "auc_per_fold": [
+          0.35178906982803543,
+          0.3225332147395172,
+          0.4278792502646903,
+          0.372410230070791
+        ],
+        "auc_mean": 0.3686529412257585,
+        "auc_min": 0.3225332147395172,
+        "auc_max": 0.4278792502646903,
+        "discriminative_auc_mean": 0.6313470587742416,
+        "discriminative_auc_max": 0.6774667852604828,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "density": {
+        "auc_per_fold": [
+          0.7132763965607087,
+          0.7006949131723846,
+          0.7444468945209105,
+          0.7058374915358572
+        ],
+        "auc_mean": 0.7160639239474653,
+        "auc_min": 0.7006949131723846,
+        "auc_max": 0.7444468945209105,
+        "discriminative_auc_mean": 0.7160639239474653,
+        "discriminative_auc_max": 0.7444468945209105,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "width_scaled_stepover": {
+        "auc_per_fold": [
+          0.11874500911933297,
+          0.14077016094875053,
+          0.17118853758602434,
+          0.1644116166512773
+        ],
+        "auc_mean": 0.14877883107634626,
+        "auc_min": 0.11874500911933297,
+        "auc_max": 0.17118853758602434,
+        "discriminative_auc_mean": 0.8512211689236537,
+        "discriminative_auc_max": 0.881254990880667,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "log_junction_distance": {
+        "auc_per_fold": [
+          0.3096611672746222,
+          0.31933707433290975,
+          0.305231068687136,
+          0.26905441751308096
+        ],
+        "auc_mean": 0.3008209319519372,
+        "auc_min": 0.26905441751308096,
+        "auc_max": 0.31933707433290975,
+        "discriminative_auc_mean": 0.6991790680480627,
+        "discriminative_auc_max": 0.7309455824869191,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      }
+    }
+  },
+  "withheld_positive_pixels": 22619,
+  "control": {
+    "name": "H57-G width-scaled stepover",
+    "holdout_dti": "HOLDOUT-DTI",
+    "pooled": 0.23742257629534305,
+    "ci95_quadrant_jackknife": [
+      0.20147621833615273,
+      0.2733689342545334
+    ],
+    "withheld_positive_pixels": 22619,
+    "dots": 80000,
+    "per_quadrant": {
+      "NW": 0.2698698769653715,
+      "NE": 0.25978000750999053,
+      "SW": 0.19414114271328145,
+      "SE": 0.24108645335694728
+    }
+  },
+  "candidate": {
+    "name": "H57-K node distance",
+    "holdout_dti": "HOLDOUT-DTI",
+    "pooled": 0.24235268752282405,
+    "ci95_quadrant_jackknife": [
+      0.20559061335802364,
+      0.27911476168762445
+    ],
+    "withheld_positive_pixels": 22619,
+    "dots": 80000,
+    "per_quadrant": {
+      "NW": 0.27865087548337986,
+      "NE": 0.2597001306164547,
+      "SW": 0.19805793813553355,
+      "SE": 0.248329892811827
+    }
+  },
+  "paired_difference": {
+    "evidence_class": "HOLDOUT-DTI paired difference",
+    "candidate_minus_control": 0.004930111227480993,
+    "ci95_quadrant_jackknife": [
+      0.0014965109553301825,
+      0.008363711499631804
+    ],
+    "leave_one_quadrant_out_differences": {
+      "foldNE": 0.006388652494240227,
+      "foldNW": 0.0038938022217087642,
+      "foldSE": 0.004090842877814138,
+      "foldSW": 0.0053619266424529965
+    }
+  },
+  "comparison_to_previous_same_setting_best": {
+    "reference_hypothesis": "H57-G",
+    "reference_evidence": "HOLDOUT-DTI",
+    "reference_pooled": 0.23742257629534305,
+    "reference_withheld_positive_pixels": 22619,
+    "reference_ci95_quadrant_jackknife": [
+      0.20147621833615273,
+      0.2733689342545334
+    ],
+    "candidate_beats_reference_point": true
+  },
+  "passes_holdout_gate": true,
+  "promotion_rule": "new features clean on canary; candidate > same-run H57-G control and prior H57-G point estimate; paired quadrant-jackknife 95% CI for candidate-control strictly above zero",
+  "surface_or_final_raster": "HOLDOUT PASS; still requires surface and full-registry uniqueness gates",
+  "weekly_slot_used": false,
+  "runtime_seconds": 573.8,
+  "surface_registry_check": {
+    "evidence_class": "PRE-PLACEMENT UNIQUENESS GATE (not a score)",
+    "phase": "surface; evaluated before allocation/placement",
+    "surface_positive_pixels": 5106385,
+    "surface_probability_min_max": [
+      2.4925890684812657e-08,
+      0.8552906513214111
+    ],
+    "surface_sha256_decoded_float32": "5130d8656d64fb7fb2938d96a1dcfcd518f1bfbc12789ea52fac9978e16f0e5d",
+    "gates": {
+      "spearman_full_footprint_max": 0.558502986342401,
+      "spearman_threshold": 0.9,
+      "positive_support_within_3px_max": 1.0,
+      "positive_support_threshold": 0.7
+    },
+    "witnesses": [
+      {
+        "source": "13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+        "path": "/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+        "sha256": "c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f",
+        "sha256_matches_index": true,
+        "shape_crs_transform_match": true,
+        "spearman_full_footprint": -6.337382259228222e-05,
+        "candidate_positive_support_within_3px": 0.9987243421716145,
+        "prior_positive_pixels": 206895,
+        "rank_gate_passes": true,
+        "overlap_gate_passes": false
+      },
+      {
+        "source": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "path": "/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+        "sha256_matches_index": true,
+        "shape_crs_transform_match": true,
+        "spearman_full_footprint": 0.558502986342401,
+        "candidate_positive_support_within_3px": 1.0,
+        "prior_positive_pixels": 5167373,
+        "rank_gate_passes": true,
+        "overlap_gate_passes": false
+      }
+    ],
+    "full_registry": {
+      "indexed_rasters": 667,
+      "cached_rasters_present": 667,
+      "scanned": false,
+      "note": "not reached if a pinned witness fails"
+    },
+    "surface_gate_passes": false,
+    "stop_reason": "surface 3-pixel overlap gate failed vs 13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+    "final_dots_check": "NOT RUN: stop before placement as required"
+  },
+  "surface_gate_passes": false,
+  "candidate_tiff_sha256": null,
+  "validator_result": "NOT RUN \u2014 no GeoTIFF was written because pre-placement surface uniqueness did not clear",
+  "download_submission_status": "NO FILE \u2014 NOT SAFE TO DOWNLOAD OR SUBMIT",
+  "verdict": "negative; holdout-positive but strict registry uniqueness gate failed; DO NOT SUBMIT",
+  "surface_gate_runtime_seconds": 133.8,
+  "submission_name": "gems57-h57k-node-distance-RESEARCH-DO-NOT-SUBMIT",
+  "submission_note": "H57-K holdout passed; registry surface uniqueness failed before placement; no TIFF written"
+}

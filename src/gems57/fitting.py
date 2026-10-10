@@ -1,17 +1,10 @@
-"""Fitting, leakage canary and leave-one-quadrant-out evaluation.
+"""Shared weighted intensity fitting, named feature canaries and prediction.
 
-The intensity model is a gradient-boosted classifier over the nine
-fault-zone-anatomy features in :data:`gems57.anatomy.FEATURES`.  Nothing about
-the shape of the response is assumed: the distance decay, the stepover/along-
-strike coupling, the length scaling and the orientation selectivity are all
-learned.  The model is calibrated to the observed withheld-pixel base rate by a
-single moment-matching scale factor, because the emission bar
-(``alpha * DTI``) is an *absolute* threshold on expected kernel credit.
-
-Evaluation is leave-one-quadrant-out: the model for quadrant *q* is trained on
-the six cells of the other three quadrants (both draws) and applied to the two
-cells of *q*.  Quadrants are spatially disjoint, so this is a spatially blocked
-estimate, not a random split.
+fit_model accepts explicit feature subsets, including the current 14-column
+relative-magnetic/sense matrix. The caller owns the spatial split; the current
+harness uses three training quadrants and one test quadrant. Moment matching
+uses weighted TRAINING prevalence only. This is catalogue-hide intensity,
+not independently calibrated live-new-fault probability or a live score.
 """
 
 from __future__ import annotations
@@ -23,6 +16,7 @@ from sklearn.metrics import roc_auc_score
 from .anatomy import FEATURES, fold_geometry
 from .emit import expected_credit, greedy_allocate
 from .holdout import Cell, HoldoutContext
+from . import evaluate_holdout as EH
 from .metric import dti_binary
 
 NEG_PER_CELL = 60_000
@@ -37,12 +31,12 @@ def _full(ctx: HoldoutContext, cell: Cell) -> np.ndarray:
     return m
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None):
+def cell_geometry(ctx: HoldoutContext, cell: Cell, geo=None, sense_src=None):
     """Feature geometry of one fold cell.  ``sense_src`` opts in to the recorded-sense
     features (``anatomy.SENSE_FEATURES``); ``None`` keeps the shipped 9-column matrix."""
     dom = _full(ctx, cell)
     g = fold_geometry(ctx.grid, ctx.visible(cell.key),
-                      ctx.hidden_by_cell[cell.key], dom, cell.key, sense_src=sense_src)
+                      ctx.hidden_by_cell[cell.key], dom, cell.key, geo=geo, sense_src=sense_src)
     return g
 
 
@@ -110,12 +104,13 @@ def canary(geoms: list, feature_names=None) -> dict:
     withheld mask itself is recoverable from a feature.
     """
     out = {}
-    names = list(FEATURES) if feature_names is None else list(feature_names)
-    if feature_names is None and geoms and geoms[0].X.shape[1] > len(FEATURES):
+    metadata = getattr(geoms[0], 'feature_names', None) if geoms else None
+    names = list(feature_names) if feature_names is not None else list(metadata or FEATURES)
+    if feature_names is None and not metadata and geoms and geoms[0].X.shape[1] > len(FEATURES):
         from .anatomy import SENSE_FEATURES
         names += list(SENSE_FEATURES)[: geoms[0].X.shape[1] - len(FEATURES)]
-    if geoms and (len(names) != geoms[0].X.shape[1] or any(g.X.shape[1] != len(names) for g in geoms)):
-        raise ValueError('canary feature names must match every column; never silently mislabel a feature')
+    if any(g.X.shape[1] != len(names) for g in geoms):
+        raise ValueError('canary feature names must match every feature column')
     for j, name in enumerate(names):
         aucs = []
         for g in geoms:
@@ -144,8 +139,7 @@ def canary(geoms: list, feature_names=None) -> dict:
 
 def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
              *, max_dots: int = 120_000, floor: float = 0.015,
-             cols: list[int] | None = None, g=None,
-             shared_evaluator: bool = False) -> dict:
+             cols: list[int] | None = None, g=None, shared_evaluator: bool = False) -> dict:
     """Predict, allocate and score one fold cell."""
     own_g = g is None
     if own_g:
@@ -156,25 +150,27 @@ def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
     alloc = greedy_allocate(p, allowed, k_truth=float(cell.n_truth),
                             floor=floor, max_dots=max_dots)
     emitted_full = alloc.emitted
-    # score on the crop
-    res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
-                     valid=cell.active)
+    # Every active H57 fold uses the shared evaluator. The optional flag adds an
+    # independent binary-metric parity assertion for focused validation runs.
+    truth_crop = _truth_crop(ctx, cell)
+    known_crop = ctx.visible(cell.key)[cell.bbox]
+    shared, _ = EH.evaluate(
+        emitted_full[cell.bbox].astype(np.float32),
+        {"region": cell.active, "truth": truth_crop, "visible": known_crop},
+        cell.active, block_side=200)
     if shared_evaluator:
-        from .evaluate_holdout import evaluate
-        # Same pixel-exact active domain; the second implementation catches
-        # scoring drift and supplies the requested shared-template evaluation.
-        shared, _ = evaluate(emitted_full[cell.bbox].astype(np.float32),
-                             {'region': cell.active, 'truth': _truth_crop(ctx, cell),
-                              'visible': ctx.visible(cell.key)[cell.bbox]},
-                             cell.active, block_side=200)
-        np.testing.assert_allclose([shared['tpw'], shared['fpw'], shared['fnw'], shared['dti']],
-                                   [res['tp'], res['fp'], res['fn'], res['dti']], atol=2e-4, rtol=1e-6)
-        res = dict(dti=shared['dti'], coverage=shared['tpw']/cell.n_truth,
-                   tp=shared['tpw'], fp=shared['fpw'], fn=shared['fnw'])
+        reference = dti_binary(
+            emitted_full[cell.bbox], truth_crop, valid=cell.active,
+            known=known_crop)
+        np.testing.assert_allclose(
+            [shared["tp"], shared["fp"], shared["fn"], shared["dti"]],
+            [reference["tp"], reference["fp"], reference["fn"], reference["dti"]],
+            atol=2e-4, rtol=1e-6)
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
-        "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],
-        "tp": res["tp"], "fp": res["fp"], "fn": res["fn"],
+        "n_dots": alloc.n_dots, "dti": shared["dti"], "coverage": shared["coverage"],
+        "tp": shared["tp"], "fp": shared["fp"], "fn": shared["fn"],
+        "evaluator_version": shared["evaluator_version"],
         "expected_covered_credit": alloc.expected_covered_credit,
         "p_mean": float(p[allowed].mean()), "p_max": float(p.max()),
     }

@@ -1,0 +1,254 @@
+{
+  "hypothesis": "H57-K: topology-aware visible-fault junction distance",
+  "mechanism": "Missing splays or linking strands may be enriched near mapped fault-network junctions, where interacting strands perturb local stress; any distance response is learned from withheld segments, not imposed.",
+  "named_non_fault_process_that_could_mimic_it": "Cartographic line conflation or digitizing/snap-to-node artifacts in the mapped fault network.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI (local measurement; not a live score)",
+    "evaluator_version": "gems52-pooled-hide-v1; leave-one-quadrant-out pooled; detached whole-component holdout; shared evaluator checked against binary EDT",
+    "withheld_positive_count": 22619,
+    "pooled": 0.24235268752282405,
+    "ci95_spatial_quadrant_jackknife": [
+      0.20559061335802364,
+      0.27911476168762445
+    ],
+    "same_setting_control": 0.23742257629534305,
+    "paired_candidate_minus_control": 0.004930111227480993,
+    "paired_difference_ci95": [
+      0.0014965109553301825,
+      0.008363711499631804
+    ]
+  },
+  "leakage_canary": {
+    "threshold": 0.9,
+    "features": {
+      "d": {
+        "auc_per_fold": [
+          0.10185771104742054,
+          0.11304080262600592,
+          0.12925397564849125,
+          0.14019706986765157
+        ],
+        "auc_mean": 0.12108738979739232,
+        "auc_min": 0.10185771104742054,
+        "auc_max": 0.14019706986765157,
+        "discriminative_auc_mean": 0.8789126102026077,
+        "discriminative_auc_max": 0.8981422889525794,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_perp": {
+        "auc_per_fold": [
+          0.10349655289213133,
+          0.11716066603134262,
+          0.15956647631021703,
+          0.13764826638965835
+        ],
+        "auc_mean": 0.12946799040583734,
+        "auc_min": 0.10349655289213133,
+        "auc_max": 0.15956647631021703,
+        "discriminative_auc_mean": 0.8705320095941627,
+        "discriminative_auc_max": 0.8965034471078687,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_par_abs": {
+        "auc_per_fold": [
+          0.2489158311620636,
+          0.24216955950868277,
+          0.2289650622022234,
+          0.27135237457679284
+        ],
+        "auc_mean": 0.24785070686244065,
+        "auc_min": 0.2289650622022234,
+        "auc_max": 0.27135237457679284,
+        "discriminative_auc_mean": 0.7521492931375593,
+        "discriminative_auc_max": 0.7710349377977765,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "side": {
+        "auc_per_fold": [
+          0.4969617665450755,
+          0.5076267460821685,
+          0.5060491582848068,
+          0.5351771306555864
+        ],
+        "auc_mean": 0.5114537003919093,
+        "auc_min": 0.4969617665450755,
+        "auc_max": 0.5351771306555864,
+        "discriminative_auc_mean": 0.5129728171193715,
+        "discriminative_auc_max": 0.5351771306555864,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "log_len": {
+        "auc_per_fold": [
+          0.4541030536737884,
+          0.42118615840745444,
+          0.471746850847009,
+          0.4220815435518621
+        ],
+        "auc_mean": 0.4422794016200285,
+        "auc_min": 0.42118615840745444,
+        "auc_max": 0.471746850847009,
+        "discriminative_auc_mean": 0.5577205983799716,
+        "discriminative_auc_max": 0.5788138415925456,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "sin2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "cos2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "coherence": {
+        "auc_per_fold": [
+          0.35178906982803543,
+          0.3225332147395172,
+          0.4278792502646903,
+          0.372410230070791
+        ],
+        "auc_mean": 0.3686529412257585,
+        "auc_min": 0.3225332147395172,
+        "auc_max": 0.4278792502646903,
+        "discriminative_auc_mean": 0.6313470587742416,
+        "discriminative_auc_max": 0.6774667852604828,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "density": {
+        "auc_per_fold": [
+          0.7132763965607087,
+          0.7006949131723846,
+          0.7444468945209105,
+          0.7058374915358572
+        ],
+        "auc_mean": 0.7160639239474653,
+        "auc_min": 0.7006949131723846,
+        "auc_max": 0.7444468945209105,
+        "discriminative_auc_mean": 0.7160639239474653,
+        "discriminative_auc_max": 0.7444468945209105,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "width_scaled_stepover": {
+        "auc_per_fold": [
+          0.11874500911933297,
+          0.14077016094875053,
+          0.17118853758602434,
+          0.1644116166512773
+        ],
+        "auc_mean": 0.14877883107634626,
+        "auc_min": 0.11874500911933297,
+        "auc_max": 0.17118853758602434,
+        "discriminative_auc_mean": 0.8512211689236537,
+        "discriminative_auc_max": 0.881254990880667,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "log_junction_distance": {
+        "auc_per_fold": [
+          0.3096611672746222,
+          0.31933707433290975,
+          0.305231068687136,
+          0.26905441751308096
+        ],
+        "auc_mean": 0.3008209319519372,
+        "auc_min": 0.26905441751308096,
+        "auc_max": 0.31933707433290975,
+        "discriminative_auc_mean": 0.6991790680480627,
+        "discriminative_auc_max": 0.7309455824869191,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      }
+    }
+  },
+  "correlation_overlap_vs_registry": {
+    "evidence_class": "pre-placement uniqueness gate (not a score)",
+    "surface_spearman_max_among_checked_witnesses": 0.558502986342401,
+    "spearman_limit": 0.9,
+    "surface_positive_support_overlap_max_within_3px": 1.0,
+    "directed_overlap_limit": 0.7,
+    "witnesses": [
+      {
+        "source": "13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+        "sha256": "c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f",
+        "sha256_matches_index": true,
+        "shape_crs_transform_match": true,
+        "spearman_full_footprint": -6.337382259228222e-05,
+        "candidate_positive_support_within_3px": 0.9987243421716145,
+        "prior_positive_pixels": 206895,
+        "rank_gate_passes": true,
+        "overlap_gate_passes": false
+      },
+      {
+        "source": "17GEMSDOE:docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+        "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+        "sha256_matches_index": true,
+        "shape_crs_transform_match": true,
+        "spearman_full_footprint": 0.558502986342401,
+        "candidate_positive_support_within_3px": 1.0,
+        "prior_positive_pixels": 5167373,
+        "rank_gate_passes": true,
+        "overlap_gate_passes": false
+      }
+    ],
+    "indexed_grid_rasters": 667,
+    "cached_grid_rasters": 667,
+    "rasters_scanned": false,
+    "scope_note": "Both pinned witnesses were checked; the first already fails. The other 665 index entries were not evaluated; full-registry clearance is not claimed.",
+    "surface_gate_passes": false,
+    "final_dot_gate": "NOT RUN: protocol requires stopping before placement after surface overlap failure"
+  },
+  "candidate_surface_decoded_sha256_not_a_file_hash": "5130d8656d64fb7fb2938d96a1dcfcd518f1bfbc12789ea52fac9978e16f0e5d",
+  "raster_sha256": null,
+  "validator_output": {
+    "status": "NOT RUN — no TIFF emitted after pre-placement uniqueness failure",
+    "no_nan_inside_footprint": null,
+    "values_in_0_1": null,
+    "crs_shape_transform_match": null,
+    "all_checks_passed": false
+  },
+  "download_submission_status": "NO FILE — NOT SAFE TO DOWNLOAD OR SUBMIT",
+  "submission_name": "gems57-h57k-node-distance-RESEARCH-DO-NOT-SUBMIT",
+  "submission_note": "H57-K holdout passed; registry surface uniqueness failed before placement; no TIFF written",
+  "submission_note_characters": 90,
+  "reported_0_2778_context": {
+    "classification": "OWNER-REPORTED / UNVERIFIED; not ORGANIZER-CONFIRMED",
+    "owner_artifact": "GEMSDOE32 H33-2-B2 is marked UNSCORED in inspected owner README/evidence",
+    "local_mirror_record": "0.267921 with +0.004870 in 4/4 folds (owner-reported proxy)",
+    "projected_live_value": 0.2747,
+    "projection_is_not_a_score": true,
+    "0_2708_attribution": "contradicted by inspected owner audit; public-board row is smashi34 rank 13",
+    "score_comparable_to_H57K_holdout": false
+  },
+  "weekly_slot_used": false,
+  "organizer_receipt": null,
+  "verdict": "negative",
+  "verdict_reason": "surface 3-pixel overlap gate failed vs 13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif"
+}

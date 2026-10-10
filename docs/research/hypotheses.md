@@ -1,214 +1,100 @@
-# Candidate geological hypotheses — ranked by expected DTI improvement and cost
+# Fault-zone-anatomy hypotheses — ranked, untried
 
-> **Archived backlog snapshot.** Its H1 metrics and 663-raster count refer to the earlier
-> experiment, not the current Session 4 run. Current H57-K measured detached-mode
-> **HOLDOUT-DTI 0.242353** (95% quadrant-jackknife CI 0.205591–0.279115), but failed the
-> strict pre-placement 3-px registry-overlap gate. No H57-K TIFF exists and no artifact is
-> cleared for download/submission. See [`session4-hypotheses.md`](session4-hypotheses.md),
-> the [`README`](../../README.md), and [`IR-57-SCORE-02`](../irregularities.html).
+**2026-10-10 update:** The earlier “feature stack absent” status below describes the Session-6 checkout. The 19-band bridge stack has since been restored and hash-verified via GitHub ([receipt](../data/data_preparation.json)); independent official origin is unverified. The [new pinned-witness preflight](../data/preflight_anatomy.json) proves universal literal overlap STOP, so none of the ranked hypotheses below has been rerun or authorized for a new TIFF. The first candidate remains topology-conditioned branch-end/junction strands; the rankings are qualitative, not score projections.
 
-Scope: the hidden truth is **new expert-mapped faults NOT in USGS/INGENIOUS** — including
-splays and parallel strands of existing systems (organizer thread 11536) — and pixels of
-known USGS/INGENIOUS faults are masked out of the evaluation (thread 11516). The metric is
-distance-weighted Tversky: `DTI = TP_w / (TP_w + 0.2·FP_w + 0.8·FN_w)`, credit radius
-300 m (3 px), FP cheap, FN expensive. Every candidate below is scored on the same two
-instruments before any slot is touched:
+**Status: HOLD — no candidate is authorized for download or submission.** The three-experiment / two-hour budget is spent. Session 6 re-verified all 696 rasters in the current public index; a universal-support witness makes the literal >70% 3-pixel gate unsatisfiable for every nonempty candidate while it remains in scope. The shortlist below was not implemented or evaluated in this follow-up audit.
 
-- **HOLDOUT-DTI** (brief's instrument): `gems52-pooled-hide-v1`, 4 random whole-segment
-  folds, 300 m truth buffer, features from visible faults only, 38,339 withheld
-  positives, paired spatial-block bootstrap 95% CI. Measures catalogue-segment recovery.
-- **PROXY-DTI (SGMC-truth)**: the 79,025 SGMC pixels captured by neither USGS nor
-  INGENIOUS — a local off-catalogue proxy, not an organizer score. The H33-2-B2 raster's
-  local proxy DTI is 0.0931; that measurement does not validate a live score or attribute
-  0.2778 to the raster. The inspected GEMSDOE32 owner repository marks H33-2-B2 UNSCORED;
-  0.2747 is a projection. See [`IR-57-SCORE-02`](../irregularities.html).
+The priorities below are qualitative. There is no evidence-based numerical expected DTI gain or gain probability. “Potential” means relative next-test priority, not a predicted score. The candidate list is based on the latest read-only attribute audit in [`attribute_audit_20261010.json`](../data/attribute_audit_20261010.json); that audit did not join attributes to visible hosts or run a model.
 
-Lane protocol: 3 experiments, 2 hours. **All 3 are used** (Exp 1b measurement, Exp 2
-holdout arms × budget, Exp 3 submission build). H1 below is the lane that was run;
-H2–H5 are the ranked backlog for the next session.
+## Lane and validation status
 
----
+Stay inside the secondary-strand anatomy lane: infer off-trace strand position from visible-host distance, host length, relative orientation, and recorded slip sense where the database supports a reliable visible-only join. Fit orientation and distance patterns from the holdout; do not hard-code Riedel angles or assume a universal step direction.
 
-## H1 — Fault-zone anatomy (RUN — this lane)
+Historical H57-K remains unsuitable for comparison: its geophysics arm is leakage-flagged on `d`, `d_perp`, and `vis_dtip` (single-feature discriminatory AUC >0.90), and its record does not pin evaluator/input hashes. Do not rank it against later folds or representations. Separately, Session 5 records a valid within-session comparison for E2 (`relay_bend_anatomy`): `HOLDOUT-DTI`, evaluator `gems57-pooled-hide-v2`, 11,321 withheld positives; binary E2-minus-distance-only Δ `+0.022479`, 95% CI `[+0.007867, +0.038463]`, and E2-minus-single-host-anatomy Δ `+0.025556`, 95% CI `[+0.013943, +0.037109]`. All 22 recorded feature canaries were below 0.90. These are the stored Session-5 results, not a re-run in this follow-up, not an organizer score, and not evidence of external/private performance or uniqueness. The universal literal gate still blocks release. The [scope reconciliation](../data/holdout_scope_reconciliation_20261010.json) keeps the historical H57-K result separate from Session-5's within-session comparison.
 
-**Hypothesis.** New expert-mapped faults concentrate as secondary strands in the damage
-zones of known faults: subparallel splays and parallel strands whose distance from the
-primary trace, azimuth relative to its strike, and along-strike position (beyond-tip
-extensions) follow shear-zone mechanics, with zone width growing with fault length.
+A deliberate novelty review checked `scripts/explore_zone.py`, `scripts/explore_zone2.py`, `scripts/run_sense_experiment.py`, `scripts/run_orientation_experiments.py`, `src/gems57/anatomy.py`, and the archived [`hypotheses_h57.md`](hypotheses_h57.md). The older exploration scripts measured distance, relative azimuth, normalized along-strike position, host length and marginal sense-conditioned distance; the newer model tested recorded-sense columns alongside broad geometry and relative magnetic strike. Therefore a generic sense-by-angle/distance model is **already tried**, not an untried idea. The old archived slate also proposed generic tip-relay, junction/stepover, and slip-rate hypotheses, but those proposals were marked unmeasured and no experiment receipt shows them run. This shortlist is scoped to unrun operationalizations in this repository, not global novelty; rank 1 is a narrower explicit visible-topology × sense fit, not a claim to invent relay geometry.
 
-**Layers.** `existing_faults.tif` (USGS QFaults raster) + INGENIOUS record vectors
-(`data/external/trace_segments_utm11.csv`, `qfault_attributes.csv`), linked into 2,588
-catalogue segments; 1,126 INGENIOUS record segments as vector ground truth.
+The recorded-sense transition comparison is **already tried** in Session 5: E3 minus E2 binary `HOLDOUT-DTI`, evaluator `gems57-pooled-hide-v2`, 11,321 withheld positives, Δ `+0.006188`, 95% CI `[-0.001694, +0.015702]`; the interval includes zero, so E2 was retained. The separate soft-surface paired difference was `+0.002738 [ +0.000307, +0.005994]`; it is a different representation and does not override the predeclared binary retention rule. This audit did not rerun either result. See [`relay_bend_holdout.json`](../data/relay_bend_holdout.json) and [`run_card.json`](../data/run_card.json).
 
-**Physical signature.** Geometric halo: Euclidean distance to the nearest known-fault
-pixel, offset azimuth relative to the host fault's strike, along-strike position
-(beyond-tip), host-fault length (displacement proxy), recorded sense of slip.
+## Audited attribute availability (descriptive only)
 
-**Why it catches faults missing from USGS/INGENIOUS.** The organizers said a new fault
-includes "newly mapped geometry of an existing system," and splays/parallel strands count
-(thread 11536). SGMC (real off-catalogue faults) confirms the anatomy: 41.0% of SGMC
-off-catalogue pixels lie within 1 km of a known fault; the radial density peaks at
-1–2 px from known traces and the offset-azimuth mass concentrates across-strike
-(φ median 72°, 43.4% beyond 75°).
+- `data/external/trace_segments_utm11.csv`: 84,331 rows across 1,126 record IDs; sense counts `N=66,861`, `RL=8,448`, `LL=7,628`, missing `1,394`.
+- `data/external/qfault_attributes.csv`: 22,956 rows. `SLIPRTNUM` and `RECNUM` are numeric on all rows; `FCODE2023` is populated on all rows; `SECONDARY` is populated on only 89 rows; `MAPSCALE` is missing on 4,059 rows.
+- The field definitions describe `SLIPRTNUM` as assigned slip rate in mm/year and `RECNUM` as the upper-bounding time (years) of the most recent surface-deforming earthquake. Neither is cumulative displacement.
+- These are CSV-level counts, **not** a spatial/host join, not proof of unambiguous correspondence to rasterized visible faults, and not predictive evidence. Preserve missing values; do not infer `SECONDARY`.
+- Official data record for manual review: [INGENIOUS / GDR submission 1391](https://gdr.openei.org/submissions/1391), which lists Quaternary Faults v2 and its field-definition text. The record page states CC BY 4.0. Local input hashes and field counts are in the audit JSON.
 
-**How it differs from what the family already does.** Every top registry lane ranks
-pixels by *geophysical evidence* (TMI gradients, RTP, elevation slope, density — h16–h63,
-d28, anderson) and then prunes dots off the catalogue (the incumbents keep 0 dots within
-200 m of it). The previous fault-zone attempt (GEMSDOE45 `h51-km-faultzone`, owner-reported
-0.0106) placed a *fixed* kernel around the catalogue. H1 instead **fits** the radial, azimuth and
-length distributions on the holdout and emits a sparse binary top-k inside the fitted
-halo at 400–1000 m from known faults — the region the incumbents deliberately avoid.
+## Ranked shortlist
 
-**Measured (HOLDOUT-DTI 0.0580 [0.0507, 0.0663] @ 60k; SGMC-truth 0.0457 @ 60k,
-0.0650 @ 120k).** Beats its own controls (random 0.0492, uniform-halo 0.0117 at 60k),
-leakage canary max AUC 0.6538 < 0.90, unique vs all 663 registry rasters
-(max |Spearman| 0.6271). Trails the incumbents 2–3× on the SGMC instrument.
+### 1. Visible-topology × recorded-sense relay anatomy
 
-**Cost.** Low (done, ~40 min compute). **Rank: baseline — validated, delivered, negative
-as a standalone score-beater.**
+**Hypothesis.** Explicitly extracted visible-host branch ends and junctions may condition where nearby secondary strands occur; any relationship to recorded slip sense must be estimated, not assumed. Fit the location and relative-strike distribution of withheld strands around visible tips/junctions, with sparse topology/sense classes shrunk toward a pooled fit.
 
----
+**Layers/data.** Build endpoint/junction type and distance from the visible-only fault skeleton/branch graph in each fold, with local strike, cross- and along-strike offsets, and component length. Add INGENIOUS trace `sense` only after a predeclared, leakage-safe visible-host join is proven reliable. Do not use hidden-fault topology or hidden-fault sense as a predictor.
 
-## H2 — Zone-gated geophysical corroboration (TOP RANKED for the next session)
+**Physical signature.** In fold-training faults, compare withheld strand locations relative to the nearest visible endpoint or junction: distance, signed normalized along-strike/cross-strike offset, and relative strike. Fit distributions only on training folds. No fixed Riedel angles, stepping direction, or universal tip effect.
 
-**Hypothesis.** The fitted damage zone says *where* new faults can be (the halo, 4.35M px);
-geophysical lineament strength says *which* halo pixels actually host strands. Multiplying
-the fitted intensity by a geophysical ridge/edge strength **restricted to the fitted halo**
-should beat both the pure-geometry halo (H1) and the ungated geophysics (the incumbents'
-approach, which spreads its budget over the whole footprint and is then pruned).
+**Why it may find missing faults.** Relay and splay structures can occupy off-trace zones near mapped branch terminations or junctions. A topology-conditioned halo could focus mass on those geometries rather than broad buffers around every host; recorded sense may separate supported kinematic classes, but only if the join and sample size permit.
 
-**Layers.** `training_features.tif` bands — `tmi_hg` (TMI horizontal-gradient magnitude,
-a ridge detector), `det_elev_slope` (slope of detrended elevation, scarp detector),
-`rtp` — masked to the fitted halo; catalogue + INGENIOUS as in H1.
+**What is new here—and what is not.** `explore_zone.py` / `explore_zone2.py` measured `d`, relative azimuth, normalized along-strike position, length and marginal sense-conditioned distance; `run_sense_experiment.py` / `run_orientation_experiments.py` tested recorded-sense features with broad geometry/orientation. The active feature matrix has no explicit visible branch-end/junction topology by fold. An archived H57 slate already proposed generic tip-relay and junction/stepover hypotheses, but recorded them as unmeasured; this is a narrower topology-conditioned refinement, not a new generic relay or sense-by-angle idea and not a claim of global novelty. The Session-5 E3-minus-E2 binary paired `HOLDOUT-DTI` difference was +0.006188, evaluator `gems57-pooled-hide-v2`, 11,321 withheld positives, 95% CI `[-0.001694, +0.015702]`; the lower bound crosses zero, so the predeclared rule retained E2.
 
-**Physical signature.** Edge/ridge transforms of gravity and topography: fault strands
-produce linear magnetic-gradient ridges and elevation scarps subparallel to the host.
+**Named non-fault mimic.** Raster fragmentation, cartographic line breaks, lithologic/dike contacts, drainage lineaments, and vector-snapping errors can create false endpoints/junctions or apparent sense-specific relays.
 
-**Why it catches faults missing from USGS/INGENIOUS.** The incumbents prove the
-geophysical signal finds off-catalogue faults (SGMC-truth 0.093–0.145); the halo proves
-where new faults sit (SGMC: 41% within 1 km of known). Their intersection is the highest-
-precision region in the study area; gating concentrates the emission budget where the
-metric's FN pressure is highest.
+**Priority and cost.** Rank 1; highest relative priority because it targets off-trace secondary-strand localization, but confidence is very low and no DTI gain is estimated. Medium-high cost: fold-specific endpoint/junction extraction, fragmentation/boundary tests, visible-host sense-join audit, sparse-class controls, and separate feature canaries.
 
-**How it differs.** H1 is pure catalogue geometry; the incumbents are ungated
-geophysics-ML; H2 is the *product* — geophysics ranks pixels, the fitted zone bounds
-them. Also differs from GEMSDOE45's fixed-kernel zone by using the fitted, length-scaled,
-azimuth-weighted zone and from 7GEMSDOE's `halo15-gbt` (a GBT trained on a 15-px halo,
-1.83M positive px, max |Spearman| 0.6271 vs this lane) by emitting a sparse binary top-k
-inside a *fitted* 60-px halo.
+**Sources reviewed.** [INGENIOUS GDR 1391](https://gdr.openei.org/submissions/1391); Wang et al. (2017), [stepover/bend stress and strain localization](https://doi.org/10.1016/j.tecto.2017.10.001). These provide fault-geometry context, not evidence that this feature improves contest DTI.
 
-**Expected DTI improvement.** Highest of the backlog: the incumbents' off-catalogue
-signal (SGMC 0.093–0.145) concentrated inside the fitted halo instead of spread over the
-footprint. **Cost.** Medium (~1–2 h: ridge extraction, halo masking, Exp-2-style holdout
-rerun). **Validation before any slot:** HOLDOUT-DTI must beat the current holdout best
-(d15 scores 0.0844 as-is on these folds; H1 scores 0.0580 rebuilt) on the same
-instrument, plus the SGMC-truth sweep.
+### 2. Slip-rate-conditioned damage-zone width/decay
 
----
+**Hypothesis.** A recorded host slip rate may condition the fitted radial/cross-strike width and decay of nearby secondary strands beyond host length alone. Estimate a rate-by-distance/relative-orientation interaction. Treat slip rate as a measured rate—not cumulative displacement, maturity, or a displacement substitute.
 
-## H3 — Along-strike tip-relay targeting (vector-native)
+**Layers/data.** Visible-only fault geometry and host length; QFault/INGENIOUS `SLIPRTNUM` or its documented category `SCODE2023`, only after a validated host-level join. The audit found `SLIPRTNUM` numeric on all 22,956 QFault rows (84 distinct values; 0.0001–4.5 mm/year); the join was not tested.
 
-**Hypothesis.** Beyond-tip extensions are the single most reliable new geometry: the
-holdout measured **64.2% of withheld mass beyond segment tips**, and SGMC off-catalogue
-faults show 45.3% beyond-tip with Δstrike median 19.5° (63.0% within 30° of the host
-strike). Emitting along the host fault's strike azimuth, just past mapped tips, targets
-the highest-precision subset of the H1 zone.
+**Why it may find missing faults.** If present-day deformation rate is associated with the spatial distribution of secondary strands, a fitted, class-conditioned halo could prioritize off-trace locations near hosts with different observed rates. The holdout must establish whether any association exists.
 
-**Layers.** `trace_segments_utm11.csv` + `existing_faults.tif` (vector segments give
-tips and strikes directly; the raster alone cannot).
+**What is new here.** Current anatomy uses a connected-component length proxy; the inspected code does not use a validated QFault slip-rate interaction. The archived H57 hypothesis slate had already proposed slip-rate-scaled width as an unmeasured candidate, so this remains untried but is not a newly invented idea. It is distinct from changing the existing length exponent or repeating geometry-only tests.
 
-**Physical signature.** Along-strike continuation (φ ≈ 0 relative to host strike) at
-`u < 0` or `u > 1` (beyond-tip), with tip-to-tip distance following the fitted
-length scaling.
+**Named non-fault mimic.** Mapping effort, catalogue completeness, recency coding, and lithologic contrasts may covary with assigned rate and mimic a physical effect.
 
-**Why it catches faults missing from USGS/INGENIOUS.** "Newly mapped geometry of an
-existing system" (thread 11536) is most often a mapped tip extension or a strand the
-mapper added along strike; the holdout's beyond-tip majority says the same for the
-withheld population.
+**Priority and cost.** Rank 2; low-to-medium relative potential, no supported gain estimate. Low-to-medium cost only if the join is clean; otherwise medium/high.
 
-**How it differs.** H1 fits the *full* azimuth distribution (including the across-strike
-splay mode); H3 emits only the beyond-tip along-strike class. It is a subset of H1's
-zone with a sharper azimuth prior.
+**Sources reviewed.** [INGENIOUS GDR 1391 / QFault v2](https://gdr.openei.org/submissions/1391); Savage & Brodsky (2011), [damage-zone fracture distribution versus displacement](https://doi.org/10.1029/2010JB007665). The latter motivates testing displacement effects but does not license substituting slip rate for cumulative displacement.
 
-**Expected DTI improvement.** Moderate — a smaller, higher-precision emission (fewer FP
-per TP inside the 3-px credit radius). **Cost.** Low–medium. **Validation:** holdout
-with the tip-relay arm isolated (the template's tip instrument already measures
-tip-adjacent recovery); must beat H1's 0.0580 on HOLDOUT-DTI and improve the
-SGMC-truth sweep at equal budget.
+### 3. Recency-conditioned strand distribution
 
----
+**Hypothesis.** The recorded upper-bound recency of a host’s most recent surface-deforming earthquake may change the relative distance/offset distribution of secondary strands. Test a predeclared recency-class interaction with fitted distance and relative-strike anatomy; estimate both near/far and along-strike responses without assuming the direction.
 
-## H4 — Slip-rate-weighted zone width (physical refinement of H1)
+**Layers/data.** Visible-only host strike, distance, offset, and length plus QFault/INGENIOUS `RECNUM` or `RCODE2023`. The local audit found numeric `RECNUM` on all 22,956 QFault rows (67 values; 88–66,000,000 years); the field definition calls it an upper bound on the most recent surface-deforming event. Host joins are not verified.
 
-**Hypothesis.** H1 uses segment *length* as a displacement proxy; the INGENIOUS database
-records slip rate directly (`SLIPRT2023`, mm/yr in `qfault_attributes.csv`). Savage &
-Brodsky (2011) and the Tchalenko/Schreurs damage-zone literature scale zone width with
-displacement; fitting the width against the recorded rate should sharpen the radial
-density where the proxy is crude (long but slow vs short but fast faults).
+**Why it may find missing faults.** Recent and long-inactive host systems could preserve different spatial patterns of secondary strands; a fitted interaction could place mass on off-trace geometry while avoiding an assumption that all activity is contemporaneous.
 
-**Layers.** `qfault_attributes.csv` (slip rate) + `trace_segments_utm11.csv` +
-`existing_faults.tif`.
+**What is new here.** Repository search of the reviewed scripts, active anatomy implementation, and archived H57 slate found no `RECNUM`/`RCODE2023` join or recency-conditioned model. This is untried within the checked-in work, not a claim of global novelty. It is not the global distance/length/orientation fit, the additive sense ablation, or the slip-rate interaction above.
 
-**Physical signature.** Wider damage halos around higher-slip-rate faults; the radial
-density's scale parameter becomes a fitted function of slip rate instead of length.
+**Named non-fault mimic.** Regional differences in dating, scarp preservation, erosion, and map compilation can make recency appear predictive without a causal strand-age relation.
 
-**Why it catches faults missing from USGS/INGENIOUS.** New strands are likelier where
-the host accommodates more displacement; the length proxy mis-ranks hosts whose raster
-segments are fragmented or merged.
+**Priority and cost.** Rank 3; low relative potential and low confidence before validation. Medium cost because age categories, join quality, and regional confounding must be controlled.
 
-**How it differs.** A refinement *inside* H1's mechanism (replaces `s(L)` with
-`s(slip)`), not a new lane.
+**Sources reviewed.** [INGENIOUS GDR 1391 / QFault v2](https://gdr.openei.org/submissions/1391); [Savage & Brodsky (2011)](https://doi.org/10.1029/2010JB007665) for damage-zone context only.
 
-**Expected DTI improvement.** Small–moderate. **Cost.** Low. **Validation:** ablation
-inside Exp 2's protocol — the `full` arm with `s(slip)` vs `s(L)` on HOLDOUT-DTI; ship
-only if it beats 0.0580 within the CI.
+### 4. USGS fault slip/dilation-tendency modifier
 
----
+**Hypothesis.** An independently estimated tendency-to-slip or dilate for a visible host may modify the fitted orientation/distance distribution of secondary strands within a fixed host-derived halo.
 
-## H5 — USGS QFaults vector sense join (DATA-BLOCKED in this sandbox)
+**Layers/data.** The competition host geometry plus the USGS ScienceBase data release, [DOI 10.5066/P9YL58W6](https://doi.org/10.5066/P9YL58W6). Its catalog record describes slip/dilation tendency on Great Basin Quaternary fault segments and lists downloadable Great Basin and INGENIOUS shapefile/KMZ archives.
 
-**Hypothesis.** The catalogue raster carries no sense of slip; dextral, sinistral and
-normal hosts produce *mirrored* splay geometries (Riedel R vs R′ shear orientations, and
-normal-fault antithetic splays). Conditioning the azimuth factor `ĝ(φ)` on the host's
-recorded sense should sharpen the across-strike mode. The holdout cannot resolve sense
-(nearest-visible sense: unk 38,063 / N 214 / RL 53 / LL 9) — the INGENIOUS database has
-it for only 1,126 of 3,714 segments — so the USGS Quaternary Fault and Fold Database
-vectors would extend sense coverage to the whole known set.
+**Why it may find missing faults.** A host's stress/tendency context might be associated with nearby off-trace secondary structures. This is a test of structural fault anatomy, not proof of geothermal resource, permeability, heat, or a hidden-fault score.
 
-**Layers.** USGS QFaults vector database (Quaternary Fault and Fold Database of the
-United States — `earthquake.usgs.gov` / ScienceBase; official, free, public domain) joined
-to `existing_faults.tif` by fault name/section.
+**What is new here.** The inspected model has not joined or tested this separate fault-tendency dataset. It is not the already-tested 19-band feature stack or a scalar magnetic edge.
 
-**Physical signature.** Sense-conditioned offset-azimuth density: Riedel R shears at
-~15° and R′ at ~75° to the host for strike-slip (Tchalenko 1970), antithetic vs
-synthetic splays for normal faults (Schreurs 2003).
+**Named non-fault mimic.** Stress-model assumptions, uncertain host geometry, common-source ancestry, and lithologic boundaries can create apparent tendency/strand associations without predicting new faults.
 
-**Why it catches faults missing from USGS/INGENIOUS.** New strands inherit their host's
-sense; a dextral host's new splays appear on the Riedel-R side, which the marginal
-azimuth fit currently smears over both sides.
+**Priority and cost.** Rank 4; low and highly uncertain relative potential until overlap is demonstrated; high data/registration cost. The catalog makes a source obtainable, but this candidate is **not yet a viable feature**: no archive was downloaded, and contest AOI overlap, schema/CRS, reuse terms, and grid registration remain unchecked.
 
-**How it differs.** Extends H1's `ĝ(φ)` from a marginal to a resolved conditioning.
+**Sources reviewed.** [Official USGS ScienceBase item](https://www.sciencebase.gov/catalog/item/6296974dd34ec53d276bb33d) / [DOI 10.5066/P9YL58W6](https://doi.org/10.5066/P9YL58W6); [INGENIOUS GDR 1391](https://gdr.openei.org/submissions/1391). The catalog describes the data purpose and file availability; it does not establish contest-grid coverage or predictive value.
 
-**Expected DTI improvement.** Moderate. **Cost.** Low once data is in hand — **but the
-source is unreachable from this sandbox** (`earthquake.usgs.gov` returns HTTP 000;
-verified repeatedly). Needs a fetcher from a network that can reach it, or a manual
-download. **Validation:** sense-conditioned ablation in Exp 2's protocol; the canary
-(single-feature AUC) must stay < 0.90.
+## Cross-candidate controls and next steps
 
----
-
-## Ranking summary
-
-| # | Hypothesis | Expected DTI gain | Cost | Status |
-|---|---|---|---|---|
-| H2 | Zone-gated geophysical corroboration | **highest** | medium | backlog — validate next |
-| H1 | Fault-zone anatomy (fitted halo) | baseline (measured) | low | **RUN — delivered, negative standalone** |
-| H3 | Along-strike tip-relay targeting | moderate | low–med | backlog |
-| H5 | USGS vector sense join | moderate | low | **data-blocked** (earthquake.usgs.gov unreachable) |
-| H4 | Slip-rate-weighted zone width | small–moderate | low | backlog |
-
-Slot rule honored: H1 was validated on the spatially-blocked holdout **before** any
-submission was written, and the verdict is **negative** for slot promotion — on the
-brief's holdout instrument H1 (0.0580 rebuilt) does not beat the current holdout best
-(d15, 0.0844 as-is on the same folds), and on the SGMC-truth live proxy it trails the
-incumbents 2–3×. The generated TIF is a validated unique artifact, not a slot candidate.
+- `FCODE2023` (mapping certainty) and `MAPSCALE` are observation-process/confounding fields, not proof of a fault. `MAPSCALE` is missing on 4,059 rows; any future use requires a visible-host join audit. `SECONDARY` is nonmissing on only 89 rows and must not be imputed.
+- No current shared feature cache or `training_features.tif` is present. Historical feature-cache receipts do not make the underlying current inputs available or independently authenticate their origin.
+- Do not run, download, fit, or emit under the spent budget and unresolved uniqueness blocker. If the project is explicitly reauthorized, first resolve the literal universal-overlap stop and establish a new budget; then preregister the join and feature, reuse the shared cache/evaluator/writer, withhold whole buffered segments, derive catalog features only from visible faults, mask visible pixels exactly, use pooled DTI (`alpha=0.2`, `beta=0.8`, 300 m triangular kernel), test each feature alone for leakage (`AUC >0.90` means leakage until resolved), compare registry rank correlation and 3-pixel overlap before placement and on final dots, and finish each experiment with the required JSON run card.
+- **No hypothesis here is implemented, validated, promoted, or approved for a competition slot.**

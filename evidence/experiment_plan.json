@@ -1,0 +1,32 @@
+{
+  "generated_utc": "2026-10-10T20:26:26.648410+00:00",
+  "session": "session-5-2026-10-10",
+  "maximum_experiments": 3,
+  "experiments": [
+    {
+      "id": "E1",
+      "hypothesis_id": "H57-H",
+      "hypothesis": "Multi-scale host-bend damage asymmetry (sigma=3 px vs 9 px) + detrended-elevation scarp relative strike vs repaired single-host anatomy"
+    },
+    {
+      "id": "E2",
+      "hypothesis_id": "H57-I2",
+      "hypothesis": "Two-host damage-zone superposition and en echelon stepover relay geometry (nearest two distinct visible components C1 != C2 via exact 12-bitplane EDT)"
+    },
+    {
+      "id": "E3",
+      "hypothesis_id": "H57-J",
+      "hypothesis": "Along-host and inter-host slip-sense transition heterogeneity (strike-slip RL/LL vs normal N coexistence in 1.5 km damage neighborhood)"
+    }
+  ],
+  "per_quadrant_cap": 10000,
+  "seed": 20,
+  "split": "buffered-whole-components-loqo-v2",
+  "evaluator": "gems57-pooled-hide-v2",
+  "no_textbook_angle": true,
+  "submission_slots_used": 0,
+  "candidate_predeclared": "relay_bend_anatomy",
+  "sense_retention_rule": "paired CI lower bound > 0 against relay_bend_anatomy",
+  "emission": "shared greedy allocation; truth-count estimate from training base rate, never test labels",
+  "zone": "90th percentile of TRAINING withheld-positive distances; cap shrunk by TRAINING fraction inside zone"
+}

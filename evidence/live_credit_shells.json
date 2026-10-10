@@ -1,0 +1,244 @@
+{
+ "schema": "gems57.live-credit-shells.v1",
+ "label": "WITHDRAWN MODEL \u2014 owner-report-derived arithmetic; anchor invalidated, not hidden-truth measurement",
+ "metric_identity": "DTI = T/(0.2T + 0.2n - 0.2Q + 0.8G), T==Q assumed",
+ "G_hidden_truth": 14088.747191011289,
+ "T_pair": 5223.139415730348,
+ "sum_kernel": 9.380298,
+ "footprint_cells": 5167373,
+ "catalogue_px": 60988,
+ "rasters": [
+  {
+   "file": "live_01922_h195.tif",
+   "n_dots": 121131,
+   "owner_reported_score": 0.1922,
+   "model_T": 6822.561408089897,
+   "model_mean_credit": 0.056323826337518035,
+   "model_coverage": 0.4842560744111254,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_02477_d15.tif",
+   "n_dots": 60069,
+   "owner_reported_score": 0.2477,
+   "model_T": 5767.644403370798,
+   "model_mean_credit": 0.09601698718758091,
+   "model_coverage": 0.40937950870823997,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_02600_d28.tif",
+   "n_dots": 44090,
+   "owner_reported_score": 0.26,
+   "model_T": 5223.139415730348,
+   "model_mean_credit": 0.11846539840622246,
+   "model_coverage": 0.37073128965382707,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_02708_d28.tif",
+   "n_dots": 40199,
+   "model_T": 5229.3640314606855,
+   "model_mean_credit": 0.13008691836763814,
+   "model_coverage": 0.37117310436211487,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "owner_reported_claim": 0.2708,
+   "score_provenance": "0.2708 attribution to this file is contradicted by owner audit."
+  },
+  {
+   "file": "live_02778_b2prune.tif",
+   "n_dots": 37654,
+   "model_T": 5223.139415730348,
+   "model_mean_credit": 0.13871406532454317,
+   "model_coverage": 0.37073128965382707,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "owner_reported_claim": 0.2778,
+   "score_provenance": "H33-2-B2 is owner-marked UNSCORED; the 0.2778 claim has no exact-file receipt."
+  },
+  {
+   "file": "live_02649_h32tip.tif",
+   "n_dots": 42294,
+   "owner_reported_score": 0.2649,
+   "model_T": 5226.423424719113,
+   "model_mean_credit": 0.12357363750695402,
+   "model_coverage": 0.3709643841188097,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_02632_tipstepover.tif",
+   "n_dots": 41865,
+   "owner_reported_score": 0.2632,
+   "model_T": 5170.300208539336,
+   "model_mean_credit": 0.12349934810795023,
+   "model_coverage": 0.3669808350197398,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_02710_h36rung30.tif",
+   "n_dots": 37660,
+   "owner_reported_score": 0.271,
+   "model_T": 5095.612391011247,
+   "model_mean_credit": 0.13530569280433477,
+   "model_coverage": 0.3616795959162558,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  },
+  {
+   "file": "live_00512_sgmc44k.tif",
+   "n_dots": 44090,
+   "owner_reported_score": 0.0512,
+   "model_T": 1028.5566849438223,
+   "model_mean_credit": 0.023328570763071498,
+   "model_coverage": 0.07300554627029208,
+   "evidence_class": "HISTORICAL MODEL INPUT; owner-reported value, not organizer-confirmed",
+   "score_provenance": "OWNER-REPORTED; no organizer submission-page receipt reviewed here."
+  }
+ ],
+ "shells": [
+  {
+   "shell": "live_01922_h195.tif",
+   "n": 77041,
+   "model_T": 1599.4219923595483,
+   "model_mean_credit": 0.020760659809186646,
+   "dcat_median": 14.317821063276353,
+   "dcat_mean": 24.751759919884062,
+   "frac_le2": 0.1413533053828481,
+   "frac_le5": 0.2845238249763113,
+   "frac_le10": 0.4147142430653808,
+   "frac_le30": 0.6977453563686868,
+   "evidence_class": "WITHDRAWN MODEL arithmetic derived from disputed owner claims; not a hidden-truth measurement"
+  },
+  {
+   "shell": "live_02600_d28.tif",
+   "n": 3891,
+   "model_T": -6.224615730337064,
+   "model_mean_credit": -0.0015997470394081377,
+   "dcat_median": 1.0,
+   "dcat_mean": 1.0,
+   "frac_le2": 1.0,
+   "frac_le5": 1.0,
+   "frac_le10": 1.0,
+   "frac_le30": 1.0,
+   "evidence_class": "WITHDRAWN MODEL arithmetic derived from disputed owner claims; not a hidden-truth measurement"
+  },
+  {
+   "shell": "live_02708_d28.tif",
+   "n": 2545,
+   "model_T": 6.224615730337064,
+   "model_mean_credit": 0.002445821505044033,
+   "dcat_median": 2.0,
+   "dcat_mean": 1.7235640425972842,
+   "frac_le2": 1.0,
+   "frac_le5": 1.0,
+   "frac_le10": 1.0,
+   "frac_le30": 1.0,
+   "evidence_class": "WITHDRAWN MODEL arithmetic derived from disputed owner claims; not a hidden-truth measurement"
+  },
+  {
+   "shell": "live_02778_b2prune.tif",
+   "n": 37654,
+   "model_T": 5223.139415730348,
+   "model_mean_credit": 0.13871406532454317,
+   "dcat_median": 19.6468827043885,
+   "dcat_mean": 28.996593932371773,
+   "frac_le2": 0.0,
+   "frac_le5": 0.14970521060179529,
+   "frac_le10": 0.301694375099591,
+   "frac_le30": 0.6418176023795613,
+   "evidence_class": "WITHDRAWN MODEL arithmetic derived from disputed owner claims; not a hidden-truth measurement"
+  },
+  {
+   "shell": "live_00512_sgmc44k.tif (standalone)",
+   "n": 44090,
+   "model_T": 1028.5566849438223,
+   "model_mean_credit": 0.023328570763071498,
+   "dcat_median": 18.027756377319946,
+   "dcat_mean": 24.915649633594143,
+   "frac_le2": 0.0739169879791336,
+   "frac_le5": 0.1938081197550465,
+   "frac_le10": 0.3360172374688138,
+   "frac_le30": 0.6789521433431617,
+   "evidence_class": "WITHDRAWN MODEL arithmetic derived from disputed owner claims; not a hidden-truth measurement"
+  }
+ ],
+ "distance_profile_fit": {
+  "bin_edges": [
+   0.0,
+   1.0,
+   2.0,
+   3.0,
+   5.0,
+   8.0,
+   12.0,
+   20.0,
+   32.0,
+   1000000000.0
+  ],
+  "weights": [
+   0.0,
+   0.0,
+   0.8930472661798985,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "observed": [
+   6822.561408089897,
+   5767.644403370798,
+   5223.139415730348,
+   5229.3640314606855,
+   5223.139415730348,
+   5226.423424719113,
+   5170.300208539336,
+   5095.612391011247,
+   1028.5566849438223,
+   132156.6470983488
+  ],
+  "fitted": [
+   8246.398455905182,
+   3761.5150851497324,
+   2638.9546715616,
+   2638.9546715616,
+   1438.6991458158166,
+   2803.2753685387015,
+   2638.06162429542,
+   2506.783676166975,
+   1777.164059697998,
+   151222.37272404076
+  ],
+  "mean_credit_by_bin": [
+   0.0,
+   0.0,
+   0.8930472661798985,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "footprint_counts": [
+   60988.0,
+   176003.0,
+   169333.0,
+   240798.0,
+   396500.0,
+   453081.0,
+   810211.0,
+   901546.0,
+   1958913.0
+  ]
+ },
+ "status": "RETIRED / DO NOT USE FOR CANDIDATE EMISSION",
+ "score_anchor_status": "INVALIDATED: H33-2-B2 is owner-marked UNSCORED; 0.2747 is a projection; 0.2778 remains unverified and not tied to exact TIFF bytes; 0.2708 attribution is contradicted.",
+ "owner_score_audit": "evidence/owner_score_reconciliation_session4.json",
+ "G_hidden_truth_status": "Not observed. Historical algebraic estimate under assumptions T==Q and disputed owner score-to-file mappings; withdrawn."
+}

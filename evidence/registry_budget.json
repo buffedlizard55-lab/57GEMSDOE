@@ -1,307 +1,323 @@
 {
-  "n_rasters": 13,
-  "p_value": 0.0021415872926236422,
-  "rows": [
-    {
-      "submission": "h36-1-rung30-blind-r1",
-      "n_dots": 37660,
-      "repo": "GEMSDOE28",
-      "owner_reported_value": 0.271
-    },
-    {
-      "submission": "h38-1-hf-euler-r30-r1",
-      "n_dots": 37860,
-      "repo": "GEMSDOE28",
-      "owner_reported_value": 0.2707
-    },
-    {
-      "submission": "anderson-geothermal-pinn-38854",
-      "n_dots": 38854,
-      "repo": "GEMSDOE36",
-      "owner_reported_value": 0.275
-    },
-    {
-      "submission": "gate_ortho_w0.25-40k",
-      "n_dots": 40000,
-      "repo": "GEMSDOE49",
-      "owner_reported_value": 0.2376
-    },
-    {
-      "submission": "wormrank-d28",
-      "n_dots": 41338,
-      "repo": "GEMSDOE29",
-      "owner_reported_value": 0.256
-    },
-    {
-      "submission": "h33d-analog-tip-stepover-r30",
-      "n_dots": 41865,
-      "repo": "GEMSDOE33",
-      "owner_reported_value": 0.2632
-    },
-    {
-      "submission": "h32-1-prethin-tip-euler-d2-8",
-      "n_dots": 42294,
-      "repo": "GEMSDOE28",
-      "owner_reported_value": 0.2649
-    },
-    {
-      "submission": "d28-poisson300m-offcat-44090",
-      "n_dots": 44090,
-      "repo": "GEMSDOE30",
-      "owner_reported_value": 0.26
-    },
-    {
-      "submission": "dotted-h19-5-d2-8",
-      "n_dots": 44090,
-      "repo": "GEMSDOE25",
-      "owner_reported_value": 0.26
-    },
-    {
-      "submission": "h25-1-dotted-h19-5-d1-5",
-      "n_dots": 60069,
-      "repo": "GEMSDOE24",
-      "owner_reported_value": 0.2477
-    },
-    {
-      "submission": "topo-gap-closure-t-v2-on-d1-5",
-      "n_dots": 61328,
-      "repo": "GEMSDOE27",
-      "owner_reported_value": 0.2449
-    },
-    {
-      "submission": "h19-5-powerlaw-budget-multiline",
-      "n_dots": 121131,
-      "repo": "19GEMSDOE",
-      "owner_reported_value": 0.1922
-    },
-    {
-      "submission": "h19-4-multiline-corroborated",
-      "n_dots": 123779,
-      "repo": "19GEMSDOE",
-      "owner_reported_value": 0.1894
-    }
-  ],
-  "band_lt_50k": {
-    "n": 9,
-    "mean_owner_reported_value": 0.262,
-    "best_owner_reported_value": 0.275
+ "n_rasters": 13,
+ "p_value": 0.0021415872926236422,
+ "rows": [
+  {
+   "submission": "h36-1-rung30-blind-r1",
+   "n_dots": 37660,
+   "repo": "GEMSDOE28",
+   "owner_reported_value": 0.271
   },
-  "band_ge_50k": {
-    "n": 4,
-    "mean_owner_reported_value": 0.2186,
-    "best_owner_reported_value": 0.2477
+  {
+   "submission": "h38-1-hf-euler-r30-r1",
+   "n_dots": 37860,
+   "repo": "GEMSDOE28",
+   "owner_reported_value": 0.2707
   },
-  "band_35k_46k": {
-    "n": 9,
-    "mean_owner_reported_value": 0.262
+  {
+   "submission": "anderson-geothermal-pinn-38854",
+   "n_dots": 38854,
+   "repo": "GEMSDOE36",
+   "owner_reported_value": 0.275
   },
-  "grid_px": 2560000,
-  "n_truth_cells": 5660,
-  "base_rate": 0.002211,
-  "sum_kernel": 9.380298,
-  "random_hit_prob": 0.0207,
-  "dti_vs_coverage_curve": [
-    {
-      "coverage": 0.1,
-      "n_over_K": 0.5,
-      "dti": 0.1215
-    },
-    {
-      "coverage": 0.1,
-      "n_over_K": 1.0,
-      "dti": 0.1196
-    },
-    {
-      "coverage": 0.1,
-      "n_over_K": 2.0,
-      "dti": 0.1132
-    },
-    {
-      "coverage": 0.1,
-      "n_over_K": 4.0,
-      "dti": 0.1068
-    },
-    {
-      "coverage": 0.1,
-      "n_over_K": 6.0,
-      "dti": 0.1016
-    },
-    {
-      "coverage": 0.2,
-      "n_over_K": 0.5,
-      "dti": 0.23
-    },
-    {
-      "coverage": 0.2,
-      "n_over_K": 1.0,
-      "dti": 0.2163
-    },
-    {
-      "coverage": 0.2,
-      "n_over_K": 2.0,
-      "dti": 0.1937
-    },
-    {
-      "coverage": 0.2,
-      "n_over_K": 4.0,
-      "dti": 0.1672
-    },
-    {
-      "coverage": 0.2,
-      "n_over_K": 6.0,
-      "dti": 0.1462
-    },
-    {
-      "coverage": 0.2778,
-      "n_over_K": 0.5,
-      "dti": 0.3162
-    },
-    {
-      "coverage": 0.2778,
-      "n_over_K": 1.0,
-      "dti": 0.2909
-    },
-    {
-      "coverage": 0.2778,
-      "n_over_K": 2.0,
-      "dti": 0.2558
-    },
-    {
-      "coverage": 0.2778,
-      "n_over_K": 4.0,
-      "dti": 0.2114
-    },
-    {
-      "coverage": 0.2778,
-      "n_over_K": 6.0,
-      "dti": 0.1809
-    },
-    {
-      "coverage": 0.3,
-      "n_over_K": 0.5,
-      "dti": 0.3413
-    },
-    {
-      "coverage": 0.3,
-      "n_over_K": 1.0,
-      "dti": 0.3132
-    },
-    {
-      "coverage": 0.3,
-      "n_over_K": 2.0,
-      "dti": 0.2729
-    },
-    {
-      "coverage": 0.3,
-      "n_over_K": 4.0,
-      "dti": 0.2221
-    },
-    {
-      "coverage": 0.3,
-      "n_over_K": 6.0,
-      "dti": 0.1887
-    },
-    {
-      "coverage": 0.4,
-      "n_over_K": 0.5,
-      "dti": 0.4494
-    },
-    {
-      "coverage": 0.4,
-      "n_over_K": 1.0,
-      "dti": 0.4102
-    },
-    {
-      "coverage": 0.4,
-      "n_over_K": 2.0,
-      "dti": 0.3525
-    },
-    {
-      "coverage": 0.4,
-      "n_over_K": 4.0,
-      "dti": 0.2808
-    },
-    {
-      "coverage": 0.4,
-      "n_over_K": 6.0,
-      "dti": 0.2362
-    },
-    {
-      "coverage": 0.5,
-      "n_over_K": 0.5,
-      "dti": 0.5603
-    },
-    {
-      "coverage": 0.5,
-      "n_over_K": 1.0,
-      "dti": 0.5101
-    },
-    {
-      "coverage": 0.5,
-      "n_over_K": 2.0,
-      "dti": 0.4334
-    },
-    {
-      "coverage": 0.5,
-      "n_over_K": 4.0,
-      "dti": 0.3384
-    },
-    {
-      "coverage": 0.5,
-      "n_over_K": 6.0,
-      "dti": 0.2825
-    },
-    {
-      "coverage": 0.7,
-      "n_over_K": 0.5,
-      "dti": 0.5602
-    },
-    {
-      "coverage": 0.7,
-      "n_over_K": 1.0,
-      "dti": 0.7048
-    },
-    {
-      "coverage": 0.7,
-      "n_over_K": 2.0,
-      "dti": 0.594
-    },
-    {
-      "coverage": 0.7,
-      "n_over_K": 4.0,
-      "dti": 0.4542
-    },
-    {
-      "coverage": 0.7,
-      "n_over_K": 6.0,
-      "dti": 0.3689
-    },
-    {
-      "coverage": 1.0,
-      "n_over_K": 0.5,
-      "dti": 0.5597
-    },
-    {
-      "coverage": 1.0,
-      "n_over_K": 1.0,
-      "dti": 1.0
-    },
-    {
-      "coverage": 1.0,
-      "n_over_K": 2.0,
-      "dti": 0.8365
-    },
-    {
-      "coverage": 1.0,
-      "n_over_K": 4.0,
-      "dti": 0.6301
-    },
-    {
-      "coverage": 1.0,
-      "n_over_K": 6.0,
-      "dti": 0.5063
-    }
-  ],
-  "perfect_prediction_dti": 1.0,
-  "spearman_dots_vs_owner_reported_value": -0.7686
+  {
+   "submission": "gate_ortho_w0.25-40k",
+   "n_dots": 40000,
+   "repo": "GEMSDOE49",
+   "owner_reported_value": 0.2376
+  },
+  {
+   "submission": "wormrank-d28",
+   "n_dots": 41338,
+   "repo": "GEMSDOE29",
+   "owner_reported_value": 0.256
+  },
+  {
+   "submission": "h33d-analog-tip-stepover-r30",
+   "n_dots": 41865,
+   "repo": "GEMSDOE33",
+   "owner_reported_value": 0.2632
+  },
+  {
+   "submission": "h32-1-prethin-tip-euler-d2-8",
+   "n_dots": 42294,
+   "repo": "GEMSDOE28",
+   "owner_reported_value": 0.2649
+  },
+  {
+   "submission": "d28-poisson300m-offcat-44090",
+   "n_dots": 44090,
+   "repo": "GEMSDOE30",
+   "owner_reported_value": 0.26
+  },
+  {
+   "submission": "dotted-h19-5-d2-8",
+   "n_dots": 44090,
+   "repo": "GEMSDOE25",
+   "owner_reported_value": 0.26
+  },
+  {
+   "submission": "h25-1-dotted-h19-5-d1-5",
+   "n_dots": 60069,
+   "repo": "GEMSDOE24",
+   "owner_reported_value": 0.2477
+  },
+  {
+   "submission": "topo-gap-closure-t-v2-on-d1-5",
+   "n_dots": 61328,
+   "repo": "GEMSDOE27",
+   "owner_reported_value": 0.2449
+  },
+  {
+   "submission": "h19-5-powerlaw-budget-multiline",
+   "n_dots": 121131,
+   "repo": "19GEMSDOE",
+   "owner_reported_value": 0.1922
+  },
+  {
+   "submission": "h19-4-multiline-corroborated",
+   "n_dots": 123779,
+   "repo": "19GEMSDOE",
+   "owner_reported_value": 0.1894
+  }
+ ],
+ "band_lt_50k": {
+  "n": 9,
+  "mean_owner_reported_value": 0.262,
+  "best_owner_reported_value": 0.275
+ },
+ "band_ge_50k": {
+  "n": 4,
+  "mean_owner_reported_value": 0.2186,
+  "best_owner_reported_value": 0.2477
+ },
+ "band_35k_46k": {
+  "n": 9,
+  "mean_owner_reported_value": 0.262
+ },
+ "grid_px": 2560000,
+ "n_truth_cells": 5660,
+ "base_rate": 0.002211,
+ "sum_kernel": 9.380298,
+ "random_hit_prob": 0.0207,
+ "dti_vs_coverage_curve": [
+  {
+   "coverage": 0.1,
+   "n_over_K": 0.5,
+   "dti": 0.1215
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 1.0,
+   "dti": 0.1196
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 2.0,
+   "dti": 0.1132
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 4.0,
+   "dti": 0.1068
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 6.0,
+   "dti": 0.1016
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 0.5,
+   "dti": 0.23
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 1.0,
+   "dti": 0.2163
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 2.0,
+   "dti": 0.1937
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 4.0,
+   "dti": 0.1672
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 6.0,
+   "dti": 0.1462
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 0.5,
+   "dti": 0.3162
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 1.0,
+   "dti": 0.2909
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 2.0,
+   "dti": 0.2558
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 4.0,
+   "dti": 0.2114
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 6.0,
+   "dti": 0.1809
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 0.5,
+   "dti": 0.3413
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 1.0,
+   "dti": 0.3132
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 2.0,
+   "dti": 0.2729
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 4.0,
+   "dti": 0.2221
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 6.0,
+   "dti": 0.1887
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 0.5,
+   "dti": 0.4494
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 1.0,
+   "dti": 0.4102
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 2.0,
+   "dti": 0.3525
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 4.0,
+   "dti": 0.2808
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 6.0,
+   "dti": 0.2362
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 0.5,
+   "dti": 0.5603
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 1.0,
+   "dti": 0.5101
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 2.0,
+   "dti": 0.4334
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 4.0,
+   "dti": 0.3384
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 6.0,
+   "dti": 0.2825
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 0.5,
+   "dti": 0.5602
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 1.0,
+   "dti": 0.7048
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 2.0,
+   "dti": 0.594
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 4.0,
+   "dti": 0.4542
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 6.0,
+   "dti": 0.3689
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 0.5,
+   "dti": 0.5597
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 1.0,
+   "dti": 1.0
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 2.0,
+   "dti": 0.8365
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 4.0,
+   "dti": 0.6301
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 6.0,
+   "dti": 0.5063
+  }
+ ],
+ "perfect_prediction_dti": 1.0,
+ "spearman_dots_vs_owner_reported_value": -0.7686,
+ "evidence_class": "OWNER-REPORTED DESCRIPTIVE VALUE ANALYSIS; NOT ORGANIZER-CONFIRMED SCORES",
+ "score_attribution_note": "The two disputed score-to-file mappings are excluded: H33-2-B2 is marked UNSCORED by GEMSDOE32; 0.2747 is a projection; 0.2778 is owner-reported and unverified without an exact-file receipt; 0.2708 attribution is contradicted by owner audit.",
+ "excluded_score_file_mappings": [
+  {
+   "repo": "GEMSDOE32",
+   "submission": "H33-2-B2",
+   "claim": 0.2778,
+   "reason": "Owner README marks H33-2-B2 UNSCORED; no exact-file submission receipt."
+  },
+  {
+   "repo": "GEMSDOE28",
+   "submission": "h27-4-r1-solo-d2-8",
+   "claim": 0.2708,
+   "reason": "File-score attribution contradicted by owner audit and public-board row attribution."
+  }
+ ]
 }

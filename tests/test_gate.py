@@ -1,10 +1,12 @@
-"""The shipped submission must pass the template's format gate.
+"""Historical candidate format checks and the writer's fail-closed contract.
 
-Also pins the writer's fail-closed contract: it REJECTS out-of-range values,
-NaN anywhere, positive mass outside the footprint, and over-long names/notes —
-no silent repair (the earlier "Predicted values must be in range [0, 1]"
-organizer rejection is why callers must normalize before packaging).
+The historical raster passes local format checks but is not cleared by the
+literal full-registry uniqueness gate and must not be downloaded/submitted.
+The writer rejects out-of-range values, NaN, positive mass outside the footprint,
+and over-long names/notes; it never silently repairs model output.
 """
+import json
+
 import numpy as np
 import pytest
 import rasterio
@@ -15,12 +17,25 @@ from gems57.submission_writer import write_submission
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SUB = ROOT / "docs" / "downloads" / "gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif"
-RECEIPT = ROOT / "docs" / "downloads" / "checks-gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif.json"
+DL = ROOT / "docs" / "downloads"
 SAMPLE = ROOT / "data" / "official" / "sample_submission.tif"
+BUILD = ROOT / "evidence" / "submission_build_all.json"
+
+
+def _shipped_submission() -> Path:
+    """The shipped artifact is whatever the latest build receipt says.
+
+    Resolving it from ``evidence/submission_build_all.json`` (instead of a
+    hard-coded timestamped filename) is what keeps these gates from going
+    stale every time the lane rebuilds -- see ``REMAINING_WORK.md`` item 7.
+    """
+    assert BUILD.exists(), "missing evidence/submission_build_all.json (run build_submission.py)"
+    name = json.loads(BUILD.read_text())["submission_name"]
+    return DL / f"{name}-zeros.tif"
 
 
 def test_shipped_submission_passes_format_gate():
+    SUB = _shipped_submission()
     assert SUB.exists(), f"missing submission artifact: {SUB}"
     with rasterio.open(SAMPLE) as ds:
         footprint = np.isfinite(ds.read(1))
@@ -32,14 +47,15 @@ def test_shipped_submission_passes_format_gate():
     assert rep["n_nan"] == 0
     assert rep["min"] >= 0.0 and rep["max"] <= 1.0
     assert rep["mass_outside_footprint"] == 0
-    assert rep["n_nonzero"] == 35341  # emitted positives in the shipped file (see evidence/submission_build_all.json)
+    rec = json.loads(SUB.with_suffix(".json").read_text())
+    assert rep["n_nonzero"] == rec["validator"]["n_nonzero"] > 0
     with rasterio.open(SUB) as ds:
         vals = np.unique(ds.read(1))
     assert set(vals) <= {0.0, 1.0}
 
 
 def test_shipped_submission_has_no_dots_on_known_faults():
-    with rasterio.open(SUB) as ds:
+    with rasterio.open(_shipped_submission()) as ds:
         p = ds.read(1)
     with rasterio.open(ROOT / "data" / "official" / "labels.tif") as ds:
         cat = ds.read(1)
@@ -48,13 +64,12 @@ def test_shipped_submission_has_no_dots_on_known_faults():
 
 def test_shipped_submission_sha256_matches_receipt():
     import hashlib
-    import json
-    rec = json.loads(RECEIPT.read_text())
+    SUB = _shipped_submission()
+    rec = json.loads(SUB.with_suffix(".json").read_text())
     got = hashlib.sha256(SUB.read_bytes()).hexdigest()
-    assert got == rec["sha256"] == "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482"
-    assert rec["all_checks_passed"] is True
-    note = json.loads((ROOT / "evidence" / "submission_build_all.json").read_text())["submission_note"]
-    assert len(note) <= 140
+    assert got == rec["sha256"] == rec["validator"]["sha256"]
+    assert rec["note_chars"] <= 140
+    assert rec["promoted"] is False
 
 
 def _valid_footprint():
@@ -103,8 +118,8 @@ def test_writer_accepts_valid_binary_prediction(tmp_path):
     pred[ys[:100], xs[:100]] = 1.0
     out = tmp_path / "ok.tif"
     rec = write_submission(out, pred, SAMPLE, valid, note="test note", name="test")
-    assert rec["ok"] if "ok" in rec else True
-    assert rec["validator"]["ok"]
-    assert rec["validator"]["n_nonzero"] == 100
+    assert rec["validator"]["all_checks_passed"]
+    assert rec["validator"]["emitted_positive_pixels"] == 100
+    assert rec["approved_for_weekly_slot"] is False
     assert (tmp_path / "ok.zip").exists()
     assert (tmp_path / "ok.json").exists()

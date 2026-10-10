@@ -1,0 +1,423 @@
+{
+ "n_rasters": 15,
+ "rows": [
+  {
+   "submission": "H33-2-B2 raster bytes (owner README: UNSCORED; 0.2778 claim unlinked)",
+   "n_dots": 37654,
+   "repo": "GEMSDOE32",
+   "owner_reported_claim": 0.2778,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed",
+   "owner_reported_claim_attribution": "unverified; no exact-file receipt"
+  },
+  {
+   "submission": "h36-1-rung30-blind-r1",
+   "n_dots": 37660,
+   "repo": "GEMSDOE28",
+   "owner_reported_claim": 0.271,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h38-1-hf-euler-r30-r1",
+   "n_dots": 37860,
+   "repo": "GEMSDOE28",
+   "owner_reported_claim": 0.2707,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "anderson-geothermal-pinn-38854",
+   "n_dots": 38854,
+   "repo": "GEMSDOE36",
+   "owner_reported_claim": 0.275,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "gate_ortho_w0.25-40k",
+   "n_dots": 40000,
+   "repo": "GEMSDOE49",
+   "owner_reported_claim": 0.2376,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "H27-4 raster bytes (0.2708 attribution contradicted)",
+   "n_dots": 40199,
+   "repo": "GEMSDOE28",
+   "owner_reported_claim": 0.2708,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed",
+   "owner_reported_claim_attribution": "contradicted; not attributed to these bytes"
+  },
+  {
+   "submission": "wormrank-d28",
+   "n_dots": 41338,
+   "repo": "GEMSDOE29",
+   "owner_reported_claim": 0.256,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h33d-analog-tip-stepover-r30",
+   "n_dots": 41865,
+   "repo": "GEMSDOE33",
+   "owner_reported_claim": 0.2632,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h32-1-prethin-tip-euler-d2-8",
+   "n_dots": 42294,
+   "repo": "GEMSDOE28",
+   "owner_reported_claim": 0.2649,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "d28-poisson300m-offcat-44090",
+   "n_dots": 44090,
+   "repo": "GEMSDOE30",
+   "owner_reported_claim": 0.26,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "dotted-h19-5-d2-8",
+   "n_dots": 44090,
+   "repo": "GEMSDOE25",
+   "owner_reported_claim": 0.26,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h25-1-dotted-h19-5-d1-5",
+   "n_dots": 60069,
+   "repo": "GEMSDOE24",
+   "owner_reported_claim": 0.2477,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "topo-gap-closure-t-v2-on-d1-5",
+   "n_dots": 61328,
+   "repo": "GEMSDOE27",
+   "owner_reported_claim": 0.2449,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h19-5-powerlaw-budget-multiline",
+   "n_dots": 121131,
+   "repo": "19GEMSDOE",
+   "owner_reported_claim": 0.1922,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  },
+  {
+   "submission": "h19-4-multiline-corroborated",
+   "n_dots": 123779,
+   "repo": "19GEMSDOE",
+   "owner_reported_claim": 0.1894,
+   "score_provenance": "OWNER-REPORTED label; not organizer-confirmed"
+  }
+ ],
+ "band_lt_50k": {
+  "n": 11,
+  "mean_owner_reported_claim_legacy": 0.26427272727272727,
+  "best_owner_reported_claim_legacy": 0.2778
+ },
+ "band_ge_50k": {
+  "n": 4,
+  "mean_owner_reported_claim_legacy": 0.21855000000000002,
+  "best_owner_reported_claim_legacy": 0.2477
+ },
+ "band_35k_46k": {
+  "n": 11,
+  "mean_owner_reported_claim_legacy": 0.26427272727272727,
+  "best_owner_reported_claim_legacy": 0.2778
+ },
+ "grid_px": 2560000,
+ "n_truth_cells": 5660,
+ "base_rate": 0.0022109375,
+ "sum_kernel": 9.380297810508182,
+ "random_hit_prob": 0.020739252190420433,
+ "dti_vs_coverage_curve": [
+  {
+   "coverage": 0.1,
+   "n_over_K": 0.5,
+   "dti": 0.12080204034091432,
+   "dti_sd": 0.0008580681128050091,
+   "trials": 40
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 1.0,
+   "dti": 0.11806244071677947,
+   "dti_sd": 0.0013795375047438577,
+   "trials": 40
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 2.0,
+   "dti": 0.11291003395697882,
+   "dti_sd": 0.001521301674936969,
+   "trials": 40
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 4.0,
+   "dti": 0.1061506835906818,
+   "dti_sd": 0.0014104247420316113,
+   "trials": 40
+  },
+  {
+   "coverage": 0.1,
+   "n_over_K": 6.0,
+   "dti": 0.10071221859488624,
+   "dti_sd": 0.001267608723899591,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 0.5,
+   "dti": 0.2311444530042938,
+   "dti_sd": 0.0008770311562923511,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 1.0,
+   "dti": 0.21598981035477535,
+   "dti_sd": 0.0012126416244622512,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 2.0,
+   "dti": 0.19331704381808712,
+   "dti_sd": 0.001498901493700145,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 4.0,
+   "dti": 0.16355512096236752,
+   "dti_sd": 0.0013099301352976008,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2,
+   "n_over_K": 6.0,
+   "dti": 0.1451132005853578,
+   "dti_sd": 0.001335156038392896,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 0.5,
+   "dti": 0.31609698620017,
+   "dti_sd": 0.0008380916221318571,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 1.0,
+   "dti": 0.2924116611015388,
+   "dti_sd": 0.000952586286092946,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 2.0,
+   "dti": 0.2555191574182193,
+   "dti_sd": 0.0012987270465699588,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 4.0,
+   "dti": 0.20913440321380833,
+   "dti_sd": 0.0012849504042293258,
+   "trials": 40
+  },
+  {
+   "coverage": 0.2778,
+   "n_over_K": 6.0,
+   "dti": 0.1794453962257277,
+   "dti_sd": 0.0010397246406494748,
+   "trials": 40
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 0.5,
+   "dti": 0.3406495351916883,
+   "dti_sd": 0.0007396835298589164,
+   "trials": 40
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 1.0,
+   "dti": 0.313440540427834,
+   "dti_sd": 0.0008892767460998376,
+   "trials": 40
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 2.0,
+   "dti": 0.2736481134667388,
+   "dti_sd": 0.0012554148876851704,
+   "trials": 40
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 4.0,
+   "dti": 0.22177468879232318,
+   "dti_sd": 0.0011409717859631068,
+   "trials": 40
+  },
+  {
+   "coverage": 0.3,
+   "n_over_K": 6.0,
+   "dti": 0.18969203575326404,
+   "dti_sd": 0.0010190758824446563,
+   "trials": 40
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 0.5,
+   "dti": 0.45027947099492793,
+   "dti_sd": 0.0006625381861363516,
+   "trials": 40
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 1.0,
+   "dti": 0.4118963475620546,
+   "dti_sd": 0.0009445179112503343,
+   "trials": 40
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 2.0,
+   "dti": 0.3537871107821413,
+   "dti_sd": 0.0012592820745720927,
+   "trials": 40
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 4.0,
+   "dti": 0.2796944947616247,
+   "dti_sd": 0.0010314966638845166,
+   "trials": 40
+  },
+  {
+   "coverage": 0.4,
+   "n_over_K": 6.0,
+   "dti": 0.23456444256695086,
+   "dti_sd": 0.0008284910777206522,
+   "trials": 40
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 0.5,
+   "dti": 0.5599451047601631,
+   "dti_sd": 0.0004701486217865524,
+   "trials": 40
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 1.0,
+   "dti": 0.5097845350088813,
+   "dti_sd": 0.0008357748746604846,
+   "trials": 40
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 2.0,
+   "dti": 0.4338239333620919,
+   "dti_sd": 0.0011529941262083908,
+   "trials": 40
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 4.0,
+   "dti": 0.3377218087456419,
+   "dti_sd": 0.0009458626572612838,
+   "trials": 40
+  },
+  {
+   "coverage": 0.5,
+   "n_over_K": 6.0,
+   "dti": 0.2792779629729072,
+   "dti_sd": 0.0009655089387268324,
+   "trials": 40
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 0.5,
+   "dti": 0.5600549385529883,
+   "dti_sd": 0.00044994152597282257,
+   "trials": 40
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 1.0,
+   "dti": 0.7057047297918304,
+   "dti_sd": 0.0006262528924168481,
+   "trials": 40
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 2.0,
+   "dti": 0.5944439988097849,
+   "dti_sd": 0.0008181329004734789,
+   "trials": 40
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 4.0,
+   "dti": 0.45434922439137876,
+   "dti_sd": 0.0009370621688698052,
+   "trials": 40
+  },
+  {
+   "coverage": 0.7,
+   "n_over_K": 6.0,
+   "dti": 0.36939477611152494,
+   "dti_sd": 0.0009184288230910119,
+   "trials": 40
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 0.5,
+   "dti": 0.5601205113009955,
+   "dti_sd": 0.0006780376244730041,
+   "trials": 40
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 1.0,
+   "dti": 0.9999999999999998,
+   "dti_sd": 1.1102230246251565e-16,
+   "trials": 40
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 2.0,
+   "dti": 0.8361914264260413,
+   "dti_sd": 0.00019429252835083077,
+   "trials": 40
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 4.0,
+   "dti": 0.6297977405375553,
+   "dti_sd": 0.000207772047513188,
+   "trials": 40
+  },
+  {
+   "coverage": 1.0,
+   "n_over_K": 6.0,
+   "dti": 0.5051350263753334,
+   "dti_sd": 0.00013777201446328827,
+   "trials": 40
+  }
+ ],
+ "perfect_prediction_dti": 0.9999999999999999,
+ "curve_method": "exact metric on synthetic fields: m=round(c*K) dots on distinct random truth cells + n-m uniform-random dots, n=round(r*K); 40 seeded trials per cell; N and K are stated illustration parameters, not measurements",
+ "evidence_class": "LEGACY OWNER-REPORTED CLAIM LABELS (not organizer-confirmed); synthetic curve is metric illustration only, not score projection",
+ "runtime_s": 553.2583804130554,
+ "status": "SUPERSEDED HISTORICAL ANALYSIS — do not use as live-score or promotion evidence.",
+ "superseded_by": "evidence/registry_budget.json (13 eligible owner-reported entries; disputed mappings excluded)",
+ "score_provenance_note": "All row values were copied from owner material and are not organizer-confirmed submission-page receipts. H33-2-B2 is marked UNSCORED by the owner; 0.2778 is unverified and unlinked to exact bytes. The H27-4 / 0.2708 file attribution is contradicted. This 15-row correlation includes both disputed mappings and is superseded; do not interpret it as score calibration.",
+ "spearman_dots_vs_owner_reported_claims_legacy_including_disputed_mappings": -0.8103756708407871,
+ "legacy_p_value_including_disputed_mappings": 0.0002486657034971754
+}

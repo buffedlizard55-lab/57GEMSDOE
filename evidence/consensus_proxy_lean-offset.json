@@ -1,0 +1,70 @@
+{
+  "evidence_class": "CONSENSUS-PROXY (local file-geometry agreement only; not a score or live-truth calibration)",
+  "candidate": "docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+  "candidate_dots": 40000,
+  "top_registry_rasters": [
+    {
+      "submission": "H33-2-B2 raster bytes (owner README: UNSCORED; 0.2778 claim unlinked)",
+      "dots": 37654,
+      "owner_reported_claim": 0.2778,
+      "score_provenance": "unverified owner claim; no exact-file receipt"
+    },
+    {
+      "submission": "H27-4 raster bytes (0.2708 attribution contradicted)",
+      "dots": 40199,
+      "owner_reported_claim": 0.2708,
+      "score_provenance": "contradicted file attribution"
+    },
+    {
+      "submission": "h36-1-rung30-blind-r1",
+      "dots": 37660,
+      "owner_reported_claim": 0.271,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "h38-1-hf-euler-r30-r1",
+      "dots": 37860,
+      "owner_reported_claim": 0.2707,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "h32-1-prethin-tip-euler-d2-8",
+      "dots": 42294,
+      "owner_reported_claim": 0.2649,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "anderson-geothermal-pinn-38854",
+      "dots": 38854,
+      "owner_reported_claim": 0.275,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "h33d-analog-tip-stepover-r30",
+      "dots": 41865,
+      "owner_reported_claim": 0.2632,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "d28-poisson300m-offcat-44090",
+      "dots": 44090,
+      "owner_reported_claim": 0.26,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    },
+    {
+      "submission": "dotted-h19-5-d2-8",
+      "dots": 44090,
+      "owner_reported_claim": 0.26,
+      "score_provenance": "owner-reported label; not organizer-confirmed"
+    }
+  ],
+  "definition": "fraction of candidate dots within 3.0 px of >= 2 top-registry (live >= 0.26) raster dots",
+  "candidate_frac_in_consensus": 0.276825,
+  "random_baseline_mean": 0.1765625,
+  "random_baseline_std": 0.0022406402544808473,
+  "random_baseline_max": 0.182275,
+  "enrichment_over_random": 1.5678584070796457,
+  "beats_all_random_draws": true,
+  "verdict": "consensus-enriched (transfer plausible)",
+  "score_provenance_note": "Any owner-reported labels shown here are not organizer-confirmed receipts. H33-2-B2 is marked UNSCORED; the 0.2778 claim is unverified and unlinked to exact bytes; H27-4 / 0.2708 attribution is contradicted. Agreement among selected raster files is an exploratory proxy only."
+}
