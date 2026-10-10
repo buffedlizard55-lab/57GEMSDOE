@@ -2,7 +2,20 @@
 
 Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of **every** session. The historical request is preserved for requirements and context, not word-for-word certified chat fidelity or score verification.
 
-## Current outcome, 2026-10-10 (Session 5)
+## Current outcome, 2026-10-10 (Session 7 / H58 fault-zone anatomy)
+
+**New TIFF generated from scratch (`docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif`, 87,169 bytes, 21,748 binary dots). Download for research: OK. Submit to competition: NO. Zero weekly slots used.**
+
+The [run card](evidence/run_card_current.json) is **negative**: the inherited literal drift gate trips on the 3-px overlap clause (worst overlap 1.0 against **45** priors whose support already covers all 5,106,385 allowed cells; 95 triggered comparisons of 695), even though the release is byte- and pixel-distinct from every audited raster and its worst full-footprint Spearman is **0.2172**. Both required phases were audited — the fitted surface *before* placement and the final dots — and STOP was honoured. Owner ruling on how soft rasters define a "dot" is still open (IR-S6-01).
+
+Three predeclared experiments, all completed:
+- **E1 structure:** fitted damage-zone law `W(L) = w0·(L/40 px)^γ` gives **γ = 0.1544 [0.0732, 0.2882]** over 6 length bins and 11,360 withheld positives — strongly sub-linear, and the interval also excludes √L. Withheld positives sit at median **13.64°** oblique to their nearest visible host against a **6.39°** visible-reference null. **Signed (handed) radial obliquity and its sense interaction produced no enriched bin (max 0.0065 vs base 0.00235; L/R log-ratio +0.096 / −0.153) — recorded as a negative result, so no Riedel handedness is claimed.**
+- **E2 holdout (four buffered whole-component quadrants, evaluator `gems57-pooled-hide-v2`):** candidate `anatomy10_sense_obliq` beats reference `anatomy10` by only **+0.00171 [−0.00367, +0.00780]** → dropped by the predeclared rule; shipped arm `anatomy10__flank2` binary **HOLDOUT-DTI 0.09456 [0.07990, 0.11072]**, soft **0.01675 [0.01423, 0.01942]**. The `distance_only` control scored **0.11004 [0.09600, 0.12287]** binary, i.e. better than every anatomy arm on this draw while being far worse on the soft surface. Canary clean: 14 features, max discriminative AUC 0.7614, no flags. `flank0` and `flank2` are identical for all arms (Δ = 0) because the collar already emptied the near-flank bins — the flank policy is therefore justified by thread 11516 and by the registry measurement, never by this CI.
+- **E3 build:** budget = `4 × 10,000 × 0.5437` (fitted fraction of withheld positives inside the kept distance × strike zone) = **21,748 dots**, support = footprint ∧ ¬catalogue ∧ d > 2 px ∧ d ≤ W(L); 15/15 local format checks, no NaN anywhere, values {0,1}, zero positive mass on the catalogue. The mismatch between the holdout arm budget (29,889 pooled) and the shipped cap is disclosed in the card and in the README, not smoothed over.
+
+Also measured from bytes this session ([evidence/live_submission_patterns.json](evidence/live_submission_patterns.json)): across 15 owner-reported registry entries, ρ(dots, reported score) = **−0.8104** (p = 0.00025) and ρ(median dot-to-catalogue distance, score) = **+0.7663**; the 0.2778 file is the 0.2708 file minus exactly 2,545 dots all ≤ 2.00 px from the catalogue, with every kept dot ≥ 2.236 px away (`equals_base_pruned_at_2px: true`). Confounded by construction, so it informs the support shape and is not a causal estimate.
+
+## Prior outcome, 2026-10-10 (Session 5, superseded as the current release)
 
 **New TIFF generated (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`). Download for research: OK. Submit: NO.**
 

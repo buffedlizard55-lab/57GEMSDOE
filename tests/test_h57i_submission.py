@@ -47,10 +47,12 @@ def test_partial_16_prior_check_never_clears_and_dense_witness_fails():
 
 
 def test_current_site_and_generic_card_withdraw_submission_permission():
-    text=(ROOT/'docs/index.html').read_text();card=json.loads((ROOT/'evidence/run_card.json').read_text())
+    from html import escape as hesc
+    text=(ROOT/'docs/index.html').read_text();card=json.loads((ROOT/'evidence/run_card_current.json').read_text())
     assert 'Submit to competition: NO' in text and 'OK TO DOWNLOAD AND SUBMIT' not in text
     assert not card['okay_to_submit'] and card['verdict']=='negative' and card['submission_slots_used']==0
     assert card['raster_sha256']!=SHA
     assert TIF.name in (ROOT/'docs/archive.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'docs/session-4.html').read_text()
-    note=card['submission_note'];assert 1<=len(note)<=140 and note in text
+    note=card['submission_note'];assert 1<=len(note)<=140 and (note in text or hesc(note) in text)
+    assert card['submission_name'] in text or hesc(card['submission_name']) in text

@@ -129,9 +129,11 @@ def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
     # Main's owner-merged card may say research download is OK (IR-S6-10). Submission must stay NO.
     assert card["okay_to_submit"] is False
     assert card["verdict"] == "negative"
-    s6 = card["session6_verification"]
-    assert s6["literal_gate_on_offered_tif"]["duplicate_count"] == 80
-    assert s6["experiments_run"] == 0 and s6["submission_slots_used"] == 0
+    # the session-6 gate numbers live in their own receipt (asserted above), not in
+    # whichever card happens to be current; the card must carry its own accounting
+    assert card["submission_slots_used"] == 0
+    assert card["experiments_used"] == 3
+    assert card["surface_before_placement"]["checked"] is True
     ids = {i["id"]: i for i in json.loads((ROOT / "evidence" / "irregularities_current.json").read_text())["irregularities"]}
     assert ids["IR-S6-10"]["status"].startswith("OPEN")
     assert ids["IR-S6-01"]["status"].startswith("OPEN")

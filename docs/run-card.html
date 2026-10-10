@@ -6,120 +6,339 @@
 <header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
 <span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
 <main id="main"><div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p><a href="data/run_card.json">Download JSON</a></p><pre>{
-  &quot;hypothesis&quot;: &quot;Secondary strands concentrate at multi-scale host bends (H57-H) and inside two-host en echelon stepover relay zones between distinct fault systems (H57-I2), corroborated by detrended-elevation scarp relative strike and conditioned on slip-sense transitions (H57-J).&quot;,
-  &quot;mechanism&quot;: &quot;Multi-scale structure-tensor turning (300 m vs 900 m) and exact 12-bitplane two-host Euclidean distance transforms identify relay corridors and bend-wall damage zones strictly from visible faults, coupled with label-free detrended-elevation scarp tangents. No textbook Riedel angle is imposed.&quot;,
-  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Erosional range-front scarps, fluvial terrace margins, lithologic contacts situated between unrelated fault systems, and cartographic digitization vertices can mimic multi-scale trace bends and relay stepover geometry without secondary fault slip.&quot;,
-  &quot;holdout_dti&quot;: {
-    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
-    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;dti&quot;: 0.031159854641644204,
-    &quot;ci95&quot;: [
-      0.024691006152132863,
-      0.03810944921363519
-    ],
-    &quot;withheld_positive_pixels&quot;: 11321,
-    &quot;tpw&quot;: 346.3834801632157,
-    &quot;fpw&quot;: 9951.307151391367,
-    &quot;fnw&quot;: 10974.616519836785,
-    &quot;representation&quot;: &quot;soft pre-placement surface (matches downloaded TIFF method)&quot;,
-    &quot;split_version&quot;: &quot;buffered-whole-components-loqo-v2&quot;,
-    &quot;canary_clean&quot;: true,
-    &quot;selected_arm&quot;: &quot;relay_bend_anatomy&quot;
-  },
+  &quot;hypothesis&quot;: &quot;Secondary strands around a mapped fault are predicted by a *fitted* damage-zone envelope whose half-width scales sub-linearly with mapped-component length (displacement proxy), modulated by distance x host-strike structure, with handed (sense-conditioned) radial obliquity tested rather than assumed, and with dots kept off the fully-penalised catalogue flank.&quot;,
+  &quot;mechanism&quot;: &quot;Visible-only distance/length/strike geometry feeds a histogram-boosted intensity fitted on a buffered whole-component hide-and-recover draw; W(L)=w0*(L/L0)**gamma is estimated by bin-wise quantile regression with a bin bootstrap; the greedy allocator accepts a dot only under the exact marginal-DTI test; the dot budget is shrunk by the fitted fraction of withheld positives inside the kept zone.&quot;,
+  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Map-trace fragmentation and mapping effort (which set the connected-component length used as the displacement proxy), lithologic contacts, magnetised dikes, erosional range-front scarps and digitisation vertices all produce oblique near-fault lineaments without secondary fault slip.&quot;,
   &quot;holdout_dot_dti&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;dti&quot;: 0.13520371677763354,
+    &quot;dti&quot;: 0.09455702305703485,
     &quot;ci95&quot;: [
-      0.11913983230552322,
-      0.15303605496339084
+      0.07990286289577733,
+      0.11071649872617237
     ],
-    &quot;withheld_positive_pixels&quot;: 11321,
-    &quot;tpw&quot;: 2153.6318045580256,
-    &quot;fpw&quot;: 32206.325324965805,
-    &quot;fnw&quot;: 9167.368195441974,
-    &quot;representation&quot;: &quot;holdout binary allocation ONLY; production dots were not generated&quot;,
-    &quot;selected_arm&quot;: &quot;relay_bend_anatomy&quot;
+    &quot;withheld_positive_pixels&quot;: 11360,
+    &quot;tpw&quot;: 1398.6188149470343,
+    &quot;fpw&quot;: 27117.750036862948,
+    &quot;fnw&quot;: 9961.381185052966,
+    &quot;representation&quot;: &quot;holdout binary allocation&quot;,
+    &quot;arm&quot;: &quot;anatomy10__flank2&quot;,
+    &quot;split_version&quot;: &quot;buffered-whole-components-loqo-v2&quot;,
+    &quot;draw_seed&quot;: 2026
   },
-  &quot;paired_orientation_minus_anatomy&quot;: {
+  &quot;holdout_surface_dti&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;delta&quot;: 0.02555640893870513,
+    &quot;dti&quot;: 0.016748045067157435,
     &quot;ci95&quot;: [
-      0.013943366750616887,
-      0.03710882091013755
+      0.014226680113209263,
+      0.019424675920107295
     ],
-    &quot;withheld_positive_pixels&quot;: 11321
+    &quot;withheld_positive_pixels&quot;: 11360,
+    &quot;tpw&quot;: 189.05396648630548,
+    &quot;fpw&quot;: 10811.553199372196,
+    &quot;fnw&quot;: 11170.946033513696,
+    &quot;representation&quot;: &quot;soft pre-placement surface&quot;,
+    &quot;arm&quot;: &quot;anatomy10__flank2&quot;
   },
-  &quot;paired_bend_minus_anatomy&quot;: {
+  &quot;paired_gain_candidate_minus_reference&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;delta&quot;: 0.0026839256064493944,
+    &quot;delta&quot;: 0.0017072204669451724,
     &quot;ci95&quot;: [
-      -0.004963871413615349,
-      0.01040613643964517
+      -0.0036706720365989585,
+      0.007804611556762041
     ],
-    &quot;withheld_positive_pixels&quot;: 11321
+    &quot;withheld_positive_pixels&quot;: 11360,
+    &quot;retained&quot;: false
   },
-  &quot;paired_relay_minus_bend&quot;: {
-    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
-    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;delta&quot;: 0.022872483332255736,
-    &quot;ci95&quot;: [
-      0.01305049452795725,
-      0.03210233238554293
-    ],
-    &quot;withheld_positive_pixels&quot;: 11321
+  &quot;flank_policy_effect_on_holdout&quot;: {
+    &quot;distance_only&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;dti_flank2&quot;: 0.11003739759823371,
+      &quot;dti_flank0&quot;: 0.11003739759823371,
+      &quot;delta&quot;: 0.0,
+      &quot;interpretation&quot;: &quot;cost/benefit of dropping pixels within 2 px of a visible trace&quot;
+    },
+    &quot;anatomy10&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;dti_flank2&quot;: 0.09455702305703485,
+      &quot;dti_flank0&quot;: 0.09455702305703485,
+      &quot;delta&quot;: 0.0,
+      &quot;interpretation&quot;: &quot;cost/benefit of dropping pixels within 2 px of a visible trace&quot;
+    },
+    &quot;anatomy10_sense&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;dti_flank2&quot;: 0.0965030405002425,
+      &quot;dti_flank0&quot;: 0.0965030405002425,
+      &quot;delta&quot;: 0.0,
+      &quot;interpretation&quot;: &quot;cost/benefit of dropping pixels within 2 px of a visible trace&quot;
+    },
+    &quot;anatomy10_sense_obliq&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;dti_flank2&quot;: 0.09626424352398003,
+      &quot;dti_flank0&quot;: 0.09626457502298631,
+      &quot;delta&quot;: -3.314990062869283e-07,
+      &quot;interpretation&quot;: &quot;cost/benefit of dropping pixels within 2 px of a visible trace&quot;
+    }
   },
-  &quot;paired_soft_relay_minus_anatomy&quot;: {
-    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
-    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;delta&quot;: 0.008284214231133156,
-    &quot;ci95&quot;: [
-      0.005420358009747388,
-      0.010947349984586187
+  &quot;width_law&quot;: {
+    &quot;model&quot;: &quot;W(L) = exp(log_w0) * (L/l0)**gamma, clipped to [W_MIN_PX, W_MAX_PX]&quot;,
+    &quot;evidence_class&quot;: &quot;HOLDOUT-STRUCTURE (fitted on visible-only folds, not a score)&quot;,
+    &quot;gamma&quot;: 0.15444110308687087,
+    &quot;gamma_ci95&quot;: [
+      0.0732012918922162,
+      0.2882427283043857
     ],
-    &quot;withheld_positive_pixels&quot;: 11321
+    &quot;log_w0&quot;: 3.007091927933223,
+    &quot;w0_px&quot;: 20.22848840520104,
+    &quot;l0_px&quot;: 40.0,
+    &quot;quantile&quot;: 0.9,
+    &quot;n_positives&quot;: 11360,
+    &quot;n_bins&quot;: 6,
+    &quot;sublinear&quot;: true,
+    &quot;bins&quot;: [
+      {
+        &quot;len_lo&quot;: 0.0,
+        &quot;len_hi&quot;: 5.0,
+        &quot;n_positives&quot;: 1843,
+        &quot;length_median_px&quot;: 2.000000059502263,
+        &quot;width_px&quot;: 24.823355484008786
+      },
+      {
+        &quot;len_lo&quot;: 5.0,
+        &quot;len_hi&quot;: 10.0,
+        &quot;n_positives&quot;: 2075,
+        &quot;length_median_px&quot;: 7.000000045711704,
+        &quot;width_px&quot;: 27.257989120483412
+      },
+      {
+        &quot;len_lo&quot;: 10.0,
+        &quot;len_hi&quot;: 20.0,
+        &quot;n_positives&quot;: 3235,
+        &quot;length_median_px&quot;: 14.000000748573068,
+        &quot;width_px&quot;: 26.2182876586914
+      },
+      {
+        &quot;len_lo&quot;: 20.0,
+        &quot;len_hi&quot;: 40.0,
+        &quot;n_positives&quot;: 2240,
+        &quot;length_median_px&quot;: 27.00000196369055,
+        &quot;width_px&quot;: 35.77988204956055
+      },
+      {
+        &quot;len_lo&quot;: 40.0,
+        &quot;len_hi&quot;: 80.0,
+        &quot;n_positives&quot;: 1255,
+        &quot;length_median_px&quot;: 54.99999068260195,
+        &quot;width_px&quot;: 33.541019439697266
+      },
+      {
+        &quot;len_lo&quot;: 80.0,
+        &quot;len_hi&quot;: 160.0,
+        &quot;n_positives&quot;: 553,
+        &quot;length_median_px&quot;: 119.00000667426013,
+        &quot;width_px&quot;: 53.35884704589845
+      }
+    ],
+    &quot;w_min_px&quot;: 2.0,
+    &quot;w_max_px&quot;: 60.0,
+    &quot;min_bin_positives&quot;: 200,
+    &quot;interpretation&quot;: &quot;gamma&lt;1 with an interval excluding 1 supports sub-linear (Savage-Brodsky-like) widening; gamma&gt;=1 means the mapped component length does not narrow the halo in this instrument&quot;
+  },
+  &quot;structure_measurements&quot;: {
+    &quot;withheld_positive_pixels&quot;: 11360,
+    &quot;base_rate&quot;: 0.0023467016137911686,
+    &quot;withheld_distance_quantiles_px&quot;: [
+      4.123105525970459,
+      9.433980941772461,
+      31.14482307434082,
+      38.27531814575195,
+      57.9855758666992
+    ],
+    &quot;domain_distance_quantiles_px&quot;: [
+      5.0,
+      26.0,
+      71.34423828125,
+      86.16263580322266,
+      120.55289459228516
+    ],
+    &quot;withheld_distance_enrichment&quot;: {
+      &quot;edges&quot;: [
+        0.0,
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        8.0,
+        10.0,
+        13.0,
+        16.0,
+        20.0,
+        26.0,
+        33.0,
+        41.0,
+        51.0,
+        1000000000.0
+      ],
+      &quot;n_withheld&quot;: [
+        0.0,
+        0.0,
+        0.0,
+        769.0,
+        1113.0,
+        1266.0,
+        1540.0,
+        1185.0,
+        1341.0,
+        928.0,
+        763.0,
+        782.0,
+        679.0,
+        566.0,
+        220.0,
+        208.0
+      ],
+      &quot;n_domain&quot;: [
+        0.0,
+        127933.0,
+        128422.0,
+        97550.0,
+        95240.0,
+        130437.0,
+        203957.0,
+        212011.0,
+        293819.0,
+        290507.0,
+        358557.0,
+        476626.0,
+        467400.0,
+        440106.0,
+        445746.0,
+        1072526.0
+      ],
+      &quot;enrichment&quot;: [
+        0.0,
+        0.0,
+        0.0,
+        0.00788313685289595,
+        0.011686266274674506,
+        0.009705835000804986,
+        0.007550611158234334,
+        0.005589332628967365,
+        0.004564034320448984,
+        0.003194415280871029,
+        0.002127974073857155,
+        0.0016406994163138393,
+        0.001452717158750535,
+        0.001286053814308371,
+        0.0004935546252798679,
+        0.0001939346924923032
+      ]
+    },
+    &quot;relative_strike_median_withheld_deg&quot;: 13.63848876953125,
+    &quot;relative_strike_median_visible_null_deg&quot;: 6.38934326171875,
+    &quot;obliquity_enrichment&quot;: [
+      0.0017017740004551256,
+      0.0024247781510458376,
+      0.004553822304040306,
+      0.006539050239280801,
+      0.003321957308306078,
+      0.002245052823615911,
+      0.0016386099858665783
+    ],
+    &quot;side_asymmetry_by_sense_record&quot;: {
+      &quot;recorded_strike_slip_host&quot;: {
+        &quot;positives_left&quot;: 1010,
+        &quot;positives_right&quot;: 1112,
+        &quot;domain_left&quot;: 363000,
+        &quot;domain_right&quot;: 363109,
+        &quot;rate_left&quot;: 0.0027823691460055096,
+        &quot;rate_right&quot;: 0.003062441305503306,
+        &quot;log_ratio_R_over_L&quot;: 0.09590963456678867
+      },
+      &quot;no_recorded_sense&quot;: {
+        &quot;positives_left&quot;: 3847,
+        &quot;positives_right&quot;: 3366,
+        &quot;domain_left&quot;: 1883689,
+        &quot;domain_right&quot;: 1921361,
+        &quot;rate_left&quot;: 0.002042269185624591,
+        &quot;rate_right&quot;: 0.0017518831703152089,
+        &quot;log_ratio_R_over_L&quot;: -0.15337022887152071
+      }
+    },
+    &quot;fraction_pos_in_kept_zone&quot;: 0.5437059859154929
+  },
+  &quot;leakage_canary&quot;: {
+    &quot;max_discriminative_auc&quot;: 0.7613771694542253,
+    &quot;flags&quot;: [],
+    &quot;canary_evidence_class&quot;: &quot;LEAKAGE-CANARY (AUC, not DTI)&quot;,
+    &quot;threshold&quot;: 0.9,
+    &quot;features&quot;: 14,
+    &quot;evidence_class&quot;: &quot;LEAKAGE-CANARY (AUC, not DTI)&quot;
   },
   &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;registry_rasters_expected&quot;: 695,
-    &quot;registry_rasters_checked&quot;: 695,
-    &quot;complete_accessible_scan&quot;: true,
-    &quot;worst_spearman_full_footprint&quot;: 0.9753151923476495,
-    &quot;worst_rho_submission&quot;: &quot;57GEMSDOE:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
-    &quot;worst_dot_overlap&quot;: 1.0,
-    &quot;worst_overlap_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
-    &quot;duplicate_count&quot;: 81,
-    &quot;byte_unique_among_checked&quot;: true,
-    &quot;pixel_unique_among_checked&quot;: true,
-    &quot;unique&quot;: false,
-    &quot;discriminating_other_lanes&quot;: {
-      &quot;n_other_lane_rasters&quot;: 15,
-      &quot;worst_spearman_other_lanes&quot;: 0.028841495318253536,
-      &quot;worst_overlap_other_lanes&quot;: 0.23746962509158057,
-      &quot;worst_jaccard_other_lanes&quot;: 0.029241220672120947
+    &quot;final_dots&quot;: {
+      &quot;registry_rasters_expected&quot;: 695,
+      &quot;registry_rasters_checked&quot;: 695,
+      &quot;complete_accessible_scan&quot;: true,
+      &quot;worst_spearman_full_footprint&quot;: 0.2172256518545972,
+      &quot;worst_rho_submission&quot;: &quot;57GEMSDOE-PR6:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif&quot;,
+      &quot;worst_dot_overlap&quot;: 1.0,
+      &quot;worst_overlap_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
+      &quot;worst_jaccard_dot_sets&quot;: 0.1184003187770553,
+      &quot;duplicate_count&quot;: 95,
+      &quot;byte_unique_among_checked&quot;: true,
+      &quot;pixel_unique_among_checked&quot;: true,
+      &quot;unique&quot;: false,
+      &quot;candidate_rank_variation&quot;: true,
+      &quot;jaccard_diagnostic_only&quot;: true
     },
-    &quot;n_other_repo_rasters&quot;: 665,
-    &quot;worst_spearman_other_repos&quot;: 0.6580295804692531,
-    &quot;worst_rho_other_repo_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
-    &quot;worst_spearman_sibling_lanes&quot;: 0.028841495318253536,
-    &quot;worst_dot_overlap_sibling_lanes&quot;: 0.23746962509158057,
-    &quot;jaccard_diagnostic_only&quot;: true
+    &quot;surface_before_placement&quot;: {
+      &quot;worst_spearman_full_footprint&quot;: 0.7249089067339215,
+      &quot;worst_dot_overlap&quot;: 1.0,
+      &quot;worst_jaccard_dot_sets&quot;: 1.0,
+      &quot;duplicate_count&quot;: 74,
+      &quot;unique&quot;: false
+    },
+    &quot;registry_profile&quot;: {
+      &quot;rasters_indexed&quot;: 695,
+      &quot;read&quot;: 695,
+      &quot;missing&quot;: 0,
+      &quot;sha_mismatch&quot;: 0,
+      &quot;universal_overlap_blockers&quot;: 45,
+      &quot;allowed_pixels&quot;: 5106385
+    }
   },
   &quot;surface_before_placement&quot;: {
     &quot;checked&quot;: true,
-    &quot;protocol_pass&quot;: false
+    &quot;protocol_pass&quot;: false,
+    &quot;note&quot;: &quot;the fitted intensity is dense by construction, so the literal 3-px support rule cannot separate it from any dense prior; this is reported, not exempted&quot;
   },
   &quot;final_dots&quot;: {
-    &quot;status&quot;: &quot;not_generated&quot;,
-    &quot;reason&quot;: &quot;literal surface gate requires stop&quot;,
-    &quot;emitted_pixels&quot;: 0
+    &quot;status&quot;: &quot;generated&quot;,
+    &quot;dots&quot;: 21748,
+    &quot;cap&quot;: 21748,
+    &quot;protocol_pass&quot;: false,
+    &quot;stop_required&quot;: true,
+    &quot;overlap_limit&quot;: 0.7,
+    &quot;rho_limit&quot;: 0.9,
+    &quot;byte_unique&quot;: true,
+    &quot;pixel_unique&quot;: true,
+    &quot;duplicate_count&quot;: 95,
+    &quot;registry_scope&quot;: &quot;all hash-pinned grid rasters present in this workspace&quot;
   },
-  &quot;raster_sha256&quot;: &quot;cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648&quot;,
+  &quot;raster_sha256&quot;: &quot;705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7&quot;,
   &quot;validator_output&quot;: {
-    &quot;file&quot;: &quot;/home/user/57GEMSDOE/docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif&quot;,
-    &quot;bytes&quot;: 9960624,
-    &quot;sha256&quot;: &quot;cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648&quot;,
+    &quot;file&quot;: &quot;/home/user/57GEMSDOE/docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif&quot;,
+    &quot;bytes&quot;: 87169,
+    &quot;sha256&quot;: &quot;705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7&quot;,
     &quot;meta&quot;: {
       &quot;crs&quot;: &quot;EPSG:32611&quot;,
       &quot;shape&quot;: [
@@ -144,10 +363,11 @@
     ],
     &quot;n_finite&quot;: 12279160,
     &quot;n_nan&quot;: 0,
+    &quot;n_infinite&quot;: 0,
     &quot;min&quot;: 0.0,
-    &quot;max&quot;: 0.9014216065406799,
-    &quot;mean&quot;: 0.0007488319533877075,
-    &quot;emitted_positive_pixels&quot;: 2714823,
+    &quot;max&quot;: 1.0,
+    &quot;mean&quot;: 0.0017711309483274817,
+    &quot;emitted_positive_pixels&quot;: 21748,
     &quot;checks&quot;: {
       &quot;single_band&quot;: true,
       &quot;dtype_float32&quot;: true,
@@ -166,116 +386,82 @@
       &quot;zero_dots_on_mapped_catalogue&quot;: true
     },
     &quot;all_checks_passed&quot;: true,
+    &quot;validation_class&quot;: &quot;local format/range preflight; not organizer acceptance or uniqueness clearance&quot;,
     &quot;on_catalogue_positive_pixels&quot;: 0,
-    &quot;in_footprint_positive_pixels&quot;: 2714823,
-    &quot;footprint_fraction&quot;: 0.5253777886752127
+    &quot;in_footprint_positive_pixels&quot;: 21748,
+    &quot;footprint_fraction&quot;: 0.00420871495051741
   },
-  &quot;submission_name&quot;: &quot;gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec&quot;,
-  &quot;submission_note&quot;: &quot;Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b&quot;,
-  &quot;submission_note_chars&quot;: 121,
-  &quot;file&quot;: &quot;docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif&quot;,
-  &quot;zip_file&quot;: &quot;docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip&quot;,
-  &quot;verdict&quot;: &quot;negative&quot;,
-  &quot;okay_to_download&quot;: true,
-  &quot;okay_to_submit&quot;: false,
-  &quot;verdict_reason&quot;: &quot;Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.&quot;,
-  &quot;recorded_sense&quot;: {
-    &quot;tested&quot;: true,
-    &quot;retained&quot;: false,
-    &quot;paired_difference&quot;: {
-      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
-      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-      &quot;delta&quot;: 0.006187676916750318,
-      &quot;ci95&quot;: [
-        -0.0016937951896787019,
-        0.015701673226549834
-      ],
-      &quot;withheld_positive_pixels&quot;: 11321
+  &quot;file&quot;: &quot;docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif&quot;,
+  &quot;zip_file&quot;: &quot;docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.zip&quot;,
+  &quot;surface_array_sha256&quot;: &quot;422706f30635c1bb57ed6fbcff84359fa98f70bd6a671afaef30c6cac79b152b&quot;,
+  &quot;dots_array_sha256&quot;: &quot;673354bceb7df0a0eccde4e28e0b028096934eef7b5042187080604f8322ffb8&quot;,
+  &quot;receipt_file&quot;: &quot;docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.json&quot;,
+  &quot;submission_name&quot;: &quot;gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros&quot;,
+  &quot;submission_note&quot;: &quot;H58 damage-zone envelope: W(L)=w0*L^gamma fitted; handed obliquity tested and rejected; dots kept &gt;2 px off the mapped catalogue.&quot;,
+  &quot;submission_note_chars&quot;: 129,
+  &quot;live_submission_evidence&quot;: {
+    &quot;evidence_class&quot;: &quot;RASTER-MEASUREMENT (registry bytes; not a score, not a receipt)&quot;,
+    &quot;scored_rasters&quot;: 15,
+    &quot;rank_correlations&quot;: {
+      &quot;dots&quot;: -0.8103756708407871,
+      &quot;median_distance_to_catalogue_px&quot;: 0.7663387135491565,
+      &quot;p10_distance_to_catalogue_px&quot;: 0.7138141840041761,
+      &quot;fraction_within_3px_of_catalogue&quot;: -0.6636851520572451,
+      &quot;median_neighbour_spacing_px&quot;: 0.44129190505985705
     },
-    &quot;soft_paired_difference&quot;: {
-      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
-      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-      &quot;delta&quot;: 0.0027379403745161623,
-      &quot;ci95&quot;: [
-        0.0003069096496624412,
-        0.005994069506400139
-      ],
-      &quot;withheld_positive_pixels&quot;: 11321
-    }
+    &quot;rank_correlation_p&quot;: {
+      &quot;dots&quot;: 0.0002486657034971754,
+      &quot;median_distance_to_catalogue_px&quot;: 0.000861790692616979,
+      &quot;p10_distance_to_catalogue_px&quot;: 0.0028007352075563345,
+      &quot;fraction_within_3px_of_catalogue&quot;: 0.0069799328343782005,
+      &quot;median_neighbour_spacing_px&quot;: 0.09962989366266174
+    },
+    &quot;best_vs_base&quot;: {
+      &quot;best_file_sha256&quot;: &quot;c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9&quot;,
+      &quot;base_file_sha256&quot;: &quot;2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8&quot;,
+      &quot;best_dots&quot;: 37654,
+      &quot;base_dots&quot;: 40199,
+      &quot;best_is_subset_of_base&quot;: true,
+      &quot;removed_dots&quot;: 2545,
+      &quot;added_dots&quot;: 0,
+      &quot;removed_max_distance_to_catalogue_px&quot;: 2.0,
+      &quot;kept_min_distance_to_catalogue_px&quot;: 2.23606797749979,
+      &quot;equals_base_pruned_at_2px&quot;: true
+    },
+    &quot;caveats&quot;: [
+      &quot;owner_reported_score is copied from the owner&#x27;s prompt text, not from a submission-page receipt; no file-to-score attribution is established here.&quot;,
+      &quot;Method and dot budget change together across registries, so a rank correlation between a statistic and a reported score is confounded and cannot be read as a causal effect.&quot;,
+      &quot;Distance to catalogue is measured against the public mapped-fault raster, not against the private new-fault truth.&quot;
+    ],
+    &quot;use&quot;: &quot;shape of the support and the ~10k-per-quadrant budget rule only; these are owner-reported numbers attached to files by filename, never a forecast&quot;
   },
+  &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
   &quot;experiments_used&quot;: 3,
   &quot;submission_slots_used&quot;: 0,
-  &quot;generated_utc&quot;: &quot;2026-10-10T20:35:00.673249+00:00&quot;,
-  &quot;registry_reviewed_utc&quot;: &quot;2026-10-10T20:35:00.673273+00:00&quot;,
-  &quot;registry_scope&quot;: &quot;All 695 SHA256-verified competition-grid rasters across all 57 GEMSDOE repositories at their latest public-main commits plus historical pins. Current generated candidate excluded as an output, not a prior.&quot;,
-  &quot;session6_verification&quot;: {
-    &quot;evidence_class&quot;: &quot;REPOSITORY-AUDIT \u2014 session 6. No experiment, holdout, slot use or submission. Measurements are not scores.&quot;,
-    &quot;generated_utc&quot;: &quot;2026-10-10T21:10:00+00:00&quot;,
-    &quot;experiments_run&quot;: 0,
-    &quot;holdout_run&quot;: false,
-    &quot;holdout_blocker&quot;: &quot;IR-S6-05: training_features.tif absent; Dropbox feature link unreachable from the sandbox.&quot;,
-    &quot;registry_index&quot;: &quot;evidence/registry_refreshed_20261010T2001.json&quot;,
-    &quot;registry&quot;: {
-      &quot;indexed&quot;: 696,
-      &quot;fetched_and_verified&quot;: 696,
-      &quot;errors&quot;: 0,
-      &quot;sha256_pin_mismatches&quot;: 0,
-      &quot;git_blob_sha1_mismatches&quot;: 0,
-      &quot;dense_rasters_ge_50pct_footprint&quot;: 53,
-      &quot;rasters_with_positive_outside_footprint&quot;: 14,
-      &quot;rasters_with_values_outside_0_1&quot;: 11
-    },
-    &quot;literal_gate_on_offered_tif&quot;: {
-      &quot;candidate&quot;: &quot;downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif&quot;,
-      &quot;candidate_file_sha256&quot;: &quot;cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648&quot;,
-      &quot;registry_rasters_checked&quot;: 696,
-      &quot;complete_accessible_scan&quot;: true,
-      &quot;duplicate_count&quot;: 80,
-      &quot;worst_spearman_full_footprint&quot;: 0.8180518194375755,
-      &quot;worst_dot_overlap&quot;: 1.0,
-      &quot;unique&quot;: false,
-      &quot;verdict&quot;: &quot;negative&quot;,
-      &quot;stop_required&quot;: true,
-      &quot;evidence_file&quot;: &quot;evidence/uniqueness_session6_full_registry_696.json&quot;
-    },
-    &quot;witness_universal_blocker&quot;: true,
-    &quot;witness_sha256&quot;: &quot;ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be&quot;,
-    &quot;covered_allowed_fraction&quot;: 1.0,
-    &quot;owner_reported_pair_containment&quot;: {
-      &quot;base_positive&quot;: 40199,
-      &quot;target_positive&quot;: 37654,
-      &quot;target_subset_of_base&quot;: true,
-      &quot;added_vs_base&quot;: 0,
-      &quot;removed_vs_base&quot;: 2545,
-      &quot;removed_on_catalogue&quot;: 0,
-      &quot;removed_distance_px_min&quot;: 1.4142135623730951,
-      &quot;removed_distance_px_max&quot;: 2.0,
-      &quot;target_distance_px_min&quot;: 2.23606797749979
-    },
-    &quot;causal_score_gain_verified&quot;: false,
-    &quot;leaderboard_snapshot_conflict&quot;: &quot;IR-S6-06: brief says 0.3195 highest; snapshot shows 0.3774 rank 1, 0.3195 rank 7 (evidence/leaderboard_snapshot.json).&quot;,
-    &quot;download_status_conflict&quot;: &quot;IR-S6-10: main shows &#x27;Download for research: OK&#x27; with okay_to_download=true while the literal gate fails. Not changed by session 6; owner must confirm.&quot;,
-    &quot;ranked_untried_hypotheses&quot;: [
-      &quot;H6-1&quot;,
-      &quot;H6-2&quot;,
-      &quot;H6-3&quot;,
-      &quot;H6-4&quot;
-    ],
-    &quot;evidence_files&quot;: [
-      &quot;evidence/session6_hypotheses.json&quot;,
-      &quot;evidence/session6_mechanism_and_witness.json&quot;,
-      &quot;evidence/registry_profile_session6.json&quot;,
-      &quot;evidence/uniqueness_session6_full_registry_696.json&quot;,
-      &quot;evidence/irregularities_current.json&quot;
-    ],
-    &quot;owner_decisions_required&quot;: [
-      &quot;IR-S6-01 dot definition for soft registry rasters (options B or C)&quot;,
-      &quot;IR-S6-10 research-download authorization vs stop rule&quot;,
-      &quot;IR-S6-05 holdout data access (authorised, hash-pinned copy)&quot;
-    ],
-    &quot;submission_slots_used&quot;: 0
+  &quot;generated_utc&quot;: &quot;2026-10-10T22:21:20.774598+00:00&quot;,
+  &quot;okay_to_download&quot;: true,
+  &quot;okay_to_submit&quot;: false,
+  &quot;verdict&quot;: &quot;negative&quot;,
+  &quot;verdict_reason&quot;: &quot;Literal drift gate not cleared: 95 of 695 accessible priors trip a threshold (45 priors have positive support on every allowed cell, which makes the 0.70 rule unsatisfiable for any non-empty candidate). Byte- and pixel-identity checks pass against all of them.&quot;,
+  &quot;limitations&quot;: [
+    &quot;HOLDOUT-DTI measures recovery of mapped catalogue geometry, not discovery of unpublished expert faults; the repository&#x27;s own record is that this instrument does not rank live scores.&quot;,
+    &quot;The 3 px context collar makes withheld positives structurally impossible within 2 px of a visible trace, so the holdout cannot price the catalogue-flank suppression the live metric does; the suppression is therefore justified by organiser thread 11516, not by this CI.&quot;,
+    &quot;Mapped-component length is a noisy displacement proxy; gamma describes that proxy, not measured throw.&quot;,
+    &quot;No geophysical band was used this session: the 19-band feature cache is gitignored and was not restored, so scarp/magnetic corroboration is untested here.&quot;,
+    &quot;Scores of sibling repositories are OWNER-REPORTED prompt text; no organiser receipt ties a score to a file hash.&quot;
+  ],
+  &quot;evidence&quot;: {
+    &quot;plan&quot;: &quot;evidence/h58_experiment_plan.json&quot;,
+    &quot;structure&quot;: &quot;evidence/h58_structure.json&quot;,
+    &quot;holdout&quot;: &quot;evidence/h58_holdout.json&quot;,
+    &quot;canary&quot;: &quot;evidence/h58_canary.json&quot;,
+    &quot;build&quot;: &quot;evidence/h58_build.json&quot;,
+    &quot;uniqueness_final_dots&quot;: &quot;evidence/h58_uniqueness_final_dots.json&quot;,
+    &quot;uniqueness_surface&quot;: &quot;evidence/h58_uniqueness_surface_before_placement.json&quot;,
+    &quot;registry_profile&quot;: &quot;evidence/h58_registry_profile.json&quot;,
+    &quot;live_patterns&quot;: &quot;evidence/live_submission_patterns.json&quot;
   }
 }</pre></main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-10 21:14 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<p>Site built 2026-10-10 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 <a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

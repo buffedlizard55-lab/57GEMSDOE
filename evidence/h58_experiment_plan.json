@@ -1,0 +1,70 @@
+{
+  "generated_utc": "2026-10-10T21:50:02.427080+00:00",
+  "evidence_class": "EXPERIMENT PLAN (predeclared, no numbers yet)",
+  "lane": "fault-zone anatomy (secondary strands around mapped faults)",
+  "split": "buffered-whole-components-loqo-v2",
+  "draw_seed": 2026,
+  "evaluator": "gems57-pooled-hide-v2",
+  "alpha": 0.2,
+  "beta": 0.8,
+  "triangular_radius_m": 300.0,
+  "per_quadrant_cap": 10000,
+  "flank_px": 2.0,
+  "zone_quantile": 0.9,
+  "arms": {
+    "distance_only": [
+      "d"
+    ],
+    "anatomy10": [
+      "d",
+      "d_perp",
+      "d_par_abs",
+      "log_len",
+      "sin2",
+      "cos2",
+      "coherence",
+      "density",
+      "sin2d",
+      "cos2d"
+    ],
+    "anatomy10_sense": [
+      "d",
+      "d_perp",
+      "d_par_abs",
+      "log_len",
+      "sin2",
+      "cos2",
+      "coherence",
+      "density",
+      "sin2d",
+      "cos2d",
+      "sense_sgn",
+      "sense_side"
+    ],
+    "anatomy10_sense_obliq": [
+      "d",
+      "d_perp",
+      "d_par_abs",
+      "log_len",
+      "sin2",
+      "cos2",
+      "coherence",
+      "density",
+      "sin2d",
+      "cos2d",
+      "sense_sgn",
+      "sense_side",
+      "obliq_signed",
+      "obliq_signed_sense",
+      "d_over_w"
+    ]
+  },
+  "candidate": "anatomy10_sense_obliq",
+  "reference": "anatomy10",
+  "retention_rule": "candidate retained only if its paired 95% CI lower bound against the reference arm under the same flank policy is strictly positive; otherwise the simpler arm ships",
+  "budget_rule": "per-quadrant cap times the TRAINING fraction of withheld positives inside the fitted zone, clipped to [0.25, 1.0]; k_truth comes from the TRAINING base rate times allowed cells, never from test truth",
+  "width_law": "W(L)=w0*(L/L0)**gamma fitted on training folds only by bin-wise quantile regression of withheld distance on mapped-component length, bin bootstrap CI",
+  "no_textbook_angle": true,
+  "submission_slots_used": 0,
+  "maximum_experiments": 3
+}
