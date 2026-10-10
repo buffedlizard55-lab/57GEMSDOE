@@ -1,0 +1,69 @@
+{
+  "status": "three local implementation/review passes complete",
+  "passes": [
+    {
+      "pass_number": 1,
+      "scope": "Original suite + data placement + shared-tool implementation",
+      "tests": "37 passed; initial geometry interpretation later rejected"
+    },
+    {
+      "pass_number": 2,
+      "scope": "Strike/empty-visible regressions, corrected repeat and full suite",
+      "tests": "48 passed, 9 warnings; new site preview and quantile errors caught and fixed"
+    },
+    {
+      "pass_number": 3,
+      "scope": "Literal gate refactor, 679 exact checks including linked PRs; withdraw partial 16-prior H57-I promotion; retire unsafe generators; full 26-page byte/link QA; Chromium desktop/mobile; original standing request and scientific caveats",
+      "status": "complete",
+      "tests": "72 passed after both concurrent-main integrations"
+    }
+  ],
+  "experiments": 3,
+  "slots_used": 0,
+  "completed_utc": "2026-10-09T21:06:57.362073+00:00",
+  "production_final_dots": 0,
+  "final_local_tests": {
+    "passed": 72,
+    "warnings": 9,
+    "junit": "evidence/tests-final.xml"
+  },
+  "static_delivery_checks": {
+    "html_pages": 26,
+    "zip_exactly_one_tiff": true,
+    "local_format": true,
+    "root_and_docs_mirrors_identical": true
+  },
+  "registry_rasters_checked": 679,
+  "github_ci": {
+    "first_run_id": 37989482527,
+    "first_run_conclusion": "success",
+    "final_head_verification": "pending updated branch push"
+  },
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "integration_after_f93_restore": {
+    "completed_utc": "2026-10-10",
+    "tests": {
+      "suite_total": 94,
+      "passed": 92,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "warnings": 9,
+      "junit": "evidence/tests-final.xml"
+    },
+    "scope": "H57-B shared metric masking and legacy aliases; f93 holdout/evaluator integration; literal surface and final-dot registry compatibility; archive-path/site status integration.",
+    "site_check": {
+      "pages_checked": 30,
+      "local_format_pass": true,
+      "zip_exactly_one_tiff": true,
+      "links_pass": true,
+      "current_card_consistent": true,
+      "submission_cleared": false
+    },
+    "run_card_sha256_before_and_after_site_build": "27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923",
+    "new_experiments": 0,
+    "new_rasters_generated": 0,
+    "submission_slots_used": 0,
+    "weekly_slot_selected": false
+  }
+}

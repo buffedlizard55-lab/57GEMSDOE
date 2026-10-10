@@ -4,10 +4,10 @@
 new H57-B raster was generated, no current file-format validation was run, and nothing is cleared
 to download or submit. No weekly slot was selected.
 
-The former file one directory above,
-`docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif`, is also
+The older H57-A file,
+`docs/downloads/archive/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif`, is also
 **HOLD and not cleared**. Its old format receipt applies only to that historical file; its prior
-644-raster uniqueness scan is stale against the refreshed 667-raster archive. The current project
+644-raster uniqueness scan is stale against the refreshed registry. The current project
 status and single H57-B run card are at [`docs/index.html`](../../index.html) and
 [`evidence/run_card.json`](../../../evidence/run_card.json).
 

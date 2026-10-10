@@ -54,6 +54,8 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
     if result["n_truth"] <= 0:
         raise ValueError("a holdout fold must contain withheld positive pixels")
     result.update(
+        tpw=result["tp"], fpw=result["fp"], fnw=result["fn"],
+        emitted=result["n_emitted"],
         evidence_class="HOLDOUT-DTI",
         evaluator_version=VERSION,
         withheld_positive_count=int(result["n_truth"]),

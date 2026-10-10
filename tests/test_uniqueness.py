@@ -1,4 +1,5 @@
 """Regression tests for the parallel-run uniqueness screen (IR-57-RHO-01)."""
+import hashlib
 import json
 
 import numpy as np
@@ -92,10 +93,12 @@ def _write_registry(path, raster, submission="prior", transform=TRANSFORM):
     with rasterio.open(path, "w", **profile) as ds:
         ds.write(raster, 1)
     index_path = path.with_suffix(".json")
-    index_path.write_text(json.dumps({"n_unique_grid_rasters": 1, "rasters": [{
-        "cache_file": str(path), "repo_first": "owner/repo",
-        "sha256": "abc", "sources": [f"owner/repo:{submission}"],
-    }]}))
+    index_path.write_text(json.dumps({"complete_accessible_scan": True,
+        "n_unique_grid_rasters": 1, "rasters": [{
+            "cache_file": str(path), "repo_first": "owner/repo",
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "sources": [f"owner/repo:{submission}"],
+        }]}))
     return index_path
 
 

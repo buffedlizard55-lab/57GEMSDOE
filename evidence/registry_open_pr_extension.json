@@ -1,0 +1,61 @@
+{
+  "rasters": [
+    {
+      "repo_first": "57GEMSDOE",
+      "blob": "cb9c830503f83dae0fccf0d5ee5fb4d0241cfc40",
+      "sources": [
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif"
+      ],
+      "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
+      "sha256": "ba0aab85f966e55477ef283cd1b4c14c481328ee21e564af47ad7043337a5d84",
+      "bytes": 1682750,
+      "cache_file": ".cache/registry/cb9c830503f83dae0fccf0d5ee5fb4d0241cfc40.tif"
+    },
+    {
+      "repo_first": "57GEMSDOE",
+      "blob": "9b3579fc25391668c27c594f8541dadf515694e5",
+      "sources": [
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif"
+      ],
+      "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
+      "sha256": "bb9ed068937100e706970ec4c216bc5edaf5c8d0042cd096fb6a3be8cdf4c919",
+      "bytes": 1682664,
+      "cache_file": ".cache/registry/9b3579fc25391668c27c594f8541dadf515694e5.tif"
+    },
+    {
+      "repo_first": "57GEMSDOE",
+      "blob": "fff3348bf3f24c21ff572d273a7d42b69e63bb24",
+      "sources": [
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif"
+      ],
+      "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
+      "sha256": "e845aa2e10fc47fa7582ca8a0b3c3a05cb5097a2bd922daf54db99169c663144",
+      "bytes": 118094,
+      "cache_file": ".cache/registry/fff3348bf3f24c21ff572d273a7d42b69e63bb24.tif"
+    },
+    {
+      "repo_first": "57GEMSDOE",
+      "blob": "df213d013958aed1878222d076d5113c26652f19",
+      "sources": [
+        "57GEMSDOE-PR6:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif"
+      ],
+      "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
+      "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
+      "bytes": 118108,
+      "cache_file": ".cache/registry/df213d013958aed1878222d076d5113c26652f19.tif"
+    }
+  ],
+  "complete_accessible_scan": true,
+  "errors": [],
+  "n_unique_grid_rasters": 4,
+  "open_pr_heads": [
+    {
+      "pr": 6,
+      "commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c"
+    },
+    {
+      "pr": 8,
+      "commit": "58840b86ad780b35b2f37fbc70e79c4ed3cab420"
+    }
+  ]
+}

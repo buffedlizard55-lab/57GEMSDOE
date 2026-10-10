@@ -5,3 +5,10 @@ __pycache__/
 .venv/
 venv57/
 out/
+# Large source rasters and generated feature caches are restored by hash, never committed.
+data/official/training_features.tif
+data/official/*.partial
+data/raw/
+registry/cache/
+*.download
+*.partial

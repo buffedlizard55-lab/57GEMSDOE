@@ -8,5 +8,11 @@
   "validator": "zeros version: single band float32 EPSG:32611 100m 3292x3730 transform [100,0,243350,0,-100,4508550] all 12279160 cells finite min 0.0 max 1.0 zero outside [0,1] zero NaN, in-footprint 5167373 finite min 0 max 1, outside 7111787 zero, 12000 positive, 0 on-catalogue (masked), no nodata tag; nan version: same inside, outside NaN 7111787",
   "submission_name": "57GEMSDOE-faultzone-anatomy-12000",
   "note": "fault-zone anatomy 12k dots W=2.6*L^0.22 rel-angle 12deg median shrunk budget 6pct inside 3km/30deg",
-  "verdict": "promote"
+  "verdict": "negative — archived historical candidate; not cleared under refreshed literal full-registry gate",
+  "historical_verdict": "promote",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archive provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+  "superseded_by": "evidence/run_card_current.json"
 }

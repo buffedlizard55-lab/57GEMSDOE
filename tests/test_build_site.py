@@ -2,46 +2,35 @@ from __future__ import annotations
 
 import json
 
-import pytest
-
 from scripts import build_site, build_submission
 
 
-def test_run_card_renderer_is_read_only(tmp_path, monkeypatch):
-    card_path = tmp_path / "run_card.json"
-    card = {
-        "artifact": {
-            "submission_status": "NOT SUBMITTED",
-            "download_status": "NOT CLEARED — no new TIF generated",
-            "raster_generated": False,
-        },
-        "holdout": {},
-    }
+def test_h57b_run_card_loader_is_read_only(tmp_path):
+    card_path = tmp_path / "evidence" / "run_card.json"
+    card_path.parent.mkdir()
+    card = {"artifact": {"download_status": "NOT CLEARED", "raster_generated": False}}
     original = json.dumps(card, indent=2).encode()
     card_path.write_bytes(original)
-    monkeypatch.setattr(build_site, "EVID", tmp_path)
 
-    rendered = build_site.build_runcard()
+    loaded = build_site.load_h57b_run_card(tmp_path)
 
-    assert "NOT SUBMITTED" in rendered
-    assert "does not regenerate or modify it" in rendered
+    assert loaded == card
     assert card_path.read_bytes() == original
 
 
-def test_cleared_card_without_download_path_fails_closed(tmp_path, monkeypatch):
-    (tmp_path / "run_card.json").write_text(json.dumps({
-        "artifact": {"download_status": "CLEARED TO DOWNLOAD"},
-    }))
-    monkeypatch.setattr(build_site, "EVID", tmp_path)
-
-    rendered = build_site.submission_status_html()
+def test_held_card_has_no_research_download_link():
+    rendered = build_site.download_panel({
+        "okay_to_download": False,
+        "okay_to_submit": False,
+        "download_status": "NOT CLEARED",
+    })
 
     assert "NOT CLEARED" in rendered
-    assert "no validated download path is recorded" in rendered
-    assert 'href="' not in rendered
-    assert "do not submit" in rendered.lower()
+    assert "Submit: NO" in rendered
+    assert 'href="downloads/' not in rendered
+    assert "Download: NOT CLEARED" in rendered
 
 
-def test_legacy_submission_builder_is_disabled():
-    with pytest.raises(SystemExit, match="Disabled"):
-        build_submission.main()
+def test_legacy_submission_builder_returns_refusal(capsys):
+    assert build_submission.main() == 2
+    assert "Retired unsafe builder" in capsys.readouterr().err

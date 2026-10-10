@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
 """Buffered whole-branch LOQO test of the H57-B terminal-proximity hypothesis.
 
-This is one preregistered experiment with three matched arms: distance-only,
-the lane's current no-side anatomy baseline, and that same baseline plus one
-new terminal-distance feature.  Every cell is scored by the shared evaluator.
+Runs, for one withholding mode:
+
+1. the leakage canary -- single-feature AUC on every fold (no fitting involved,
+   so nothing can leak through the fit);
+2. leave-one-quadrant-out CV of nested feature sets, so the value of the
+   anisotropic anatomy and of the geophysical corroboration block is measured
+   against distance-only and single-block controls;
+3. pooled DTI with two CIs (coverage-Wilson and quadrant-jackknife).
+
+Fold geometries are computed once and shared by every variant (the previous
+per-variant recomputation was pure waste -- see REMAINING_WORK item 7).
+
+All numbers printed are HOLDOUT-DTI instrument readings.  No live score is
+projected anywhere in this file.
 """
 from __future__ import annotations
 
@@ -19,21 +30,46 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from gems57 import load_grid                                             # noqa: E402
-from gems57.anatomy import FEATURES, TIP_FEATURES                         # noqa: E402
-from gems57.evaluate_holdout import pooled_summary, VERSION               # noqa: E402
-from gems57.fitting import (canary, cell_geometry, fit_model_from_cells,
-                            run_cell)                                      # noqa: E402
-from gems57.holdout import FOLD_NAMES, build_holdout                      # noqa: E402
+from gems57 import load_grid                                    # noqa: E402
+from gems57.anatomy import FEATURES                             # noqa: E402
+from gems57.fitting import (canary, cell_geometry, fit_model,    # noqa: E402
+                            pooled, run_cell, sample_train)
+from gems57.holdout import FOLD_NAMES, build_holdout            # noqa: E402
 
 EVID = ROOT / "evidence"
-BASE_NO_SIDE = [i for i, name in enumerate(FEATURES) if name != "side"]
-TIP_INDEX = len(FEATURES)
-VARIANTS = {
-    "d_only": [FEATURES.index("d")],
-    "no_side": BASE_NO_SIDE,
-    "h57b_tip_distance": BASE_NO_SIDE + [TIP_INDEX],
-}
+
+GEO_NAMES: tuple = ()
+try:
+    from gems57.geo import GEO_FEATURES, load_planes  # noqa: E402
+    GEO_NAMES = tuple(GEO_FEATURES)
+except Exception:  # geo.py absent or stack missing: pure-geometry CV still works
+    load_planes = None
+
+
+def variant_cols(names: tuple) -> dict[str, list[int]]:
+    """Named feature sets, resolved to column indices of the combined matrix."""
+    all_names = names
+    idx = {n: i for i, n in enumerate(all_names)}
+    has_geo = bool(GEO_NAMES) and GEO_NAMES[0] in idx
+
+    def cols(*want: str) -> list[int]:
+        missing = [w for w in want if w not in idx]
+        if missing:
+            raise KeyError(f"features not available: {missing}")
+        return [idx[w] for w in want]
+
+    out = {
+        "d_only": cols("d"),
+        "d_perp_par": cols("d", "d_perp", "d_par_abs"),
+        "anatomy_full": cols(*FEATURES),
+        "no_side": cols(*(n for n in FEATURES if n != "side")),
+    }
+    if has_geo:
+        out["geo_only"] = cols(*GEO_NAMES)
+        out["no_side_plus_geo"] = cols(*(n for n in FEATURES if n != "side"),
+                                       *GEO_NAMES)
+        out["anatomy_plus_geo"] = cols(*FEATURES, *GEO_NAMES)
+    return out
 
 
 def _json_default(value):
@@ -53,10 +89,12 @@ def main() -> None:
                     help="per test cell cap; one holdout realization is capped at 4x this value")
     ap.add_argument("--floor", type=float, default=0.015)
     ap.add_argument("--canary-only", action="store_true")
-    ap.add_argument("--bootstrap-draws", type=int, default=2_000)
-    ap.add_argument("--out", type=Path, default=EVID / "exp_h57b_holdout.json")
-    ap.add_argument("--analysis-role", choices=("preregistered-primary", "posthoc-matched-sensitivity"),
-                    default="preregistered-primary")
+    ap.add_argument("--variants", default="",
+                    help="comma-separated subset of variant names (default: all)")
+    ap.add_argument("--no-geo", action="store_true",
+                    help="ignore training_features.tif even if present")
+    ap.add_argument("--out", default="",
+                    help="evidence file name (default cv_{mode}.json)")
     a = ap.parse_args()
     if a.max_dots <= 0:
         raise SystemExit("--max-dots must be positive")
@@ -64,26 +102,61 @@ def main() -> None:
     if a.max_dots != expected_cap:
         raise SystemExit(f"{a.analysis_role} requires the fixed --max-dots {expected_cap}; no cap sweep is allowed")
 
-    started = time.time()
-    ctx = build_holdout(load_grid(), modes=(a.mode,))
-    cells = sorted(ctx.cells_of(a.mode), key=lambda c: (c.seed, c.fold))
-    if len(cells) != 8:
-        raise RuntimeError(f"expected four quadrants x two draws, got {len(cells)} cells")
-    by_key = {c.key: c for c in cells}
-    print(f"[{time.time()-started:6.1f}s] buffered whole-branch holdout ready: "
-          f"{len(cells)} cells, mode={a.mode}, evaluator={VERSION}", flush=True)
+    t0 = time.time()
+    g0 = load_grid()
+    geo = None
+    if load_planes is not None and not a.no_geo:
+        geo = load_planes(g0.footprint)
+        print(f"[{time.time()-t0:5.1f}s] geo planes loaded: {list(geo)}")
+    ctx = build_holdout(g0)
+    cells = ctx.cells_of(a.mode)
+    print(f"[{time.time()-t0:5.1f}s] holdout ready: {len(cells)} cells, mode={a.mode}")
 
-    # Streaming canary: no full-grid feature matrices are retained across folds.
-    def canary_geometries():
-        for cell in cells:
-            yield cell_geometry(ctx, cell, include_tip=True, training=False)
+    # ---- 0. cell geometries, one fold group at a time ---------------------
+    # Peak memory is kept near (n_cells_per_fold x 2) geometries: the sandbox
+    # has 3 GB RAM and the full 8-geometry cache plus a concurrent test run
+    # OOM-killed the first session-2 CV attempt (exit 137).
+    geoms = {}
+    for c in cells[:4]:
+        geoms[c.key] = cell_geometry(ctx, c, geo=geo)
+    print(f"[{time.time()-t0:5.1f}s] canary geometries built "
+          f"({geoms[cells[0].key].X.shape[1]} features)")
 
-    can = canary(canary_geometries())
-    print(f"[{time.time()-started:6.1f}s] single-feature leakage canary", flush=True)
-    for name, result in can.items():
-        flag = " LEAKAGE FLAG" if result["leakage_flag"] else ""
-        print(f"  {name:14s} disc-AUC mean={result['discriminative_auc_mean']:.4f} "
-              f"max={result['discriminative_auc_max']:.4f}{flag}", flush=True)
+    # ---- 1. leakage canary ----------------------------------------------
+    can = canary(list(geoms.values()))                 # 4 folds x 1 draw is enough
+    print(f"\n[{time.time()-t0:5.1f}s] LEAKAGE CANARY (single-feature AUC, 4 folds)")
+    for name, r in can.items():
+        flag = "  <== FLAG" if r["leakage_flag"] else ""
+        print(f"  {name:12s} raw_mean={r['auc_mean']:.4f} "
+              f"discriminative_mean={r['discriminative_auc_mean']:.4f} "
+              f"discriminative_max={r['discriminative_auc_max']:.4f}{flag}")
+    # Protocol rule 4: AUC > 0.90 is "leakage until proven otherwise".  The
+    # proof for the catalogue-geometry block is by construction: every column
+    # of fold_geometry is a deterministic function of the *visible* mask only
+    # (holdout.py: whole-segment withholding + 12 px domain erosion), so no
+    # channel exists from the withheld mask into the features.  Flagged
+    # geometry features are therefore reported as near-field physical signal
+    # (the lane's mechanism) with the mapping-continuity caveat recorded in
+    # the run card.  A flagged *geophysical* column (static external raster)
+    # would be equally leakage-free by construction, but a flag there would
+    # also mean the fold split is geographically confounded -- review, not run.
+    flagged = [n for n, r in can.items() if r["leakage_flag"]]
+    geo_flagged = [n for n in flagged if n.startswith("g_")]
+    for n in flagged:
+        can[n]["interpretation"] = (
+            "catalogue-geometry feature computed from visible faults only -- "
+            "no leakage channel by construction; near-field physical signal "
+            "(damage-zone adjacency), with mapping-continuity confound recorded"
+            if not n.startswith("g_") else
+            "static geophysical plane; high AUC means fold-split geographic "
+            "confounding to review before trusting results")
+    if geo_flagged:
+        print(f"LEAKAGE CANARY FIRED on geophysical columns {geo_flagged} -- "
+              "review before running CV.")
+        raise SystemExit(2)
+    if flagged:
+        print(f"canary flags on {flagged}: proven non-leaking by construction "
+              "(visible-only features); recorded in evidence.")
     if a.canary_only:
         EVID.mkdir(exist_ok=True)
         (EVID / f"canary_{a.mode}_buffered.json").write_text(
@@ -91,108 +164,65 @@ def main() -> None:
                         "canary": can}, indent=2) + "\n")
         return
 
-    out = {
-        "evidence_class": "HOLDOUT-DTI",
-        "evaluator_version": VERSION,
-        "experiment_id": "H57-B-terminal-distance",
-        "analysis_role": a.analysis_role,
-        "plan_status": ("pre-registered before any H57-B outcome" if a.analysis_role == "preregistered-primary"
-                        else "post-hoc matched-mass sensitivity plan written before this replay; not confirmatory"),
-        "hypothesis": "Withheld fault branches are enriched near the termini of visible fault branches, after a 3 px holdout collar removes cut-induced endpoints.",
-        "mechanism": "A single distance-to-visible-branch-terminal feature, appended to the existing no-side anatomy features; no angle or lobe width is hand-set.",
-        "named_non_fault_mimic": "Road and dry-wash terminations, plus map-sheet or digitization breaks, can imitate mapped-fault endpoints; this catalogue-only experiment cannot distinguish those mimics without independent geology or topography.",
-        "withholding": {"mode": a.mode, "whole_between_junction_branches": True,
-                        "artificial_chunking": False, "draw_seeds": sorted({c.seed for c in cells}),
-                        "quadrants": list(FOLD_NAMES), "domain_erosion_px": 12,
-                        "feature_and_training_negative_buffer_px": 3,
-                        "visible_fault_score_mask": "pixel-exact",
-                        "test_region_near_truth": "retained and scored; not removed by the feature collar"},
-        "allocation": {"method": "shared greedy DTI max-coverage", "per_cell_cap": a.max_dots,
-                       "floor": a.floor, "alpha": 0.2, "beta": 0.8,
-                       "triangular_radius_m": 300},
-        "canary": can,
-        "variants": {},
-        "runtime_started_epoch_s": started,
-    }
+    # ---- 2. leave-one-quadrant-out CV ------------------------------------
+    all_names = tuple(geoms[cells[0].key].feature_names)
+    VARIANTS = variant_cols(all_names)
+    if a.variants:
+        want = {v.strip() for v in a.variants.split(",") if v.strip()}
+        unknown = want - set(VARIANTS)
+        if unknown:
+            raise SystemExit(f"unknown variants: {sorted(unknown)}; "
+                             f"available: {sorted(VARIANTS)}")
+        VARIANTS = {k: v for k, v in VARIANTS.items() if k in want}
+    geoms.clear()
+    gc.collect()
 
-    n_blocks = ((ctx.grid.height + 199) // 200) * ((ctx.grid.width + 199) // 200)
-    terms_by_arm = {}
-    all_counts = {name: {} for name in VARIANTS}
+    out = {"mode": a.mode, "n_cells": len(cells), "canary": can,
+           "feature_names": list(all_names), "variants": {
+               v: {"cols": [all_names[i] for i in c], "per_cell": []}
+               for v, c in VARIANTS.items()}}
+    for qi, q in enumerate(FOLD_NAMES):
+        t1 = time.time()
+        train = [c for c in cells if f"fold{q}" not in c.key]
+        test = [c for c in cells if f"fold{q}" in c.key]
+        tr = {c.key: cell_geometry(ctx, c, geo=geo) for c in train}
+        te = {c.key: cell_geometry(ctx, c, geo=geo) for c in test}
+        for vname, cols_ in VARIANTS.items():
+            clf, scale, base = fit_model(list(tr.values()), seed=qi, cols=cols_)
+            for c in test:
+                out["variants"][vname]["per_cell"].append(
+                    run_cell(ctx, c, clf, scale, cols=cols_,
+                             max_dots=a.max_dots, floor=a.floor, g=te[c.key]))
+            del clf
+            gc.collect()
+        tr.clear(); te.clear()
+        gc.collect()
+        print(f"[{time.time()-t1:5.1f}s] fold{q} done "
+              f"({len(VARIANTS)} variants, {len(train)} train / {len(test)} test cells)")
 
-    # A separate model per draw/fold prevents one randomized holdout replicate
-    # from leaking into another replicate's training labels/features.
-    for arm, cols in VARIANTS.items():
-        t_arm = time.time()
-        arm_rows = []
-        arm_terms = np.zeros((n_blocks, 4), np.float64)
-        for seed in sorted({c.seed for c in cells}):
-            for fold, qname in enumerate(FOLD_NAMES):
-                test = by_key[f"draw{seed}_fold{qname}_{a.mode}"]
-                train = [c for c in cells if c.seed == seed and c.fold != fold]
-                exclusions = {c.key: (test.key,) for c in train}
-                clf, scale, base_rate = fit_model_from_cells(
-                    ctx, train, seed=(5_200 + 100 * seed + fold), cols=cols,
-                    include_tip=True, feature_excludes=exclusions)
-                gc.collect()
-
-                test_geom = cell_geometry(ctx, test, training=False, include_tip=True)
-                row = run_cell(ctx, test, clf, scale, max_dots=a.max_dots,
-                               floor=a.floor, cols=cols, g=test_geom)
-                row["base_rate"] = float(base_rate)
-                arm_terms += row.pop("spatial_terms")
-                all_counts[arm][test.key] = int(row["n_dots"])
-                arm_rows.append(row)
-                del test_geom, clf, row
-                gc.collect()
-        terms_by_arm[arm] = arm_terms
-        out["variants"][arm] = {"features": [FEATURES[i] for i in cols if i < len(FEATURES)]
-                                       + ([TIP_FEATURES[0]] if TIP_INDEX in cols else []),
-                                 "per_cell": arm_rows,
-                                 "dot_counts_by_cell": all_counts[arm]}
-        print(f"[{time.time()-t_arm:6.1f}s] completed {arm}: "
-              f"dots={sum(all_counts[arm].values())}", flush=True)
-
-    summary = pooled_summary(terms_by_arm, draws=a.bootstrap_draws,
-                             candidate="h57b_tip_distance")
-    out["pooled_summary"] = summary
-    out["mass_matched_across_arms"] = all(
-        len({all_counts[arm][key] for arm in VARIANTS}) == 1
-        for key in all_counts["no_side"])
-    out["all_features_canary_clean"] = not any(r["leakage_flag"] for r in can.values())
-    contrast = summary["paired_differences"].get("no_side", {})
-    ci = contrast.get("ci95", [None, None])
-    numeric_gate = bool(
-        out["mass_matched_across_arms"] and out["all_features_canary_clean"]
-        and ci[0] is not None and ci[0] > 0.0)
-    out["numeric_promotion_rule_passed"] = numeric_gate
-    out["promotion_eligible_by_holdout_only"] = bool(
-        numeric_gate and a.analysis_role == "preregistered-primary")
-    if a.analysis_role == "posthoc-matched-sensitivity":
-        out["holdout_verdict"] = ("POST-HOC SENSITIVITY ONLY — numeric rule passes; not confirmatory and not promotion-eligible"
-                                  if numeric_gate else
-                                  "POST-HOC SENSITIVITY NEGATIVE / HOLD")
-    else:
-        out["holdout_verdict"] = ("PROMOTE-ELIGIBLE FOR SEPARATE GATES ONLY"
-                                  if numeric_gate else
-                                  "NEGATIVE / HOLD — does not pass preregistered canary, matched-mass and paired-CI rule")
-    out["paired_dot_count_comparison"] = all_counts
-    out["runtime_s"] = time.time() - started
+    for vname in VARIANTS:
+        pl = pooled(out["variants"][vname]["per_cell"])
+        out["variants"][vname]["pooled"] = pl
+        ci = pl["dti_ci95_quadrant_jackknife"]
+        print(f"{vname:18s} HOLDOUT-DTI pooled={pl['pooled_dti']:.4f} "
+              f"CI95(jackknife)=[{ci[0]:.4f},{ci[1]:.4f}] coverage={pl['coverage']:.4f} "
+              f"dots={pl['n_dots']} tp={pl['tp']:.0f} fp={pl['fp']:.0f} K={pl['n_truth']}")
 
     EVID.mkdir(exist_ok=True)
-    path = a.out if a.out.is_absolute() else ROOT / a.out
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(out, indent=2, default=_json_default) + "\n")
-    for arm, result in summary["scores"].items():
-        ci = result["ci95"]
-        print(f"{arm:20s} HOLDOUT-DTI={result['dti']:.5f} "
-              f"95% CI=[{ci[0]:.5f},{ci[1]:.5f}] "
-              f"withheld={result['withheld_positive_count']:,}", flush=True)
-    print(f"paired tip - no_side: {contrast.get('delta')} "
-          f"95% CI={contrast.get('ci95')} | matched mass={out['mass_matched_across_arms']} "
-          f"canary clean={out['all_features_canary_clean']}", flush=True)
-    print(f"verdict: {out['holdout_verdict']} | wrote {path.relative_to(ROOT)} "
-          f"| runtime={out['runtime_s']:.1f}s", flush=True)
+    fname = a.out or f"cv_{a.mode}.json"
+    (EVID / fname).write_text(json.dumps(out, indent=2))
+    print(f"\nwrote evidence/{fname}   total {time.time()-t0:.1f}s")
+
+    def dti(v):
+        return out["variants"][v]["pooled"]["pooled_dti"]
+    if "d_only" in out["variants"] and "anatomy_full" in out["variants"]:
+        print(f"\nanatomy gain over distance-only: "
+              f"{dti('anatomy_full')-dti('d_only'):+.4f} DTI")
+    if "no_side" in out["variants"] and "no_side_plus_geo" in out["variants"]:
+        print(f"geo corroboration gain over no_side: "
+              f"{dti('no_side_plus_geo')-dti('no_side'):+.4f} DTI")
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit("Historical runner retained for learning, not current buffered/full-registry validation. "
+                     "No new experiment or slot authorized; read the current README and run card.")

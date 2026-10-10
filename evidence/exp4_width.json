@@ -1,0 +1,330 @@
+{
+  "hypothesis": "H57-G: sqrt(length)-normalized cross-strike stepover",
+  "mechanism": "Damage-zone width may grow with fault displacement; connected visible-component length is only a noisy displacement proxy.",
+  "non_fault_mimic": "Map-trace fragmentation and mapping effort, not actual displacement.",
+  "evidence_class": "HOLDOUT-DTI (not a live score)",
+  "evaluator_version": "gems52-pooled-hide-v1 repaired (metric.max_cover, pixel-exact mask), gems57 LOQO pooled/quadrant-jackknife",
+  "shared_evaluator_hashes": {
+    "evaluate_holdout.py": "5c0a897203c69c5f283961afffbc82d648a19060f6c2597a414ca1ec17b29d70",
+    "holdout.py": "31a692a1b34fff296b7ad3416f49981ebab4ae2a55c1903c5854c2babd4202bb",
+    "metric.py": "0c7f7c70b686d934050f253c6c9331b34dd6c70ac2d3b8172423c81a6da71542",
+    "spatial.py": "fad7b09db9efc512247b9a176a7e7ce8631e287592b4e07902d0b9c38bed00f8"
+  },
+  "withheld_positive_pixels": 22619,
+  "canary": {
+    "base": {
+      "d": {
+        "auc_per_fold": [
+          0.10185771104742054,
+          0.11304080262600592,
+          0.12925397564849125,
+          0.14019706986765157
+        ],
+        "auc_mean": 0.12108738979739232,
+        "auc_min": 0.10185771104742054,
+        "auc_max": 0.14019706986765157,
+        "discriminative_auc_mean": 0.8789126102026077,
+        "discriminative_auc_max": 0.8981422889525794,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_perp": {
+        "auc_per_fold": [
+          0.10349655289213133,
+          0.11716066603134262,
+          0.15956647631021703,
+          0.13764826638965835
+        ],
+        "auc_mean": 0.12946799040583734,
+        "auc_min": 0.10349655289213133,
+        "auc_max": 0.15956647631021703,
+        "discriminative_auc_mean": 0.8705320095941627,
+        "discriminative_auc_max": 0.8965034471078687,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "d_par_abs": {
+        "auc_per_fold": [
+          0.2489158311620636,
+          0.24216955950868277,
+          0.2289650622022234,
+          0.27135237457679284
+        ],
+        "auc_mean": 0.24785070686244065,
+        "auc_min": 0.2289650622022234,
+        "auc_max": 0.27135237457679284,
+        "discriminative_auc_mean": 0.7521492931375593,
+        "discriminative_auc_max": 0.7710349377977765,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "side": {
+        "auc_per_fold": [
+          0.4969617665450755,
+          0.5076267460821685,
+          0.5060491582848068,
+          0.5351771306555864
+        ],
+        "auc_mean": 0.5114537003919093,
+        "auc_min": 0.4969617665450755,
+        "auc_max": 0.5351771306555864,
+        "discriminative_auc_mean": 0.5129728171193715,
+        "discriminative_auc_max": 0.5351771306555864,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "log_len": {
+        "auc_per_fold": [
+          0.4541030536737884,
+          0.42118615840745444,
+          0.471746850847009,
+          0.4220815435518621
+        ],
+        "auc_mean": 0.4422794016200285,
+        "auc_min": 0.42118615840745444,
+        "auc_max": 0.471746850847009,
+        "discriminative_auc_mean": 0.5577205983799716,
+        "discriminative_auc_max": 0.5788138415925456,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "sin2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "cos2": {
+        "auc_per_fold": [
+          0.5,
+          0.5,
+          0.5,
+          0.5
+        ],
+        "auc_mean": 0.5,
+        "auc_min": 0.5,
+        "auc_max": 0.5,
+        "discriminative_auc_mean": 0.5,
+        "discriminative_auc_max": 0.5,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "coherence": {
+        "auc_per_fold": [
+          0.35178906982803543,
+          0.3225332147395172,
+          0.4278792502646903,
+          0.372410230070791
+        ],
+        "auc_mean": 0.3686529412257585,
+        "auc_min": 0.3225332147395172,
+        "auc_max": 0.4278792502646903,
+        "discriminative_auc_mean": 0.6313470587742416,
+        "discriminative_auc_max": 0.6774667852604828,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      },
+      "density": {
+        "auc_per_fold": [
+          0.7132763965607087,
+          0.7006949131723846,
+          0.7444468945209105,
+          0.7058374915358572
+        ],
+        "auc_mean": 0.7160639239474653,
+        "auc_min": 0.7006949131723846,
+        "auc_max": 0.7444468945209105,
+        "discriminative_auc_mean": 0.7160639239474653,
+        "discriminative_auc_max": 0.7444468945209105,
+        "leakage_threshold": 0.9,
+        "leakage_flag": false
+      }
+    },
+    "width": {
+      "auc_per_fold": [
+        0.11874500911933297,
+        0.14077016094875053,
+        0.17118853758602434,
+        0.1644116166512773
+      ],
+      "auc_mean": 0.14877883107634626,
+      "auc_min": 0.11874500911933297,
+      "auc_max": 0.17118853758602434,
+      "discriminative_auc_mean": 0.8512211689236537,
+      "discriminative_auc_max": 0.881254990880667,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    }
+  },
+  "baseline": {
+    "pooled_dti": 0.23587476580727823,
+    "coverage": 0.3407435740365925,
+    "coverage_ci95": [
+      0.3345944399467107,
+      0.34694679302148357
+    ],
+    "dti_ci95_coverage_only": [
+      0.23181546886859658,
+      0.2399627693703078
+    ],
+    "dti_ci95_quadrant_jackknife": [
+      0.20034427776743302,
+      0.27140525384712344
+    ],
+    "jackknife_drop_quadrant": {
+      "foldNE": 0.22982175064499558,
+      "foldNW": 0.226963371188498,
+      "foldSE": 0.23467612776460273,
+      "foldSW": 0.253804172002019
+    },
+    "tp": 7707.278901133686,
+    "fp": 65193.22461664677,
+    "fn": 14911.721098866314,
+    "n_truth": 22619,
+    "n_dots": 80000
+  },
+  "H57-G": {
+    "pooled_dti": 0.23742257629534305,
+    "coverage": 0.34314555095451793,
+    "coverage_ci95": [
+      0.3369855818057074,
+      0.3493587892656686
+    ],
+    "dti_ci95_coverage_only": [
+      0.23335941015781833,
+      0.2415138680995202
+    ],
+    "dti_ci95_quadrant_jackknife": [
+      0.20147621833615273,
+      0.2733689342545334
+    ],
+    "jackknife_drop_quadrant": {
+      "foldNE": 0.2308544664961304,
+      "foldNW": 0.22889095856841385,
+      "foldSE": 0.23607690930796696,
+      "foldSW": 0.2556304527444295
+    },
+    "tp": 7761.609217040241,
+    "fp": 65217.97571825981,
+    "fn": 14857.39078295976,
+    "n_truth": 22619,
+    "n_dots": 80000
+  },
+  "paired_delta": 0.0015478104880648214,
+  "paired_delta_per_quadrant": {
+    "NW": -2.427776337093901e-05,
+    "NE": 0.0033128632100950517,
+    "SW": 0.0008361708413643365,
+    "SE": 0.0019527169815266865
+  },
+  "passes_holdout_bar": true,
+  "bar_note": "Same detached-mode, same-budget LOQO baseline; the earlier all-mode .2279 is not a comparable bar.",
+  "runtime_s_before_surface": 483.1,
+  "surface_witnesses": [
+    {
+      "source": "/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+      "sha256": "c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f",
+      "prior_coverage_of_eligible_3px": 0.9987243421716145,
+      "candidate_surface_positive_3px_overlap": 0.9987243421716145,
+      "prior_nonzero": 206895
+    },
+    {
+      "source": "/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+      "sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+      "prior_coverage_of_eligible_3px": 1.0,
+      "candidate_surface_positive_3px_overlap": 1.0,
+      "prior_nonzero": 5167373
+    }
+  ],
+  "surface_rank_vs_witnesses": [
+    {
+      "source": "/tmp/gems13-review/docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
+      "spearman": -0.0001280785867744352
+    },
+    {
+      "source": "/tmp/gems17-review/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+      "spearman": 0.60017972098096
+    }
+  ],
+  "sha256_distinct_from_all_644_indexed_rasters": true,
+  "index_scope_note": "Full sha256 index only; two pinned overlap witnesses suffice to fail the literal gate.",
+  "surface_gate_passes": false,
+  "dot_placement": "STOPPED before placement; literal surface-overlap gate fired",
+  "research_raster": {
+    "path": "docs/downloads/archive/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif",
+    "sha256": "07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92",
+    "validator": {
+      "file": "docs/downloads/archive/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif",
+      "bytes": 21430160,
+      "sha256": "07d03560f0ef4a793d98b1925156d0fdb74fa21b412579d94b44a4e7f0681d92",
+      "meta": {
+        "crs": "EPSG:32611",
+        "shape": [
+          3730,
+          3292
+        ],
+        "dtype": "float32",
+        "count": 1,
+        "nodata": null,
+        "transform": [
+          100.0,
+          0.0,
+          243350.0,
+          0.0,
+          -100.0,
+          4508550.0
+        ],
+        "profile_compress": "lzw"
+      },
+      "band_description": [
+        "predicted_new_fault_probability"
+      ],
+      "n_finite": 12279160,
+      "n_nan": 0,
+      "min": 0.0,
+      "max": 0.7376705408096313,
+      "mean": 0.0008341983193531632,
+      "emitted_positive_pixels": 5106385,
+      "checks": {
+        "single_band": true,
+        "dtype_float32": true,
+        "dimensions_3730x3292": true,
+        "crs_epsg_32611": true,
+        "transform_matches_sample_submission": true,
+        "no_nan_anywhere": true,
+        "no_inf_anywhere": true,
+        "no_sentinel_values": true,
+        "range_0_1_guaranteed": true,
+        "min_ge_0": true,
+        "max_le_1": true,
+        "in_footprint_all_finite": true,
+        "in_footprint_range_0_1": true,
+        "outside_footprint_zero": true,
+        "zero_dots_on_mapped_catalogue": true
+      },
+      "all_checks_passed": true,
+      "on_catalogue_positive_pixels": 0,
+      "in_footprint_positive_pixels": 5106385,
+      "footprint_fraction": 0.9881974844858307
+    }
+  },
+  "submission_name": "gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT",
+  "submission_note": "H57-G width-scaled stepover; research only: strict overlap gate failed; DO NOT SUBMIT",
+  "verdict": "negative; DO NOT SUBMIT (not a unique lane submission by literal gate)",
+  "runtime_s": 572.7,
+  "post_run_source_note": {
+    "executed_evaluator_sha256": "5c0a897203c69c5f283961afffbc82d648a19060f6c2597a414ca1ec17b29d70",
+    "current_evaluator_sha256": "faa8fad9a6a7bd6836d4d77764674109f37214ce88c719b6ec19afe517dce94b",
+    "change_after_run": "docstring only; metric arithmetic and masking unchanged",
+    "historical_exp2_hashes_do_not_match_current_shared_evaluator": true
+  }
+}

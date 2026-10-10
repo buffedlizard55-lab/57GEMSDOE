@@ -1,0 +1,79 @@
+{
+  "file": "gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif",
+  "sha256": "e845aa2e10fc47fa7582ca8a0b3c3a05cb5097a2bd922daf54db99169c663144",
+  "bytes": 118094,
+  "submission_name": "gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353",
+  "note": "57GEMSDOE fault-zone anatomy | fitted en echelon stepover zone (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 90e53294",
+  "note_chars": 123,
+  "validator": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif",
+    "bytes": 118094,
+    "sha256": "e845aa2e10fc47fa7582ca8a0b3c3a05cb5097a2bd922daf54db99169c663144",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0032575519289821386,
+    "n_nonzero": 40000,
+    "mass": 40000.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.zip",
+  "zip_sha256": "05ef51cb86e08d1bb7088b8378b373061558040a04ec1b8410daec2d42022b1a",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "research-only; local format validation is not organizer acceptance",
+  "metadata": {
+    "lane": "fault-zone anatomy",
+    "mode": "all",
+    "flank_px": 0,
+    "feature_set": "no_side",
+    "features": [
+      "d",
+      "d_perp",
+      "d_par_abs",
+      "log_len",
+      "sin2",
+      "cos2",
+      "coherence",
+      "density"
+    ]
+  }
+}

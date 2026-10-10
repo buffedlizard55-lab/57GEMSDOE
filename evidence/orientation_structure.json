@@ -1,0 +1,62 @@
+{
+  "edges": [
+    0.0,
+    7.5,
+    15.0,
+    22.5,
+    30.0,
+    37.5,
+    45.0,
+    52.5,
+    60.0,
+    67.5,
+    75.0,
+    82.5,
+    90.0
+  ],
+  "n_withheld": 11321,
+  "n_visible_reference": [
+    11794.0,
+    4803.0,
+    1944.0,
+    1072.0,
+    605.0,
+    333.0,
+    256.0,
+    168.0,
+    125.0,
+    90.0,
+    60.0,
+    71.0
+  ],
+  "n_withheld_total": 10811,
+  "n_visible_total": 21321,
+  "median_withheld": 13.438201904296875,
+  "median_visible": 6.4037017822265625,
+  "p25_withheld": 5.9733123779296875,
+  "p75_withheld": 27.847640991210938,
+  "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+  "distance_positive_quantiles_px": [
+    4.0,
+    9.05538558959961,
+    25.553865432739258,
+    33.95585250854492,
+    56.52603607177719
+  ],
+  "distance_domain_quantiles_px": [
+    5.0,
+    25.495098114013672,
+    71.86793518066406,
+    87.72685241699219,
+    121.51131439208984
+  ],
+  "null_caveat": "Visible-reference nearest-different-component null uses at most 13 neighbors and is censored; no significance is inferred from it.",
+  "distance_quantile_probabilities": [
+    0.1,
+    0.5,
+    0.9,
+    0.95,
+    0.99
+  ],
+  "pixel_size_m": 100
+}

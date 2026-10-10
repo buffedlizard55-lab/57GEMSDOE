@@ -1,0 +1,7 @@
+{
+  "status": "aborted - invalid tooling",
+  "reason": "IR-57-STRIKE-01: finite primary strikes reset to zero by reversed np.where branches",
+  "scores_trusted": false,
+  "new_hypotheses_added": 0,
+  "repeat_same_predeclared_experiments": true
+}

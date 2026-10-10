@@ -173,6 +173,10 @@ def _dti_vectors(pred, truth, active):
     vals = p[active]
     if not np.isfinite(vals).all() or (vals < 0).any() or (vals > 1).any():
         raise ValueError("predictions inside the scored domain must be finite and in [0, 1]")
+    # Mask before credit convolution as well as before counting emitted pixels;
+    # otherwise a prediction on a known/invalid fault pixel could credit a
+    # neighboring withheld truth even though it should be excluded exactly.
+    p = np.where(active, p, 0.0)
     yy, xx = np.nonzero(g)
     py, px = np.nonzero((p > 0) & active)
     n = int(yy.size)

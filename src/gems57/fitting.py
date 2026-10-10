@@ -41,7 +41,7 @@ def _full(ctx: HoldoutContext, cell: Cell, *, training: bool = False) -> np.ndar
     return full
 
 
-def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None, *,
+def cell_geometry(ctx: HoldoutContext, cell: Cell, geo=None, sense_src=None, *,
                   training: bool = False, include_tip: bool = False,
                   feature_exclude: tuple[str, ...] = ()):
     """Build one fold's visible-only features.
@@ -60,7 +60,7 @@ def cell_geometry(ctx: HoldoutContext, cell: Cell, sense_src=None, *,
         tip_source = tip_source & ~excluded
         tip_exclusion |= excluded
     return fold_geometry(ctx.grid, feature_visible, ctx.hidden_by_cell[cell.key],
-                         domain, cell.key, sense_src=sense_src,
+                         domain, cell.key, geo=geo, sense_src=sense_src,
                          include_tip=include_tip, tip_source=tip_source,
                          tip_exclusion=tip_exclusion, tip_buffer_px=BUFFER_PX)
 
@@ -106,13 +106,13 @@ def fit_model_from_cells(ctx: HoldoutContext, cells: list[Cell], seed: int = 0,
                          cols: list[int] | None = None, *,
                          include_tip: bool = False,
                          feature_excludes: dict[str, tuple[str, ...]] | None = None,
-                         sense_src=None, neg_per_cell: int = NEG_PER_CELL):
+                         geo=None, sense_src=None, neg_per_cell: int = NEG_PER_CELL):
     """Fit from context cells while releasing each full feature matrix immediately."""
     rng = np.random.default_rng(seed)
     Xs, ys, ws = [], [], []
     exclusions = feature_excludes or {}
     for cell in cells:
-        g = cell_geometry(ctx, cell, sense_src=sense_src, training=True,
+        g = cell_geometry(ctx, cell, geo=geo, sense_src=sense_src, training=True,
                           include_tip=include_tip,
                           feature_exclude=exclusions.get(cell.key, ()))
         pos = g.y == 1
@@ -151,16 +151,20 @@ def predict_surface(clf, scale: float, g, shape: tuple[int, int],
     return full
 
 
-def canary(geoms) -> dict:
+def canary(geoms, feature_names=None) -> dict:
     """Stream single-feature AUCs; discriminative AUC >0.90 is a leakage flag."""
     iterator = iter(geoms)
     first = next(iterator, None)
     if first is None:
         return {}
-    names = tuple(first.feature_names or FEATURES)
+    first_names = getattr(first, "feature_names", None)
+    names = tuple(feature_names) if feature_names is not None else tuple(first_names or FEATURES)
+    if first.X.shape[1] != len(names):
+        raise ValueError("feature names must match every feature column")
     aucs = {name: [] for name in names}
     for g in chain((first,), iterator):
-        if g.X.shape[1] != len(names) or tuple(g.feature_names or FEATURES) != names:
+        current_names = getattr(g, "feature_names", None)
+        if g.X.shape[1] != len(names) or (current_names and tuple(current_names) != names):
             raise ValueError("feature matrix widths/names do not match across folds")
         for j, name in enumerate(names):
             if (g.y == 1).sum() < 10 or (g.y == 0).sum() < 10:
@@ -201,12 +205,12 @@ def predict_surface_crop(clf, scale: float, g, cell: Cell,
 
 def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
              *, max_dots: int = 120_000, floor: float = 0.015,
-             cols: list[int] | None = None, g=None,
+             cols: list[int] | None = None, g=None, geo=None,
              include_tip: bool = False) -> dict:
     """Predict, allocate and score one fold cell with the shared evaluator."""
     own_g = g is None
     if own_g:
-        g = cell_geometry(ctx, cell, include_tip=include_tip)
+        g = cell_geometry(ctx, cell, geo=geo, include_tip=include_tip)
     p = predict_surface_crop(clf, scale, g, cell, cols)
     alloc = greedy_allocate(p, cell.active, k_truth=float(cell.n_truth),
                             floor=floor, max_dots=max_dots)

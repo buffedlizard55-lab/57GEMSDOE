@@ -1,62 +1,64 @@
-# Current status and remaining work — 2026-10-10
+# Remaining work — do not bypass the current HOLD
 
-## Decision first
+Last reviewed 2026-10-10. **H57-B is HOLD; download and submission are NOT CLEARED.** No H57-B TIFF was generated or validated; no upload or slot selection occurred. Its preregistered arm comparison is non-comparable (71,191 candidate vs 80,000 control dots across eight cells). The matched-mass replay is a post-hoc sensitivity only. The final-dot registry gate failed at 0.7270747 > 0.70 and stopped at its first firing. Details and the complete decision card are in `evidence/run_card.json` and `evidence/uniqueness_h57b_*.json`.
 
-**H57-B remains HOLD.** It is a fault-zone-anatomy hypothesis tested on the repository's buffered whole-branch hide-and-recover instrument. The original preregistered contrast is non-comparable because candidate and control emitted different dot counts. A later matched-mass replay is a post-hoc sensitivity, not confirmation. The in-memory final-dot map failed the literal registry-overlap rule. **No H57-B TIF was generated, format-validated, cleared, downloaded, or submitted. No weekly slot was selected.**
+The older H57-K surface passed local format checks but failed the literal uniqueness gate (worst forward overlap 1.0). It is archived under `docs/downloads/archive/` and `downloads/archive/` for provenance only; **no research TIFF is cleared to download or submit**. H57-K's prior comparisons are historical and distinct from H57-B. No experiment budget remains in this review.
 
-The remaining experiment budget is exhausted. Do not run another model/feature/hyperparameter experiment, select a weekly slot, or generate a TIF under the current HOLD. This file records status and limitations; it is not authorization to continue experiments.
+## 1. Literal uniqueness obstruction — unresolved, highest priority
 
-## H57-B evidence
+The [dense17 certificate](evidence/uniqueness_saturation_certificate.json) covers every one of 5,106,385 allowable cells. Under literal finite-positive support, every nonempty candidate has directed 3 px overlap 1.0, above 0.70. Repeatedly trying different candidates cannot resolve this mathematical obstruction.
 
-All score-like values below are **HOLDOUT-DTI** from evaluator `gems57-buffered-whole-branch-pooled-v2.0`, with 22,276 withheld positives and paired 20 km spatial-block 95% confidence intervals. These are local measurements on withheld mapped branches, **not live scores or leaderboard projections**.
+Only an **explicit protocol revision** distinguishing continuous surfaces from dot representations could change it. This session applied no threshold/density/reverse-overlap exemption. Until resolved, no production placement, promoted file or slot is defensible. No further experiment was launched after the three declared comparisons.
 
-### Preregistered 10,000-per-cell run — non-comparable
+## 2. Score and source authentication
 
-| Arm | HOLDOUT-DTI | 95% CI | Emitted dots |
-|---|---:|---:|---:|
-| H57-B tip-distance feature | 0.1882084 | [0.1760057, 0.2014529] | 71,191 |
-| `no_side` control | 0.1303988 | [0.1188650, 0.1419912] | 80,000 |
+No organizer submission-page receipt attributes owner-reported 0.2778 to the exact H33-B2 SHA256. Public participant scores are not file receipts. The current experiment does not demonstrate higher live performance, and HOLDOUT-DTI intervals must not be compared numerically with private/live scores as if calibrated forecasts.
 
-Counts differed in four of eight cells. The preregistered arm comparison therefore cannot identify a causal feature gain and cannot promote. Do not interpret the nominal difference as confirmatory.
+Input pins authenticate third-party bridge bytes, not independent official-origin identity. The DrivenData data URL redirected to login; official template/data receipts are unavailable. Official USGS/GDR metadata is free and linked, but sandbox binary egress does not allow their storage hosts. No credentials should be requested/stored in chat. The CPU model's data-placement blocker is **closed**, not a reason to ask the owner to download 420 MB manually.
 
-### Matched-mass replay — post-hoc sensitivity only
+## 3. The next separately budgeted anatomy question
 
-The later replay used a common 6,772-per-cell cap selected after the initial run was observed. Candidate HOLDOUT-DTI was **0.1712803** [0.1585123, 0.1843726], versus `no_side` **0.1103187** [0.0994158, 0.1222397]. The paired difference was **+0.0609616** [ +0.0520292, +0.0703759 ]. This favorable sensitivity is conditional on a post-hoc cap; the interval does not represent cap-selection uncertainty. It is not a confirmatory result and does not repair the preregistered comparison.
+[Predeclared ranking](evidence/hypotheses_current.json): H57-H multi-scale host-bend asymmetry, then H57-I two-host damage-zone superposition. Neither was implemented or validated. H57-J along-host sense transitions is also unrun; E3 is a single-sense/handedness ablation, not a transition test.
 
-The maximum single-feature discriminative AUC was 0.8392, below the 0.90 leakage screen. This is the canary result for the tested visible-catalogue features, not proof that catalogue hide-and-recover transfers to genuinely uncatalogued faults. The named non-fault mimics are road/dry-wash endings, map-sheet breaks, and digitization endpoints.
+Start with the repaired strike field and whole-component context buffer, recompute all controls at the same representation and density, and require a positive paired lower CI before the separate selector considers a real slot. Do not revive historical unbuffered/in-sample/oracle-budget readings. The corrected relative-magnetic-tangent candidate is negative for its tested scale/model, not a universal rejection of fault-zone mechanics.
 
-### Literal registry gates
+## 4. Geological and statistical limitations
 
-- **Before placement:** all 667 indexed single-band, grid-shaped rasters were checked. The surface gate passed; maximum full-footprint Spearman was 0.4229688817.
-- **After placement:** the 27,088-dot in-memory map first fired at 0.7270747194 of candidate dots within 3 px of `13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_nan-outside.tif`, exceeding the literal 0.70 limit. The final-dot scan stopped at its first firing; it was not a complete list of final-dot comparisons.
-- No reverse-overlap exemption or Jaccard gate was used. The SHA-256 `323af960dbef0bc85a42001d0da19b73da8b1a509a6f21966e257ddb38d0be67` is for the in-memory decoded array, **not** for a raster file.
+- Connected components can fragment one geological fault or join distinct systems. Longer system-level holdouts and multiple predeclared draws need a **new** experiment budget.
+- The hide-and-recover target is catalogue geometry, not unpublished newly mapped expert faults. Mapping bias/domain shift remains uncalibrated. Historical sibling correlation anecdotes do not validate this corrected instrument.
+- Bootstrap CIs condition on the fitted folds, masks and budgets. They omit full retraining, model-selection and private-label uncertainty; only 153 physical blocks contribute.
+- Mapped component size is a noisy displacement proxy. Verify independent displacement/maturity indicators before interpreting it as mechanical scaling.
+- Relative-strike reference uses at most 13 neighbors and is censored; no stress inversion or significance claim follows from the descriptive angles.
+- Slip-record join/source rasterization is not independently authenticated. The tested handedness encoding does not establish that all normal/mixed-slip attributes lack value.
+- Magnetic dikes, contacts, flight-line leveling residuals and variable clearance can mimic strands. Survey line spacing is coarser than the raster pixel size and scoring kernel.
+- Greedy emission uses a clipped convolution-based **surrogate** for unknown-truth self-credit, not exact expected max-cover over random geological truth. Real holdout scoring uses the exact shared evaluator. Improve/validate the allocation approximation only in a separately declared experiment.
+- No heat, fluid flow, reservoir volume or economic-viability labels are provided. This is a fault-probability research raster, not verified geothermal-vent discovery.
 
-The machine-readable gate reports are [`evidence/uniqueness_h57b_surface.json`](evidence/uniqueness_h57b_surface.json) and [`evidence/uniqueness_h57b_dots.json`](evidence/uniqueness_h57b_dots.json). The single authoritative decision card is [`evidence/run_card.json`](evidence/run_card.json); it records a null raster-file SHA, validator not run, download **NOT CLEARED**, submission **NOT SUBMITTED**, and no slot selected. Draft-only name: `gems57-h57b-tip-distance-6772-323af960dbef`. Draft-only note (116 characters): “Fault-zone anatomy H57-B tip-distance; matched-mass sensitivity only. HOLD: not cleared, no upload or slot selected.”
+## 5. Registry/site maintenance
 
-## Historical context — not current H57-B results
+The audited 679-grid-raster union comprises 675 predictions/conservatively retained ambiguous rasters plus four historical auxiliary inputs, explicitly classified. Public-main commit pins and historical blobs are covered; private/unlinked/inaccessible artifacts are not. Refresh before a future candidate; never claim absence from a missing cache. Do not sweep current generated outputs into their own prior inventory.
 
-- H57-A measured local hide-and-recover DTI for withheld catalogue pixels. At its shipped-density setting, the old `no_side` reading was 0.2279 [0.1867, 0.2691], with 22,641 withheld positives. Higher-density readings (0.2508/0.2517) were at about twice the old file's density. None is a live score or H57-B result.
-- H57-F's recorded-sense feature was inconclusive/negative: historical `no_side_plus_sense` 0.2292 versus 0.2279; mean paired difference +0.0016, positive in three of four quadrants but not significant.
-- The older raster in `docs/downloads/` is historical and remains HOLD. Its prior 644-raster scan is superseded by the refreshed 667-raster registry and is not current clearance.
-- The official DrivenData leaderboard snapshot fetched 2026-10-09 listed #1 at 0.3774, #7 at 0.3195, and #16 at 0.2778. It does not attribute entries to a raster or method. Repository holdout values and sibling-repository projections do not explain or predict those leaderboard entries; no claim is made that new work will beat them.
+The Pages feed updates public-board **context** without submitting. It exposes cached/stale and failed-refresh status. It cannot read authenticated team slots or private scores. Keep metadata/hashes and accessible links tested; update the standing request at the start of each session.
 
-## Transfer limitation
+## 6. Prize compliance
 
-The hide-and-recover instrument withholds whole mapped branches. Those hidden catalogue pixels can remain physically connected to visible faults; genuinely uncatalogued faults need not be. The matched-mass H57-B result therefore cannot establish transfer to the hidden competition truth. The sibling-repository calibration of this instrument against owner-reported scores had only +0.14 rank correlation for the corresponding `catalogue_hidden` variant (12 scores); this is weak, confounded calibration evidence, not a correction factor or score projection.
+Review the [official rules](https://docs.nlr.gov/docs/fy26osti/96647.pdf), entrant eligibility, external-data licenses and required reproducibility materials. The published cap is three submissions per week; only the logged-in page establishes remaining team capacity. AI-assisted code/analysis must be disclosed in finalist narrative materials; authorship and accuracy remain the entrant's responsibility.
 
-## Engineering and documentation status
+**Maximize P(Win):** better evidence, not slot-burning A/B claims or a fabricated forecast. **Own the Outcome:** maintain the complete negative receipt and fix provenance/method gaps before any promotion.
 
-- `scripts/build_submission.py` is an unsafe legacy in-sample builder. Its CLI now exits before doing work and writes no raster. It is not a promotion path.
-- `scripts/build_site.py` renders `evidence/run_card.json` read-only; it does not reconstruct or overwrite that card. The generated pages state the HOLD, with no current download link.
-- The README reproduce section is limited to data-pin verification, site generation, and tests; it does not replay the exhausted experiments or invoke the legacy builder.
-- The full test suite passed in this branch (one test skipped because optional training data was absent). The site generator ran successfully, `git diff --check` passed, and the run-card SHA-256 was unchanged by site generation.
+## 7. Pages administration / network limits
 
-## Future work — blocked, not authorized here
+The integration can push this working branch and merge its PR, but changing
+Pages settings returned HTTP 403 (repository administration scope). The current
+workflow publishes `docs/`; the root entry redirects to `docs/index.html`. Held
+TIFF/ZIP provenance copies are archived under `docs/downloads/archive/` and
+`downloads/archive/`; no root-level current-release download mirror is created.
+The scheduled workflow refreshes public context on the runner, retaining cache
+on errors; custom deployment is checked separately. GitHub run-log downloads
+redirect to an egress-blocked host; check/run status APIs remain accessible.
+Do not request/store tokens to work around these limits.
 
-Any future candidate idea must remain in the fault-zone-anatomy lane, be preregistered under a newly authorized experiment budget, test each feature alone for leakage, use the valid buffered whole-segment holdout, and pass both literal registry gates before a format validator or writer is considered. A candidate must have a genuinely new raster, a file SHA-256, successful format validation, a unique name and a note of at most 140 characters before any download is offered. The weekly-slot selector remains separate. These are gates for a future separately authorized run, not a plan to spend a slot now.
-
-## Source trail
-
-- Official [DrivenData competition description and metric](https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/).
-- Official [leaderboard](https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/) snapshot dated 2026-10-09.
-- Mechanistic background: Schreurs (2003), https://doi.org/10.1144/GSL.SP.2003.210.01.03; Tchalenko (1970), https://doi.org/10.1130/0016-7606(1970)81%5B1625%3ASBSZOD%5D2.0.CO%3B2; Faulds, Henry & Hinz (2005), https://doi.org/10.1130/G21274.1; Savage & Brodsky (2011), https://doi.org/10.1029/2010JB007665. These sources motivate hypotheses; they do not establish competition-performance gains.
+The current relative magnetic orientation uses axial cos2, not signed angular
+handedness; normal versus unavailable sense is not fully separated. Testing
+those interactions needs a new declared experiment. No broad rejection of
+fault-zone mechanics is claimed.

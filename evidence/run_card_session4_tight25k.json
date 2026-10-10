@@ -1,0 +1,46 @@
+{
+  "hypothesis": "Anatomy model with tighter dot budget: same validated GBM features but fewer dots to match the live-score optimum.",
+  "mechanism": "8-feature GBM (side dropped), seed=42 for uniqueness, greedy max-coverage allocation at budget=25000.",
+  "named_non_fault_process": "Mapping continuity (mapper stopping mid-system), not mechanics.",
+  "holdout_dti": {
+    "pooled_dti": 0.23758872635584508,
+    "ci95_quadrant_jackknife": [
+      0.19316530628921896,
+      0.2820121464224712
+    ],
+    "coverage": 0.2805202424736606,
+    "n_truth": 22641,
+    "n_dots": 50000,
+    "label": "HOLDOUT-DTI - local instrument, NOT projected live score"
+  },
+  "uniqueness": {
+    "unique": true,
+    "worst_rho": 0.009382015444375256,
+    "worst_jaccard": 0.007715923284345197,
+    "worst_overlap": 0.36464
+  },
+  "raster_sha256": "276f50b191ca2a55b89f14bed7b0baf3b8a5cbf647e86d1fb0a264d4c276c280",
+  "validator": {
+    "all_passed": true,
+    "n_checks": 15,
+    "emitted_pixels": 25000
+  },
+  "submission_name": "gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b",
+  "submission_note": "57GEMSDOE H57-L anatomy tight 25k | 25000 dots 0 on-cat | ed72d2ce",
+  "submission_file": "docs/downloads/archive/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif",
+  "verdict": "HOLD — historical candidate; no current download or submission clearance",
+  "parameters": {
+    "budget": 25000,
+    "n_dots": 25000,
+    "seed": 42
+  },
+  "runtime_s": 229.31027173995972,
+  "historical_verdict": "PROMOTE",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "download_status": "NOT CLEARED — archived for provenance only",
+  "submission_status": "NOT SUBMITTED — no organizer receipt exists",
+  "weekly_slot_selected": false,
+  "release_role": "historical H57-K experiment output; archived, not cleared",
+  "superseded_by": "evidence/run_card_current.json"
+}
