@@ -6,8 +6,9 @@ There is no cleared submission file. Do not use the retained historical TIFF. No
 experiments, holdout runs, GeoTIFF builds, downloads, or submissions occurred in this audit;
 the three-experiment / two-hour budget is spent. No weekly slot was used.
 
-The latest stored complete scan measured the soft candidate against 679 rasters: maximum
-full-footprint Spearman 0.821258; maximum forward 3-pixel overlap 1.0 on the soft surface's
+The latest stored scan measured the soft candidate against the 679-entry indexed public
+owner-repository inventory (not organizer-complete): maximum full-footprint Spearman 0.821258;
+maximum forward 3-pixel overlap 1.0 on the soft surface's
 inherited finite-positive support (treated as “dots” by the gate), with 78 firings above the
 0.70 stop threshold. This was a pre-placement support comparison, not a final-dot comparison.
 The overlap gate failed before placement, so final dots were not generated. The scan is historical.
@@ -21,7 +22,11 @@ A session-5 independent witness check re-fetched and SHA256-verified the in-scop
 allowable cell and gives measured forward overlap 1.0 for dense and sparse test candidates. Under
 the literal >70% overlap rule, every nonempty candidate is blocked while this witness remains in
 scope. This is a registry measurement—not a score, threshold change, or full 679-raster cache
-revalidation. No density or reverse-overlap exception is authorized.
+revalidation. The public owner-repository index cannot prove completeness against private,
+unlinked, inaccessible, externally stored, or later-written competition rasters. No density or
+reverse-overlap exception is authorized. A separate check found the archived 40,000-dot
+`h57-anatomy-enechelon` candidate has 0.7113 forward 3-pixel overlap against its own earlier
+build, also above the literal 0.70 limit; see `evidence/independent_candidate_check.json`.
 
 The latest recorded soft-surface `HOLDOUT-DTI` is 0.023203 (95% CI [0.018778, 0.027992],
 11,321 withheld positives, evaluator `gems57-pooled-hide-v2`); its source hashes predate the
@@ -40,21 +45,24 @@ snapshot is not a submission-page receipt for exact bytes. No gain estimate is s
 domain under the required 3-pixel support rule, so any nonempty candidate fails the >70% test.
 Do not exclude it, alter the threshold, or apply a density/reverse-overlap exception without an
 explicit owner protocol revision. Under the unchanged rule, the gate is unsatisfiable.
-2. **Registry:** the present checkout has 0/679 cache files. Any future audit must restore all 679
-files listed in `evidence/registry_refreshed.json` and verify every SHA256 and contest-grid
-alignment; the historical full-scan certificate and one re-fetched witness do not replace this.
+2. **Registry:** the present checkout has 0/679 cache files. Any future public-inventory audit
+would need every indexed file in `evidence/registry_refreshed.json` restored and SHA256/grid
+verified; the historical scan and one re-fetched witness do not replace that check. Even a complete
+local copy of this 679-entry public owner-repository inventory would not establish
+organizer-complete scope; `registry/audit_scope.json` records those exclusions.
 3. **Validation:** current-code spatial hide-and-recover evidence must include evaluator version,
 source/input hashes, withheld-positive count, 95% CI, and a clean single-feature leakage canary.
 The existing experiment budget is spent; no such run is authorized by this document.
 4. **Uniqueness:** if the protocol is explicitly revised, apply its authorized surface rank-correlation
 and pre-placement/final 3-pixel overlap checks against the complete registry. Under current
 instructions, stop at rho > 0.90 or >70% overlap; no exception is authorized.
-5. **Selector:** require an independent versioned local-build selector receipt only after the
-validation and registry gates clear. Weekly-slot promotion is a separate decision. No slot may be
-used by the build script.
-6. **Format:** only after all gates clear may the fail-closed writer create a uniquely named,
-validated single-band float32 GeoTIFF and a ZIP containing exactly that TIFF. Local format checks
-are not organizer acceptance.
+5. **Selector:** only a separate, independently versioned selector may promote a cleared
+candidate to a weekly slot. No slot was used or is authorized by this audit.
+6. **Publisher and format:** `scripts/build_submission.py` is a retired no-output stub. Do not
+restore candidate-building until renewed authorization and an independently complete comparison
+scope exist. If a future candidate is ever cleared, it must be a uniquely named, locally validated
+single-band float32 GeoTIFF (or a ZIP containing exactly that TIFF), finite in `[0,1]` and matched
+to the pinned grid. Local format checks are not organizer acceptance.
 
 ## Future research shortlist (unrun)
 
@@ -64,6 +72,17 @@ and controls are documented in [`docs/research/hypotheses.md`](docs/research/hyp
 research priority, not a projected DTI gain. None is actionable under the current universal
 uniqueness blocker; do not implement or evaluate them without explicit protocol resolution,
 renewed authorization, and a new experiment budget.
+
+## Additional scientific, data, and compliance limits
+
+- Hide-and-recover tests catalogue recovery, not unpublished expert mapping of new faults; component boundaries can split one geological fault or join separate systems, and catalogue bias/domain shift remain uncalibrated.
+- Stored bootstrap intervals condition on the fitted folds, masks, catalogue labels, and fixed budgets. They are not forecasts of hidden/private scores and do not include all refit/model-selection uncertainty.
+- Fault length is only a noisy maturity/displacement proxy. Do not substitute fault length or slip rate for cumulative displacement without an independent justification.
+- Relative strike/sense fields are bounded by visible-neighbor sampling, attribute joins, and source-rasterization limitations; they do not establish stress inversion or a universal mechanism.
+- Magnetic dikes, geologic contacts, flight-line leveling residuals, and variable survey clearance can mimic fault strands. GeoDAWN's public catalogue/license record was checked, but coverage, CRS, usable bands, and contest-grid overlap were not.
+- No geothermal heat, fluid flow, reservoir volume, or economic-viability labels are validated here. This lane concerns fault probability, not proof of a geothermal resource.
+- Before any future competition submission, re-check official rules, entrant eligibility, external-data licenses, required reproducibility material, and any AI-use disclosure. No credentials should be requested or stored in chat.
+- `docs/review_passes.md` and `evidence/review_passes.json` preserve the multi-pass audit record. Earlier session plans and claims are retained under `evidence/history/` and in `TASK_PROMPT.md`; they are provenance, not current status or permission.
 
 ## Source of truth
 

@@ -105,6 +105,7 @@ def build_status(card: dict) -> str:
     validator = card.get("validator_result", {})
     dti = number(hold.get("pooled_dti"))
     indexed = registry.get("indexed_matching_grid_rasters", "NOT AVAILABLE")
+    scope = card.get("registry_scope", "Public owner-repository inventory; not organizer-complete.")
     firing_count = registry.get("forward_overlap_firings", "NOT AVAILABLE")
     itemized = registry.get("firings_itemized_in_stored_report", "NOT AVAILABLE")
     verified = cache.get("verified_rasters", "NOT VERIFIED")
@@ -125,15 +126,16 @@ def build_status(card: dict) -> str:
 <dt>Withheld positives</dt><dd>{esc(hold.get('withheld_positive_pixels', 'NOT AVAILABLE'))}</dd>
 <dt>Evaluator</dt><dd>{esc(hold.get('evaluator_version', 'NOT AVAILABLE'))}</dd>
 <dt>Registry index size</dt><dd>{esc(indexed)}</dd>
+<dt>Registry scope</dt><dd>{esc(scope)}</dd>
 <dt>Registry cache preflight</dt><dd>{esc(cache_status)} — {esc(verified)}/{esc(indexed)} verified; {esc(missing)} missing</dd>
 <dt>Literal overlap gate</dt><dd>{esc(registry.get('literal_gate_verdict', 'NOT AVAILABLE'))}; max pre-placement positive-support overlap within 3 px {number(registry.get('max_forward_dot_overlap_within_3px'))}; {esc(firing_count)} firings</dd>
 <dt>Independent universal-overlap witness</dt><dd>17GEMSDOE raster SHA256 {esc(registry.get('independent_witness_blocker', {}).get('sha256', 'NOT AVAILABLE'))}; covers every allowable cell. Any nonempty candidate has measured 3-px forward overlap 1.0 while this witness remains in scope. This is not a score or full-cache revalidation.</dd>
 </dl></div>
 <div class="note"><b>Interpretation:</b> the stored {dti} value is a historical
-HOLDOUT-DTI reading whose source hashes do not match the current tree; it is not current-code clearance or a live-score projection. The full-registry
+HOLDOUT-DTI reading whose source hashes do not match the current tree; it is not current-code clearance or a live-score projection. The indexed public-inventory
 report records {esc(firing_count)} forward-overlap firings ({esc(itemized)} itemized) on the
 soft surface's finite-positive support, not final dots; it therefore does not clear the literal
-stop rule. Current cache verification is {esc(cache_status)}; the builder requires every indexed raster.
+stop rule. Current cache verification is {esc(cache_status)}. The publisher is retired; any future replacement must verify every indexed raster and disclose that this inventory is not organizer-complete.
 See <a href="run-card.html">the run card</a>.</div>
 <h2>What must happen before a future build</h2>
 <ol>
@@ -156,6 +158,7 @@ def build_executive(card: dict) -> str:
     registry = card.get("registry_comparison", {})
     cache = registry.get("current_cache_preflight", {})
     indexed = registry.get("indexed_matching_grid_rasters", "NOT AVAILABLE")
+    scope = card.get("registry_scope", "Indexed public owner-repository inventory; not organizer-complete.")
     verified = cache.get("verified_rasters", "NOT VERIFIED")
     missing = cache.get("missing_cache_files", "NOT VERIFIED")
     cache_status = cache.get("status", "NOT VERIFIED")
@@ -165,18 +168,21 @@ def build_executive(card: dict) -> str:
 <p><b>This is a conditional guide, not permission to submit.</b> No current file is cleared. The
 historical soft research-surface GeoTIFF has a local format receipt but fails the literal registry
 stop rule and must not be used.</p>
+<div class="note"><b>Inventory scope:</b> {esc(scope)} This finite public index is not an
+organizer-complete registry and cannot certify uniqueness against inaccessible submissions.</div>
 <h3>Before any upload is possible</h3>
 <ol>
-<li>Obtain an independently reviewed, version-pinned holdout clearance receipt. Current evidence
-is not version-attested; the three-experiment budget is spent.</li>
-<li>Verify all {esc(indexed)} indexed registry rasters by their recorded SHA256. The current
-cache preflight is {esc(cache_status)} ({esc(verified)}/{esc(indexed)} verified; {esc(missing)} missing),
-so the build stops before model fitting.</li>
-<li>Run the build only after both gates clear. It checks the surface, a pre-placement dot proposal,
-and the final dots against every supplied aligned raster; any error or threshold firing stops the
-build.</li>
-<li>Review the generated GeoTIFF and its validation receipt. The writer does not clip or fill
-predictions, and its receipt explicitly says local validation is not organizer acceptance.</li>
+<li>Obtain renewed authorization and an independently reviewed, version-pinned holdout and
+selector decision. Current evidence is not version-attested; the three-experiment budget is spent.</li>
+<li>Restore and verify all {esc(indexed)} rasters in the pinned public index by recorded SHA256. The
+current cache preflight is {esc(cache_status)} ({esc(verified)}/{esc(indexed)} verified;
+{esc(missing)} missing). This check would still not establish organizer-wide completeness.</li>
+<li>The current submission publisher is retired and creates no candidate TIFF or ZIP. Do not run
+fitting or build commands under this HOLD. Any future replacement requires a separately reviewed,
+organizer-complete comparison scope, current holdout clearance, and literal surface/pre-placement/
+final-dot gates; any stop means no output.</li>
+<li>If a future candidate is actually cleared, review its exact GeoTIFF and local format receipt.
+The writer does not clip or fill predictions; local validity is not organizer acceptance.</li>
 <li>Only after a separate selector says to use a weekly slot, upload the exact validated single-band
 GeoTIFF (or a ZIP with exactly one GeoTIFF) on the competition submission page; record the actual
 organizer receipt before labeling a score `ORGANIZER-CONFIRMED`.</li>
@@ -289,9 +295,9 @@ the candidate.</p></div>
 {esc(card.get('binary_dot_holdout_result', {}).get('withheld_positive_pixels', 'not available'))}
 withheld positives; evaluator <code>{esc(card.get('binary_dot_holdout_result', {}).get('evaluator_version', 'not available'))}</code>.
 This is a test-fold allocator comparison only, not the soft TIFF's value; no production final dots were generated.</p></div>
-<div class="card"><h3>Full-registry uniqueness</h3>
-<p>Recorded inventory: {esc(report.get('indexed_matching_grid_rasters', 'not available'))} indexed rasters;
-max Spearman {number(report.get('max_spearman_full_footprint'))}; max Jaccard diagnostic
+<div class="card"><h3>Indexed public-inventory comparison</h3>
+<p>Recorded public owner-repository inventory: {esc(report.get('indexed_matching_grid_rasters', 'not available'))} indexed rasters;
+not organizer-complete. Max Spearman {number(report.get('max_spearman_full_footprint'))}; max Jaccard diagnostic
 {number(report.get('max_jaccard'))} (not a stop threshold); maximum pre-placement positive-support overlap within 3 px
 {number(report.get('max_forward_dot_overlap_within_3px'))} (finite surface values &gt; 0, not final dots);
 {esc(report.get('forward_overlap_firings', 'not available'))} firings above
@@ -381,11 +387,12 @@ def build_irregularities(card: dict) -> str:
 <tr><td>Historical holdout artifact lacks current evaluator/input source hashes.</td><td>Keep as historical HOLDOUT-DTI only; do not use it as current clearance.</td></tr>
 <tr><td>Historical soft-surface positive-support comparison has {esc(firing_count)} forward-overlap firings above the literal 0.70 threshold; only {esc(itemized)} are itemized. This is not a final-dot comparison.</td><td>HOLD / STOP. No reverse-overlap exception is applied.</td></tr>
 <tr><td>A session-5 verified 17GEMSDOE witness has positive support covering every allowable cell within 3 px; any nonempty candidate therefore has forward overlap 1.0.</td><td>Current literal &gt;70% rule is unsatisfiable while this raster remains in scope. Keep HOLD; do not change policy without explicit owner authorization. This single witness is not full-cache revalidation.</td></tr>
-<tr><td>Registry manifest lists {esc(indexed)} rasters; current cache preflight is {esc(cache_status)} ({esc(verified)} verified, {esc(missing)} missing).</td><td>Builder pins the manifest SHA256 and verifies every indexed raster; it fails before fitting if the cache is incomplete.</td></tr>
+<tr><td>The public owner-repository inventory lists {esc(indexed)} rasters; it is not organizer-complete. Current cache preflight is {esc(cache_status)} ({esc(verified)} verified, {esc(missing)} missing).</td><td>The submission publisher is retired and writes no candidate. Any future replacement must verify every indexed file and disclose this scope limit; the current cache cannot clear anything.</td></tr>
 <tr><td>Old score comparisons and standalone research/source pages contained unsupported or unversioned claims.</td><td>Replaced with HOLD-first pages; only version-pinned current evidence can be used for future clearance.</td></tr>
 <tr><td>Earlier notes mislabeled the absent feature stack as 105-band/unobtainable; a historic bridge receipt reports 19 bands, but the file is absent now.</td><td>Corrected the count and retained-file status; no current data download/preparation was performed, and the bridge does not independently authenticate official origin.</td></tr>
 <tr><td>Prior “NaN caused the range error” explanation was stronger than the evidence.</td><td>Cause remains unknown (`IR-57-NAN-02`). Writer uses all-finite [0,1] policy without claiming that NaN caused rejection.</td></tr>
 <tr><td>The legacy session-4 publisher could overwrite the run card with a positive banner and active download links from a partial registry.</td><td>Its entry point is retired; exact source is preserved in <code>evidence/history/</code>. Only the current HOLD-first site generator may publish pages.</td></tr>
+<tr><td>The session-2 publisher wrote candidate TIFFs before its uniqueness check and excluded same-lane prior rasters from its drift verdict.</td><td>That publisher is now a no-output stub; its exact source is archived for provenance. The literal all-indexed-raster rule has no same-lane exception.</td></tr>
 <tr><td>Old submission writer silently clipped/fill-repaired model output and did not gate registry before packaging.</td><td>Writer rejects invalid values, stages outputs, validates on-disk TIFF/ZIP, refuses overwrite; build requires independent holdout clearance, complete registry, and three strict uniqueness checks.</td></tr>
 <tr><td>Evaluator API/caller drift included a nonexistent metric call and stale confidence interval/code labels.</td><td>Shared `max_cover` and DTI primitives, source hashes, caller corrections, and unit regression tests added.</td></tr>
 </table>

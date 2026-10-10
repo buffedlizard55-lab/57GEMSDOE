@@ -29,27 +29,51 @@ from gems57 import metric as M  # noqa: E402
 
 DATA = ROOT / "data"
 OUT = ROOT / "evidence"
-REG = Path("/home/user/registry")
+REG = ROOT / "registry" / "rasters"       # in-repo registry (was /home/user/registry)
 BASE = 100000
 BUFFER_PX = 3
 N_FOLDS = 4
 PREVALENCE = 0.002
 SEED = 20261009
 
-# registry rasters that carry owner-reported live scores (top of the family)
+
+def _registry_files() -> dict:
+    """Map a short label to an in-repo registry raster path, by sha256 first and
+    by name substring second (IR-57-CALIB-01: the original hard-coded paths
+    pointed at a sibling checkout that no longer exists at that location)."""
+    idx = json.loads((ROOT / "registry" / "registry_index.json").read_text())
+    by_sha = {e["sha256"]: ROOT / e["file"] for e in idx}
+    by_name = {e["submission"]: ROOT / e["file"] for e in idx}
+    return by_sha, by_name
+
+
+# registry rasters that carry owner-reported live scores (top of the family).
+# Each entry: (label, registry_index submission substring, sha256 or None)
 REGISTRY = [
-    ("h33-2-b2 LIVE 0.2778", "GEMSDOE48-main/data/raw/dotted_h33_2_b2_zeros.tif"),
-    ("h27-4-solo LIVE 0.2708", "GEMSDOE48-main/data/raw/ref_h27_4_solo.tif"),
-    ("h36-1-rung30 LIVE 0.2710", "GEMSDOE48-main/data/raw/ref_h36_1_rung30.tif"),
-    ("tip-h33d LIVE 0.2632", "GEMSDOE48-main/data/raw/tip_h33d_stepover.tif"),
-    ("tip-h32-1 LIVE 0.2649", "GEMSDOE48-main/data/raw/tip_h32_1_prethin_tip_euler.tif"),
-    ("h19-5 LIVE 0.1922", "GEMSDOE48-main/data/raw/scored/h19_5_01922.tif"),
-    ("d15 LIVE 0.2477", "GEMSDOE48-main/data/raw/scored/d15_02477.tif"),
-    ("h32 LIVE 0.2649", "GEMSDOE48-main/data/raw/scored/h32_prethin_tip_02649.tif"),
-    ("h36 LIVE 0.2710", "GEMSDOE48-main/data/raw/scored/h36_rung30_02710.tif"),
-    ("anderson LIVE 0.2750", "GEMSDOE36-main/docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif"),
-    ("catalogue (sample_submission)", "official/sample_submission.tif"),
+    ("h33-2-b2 LIVE 0.2778", "h33-h33-2-b2", "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9"),
+    ("h27-4-solo LIVE 0.2708", "h27-4-r1-solo-d2-8", "2fc94a38d77f74f4f4e1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8"),
+    ("h36-1-rung30 LIVE 0.2710", "h36-1-rung30-blind-r1", "7c74270ad48fa6b55163853046a6d3815967c5bf37bbda5b74ca7fa22583a32"),
+    ("tip-h33d LIVE 0.2632", "h33d-analog-tip-stepover-r30", "87f857d505e23247e991ccfab2cbe9f49a04df4f9c8028dce7ea261554690757"),
+    ("tip-h32-1 LIVE 0.2649", "h32-1-prethin-tip-euler-d2-8", "26748e4b4721277b093c776f7ca72920023d0ee6e9514ee38e677c8010f4068e"),
+    ("h19-5 LIVE 0.1922", "h19-5-powerlaw-budget-multiline", "ef2ae808eb7179861b9f1ff753fd3ded625ace7b7c158e29cec45bbd8fa3cfaa"),
+    ("d15 LIVE 0.2477", "h25-1-dotted-h19-5-d1-5", "3e0730e8d4f7db095dd80246a98cba3bc0fc9a28f436b91db27ca34df4d0d1ce"),
+    ("h32 LIVE 0.2649", "h32-1-prethin-tip-euler-d2-8", "26748e4b4721277b093c776f7ca72920023d0ee6e9514ee38e677c8010f4068e"),
+    ("h36 LIVE 0.2710", "h36-1-rung30-blind-r1", "7c74270ad48fa6b55163853046a6d3815967c5bf37bbda5b74ca7fa22583a32"),
+    ("anderson LIVE 0.2750", "anderson-geothermal-pinn-38854", "e15891020b9c57056ac7fa874a5e506fbd6ed9314a4ea8e73af0753887a3708a"),
+    ("catalogue (sample_submission)", None, None),
 ]
+
+
+def _resolve(label, substr, sha):
+    if substr is None:
+        return DATA / "official/sample_submission.tif"
+    by_sha, by_name = _registry_files()
+    if sha and sha in by_sha:
+        return by_sha[sha]
+    for name, p in by_name.items():
+        if substr in name:
+            return p
+    return None
 
 
 def read_raster(path):
@@ -122,12 +146,10 @@ def main():
         gc.collect()
 
     results = {}
-    for name, rel in REGISTRY:
-        path = REG / rel
-        if not path.exists():
-            path = DATA / rel
-        if not path.exists():
-            print(f"  MISSING {rel}", flush=True)
+    for name, substr, sha in REGISTRY:
+        path = _resolve(name, substr, sha)
+        if path is None or not Path(path).exists():
+            print(f"  MISSING {name} (substr={substr})", flush=True)
             continue
         p = read_raster(path)
         terms = []
@@ -145,7 +167,7 @@ def main():
         pm = np.where(known, 0.0, p)
         r = M.dti_exact(pm.astype(np.float32), sgmc_truth, valid=valid, known=known)
         results[name] = dict(
-            file=rel,
+            file=str(path),
             holdout_dti=s["scores"]["candidate"]["dti"],
             holdout_ci95=s["scores"]["candidate"]["ci95"],
             holdout_withheld_positives=s["scores"]["candidate"]["withheld_positive_pixels"],

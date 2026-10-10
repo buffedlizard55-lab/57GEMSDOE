@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
-"""Retired unsafe session-4 publisher.
+"""Retired session-4 site generator; kept as a safe no-op entry point.
 
-The original source is preserved at
-``evidence/history/build_site_session4_legacy_2026-10-09.py`` for provenance.
-It previously rewrote the current run card, restored a positive submission banner,
-and emitted active download links from a partial registry. Use only
-``scripts/build_site.py`` and ``scripts/check_site.py`` for the current HOLD-first
-site.
+The historical implementation could rewrite current evidence and publish a
+stale positive submission banner before reaching its retirement guard. Its
+outputs remain archived in the repository, but this command intentionally has
+no generation or file-writing behavior. Use ``scripts/build_site.py`` for the
+current evidence-led, negative-status site.
 """
 from __future__ import annotations
 
 
-def main() -> int:
+def main() -> None:
     raise SystemExit(
-        "Retired: session-4 publisher could restore withdrawn OK-to-submit claims. "
-        "Use scripts/build_site.py; no download or submission is cleared."
+        "Historical session-4 site generator is retired and has no side effects. "
+        "Use scripts/build_site.py for the current negative release card."
     )
 
 

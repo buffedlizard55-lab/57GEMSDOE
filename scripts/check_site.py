@@ -197,8 +197,12 @@ def check(root: Path = ROOT) -> dict:
         errors.append("non-legacy session-4 run-card path still lacks a withdrawal notice")
 
     retired_publisher = root / "scripts" / "build_site_session4.py"
-    if not retired_publisher.is_file() or "Retired:" not in retired_publisher.read_text(encoding="utf-8"):
+    if not retired_publisher.is_file() or "Retired" not in retired_publisher.read_text(encoding="utf-8"):
         errors.append("unsafe session-4 site publisher is not retired")
+    retired_session2 = root / "scripts" / "build_r2_submission.py"
+    if (not retired_session2.is_file()
+            or "no-output stub" not in retired_session2.read_text(encoding="utf-8")):
+        errors.append("session-2 publisher that screened after placement is not retired")
 
     status_ok = (
         card.get("okay_to_download") is False
@@ -236,6 +240,16 @@ def check(root: Path = ROOT) -> dict:
     )
     if not cache_ok:
         errors.append("current 679-raster cache preflight is not recorded as 0/679 HOLD")
+    if "not organizer-complete" not in str(card.get("registry_scope", "")).lower():
+        errors.append("current run card overstates or omits the public registry's non-organizer-complete scope")
+    audit_scope_path = root / "registry" / "audit_scope.json"
+    try:
+        audit_scope = json.loads(audit_scope_path.read_text(encoding="utf-8"))
+        limitations = " ".join(str(x) for x in audit_scope.get("limitations", [])).lower()
+        if "not a complete organizer registry" not in limitations:
+            errors.append("pinned registry scope must disclose that it is not an organizer-complete registry")
+    except (OSError, json.JSONDecodeError):
+        errors.append("pinned registry audit-scope disclosure is missing or invalid")
 
     if errors:
         raise AssertionError("\n".join(errors))

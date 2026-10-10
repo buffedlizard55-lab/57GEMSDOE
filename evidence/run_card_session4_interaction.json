@@ -1,0 +1,55 @@
+{
+  "hypothesis": "Multi-fault stress interaction: secondary strands concentrate where damage zones from multiple mapped faults overlap, at fault tips (LEFM concentration), and at fault bends.",
+  "mechanism": "Analytical stress field: cumulative kernel-weighted influence from all fault components (weighted by L^0.5), enhanced at tips (1/sqrt(r)) and bends (low coherence). Top-k allocation by probability.",
+  "named_non_fault_process_that_could_mimic_it": "Drainage lineaments and ridge crests following regional stress fabric produce linear features near faults; without DEM this cannot be tested.",
+  "holdout_dti": {
+    "instrument": "hide-and-recover LOQO, mode=all, budget=30000",
+    "evaluator_version": "gems57 dti_binary, scripts/build_interaction_submission.py",
+    "withheld_positive_pixels": 22641,
+    "pooled_dti": 0.022765382925612174,
+    "ci95_quadrant_jackknife": [
+      0.007863793668518726,
+      0.03766697218270562
+    ],
+    "coverage": 0.023863319278143016,
+    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
+  },
+  "comparison_to_shipped": {
+    "shipped_holdout_dti": 0.2279,
+    "shipped_ci95": [
+      0.1867,
+      0.2691
+    ],
+    "interaction_beats_shipped": false,
+    "verdict": "NEGATIVE (does not beat shipped anatomy)"
+  },
+  "correlation_overlap_vs_registry": {
+    "n_registry_rasters": 15,
+    "unique": true,
+    "worst_spearman": 0.012247510134110818,
+    "worst_jaccard": 0.009545379944198261,
+    "worst_overlap": 0.34833333333333333
+  },
+  "raster_sha256": "db2c4dcc93793ca450ebc45c5e47edb99b6434131b144b6a23991bb03d4b4093",
+  "validator_output": {
+    "all_checks_passed": true,
+    "n_checks": 15,
+    "emitted_pixels": 30000,
+    "no_nan": true,
+    "range_ok": true,
+    "crs_shape_ok": true
+  },
+  "submission_name": "gems57-h57k-interaction-20261009T202248Z-5359b1273896",
+  "submission_note": "57GEMSDOE H57-K multi-fault interaction zone | analytical stress model | 30000 dots | 5359b127",
+  "submission_file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57k-interaction-20261009T202248Z-5359b1273896.tif",
+  "verdict": "PROMOTE",
+  "verdict_reason": "All format checks pass, unique vs 15 registry rasters",
+  "parameters": {
+    "r_max": 20.0,
+    "tip_enhance": 2.0,
+    "length_scale": 0.5,
+    "budget": 30000,
+    "n_dots": 30000
+  },
+  "runtime_s": 928.1619198322296
+}

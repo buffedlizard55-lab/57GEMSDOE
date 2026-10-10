@@ -16,6 +16,7 @@ from sklearn.metrics import roc_auc_score
 from .anatomy import FEATURES, fold_geometry
 from .emit import expected_credit, greedy_allocate
 from .holdout import Cell, HoldoutContext
+from . import evaluate_holdout as EH
 from .metric import dti_binary
 
 NEG_PER_CELL = 60_000
@@ -149,23 +150,27 @@ def run_cell(ctx: HoldoutContext, cell: Cell, clf, scale: float,
     alloc = greedy_allocate(p, allowed, k_truth=float(cell.n_truth),
                             floor=floor, max_dots=max_dots)
     emitted_full = alloc.emitted
-    # score on the crop
-    res = dti_binary(emitted_full[cell.bbox], _truth_crop(ctx, cell),
-                     valid=cell.active)
+    # Every active H57 fold uses the shared evaluator. The optional flag adds an
+    # independent binary-metric parity assertion for focused validation runs.
+    truth_crop = _truth_crop(ctx, cell)
+    known_crop = ctx.visible(cell.key)[cell.bbox]
+    shared, _ = EH.evaluate(
+        emitted_full[cell.bbox].astype(np.float32),
+        {"region": cell.active, "truth": truth_crop, "visible": known_crop},
+        cell.active, block_side=200)
     if shared_evaluator:
-        from .evaluate_holdout import evaluate
-        shared, _ = evaluate(emitted_full[cell.bbox].astype(np.float32),
-                             {'region': cell.active, 'truth': _truth_crop(ctx, cell),
-                              'visible': ctx.visible(cell.key)[cell.bbox]},
-                             cell.active, block_side=200)
-        np.testing.assert_allclose([shared['tpw'], shared['fpw'], shared['fnw'], shared['dti']],
-                                   [res['tp'], res['fp'], res['fn'], res['dti']], atol=2e-4, rtol=1e-6)
-        res = dict(dti=shared['dti'], coverage=shared['tpw']/cell.n_truth,
-                   tp=shared['tpw'], fp=shared['fpw'], fn=shared['fnw'])
+        reference = dti_binary(
+            emitted_full[cell.bbox], truth_crop, valid=cell.active,
+            known=known_crop)
+        np.testing.assert_allclose(
+            [shared["tp"], shared["fp"], shared["fn"], shared["dti"]],
+            [reference["tp"], reference["fp"], reference["fn"], reference["dti"]],
+            atol=2e-4, rtol=1e-6)
     out = {
         "key": cell.key, "mode": cell.mode, "n_truth": cell.n_truth,
-        "n_dots": alloc.n_dots, "dti": res["dti"], "coverage": res["coverage"],
-        "tp": res["tp"], "fp": res["fp"], "fn": res["fn"],
+        "n_dots": alloc.n_dots, "dti": shared["dti"], "coverage": shared["coverage"],
+        "tp": shared["tp"], "fp": shared["fp"], "fn": shared["fn"],
+        "evaluator_version": shared["evaluator_version"],
         "expected_covered_credit": alloc.expected_covered_credit,
         "p_mean": float(p[allowed].mean()), "p_max": float(p.max()),
     }
@@ -219,9 +224,8 @@ def pooled(results: list[dict]) -> dict:
     jk_se = float(np.sqrt((m - 1) / m * ((jk - jk.mean()) ** 2).sum())) if m > 1 else 0.0
     return {"pooled_dti": dti, "coverage": cov, "coverage_ci95": [lo, hi],
             "dti_ci95_coverage_only": [d_lo, d_hi],
-            "dti_ci95_quadrant_jackknife": [
-                max(0.0, float(dti - 1.959963985 * jk_se)),
-                min(1.0, float(dti + 1.959963985 * jk_se))],
+            "dti_ci95_quadrant_jackknife": [float(dti - 1.959963985 * jk_se),
+                                            float(dti + 1.959963985 * jk_se)],
             "jackknife_drop_quadrant": {q: float(v) for q, v in zip(quads, jk)},
             "tp": tp, "fp": fp, "fn": fn, "n_truth": n,
             "n_dots": sum(r["n_dots"] for r in results)}

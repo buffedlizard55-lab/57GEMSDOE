@@ -10,11 +10,12 @@
 > Historical TIFF/ZIP bytes remain at `docs/downloads/` for audit and a direct URL may still resolve;
 > that is not download authorization. Do not use any retained artifact.
 
-The latest recorded pre-placement comparison measured the candidate against a
-complete 679-raster public inventory. Maximum forward 3-pixel overlap of the
-soft surface's inherited positive support (finite values greater than zero,
-treated as “dots” by the literal gate) was 1.0, exceeding the 0.70 stop
-threshold in 78 comparisons. This is not a final-dot comparison. Maximum
+The latest recorded pre-placement comparison measured the candidate against
+the 679-entry indexed public owner-repository inventory (not an
+organizer-complete registry). Maximum forward 3-pixel overlap of the soft
+surface's inherited positive support (finite values greater than zero, treated
+as “dots” by the literal gate) was 1.0, exceeding the 0.70 stop threshold in
+78 comparisons. This is not a final-dot comparison. Maximum
 full-footprint Spearman was 0.821258, below its 0.90 threshold. The overlap
 rule fired, so the candidate was **not cleared** and no final dots were
 generated. That scan is historical, not a current cache revalidation: the
@@ -26,21 +27,26 @@ current cache preflight found **0 of 679** indexed rasters present. A separate
 was 1.0 for dense and sparse test candidates. Under the unchanged literal
 >70% rule, any nonempty candidate is blocked while this witness remains in
 scope. This is a registry measurement, not a score, and the specific witness
-check does not verify the other 678 local cache files. Do not download or use
-the retained research-surface TIFF or any archived `-zeros.tif`. See
+check does not verify the other 678 local cache files. The separately retained
+40,000-dot `h57-anatomy-enechelon` artifact also measured 0.7113 forward overlap
+against its own earlier build, above the same literal limit; this independent
+candidate check is not clearance either. Do not download or use the retained
+research-surface TIFF or any archived `-zeros.tif`. See
 [`evidence/run_card.json`](evidence/run_card.json),
 [`evidence/session5_witness_verification.json`](evidence/session5_witness_verification.json),
-and the generated [status site](docs/index.html).
+[`evidence/independent_candidate_check.json`](evidence/independent_candidate_check.json),
+[`registry/audit_scope.json`](registry/audit_scope.json), and the generated
+[status site](docs/index.html).
 
 The three-experiment / two-hour budget is spent. This audit ran tests and
 site checks only; it did not run new geological experiments, holdouts,
 candidate GeoTIFF builds, data downloads, or submissions. The exact historical
 `lean-offset` TIFF was re-read against its receipt and locally passes the
 single-band float32, grid, finite `[0,1]`, and 40,000-dot checks, but it is not
-uniqueness-cleared or authorized to download/submit. The future builder
-requires a current, independently reviewed clearance receipt and every
-hash-verified, grid-aligned raster in the complete pinned registry before
-fitting or writing any file; it currently fails closed.
+uniqueness-cleared or authorized to download/submit. The current `scripts/build_submission.py` is a retired no-output stub. Any
+future replacement would require a current, independently reviewed clearance
+receipt and an independently complete, hash-verified, grid-aligned comparison
+set before fitting or writing any file; none is available here.
 
 ### What the reported scores do—and do not—mean
 
@@ -114,10 +120,12 @@ sample transform. Local validation is not organizer acceptance.
    mimic, holdout result/CI, registry comparison, raster SHA256, validator result,
    submission name/note (≤140 characters), and promote/negative verdict.
 
-The stored standing task prompt and protocol are reproduced in the appendix
-below and [`BRIEF.md`](BRIEF.md). This is the repository's saved specification,
-not a certified word-for-word transcript of the original chat; current audit
-status and evidence above supersede historical claims.
+The standing task prompt and protocol are reproduced in the appendix below
+and [`BRIEF.md`](BRIEF.md). The longer historical request/report ledger is
+preserved separately in [`TASK_PROMPT.md`](TASK_PROMPT.md), including quoted
+owner-reported figures that are not treated as verified scores here. These are
+repository records, not certified word-for-word transcripts of the original
+chat; current audit status and evidence above supersede historical claims.
 
 ## Repository map
 
@@ -131,7 +139,8 @@ status and evidence above supersede historical claims.
 | `src/gems57/submission_writer.py` | Fail-closed GeoTIFF/ZIP writer; no silent repair |
 | `src/gems57/validate.py` / `gates.py` | Local format/range and registry checks |
 | `scripts/run_cv.py` | Spatial CV instrument (not run during this audit) |
-| `scripts/build_submission.py` | Requires current clearance and complete registry; currently fails closed |
+| `scripts/build_submission.py` | Retired fail-closed stub; creates no candidate TIFF or ZIP while HOLD remains |
+| `scripts/build_r2_submission.py` | Retired session-2 publisher; its write-before-check/same-lane exception source is archived under `evidence/history/` |
 | `scripts/build_site.py` / `scripts/check_site.py` | Generate the HOLD-first executive site and check internal links/status gates |
 | `docs/research/hypotheses.md` | Ranked, source-grounded untried hypotheses |
 | `evidence/run_card.json` | Current audit run card; HOLD verdict |

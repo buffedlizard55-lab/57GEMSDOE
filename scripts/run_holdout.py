@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
-"""Fault-zone hide-and-recover evaluation (historic experiment driver).
+"""ARCHIVED H1/H52 experiment; not the active H57 workflow.
 
-The experiment budget for this candidate is exhausted; this script was not run
-in the current audit. Future output pins this whole driver, its dependencies,
-all fitted-measurement inputs, and the shared DTI evaluator. Existing evidence
-without those hashes remains historical and is not retroactively attested.
+This legacy script fits the H1 vector-native faultzone model, sweeps its own
+budget/ablations, and historically used ``gems52-pooled-hide-v1``. The shared
+helper it imports has since been repaired/versioned as H57 v2; rerunning this
+script will therefore not reproduce the archived H1 evaluator provenance.
+Do not compare its outputs with ``scripts/run_lane.py`` / ``scripts/run_cv.py``
+or overwrite the H1 archive with a current H57 score.
+
+EXPERIMENT 2 (fault-zone anatomy lane): fit the intensity on the holdout,
+sweep the dot budget, ablate every factor, run the leakage canary, and score
+pooled DTI with the legacy template evaluator.
 
 Arms (each is top-k binary dots on the fold's visible-only intensity):
   full          f(d/s(L)) * g(phi)          -- the lane's intensity
@@ -37,9 +43,6 @@ from gems57 import faultzone as fz  # noqa: E402
 from gems57 import fit as F  # noqa: E402
 from gems57 import evaluate_holdout as EH  # noqa: E402
 from gems57 import holdout as HO  # noqa: E402
-from gems57.evaluator_provenance import (FAULTZONE_VERSION,
-                                         faultzone_implementation_hashes,
-                                         faultzone_input_hashes)  # noqa: E402
 
 DATA = ROOT / "data"
 OUT = ROOT / "evidence"
@@ -106,10 +109,6 @@ def halo_features(visible, seg_lab_v, seg_stats_v, valid, d_max=D_MAX):
 
 
 def main():
-    # Version and input checks precede all data loading and expensive work. Missing
-    # exp1b fitted-measurement arrays stop this legacy driver immediately.
-    implementation_hashes = faultzone_implementation_hashes()
-    input_hashes = faultzone_input_hashes()
     OUT.mkdir(exist_ok=True)
     t0 = time.time()
     with rasterio.open(DATA / "official/labels.tif") as ds:
@@ -321,10 +320,8 @@ def main():
 
     payload = dict(
         evidence_class="HOLDOUT-DTI",
-        evaluator_version=FAULTZONE_VERSION,
-        metric_evaluator_version=EH.VERSION,
-        evaluator_implementation_sha256=implementation_hashes,
-        evaluator_input_sha256=input_hashes,
+        evaluator_version=EH.VERSION,
+        evaluator_implementation_hashes=EH.implementation_hashes(),
         protocol=dict(folds=N_FOLDS, fold_scheme="random whole catalogue segments",
                       buffer_px=BUFFER_PX, buffer_applied_to="truth",
                       mask_visible="pixel-exact (USGS+INGENIOUS known faults)",

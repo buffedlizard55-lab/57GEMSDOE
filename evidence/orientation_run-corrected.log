@@ -1,0 +1,36 @@
+[run] predeclared three experiments; no weekly slot will be used
+[run] visible-only geometry ready: 4840798 examples, 11321 positives
+[run] feature canary maxima: {'d': 0.7935, 'd_perp': 0.8259, 'd_par_abs': 0.6192, 'side': 0.5359, 'log_len': 0.6573, 'sin2': 0.52, 'cos2': 0.5417, 'coherence': 0.6373, 'density': 0.5785, 'sense_sgn': 0.5522, 'sense_side': 0.5224, 'mag_relative_cos2': 0.5265, 'mag_log_gradient': 0.5555, 'mag_coherence': 0.5226}
+[run] NW distance_only: HOLDOUT-DTI 0.11578; soft 0.00615; dots 9001
+[run] NW anatomy: HOLDOUT-DTI 0.11074; soft 0.02337; dots 9001
+[run] NW orientation: HOLDOUT-DTI 0.11231; soft 0.02228; dots 9001
+[run] NW orientation_sense: HOLDOUT-DTI 0.11902; soft 0.02297; dots 9001
+[run] NE distance_only: HOLDOUT-DTI 0.10100; soft 0.00601; dots 8999
+[run] NE anatomy: HOLDOUT-DTI 0.12451; soft 0.02747; dots 8999
+[run] NE orientation: HOLDOUT-DTI 0.12115; soft 0.02704; dots 8999
+[run] NE orientation_sense: HOLDOUT-DTI 0.11053; soft 0.02556; dots 8999
+[run] SW distance_only: HOLDOUT-DTI 0.12815; soft 0.00659; dots 9001
+[run] SW anatomy: HOLDOUT-DTI 0.09859; soft 0.02086; dots 9001
+[run] SW orientation: HOLDOUT-DTI 0.10001; soft 0.02171; dots 9001
+[run] SW orientation_sense: HOLDOUT-DTI 0.10998; soft 0.02631; dots 9001
+[run] SE distance_only: HOLDOUT-DTI 0.10330; soft 0.00584; dots 9005
+[run] SE anatomy: HOLDOUT-DTI 0.10896; soft 0.02090; dots 9005
+[run] SE orientation: HOLDOUT-DTI 0.10687; soft 0.02262; dots 9005
+[run] SE orientation_sense: HOLDOUT-DTI 0.11291; soft 0.02124; dots 9005
+[run] pooled: {'distance_only': 0.11272500983662669, 'anatomy': 0.10975313080983894, 'orientation': 0.10916787041142981, 'orientation_sense': 0.11274865400292344}
+[run] fresh research TIFF written: gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif
+[registry] surface audit 50/670
+[registry] surface audit 100/670
+[registry] surface audit 150/670
+[registry] surface audit 200/670
+[registry] surface audit 250/670
+[registry] surface audit 300/670
+[registry] surface audit 350/670
+[registry] surface audit 400/670
+[registry] surface audit 450/670
+[registry] surface audit 500/670
+[registry] surface audit 550/670
+[registry] surface audit 600/670
+[registry] surface audit 650/670
+[run] DUPLICATE/INCOMPLETE pre-placement gate: logged; STOP. No production dots generated.
+[run] NEGATIVE deliverable; runtime 13.0 minutes

@@ -1,0 +1,218 @@
+{
+  "evidence_class": "LEAKAGE-CANARY (AUC, not DTI)",
+  "split_version": "buffered-whole-components-loqo-v2",
+  "features": {
+    "d": {
+      "auc_per_fold": [
+        0.2065489378575143,
+        0.22593914343050275,
+        0.25234330666490346,
+        0.29294824076923076
+      ],
+      "auc_mean": 0.24444490718053782,
+      "auc_min": 0.2065489378575143,
+      "auc_max": 0.29294824076923076,
+      "discriminative_auc_mean": 0.7555550928194622,
+      "discriminative_auc_max": 0.7934510621424857,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "d_perp": {
+      "auc_per_fold": [
+        0.1741334893395736,
+        0.1989643747359527,
+        0.2657027882835229,
+        0.29638906153846156
+      ],
+      "auc_mean": 0.23379742847437768,
+      "auc_min": 0.1741334893395736,
+      "auc_max": 0.29638906153846156,
+      "discriminative_auc_mean": 0.7662025715256223,
+      "discriminative_auc_max": 0.8258665106604264,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "d_par_abs": {
+      "auc_per_fold": [
+        0.4423077925117005,
+        0.4532046166032953,
+        0.3807553993652472,
+        0.4124340384615385
+      ],
+      "auc_mean": 0.4221754617354454,
+      "auc_min": 0.3807553993652472,
+      "auc_max": 0.4532046166032953,
+      "discriminative_auc_mean": 0.5778245382645546,
+      "discriminative_auc_max": 0.6192446006347527,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "side": {
+      "auc_per_fold": [
+        0.47880468798751946,
+        0.46494123785382335,
+        0.4640702168738429,
+        0.4741315461538461
+      ],
+      "auc_mean": 0.47048692221725796,
+      "auc_min": 0.4640702168738429,
+      "auc_max": 0.47880468798751946,
+      "discriminative_auc_mean": 0.529513077782742,
+      "discriminative_auc_max": 0.5359297831261571,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "log_len": {
+      "auc_per_fold": [
+        0.4238660387415497,
+        0.34265285171102655,
+        0.4205597956889713,
+        0.40745898384615387
+      ],
+      "auc_mean": 0.3986344174969254,
+      "auc_min": 0.34265285171102655,
+      "auc_max": 0.4238660387415497,
+      "discriminative_auc_mean": 0.6013655825030747,
+      "discriminative_auc_max": 0.6573471482889734,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sin2": {
+      "auc_per_fold": [
+        0.517631926677067,
+        0.4897744803548796,
+        0.5199957068235916,
+        0.48782903538461536
+      ],
+      "auc_mean": 0.5038077873100384,
+      "auc_min": 0.48782903538461536,
+      "auc_max": 0.5199957068235916,
+      "discriminative_auc_mean": 0.515006029440291,
+      "discriminative_auc_max": 0.5199957068235916,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "cos2": {
+      "auc_per_fold": [
+        0.46961215548621943,
+        0.49916110160540766,
+        0.4932116166358106,
+        0.5417025207692308
+      ],
+      "auc_mean": 0.5009218486241671,
+      "auc_min": 0.46961215548621943,
+      "auc_max": 0.5417025207692308,
+      "discriminative_auc_mean": 0.5199294117604483,
+      "discriminative_auc_max": 0.5417025207692308,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "coherence": {
+      "auc_per_fold": [
+        0.3999804979199168,
+        0.3626872929869033,
+        0.4378342885480032,
+        0.41664242923076916
+      ],
+      "auc_mean": 0.4042861271713981,
+      "auc_min": 0.3626872929869033,
+      "auc_max": 0.4378342885480032,
+      "discriminative_auc_mean": 0.5957138728286019,
+      "discriminative_auc_max": 0.6373127070130967,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "density": {
+      "auc_per_fold": [
+        0.5426184009360374,
+        0.5414256326573722,
+        0.5784626176937319,
+        0.5262551176923077
+      ],
+      "auc_mean": 0.5471904422448624,
+      "auc_min": 0.5262551176923077,
+      "auc_max": 0.5784626176937319,
+      "discriminative_auc_mean": 0.5471904422448624,
+      "discriminative_auc_max": 0.5784626176937319,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_sgn": {
+      "auc_per_fold": [
+        0.5200704134165367,
+        0.5,
+        0.44775524728907695,
+        0.4834905053846154
+      ],
+      "auc_mean": 0.48782904152255724,
+      "auc_min": 0.44775524728907695,
+      "auc_max": 0.5200704134165367,
+      "discriminative_auc_mean": 0.5222061651857111,
+      "discriminative_auc_max": 0.5522447527109231,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_side": {
+      "auc_per_fold": [
+        0.507875608424337,
+        0.5,
+        0.4775865921713832,
+        0.50878934
+      ],
+      "auc_mean": 0.49856288514893,
+      "auc_min": 0.4775865921713832,
+      "auc_max": 0.50878934,
+      "discriminative_auc_mean": 0.5097695890632384,
+      "discriminative_auc_max": 0.5224134078286168,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "mag_relative_cos2": {
+      "auc_per_fold": [
+        0.5265377769110764,
+        0.4881109843683988,
+        0.49871096006347526,
+        0.5248626938461538
+      ],
+      "auc_mean": 0.5095556037972762,
+      "auc_min": 0.4881109843683988,
+      "auc_max": 0.5265377769110764,
+      "discriminative_auc_mean": 0.5161446315813389,
+      "discriminative_auc_max": 0.5265377769110764,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "mag_log_gradient": {
+      "auc_per_fold": [
+        0.5555322802912116,
+        0.4737891223067173,
+        0.5268766933350966,
+        0.494995733076923
+      ],
+      "auc_mean": 0.5127984572524871,
+      "auc_min": 0.4737891223067173,
+      "auc_max": 0.5555322802912116,
+      "discriminative_auc_mean": 0.528406029560667,
+      "discriminative_auc_max": 0.5555322802912116,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "mag_coherence": {
+      "auc_per_fold": [
+        0.4773604758190328,
+        0.4909793377693283,
+        0.4901308291457287,
+        0.4941471915384616
+      ],
+      "auc_mean": 0.48815445856813783,
+      "auc_min": 0.4773604758190328,
+      "auc_max": 0.4941471915384616,
+      "discriminative_auc_mean": 0.5118455414318621,
+      "discriminative_auc_max": 0.5226395241809672,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    }
+  },
+  "features_independent_of_hidden_values": true,
+  "note": "All predictors are calculated from visible mask and catalogue-independent cached TMI; hidden geometry is diagnostic only."
+}

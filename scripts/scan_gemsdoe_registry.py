@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
-"""Build the full uniqueness registry from every accessible GEMSDOE sibling repo.
+"""Build a scoped index of public owner-repository rasters.
 
-Why this exists: ``registry/`` holds only the 15 rasters committed here, but the
-brief requires the submission to be unique against *every* earlier raster.  This
-script enumerates the sibling repos on github.com (the only host the sandbox can
-reach for them), extracts every GeoTIFF that has the competition grid (shape
-3730x3292, EPSG:32611) from the git object store, de-duplicates by sha256, and
-writes a manifest.  The rasters themselves are cached OUTSIDE the repository
-(default ``/tmp/gems_registry_cache``) so Git does not grow.
+This indexes grid-matching GeoTIFFs discoverable in the listed, accessible
+GEMSDOE sibling repositories and historical pins. It is not a complete
+organizer registry or proof of complete competition coverage: private,
+unlinked, external, and otherwise inaccessible rasters may be absent. The
+uniqueness gate can only compare against this explicitly scoped inventory.
+
+The rasters themselves are cached OUTSIDE the repository (default
+``/tmp/gems_registry_cache``) so Git does not grow.
 
 Two stages (both idempotent):
 
     python scripts/scan_gemsdoe_registry.py clone    # shallow, blob-size-limited clones
-    python scripts/scan_gemsdoe_registry.py index    # extract + manifest  -> evidence/registry_full_index.json
+    python scripts/scan_gemsdoe_registry.py index    # extract + scoped index -> evidence/registry_full_index.json
 
-Then ``scripts/check_uniqueness_full.py`` runs the protocol gates against the index.
+Then ``scripts/check_uniqueness_full.py`` runs the literal checks against the
+indexed public owner-repository inventory; the filename does not imply a full
+organizer registry.
 
 Clones use ``--filter=blob:limit=3m`` so the 420 MB feature stack in the bridge
 repos is never downloaded; only submission-sized rasters are needed.

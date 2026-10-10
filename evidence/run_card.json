@@ -148,7 +148,7 @@
   "submission_slots_used": 0,
   "generated_utc": "2026-10-10T07:46:18Z",
   "registry_reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
-  "registry_scope": "Historical pinned inventory union recorded public-main trees and linked open PR heads, including the 679-raster scan. Session-5 independently re-fetched and SHA-verified the 17GEMSDOE_E-proba-multiscale witness recorded in that inventory. This does not verify the other 678 local cache files now: current preflight is 0/679. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.",
+  "registry_scope": "679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.",
   "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
   "current_run_card": "evidence/run_card.json",
   "audit_date_utc": "2026-10-10",
@@ -272,7 +272,8 @@
       "universal_overlap_blocker": true,
       "implication": "Every nonempty legal candidate has forward 3-px overlap 1.0 with this witness; the literal 0.70 stop threshold cannot be cleared while this raster remains in the comparison set.",
       "scope_note": "A specific witness was re-fetched and verified; this does not change the full local-cache preflight of 0/679."
-    }
+    },
+    "inventory_scope_disclosure": "Public owner-repository inventory only; not organizer-complete. See registry/audit_scope.json."
   },
   "validator_result": {
     "evidence_status": "historical local on-disk format/range receipt; not current revalidation, uniqueness clearance, organizer acceptance, or authorization to download",

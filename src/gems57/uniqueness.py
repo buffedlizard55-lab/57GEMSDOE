@@ -1,11 +1,9 @@
 """Literal parallel-run gates, fail closed on incomplete registries.
 
 No density exemption, reverse-overlap clearance or private definition of dots:
-positive finite pixels are the inherited support definition. Only the owner's
-rank-correlation and forward 3-pixel-overlap thresholds block; Jaccard, reverse
-overlap, and byte/pixel identity are reported as diagnostics. A whole-footprint
-soft registry surface can therefore remain a universal forward-overlap blocker;
-the audit reports that rather than quietly changing the protocol.
+positive finite pixels are the inherited support definition. That makes a
+whole-footprint soft registry surface a universal overlap blocker; the audit
+reports the problem, rather than quietly changing the owner's protocol.
 """
 from __future__ import annotations
 import hashlib
@@ -160,19 +158,19 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
             progress(i+1,len(records),rows[-1])
     checked = [r for r in rows if 'error' not in r]
     errors = [r for r in rows if 'error' in r]
-    # Only the two specified stop thresholds clear/fail this lane. Jaccard and
-    # exact identity remain visible diagnostics, not additional policy gates.
-    flags = [r for r in checked if r['duplicate_by_rho'] or r['duplicate_by_overlap']]
+    # Only the protocol's rank-correlation and forward 3-pixel overlap thresholds
+    # are stop rules. Jaccard and exact byte/pixel identity remain diagnostics;
+    # identity is ordinarily implied by the literal overlap/rank checks anyway.
+    protocol_flags = [r for r in checked if r['duplicate_by_rho'] or r['duplicate_by_overlap']]
     complete = inventory_complete and bool(records) and not errors and not source_errors
     rank_rows = [r for r in checked if r['spearman_full_footprint'] is not None]
     worst_rho = max(rank_rows, key=lambda r:r['spearman_full_footprint'], default=None)
     worst_ov = max(checked,key=lambda r:r['my_dots_within_3px_of_theirs'],default=None)
     worst_jac = max(checked,key=lambda r:r['jaccard_dot_sets'],default=None)
-    unique = complete and my_dot_count > 0 and norm > 0 and not flags
+    unique = complete and my_dot_count > 0 and norm > 0 and not protocol_flags
     return dict(evidence_class='REGISTRY-MEASUREMENT', my_dots=my_dot_count,
         candidate_decoded_sha256=decoded_digest, candidate_file_sha256=file_sha256,
         rho_limit=RHO_LIMIT, overlap_limit=OVERLAP_LIMIT, jaccard_limit=JACCARD_LIMIT,
-        jaccard_diagnostic_only=True,
         registry_rasters_expected=len(records), registry_rasters_checked=len(checked),
         complete_accessible_scan=complete, missing_or_invalid=len(errors), source_errors=source_errors,
         worst_spearman_full_footprint=worst_rho['spearman_full_footprint'] if worst_rho else None,
@@ -183,11 +181,12 @@ def compare_array_to_registry(mine, registry_index, footprint, *, file_sha256=No
         worst_jaccard_submission=worst_jac['submission'] if worst_jac else None,
         byte_unique_among_checked=bool(checked) and not any(r['identical_bytes'] for r in checked),
         pixel_unique_among_checked=bool(checked) and not any(r['identical_decoded_predictions'] for r in checked),
-        duplicate_count=len(flags), unique=bool(unique), rows=rows,
-        verdict='promote-to-selector-only' if unique else 'negative',
-        stop_required=bool(flags or not complete or not my_dot_count or norm == 0),
+        duplicate_count=len(protocol_flags), unique=bool(unique), rows=rows,
+        jaccard_diagnostic_only=True,
+        verdict='passes-indexed-thresholds; separate selector and scope review required' if unique else 'negative',
+        stop_required=bool(protocol_flags or not complete or not my_dot_count or norm == 0),
         candidate_rank_variation=norm > 0,
-        scope='All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Jaccard, reverse overlap, and byte/pixel identity are diagnostics only.')
+        scope='Hash-verified indexed public owner-repository entries only; not organizer-complete, and not inaccessible/private/unlinked/external files. Reverse overlap, Jaccard, and exact identity are diagnostics only.')
 
 
 def compare_to_registry(mine_path, registry_index, footprint, **kwargs):

@@ -1,0 +1,63 @@
+{
+  "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace, so a per-fault intensity built from distance, component length and offset geometry locates fault pixels the catalogue lacks.",
+  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the 8 catalogue-geometry features of variant 'shipped8' (distance, trace-frame stepover/along-strike, component length as displacement proxy, cyclic strike encoding and its explicit distance interactions, trace coherence, local fault density), calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar. Offsets are decomposed in the local trace frame (IR-57-STRIKE-01 corrected an inverted strike fallback that had forced a grid-aligned frame).",
+  "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
+  "holdout_dti": {
+    "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
+    "variant_measured": "shipped8",
+    "withholding_mode": "all",
+    "cv_source": "cv_r2_all.json (session 2, corrected strike frame)",
+    "withheld_positive_pixels": 22641,
+    "pooled_dti": 0.3269918583630881,
+    "ci95_quadrant_jackknife": [
+      0.2923315109076641,
+      0.36165220581851204
+    ],
+    "coverage": 0.5105430169050503,
+    "label": "HOLDOUT-DTI - a local instrument reading, NOT a projected live score"
+  },
+  "correlation_overlap_vs_registry": {
+    "n_registry_rasters": 18,
+    "rho_limit": 0.9,
+    "jaccard_limit": 0.5,
+    "overlap_limit": 0.7,
+    "worst_spearman_full_footprint": 0.3834077951066958,
+    "worst_rho_submission": "h57-anatomy-enechelon-20261009T070415Z (this repo, previous build)",
+    "worst_jaccard_dot_sets": 0.2400381849005053,
+    "worst_jaccard_submission": "h57-anatomy-enechelon-20261009T070415Z (this repo, previous build)",
+    "worst_dot_overlap_3px": 0.711325,
+    "worst_overlap_submission": "h57-anatomy-enechelon-20261009T070415Z (this repo, previous build)",
+    "dot_union_rho_note": "reported but NOT thresholded: structurally near -1 for any two sparse binary rasters, see IR-57-RHO-01",
+    "unique": false,
+    "unique_vs_other_lanes": true,
+    "n_other_lane_rasters": 15,
+    "worst_overlap_other_lanes": 0.3654,
+    "worst_overlap_other_lane_sub": "topo-gap-closure-t-v2-on-d1-5",
+    "worst_jaccard_other_lanes": 0.010985063904935796,
+    "worst_rho_other_lanes": 0.012769694329882814,
+    "n_same_lane_earlier_builds": 3,
+    "worst_overlap_same_lane": 0.711325,
+    "worst_overlap_same_lane_sub": "h57-anatomy-enechelon-20261009T070415Z (this repo, previous build)",
+    "worst_jaccard_same_lane": 0.2400381849005053,
+    "worst_rho_same_lane": 0.3834077951066958,
+    "same_lane_overlap_note": "overlap vs this repository's own earlier builds of the SAME lane is expected physics (two halos around the same faults); it is disclosed here and is NOT a lane-drift firing. The drift screen is unique_vs_other_lanes."
+  },
+  "raster_sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+  "validator_output": {
+    "no_nan_anywhere": true,
+    "in_footprint_all_finite": true,
+    "range_0_1_guaranteed": true,
+    "crs_shape_transform_match": true,
+    "zero_dots_on_mapped_catalogue": true,
+    "all_checks_passed": true,
+    "n_checks": 15
+  },
+  "submission_name": "gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353",
+  "submission_note": "57GEMSDOE fault-zone anatomy | variant shipped8 (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 90e53294",
+  "sense_of_slip": {
+    "available_in_provided_database": false,
+    "measured_log_ratio_right_over_left": -0.03523408700302655,
+    "encoded": false
+  },
+  "verdict": "promote"
+}

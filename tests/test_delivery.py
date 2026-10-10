@@ -53,7 +53,7 @@ def test_saturation_exception_and_partial_old_gate_cannot_clear(tmp_path):
     with pytest.raises(ValueError, match="not authorized"):
         gates.lane_report(candidate, footprint, sample=prior,
                           registry_index=manifest, probe_coverage=0.95)
-    with pytest.raises(RuntimeError, match="complete registry"):
+    with pytest.raises(RuntimeError, match="inventory manifest"):
         gates.lane_report(candidate, footprint, [prior], sample=prior)
     with pytest.raises(RuntimeError, match="retired"):
         gates.uniqueness_report(candidate, [prior], top=1)
@@ -146,6 +146,7 @@ def test_historical_lean_offset_matches_receipt_but_remains_blocked():
         assert int((values > 0).sum()) == 40000
     assert audit["okay_to_download"] is False and audit["okay_to_submit"] is False
     assert card["okay_to_download"] is False and card["okay_to_submit"] is False
+    assert "not organizer-complete" in card["registry_scope"].lower()
     witness = card["registry_comparison"]["independent_witness_blocker"]
     assert witness["universal_overlap_blocker"] is True
     assert witness["uncovered_allowable_cells"] == 0
@@ -190,3 +191,16 @@ def test_public_historical_receipts_are_withdrawn_and_originals_preserved():
         assert record.get("verdict") != "promote"
         archived = ROOT / record.get("archived_original_receipt", record.get("archived_original_card"))
         assert archived.is_file()
+
+
+def test_owner_report_table_never_promotes_reported_scores_to_confirmed():
+    rows = json.loads((ROOT / "docs/data/owner_reports.json").read_text())
+    score = next(row for row in rows if row.get("owner_reported_dti") == 0.2778)
+    assert score["evidence_class"].startswith("OWNER-REPORTED")
+    assert score["submission_receipt"] is None
+    assert all(row.get("submission_receipt") is None for row in rows)
+
+
+def test_preview_asset_has_a_real_png_signature():
+    preview = (ROOT / "docs/assets/preview.png").read_bytes()
+    assert preview.startswith(b"\x89PNG\r\n\x1a\n")

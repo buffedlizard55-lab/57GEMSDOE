@@ -8,11 +8,18 @@
   "withdrawn_historical_banner": "OK TO DOWNLOAD AND SUBMIT",
   "withdrawn_historical_verdict": "promote",
   "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-  "current_download_status": "NOT OK — historical bytes retained for provenance only",
-  "current_submission_status": "NOT OK — no current clearance or organizer acceptance",
+  "current_download_status": "NOT OK — no file cleared for download",
+  "current_submission_status": "NOT OK — no file cleared for submission",
   "verdict": "negative",
   "promote": false,
   "submission_slots_used": 0,
   "reason": "The historic H57-I card used a partial 16-prior comparison. Its withdrawal diagnostic reported forward 3-pixel overlap 1.0 with an incomplete inventory; no complete current-cache revalidation is possible at 0/679.",
-  "current_run_card": "evidence/run_card.json"
+  "current_run_card": "evidence/run_card.json",
+  "archived_original_mainline_card": {
+    "path": "evidence/history/run_card_session4_legacy_2026-10-09.json",
+    "sha256": "241fd9f7b9c0c01cd63c3732766758ec401658ed9dd2195d440eae95963389b2",
+    "bytes": 5267,
+    "preserved_verbatim": true,
+    "note": "Historical promoted run card preserved for provenance; its prior promote/status fields are not current authorization."
+  }
 }

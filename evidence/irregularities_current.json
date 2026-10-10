@@ -69,14 +69,28 @@
       "severity": "critical",
       "status": "fail-closed code in place; current cache incomplete",
       "finding": "Earlier inventory checks used vanished /tmp cache files and could report unique when prior rasters were missing.",
-      "resolution": "The current builder pins the complete registry manifest, verifies every listed SHA256 and contest-grid alignment, and fails closed when any entry is missing, corrupt, or incomplete.",
+      "resolution": "The previously implemented candidate publisher is now a retired no-output stub. It performs no fit, download, or TIFF/ZIP write. Any future replacement must require independent clearance and verify every indexed raster's hash/grid while clearly disclosing that the public owner-repository inventory is not organizer-complete.",
       "evidence": [
         "scripts/refresh_registry.py",
         "src/gems57/uniqueness.py",
         "evidence/registry_refreshed.json",
         "tests/test_shared_pipeline.py"
       ],
-      "remaining": "The manifest lists 679 rasters, but the present cache preflight is 0/679. No current hashes or grids have been verified; the historical public scan does not replace present-file verification."
+      "remaining": "Current cache preflight is 0/679. The public inventory cannot prove uniqueness against private, unlinked, or otherwise inaccessible competition rasters. The retired publisher stays disabled; no current candidate clearance exists."
+    },
+    {
+      "id": "IR-57-REGISTRY-03",
+      "severity": "critical",
+      "status": "OPEN — inventory is not organizer-complete; submission clearance remains impossible",
+      "finding": "The 679-entry index is a public owner-repository inventory, not a complete organizer submission registry. Private, unlinked, closed-branch-only, external, unavailable, and later-written rasters may be outside its scope; no claim can be made that every historical or future competition raster was compared.",
+      "resolution": "Describe the measured 679-raster scope precisely and keep it distinct from organizer completeness. Do not label the inventory a universal uniqueness certificate, and do not use the partial local cache to clear a candidate.",
+      "evidence": [
+        "registry/audit_scope.json",
+        "registry/audit_index.json",
+        "evidence/registry_refreshed.json",
+        "evidence/run_card.json"
+      ],
+      "remaining": "The current cache preflight is 0/679 and the verified witness blocks every nonempty candidate under the literal rule. Any broader clearance requires an independently reviewed, organizer-complete raster source; no such source is available in this audit."
     },
     {
       "id": "IR-57-TRACE-03",
@@ -135,14 +149,18 @@
       "id": "IR-57-GATE-05",
       "severity": "critical",
       "status": "fixed; unsafe helpers retired",
-      "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; old standalone scripts applied reverse-overlap or partial-registry clearance.",
-      "resolution": "One literal shared uniqueness implementation at both phases. Compatibility helpers require a full manifest; bare lists/missing certificates cannot clear. Unsafe old builder is retired.",
+      "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; older standalones applied reverse-overlap or partial-registry clearance. The session-2 build_r2_submission.py wrote candidate rasters before uniqueness and then excluded this repository's same-lane priors from its drift verdict.",
+      "resolution": "The shared uniqueness helper now uses only the specified rank-correlation and forward 3-pixel-overlap thresholds as stop rules; Jaccard and exact identity are diagnostics only. The old session-2 publisher is a no-output stub and its source is preserved under evidence/history/. Current submission publisher is also retired; the current HOLD site is checked for active links and status drift.",
       "evidence": [
         "src/gems57/gates.py",
         "src/gems57/uniqueness.py",
-        "scripts/build_submission.py"
+        "scripts/build_submission.py",
+        "scripts/build_r2_submission.py",
+        "evidence/history/build_r2_submission_legacy_2026-10-10.py",
+        "tests/test_uniqueness.py",
+        "tests/test_submission_clearance.py"
       ],
-      "remaining": "No saturation exemption is authorized; the measured global blocker still means HOLD."
+      "remaining": "No output-generating legacy builder is authorized under the spent budget or universal-overlap blocker. Any future replacement must perform the literal surface, pre-placement, and final-dot checks against a reviewed complete scope before writing; the indexed public owner-repository inventory is not organizer-complete."
     },
     {
       "id": "IR-57-PREVIEW-01",

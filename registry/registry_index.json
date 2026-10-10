@@ -175,5 +175,41 @@
   "bytes": 808408,
   "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
   "note": "registered 2026-10-09 so every later build uniqueness-checks against this lane's own earlier raster (parallel-run protocol rule 1)"
+ },
+ {
+  "repo": "57GEMSDOE",
+  "submission": "faultzone-anatomy-12000dots (parallel session, merged PR #1)",
+  "owner_reported_score": null,
+  "mode": "zeros",
+  "blob_sha": "(this repository)",
+  "path": "docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+  "file": "registry/rasters/57GEMSDOE__parallel-12000dots-zeros.tif",
+  "bytes": 75896,
+  "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
+  "note": "registered 2026-10-09 (session 2): the parallel session's merged raster of the SAME lane -- the drift screen must see it"
+ },
+ {
+  "repo": "57GEMSDOE",
+  "submission": "faultzone-anatomy-60000px-20261009T054251Z (this repo, superseded)",
+  "owner_reported_score": null,
+  "mode": "zeros",
+  "blob_sha": "(this repository)",
+  "path": "docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+  "file": "registry/rasters/57GEMSDOE__faultzone-anatomy-60000px-prev.tif",
+  "bytes": 154835,
+  "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
+  "note": "registered 2026-10-09 (session 2): this lane's superseded 60k-dot halo build"
+ },
+ {
+  "repo": "57GEMSDOE",
+  "submission": "h57r2-shipped8-all-flank0-20261009T180433Z (this repo, session-2 ship, HOLDOUT-DTI 0.3270)",
+  "owner_reported_score": null,
+  "mode": "zeros",
+  "blob_sha": "(this repository)",
+  "path": "docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+  "file": "registry/rasters/57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+  "bytes": 818144,
+  "sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+  "note": "registered 2026-10-09 (session 2): this lane's session-2 submission, built on the corrected strike frame (IR-57-STRIKE-01); see IR-57-OVERLAP-01 for the same-lane overlap disclosure"
  }
 ]
