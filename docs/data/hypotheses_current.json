@@ -1,9 +1,9 @@
 {
-  "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — qualitative priorities, not scores",
+  "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES \u2014 qualitative priorities, not scores",
   "status": "RESEARCH SHORTLIST ONLY; NOT IMPLEMENTED OR RUN; three-experiment/two-hour budget spent",
   "novelty_scope": "Compared with the inspected fault-zone-anatomy implementations and experiments recorded in this repository; no claim of global novelty.",
   "ranking_basis": "Mechanistic relevance to missed secondary strands, plausible incremental value, data readiness, and implementation cost. No numerical DTI gain is estimated.",
-  "current_blocker": "A separately SHA-verified raster in the 679-entry inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization.",
+  "current_blocker": "A separately SHA-verified raster in the 698-entry indexed public owner-repository inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization. The inventory is not a complete organizer registry.",
   "candidates": [
     {
       "rank": 1,
@@ -23,7 +23,7 @@
       "data_readiness": "Local trace vectors are present; provenance and host-sense missingness still require audit.",
       "sources": [
         {
-          "citation": "Wang et al. (2017), Strain partitioning and stress perturbation around stepovers and bends of strike-slip faults: Numerical results, Tectonophysics 721, 211–226.",
+          "citation": "Wang et al. (2017), Strain partitioning and stress perturbation around stepovers and bends of strike-slip faults: Numerical results, Tectonophysics 721, 211\u2013226.",
           "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
           "checked_takeaway": "Models show stress/strain localization around bends and stepovers; narrow and wider steps can localize deformation differently. Mechanism support only, not a DTI claim."
         },
@@ -52,12 +52,12 @@
       "data_readiness": "Existing vector trace endpoints are present; no new raster is required.",
       "sources": [
         {
-          "citation": "d’Alessio & Martel (2004), Fault terminations and barriers to fault growth, Journal of Structural Geology 26, 1885–1896.",
+          "citation": "d\u2019Alessio & Martel (2004), Fault terminations and barriers to fault growth, Journal of Structural Geology 26, 1885\u20131896.",
           "url": "https://doi.org/10.1016/j.jsg.2004.01.010",
           "checked_takeaway": "Small faults near a major fault-system tip can diffuse stress and inhibit growth; tip enrichment is not assumed to be universally beneficial."
         },
         {
-          "citation": "Wang et al. (2017), Tectonophysics 721, 211–226.",
+          "citation": "Wang et al. (2017), Tectonophysics 721, 211\u2013226.",
           "url": "https://doi.org/10.1016/j.tecto.2017.10.001",
           "checked_takeaway": "Wider stepovers can localize strain near segment tips in the modeled settings; this motivates a bidirectional test, not a gain prediction."
         }
@@ -102,7 +102,7 @@
       "named_non_fault_mimic": "Magnetic lithologic contacts, surficial drainage, cultural metal, and flight-line leveling artifacts.",
       "qualitative_priority": "Fourth; expected DTI effect unknown.",
       "implementation_cost": "High because exact file coverage, CRS, band meaning, and registration must be verified first.",
-      "data_readiness": "The competition feature stack is absent from this checkout. Official GeoDAWN metadata identifies public access and CC BY 4.0, but actual AOI coverage and competition-grid alignment have not been checked; no external raster was downloaded.",
+      "data_readiness": "The pinned competition feature stack was restored, all eight input pins verified, and 19 bands cached; this was data preparation only, not a fit or holdout. Official GeoDAWN metadata identifies public access and CC BY 4.0, but the external dataset AOI coverage and competition-grid alignment have not been checked, and no GeoDAWN raster was downloaded.",
       "sources": [
         {
           "citation": "Grauch (2002), High-resolution aeromagnetic survey to image shallow faults, Dixie Valley geothermal field, Nevada, USGS Open-File Report 2002-384.",

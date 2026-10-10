@@ -42,55 +42,28 @@
     {
       "id": "IR-57-UNIQ-04",
       "severity": "submission blocker",
-      "status": "OPEN — HOLD; no current download or submission clearance",
-      "finding": "The historical 679-raster pre-placement soft-surface scan has 78 forward 3-pixel positive-support overlap firings (maximum 1.0). This is not a final-dot comparison or current cache revalidation; the present cache preflight is 0/679.",
-      "resolution": "Apply only the specified rank-correlation and forward 3-pixel-overlap thresholds; the historical support comparison fired, so final dots were not generated. No download, candidate build, or submission is authorized. Do not use reverse-overlap, density, or Jaccard as a clearance exception.",
+      "status": "OPEN; no silent protocol change",
+      "finding": "A dense earlier soft raster is positive at every footprint pixel. With the inherited positive-pixel dot definition, every nonempty allowed candidate has forward overlap 1.0, above the literal 0.70 gate.",
+      "resolution": "Publish a hash-verified universal-blockage certificate, apply the literal gate, log duplicate and stop production dot placement. Download is permitted for research; submission is not cleared.",
       "evidence": [
         "evidence/uniqueness_saturation_certificate.json",
         "evidence/orientation_surface_uniqueness.json"
       ],
-      "remaining": "The 679-raster result is historical; no indexed cache files are present now. The builder must stop before fitting or TIFF creation until the full registry and independent current-code clearance are available."
-    },
-    {
-      "id": "IR-57-UNIQ-05",
-      "severity": "critical",
-      "status": "OPEN — literal uniqueness gate is unsatisfiable while the verified witness remains in scope",
-      "finding": "Session-5 independently re-fetched and SHA256-verified 17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif (25,065,181 bytes; SHA256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be), which is present in the 679-raster manifest. Its 3-pixel positive support covers every allowable cell; measured forward overlap is 1.0 for dense and sparse test candidates.",
-      "resolution": "Do not change the user-mandated >70% threshold or apply a density/reverse-overlap exception. Keep download/submission HOLD and make the blocker explicit. The witness is a uniqueness measurement, not a score and not a full revalidation of all 679 local cache files.",
-      "evidence": [
-        "evidence/session5_witness_verification.json",
-        "evidence/independent_candidate_check.json",
-        "evidence/registry_refreshed.json"
-      ],
-      "remaining": "Current local cache preflight is 0/679. A specific witness was fetched and hash-verified, but no current complete-inventory scan or candidate clearance exists. Any policy change requires explicit owner authorization."
+      "remaining": "Only an explicit protocol revision that defines surface versus dot representations could resolve this. No reverse-overlap or density exemption is applied."
     },
     {
       "id": "IR-57-REGISTRY-02",
       "severity": "critical",
-      "status": "fail-closed code in place; current cache incomplete",
-      "finding": "Earlier inventory checks used vanished /tmp cache files and could report unique when prior rasters were missing.",
-      "resolution": "The previously implemented candidate publisher is now a retired no-output stub. It performs no fit, download, or TIFF/ZIP write. Any future replacement must require independent clearance and verify every indexed raster's hash/grid while clearly disclosing that the public owner-repository inventory is not organizer-complete.",
+      "status": "fixed",
+      "finding": "The prior public owner-repository inventory pointed to vanished /tmp cache files. compare_to_registry could report unique when all indexed rasters were missing.",
+      "resolution": "Refresh immutable GitHub blobs into ignored workspace cache, union historical pins with current public trees including this repo's archives, verify hashes, and fail closed on missing, corrupt, empty or incomplete inventories.",
       "evidence": [
         "scripts/refresh_registry.py",
         "src/gems57/uniqueness.py",
         "evidence/registry_refreshed.json",
         "tests/test_shared_pipeline.py"
       ],
-      "remaining": "Current cache preflight is 0/679. The public inventory cannot prove uniqueness against private, unlinked, or otherwise inaccessible competition rasters. The retired publisher stays disabled; no current candidate clearance exists."
-    },
-    {
-      "id": "IR-57-REGISTRY-03",
-      "severity": "critical",
-      "status": "OPEN — inventory is not organizer-complete; submission clearance remains impossible",
-      "finding": "The 679-entry index is a public owner-repository inventory, not a complete organizer submission registry. Private, unlinked, closed-branch-only, external, unavailable, and later-written rasters may be outside its scope; no claim can be made that every historical or future competition raster was compared.",
-      "resolution": "Describe the measured 679-raster scope precisely and keep it distinct from organizer completeness. Do not label the inventory a universal uniqueness certificate, and do not use the partial local cache to clear a candidate.",
-      "evidence": [
-        "registry/audit_scope.json",
-        "registry/audit_index.json",
-        "evidence/registry_refreshed.json",
-        "evidence/run_card.json"
-      ],
-      "remaining": "The current cache preflight is 0/679 and the verified witness blocks every nonempty candidate under the literal rule. Any broader clearance requires an independently reviewed, organizer-complete raster source; no such source is available in this audit."
+      "remaining": "This is an indexed public owner-repository inventory, not a complete organizer registry. Private, unlinked, external, and otherwise inaccessible rasters may be absent."
     },
     {
       "id": "IR-57-TRACE-03",
@@ -108,15 +81,15 @@
     {
       "id": "IR-57-DATA-02",
       "severity": "high",
-      "status": "historical 19-band receipt; feature file absent from this checkout",
-      "finding": "Earlier prose incorrectly described the competition feature stack as unobtainable and 105 bands. The stored bridge feature-cache receipt reports 19 bands and a verified bridge hash, but the actual training_features.tif is absent in this checkout.",
-      "resolution": "The old evidence/data_preparation.json and evidence/feature_cache.json are historical receipts, not evidence that the file is presently available. This audit did not download or prepare the feature raster; data/README.md records the expected pin and provenance limits.",
+      "status": "data-placement blocker closed; provenance caveat remains",
+      "finding": "The downloader only verified files by default and fetched raw.githubusercontent.com URLs outside the allowlist. The feature stack was wrongly called unobtainable and described as 105 bands.",
+      "resolution": "Fetch all five immutable public bridge parts via api.github.com, hash-check each and the atomic assembly, verify all eight pins and cache the actual 19 bands. Large data are ignored by Git.",
       "evidence": [
         "evidence/data_preparation.json",
         "evidence/feature_cache.json",
         "scripts/prepare_data.py"
       ],
-      "remaining": "Bridge hash matching does not authenticate official-origin provenance. Embedded band descriptions remain suspect for some variables; exact coverage and suitability must not be assumed."
+      "remaining": "Hash matching authenticates bridge bytes, not official-origin provenance. Some embedded band descriptions are suspect: tc is not trusted as a tilt-angle layer and depth_to_base_surf is not assumed to be basement. Neither is used in this candidate."
     },
     {
       "id": "IR-57-NAN-03",
@@ -135,32 +108,28 @@
     {
       "id": "IR-57-SCORE-03",
       "severity": "high",
-      "status": "labels corrected; exact score attribution unverified",
-      "finding": "The prompt includes a 0.2778 owner-reported result and conflicting reported highs of 0.3195 and 0.3774. No organizer submission-page receipt in this repository ties those values to the retained candidate.",
-      "resolution": "Keep 0.2778 labeled OWNER-REPORTED and the conflicting highs unverified. Do not use a leaderboard snapshot as a substitute for an organizer receipt tying a score to the submitted file; local HOLDOUT-DTI remains a different instrument.",
+      "status": "labels corrected",
+      "finding": "The prompt quotes both 0.3195 and 0.3774 as the highest score. The live public board retrieved in this session lists 0.3774 first. The supplied 0.2778 file-specific result lacks an organizer submission receipt.",
+      "resolution": "Separate organizer-published board context, owner reports, local HOLDOUT-DTI and projections. No local result is called a leaderboard score, and no projection is used for promotion.",
       "evidence": [
         "evidence/leaderboard_snapshot.json",
         "evidence/best_submission_audit.json",
         "evidence/source_checks.json"
       ],
-      "remaining": "Private performance, exact file-to-score attribution, and any verified organizer submission receipt remain unavailable here."
+      "remaining": "Private performance and exact file-to-score attribution remain unknown."
     },
     {
       "id": "IR-57-GATE-05",
       "severity": "critical",
       "status": "fixed; unsafe helpers retired",
-      "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; older standalones applied reverse-overlap or partial-registry clearance. The session-2 build_r2_submission.py wrote candidate rasters before uniqueness and then excluded this repository's same-lane priors from its drift verdict.",
-      "resolution": "The shared uniqueness helper now uses only the specified rank-correlation and forward 3-pixel-overlap thresholds as stop rules; Jaccard and exact identity are diagnostics only. The old session-2 publisher is a no-output stub and its source is preserved under evidence/history/. Current submission publisher is also retired; the current HOLD site is checked for active links and status drift.",
+      "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; old standalone scripts applied reverse-overlap or partial-registry clearance.",
+      "resolution": "One literal shared uniqueness implementation at both phases. Compatibility helpers require a pinned public-inventory manifest; bare lists/missing certificates cannot clear. Unsafe old builder is retired.",
       "evidence": [
         "src/gems57/gates.py",
         "src/gems57/uniqueness.py",
-        "scripts/build_submission.py",
-        "scripts/build_r2_submission.py",
-        "evidence/history/build_r2_submission_legacy_2026-10-10.py",
-        "tests/test_uniqueness.py",
-        "tests/test_submission_clearance.py"
+        "scripts/build_submission.py"
       ],
-      "remaining": "No output-generating legacy builder is authorized under the spent budget or universal-overlap blocker. Any future replacement must perform the literal surface, pre-placement, and final-dot checks against a reviewed complete scope before writing; the indexed public owner-repository inventory is not organizer-complete."
+      "remaining": "No saturation exemption is authorized; the measured global blocker still means HOLD."
     },
     {
       "id": "IR-57-PREVIEW-01",
@@ -178,14 +147,14 @@
       "id": "IR-57-CONCURRENT-01",
       "severity": "high",
       "status": "integrated; later artifacts preserved for learning",
-      "finding": "At the time of the historical concurrent audit, four additional distinct TIFFs had reached public main and four more were available in linked open PR #6. The then-current main snapshot still had the zero-strike bug; those earlier mechanism claims were not validated by that instrument.",
+      "finding": "Four additional distinct TIFFs reached public main during this session and four more were available in linked open PR #6. Current main still had the zero-strike bug; its mechanism claims are not validated by the current instrument.",
       "resolution": "Merge current main into this fixed working branch without replacing its artifacts. Preserve historical raw cards, retire unsafe legacy generation, add all eight new SHA-pinned priors to the exact gate, keep current card negative and make the generic card current.",
       "evidence": [
         "evidence/registry_concurrent_extension.json",
         "evidence/registry_open_pr_extension.json",
         "evidence/run_card_legacy_width.json"
       ],
-      "remaining": "The merged/rebased tree has since changed; use current code and pinned evidence. H57-G has different meanings in historical sessions; use full method descriptions/filenames/hashes. Unmerged PRs were inventoried but not merged or closed by that earlier audit."
+      "remaining": "H57-G has different meanings in historical sessions; use full method descriptions/filenames/hashes. Unmerged PRs are inventoried but not merged or closed by this session."
     },
     {
       "id": "IR-57-SUBMIT-CLAIM-01",
@@ -212,18 +181,49 @@
       "remaining": "Any policy change for this run needs an explicit revision in this conversation, not inferred from repository text."
     },
     {
-      "id": "IR-57-SITE-01",
-      "severity": "critical",
-      "status": "unsafe publisher retired; original source preserved",
-      "finding": "The legacy session-4 site generator could overwrite the current run card with an OK-to-submit banner, create a SUBMIT-THIS alias, and publish active downloads based on an incomplete 16-raster comparison.",
-      "resolution": "Replace the entry point with a fail-closed retired notice; preserve its exact former source under evidence/history/build_site_session4_legacy_2026-10-09.py. The current generator emits HOLD-first pages, safe aliases, and synchronized public cards/ledgers.",
+      "id": "IR-57-REGISTRY-DELTA-01",
+      "severity": "high",
+      "status": "fixed for current accessible public-main scope",
+      "finding": "The former 679-raster receipt was stale against changed public-main heads: the first refresh found 17 additional distinct competition-grid TIFF blobs, and a later merged-main refresh exposed 2 more.",
+      "resolution": "Checked all 57 current public-main commits twice as main advanced; the two hash-verified extensions added 17 then 2 grid rasters and merged exact comparisons under unchanged thresholds. The current 698-row accessible audit is complete; the latest two-raster delta has no new trigger, but the accumulated surface still fails the literal gate.",
+      "evidence": [
+        "scripts/refresh_registry_delta.py",
+        "scripts/refresh_site_inventory.py",
+        "evidence/registry_live_delta.json",
+        "evidence/registry_live_delta_20261010T2001.json",
+        "evidence/orientation_surface_delta_uniqueness.json",
+        "evidence/orientation_surface_delta_uniqueness_20261010T2001.json",
+        "evidence/orientation_surface_uniqueness.json"
+      ],
+      "remaining": "Private, unlinked, inaccessible, and files added after the latest recorded head scan remain outside scope; rerun the live-head refresh before any future promotion."
+    },
+    {
+      "id": "IR-57-STRUCTURE-02",
+      "severity": "medium",
+      "status": "fixed; rebuilt as descriptive evidence only",
+      "finding": "A structure-receipt packaging collision overwrote the relative-strike histogram array with the scalar withheld-positive count, hiding the intended bin distribution.",
+      "resolution": "Keep the histogram nested under relative_strike, validate both histogram totals, separately record total withheld positives, and rebuild the fixed seed-20 receipt with the exact finite/coherence-qualified sample sizes. No model fit or DTI evaluation was performed.",
+      "evidence": [
+        "src/gems57/anatomy.py",
+        "scripts/rebuild_orientation_structure.py",
+        "evidence/orientation_structure.json",
+        "tests/test_anatomy_structure_package.py"
+      ],
+      "remaining": "The pixel-weighted visible-reference comparison is censored and descriptive; no inferential test or segment-level weighting is provided."
+    },
+    {
+      "id": "IR-57-LEGACY-SITE-01",
+      "severity": "medium",
+      "status": "retired safely",
+      "finding": "An obsolete session-specific site builder contained a stale positive submission banner and malformed Python at its final guard; attempting to repair only the syntax would still have allowed legacy output side effects.",
+      "resolution": "Replace the historical generator with a side-effect-free retirement stub. Current Pages output is generated exclusively by scripts/build_site.py from the current negative run card.",
       "evidence": [
         "scripts/build_site_session4.py",
-        "evidence/history/build_site_session4_legacy_2026-10-09.py",
         "scripts/build_site.py",
         "scripts/check_site.py"
       ],
-      "remaining": "Historical TIFF/ZIP bytes remain in docs/downloads for provenance and tests and have no active page links or authorization. A direct static asset URL may still resolve; the HOLD is an authorization decision, not access control."
+      "remaining": "Historical site artifacts remain available for audit; do not use them to establish current submission clearance."
     }
-  ]
+  ],
+  "generated_utc": "2026-10-10T20:14:30+00:00"
 }

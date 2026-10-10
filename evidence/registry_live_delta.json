@@ -1,0 +1,519 @@
+{
+  "evidence_class": "REGISTRY-DELTA-MEASUREMENT",
+  "generated_utc": "2026-10-10T20:38:44.704659+00:00",
+  "owner": "buffedlizard55-lab",
+  "candidate": "gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+  "candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+  "prior_rasters_reused": 698,
+  "new_unique_blobs_examined": 0,
+  "new_grid_rasters_added": 0,
+  "new_grid_raster_rows": {},
+  "new_raster_comparison_file": null,
+  "new_raster_comparison_summary": null,
+  "changed_repositories": [
+    "12GEMSDOE",
+    "57GEMSDOE"
+  ],
+  "current_public_main_snapshots": [
+    {
+      "repo": "11GEMSDOE",
+      "commit": "7d8133c69cb39363f394fc2d4a6d4919112c4270"
+    },
+    {
+      "repo": "12GEMSDOE",
+      "commit": "eaf8615fff18f809e919b2ad14be3f93197d3f36"
+    },
+    {
+      "repo": "13GEMSDOE",
+      "commit": "92ee6f074323f161eed837b80ec3ee5b662e26f5"
+    },
+    {
+      "repo": "14GEMSDOE",
+      "commit": "88dd365dc7469c316f0f7c3bdd18fd90c5825a07"
+    },
+    {
+      "repo": "15GEMSDOE",
+      "commit": "8c94b0f83f22999032ba8a29c523af7ae6cf5e76"
+    },
+    {
+      "repo": "16GEMSDOE",
+      "commit": "2565805c0731a870335e54a64dce6fba01377e63"
+    },
+    {
+      "repo": "17GEMSDOE",
+      "commit": "6fc71d19d49dca4960d5434bd81b6dd06fcc030a"
+    },
+    {
+      "repo": "18GEMSDOE",
+      "commit": "809482f4634e49eb552547554f0682cdcbb4d467"
+    },
+    {
+      "repo": "19GEMSDOE",
+      "commit": "a3aca62fdb2be428f4245e22570cbc54082b2c15"
+    },
+    {
+      "repo": "20GEMSDOE",
+      "commit": "50edbbad9bb05541f8a8ca8e62b75210fb5b2954"
+    },
+    {
+      "repo": "55GEMSDOE",
+      "commit": "d145969f74f272199b983521a8519e09b25eefd5"
+    },
+    {
+      "repo": "56GEMSDOE",
+      "commit": "1da1ba0ef210a17f6dae1fd24747e0c4f1c91eae"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "commit": "f244d606dcaf3eea26ba6afd6c8a476482bc177c"
+    },
+    {
+      "repo": "5GEMSDOE",
+      "commit": "f0dd3472d5307c296ee875d826412c49a153f74d"
+    },
+    {
+      "repo": "6GEMSDOE",
+      "commit": "e2fe3f41c6f5dd2dcb2fc91958ee67698f114ada"
+    },
+    {
+      "repo": "7GEMSDOE",
+      "commit": "9d8b5d55b674629f7b0e0e486269917c0fa2dade"
+    },
+    {
+      "repo": "8GEMSDOE",
+      "commit": "e24abefab237115d67e0afb2acfde01c6304783f"
+    },
+    {
+      "repo": "GEMSDOE",
+      "commit": "dcbbb192e56b2b32c0a131eba791dc363305d4a3"
+    },
+    {
+      "repo": "GEMSDOE10",
+      "commit": "4d08f51aa59bf57b4041474ff1463c9e737c8090"
+    },
+    {
+      "repo": "GEMSDOE2",
+      "commit": "d11f1117d8cb1192e7e69687947efdcb2f9ed9e6"
+    },
+    {
+      "repo": "GEMSDOE21",
+      "commit": "43e8510cfb37b85460a986d4d1b7796625de0d31"
+    },
+    {
+      "repo": "GEMSDOE22",
+      "commit": "96481093a7f73e5c13669e45574213d70c204ba0"
+    },
+    {
+      "repo": "GEMSDOE23",
+      "commit": "ebf8fb20ccd1b57edeb0d4677c6a3ed777154072"
+    },
+    {
+      "repo": "GEMSDOE24",
+      "commit": "07345ea0604953d7efb858d9cfbc21e20c7aca0b"
+    },
+    {
+      "repo": "GEMSDOE25",
+      "commit": "0e8b8234fdaec8eb4d80569ed8e5ea003780e5af"
+    },
+    {
+      "repo": "GEMSDOE26",
+      "commit": "ba071a372c970531fca4d024b7fc06631d9ce604"
+    },
+    {
+      "repo": "GEMSDOE27",
+      "commit": "3dc3a6b00d85dfb3b221812a10d6e4f060147792"
+    },
+    {
+      "repo": "GEMSDOE28",
+      "commit": "fa0edf3fd3b55e9dc0725b6013167b30ddf5e464"
+    },
+    {
+      "repo": "GEMSDOE29",
+      "commit": "bbf6d0e1ab64d322b7f0fa2051d323ed8a6acd3d"
+    },
+    {
+      "repo": "GEMSDOE3",
+      "commit": "512371de5d30162813803cdccbd4931ceeb065c7"
+    },
+    {
+      "repo": "GEMSDOE30",
+      "commit": "1f9ac110d5f1a4fac7957fe814267a0be964dd20"
+    },
+    {
+      "repo": "GEMSDOE31",
+      "commit": "cf13282fcd86290f1539f0a86446c8ba7205a79b"
+    },
+    {
+      "repo": "GEMSDOE32",
+      "commit": "3ae286af599fdf86dbb0f333591f8273efcee806"
+    },
+    {
+      "repo": "GEMSDOE33",
+      "commit": "f52533110fe62cd03e77f1228e9e5ecac412c463"
+    },
+    {
+      "repo": "GEMSDOE34",
+      "commit": "cfa8f6b626401a38259a4b809d1bfe7d65d682e6"
+    },
+    {
+      "repo": "GEMSDOE35",
+      "commit": "cd4f9f62c46597dd1e45e6289b1b4c6774c86f82"
+    },
+    {
+      "repo": "GEMSDOE36",
+      "commit": "c9ad59ec6f969ed931d089a03044c1567a633e84"
+    },
+    {
+      "repo": "GEMSDOE37",
+      "commit": "8d07e2a111b68c49b3588c5f4409be11ae7ba9b5"
+    },
+    {
+      "repo": "GEMSDOE38",
+      "commit": "526d65add01b32bc7354264703501692aec0ef95"
+    },
+    {
+      "repo": "GEMSDOE39",
+      "commit": "381c6a923ffea8fbcd87eb2d5825449f09f29f0e"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "commit": "5dc28f67a096c511b0aafbf06c235146c5dcf50e"
+    },
+    {
+      "repo": "GEMSDOE40",
+      "commit": "0d2ab31e0b75e29c627ee93614940904b457f8c6"
+    },
+    {
+      "repo": "GEMSDOE41",
+      "commit": "aee9fc5ee0d11ed7532cf5d8042f376ca68b1357"
+    },
+    {
+      "repo": "GEMSDOE42",
+      "commit": "13de50d79a668530c52d17c0aacba62c840fc903"
+    },
+    {
+      "repo": "GEMSDOE43",
+      "commit": "e641e0c1dd7cf4cb7a4013440e39fa8541250139"
+    },
+    {
+      "repo": "GEMSDOE44",
+      "commit": "c1019c4b534e327952f638a8bdce2ecc74923f50"
+    },
+    {
+      "repo": "GEMSDOE45",
+      "commit": "f90a332ab577877eaa4f533748cc1a24dc58741d"
+    },
+    {
+      "repo": "GEMSDOE46",
+      "commit": "537700976521311457fc74679095a17837429e4b"
+    },
+    {
+      "repo": "GEMSDOE47",
+      "commit": "5558d6d3daef3fe0a7b26b6928d7335645c5ae99"
+    },
+    {
+      "repo": "GEMSDOE48",
+      "commit": "268ec599f51c517cc3485da077c24d83af5be81d"
+    },
+    {
+      "repo": "GEMSDOE49",
+      "commit": "8ab48f22d02d8be3b8e01d843ed7dc7967b87c44"
+    },
+    {
+      "repo": "GEMSDOE50",
+      "commit": "74668975f7a83d90094184b0905f94d9698c8a3a"
+    },
+    {
+      "repo": "GEMSDOE51",
+      "commit": "51028ff37fc28fc9b3c83dfc1f426195195f3878"
+    },
+    {
+      "repo": "GEMSDOE52",
+      "commit": "ebb1d343f8f5a5a33a5835776add16b668f6fbea"
+    },
+    {
+      "repo": "GEMSDOE53",
+      "commit": "609cb0081db6ff9ca8ac3843c84ec3657a970c02"
+    },
+    {
+      "repo": "GEMSDOE54",
+      "commit": "ba2a5ba59d3f3e0edf456dfc09874b5d38ca443a"
+    },
+    {
+      "repo": "GEMSDOE9",
+      "commit": "1fdfddcefd291889e618adf8c42922e4893d514d"
+    }
+  ],
+  "current_main_commit_errors": [],
+  "current_open_pr_heads": [
+    {
+      "pr": 16,
+      "repo": "57GEMSDOE",
+      "branch": "arena/6fc4c9e2-57gemsdoe",
+      "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
+    },
+    {
+      "pr": 19,
+      "repo": "57GEMSDOE",
+      "branch": "arena/0d13e6b3-57gemsdoe",
+      "commit": "4b826f702216c553068c3c1bf6deb727cf957e8a"
+    }
+  ],
+  "previous_open_pr_heads_checked": [
+    {
+      "pr": 16,
+      "repo": "57GEMSDOE",
+      "branch": "arena/6fc4c9e2-57gemsdoe",
+      "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
+    },
+    {
+      "pr": 17,
+      "repo": "57GEMSDOE",
+      "branch": "arena/02d0e8d8-57gemsdoe",
+      "commit": "ca569dfaaf85657bb80a5e72ddaa9ceb9829f731"
+    }
+  ],
+  "open_pr_head_discovery_errors": [],
+  "open_pr_tree_errors": [],
+  "changed_open_pr_heads": [
+    {
+      "pr": 19,
+      "repo": "57GEMSDOE",
+      "branch": "arena/0d13e6b3-57gemsdoe",
+      "commit": "4b826f702216c553068c3c1bf6deb727cf957e8a"
+    }
+  ],
+  "closed_or_replaced_open_pr_heads": [
+    {
+      "pr": 17,
+      "repo": "57GEMSDOE",
+      "branch": "arena/02d0e8d8-57gemsdoe",
+      "commit": "ca569dfaaf85657bb80a5e72ddaa9ceb9829f731"
+    }
+  ],
+  "changed_tree_errors": [],
+  "fetch_errors": [],
+  "too_large_unchecked_tiffs": [],
+  "non_grid_tiffs_examined": [],
+  "input_auxiliary_tiffs_excluded_by_existing_policy": [
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/bridge/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/external/derived_sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/external/sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/official/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/official/labels.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE",
+      "path": "data/official/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/bridge/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/external/derived_sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/external/sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/official/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/official/labels.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR16",
+      "path": "data/official/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/bridge/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/external/derived_sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/external/sgmc_faults_100m.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/official/existing_faults.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/official/labels.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    },
+    {
+      "repo": "57GEMSDOE-PR19",
+      "path": "data/official/sample_submission.tif",
+      "reason": "input/auxiliary source raster under existing registry policy"
+    }
+  ],
+  "candidate_output_excluded_from_its_own_prior_registry": [
+    "57GEMSDOE-PR16:docs/downloads/archive/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "57GEMSDOE-PR16:downloads/archive/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "57GEMSDOE-PR19:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "57GEMSDOE-PR19:downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "57GEMSDOE:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+    "57GEMSDOE:downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif"
+  ],
+  "new_aliases_for_prior_blobs": {
+    "078005f13defe72457b083ba39b8ad1e22006650": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE29__wormrank-d28.tif"
+    ],
+    "10b2354d4ac8af863419284f1e694a02db180711": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE28__h36-1-rung30-blind-r1.tif"
+    ],
+    "17a76895f68174cc93f3cb1597d25686f6d6bc67": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif"
+    ],
+    "2a266668251f1f2f1013972329f484886e3b412a": [
+      "57GEMSDOE-PR19:docs/downloads/archive/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif"
+    ],
+    "37dd960345125bc943542e16994b2736ff0e9e22": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE28__h38-1-hf-euler-r30-r1.tif"
+    ],
+    "3fa20e5def84596794539ba9c3304c9c9277f04f": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif"
+    ],
+    "49ad427035b2267dcd3e8acee10bdc85d5dbe322": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif"
+    ],
+    "609ff4ba35f74998157ce8f746f9b7640c650077": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57k-interaction-20261009T202126Z-4ff6a91ee912.tif"
+    ],
+    "628f00967b5aac2e800e0fe352984969c3b21598": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif"
+    ],
+    "6b6d31807e501af4749bbaeb43702450893fd720": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif"
+    ],
+    "728350947fae686cc5f1666b1b840e5e4b58872b": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif"
+    ],
+    "78ccf32bf1ce0970b95ba803a120a476c8b65727": [
+      "57GEMSDOE-PR19:docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-nan.tif"
+    ],
+    "7e422e07d5d3aac9ceb187a154bacc0f72a79f5c": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif"
+    ],
+    "831a4d3deaa6e467192f0363fac2b5ff08dc8b77": [
+      "57GEMSDOE-PR19:docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+      "57GEMSDOE-PR19:registry/rasters/57GEMSDOE__parallel-12000dots-zeros.tif"
+    ],
+    "901d9db3f008f0f5c3be9c314524ccc8e95fb43e": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE33__h33d-analog-tip-stepover-r30.tif"
+    ],
+    "918e6e23d71e27475e784fa4593c866d2d915743": [
+      "57GEMSDOE-PR19:registry/rasters/19GEMSDOE__h19-5-powerlaw-budget-multiline.tif"
+    ],
+    "94106cce41eb878e3744818a71d99affde67028d": [
+      "57GEMSDOE-PR19:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif"
+    ],
+    "9b3579fc25391668c27c594f8541dadf515694e5": [
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif",
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-nan.tif"
+    ],
+    "a59665a7fad659dcc6a45e5e7e71059586c3247a": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE30__d28-poisson300m-offcat-44090.tif"
+    ],
+    "a9caa7f9c20875ee3851461855ed58fb57306773": [
+      "57GEMSDOE-PR19:docs/downloads/h57-selective-anatomy-40000-20261009T201645Z-9363b8feb372.tif"
+    ],
+    "ab3927ff4ade32bba6fb1954a3d6aa9295734077": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE49__gate_ortho_w0.25-40k.tif"
+    ],
+    "b0453464e72b845efe6094a6b65748c732fa2830": [
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+      "57GEMSDOE-PR19:registry/rasters/57GEMSDOE__h57-anatomy-enechelon-zeros.tif"
+    ],
+    "bfb7e86d046dd178c3d6ab60522861b5464dd420": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE25__dotted-h19-5-d2-8.tif"
+    ],
+    "cb9c830503f83dae0fccf0d5ee5fb4d0241cfc40": [
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif"
+    ],
+    "cc24e3df03a214012fb85f3fd02790ddd178dd30": [
+      "57GEMSDOE-PR19:registry/rasters/19GEMSDOE__h19-4-multiline-corroborated.tif"
+    ],
+    "cdab993cdfe6a7bfbf25af95d72fd4d855819e77": [
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+      "57GEMSDOE-PR19:registry/rasters/57GEMSDOE__faultzone-anatomy-60000px-prev.tif"
+    ],
+    "d40a02cc77d2156638ee1e776cbc970182680b86": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+      "57GEMSDOE-PR19:registry/rasters/57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif"
+    ],
+    "dc9e2b713d11cd951e93c5b313b03ed184ab1168": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57L-anatomy-tight25k-20261009T202544Z-ed72d2ce6b1b.tif"
+    ],
+    "df213d013958aed1878222d076d5113c26652f19": [
+      "57GEMSDOE-PR19:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif"
+    ],
+    "e79b7bdb633369c724628e30efba6de60c1d25d9": [
+      "57GEMSDOE-PR19:registry/rasters/GEMSDOE36__anderson-geothermal-pinn-38854.tif"
+    ],
+    "fff3348bf3f24c21ff572d273a7d42b69e63bb24": [
+      "57GEMSDOE-PR19:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif"
+    ]
+  },
+  "complete_accessible_scan": true,
+  "surface_protocol_pass": false,
+  "current_audit_raster_count": 698,
+  "uniqueness_audit_file": "orientation_surface_uniqueness.json",
+  "submission_slots_used": 0
+}
