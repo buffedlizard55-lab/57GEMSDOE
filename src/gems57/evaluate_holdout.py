@@ -29,7 +29,8 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
     """Exact fold DTI plus additive (TPw, FPw, FNw, withheld count) per spatial block.
 
     ``fold`` must provide pixel-exact ``visible`` and ``truth`` masks, plus the
-    scored ``region``.  ``valid`` may further restrict that region.  ``origin``
+    scored ``region``. Visible pixels are masked from scoring even if the truth
+    input includes them. ``valid`` may further restrict that region. ``origin``
     maps a cropped fold to global grid coordinates; this makes equal 20 km cells
     from different folds/draws merge before bootstrap resampling.
     """
@@ -45,8 +46,6 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
     valid_ = np.asarray(valid, bool)
     if any(a.shape != p.shape for a in (region, visible, truth, valid_)):
         raise ValueError("prediction, fold masks and valid must be aligned")
-    if np.any(visible & truth):
-        raise ValueError("withheld truth must not overlap the visible-catalogue mask")
     scored_region = region & valid_
     result, terms = metric.dti_spatial_terms(
         p, truth, valid=scored_region, known=visible, origin=origin,

@@ -6,13 +6,13 @@ Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of
 
 **H57-B HOLD. No H57-B TIFF was generated or validated. Download NOT CLEARED. Submit NO.** The read-only current [run card](evidence/run_card.json) records this negative disposition; there was no upload or weekly-slot selection.
 
-The preregistered H57-B arm comparison is non-comparable because the candidate emitted fewer dots than its control in four of eight cells. The 6,772-dot matched-mass replay is a post-hoc sensitivity only, not a promotion result. The surface gate passed against all 667 indexed rasters (max Spearman 0.4229689); the final 27,088-dot in-memory candidate then failed the literal forward-overlap gate at 0.7270747 > 0.70, so work stopped. No reverse-overlap exemption was applied. See [H57-B evidence](evidence/exp_h57b_holdout.json), [matched sensitivity](evidence/exp_h57b_holdout_matched6772.json), and the single source-of-truth run card.
+The preregistered H57-B arm comparison is non-comparable because the candidate emitted fewer dots than its control in four of eight cells. The 6,772-dot matched-mass replay is a post-hoc sensitivity only, not a promotion result. The frozen pre-placement receipt recorded a pass against 667 indexed rasters (max Spearman 0.4229689); the final 27,088-dot in-memory candidate then failed the literal forward-overlap gate at 0.7270747 > 0.70, so work stopped. That pre-placement scan was not refreshed against the later 679-row public inventory. No reverse-overlap exemption was applied, and the final-dot failure still blocks promotion. See [H57-B evidence](evidence/exp_h57b_holdout.json), [matched sensitivity](evidence/exp_h57b_holdout_matched6772.json), and the single source-of-truth run card.
 
 The older H57-K orientation analysis is historical and separate; it also does not clear an artifact. Its corrected repeat found no demonstrated binary HOLDOUT-DTI gain. Do not reuse its earlier local download wording.
 
 The integrated Session-5 independent audit finds a literal universal blocker: the SHA-pinned dense witness covers every allowable cell, so any nonempty candidate has 1.0 forward overlap. The historical 40,000-dot H57-R2 file separately measured 0.711325 on a 19-raster local check. Same-lane candidates receive no exemption; the partial check is not clearance. All such TIFFs remain archive-only. See [the witness receipt](evidence/session5_witness_verification.json) and [the local diagnostic](evidence/independent_candidate_check.json).
 
-Integration verification after conflict resolution: 95 tests passed, 2 skipped, 0 failures; 30-page site check passed with `submission_cleared: false` and no direct download files. Existing `PendingDeprecationWarning`s remain for Affine `*` matrix multiplication in `faultzone.py`/Rasterio. The run-card SHA-256 remained `27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923` across the guarded site build.
+Latest-main integration verification: 100 tests passed, 2 skipped, 0 failures (102 collected); the 30-page site check passed with `submission_cleared: false`, valid local formatting/links, and no direct download files. `evidence/run_card.json` remained byte-identical at SHA-256 `27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923` across the guarded site build. No H57-B TIFF was generated, no experiment/data fetch was run, and no slot was selected. Existing `PendingDeprecationWarning`s remain for Affine `*` matrix multiplication in `faultzone.py`/Rasterio.
 
 ## Non-negotiable protocol
 
@@ -31,7 +31,7 @@ Integration verification after conflict resolution: 95 tests passed, 2 skipped, 
 
 ## Closed previous blockers
 
-- Five feature parts restored, eight hashes verified, actual 19-band cache ready. CPU lane; no GPU requirement.
+- Historical data-preparation evidence records a five-part public-bridge assembly, but the current checkout lacks `data/official/training_features.tif`; `evidence/data_preparation.json` marks its expected pin unverified. No data was fetched here. Re-verify the exact pin before any future experiment. The fault-zone-anatomy implementation itself remains CPU-capable; no GPU is required.
 - Shared evaluator API, missing `fn`, host-strike fallback, empty-visible behavior and trace/sense indexing corrected.
 - Missing `/tmp` registry caches replaced with ignored immutable workspace caches; missing/incomplete manifests fail closed.
 - Unsafe in-sample/oracle-budget builder and unauthorized `>=0.5` / universal-probe uniqueness helpers retired.

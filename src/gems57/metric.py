@@ -164,6 +164,32 @@ def dti_binary(pred_bool, truth, valid=None, known=None,
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
+def max_cover(pred, truth):
+    """Return official-kernel credit per truth pixel, per-pixel truth credit, and distance.
+
+    The first result is row-major over truth pixels; the second and third match
+    the prediction grid. Empty truth returns zero credit everywhere rather than
+    treating the raster boundary as an implicit truth source.
+    """
+    p = np.asarray(pred, dtype=np.float64)
+    g = np.asarray(truth, bool)
+    if p.ndim != 2 or p.shape != g.shape:
+        raise ValueError("grid shape mismatch")
+    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
+        raise ValueError("predictions must be finite in [0,1]")
+    yy, xx = np.nonzero(g)
+    credit = np.zeros(len(yy), np.float64)
+    h, w = p.shape
+    for j, i, weight in zip(OFF_DY, OFF_DX, OFF_K):
+        ny, nx = yy + j, xx + i
+        valid = (ny >= 0) & (ny < h) & (nx >= 0) & (nx < w)
+        credit[valid] = np.maximum(
+            credit[valid], p[ny[valid], nx[valid]] * weight)
+    distance = (distance_transform_edt(~g) if len(yy)
+                else np.full(p.shape, np.inf, dtype=np.float64))
+    return credit, kernel(distance), distance
+
+
 def _dti_vectors(pred, truth, active):
     """Shared exact-metric primitive: truth credits and emitted-pixel FP weights."""
     p = np.asarray(pred, dtype=np.float64)

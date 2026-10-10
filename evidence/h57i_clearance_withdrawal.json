@@ -46,5 +46,6 @@
   "verdict": "negative",
   "stop_required": true,
   "candidate_rank_variation": true,
-  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only."
+  "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.",
+  "legacy_metric_semantics": "Legacy Jaccard and reverse-overlap fields are diagnostics only; they do not affect duplicate_count, unique, or the current literal rule (Spearman > 0.90 OR candidate-forward 3-pixel overlap > 0.70)."
 }

@@ -37,7 +37,7 @@ def main():
     out = {"evidence_class": "RASTER-MEASUREMENT (not a score)", "radius_px": RADIUS_PX,
            "limits": dict(forward_overlap=OVERLAP_LIMIT, rho_full_footprint=RHO_LIMIT),
            "diagnostics_only": {"jaccard": "reported, not a gate"},
-           "registry_scope": "19 local files in registry/rasters; full 679 inventory NOT available here",
+           "registry_scope": "19-file local cache slice; the 679-row indexed public owner-repository inventory is not materialized here as rasters and is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent",
            "release_disposition": "NOT CLEARED — local scan is incomplete and the cited dense witness blocks every nonempty candidate under the literal forward-overlap gate",
            "known_dense_witness": {"sha256": WITNESS_SHA256,
                                    "positive_pixels": witness["positive_pixels"],

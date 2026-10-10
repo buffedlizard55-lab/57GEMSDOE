@@ -69,7 +69,7 @@ Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orie
 
 The first new attempt was stopped; its [aborted receipt/log](evidence/orientation_attempt1-aborted.json) is explicitly untrusted. The same three predeclared hypotheses were repeated only after the tooling repair. Earlier 0.2279/0.2517 readings and claims that constant orientation features might help in interaction are **not valid current mechanism evidence**. Historical artifacts remain for learning, not recommendations. Unsafe in-sample/oracle-budget builders and relaxed uniqueness helpers are retired.
 
-Other shared repairs: metric/evaluator API mismatch, missing `fn`, vector endpoint sampling, zero-based sense-record indexing, exact finite-support/Euclidean-radius uniqueness, and missing-registry fail-closed behavior. [Audit ledger](evidence/irregularities_current.json). The historical session-2 rebuild script is retained for provenance, was not executed here, writes only to the archive, and now applies the literal full-registry gate with same-lane rasters included; Jaccard and reverse overlap are diagnostics only.
+Other shared repairs: metric/evaluator API mismatch, missing `fn`, vector endpoint sampling, zero-based sense-record indexing, exact finite-support/Euclidean-radius uniqueness, and missing-registry fail-closed behavior. [Audit ledger](evidence/irregularities_current.json). The historical session-2 rebuild script is retained for provenance, was not executed here, writes only to the archive, and now applies the literal indexed-inventory gate with same-lane rasters included; Jaccard and reverse overlap are diagnostics only. A few older JSON receipts preserve fields named `jaccard_limit` or `duplicate_by_jaccard`; those are historical measurements and do not affect duplicate counts, the `unique` verdict, or the current rho-or-forward-overlap rule.
 
 ## Why the reported GEMSDOE32 0.2778 is not a scientific explanation
 
@@ -96,11 +96,13 @@ python3 -m venv .venv
 
 The H57-B holdout and registry audits are frozen evidence in `evidence/`; do not rerun model,
 feature, allocation, or registry-refresh experiments under the exhausted budget. The site build is
-render-only and must not overwrite the H57-B run card. Large data/caches are Git-ignored. The
-prior H57-K study restored an 8-pin, 19-band 418,912,844-byte feature stack; its hashes establish
-bridge-byte transport identity, **not independently authenticated official origin**. That study's
-TIF remains held despite local format PASS. CPU execution is sufficient for the fault-zone-anatomy
-lane.
+render-only and must not overwrite the H57-B run card. Large data/caches are Git-ignored. A prior
+H57-K receipt records an 8-pin, 19-band 418,912,844-byte feature stack assembled from five public
+GitHub parts; those hashes establish bridge-byte transport identity, **not independently
+authenticated official origin**. In this checkout, `data/official/training_features.tif` is absent
+and `evidence/data_preparation.json` correctly records the expected pin as unverified. No data was
+fetched and no experiment was rerun during this merge. The prior TIFF remains held despite local
+format PASS. CPU execution is sufficient for the fault-zone-anatomy lane.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
@@ -108,7 +110,7 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
 - [Four pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. Relative magnetic strike tested; multi-scale bends, two-host superposition and sense transitions not run.
-- [57 pinned sibling sites](evidence/site_inventory.json); [679 conservative grid-raster inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
+- [57 pinned sibling sites](evidence/site_inventory.json); [679-raster indexed public owner-repository inventory](evidence/registry_refreshed.json). It is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 

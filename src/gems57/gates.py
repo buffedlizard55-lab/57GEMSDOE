@@ -1,9 +1,11 @@
 """On-disk format validation and compatibility access to the literal shared gate.
 
 All-finite export is a conservative project policy, not proof of portal behavior.
-Uniqueness delegates to gems57.uniqueness with the FULL manifest. The inherited
->=0.5 continuous-support and saturated-prior exemptions were unauthorized and
-are retired; no second or private clearance policy remains.
+Uniqueness delegates to gems57.uniqueness with the indexed public
+owner-repository inventory manifest. This inventory is not organizer-complete;
+private, unlinked, external, and otherwise inaccessible rasters may be absent.
+The inherited >=0.5 continuous-support and saturated-prior exemptions were
+unauthorized and are retired; no second or private clearance policy remains.
 """
 from __future__ import annotations
 
@@ -141,20 +143,22 @@ def uniqueness_report(emitted, priors, top=None):
     """Retired partial-inventory helper. Never clear a lane from a curated subset."""
     raise RuntimeError("Legacy novelty/0.5-support gate is retired. Use "
                        "gems57.uniqueness.compare_array_to_registry with the "
-                       "complete evidence/registry_refreshed.json inventory.")
+                       "indexed public owner-repository inventory in "
+                       "evidence/registry_refreshed.json; not organizer-complete.")
 
 
 def lane_uniqueness_report(candidate, footprint, priors=None, *, sample, phase,
                            registry_index=None, rank_limit=.90, near_limit=.70, log=None):
     """Compatibility interface delegates ONLY to the one literal shared gate.
 
-    A caller must provide the full inventory manifest, not just `priors`.
+    A caller must provide the pinned public owner-repository inventory
+    manifest, not just `priors`. This inventory is not organizer-complete.
     The pre-placement SURFACE phase tests positive support too. No >=0.5
     threshold, density exemption or reverse-overlap clearance is applied.
     """
     from .uniqueness import compare_array_to_registry
     if registry_index is None:
-        raise RuntimeError("A complete registry manifest is required; partial priors cannot clear a lane")
+        raise RuntimeError("A public owner-repository inventory manifest is required; partial priors cannot clear a lane")
     if priors is not None:
         raise ValueError("Pass registry_index only; legacy partial priors are not a clearance source")
     if phase not in ('surface', 'dots') or rank_limit != .90 or near_limit != .70:

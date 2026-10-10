@@ -11420,5 +11420,6 @@
   "scope": "All hash-verified accessible inventory entries; not inaccessible/private/unlinked files. Reverse overlap is diagnostic only.",
   "phase": "surface",
   "reviewed_utc": "2026-10-09T20:38:13.929685+00:00",
-  "submission_slots_used": 0
+  "submission_slots_used": 0,
+  "legacy_metric_semantics": "Legacy Jaccard and reverse-overlap fields are diagnostics only; they do not affect duplicate_count, unique, or the current literal rule (Spearman > 0.90 OR candidate-forward 3-pixel overlap > 0.70)."
 }

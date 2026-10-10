@@ -10,7 +10,7 @@
 <section class="stat-grid"><div class="stat"><span>Historical local format</span><strong>15/15</strong><small>Archived file; local checks only</small></div>
 <div class="stat"><span>Dots</span><strong>62,872</strong><small>None on the mapped catalogue</small></div>
 <div class="stat"><span>Worst Spearman</span><strong>0.0246</strong><small>Required &le;0.90 · PASS</small></div>
-<div class="stat"><span>Worst forward overlap</span><strong>41%</strong><small>Discriminating rasters only · literal FAIL</small></div></section>
+<div class="stat"><span>Worst forward overlap</span><strong>99.8%</strong><small>All compared rasters · literal FAIL</small></div></section>
 <section><h2>Archived artifact metadata — no download link</h2><p>The TIFF and ZIP are retained under <code>docs/downloads/archive/</code> for provenance only. They are not cleared for download or submission.</p>
 <p class="small">Filename <code>gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif</code> · SHA256 <code>749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6</code> · 854,692 bytes. Historical note (105/140 chars): <code>57GEMSDOE fault-zone anatomy: strand-expression damage zone, 62872 dots, 0 on-catalogue, sha f38e36d82033</code></p></section>
 <section><h2>The H57-K hypothesis was tested; its gate did not pass.</h2>
@@ -32,5 +32,5 @@
 <section><h2>A template bug found and fixed here</h2>
 <p><code>gems57.emit.allocate_by_marginal_bar</code> breaks at the first candidate failing the DTI test, but marginal credit depends on local kernel saturation, not rank, so on this surface's flat plateaus it stopped at 3,405 dots. <code>allocate_patient</code> keeps the identical test and stops only after <code>patience</code> consecutive rejections: 62,872 dots, surrogate DTI 0.0832 &rarr; 0.2927. Fixed once, in the shared template, with regression tests; the original function is retained for callers and comparison.</p></section></main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-10 20:22 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<p>Site built 2026-10-10 21:02 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 <a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>
