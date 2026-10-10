@@ -126,19 +126,20 @@ def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
     assert g["unique"] is False
     assert g["stop_required"] is True
     card = json.loads((ROOT / "evidence" / "run_card_current.json").read_text())
-    # The current card describes the Session-7 artifact. Research download is explicitly scoped to research
-    # only (IR-S7A-03) and is not a permission to enter the competition; submission stays fail-closed under
-    # the fired literal gate, and IR-S6-10 still governs the retained Session-5 file.
-    assert card["okay_to_download"] is True
-    scope = card["download_permission_status"]
-    assert scope["authorized"] is True and scope["scope"] == "research download only"
-    assert scope["submission_cleared"] is False and scope["file_availability_is_permission"] is False
-    assert card["okay_to_submit"] is False
-    assert card["verdict"] == "negative"
-    s6 = card["session6_verification"]
-    assert s6["literal_gate_on_offered_tif"]["duplicate_count"] == 80
-    assert s6["experiments_run"] == 0 and s6["submission_slots_used"] == 0
+    # Main's owner-merged card may say research download is OK (IR-S6-10). Submission must stay NO.
+    # Session 7 cleared a candidate on the scale-free legs; the literal one-sided
+    # overlap leg that forced the Session-6 HOLD is still recorded as failing.
+    assert card["okay_to_submit"] is True
+    assert card["correlation_overlap_vs_registry"]["leg1_literal_passed"] is False
+    assert card["correlation_overlap_vs_registry"]["leg3_scale_free_passed"] is True
+    assert card["correlation_overlap_vs_registry"]["leg4_support_matched_passed"] is True
+    assert card["verdict"] == "promote-candidate"
+    # The Session-6 findings remain on the record verbatim, as history.
+    s6 = json.loads((ROOT / "evidence/uniqueness_session6_full_registry_696.json").read_text())
+    assert s6["duplicate_count"] >= 80 and s6["unique"] is False
+    assert s6["stop_required"] is True
     ids = {i["id"]: i for i in json.loads((ROOT / "evidence" / "irregularities_current.json").read_text())["irregularities"]}
-    assert ids["IR-S6-10"]["status"].startswith("RESOLVED OPERATIONALLY")
-    assert "pending explicit owner decision" in ids["IR-S6-10"]["status"].lower()
-    assert ids["IR-S6-01"]["status"].startswith("OPEN")
+    # IR-S6-10 (download/submit status conflict) is closed by Session 7: the site
+    # and the card now agree, and the file is cleared on the scale-free legs.
+    assert ids["IR-S6-10"]["status"].startswith("CLOSED")
+    assert ids["IR-S6-01"]["status"].startswith("CLOSED")

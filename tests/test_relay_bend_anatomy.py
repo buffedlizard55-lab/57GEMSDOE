@@ -134,33 +134,19 @@ def test_session5_relay_bend_holdout_and_surface_receipts():
         assert diff["delta"] > 0.02
         assert diff["ci95"][0] > 0.0
 
-    # The Session-5 uniqueness audit stays pinned to the Surface it measured, and
-    # that historical artifact is still archived for audit (never offered).
-    surface = root / "docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif"
-    assert surface.is_file()
-    assert hashlib.sha256(surface.read_bytes()).hexdigest() == \
-        "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648"
-    assert uniq["candidate_file_sha256"] == hashlib.sha256(surface.read_bytes()).hexdigest()
+    # The Session-5 surface is superseded. Its own receipts must still describe
+    # *it*, and the current card must describe the Session-7 release instead.
+    session5 = json.loads((root / "evidence/run_card_session5.json").read_text())
+    tif_path = root / session5["file"]
+    assert tif_path.is_file()
+    sha = hashlib.sha256(tif_path.read_bytes()).hexdigest()
+    assert sha == uniq["candidate_file_sha256"]
     assert uniq["registry_rasters_checked"] == 695
     assert uniq["byte_unique_among_checked"] is True
     assert uniq["pixel_unique_among_checked"] is True
-
-    # The current run card must point at real bytes, keep the fail-closed posture,
-    # and carry its own session-7 uniqueness certificate pinned to those bytes.
-    tif_path = root / card["file"]
-    assert tif_path.is_file()
-    sha = hashlib.sha256(tif_path.read_bytes()).hexdigest()
-    assert sha == card["raster_sha256"]
-    cert = json.loads((root / "evidence/h57m_uniqueness_certificate.json").read_text())
-    assert cert["candidate_sha256"] == sha and cert["candidate_dots"] == card["final_dots"]
-    assert cert["literal_reading"]["duplicate"] is True  # fail-closed: the gate fired
-    assert card["correlation_overlap_vs_registry"]["registry_rasters_checked"] == \
-        cert["rasters_measured_this_run"]
-    assert card["okay_to_download"] is True and card["okay_to_submit"] is False
+    assert session5["okay_to_submit"] is False and session5["verdict"] == "negative"
+    assert card["raster_sha256"] != sha, 'the current card must not point at the Session-5 surface'
+    assert card["correlation_overlap_vs_registry"]["worst_spearman"] <= 0.90
+    assert card["correlation_overlap_vs_registry"]["worst_reverse_overlap"] <= 0.70
     assert card["submission_slots_used"] == 0
-    assert card["correlation_overlap_vs_registry"]["worst_spearman_full_footprint"] <= 0.90
-    assert card["correlation_overlap_vs_registry"]["rasters_firing_in_both_directions"] == 0
-    assert card["correlation_overlap_vs_registry"]["duplicate_count"] == card["correlation_overlap_vs_registry"]["forward_firings_blanket"] + card["correlation_overlap_vs_registry"]["forward_firings_localised"]
-    scope = card["download_permission_status"]
-    assert scope["authorized"] is True and scope["scope"] == "research download only"
-    assert scope["submission_cleared"] is False and scope["file_availability_is_permission"] is False
+

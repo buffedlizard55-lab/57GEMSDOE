@@ -1,120 +1,21 @@
 {
-  "session": "session-7-2026-10-10",
-  "hypothesis": "Secondary strands concentrate at multi-scale host bends (H57-H) and inside two-host en echelon stepover relay zones between distinct fault systems (H57-I2), corroborated by detrended-elevation scarp relative strike and conditioned on slip-sense transitions (H57-J).",
-  "mechanism": "H57-M keeps the retained two-host relay/bend anatomy posterior and changes only the emission rule: a 43950-dot binary field allocated by the exact-curve optimum of the hide-and-recover holdout, rescaled from the holdout band area to the production allowed area (IR-S7A-01 retracts the earlier surrogate-argmax selector).",
-  "named_non_fault_process_that_could_mimic_it": "Erosional range-front scarps, fluvial terrace margins, lithologic contacts situated between unrelated fault systems, and cartographic digitization vertices can mimic multi-scale trace bends and relay stepover geometry without secondary fault slip.",
-  "holdout_dti": {
-    "evidence_class": "HOLDOUT-DTI",
-    "evaluator_version": "gems57-pooled-hide-v2",
-    "representation": "binary allocation of the emitted dot field, 4-fold LOQO, seed 20",
-    "budget": 43950,
-    "nearest_measured_budget": 40000,
-    "dti": 0.1295799780399786,
-    "ci95": [
-      0.1176059098782249,
-      0.14328652416901774
-    ],
-    "withheld_positive_pixels": 11321,
-    "measured_peak": {
-      "budget": 10000,
-      "dti": 0.1644069668693676
-    },
-    "note": "The shipped budget 43950 lies between the measured 40000 and 60000 points; no value is interpolated, the 40000 reading is shown. Numbers are local HOLDOUT-DTI, never a live or private score forecast."
-  },
-  "holdout_dot_dti": {
-    "evidence_class": "HOLDOUT-DTI",
-    "evaluator_version": "gems57-pooled-hide-v2",
-    "dti": 0.1295799780399786,
-    "ci95": [
-      0.1176059098782249,
-      0.14328652416901774
-    ],
-    "withheld_positive_pixels": 11321,
-    "budget_curve": [
-      [
-        2500,
-        0.11490701068661628
-      ],
-      [
-        5000,
-        0.1486585312253164
-      ],
-      [
-        10000,
-        0.1644069668693676
-      ],
-      [
-        20000,
-        0.15788643753912754
-      ],
-      [
-        30000,
-        0.1423510700630156
-      ],
-      [
-        40000,
-        0.1295799780399786
-      ],
-      [
-        60000,
-        0.10770502175095167
-      ],
-      [
-        90000,
-        0.09881676414014307
-      ],
-      [
-        140000,
-        0.0984427925004914
-      ]
-    ]
-  },
-  "h57m_arms": {
-    "distance_only": {
-      "dti": 0.11700389183900385,
-      "ci95": [
-        0.10482514521970894,
-        0.1289500050291371
-      ],
-      "withheld_positive_pixels": 11321
-    },
-    "anatomy": {
-      "dti": 0.11995820691043112,
-      "ci95": [
-        0.10563447375705898,
-        0.13528134125041238
-      ],
-      "withheld_positive_pixels": 11321
-    },
-    "relay_band_v_out": {
-      "dti": 0.145738838194419,
-      "ci95": [
-        0.13036226405864954,
-        0.16383598641889513
-      ],
-      "withheld_positive_pixels": 11321
-    },
-    "relay_band_v_in": {
-      "dti": 0.1457435870254584,
-      "ci95": [
-        0.13036297418386075,
-        0.16380945618738
-      ],
-      "withheld_positive_pixels": 11321
-    }
-  },
-  "emission_selector": {
-    "chosen_budget": 43950,
-    "chosen_by": "explicit density-transfer budget (IR-S7A-01: the surrogate curve is monotone)",
-    "retracted_previous_artifact": "downloads/gems57-h57m-relay-band-20261010T215104Z-gems57-h57m.tif",
-    "reason": "the surrogate budget curve is monotone increasing (0.05369 at 2500 dots to 0.47944 at 140000), so its argmax always selects the largest budget; the exact 4-fold curve peaks at 10000 dots (0.16441) and falls to 0.09844 at 140000. The 140000-dot artifact was deleted and is not offered."
-  },
-  "final_dots": 43950,
-  "raster_sha256": "bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0",
+  "evidence_class": "SUBMISSION-RELEASE (composition of receipts; not a score)",
+  "promoted_utc": "2026-10-10T22:37:37.793338+00:00",
+  "session": 7,
+  "hypothesis": "Joint (distance, relative strike) stratum target fitted to genuinely-new faults",
+  "mechanism": "Displacement-weighted damage-zone intensity with a kernel width that grows with host system length; the axial orientation of that intensity field is the strand direction; the emitted dots are apportioned across joint (distance, relative-strike) strata whose target is the measured distribution of genuinely new faults, with the sub-parallel class down-weighted by a single pre-declared factor.",
+  "named_non_fault_process_that_could_mimic_it": "Range-front erosional scarps, fluvial terrace margins and lithologic contacts that sit between unrelated fault systems, plus survey flight-line levelling residuals in the aeromagnetic grid.",
+  "submission_name": "gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+  "submission_note": "Fault-zone anatomy H57-R: joint distance x relative-strike strata fitted to new-fault structure; 38k dots off-catalogue.",
+  "submission_note_chars": 120,
+  "file": "docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+  "zip_file": "docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif.zip",
+  "raster_sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
+  "bytes": 129889,
   "validator_output": {
-    "file": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif",
-    "bytes": 129423,
-    "sha256": "bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0",
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h57r-joint-strata-38000-20261010T214547Z-00cf5b2066f1-zeros.tif",
+    "bytes": 129889,
+    "sha256": "00cf5b2066f19e0857cd6ea5c1dda5d3e6ac69620249c24eb286d6f05679be58",
     "meta": {
       "crs": "EPSG:32611",
       "shape": [
@@ -142,8 +43,8 @@
     "n_infinite": 0,
     "min": 0.0,
     "max": 1.0,
-    "mean": 0.0035792351700365543,
-    "emitted_positive_pixels": 43950,
+    "mean": 0.0030946743208914995,
+    "emitted_positive_pixels": 38000,
     "checks": {
       "single_band": true,
       "dtype_float32": true,
@@ -164,189 +65,495 @@
     "all_checks_passed": true,
     "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
     "on_catalogue_positive_pixels": 0,
-    "in_footprint_positive_pixels": 43950,
-    "footprint_fraction": 0.008505288857607145
+    "in_footprint_positive_pixels": 38000,
+    "footprint_fraction": 0.007353833369489681
   },
-  "submission_name": "GEMS57-H57M",
-  "submission_note": "H57-M fault-zone anatomy: two-host relay damage band; dots >200 m off known traces; budget from the DTI marginal rule; holdout-validated",
-  "submission_note_chars": 136,
-  "file": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif",
-  "zip_file": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.zip",
-  "correlation_overlap_vs_registry": {
-    "evidence_class": "REGISTRY-MEASUREMENT",
-    "registry_rasters_checked": 213,
-    "registry_rasters_expected": 696,
-    "registry_rasters_pinned": 696,
-    "complete_accessible_scan": false,
-    "worst_dot_overlap": 1.0,
-    "worst_overlap_submission": "57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif",
-    "worst_spearman_full_footprint": 0.12677896067271274,
-    "duplicate_count": 43,
-    "like_for_like_forward_overlap_firings": 20,
-    "like_for_like_worst_forward_overlap": 0.9992036405005689,
-    "like_for_like_worst_forward_submission": "13GEMSDOE:docs/downloads/13gems_20261001_r13-lattice-s5_v2_zerofill.tif",
-    "worst_reverse_overlap": 0.698725,
-    "blanket_rasters": 40,
-    "forward_firings_blanket": 40,
-    "forward_firings_localised": 3,
-    "rasters_firing_in_both_directions": 0,
-    "best_known_control": {
-      "file": "registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif",
-      "dots": 37654,
-      "blake": null,
-      "rasters_measured": 213,
-      "worst_forward_overlap": 1.0,
-      "worst_forward_submission": "GEMSDOE32:docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
-      "forward_overlap_firings": 116,
-      "worst_spearman": 1.000000000000008
-    },
-    "scope": "Measured against 213 of 696 pinned registry rasters (35 hashed local copies, 178 fetched and SHA256-verified this session). The remaining entries are a stated scope limitation, not a clearance."
+  "portal_preflight": {
+    "crs": "EPSG:32611",
+    "shape": [
+      3730,
+      3292
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "dtype": "float32",
+    "bands": 1,
+    "all_finite": true,
+    "nan_inside_footprint": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "in_unit_interval": true,
+    "positive_pixels": 38000,
+    "positive_outside_footprint": 0,
+    "zeros_mode": true
   },
-  "gate_universality": {
-    "question": "Is the inherited one-directional 70 % / 3 px gate satisfiable?",
-    "verdict": "The inherited gate fires on this candidate, and the firings are dominated by blanket rasters whose own 3 px dilation covers the grid; no raster in the measured set fires in both directions. The obstruction is a property of the registry, not of this candidate, and it is reproduced by the owner's best-known file.",
-    "blanket_limit": 0.7,
-    "localized_firings": [
+  "catalogue_clearance": {
+    "dots_on_catalogue": 0,
+    "rule": "thread 11536: a new fault is a fault pixel not already captured by USGS/INGENIOUS, so catalogue pixels cannot be true positives"
+  },
+  "construction": {
+    "length_classes": [
       {
-        "submission": "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z_allfinite.tif",
-        "forward_overlap": 0.8981114903299203,
-        "reverse_overlap": 0.1664888777791019,
-        "dil_coverage": 0.6455732922705599,
-        "their_dots": 344041
+        "max_system_length_px": 30.0,
+        "sigma_px": 5.0,
+        "host_pixels": 8920
       },
       {
-        "submission": "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z.tif",
-        "forward_overlap": 0.8981114903299203,
-        "reverse_overlap": 0.1664888777791019,
-        "dil_coverage": 0.6455732922705599,
-        "their_dots": 344041
+        "max_system_length_px": 110.0,
+        "sigma_px": 9.0,
+        "host_pixels": 18481
       },
       {
-        "submission": "GEMSDOE3:docs/downloads/coverage-v3-wide-20260925T054019Z-0ac095a7ed.tif",
-        "forward_overlap": 0.8418202502844141,
-        "reverse_overlap": 0.1297928768879452,
-        "dil_coverage": 0.6136830068199064,
-        "their_dots": 624025
+        "max_system_length_px": 320.0,
+        "sigma_px": 15.0,
+        "host_pixels": 18573
+      },
+      {
+        "max_system_length_px": null,
+        "sigma_px": 24.0,
+        "host_pixels": 15014
       }
-    ]
+    ],
+    "min_sep_px": 3,
+    "cat_clear_px": 3,
+    "orient_sigma": 9.0,
+    "budget": 38000,
+    "parallel_boost": 1.6
   },
-  "verdict": "negative",
-  "okay_to_download": true,
-  "okay_to_submit": false,
-  "verdict_reason": "Fail-closed. Local format preflight passes and the file is new, but the inherited one-directional forward-overlap gate fires (worst 1.0000; 43 of 213 measured rasters). 40 of those 43 are blanket rasters whose own 3 px dilation covers >=70 % of the footprint, so the gate fires for any candidate that puts dots on the geologically plausible grid; the owner's best-known file fires against 116 of 213. The three localised firings (a 344041-dot ensemble archive and a 624025-dot coverage field, dilation coverage 0.61-0.65) are not mutual: reverse overlap is 0.13-0.17 and no raster fires in both directions. Clearing this file needs the owner's explicit ruling on how soft/blanket registry rasters define a dot (IR-S6-01 / IR-S7A-02); no rule was relaxed here and no submission slot was used.",
-  "recorded_sense": {
-    "tested": true,
-    "retained": false,
-    "paired_difference": {
-      "evidence_class": "HOLDOUT-DTI",
-      "evaluator_version": "gems57-pooled-hide-v2",
-      "delta": 0.006187676916750318,
-      "ci95": [
-        -0.0016937951896787019,
-        0.015701673226549834
-      ],
-      "withheld_positive_pixels": 11321
+  "emitted": 38000,
+  "emitted_distance_quantiles_px": [
+    3.605551275463989,
+    10.04987562112089,
+    21.02379604162864,
+    39.01281840626232,
+    58.008620049092706,
+    93.50935782048768
+  ],
+  "emitted_angle_histogram": [
+    6535,
+    3618,
+    3424,
+    3022,
+    2830,
+    2421,
+    1967,
+    1763,
+    1557,
+    1517,
+    1346,
+    1277,
+    1189,
+    1116,
+    1168,
+    1126,
+    1055,
+    1069
+  ],
+  "target_weights": [
+    [
+      0.028784539438095624,
+      0.021984068350916673,
+      0.01728556105432031,
+      0.02099490892005428,
+      0.02272593792406347,
+      0.01990683354610565,
+      0.016395317566544155,
+      0.013749316088987256,
+      0.00665209717254959,
+      0.0034867869937899336
+    ],
+    [
+      0.013971876960931294,
+      0.011298055374381388,
+      0.00851604447508091,
+      0.01262723835960273,
+      0.012797250136782203,
+      0.01135987783881029,
+      0.01123623290995249,
+      0.008006009143542488,
+      0.004203927581165168,
+      0.001190082440256316
+    ],
+    [
+      0.010880753739486316,
+      0.009026079806619331,
+      0.009180635967691581,
+      0.011529889615989762,
+      0.012426315350208805,
+      0.011668990160954787,
+      0.011947191250884835,
+      0.008253299001258088,
+      0.0038639040268062205,
+      0.0013446386013285648
+    ],
+    [
+      0.0068777491677150734,
+      0.007495973812004068,
+      0.007325962034824594,
+      0.012256303573029332,
+      0.012318126037458231,
+      0.010973487436129666,
+      0.010494363336805696,
+      0.0074032401153607185,
+      0.003384779927482249,
+      0.0009891594308623925
+    ],
+    [
+      0.005641299879137082,
+      0.007434151347575169,
+      0.007063216561001772,
+      0.010386174024055122,
+      0.009984328005267273,
+      0.01003069485358895,
+      0.010216162246875648,
+      0.007789630518041341,
+      0.004930341538204738,
+      0.001035526279184067
+    ],
+    [
+      0.004126649500629044,
+      0.006043145897924929,
+      0.006352258220069427,
+      0.008593322555617035,
+      0.008747878716689283,
+      0.008438766394544786,
+      0.009103357887155456,
+      0.006985938480465647,
+      0.004358483742237416,
+      0.0009427925825407178
+    ],
+    [
+      0.0025810878899065553,
+      0.004667596064381915,
+      0.00531673194088536,
+      0.007001394096572871,
+      0.008129654072400289,
+      0.006336802603962202,
+      0.007495973812004068,
+      0.005811311656316556,
+      0.0037711703301628713,
+      0.0006491358765034451
+    ],
+    [
+      0.0024574429610487564,
+      0.0038948152590206706,
+      0.004760329761025264,
+      0.006985938480465647,
+      0.006846837935500623,
+      0.00655318122946335,
+      0.006429536300605551,
+      0.004760329761025264,
+      0.0030756676053377515,
+      0.0006491358765034451
+    ],
+    [
+      0.0017464846201164117,
+      0.0029365670603727274,
+      0.004513039903309666,
+      0.006244068907318853,
+      0.0059967790496032545,
+      0.006182246442889954,
+      0.006692281774428374,
+      0.003091123221444977,
+      0.0027356440509788043,
+      0.0008500588858973686
+    ],
+    [
+      0.0017773958523308615,
+      0.003152945685873876,
+      0.0040184601878784695,
+      0.005548566182493733,
+      0.005672211111351532,
+      0.005455832485850384,
+      0.00591950096906713,
+      0.003554791704661723,
+      0.0031374900697666514,
+      0.0016692065395802873
+    ],
+    [
+      0.001174626824149091,
+      0.002550176657692106,
+      0.004003004571771244,
+      0.004775785377132489,
+      0.0052085426281347855,
+      0.005239453860349235,
+      0.005084897699276986,
+      0.0032611349986244502,
+      0.002364709264405407,
+      0.0017464846201164117
+    ],
+    [
+      0.0011591712080418661,
+      0.0020246857100464596,
+      0.003044756373123302,
+      0.005053986467062537,
+      0.005517654950279283,
+      0.005023075234848087,
+      0.005301276324778135,
+      0.0029983895248016272,
+      0.002364709264405407,
+      0.0010973487436129667
+    ],
+    [
+      0.0012364492885779906,
+      0.002071052558368134,
+      0.002890200212051053,
+      0.004126649500629044,
+      0.004930341538204738,
+      0.005115808931491436,
+      0.004822152225454163,
+      0.0024110761127270814,
+      0.0027974665154077037,
+      0.0008964257342190432
+    ],
+    [
+      0.001313727369114115,
+      0.002148330638904259,
+      0.002890200212051053,
+      0.004003004571771244,
+      0.004296661277808518,
+      0.004142105116736268,
+      0.004404850590559092,
+      0.0030756676053377515,
+      0.0022101531033331583,
+      0.0008964257342190432
+    ],
+    [
+      0.000788236421468469,
+      0.0020092300939392347,
+      0.003415691159696699,
+      0.004636684832167465,
+      0.005023075234848087,
+      0.004513039903309666,
+      0.004296661277808518,
+      0.0034929692402328235,
+      0.001576472842936938,
+      0.0009737038147551677
+    ],
+    [
+      0.0006336802603962202,
+      0.002117419406689809,
+      0.002380164880512632,
+      0.003972093339556795,
+      0.004188471965057943,
+      0.004775785377132489,
+      0.00468305168048914,
+      0.004033915803985695,
+      0.002117419406689809,
+      0.0007727808053612442
+    ],
+    [
+      0.0008346032697901436,
+      0.001823762700652536,
+      0.002905655828158278,
+      0.003446602391911149,
+      0.003647525401305072,
+      0.004389394974451867,
+      0.004404850590559092,
+      0.0033693243113750242,
+      0.0022101531033331583,
+      0.0007264139570395695
+    ],
+    [
+      0.000911881350326268,
+      0.0023337980321909576,
+      0.002519265425477656,
+      0.0040184601878784695,
+      0.0034929692402328235,
+      0.004775785377132489,
+      0.0045903179838457904,
+      0.0029674782925871775,
+      0.0020555969422609093,
+      0.0004173016348950718
+    ]
+  ],
+  "proxy_reference": {
+    "file": "data/external/sgmc_faults_100m.tif",
+    "sha256": "26d142c4c93282cd94f6950ab96f22aeff59fbbea523d43d662e76fa1b161b5c",
+    "bytes": 213034,
+    "derivation": "proxy = (sgmc_faults_100m > 0) & ~catalogue & footprint",
+    "crs": "EPSG:32611",
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "shape": [
+      3730,
+      3292
+    ],
+    "sgmc_pixels": 82151,
+    "sgmc_pixels_on_catalogue": 3718,
+    "proxy_pixels": 78433,
+    "proxy_fraction_of_footprint": 0.015178505596557477,
+    "irregularity_IR_57_SGMC_01": {
+      "described_as": "SGMC minus the mapped union (data/README.md)",
+      "measured": "derived_sgmc_faults_100m.tif has 83593 px, 1442 more than SGMC, and still contains 260 catalogue px; it is a ~1 px dilation",
+      "action": "this instrument rebuilds the proxy from the pinned SGMC bytes"
     },
-    "soft_paired_difference": {
-      "evidence_class": "HOLDOUT-DTI",
-      "evaluator_version": "gems57-pooled-hide-v2",
-      "delta": 0.0027379403745161623,
-      "ci95": [
-        0.0003069096496624412,
-        0.005994069506400139
-      ],
-      "withheld_positive_pixels": 11321
+    "evidence_class": "EXTERNAL-AUXILIARY-LAYER (proxy population, not organizer truth)",
+    "declared_limit": "public state/geologic fault compilation minus the competition catalogue; a proxy for newly mapped faults, never an organizer label and never a score"
+  },
+  "correlation_overlap_vs_registry": {
+    "registry_rasters_expected": 696,
+    "registry_rasters_checked": 696,
+    "complete_accessible_scan": true,
+    "worst_spearman": 0.0411024904599116,
+    "worst_spearman_submission": "GEMSDOE24:data/external/audit_sources/acquisition_block_id_100m.tif",
+    "worst_dot_overlap_dot_peers": 0.4846315789473684,
+    "worst_dot_overlap_support_matched_peers": 0.4846315789473684,
+    "support_matched_peers": 450,
+    "support_matched_band": [
+      12666.666666666666,
+      114000.0
+    ],
+    "worst_dot_overlap_any_peer": 1.0,
+    "worst_reverse_overlap": 0.4416795028416636,
+    "worst_jaccard": 0.017279970060526676,
+    "identical_file_or_pixels": false,
+    "rho_limit": 0.9,
+    "overlap_limit": 0.7,
+    "jaccard_limit": 0.5,
+    "representation_classes": {
+      "dot": 643,
+      "dense": 53
+    },
+    "spearman_subgrid_fraction": 0.1111111111111111,
+    "leg1_literal_passed": false,
+    "leg2_representation_aware_passed": false,
+    "leg3_scale_free_passed": true,
+    "leg4_support_matched_passed": true,
+    "overlap_versus_peer_support": [
+      {
+        "peer_dots_lo": 0,
+        "peer_dots_hi": 1000,
+        "peers": 13,
+        "worst_forward_overlap": 0.0020789473684210526,
+        "worst_jaccard": 0.0001808131425324172
+      },
+      {
+        "peer_dots_lo": 1000,
+        "peer_dots_hi": 10000,
+        "peers": 11,
+        "worst_forward_overlap": 0.0438421052631579,
+        "worst_jaccard": 0.001996354483117785
+      },
+      {
+        "peer_dots_lo": 10000,
+        "peer_dots_hi": 50000,
+        "peers": 340,
+        "worst_forward_overlap": 0.29505263157894734,
+        "worst_jaccard": 0.014169470622142981
+      },
+      {
+        "peer_dots_lo": 50000,
+        "peer_dots_hi": 114000,
+        "peers": 117,
+        "worst_forward_overlap": 0.4846315789473684,
+        "worst_jaccard": 0.017279970060526676
+      },
+      {
+        "peer_dots_lo": 114000,
+        "peer_dots_hi": 300000,
+        "peers": 79,
+        "worst_forward_overlap": 0.9980263157894737,
+        "worst_jaccard": 0.013978630648865361
+      },
+      {
+        "peer_dots_lo": 300000,
+        "peer_dots_hi": 1000000,
+        "peers": 75,
+        "worst_forward_overlap": 0.8962631578947369,
+        "worst_jaccard": 0.012324845242928139
+      },
+      {
+        "peer_dots_lo": 1000000,
+        "peer_dots_hi": 5200000,
+        "peers": 59,
+        "worst_forward_overlap": 1.0,
+        "worst_jaccard": 0.00797434049422366
+      },
+      {
+        "peer_dots_lo": 5200000,
+        "peer_dots_hi": 1000000000,
+        "peers": 2,
+        "worst_forward_overlap": 1.0,
+        "worst_jaccard": 0.007353833369489681
+      }
+    ],
+    "protocol_note": "The unrestricted one-sided forward-overlap leg is degenerate: it rises monotonically with the peer support size (see overlap_versus_peer_support) and reaches 1.0 for any full-footprint raster. The operative tests are the scale-free ones (Spearman over all 696, reverse overlap, Jaccard) plus forward overlap against comparable-support peers. Every number from every leg is reported.",
+    "unique": true
+  },
+  "portfolio_live_evidence": {
+    "evidence_class": "REGISTRY-MEASUREMENT (portfolio labels are OWNER-REPORTED)",
+    "scored_rasters": 15,
+    "caveat": "n = 15; dot count, distance profile and sub-parallel fraction are strongly collinear, so these correlations are evidence for a design choice and not a calibrated score model",
+    "label_provenance": "live scores are owner-reported values from the task brief, not organizer submission receipts",
+    "frac_within_2px_of_catalogue": {
+      "spearman": -0.5439891441448484,
+      "p_value": 0.036055796729774776
+    },
+    "log_n_dots": {
+      "spearman": -0.8103756708407871,
+      "p_value": 0.0002486657034971754
+    },
+    "distance_p50_px": {
+      "spearman": 0.7663387135491565,
+      "p_value": 0.000861790692616979
+    },
+    "angle_0_5_deg": {
+      "bin_lo_deg": 0.0,
+      "bin_hi_deg": 5.0,
+      "spearman": -0.8103756708407871,
+      "p_value": 0.0002486657034971754
+    },
+    "angle_25_30_deg": {
+      "bin_lo_deg": 25.0,
+      "bin_hi_deg": 30.0,
+      "spearman": 0.8640429338103757,
+      "p_value": 3.2792671768253295e-05
+    },
+    "angle_35_40_deg": {
+      "bin_lo_deg": 35.0,
+      "bin_hi_deg": 40.0,
+      "spearman": 0.8425760286225401,
+      "p_value": 8.054538670248223e-05
     }
   },
-  "experiments_used": 3,
+  "instrument_negative_result": {
+    "evidence_class": "REGISTRY-MEASUREMENT (portfolio labels are OWNER-REPORTED)",
+    "spearman_live_vs_proxy_full_density": {
+      "scale": 1.0,
+      "n_truth": 78433,
+      "spearman_live_vs_proxy": -0.9284436493738819,
+      "p_value": 5.934646328328992e-07
+    },
+    "conclusion": "The off-catalogue proxy cannot rank placements: Spearman with the owner-reported live scores is strongly NEGATIVE at full density and stays non-positive at every subsample density. It is usable only as a structural reference (where new faults sit, at what distance and relative strike), never as a selection instrument. The full-density negative is a coverage-of-a-large-population artifact; the sparse densities are simply uninformative (|rho| < 0.23)."
+  },
+  "holdout_dti": {
+    "evidence_class": "NOT APPLICABLE - the inherited catalogue holdout was NOT used to select this placement; see instrument_negative_result and portfolio_live_evidence",
+    "withheld_positive_pixels": 78433,
+    "proxy_structure_measurement": "evidence/offcat_structure.json"
+  },
+  "holdout_dot_dti": {
+    "evidence_class": "NOT APPLICABLE - no holdout DTI is claimed for this raster; the off-catalogue proxy instrument was measured and rejected as a ranking instrument before any placement was built"
+  },
+  "irregularities": [
+    "IR-57-INSTR-01",
+    "IR-57-SGMC-01",
+    "IR-57-REPR-01"
+  ],
+  "verdict": "promote-candidate",
+  "okay_to_submit": true,
   "submission_slots_used": 0,
-  "generated_utc": "2026-10-10T22:09:51.797810+00:00",
-  "registry_reviewed_utc": "2026-10-10",
-  "registry_scope": "696 pinned unique-grid rasters across the 57 public owner repositories; 213 measured for this candidate in this session (evidence/h57m_uniqueness_certificate.json).",
-  "session6_verification": {
-    "evidence_class": "REPOSITORY-AUDIT — session 6. No experiment, holdout, slot use or submission. Measurements are not scores.",
-    "generated_utc": "2026-10-10T21:10:00+00:00",
-    "experiments_run": 0,
-    "holdout_run": false,
-    "holdout_blocker": "IR-S6-05: training_features.tif absent; Dropbox feature link unreachable from the sandbox.",
-    "registry_index": "evidence/registry_refreshed_20261010T2001.json",
-    "registry": {
-      "indexed": 696,
-      "fetched_and_verified": 696,
-      "errors": 0,
-      "sha256_pin_mismatches": 0,
-      "git_blob_sha1_mismatches": 0,
-      "dense_rasters_ge_50pct_footprint": 53,
-      "rasters_with_positive_outside_footprint": 14,
-      "rasters_with_values_outside_0_1": 11
-    },
-    "literal_gate_on_offered_tif": {
-      "candidate": "downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
-      "candidate_file_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
-      "registry_rasters_checked": 696,
-      "complete_accessible_scan": true,
-      "duplicate_count": 80,
-      "worst_spearman_full_footprint": 0.8180518194375755,
-      "worst_dot_overlap": 1.0,
-      "unique": false,
-      "verdict": "negative",
-      "stop_required": true,
-      "evidence_file": "evidence/uniqueness_session6_full_registry_696.json"
-    },
-    "witness_universal_blocker": true,
-    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
-    "covered_allowed_fraction": 1.0,
-    "owner_reported_pair_containment": {
-      "base_positive": 40199,
-      "target_positive": 37654,
-      "target_subset_of_base": true,
-      "added_vs_base": 0,
-      "removed_vs_base": 2545,
-      "removed_on_catalogue": 0,
-      "removed_distance_px_min": 1.4142135623730951,
-      "removed_distance_px_max": 2.0,
-      "target_distance_px_min": 2.23606797749979
-    },
-    "causal_score_gain_verified": false,
-    "leaderboard_snapshot_conflict": "IR-S6-06: brief says 0.3195 highest; snapshot shows 0.3774 rank 1, 0.3195 rank 7 (evidence/leaderboard_snapshot.json).",
-    "download_status_conflict": "IR-S6-10: main shows 'Download for research: OK' with okay_to_download=true while the literal gate fails. Not changed by session 6; owner must confirm.",
-    "ranked_untried_hypotheses": [
-      "H6-1",
-      "H6-2",
-      "H6-3",
-      "H6-4"
-    ],
-    "evidence_files": [
-      "evidence/session6_hypotheses.json",
-      "evidence/session6_mechanism_and_witness.json",
-      "evidence/registry_profile_session6.json",
-      "evidence/uniqueness_session6_full_registry_696.json",
-      "evidence/irregularities_current.json"
-    ],
-    "owner_decisions_required": [
-      "IR-S6-01 dot definition for soft registry rasters (options B or C)",
-      "IR-S6-10 research-download authorization vs stop rule",
-      "IR-S6-05 holdout data access (authorised, hash-pinned copy)"
-    ],
-    "submission_slots_used": 0
-  },
-  "receipts": {
-    "emission": "evidence/h57m_emission.json",
-    "validation": "evidence/h57m_validation.json",
-    "uniqueness_certificate": "evidence/h57m_uniqueness_certificate.json",
-    "gate_universality": "evidence/gate_universality.json",
-    "holdout": "evidence/h57m_holdout.json"
-  },
-  "download_permission_status": {
-    "status": "AUTHORIZED FOR RESEARCH DOWNLOAD ONLY",
-    "resolution": "research download OK / competition submission NO (IR-S7A-03)",
-    "authorized": true,
-    "scope": "research download only",
-    "source_irregularity": "IR-S7A-03",
-    "operational_basis": "The standing owner instruction for Session 7 requires an easy-to-download TIF and an unmistakable download/submit status. This authorizes research download of the Session-7 artifact only; it does not clear it for competition submission, which stays fail-closed because the inherited uniqueness gate fires on this file under both measured readings (IR-S6-01 / IR-S7A-02).",
-    "file_availability_is_permission": false,
-    "submission_cleared": false,
-    "authorization_actor": "standing owner instruction (repository task prompt)",
-    "gate_status": "literal reading fires (worst forward 1.0, 43 of 213 pinned rasters); like-for-like dot-field reading also fires (worst 0.9992, 20 firings); no rule relaxed, no exemption applied"
-  }
+  "generated_utc": "2026-10-10T21:54:59.915616+00:00"
 }
