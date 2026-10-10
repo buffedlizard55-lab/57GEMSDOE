@@ -45,13 +45,13 @@ def evaluate(prediction, fold, valid, block_side=200, *, origin=(0, 0),
     truth = np.asarray(fold["truth"], bool)
     valid_ = np.asarray(valid, bool)
     if any(a.shape != p.shape for a in (region, visible, truth, valid_)):
-        raise ValueError("prediction, fold masks and valid must be aligned")
+        raise ValueError("prediction, fold masks and valid grid shape mismatch")
     scored_region = region & valid_
     result, terms = metric.dti_spatial_terms(
         p, truth, valid=scored_region, known=visible, origin=origin,
         global_shape=global_shape, block_side=block_side)
     if result["n_truth"] <= 0:
-        raise ValueError("a holdout fold must contain withheld positive pixels")
+        raise ValueError("a holdout fold must contain positives among its withheld positive pixels")
     result.update(
         tpw=result["tp"], fpw=result["fp"], fnw=result["fn"],
         emitted=result["n_emitted"],
@@ -98,6 +98,12 @@ def pooled_summary(terms_by_arm, draws=2000, seed=520810,
         raise ValueError("all arms need aligned per-spatial-block arrays of four terms")
     if any(not np.isfinite(a).all() or (a < -1e-8).any() for a in arrays.values()):
         raise ValueError("metric terms must be finite and non-negative")
+    truth_counts = [a[:, 3] for a in arrays.values()]
+    reference_counts = truth_counts[0]
+    if not np.allclose(reference_counts, np.rint(reference_counts), rtol=0.0, atol=1e-8):
+        raise ValueError("spatial-block truth counts must be integers")
+    if any(not np.array_equal(counts, reference_counts) for counts in truth_counts[1:]):
+        raise ValueError("all candidate/control arms must use the same integer truth count per spatial block")
     active = np.any(np.stack([a.sum(axis=1) > 0 for a in arrays.values()]), axis=0)
     arrays = {name: a[active] for name, a in arrays.items()}
     n_clusters = int(active.sum())

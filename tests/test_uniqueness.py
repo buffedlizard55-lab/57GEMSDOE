@@ -123,8 +123,9 @@ def test_jaccard_above_diagnostic_reference_alone_does_not_fail_literal_gate(tmp
     assert abs(row["spearman_full_footprint"]) < RHO_LIMIT
     assert not row["duplicate_by_rho"] and not row["duplicate_by_overlap"]
     assert result["unique"] and result["duplicate_count"] == 0
-    assert "jaccard_diagnostic_reference" in result
-    assert "jaccard_limit" not in result
+    assert result["jaccard_diagnostic_only"] is True
+    assert result["jaccard_limit"] == JACCARD_LIMIT
+    assert result["protocol"].endswith("no reverse-overlap exemption")
 
 
 def test_literal_preplacement_rho_gate_detects_an_exact_surface_copy(tmp_path):

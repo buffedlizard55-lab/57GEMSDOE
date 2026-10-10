@@ -118,8 +118,8 @@ def test_writer_accepts_valid_binary_prediction(tmp_path):
     pred[ys[:100], xs[:100]] = 1.0
     out = tmp_path / "ok.tif"
     rec = write_submission(out, pred, SAMPLE, valid, note="test note", name="test")
-    assert rec["ok"] if "ok" in rec else True
-    assert rec["validator"]["ok"]
-    assert rec["validator"]["n_nonzero"] == 100
+    assert rec["validator"]["all_checks_passed"]
+    assert rec["validator"]["emitted_positive_pixels"] == 100
+    assert rec["approved_for_weekly_slot"] is False
     assert (tmp_path / "ok.zip").exists()
     assert (tmp_path / "ok.json").exists()

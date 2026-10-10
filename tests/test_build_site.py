@@ -33,4 +33,6 @@ def test_held_card_has_no_research_download_link():
 
 def test_legacy_submission_builder_returns_refusal(capsys):
     assert build_submission.main() == 2
-    assert "Retired unsafe builder" in capsys.readouterr().err
+    stderr = capsys.readouterr().err
+    assert "Retired" in stderr and "no files" in stderr
+    assert "HOLD" in stderr and "NOT OK TO DOWNLOAD OR SUBMIT" in stderr

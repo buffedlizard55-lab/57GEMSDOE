@@ -1,0 +1,87 @@
+{
+  "file": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+  "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+  "bytes": 9960624,
+  "submission_name": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec",
+  "note": "Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b",
+  "note_chars": 121,
+  "validator": {
+    "path": "docs/downloads/archive/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+    "bytes": 9960624,
+    "sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 0.9014216065406799,
+    "mean": 0.0007488319533877075,
+    "n_nonzero": 2714823,
+    "mass": 9195.027346262845,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip",
+  "zip_sha256": "f98989a2122298ccebde4a27a06ddcb51a350084765ed8f69df10a712c36aa98",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "HISTORICAL RESEARCH ONLY; local format checks do not clear the literal uniqueness gate or authorize download/submission.",
+  "metadata": {
+    "kind": "pre-placement intensity surface",
+    "session": "session-5-2026-10-10",
+    "selected_arm": "relay_bend_anatomy",
+    "emission_performed": false,
+    "fitted_zone_px": 25.553865432739258,
+    "training_fraction_inside_zone": 0.9000088331419486,
+    "sense_retained": false,
+    "no_prior_raster_used_to_build_predictions": true,
+    "holdout_evidence": "relay_bend_holdout.json"
+  },
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "clearance_status": "NOT CLEARED \u2014 DO NOT DOWNLOAD OR SUBMIT",
+  "source_run_card": "evidence/history/run_card_session5_relay_bend_held.json",
+  "permission_withdrawal": {
+    "source_main_commit": "9565542c9ab19312c8dcebe97bd446ee43a0bc8a",
+    "source_card_claimed_okay_to_download": true,
+    "withdrawn": true,
+    "reason": "The same source-main uniqueness receipt reports unique=false, 81 threshold-triggered comparisons among 695 rasters, worst full-footprint Spearman 0.9753151923476495 (>0.90), and worst candidate-forward 3 px overlap 1.0 (>0.70). The literal gate is unchanged; no reverse-overlap or Jaccard exemption applies.",
+    "final_dots": "not_generated",
+    "submission": "not_made",
+    "weekly_slot": "not_selected"
+  }
+}

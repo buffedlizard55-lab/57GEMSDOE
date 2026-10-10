@@ -1,6 +1,6 @@
 {
   "evidence_class": "REGISTRY-MEASUREMENT",
-  "generated_utc": "2026-10-09T19:37:51.284262+00:00",
+  "generated_utc": "2026-10-10T19:58:45.875405+00:00",
   "owner": "buffedlizard55-lab",
   "repos_scanned": [
     "11GEMSDOE",
@@ -68,7 +68,7 @@
     },
     {
       "repo": "12GEMSDOE",
-      "commit": "53c3ed290a357a454e23c1b9d616652d03be049d"
+      "commit": "0125608623a696e85f0fc55c61ef31f458ffdfd3"
     },
     {
       "repo": "13GEMSDOE",
@@ -104,15 +104,15 @@
     },
     {
       "repo": "55GEMSDOE",
-      "commit": "7ac126b3e3edd249265635be7dc5ec0b8a1991b7"
+      "commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023"
     },
     {
       "repo": "56GEMSDOE",
-      "commit": "94ea54980bde5e0be3de086c8a1d57f99dad02fe"
+      "commit": "1da1ba0ef210a17f6dae1fd24747e0c4f1c91eae"
     },
     {
       "repo": "57GEMSDOE",
-      "commit": "d6e7675ede4417cfb6cfdedb52620a1b596e6231"
+      "commit": "5309c85a6334c5715791c548dafc2fabdacc8568"
     },
     {
       "repo": "5GEMSDOE",
@@ -152,7 +152,7 @@
     },
     {
       "repo": "GEMSDOE23",
-      "commit": "45ebd5cd6ca6099b1c0b6e2c61a1d5a325587b2a"
+      "commit": "ebf8fb20ccd1b57edeb0d4677c6a3ed777154072"
     },
     {
       "repo": "GEMSDOE24",
@@ -160,7 +160,7 @@
     },
     {
       "repo": "GEMSDOE25",
-      "commit": "5dd419e0d2231d92755ca814dfe533aa43ef6e94"
+      "commit": "0e8b8234fdaec8eb4d80569ed8e5ea003780e5af"
     },
     {
       "repo": "GEMSDOE26",
@@ -168,11 +168,11 @@
     },
     {
       "repo": "GEMSDOE27",
-      "commit": "560ca4eccb72216005c831dbf99c659742fb6de2"
+      "commit": "3dc3a6b00d85dfb3b221812a10d6e4f060147792"
     },
     {
       "repo": "GEMSDOE28",
-      "commit": "92c596c7f80d4ebe71a349485c3b82ed3a8ba5e3"
+      "commit": "fa0edf3fd3b55e9dc0725b6013167b30ddf5e464"
     },
     {
       "repo": "GEMSDOE29",
@@ -192,7 +192,7 @@
     },
     {
       "repo": "GEMSDOE32",
-      "commit": "128c89bc4d3e5211d4a3f920d5c329821cb131d2"
+      "commit": "3ae286af599fdf86dbb0f333591f8273efcee806"
     },
     {
       "repo": "GEMSDOE33",
@@ -276,7 +276,7 @@
     },
     {
       "repo": "GEMSDOE52",
-      "commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf"
+      "commit": "22091610117447c174b65d074d0df73d2a8b2e27"
     },
     {
       "repo": "GEMSDOE53",
@@ -308,24 +308,9 @@
       4508550
     ]
   },
-  "n_unique_grid_rasters": 679,
+  "n_unique_grid_rasters": 695,
   "complete_accessible_scan": true,
   "skipped": [
-    {
-      "repo": "GEMSDOE",
-      "path": "data/bridge/example_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE",
-      "path": "data/bridge/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE",
-      "path": "data/fixture/fixture_labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
     {
       "repo": "GEMSDOE3",
       "path": "legacy/data/bridge/example_submission.tif",
@@ -342,18 +327,13 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE4",
-      "path": "data/bridge/example_submission.tif",
+      "repo": "7GEMSDOE",
+      "path": "external/dem/lidar_scarp_features_u8.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE4",
-      "path": "data/bridge/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE4",
-      "path": "data/fixture/fixture_labels.tif",
+      "repo": "7GEMSDOE",
+      "path": "tests/fixture/fixture_labels.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
@@ -382,17 +362,17 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "5GEMSDOE",
+      "repo": "GEMSDOE",
       "path": "data/bridge/example_submission.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "5GEMSDOE",
+      "repo": "GEMSDOE",
       "path": "data/bridge/existing_faults.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "5GEMSDOE",
+      "repo": "GEMSDOE",
       "path": "data/fixture/fixture_labels.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
@@ -417,13 +397,33 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "7GEMSDOE",
-      "path": "external/dem/lidar_scarp_features_u8.tif",
+      "repo": "5GEMSDOE",
+      "path": "data/bridge/example_submission.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "7GEMSDOE",
-      "path": "tests/fixture/fixture_labels.tif",
+      "repo": "5GEMSDOE",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "5GEMSDOE",
+      "path": "data/fixture/fixture_labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "path": "data/bridge/example_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE4",
+      "path": "data/fixture/fixture_labels.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
@@ -547,6 +547,21 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
+      "repo": "GEMSDOE51",
+      "path": "data/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE51",
+      "path": "data/labels.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "GEMSDOE51",
+      "path": "data/sample_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
       "repo": "GEMSDOE48",
       "path": "data/external/h52_scarp3m_100m.tif",
       "reason": "input/auxiliary source raster, not submission"
@@ -657,21 +672,6 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
-      "repo": "GEMSDOE51",
-      "path": "data/existing_faults.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE51",
-      "path": "data/labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "GEMSDOE51",
-      "path": "data/sample_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
       "repo": "GEMSDOE54",
       "path": "data/external/derived_sgmc_faults_100m_u8.tif",
       "reason": "input/auxiliary source raster, not submission"
@@ -684,16 +684,6 @@
     {
       "repo": "GEMSDOE54",
       "path": "data/grid/labels.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "56GEMSDOE",
-      "path": "data/bridge/example_submission.tif",
-      "reason": "input/auxiliary source raster, not submission"
-    },
-    {
-      "repo": "56GEMSDOE",
-      "path": "data/bridge/existing_faults.tif",
       "reason": "input/auxiliary source raster, not submission"
     },
     {
@@ -732,6 +722,16 @@
       "reason": "input/auxiliary source raster, not submission"
     },
     {
+      "repo": "56GEMSDOE",
+      "path": "data/bridge/example_submission.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
+      "repo": "56GEMSDOE",
+      "path": "data/bridge/existing_faults.tif",
+      "reason": "input/auxiliary source raster, not submission"
+    },
+    {
       "sources": [
         "14GEMSDOE:docs/downloads/GEMS_r5-geom-horse-ensemble_20260929T154852Z_ccbe1de0_site_e96e942f.tif"
       ],
@@ -746,18 +746,18 @@
     },
     {
       "sources": [
-        "GEMSDOE:data/evidence/proxy/proxy_window.tif",
         "GEMSDOE3:legacy/data/evidence/proxy/proxy_window.tif",
         "GEMSDOE2:data/evidence/proxy/proxy_window.tif",
+        "GEMSDOE:data/evidence/proxy/proxy_window.tif",
         "5GEMSDOE:data/evidence/proxy/proxy_window.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
     {
       "sources": [
-        "GEMSDOE:data/evidence/xcat/proxy_window.tif",
         "GEMSDOE3:legacy/data/evidence/xcat/proxy_window.tif",
         "GEMSDOE2:data/evidence/xcat/proxy_window.tif",
+        "GEMSDOE:data/evidence/xcat/proxy_window.tif",
         "5GEMSDOE:data/evidence/xcat/proxy_window.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
@@ -770,24 +770,24 @@
     },
     {
       "sources": [
-        "GEMSDOE:data/fixture/fixture_features_int16.tif",
         "GEMSDOE3:legacy/data/fixture/fixture_features_int16.tif",
-        "GEMSDOE4:data/fixture/fixture_features_int16.tif",
+        "7GEMSDOE:tests/fixture/fixture_features_int16.tif",
         "GEMSDOE2:data/fixture/fixture_features_int16.tif",
+        "GEMSDOE:data/fixture/fixture_features_int16.tif",
         "5GEMSDOE:data/fixture/fixture_features_int16.tif",
-        "7GEMSDOE:tests/fixture/fixture_features_int16.tif"
-      ],
-      "reason": "not a single-band competition-grid prediction"
-    },
-    {
-      "sources": [
-        "GEMSDOE48:data/pilot/dem3m/x42y425_3m.tif"
+        "GEMSDOE4:data/fixture/fixture_features_int16.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
     {
       "sources": [
         "GEMSDOE48:data/pilot/dem3m/x40y427_3m.tif"
+      ],
+      "reason": "not a single-band competition-grid prediction"
+    },
+    {
+      "sources": [
+        "GEMSDOE48:data/pilot/dem3m/x42y425_3m.tif"
       ],
       "reason": "not a single-band competition-grid prediction"
     },
@@ -812,7 +812,8 @@
       "cache_file": ".cache/registry/2a266668251f1f2f1013972329f484886e3b412a.tif",
       "sources": [
         "57GEMSDOE:docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
-        "57GEMSDOE:docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif"
+        "57GEMSDOE:docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
+        "57GEMSDOE:docs/downloads/archive/SUBMIT-THIS-gems57-h57i-iso-zeros.tif"
       ],
       "repo_first": "57GEMSDOE",
       "source_commit": "d6e7675ede4417cfb6cfdedb52620a1b596e6231"
@@ -1090,15 +1091,14 @@
       "repo_first": "GEMSDOE40"
     },
     {
-      "repo_first": "56GEMSDOE",
+      "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
+      "bytes": 351093,
       "blob": "afb1015abf35fda9e3466ba605f449ffd0029f9a",
+      "cache_file": ".cache/registry/afb1015abf35fda9e3466ba605f449ffd0029f9a.tif",
       "sources": [
         "56GEMSDOE:docs/downloads/gems56-corr-crestgt2px-20261009T051209Z-78fc86ad-nan.tif"
       ],
-      "source_commit": "94ea54980bde5e0be3de086c8a1d57f99dad02fe",
-      "sha256": "08de79ce298c74dc5fcc006c1bde2bf117203e31b3a5ba3e943c1d05154781d7",
-      "bytes": 351093,
-      "cache_file": ".cache/registry/afb1015abf35fda9e3466ba605f449ffd0029f9a.tif"
+      "repo_first": "56GEMSDOE"
     },
     {
       "sha256": "0a28426785c4125d4560d6279cc763570f791cd1fdb7fb788ba60d6024e1f9db",
@@ -1163,17 +1163,16 @@
       "repo_first": "12GEMSDOE"
     },
     {
-      "repo_first": "GEMSDOE52",
+      "sha256": "0ce05c52194a8d234aac98684bee6f96bad9c7c5c5c2f79cf580a5df72707629",
+      "bytes": 58473,
       "blob": "8d2f2b7d4a211ff724e48ac1b60dda4d63bf884c",
+      "cache_file": ".cache/registry/8d2f2b7d4a211ff724e48ac1b60dda4d63bf884c.tif",
       "sources": [
         "GEMSDOE52:docs/downloads/gems52-h66-covergate-cotrain-633px.tif",
         "GEMSDOE52:docs/downloads/h66cover-candidate.tif",
         "GEMSDOE52:submission/gems52-h66-covergate-cotrain-633px.tif"
       ],
-      "source_commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf",
-      "sha256": "0ce05c52194a8d234aac98684bee6f96bad9c7c5c5c2f79cf580a5df72707629",
-      "bytes": 58473,
-      "cache_file": ".cache/registry/8d2f2b7d4a211ff724e48ac1b60dda4d63bf884c.tif"
+      "repo_first": "GEMSDOE52"
     },
     {
       "sha256": "0d8ba64c960a3f56720e3f45345e92a554064ae41c8d139c8f2fc224ccef6261",
@@ -1469,6 +1468,17 @@
       "repo_first": "GEMSDOE46"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "2c22f389110d3f6d49f5435c4f2f269ad8da4a01",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-continuous-1875224px-20261009T202053Z-nan.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "16f3fd048f4aa65e83aafde9b041ed7fd4a84c7b1fd6266d9ba8451f16972b30",
+      "bytes": 10567086,
+      "cache_file": ".cache/registry/2c22f389110d3f6d49f5435c4f2f269ad8da4a01.tif"
+    },
+    {
       "sha256": "1729f3571ebf25668e84c08cb5e8c4fed375ae0910e5037e95bddcca7f0253a2",
       "bytes": 229076,
       "blob": "449b9282779f7a614c6118e2c83b3511e3e3c3d1",
@@ -1477,6 +1487,19 @@
         "GEMSDOE2:data/evidence/seghold/eval_labels.tif"
       ],
       "repo_first": "GEMSDOE2"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "d345e5567703a6240764742840323238aea8b648",
+      "sources": [
+        "GEMSDOE52:docs/downloads/gems52-h82-dva2vsa-B-37654px-20261009T215811Z.tif",
+        "GEMSDOE52:docs/downloads/h82-candidate.tif",
+        "GEMSDOE52:submission/gems52-h82-dva2vsa-B-37654px-20261009T215811Z.tif"
+      ],
+      "source_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+      "sha256": "17c3f8325ac6f267b1b8cc58bc6fd9495c118c30de64d5f78293d19d7f20c907",
+      "bytes": 140555,
+      "cache_file": ".cache/registry/d345e5567703a6240764742840323238aea8b648.tif"
     },
     {
       "sha256": "17c67554a1fde7607e9ffe9846433162035364eb4ef5ec3d2ab65778fe3bbdd2",
@@ -1702,20 +1725,21 @@
       "blob": "7d865a9921a40ed2ea4c742a6a25b1fa2f357c5a",
       "cache_file": ".cache/registry/7d865a9921a40ed2ea4c742a6a25b1fa2f357c5a.tif",
       "sources": [
-        "GEMSDOE:data/bridge/example_submission.tif",
-        "GEMSDOE2:data/bridge/example_submission.tif",
-        "GEMSDOE3:legacy/data/bridge/example_submission.tif",
-        "GEMSDOE4:data/bridge/example_submission.tif",
+        "56GEMSDOE:data/bridge/example_submission.tif",
         "5GEMSDOE:data/bridge/example_submission.tif",
         "6GEMSDOE:data/bridge/example_submission.tif",
         "6GEMSDOE:data/sample_submission.tif",
         "GEMSDOE10:data/sample_submission.tif",
         "GEMSDOE24:data/bridge/sample_submission.tif",
+        "GEMSDOE2:data/bridge/example_submission.tif",
+        "GEMSDOE3:legacy/data/bridge/example_submission.tif",
         "GEMSDOE40:data/sample_submission.tif",
         "GEMSDOE48:data/raw/sample_submission_template.tif",
+        "GEMSDOE4:data/bridge/example_submission.tif",
         "GEMSDOE50:data/grid/sample_submission.tif",
         "GEMSDOE51:data/sample_submission.tif",
-        "GEMSDOE54:data/grid/MIRROR_sample_submission_template.tif"
+        "GEMSDOE54:data/grid/MIRROR_sample_submission_template.tif",
+        "GEMSDOE:data/bridge/example_submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -1755,8 +1779,8 @@
       "blob": "8de2e9ba01c7a12e22b936075c83ec1c8aa36eea",
       "cache_file": ".cache/registry/8de2e9ba01c7a12e22b936075c83ec1c8aa36eea.tif",
       "sources": [
-        "GEMSDOE9:docs/downloads/gemsdoe9-PLACEHOLDER-2314b599.tif",
-        "GEMSDOE24:inputs/calibration/gemsdoe9-PLACEHOLDER-2314b599.tif"
+        "GEMSDOE24:inputs/calibration/gemsdoe9-PLACEHOLDER-2314b599.tif",
+        "GEMSDOE9:docs/downloads/gemsdoe9-PLACEHOLDER-2314b599.tif"
       ],
       "repo_first": "GEMSDOE9"
     },
@@ -1766,8 +1790,8 @@
       "blob": "3604c84562f0b4c24a411f44b9fc24855c761d2f",
       "cache_file": ".cache/registry/3604c84562f0b4c24a411f44b9fc24855c761d2f.tif",
       "sources": [
-        "GEMSDOE4:data/evidence/combined/submission.tif",
-        "7GEMSDOE:external/scored/gemsdoe4-combined-237f0063.tif"
+        "7GEMSDOE:external/scored/gemsdoe4-combined-237f0063.tif",
+        "GEMSDOE4:data/evidence/combined/submission.tif"
       ],
       "repo_first": "GEMSDOE4"
     },
@@ -1798,9 +1822,9 @@
       "blob": "3fa20e5def84596794539ba9c3304c9c9277f04f",
       "cache_file": ".cache/registry/3fa20e5def84596794539ba9c3304c9c9277f04f.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif",
         "GEMSDOE28:docs/downloads/gems28-h32-1-prethin-tip-euler-d2-8-20261003-31e35eee884e-allfinite.tif",
-        "GEMSDOE48:data/raw/tip_h32_1_prethin_tip_euler.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE28__h32-1-prethin-tip-euler-d2-8.tif"
+        "GEMSDOE48:data/raw/tip_h32_1_prethin_tip_euler.tif"
       ],
       "repo_first": "GEMSDOE28"
     },
@@ -1991,15 +2015,15 @@
       "repo_first": "GEMSDOE50"
     },
     {
-      "repo_first": "55GEMSDOE",
-      "blob": "b941046c35ab6a29739464cb48fbcf21bd98c699",
-      "sources": [
-        "55GEMSDOE:evidence/historical_artifacts/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-nan.tif"
-      ],
-      "source_commit": "7ac126b3e3edd249265635be7dc5ec0b8a1991b7",
       "sha256": "2d288ebc99218fd14bfab6b0d700fda579e65ba304f806b3ca4b2a88b6b7d7c9",
       "bytes": 1564390,
-      "cache_file": ".cache/registry/b941046c35ab6a29739464cb48fbcf21bd98c699.tif"
+      "blob": "b941046c35ab6a29739464cb48fbcf21bd98c699",
+      "cache_file": ".cache/registry/b941046c35ab6a29739464cb48fbcf21bd98c699.tif",
+      "sources": [
+        "55GEMSDOE:docs/downloads/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-nan.tif",
+        "55GEMSDOE:evidence/historical_artifacts/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-nan.tif"
+      ],
+      "repo_first": "55GEMSDOE"
     },
     {
       "sha256": "2dc67f4bdb8d1bf200f8307946d100c8e51ebd55cc6c7229d1220f83156b6935",
@@ -2037,8 +2061,8 @@
       "blob": "7e422e07d5d3aac9ceb187a154bacc0f72a79f5c",
       "cache_file": ".cache/registry/7e422e07d5d3aac9ceb187a154bacc0f72a79f5c.tif",
       "sources": [
-        "GEMSDOE28:docs/downloads/gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-allfinite.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
+        "GEMSDOE28:docs/downloads/gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-allfinite.tif"
       ],
       "repo_first": "GEMSDOE28"
     },
@@ -2235,8 +2259,8 @@
       "blob": "ab3927ff4ade32bba6fb1954a3d6aa9295734077",
       "cache_file": ".cache/registry/ab3927ff4ade32bba6fb1954a3d6aa9295734077.tif",
       "sources": [
-        "GEMSDOE49:docs/downloads/gems49-gate_ortho_w0.25-40k-20261006T213721Z-zeros.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE49__gate_ortho_w0.25-40k.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE49__gate_ortho_w0.25-40k.tif",
+        "GEMSDOE49:docs/downloads/gems49-gate_ortho_w0.25-40k-20261006T213721Z-zeros.tif"
       ],
       "repo_first": "GEMSDOE49"
     },
@@ -2246,9 +2270,9 @@
       "blob": "32a4a6d2d4df8ef8e880120f36d2a4d94f134f8a",
       "cache_file": ".cache/registry/32a4a6d2d4df8ef8e880120f36d2a4d94f134f8a.tif",
       "sources": [
-        "GEMSDOE3:docs/downloads/pindrop-v4-discovery-20260925T152423Z-37f9d5b855.tif",
         "5GEMSDOE:data/evidence/leaderboard_anchor/pindrop-v4-discovery-37f9d5b855.tif",
-        "7GEMSDOE:external/scored/gemsdoe3-pindrop-discovery-37f9d5b855.tif"
+        "7GEMSDOE:external/scored/gemsdoe3-pindrop-discovery-37f9d5b855.tif",
+        "GEMSDOE3:docs/downloads/pindrop-v4-discovery-20260925T152423Z-37f9d5b855.tif"
       ],
       "repo_first": "GEMSDOE3"
     },
@@ -2296,7 +2320,8 @@
       "repo_first": "57GEMSDOE",
       "blob": "831a4d3deaa6e467192f0363fac2b5ff08dc8b77",
       "sources": [
-        "57GEMSDOE:docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif"
+        "57GEMSDOE:docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
+        "57GEMSDOE:registry/rasters/57GEMSDOE__parallel-12000dots-zeros.tif"
       ],
       "source_commit": "71ff73a84186c49f58d6b399df607635b9abd71a",
       "sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
@@ -2362,8 +2387,8 @@
       "blob": "6b6d31807e501af4749bbaeb43702450893fd720",
       "cache_file": ".cache/registry/6b6d31807e501af4749bbaeb43702450893fd720.tif",
       "sources": [
-        "GEMSDOE24:docs/downloads/gems24-h25-1-dotted-h19-5-d1-5-20261002-989f59505db1-allfinite.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE24__h25-1-dotted-h19-5-d1-5.tif",
+        "GEMSDOE24:docs/downloads/gems24-h25-1-dotted-h19-5-d1-5-20261002-989f59505db1-allfinite.tif"
       ],
       "repo_first": "GEMSDOE24"
     },
@@ -2373,13 +2398,13 @@
       "blob": "bfb7e86d046dd178c3d6ab60522861b5464dd420",
       "cache_file": ".cache/registry/bfb7e86d046dd178c3d6ab60522861b5464dd420.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE25__dotted-h19-5-d2-8.tif",
         "GEMSDOE24:docs/downloads/gems24-h25-1-dotted-h19-5-d2-8-20261002-e56ea318af89-allfinite.tif",
         "GEMSDOE25:docs/downloads/gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-zeros.tif",
         "GEMSDOE32:docs/downloads/gems25-dotted-h19-5-d2-8-20261002-e56ea318af89-zeros.tif",
         "GEMSDOE48:data/families/dotted_d2_8_02600.tif",
         "GEMSDOE51:data/prior/g25_dotted_prior.tif",
-        "GEMSDOE54:registry/registry_rasters/dotted_d2_8_02600.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE25__dotted-h19-5-d2-8.tif"
+        "GEMSDOE54:registry/registry_rasters/dotted_d2_8_02600.tif"
       ],
       "repo_first": "GEMSDOE24"
     },
@@ -2399,8 +2424,8 @@
       "blob": "078005f13defe72457b083ba39b8ad1e22006650",
       "cache_file": ".cache/registry/078005f13defe72457b083ba39b8ad1e22006650.tif",
       "sources": [
-        "GEMSDOE29:docs/downloads/gems29-wormrank-d28-20261003-59dcaf6dd11d-zeros.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE29__wormrank-d28.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE29__wormrank-d28.tif",
+        "GEMSDOE29:docs/downloads/gems29-wormrank-d28-20261003-59dcaf6dd11d-zeros.tif"
       ],
       "repo_first": "GEMSDOE29"
     },
@@ -2420,11 +2445,11 @@
       "blob": "91c60ef2457b56f2811407540ecdda9627642d55",
       "cache_file": ".cache/registry/91c60ef2457b56f2811407540ecdda9627642d55.tif",
       "sources": [
-        "GEMSDOE:data/evidence/xcat/qfaults_catalogue.tif",
+        "5GEMSDOE:data/evidence/xcat/qfaults_catalogue.tif",
         "GEMSDOE2:data/evidence/xcat/qfaults_catalogue.tif",
         "GEMSDOE3:legacy/data/evidence/xcat/qfaults_catalogue.tif",
         "GEMSDOE4:data/evidence/xcat/qfaults_catalogue.tif",
-        "5GEMSDOE:data/evidence/xcat/qfaults_catalogue.tif"
+        "GEMSDOE:data/evidence/xcat/qfaults_catalogue.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -2489,15 +2514,15 @@
       "repo_first": "GEMSDOE44"
     },
     {
-      "repo_first": "55GEMSDOE",
-      "blob": "e813379421a6d11c53fc14ca64100a6a249c4b2b",
-      "sources": [
-        "55GEMSDOE:evidence/historical_artifacts/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-zeros.tif"
-      ],
-      "source_commit": "7ac126b3e3edd249265635be7dc5ec0b8a1991b7",
       "sha256": "43743afdb030b739465d4754aabd8605bceef49bcc836bee93e9094807d4695f",
       "bytes": 799011,
-      "cache_file": ".cache/registry/e813379421a6d11c53fc14ca64100a6a249c4b2b.tif"
+      "blob": "e813379421a6d11c53fc14ca64100a6a249c4b2b",
+      "cache_file": ".cache/registry/e813379421a6d11c53fc14ca64100a6a249c4b2b.tif",
+      "sources": [
+        "55GEMSDOE:docs/downloads/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-zeros.tif",
+        "55GEMSDOE:evidence/historical_artifacts/h56-multiscale-tensor-persistence-40000dots-20261009T162812Z-zeros.tif"
+      ],
+      "repo_first": "55GEMSDOE"
     },
     {
       "sha256": "45020a3e476242f685e8b1076d37261d12e572ee19aeeee11e68a1de5be8d585",
@@ -2525,10 +2550,10 @@
       "blob": "c7527c60ea5bf863c7f9c79ab733da9366095431",
       "cache_file": ".cache/registry/c7527c60ea5bf863c7f9c79ab733da9366095431.tif",
       "sources": [
-        "GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif",
+        "5GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif",
         "GEMSDOE2:data/evidence/runs/35042805806-experiment/submission.tif",
         "GEMSDOE3:legacy/data/evidence/runs/35042805806-experiment/submission.tif",
-        "5GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif"
+        "GEMSDOE:data/evidence/runs/35042805806-experiment/submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -2561,6 +2586,17 @@
         "GEMSDOE35:docs/downloads/gemsdoe35-h35-06-aaa86efb25-20261004T225420098147Z-candidate.tif"
       ],
       "repo_first": "GEMSDOE35"
+    },
+    {
+      "repo_first": "55GEMSDOE",
+      "blob": "4fc90582a78759dba4ee9c473a8a5fcf3d6763fd",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-gradient-gated-168854px-20261009T202306Z-nan.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "46e36695e5227d386dd7acc701aacb6386a9a9c05275d4aec4ae6f0669d4ab4b",
+      "bytes": 2389373,
+      "cache_file": ".cache/registry/4fc90582a78759dba4ee9c473a8a5fcf3d6763fd.tif"
     },
     {
       "sha256": "47174e2b95eec27358f028eb6bb4d24e00fe0a8c12d8cb27ebf132c05091a377",
@@ -2611,6 +2647,19 @@
         "13GEMSDOE:docs/downloads/archive/13gems-composite-20260928T040920Z.tif"
       ],
       "repo_first": "13GEMSDOE"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "1c4219aa51c531cbffd33dab7461106fe972eda4",
+      "sources": [
+        "GEMSDOE52:docs/downloads/gems77cond-line-support-B-cotrain-37654px-20261009T193810Z.tif",
+        "GEMSDOE52:docs/downloads/h77cond-candidate.tif",
+        "GEMSDOE52:submission/gems77cond-line-support-B-cotrain-37654px-20261009T193810Z.tif"
+      ],
+      "source_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+      "sha256": "49ad60980f8bf768b94a2753581cae9ba572c75564d862089cec8093bcf317ad",
+      "bytes": 137255,
+      "cache_file": ".cache/registry/1c4219aa51c531cbffd33dab7461106fe972eda4.tif"
     },
     {
       "sha256": "49d26d8195e343b531cf5e8f9ebd44e2e0a652daca6ad4f71016faabcab33509",
@@ -2751,9 +2800,9 @@
       "blob": "b298154c2e405095db5e58f9c5232618ef4827f1",
       "cache_file": ".cache/registry/b298154c2e405095db5e58f9c5232618ef4827f1.tif",
       "sources": [
-        "GEMSDOE3:docs/downloads/pindrop-v4-ridge-20260925T152422Z-4e03fc9705.tif",
         "5GEMSDOE:data/evidence/leaderboard_anchor/pindrop-v4-ridge-4e03fc9705.tif",
-        "7GEMSDOE:external/scored/gemsdoe3-pindrop-ridge-4e03fc9705.tif"
+        "7GEMSDOE:external/scored/gemsdoe3-pindrop-ridge-4e03fc9705.tif",
+        "GEMSDOE3:docs/downloads/pindrop-v4-ridge-20260925T152422Z-4e03fc9705.tif"
       ],
       "repo_first": "GEMSDOE3"
     },
@@ -2854,8 +2903,8 @@
       "blob": "37dd960345125bc943542e16994b2736ff0e9e22",
       "cache_file": ".cache/registry/37dd960345125bc943542e16994b2736ff0e9e22.tif",
       "sources": [
-        "GEMSDOE28:docs/downloads/gems28-h38-1-hf-euler-r30-r1-20261003-56a9f473edc7-allfinite.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE28__h38-1-hf-euler-r30-r1.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE28__h38-1-hf-euler-r30-r1.tif",
+        "GEMSDOE28:docs/downloads/gems28-h38-1-hf-euler-r30-r1-20261003-56a9f473edc7-allfinite.tif"
       ],
       "repo_first": "GEMSDOE28"
     },
@@ -2993,16 +3042,15 @@
       "repo_first": "GEMSDOE51"
     },
     {
-      "repo_first": "GEMSDOE52",
+      "sha256": "5835c8b3862a1aa6d1f4317f68daf02d8a3620701c923832b9a437b685336b7e",
+      "bytes": 163335,
       "blob": "ae1cb8de1bdc310c6c9f0208753f1541305da07e",
+      "cache_file": ".cache/registry/ae1cb8de1bdc310c6c9f0208753f1541305da07e.tif",
       "sources": [
         "GEMSDOE52:docs/downloads/h72-candidate-mraec.tif",
         "GEMSDOE52:submission/gems52-h72-mraec-multiband-edge-coherence-60000px-20261009T162713Z-a9243a183190.tif"
       ],
-      "source_commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf",
-      "sha256": "5835c8b3862a1aa6d1f4317f68daf02d8a3620701c923832b9a437b685336b7e",
-      "bytes": 163335,
-      "cache_file": ".cache/registry/ae1cb8de1bdc310c6c9f0208753f1541305da07e.tif"
+      "repo_first": "GEMSDOE52"
     },
     {
       "sha256": "5987d5051a76a8a28e8a31106936413d26ab8d8af143d6849c29827cf1d35597",
@@ -3305,15 +3353,14 @@
       "repo_first": "GEMSDOE27"
     },
     {
-      "repo_first": "56GEMSDOE",
+      "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
+      "bytes": 154019,
       "blob": "8de53906b6713e76e4151c711e3308a22cc0b368",
+      "cache_file": ".cache/registry/8de53906b6713e76e4151c711e3308a22cc0b368.tif",
       "sources": [
         "56GEMSDOE:docs/downloads/h56-magpack-37k-20261009.tif"
       ],
-      "source_commit": "94ea54980bde5e0be3de086c8a1d57f99dad02fe",
-      "sha256": "62824bcab55d97427b035a004d90c2aaf088acb30c66aeb2a355f5022cc6efb2",
-      "bytes": 154019,
-      "cache_file": ".cache/registry/8de53906b6713e76e4151c711e3308a22cc0b368.tif"
+      "repo_first": "56GEMSDOE"
     },
     {
       "sha256": "6292a7916c83d371fc650b0f0c6a090702b9890eaa6e6546d50f104eea2fadc3",
@@ -3336,15 +3383,14 @@
       "repo_first": "5GEMSDOE"
     },
     {
-      "repo_first": "56GEMSDOE",
+      "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
+      "bytes": 138144,
       "blob": "1f77700208a706287f077f7642ab8ff9c4582940",
+      "cache_file": ".cache/registry/1f77700208a706287f077f7642ab8ff9c4582940.tif",
       "sources": [
         "56GEMSDOE:docs/downloads/h56-quota-37k-20261009.tif"
       ],
-      "source_commit": "94ea54980bde5e0be3de086c8a1d57f99dad02fe",
-      "sha256": "62b309d93e9a3665520ff0f55c0683dc8458e9d60813fa7fc9a5f2fc995d0ee6",
-      "bytes": 138144,
-      "cache_file": ".cache/registry/1f77700208a706287f077f7642ab8ff9c4582940.tif"
+      "repo_first": "56GEMSDOE"
     },
     {
       "sha256": "62ccee8f81241afe6a110022b7eec4b857c1972ca6f25b45dca92bd367197ea4",
@@ -3412,16 +3458,15 @@
       "repo_first": "19GEMSDOE"
     },
     {
-      "repo_first": "GEMSDOE52",
+      "sha256": "64b338214a335714357e4f54c31835e18d4316b688e4a1dbe8bf45e48cec2ad8",
+      "bytes": 165511,
       "blob": "c0a00ad80ab394a722778fa917174b8a6df33c12",
+      "cache_file": ".cache/registry/c0a00ad80ab394a722778fa917174b8a6df33c12.tif",
       "sources": [
         "GEMSDOE52:docs/downloads/h72-candidate-spsc.tif",
         "GEMSDOE52:submission/gems52-h72-spsc-spring-structural-80000px-20261009T163622Z-02e374d49d52.tif"
       ],
-      "source_commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf",
-      "sha256": "64b338214a335714357e4f54c31835e18d4316b688e4a1dbe8bf45e48cec2ad8",
-      "bytes": 165511,
-      "cache_file": ".cache/registry/c0a00ad80ab394a722778fa917174b8a6df33c12.tif"
+      "repo_first": "GEMSDOE52"
     },
     {
       "sha256": "6501da54c39757556cac7e3d7990ce0f35ddeacc039fdd2139f3beab753ce424",
@@ -3721,8 +3766,8 @@
       "blob": "9380203f3cb5edb9d096614f8dcf453e8f141b8f",
       "cache_file": ".cache/registry/9380203f3cb5edb9d096614f8dcf453e8f141b8f.tif",
       "sources": [
-        "GEMSDOE3:docs/downloads/gapfinder-v2-sgmc-gap-20260925T045014Z-7251c22bb4.tif",
-        "7GEMSDOE:external/scored/gemsdoe3-sgmc-gap-7251c22bb4.tif"
+        "7GEMSDOE:external/scored/gemsdoe3-sgmc-gap-7251c22bb4.tif",
+        "GEMSDOE3:docs/downloads/gapfinder-v2-sgmc-gap-20260925T045014Z-7251c22bb4.tif"
       ],
       "repo_first": "GEMSDOE3"
     },
@@ -3841,17 +3886,28 @@
       "repo_first": "GEMSDOE51"
     },
     {
+      "repo_first": "57GEMSDOE",
+      "blob": "628f00967b5aac2e800e0fe352984969c3b21598",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif"
+      ],
+      "source_commit": "5309c85a6334c5715791c548dafc2fabdacc8568",
+      "sha256": "749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6",
+      "bytes": 854692,
+      "cache_file": ".cache/registry/628f00967b5aac2e800e0fe352984969c3b21598.tif"
+    },
+    {
       "sha256": "7563e187171f7210d70295f958b0b2714c1fa504afa35f9a4688fc99b1e1122a",
       "bytes": 181017,
       "blob": "06f6d50f5f06e10e2ad6dfc43bb48a3baf63d849",
       "cache_file": ".cache/registry/06f6d50f5f06e10e2ad6dfc43bb48a3baf63d849.tif",
       "sources": [
-        "GEMSDOE:data/evidence/proxy/proxy_catalogue.tif",
+        "5GEMSDOE:data/evidence/proxy/proxy_catalogue.tif",
+        "8GEMSDOE:data/proxy/proxy_catalogue_sgmc.tif",
         "GEMSDOE2:data/evidence/proxy/proxy_catalogue.tif",
         "GEMSDOE3:legacy/data/evidence/proxy/proxy_catalogue.tif",
         "GEMSDOE4:data/evidence/proxy/proxy_catalogue.tif",
-        "5GEMSDOE:data/evidence/proxy/proxy_catalogue.tif",
-        "8GEMSDOE:data/proxy/proxy_catalogue_sgmc.tif"
+        "GEMSDOE:data/evidence/proxy/proxy_catalogue.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -3876,15 +3932,14 @@
       "repo_first": "GEMSDOE48"
     },
     {
-      "repo_first": "GEMSDOE52",
+      "sha256": "760f124bee6a1752912fc5a37608fc06fbde58fb3b09406c59f099bd0de51c5b",
+      "bytes": 145322,
       "blob": "6ac784e9bfaa3735253942af73c544a9d051ce8e",
+      "cache_file": ".cache/registry/6ac784e9bfaa3735253942af73c544a9d051ce8e.tif",
       "sources": [
         "GEMSDOE52:submission/gems52-h72-v4-pure-h19-5-ring-37654px-20261009T164250Z-6a772f2ee9a1.tif"
       ],
-      "source_commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf",
-      "sha256": "760f124bee6a1752912fc5a37608fc06fbde58fb3b09406c59f099bd0de51c5b",
-      "bytes": 145322,
-      "cache_file": ".cache/registry/6ac784e9bfaa3735253942af73c544a9d051ce8e.tif"
+      "repo_first": "GEMSDOE52"
     },
     {
       "sha256": "7625f34335cc48fb05dbe851f03950ae61ae49f8db93dd27ac7f516a3349b980",
@@ -4038,24 +4093,25 @@
       "blob": "4ad3c1f3f19823e40924589bee7e51e44ae3a2e7",
       "cache_file": ".cache/registry/4ad3c1f3f19823e40924589bee7e51e44ae3a2e7.tif",
       "sources": [
-        "GEMSDOE:data/bridge/existing_faults.tif",
-        "GEMSDOE2:data/bridge/existing_faults.tif",
-        "GEMSDOE3:legacy/data/bridge/existing_faults.tif",
-        "GEMSDOE4:data/bridge/existing_faults.tif",
+        "56GEMSDOE:data/bridge/existing_faults.tif",
         "5GEMSDOE:data/bridge/existing_faults.tif",
         "6GEMSDOE:data/bridge/existing_faults.tif",
         "6GEMSDOE:data/labels.tif",
         "GEMSDOE10:data/labels.tif",
         "GEMSDOE24:data/bridge/existing_faults.tif",
         "GEMSDOE24:data/bridge/labels.tif",
+        "GEMSDOE2:data/bridge/existing_faults.tif",
+        "GEMSDOE3:legacy/data/bridge/existing_faults.tif",
         "GEMSDOE40:data/labels.tif",
         "GEMSDOE48:data/official/existing_faults.tif",
         "GEMSDOE48:data/official/labels.tif",
         "GEMSDOE48:data/raw/labels_catalogue.tif",
+        "GEMSDOE4:data/bridge/existing_faults.tif",
         "GEMSDOE50:data/grid/labels.tif",
         "GEMSDOE51:data/existing_faults.tif",
         "GEMSDOE51:data/labels.tif",
-        "GEMSDOE54:data/grid/labels.tif"
+        "GEMSDOE54:data/grid/labels.tif",
+        "GEMSDOE:data/bridge/existing_faults.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -4075,9 +4131,9 @@
       "blob": "10b2354d4ac8af863419284f1e694a02db180711",
       "cache_file": ".cache/registry/10b2354d4ac8af863419284f1e694a02db180711.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE28__h36-1-rung30-blind-r1.tif",
         "GEMSDOE28:docs/downloads/gems28-h36-1-rung30-blind-r1-20261003-b531dae0a36f-allfinite.tif",
-        "GEMSDOE48:data/raw/ref_h36_1_rung30.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE28__h36-1-rung30-blind-r1.tif"
+        "GEMSDOE48:data/raw/ref_h36_1_rung30.tif"
       ],
       "repo_first": "GEMSDOE28"
     },
@@ -4183,15 +4239,15 @@
       "blob": "812e61b74050d1350cc2bde1fab0c76ead32e0c4",
       "cache_file": ".cache/registry/812e61b74050d1350cc2bde1fab0c76ead32e0c4.tif",
       "sources": [
-        "GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif",
+        "5GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
+        "7GEMSDOE:external/scored/gemsdoe1-ens12-7f00890a.tif",
+        "GEMSDOE24:inputs/calibration/gemsdoe-ens12-adopted-7f00890a.tif",
         "GEMSDOE2:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
         "GEMSDOE2:docs/gemsdoe2-recall-arm-7f00890a.tif",
         "GEMSDOE3:legacy/data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
         "GEMSDOE4:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
-        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe-ens12-adopted-7f00890a.tif",
-        "5GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif",
-        "7GEMSDOE:external/scored/gemsdoe1-ens12-7f00890a.tif",
-        "GEMSDOE24:inputs/calibration/gemsdoe-ens12-adopted-7f00890a.tif"
+        "GEMSDOE:data/evidence/runs/ens12-adopted-floor0.1-w0/submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -4247,16 +4303,15 @@
       "repo_first": "20GEMSDOE"
     },
     {
-      "repo_first": "GEMSDOE52",
+      "sha256": "8149c9343e5438553385e5d4ce8aca43682ad1f833df0ea033f4e5bd019c037f",
+      "bytes": 137899,
       "blob": "edb0d67baf6499a5b18b4c67d07323f68e3fe2bb",
+      "cache_file": ".cache/registry/edb0d67baf6499a5b18b4c67d07323f68e3fe2bb.tif",
       "sources": [
         "GEMSDOE52:docs/downloads/h72-candidate-v3.tif",
         "GEMSDOE52:submission/gems52-h72-v3-enhanced-h19-5-37654px-20261009T164122Z-534693a7481b.tif"
       ],
-      "source_commit": "a56684eaf613fefaf802e3e6d5aa84c78c5cafdf",
-      "sha256": "8149c9343e5438553385e5d4ce8aca43682ad1f833df0ea033f4e5bd019c037f",
-      "bytes": 137899,
-      "cache_file": ".cache/registry/edb0d67baf6499a5b18b4c67d07323f68e3fe2bb.tif"
+      "repo_first": "GEMSDOE52"
     },
     {
       "sha256": "818957c0cb69caf360d445c7f7a684578c37528f363b5d84f5ae3be832e7413f",
@@ -4425,11 +4480,11 @@
       "blob": "901d9db3f008f0f5c3be9c314524ccc8e95fb43e",
       "cache_file": ".cache/registry/901d9db3f008f0f5c3be9c314524ccc8e95fb43e.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE33__h33d-analog-tip-stepover-r30.tif",
         "GEMSDOE33:docs/downloads/GEMSDOE33-h33d-analog-tip-stepover-r30-20261004-cb490425926e.tif",
         "GEMSDOE48:data/families/tip_stepover_r30_02632.tif",
         "GEMSDOE48:data/raw/tip_h33d_stepover.tif",
-        "GEMSDOE54:registry/registry_rasters/tip_stepover_r30_02632.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE33__h33d-analog-tip-stepover-r30.tif"
+        "GEMSDOE54:registry/registry_rasters/tip_stepover_r30_02632.tif"
       ],
       "repo_first": "GEMSDOE33"
     },
@@ -4577,7 +4632,9 @@
       "sources": [
         "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
         "57GEMSDOE-PR6:registry/rasters/57GEMSDOE__h57-anatomy-enechelon-zeros.tif",
-        "57GEMSDOE:docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif"
+        "57GEMSDOE:docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+        "57GEMSDOE:docs/downloads/archive/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
+        "57GEMSDOE:registry/rasters/57GEMSDOE__h57-anatomy-enechelon-zeros.tif"
       ],
       "source_commit": "71ff73a84186c49f58d6b399df607635b9abd71a",
       "sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
@@ -4590,9 +4647,9 @@
       "blob": "c6f84f48a03580d99c21271ce118c8032f380f8f",
       "cache_file": ".cache/registry/c6f84f48a03580d99c21271ce118c8032f380f8f.tif",
       "sources": [
+        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe2-precision-arm-8bce5dfe.tif",
         "GEMSDOE2:data/evidence/runs/35042805806/submission_conformant.tif",
-        "GEMSDOE2:docs/gemsdoe2-precision-arm-8bce5dfe.tif",
-        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe2-precision-arm-8bce5dfe.tif"
+        "GEMSDOE2:docs/gemsdoe2-precision-arm-8bce5dfe.tif"
       ],
       "repo_first": "GEMSDOE2"
     },
@@ -4664,9 +4721,9 @@
       "blob": "a59665a7fad659dcc6a45e5e7e71059586c3247a",
       "cache_file": ".cache/registry/a59665a7fad659dcc6a45e5e7e71059586c3247a.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE30__d28-poisson300m-offcat-44090.tif",
         "GEMSDOE29:docs/downloads/gems29-refd28-repro-20261003-1cc7dc534d51-zeros.tif",
-        "GEMSDOE30:docs/downloads/gemsdoe30-d28-poisson300m-offcat-44090-20261003T233156Z-91eae1ca.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE30__d28-poisson300m-offcat-44090.tif"
+        "GEMSDOE30:docs/downloads/gemsdoe30-d28-poisson300m-offcat-44090-20261003T233156Z-91eae1ca.tif"
       ],
       "repo_first": "GEMSDOE29"
     },
@@ -4822,6 +4879,17 @@
       "repo_first": "GEMSDOE48"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "3b4dca15a32f91f85d584f3b56e18ef33f82d9e6",
+      "sources": [
+        "55GEMSDOE:docs/downloads/gems55-tensor_full-n16000-sep3-20261009T211747Z-nan.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "927dc17f7f5d890b2f382e266ade5d775474631ee96674f8ff3cbc1f1b7c7693",
+      "bytes": 1516449,
+      "cache_file": ".cache/registry/3b4dca15a32f91f85d584f3b56e18ef33f82d9e6.tif"
+    },
+    {
       "sha256": "92904a5bfd84c8bd1141683fc5d29817aa4de71574d8caff5b40f7ed0072a5b8",
       "bytes": 1708516,
       "blob": "b1fade8be27b393d1fac2813bb06d6c541980537",
@@ -4894,6 +4962,17 @@
       "repo_first": "GEMSDOE34"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "ec8d4307658d7a0b8ff912f5e0fb450d50e56a7b",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-gradient-gated-168854px-20261009T202306Z-zeros.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "95db328f1c4aec2ab35b9da2c8fd12f88ac864cf8bd03f0c0af6c4d1ddc03c76",
+      "bytes": 1599432,
+      "cache_file": ".cache/registry/ec8d4307658d7a0b8ff912f5e0fb450d50e56a7b.tif"
+    },
+    {
       "sha256": "9606cef20d34046e9b5f6d506df642847ffae1deafe97fc9e75a07c0094a94f5",
       "bytes": 1626081,
       "blob": "7503b434b6c769d3156d780b15bb432a9c2455c2",
@@ -4958,7 +5037,8 @@
       "repo_first": "57GEMSDOE",
       "blob": "df213d013958aed1878222d076d5113c26652f19",
       "sources": [
-        "57GEMSDOE-PR6:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif"
+        "57GEMSDOE-PR6:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
+        "57GEMSDOE:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif"
       ],
       "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
       "sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
@@ -5015,6 +5095,18 @@
         "GEMSDOE4:data/evidence/newfault/seed42/submission.tif"
       ],
       "repo_first": "GEMSDOE4"
+    },
+    {
+      "repo_first": "57GEMSDOE",
+      "blob": "d40a02cc77d2156638ee1e776cbc970182680b86",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+        "57GEMSDOE:registry/rasters/57GEMSDOE__h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif"
+      ],
+      "source_commit": "5309c85a6334c5715791c548dafc2fabdacc8568",
+      "sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+      "bytes": 818144,
+      "cache_file": ".cache/registry/d40a02cc77d2156638ee1e776cbc970182680b86.tif"
     },
     {
       "sha256": "9b4a7b83fd7bb58bed86692059f112ffc9418b8bd6f0704100dabef1f98c7682",
@@ -5093,15 +5185,15 @@
       "blob": "6926b76f24e8846238b7cdfd2276d1c723d44cfd",
       "cache_file": ".cache/registry/6926b76f24e8846238b7cdfd2276d1c723d44cfd.tif",
       "sources": [
-        "GEMSDOE:data/evidence/baseline/submission.tif",
-        "GEMSDOE:data/evidence/baseline_rerun/submission.tif",
+        "5GEMSDOE:data/evidence/baseline/submission.tif",
+        "5GEMSDOE:data/evidence/baseline_rerun/submission.tif",
         "GEMSDOE2:data/evidence/baseline/submission.tif",
         "GEMSDOE2:data/evidence/baseline_rerun/submission.tif",
         "GEMSDOE3:legacy/data/evidence/baseline/submission.tif",
         "GEMSDOE3:legacy/data/evidence/baseline_rerun/submission.tif",
         "GEMSDOE4:data/evidence/baseline/submission.tif",
-        "5GEMSDOE:data/evidence/baseline/submission.tif",
-        "5GEMSDOE:data/evidence/baseline_rerun/submission.tif"
+        "GEMSDOE:data/evidence/baseline/submission.tif",
+        "GEMSDOE:data/evidence/baseline_rerun/submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -5130,7 +5222,8 @@
       "repo_first": "57GEMSDOE",
       "blob": "cdab993cdfe6a7bfbf25af95d72fd4d855819e77",
       "sources": [
-        "57GEMSDOE:docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif"
+        "57GEMSDOE:docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
+        "57GEMSDOE:registry/rasters/57GEMSDOE__faultzone-anatomy-60000px-prev.tif"
       ],
       "source_commit": "71ff73a84186c49f58d6b399df607635b9abd71a",
       "sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
@@ -5297,10 +5390,10 @@
       "blob": "c377731508178b209d90015ea2bd5c6e0260214a",
       "cache_file": ".cache/registry/c377731508178b209d90015ea2bd5c6e0260214a.tif",
       "sources": [
-        "GEMSDOE:data/evidence/runs/35042805806/submission.tif",
+        "5GEMSDOE:data/evidence/runs/35042805806/submission.tif",
         "GEMSDOE2:data/evidence/runs/35042805806/submission.tif",
         "GEMSDOE3:legacy/data/evidence/runs/35042805806/submission.tif",
-        "5GEMSDOE:data/evidence/runs/35042805806/submission.tif"
+        "GEMSDOE:data/evidence/runs/35042805806/submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -5333,6 +5426,17 @@
         "GEMSDOE39:docs/downloads/gemsdoe39-h39x01-strain-corridor-20261005T023209Z-d2f7e140-nan.tif"
       ],
       "repo_first": "GEMSDOE39"
+    },
+    {
+      "repo_first": "56GEMSDOE",
+      "blob": "afffd19fec029aa11c082f3faf92bc739000cb19",
+      "sources": [
+        "56GEMSDOE:docs/downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif"
+      ],
+      "source_commit": "1da1ba0ef210a17f6dae1fd24747e0c4f1c91eae",
+      "sha256": "a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75",
+      "bytes": 341067,
+      "cache_file": ".cache/registry/afffd19fec029aa11c082f3faf92bc739000cb19.tif"
     },
     {
       "sha256": "a6486899cb9f1a170c2bbb5a27f81ea3f960bc496ab460f11a9d4d8ae04a30b4",
@@ -5447,9 +5551,9 @@
       "blob": "49ad427035b2267dcd3e8acee10bdc85d5dbe322",
       "cache_file": ".cache/registry/49ad427035b2267dcd3e8acee10bdc85d5dbe322.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif",
         "GEMSDOE27:docs/downloads/gems27-topo-gap-closure-t-v2-on-d1-5-20261002-5512495c6bd1-allfinite.tif",
-        "GEMSDOE28:docs/downloads/gems27-topo-gap-closure-t-v2-on-d1-5-20261002-5512495c6bd1-allfinite.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE27__topo-gap-closure-t-v2-on-d1-5.tif"
+        "GEMSDOE28:docs/downloads/gems27-topo-gap-closure-t-v2-on-d1-5-20261002-5512495c6bd1-allfinite.tif"
       ],
       "repo_first": "GEMSDOE27"
     },
@@ -5543,6 +5647,17 @@
       "repo_first": "GEMSDOE4"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "18adc3d2ac930666eaeaccce2a8f377534544a3c",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-continuous-1875224px-20261009T202053Z-zeros.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "abd30a9c3aad35c9f24fe6bf21aacae236dc368cc2a1e8972d2be5f33f6f7e66",
+      "bytes": 9721662,
+      "cache_file": ".cache/registry/18adc3d2ac930666eaeaccce2a8f377534544a3c.tif"
+    },
+    {
       "sha256": "ac4ebc913a172f3415f14a3b47b169af03798cff3a643ffd0a89451b869259be",
       "bytes": 788833,
       "blob": "f7e81b7f1e19c7304f9decd31bee1db1f0979a12",
@@ -5591,9 +5706,9 @@
       "sources": [
         "19GEMSDOE:docs/downloads/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-allfinite.tif",
         "19GEMSDOE:submissions/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-allfinite.tif",
+        "57GEMSDOE:registry/rasters/19GEMSDOE__h19-4-multiline-corroborated.tif",
         "GEMSDOE22:docs/downloads/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-allfinite.tif",
-        "GEMSDOE24:inputs/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-allfinite.tif",
-        "57GEMSDOE:registry/rasters/19GEMSDOE__h19-4-multiline-corroborated.tif"
+        "GEMSDOE24:inputs/gems19-h19-4-multiline-corroborated-openness-thermal-pop-20260930-691e4dfa-allfinite.tif"
       ],
       "repo_first": "19GEMSDOE"
     },
@@ -5603,9 +5718,9 @@
       "blob": "8580ff86bf9be00f95774cb4c66b0e83b35c414c",
       "cache_file": ".cache/registry/8580ff86bf9be00f95774cb4c66b0e83b35c414c.tif",
       "sources": [
+        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe2-extension-arm-ad5ba911.tif",
         "GEMSDOE2:data/evidence/extension/submission.tif",
-        "GEMSDOE2:docs/gemsdoe2-extension-arm-ad5ba911.tif",
-        "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe2-extension-arm-ad5ba911.tif"
+        "GEMSDOE2:docs/gemsdoe2-extension-arm-ad5ba911.tif"
       ],
       "repo_first": "GEMSDOE2"
     },
@@ -5877,6 +5992,18 @@
       "repo_first": "GEMSDOE48"
     },
     {
+      "repo_first": "GEMSDOE52",
+      "blob": "698c98df958caf95b12d70463ef6eccb20f27622",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h75-candidate.tif",
+        "GEMSDOE52:submission/gems52-h75-dva-variogram-anisotropy-B-37654px-20261009.tif"
+      ],
+      "source_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+      "sha256": "b97691584d514ab1925d9fff2b61c410be86bdc0bc8c844dfdaa6257a4ea7a16",
+      "bytes": 142941,
+      "cache_file": ".cache/registry/698c98df958caf95b12d70463ef6eccb20f27622.tif"
+    },
+    {
       "sha256": "b988cbce0f4c2d839151cb7f9f6e5577fdad2f355ec8ce7186feddc7e6e58232",
       "bytes": 183470,
       "blob": "74fb758646d1ee8b6290c12b66f5c882ec2e7adc",
@@ -5902,10 +6029,10 @@
       "blob": "dafbc0a7a6e13eed55dd5f280a23bd3a60da27f3",
       "cache_file": ".cache/registry/dafbc0a7a6e13eed55dd5f280a23bd3a60da27f3.tif",
       "sources": [
-        "GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif",
+        "5GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif",
         "GEMSDOE2:data/evidence/runs/local-sandbox-smoke/submission.tif",
         "GEMSDOE3:legacy/data/evidence/runs/local-sandbox-smoke/submission.tif",
-        "5GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif"
+        "GEMSDOE:data/evidence/runs/local-sandbox-smoke/submission.tif"
       ],
       "repo_first": "GEMSDOE"
     },
@@ -5913,7 +6040,8 @@
       "repo_first": "57GEMSDOE",
       "blob": "cb9c830503f83dae0fccf0d5ee5fb4d0241cfc40",
       "sources": [
-        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif"
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif",
+        "57GEMSDOE:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif"
       ],
       "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
       "sha256": "ba0aab85f966e55477ef283cd1b4c14c481328ee21e564af47ad7043337a5d84",
@@ -5964,7 +6092,9 @@
       "repo_first": "57GEMSDOE",
       "blob": "9b3579fc25391668c27c594f8541dadf515694e5",
       "sources": [
-        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif"
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif",
+        "57GEMSDOE:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif",
+        "57GEMSDOE:docs/downloads/archive/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-nan.tif"
       ],
       "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
       "sha256": "bb9ed068937100e706970ec4c216bc5edaf5c8d0042cd096fb6a3be8cdf4c919",
@@ -6031,6 +6161,18 @@
         "13GEMSDOE:docs/downloads/archive/13gems-r6-ensemble-20260929T182914Z.tif"
       ],
       "repo_first": "13GEMSDOE"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "620049ef417ece7de514322c66568ab7371c67c8",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h76-candidate.tif",
+        "GEMSDOE52:submission/gems52-h76-gravity-surface-abstention-research-only.tif"
+      ],
+      "source_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+      "sha256": "bd64f0121502488ead1f91cb97530a7e9ae5fce89b9f0afc10a95466e35c98c2",
+      "bytes": 60802,
+      "cache_file": ".cache/registry/620049ef417ece7de514322c66568ab7371c67c8.tif"
     },
     {
       "sha256": "bdbcb62e8af6aaaa02b0baad19c80f15be5610aa8d7abddf20841408a58e5a66",
@@ -6187,15 +6329,15 @@
       "repo_first": "GEMSDOE50"
     },
     {
-      "repo_first": "55GEMSDOE",
-      "blob": "4bf00fa233a383651a99e1b29cd33d5336ab5471",
-      "sources": [
-        "55GEMSDOE:evidence/historical_artifacts/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-nan.tif"
-      ],
-      "source_commit": "7ac126b3e3edd249265635be7dc5ec0b8a1991b7",
       "sha256": "c3185ec459f84c5fd9a9c117f4611c25ec754e1a113c12139baca60e29501d74",
       "bytes": 1708911,
-      "cache_file": ".cache/registry/4bf00fa233a383651a99e1b29cd33d5336ab5471.tif"
+      "blob": "4bf00fa233a383651a99e1b29cd33d5336ab5471",
+      "cache_file": ".cache/registry/4bf00fa233a383651a99e1b29cd33d5336ab5471.tif",
+      "sources": [
+        "55GEMSDOE:docs/downloads/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-nan.tif",
+        "55GEMSDOE:evidence/historical_artifacts/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-nan.tif"
+      ],
+      "repo_first": "55GEMSDOE"
     },
     {
       "sha256": "c36696693639749791286bcd58e48a78ff79d4651b63fc33d273aab8191df0d4",
@@ -6326,12 +6468,12 @@
       "blob": "17a76895f68174cc93f3cb1597d25686f6d6bc67",
       "cache_file": ".cache/registry/17a76895f68174cc93f3cb1597d25686f6d6bc67.tif",
       "sources": [
+        "57GEMSDOE:registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif",
         "GEMSDOE32:docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
         "GEMSDOE48:data/families/dotted_b2_prune_02778.tif",
         "GEMSDOE48:data/raw/dotted_h33_2_b2_zeros.tif",
         "GEMSDOE51:data/prior/g32_h33b2_prior.tif",
-        "GEMSDOE54:registry/registry_rasters/dotted_b2_prune_02778.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif"
+        "GEMSDOE54:registry/registry_rasters/dotted_b2_prune_02778.tif"
       ],
       "repo_first": "GEMSDOE32"
     },
@@ -6943,15 +7085,14 @@
       "repo_first": "GEMSDOE54"
     },
     {
-      "repo_first": "56GEMSDOE",
+      "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
+      "bytes": 68005,
       "blob": "b6b967e1dbce604cbe87f7682f62dddebe85fcc1",
+      "cache_file": ".cache/registry/b6b967e1dbce604cbe87f7682f62dddebe85fcc1.tif",
       "sources": [
         "56GEMSDOE:docs/downloads/h56-disc-multi-b25000-20261009-20261009T165646Z.tif"
       ],
-      "source_commit": "94ea54980bde5e0be3de086c8a1d57f99dad02fe",
-      "sha256": "dd5bb61a617ff6ad779bddbe1eb3a08b050c84f94929942a5fd742f4a44a0296",
-      "bytes": 68005,
-      "cache_file": ".cache/registry/b6b967e1dbce604cbe87f7682f62dddebe85fcc1.tif"
+      "repo_first": "56GEMSDOE"
     },
     {
       "sha256": "dd5cd18a721196602eaccd8946b047eb8c929cbfdcac033512628f6dd0030f50",
@@ -7072,8 +7213,8 @@
       "blob": "e79b7bdb633369c724628e30efba6de60c1d25d9",
       "cache_file": ".cache/registry/e79b7bdb633369c724628e30efba6de60c1d25d9.tif",
       "sources": [
-        "GEMSDOE36:docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif",
-        "57GEMSDOE:registry/rasters/GEMSDOE36__anderson-geothermal-pinn-38854.tif"
+        "57GEMSDOE:registry/rasters/GEMSDOE36__anderson-geothermal-pinn-38854.tif",
+        "GEMSDOE36:docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif"
       ],
       "repo_first": "GEMSDOE36"
     },
@@ -7271,6 +7412,17 @@
       "repo_first": "GEMSDOE53"
     },
     {
+      "repo_first": "55GEMSDOE",
+      "blob": "39e713f6f5d6b9a1b07c1240215a0da1b96a81aa",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-triscale-poisson-50035dots-20261009T201613Z-nan.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "e7533fd89de166702a482db411289f1866614800a69514f00a232d46a8514302",
+      "bytes": 1747674,
+      "cache_file": ".cache/registry/39e713f6f5d6b9a1b07c1240215a0da1b96a81aa.tif"
+    },
+    {
       "sha256": "e7f0d4b9fd58b90e67538e595680315fb9861e08d8d093c1617b10a584f28b5a",
       "bytes": 1184786,
       "blob": "0bb2fae409553cc7281a848541d65232921a8bdc",
@@ -7285,7 +7437,8 @@
       "repo_first": "57GEMSDOE",
       "blob": "fff3348bf3f24c21ff572d273a7d42b69e63bb24",
       "sources": [
-        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif"
+        "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif",
+        "57GEMSDOE:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif"
       ],
       "source_commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c",
       "sha256": "e845aa2e10fc47fa7582ca8a0b3c3a05cb5097a2bd922daf54db99169c663144",
@@ -7433,11 +7586,11 @@
       "sources": [
         "19GEMSDOE:docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
         "19GEMSDOE:submissions/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
+        "57GEMSDOE:registry/rasters/19GEMSDOE__h19-5-powerlaw-budget-multiline.tif",
         "GEMSDOE22:docs/downloads/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
         "GEMSDOE24:docs/downloads/gems24-h24-0-mirror-h19-5-group-best-20261002-e27054cf-allfinite.tif",
         "GEMSDOE24:docs/downloads/gems24-reference-h19-5-20261002-80d47e1ab2ee-allfinite.tif",
-        "GEMSDOE24:inputs/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif",
-        "57GEMSDOE:registry/rasters/19GEMSDOE__h19-5-powerlaw-budget-multiline.tif"
+        "GEMSDOE24:inputs/gems19-h19-5-powerlaw-budget-multiline-corroborated-20260930-e27054cf-allfinite.tif"
       ],
       "repo_first": "19GEMSDOE"
     },
@@ -7482,6 +7635,17 @@
         "GEMSDOE50:docs/downloads/gemsdoe50-h60-union-d0-75308-20261007T2250Z.tif"
       ],
       "repo_first": "GEMSDOE50"
+    },
+    {
+      "repo_first": "55GEMSDOE",
+      "blob": "945e46ae99a2dda28f0f6f7ac8935bbbd252013b",
+      "sources": [
+        "55GEMSDOE:evidence/parallel_session_16/tensor-triscale-poisson-50035dots-20261009T201613Z-zeros.tif"
+      ],
+      "source_commit": "d92606c28dc5e93ee1bce5148b92ccbb5225d023",
+      "sha256": "f0c2f4251c5a60242354742102303ae635442469dc4472f87e414b6bee268586",
+      "bytes": 966503,
+      "cache_file": ".cache/registry/945e46ae99a2dda28f0f6f7ac8935bbbd252013b.tif"
     },
     {
       "sha256": "f0d697490fc27e9aa1e0c440c69497240f3d8ea70329b398a99902097846feed",
@@ -7534,6 +7698,18 @@
       "repo_first": "GEMSDOE34"
     },
     {
+      "repo_first": "57GEMSDOE",
+      "blob": "e89bafd5726799616938aaecfbe55978f39dea20",
+      "sources": [
+        "57GEMSDOE:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif",
+        "57GEMSDOE:downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif"
+      ],
+      "source_commit": "5309c85a6334c5715791c548dafc2fabdacc8568",
+      "sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+      "bytes": 10010096,
+      "cache_file": ".cache/registry/e89bafd5726799616938aaecfbe55978f39dea20.tif"
+    },
+    {
       "sha256": "f28e5cff682662c18d6b15f5d5501e13096b0ab00a76e1640dc93dc5e6e6fc8f",
       "bytes": 401488,
       "blob": "36d88d656a3485544f683ce3f4000f1e03c85e76",
@@ -7569,9 +7745,9 @@
       "blob": "fdd931161c431a583cf7039362e51832e59d07ad",
       "cache_file": ".cache/registry/fdd931161c431a583cf7039362e51832e59d07ad.tif",
       "sources": [
-        "GEMSDOE3:docs/downloads/pindrop-v4-nodes-20260925T152420Z-f347b70daa.tif",
         "5GEMSDOE:data/evidence/leaderboard_anchor/pindrop-v4-nodes-f347b70daa.tif",
-        "7GEMSDOE:external/scored/gemsdoe3-pindrop-nodes-f347b70daa.tif"
+        "7GEMSDOE:external/scored/gemsdoe3-pindrop-nodes-f347b70daa.tif",
+        "GEMSDOE3:docs/downloads/pindrop-v4-nodes-20260925T152420Z-f347b70daa.tif"
       ],
       "repo_first": "GEMSDOE3"
     },
@@ -7682,10 +7858,10 @@
       "blob": "fd56d5c4806521438ee89cc9bd7dd1cf89e9fd44",
       "cache_file": ".cache/registry/fd56d5c4806521438ee89cc9bd7dd1cf89e9fd44.tif",
       "sources": [
-        "GEMSDOE2:data/evidence/union/submission.tif",
-        "GEMSDOE2:docs/gemsdoe2-dual-family-union-f68e590f.tif",
         "5GEMSDOE:data/evidence/leaderboard_anchor/gemsdoe2-dual-family-union-f68e590f.tif",
-        "7GEMSDOE:external/scored/gemsdoe2-dual-union-f68e590f.tif"
+        "7GEMSDOE:external/scored/gemsdoe2-dual-union-f68e590f.tif",
+        "GEMSDOE2:data/evidence/union/submission.tif",
+        "GEMSDOE2:docs/gemsdoe2-dual-family-union-f68e590f.tif"
       ],
       "repo_first": "GEMSDOE2"
     },
@@ -7708,6 +7884,18 @@
         "GEMSDOE48:docs/downloads/gemsdoe48-ds48-belief.tif"
       ],
       "repo_first": "GEMSDOE48"
+    },
+    {
+      "repo_first": "GEMSDOE52",
+      "blob": "47f301cf7251c876f839aa7cb265eab7f258bbaa",
+      "sources": [
+        "GEMSDOE52:docs/downloads/h77-candidate.tif",
+        "GEMSDOE52:submission/gems52-h77-viewb-boardplaced-37654px-20261009T194504Z.tif"
+      ],
+      "source_commit": "22091610117447c174b65d074d0df73d2a8b2e27",
+      "sha256": "f7f234af958b5645b0ca65c8969906c6b526ef3da9afa693b0171d1902452f49",
+      "bytes": 1558626,
+      "cache_file": ".cache/registry/47f301cf7251c876f839aa7cb265eab7f258bbaa.tif"
     },
     {
       "sha256": "f81e26d7712d1a4a9d3d5393037b09849400c3976d1ebd40e2760a586f2adc2f",
@@ -7923,15 +8111,15 @@
       "repo_first": "5GEMSDOE"
     },
     {
-      "repo_first": "55GEMSDOE",
-      "blob": "1da6c53c19d3af95b5afc89645a79c32494773d6",
-      "sources": [
-        "55GEMSDOE:evidence/historical_artifacts/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-zeros.tif"
-      ],
-      "source_commit": "7ac126b3e3edd249265635be7dc5ec0b8a1991b7",
       "sha256": "ffd2a892b750022b6fbe0bcd0759099421eab1b9e354fc5f7e2793d082859273",
       "bytes": 932991,
-      "cache_file": ".cache/registry/1da6c53c19d3af95b5afc89645a79c32494773d6.tif"
+      "blob": "1da6c53c19d3af95b5afc89645a79c32494773d6",
+      "cache_file": ".cache/registry/1da6c53c19d3af95b5afc89645a79c32494773d6.tif",
+      "sources": [
+        "55GEMSDOE:docs/downloads/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-zeros.tif",
+        "55GEMSDOE:evidence/historical_artifacts/audit-h55-160k/h55-tensor2d-strikegate-160000dots-20261009T164334Z-zeros.tif"
+      ],
+      "repo_first": "55GEMSDOE"
     },
     {
       "sha256": "fffa7524b3f6e5a3b58f90b33aa9bc37982e214915ee3a16ca981feb2aa6cae3",
@@ -7944,23 +8132,5 @@
       "repo_first": "GEMSDOE51"
     }
   ],
-  "scope": "Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.",
-  "extension_utc": "2026-10-09T20:45:48.118104+00:00",
-  "concurrent_main_extension": {
-    "commit": "803052f483923a8f09a7ea04934e76c334d27ac7",
-    "new_grid_rasters": 4,
-    "previous_grid_rasters": 670,
-    "reason": "Additional public-main artifacts merged while this session was active; current candidate is not a prior."
-  },
-  "open_pr_heads_checked": [
-    {
-      "pr": 6,
-      "commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c"
-    },
-    {
-      "pr": 8,
-      "commit": "58840b86ad780b35b2f37fbc70e79c4ed3cab420"
-    }
-  ],
-  "later_main_commit": "d6e7675ede4417cfb6cfdedb52620a1b596e6231"
+  "scope": "Historical pinned inventory union latest public main trees including this repository; inaccessible/private/unlinked rasters cannot be certified."
 }

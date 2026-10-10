@@ -25,6 +25,7 @@ NAV = [('index.html', 'Overview'), ('h57b.html', 'H57-B HOLD'),
        ('research.html', 'Research'), ('sources.html', 'Sources'),
        ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
+          'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
@@ -202,6 +203,10 @@ def build(root=ROOT, make_preview=True):
         shutil.copyfile(root / 'evidence' / f'{name}.json', data / f'{name}.json')
     shutil.copyfile(root / 'evidence/run_card_current.json', data / 'run_card_h57k.json')
     shutil.copyfile(root / 'evidence/run_card.json', data / 'run_card.json')
+    shutil.copyfile(
+        root / 'evidence/history/run_card_session5_relay_bend_held.json',
+        data / 'run_card_session5_relay_bend_held.json',
+    )
     for name in h57b_evidence_names:
         shutil.copyfile(root / 'evidence' / f'{name}.json', data / f'{name}.json')
     for name in ['feed_refresh_status', 'review_passes', 'sibling_page_reviews', 'browser_qa', 'registry_concurrent_extension', 'registry_open_pr_extension', 'uniqueness_current_review', 'uniqueness_concurrent_extension', 'uniqueness_open_pr_extension', 'registry_h57i_extension', 'uniqueness_h57i_extension']:
@@ -215,6 +220,7 @@ def build(root=ROOT, make_preview=True):
     stamp = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
     holdout = evidence['orientation_holdout']
     registry = card['correlation_overlap_vs_registry']
+    latest_registry_count = evidence['registry_refreshed']['n_unique_grid_rasters']
     raw = card['holdout_dti']
     dots = card['holdout_dot_dti']
     panel = download_panel(card)
@@ -232,7 +238,7 @@ def build(root=ROOT, make_preview=True):
 
     index = panel + f'''<section class="stat-grid" aria-label="Current research diagnostics">
 <div class="stat"><span>Prior H57-K local format</span><strong>PASS</strong><small>Archived; not cleared</small></div>
-<div class="stat"><span>H57-K indexed-inventory audit</span><strong>{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']}</strong><small>Public owner-repository index; not organizer-complete</small></div>
+<div class="stat"><span>H57-K frozen historical audit</span><strong>{registry['registry_rasters_checked']} / {registry['registry_rasters_expected']}</strong><small>Older scope; latest public-main index is {latest_registry_count}; not refreshed or cleared</small></div>
 <div class="stat"><span>H57-K worst forward overlap</span><strong>{registry['worst_dot_overlap']:.0%}</strong><small>Required ≤70% · FAIL</small></div>
 <div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>No submission slot selected or used</small></div></section>
 <section class="two-column"><div><div class="eyebrow">PRIOR H57-K SCIENTIFIC RESULT · HISTORICAL</div><h2>Orientation did not earn a slot.</h2>
@@ -244,7 +250,7 @@ def build(root=ROOT, make_preview=True):
 <section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div><h2>Leaderboard context</h2><p><strong id="leaderboard-top">{number(evidence['leaderboard_snapshot']['top_public_dti'])}</strong> <span id="leaderboard-context">top public DTI in the last successful organizer snapshot</span></p><p id="feed-status" aria-live="polite">Checked on 2026-10-09. Date-precision snapshot; open the official board for current context.</p><p>{link('https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/', 'Official leaderboard')} · {link('data/leaderboard_snapshot.json', 'Timestamped snapshot')}</p><p class="small">Scheduled Pages builds refresh this public feed. Failures retain the prior snapshot with a visible freshness warning. Neither the team's remaining slots nor its private score is known.</p></section>'''
 
     executive = panel + f'''<section><h2>Read this before opening “New submission”</h2><div class="warning"><strong>No file is cleared to download or submit.</strong> The archived H57-K TIFF passed local format checks but failed the literal uniqueness gate; H57-B generated no TIFF. Local format PASS is not organizer acceptance, uniqueness clearance or permission to use a weekly slot.</div>
-<p><strong>Prior H57-K audit:</strong> {registry['duplicate_count']} registry comparisons triggered a literal duplicate condition. Worst rank correlation was {number(registry['worst_spearman_full_footprint'])} (below 0.90); worst forward overlap was {registry['worst_dot_overlap']:.2f} (above 0.70). Pixel and byte identity checks passed, but do not clear that archived file.</p></section>
+<p><strong>Historical H57-K audit:</strong> {registry['duplicate_count']} comparisons in its frozen {registry['registry_rasters_checked']}-raster snapshot triggered a literal duplicate condition. Worst rank correlation was {number(registry['worst_spearman_full_footprint'])} (below 0.90); worst forward overlap was {registry['worst_dot_overlap']:.2f} (above 0.70). Pixel and byte identity checks passed, but do not clear that archived file. The latest public-main index has {latest_registry_count} rasters; the H57-K receipt was not refreshed to that scope, so its old counts are not a current inventory audit.</p></section>
 <section><h2>Exact submission steps—for a future selector-cleared file</h2><ol class="steps"><li><strong>Check the release card.</strong> Require format PASS, surface PASS against the scoped indexed public inventory before placement, final-dot PASS, clean canaries and a positive paired holdout gain. A separate selector must clear the real slot.</li>
 <li><strong>Download the .tif, or the single-TIFF .zip.</strong> Do not upload this HTML page, a JSON receipt, a PDF or a ZIP of the repository. Our ZIP is round-trip checked to contain exactly one GeoTIFF.</li>
 <li><strong>Open the competition submission page.</strong> {link('https://www.drivendata.org/competitions/306/competition-doe-gems/submissions/', 'DrivenData: submissions')}. Log in, accept the official rules and check the logged-in weekly counter. The published rules say three submissions per week; remaining team capacity is unknown here.</li>
@@ -309,6 +315,19 @@ def build(root=ROOT, make_preview=True):
                link('data/run_card_h57k.json', 'Historical H57-K card (archived, not cleared)') + '</p>'
                '<pre>' + esc(json.dumps(h57b_card, indent=2, allow_nan=False)) + '</pre>')
     archive = '''<div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p>'''
+    h57j_card = json.loads((root / 'evidence/history/run_card_session5_relay_bend_held.json').read_text())
+    h57j_score = h57j_card['holdout_dti']
+    h57j_registry = evidence['relay_bend_surface_uniqueness']
+    h57j_structure = evidence['relay_bend_structure']
+    h57j_relative = h57j_structure['relative_strike']
+    if h57j_card['okay_to_download'] or h57j_card['okay_to_submit'] or h57j_registry['unique']:
+        raise ValueError('archived H57-J card must remain fail-closed')
+    archive += f'''<section class="warning"><div class="eyebrow">SESSION 5 · H57-J RELAY-BEND RESEARCH SURFACE · NOT CLEARED</div>
+<h2>Local format validity did not pass the uniqueness gate.</h2>
+<p>The archived TIFF is a new research surface, not copied from a prior submission. Its historical local format checks passed, but its indexed-registry receipt checked {h57j_registry['registry_rasters_checked']} / {h57j_registry['registry_rasters_expected']} rasters and reports <strong>unique: false</strong>, {h57j_registry['duplicate_count']} threshold-triggered comparisons, worst full-footprint Spearman {number(h57j_registry['worst_spearman_full_footprint'], 6)} (&gt;0.90), and worst candidate-forward 3 px overlap {number(h57j_registry['worst_dot_overlap'], 6)} (&gt;0.70). The literal gate is unchanged; no reverse-overlap or Jaccard exemption applies.</p>
+<p><strong>HOLDOUT-DTI</strong> (soft pre-placement surface only): {number(h57j_score['dti'], 6)}, 95% CI {interval(h57j_score['ci95'])}; evaluator <code>{esc(h57j_score['evaluator_version'])}</code>; {h57j_score['withheld_positive_pixels']:,} withheld positive pixels. This is a local holdout measurement—not an organizer score or projection. Final dots were not generated; no submission or weekly slot was selected.</p>
+<p><strong>HOLDOUT-STRUCTURE (descriptive, not a score):</strong> Withheld angle pixels (count; % of valid sample) use {h57j_relative['n_withheld_total']:,} withheld and {h57j_relative['n_visible_total']:,} visible-reference samples, at minimum local coherence {h57j_relative['minimum_local_coherence']}. The sample unit is <em>{esc(h57j_relative['sample_unit'])}</em>; the angle convention is {esc(h57j_relative['angle_convention'])}. This structural summary is not a DTI or a model-fit receipt. {link('data/relay_bend_structure.json', 'H57-J structural receipt')}.</p>
+<p>The upstream mainline run card set <code>okay_to_download: true</code> despite this failing uniqueness receipt. That inconsistent permission is withdrawn in the sanitized archived run card and receipt; both say <strong>NOT CLEARED — DO NOT DOWNLOAD OR SUBMIT</strong>. The current page has no TIFF/ZIP link. {link('data/run_card_session5_relay_bend_held.json', 'Sanitized historical run card')} · {link('data/relay_bend_holdout.json', 'H57-J HOLDOUT-DTI receipt')} · {link('data/relay_bend_surface_uniqueness.json', 'H57-J registry receipt')} · {link('data/relay_bend_canary.json', 'H57-J feature-alone canaries')}.</p></section>'''
     docs_root = root / 'docs'
     archived = sorted(path for path in (docs_root / 'downloads').rglob('*.tif'))
     archive += '<h2>DO NOT SUBMIT any archived output</h2><ul>' + ''.join(
@@ -335,6 +354,7 @@ def build(root=ROOT, make_preview=True):
 <div class="stat"><span>Dots</span><strong>{sb['dots']['n_dots']:,}</strong><small>None on the mapped catalogue</small></div>
 <div class="stat"><span>Worst Spearman</span><strong>{number(uq['worst_spearman_full_footprint'])}</strong><small>Required &le;0.90 · PASS</small></div>
 <div class="stat"><span>Worst forward overlap</span><strong>{uq['worst_forward_overlap_all']:.1%}</strong><small>All compared rasters · literal FAIL</small></div></section>
+<section class="warning"><h2>Audit scope is historical, not current clearance</h2><p>The H57-K receipts below describe their own archived scans. The separate H57-K card's 679-raster audit predates the latest {latest_registry_count}-raster public-main index. A 698-row mainline review also has row hashes not aligned to that 695-row index, so it is not substituted as a current audit. H57-K remains NOT CLEARED; see {link('irregularities.html', 'IR-57-AUDIT-SCOPE-01')}.</p></section>
 <section><h2>Archived artifact metadata — no download link</h2><p>The TIFF and ZIP are retained under <code>docs/downloads/archive/</code> for provenance only. They are not cleared for download or submission.</p>
 <p class="small">Filename <code>{esc(Path(sb['file']).name)}</code> · SHA256 <code>{esc(sb['sha256'])}</code> · {sb['bytes']:,} bytes. Historical note ({sb['note_chars']}/140 chars): <code>{esc(sb['note'])}</code></p></section>
 <section><h2>The H57-K hypothesis was tested; its gate did not pass.</h2>

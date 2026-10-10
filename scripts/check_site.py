@@ -103,12 +103,70 @@ def check(root=ROOT):
     assert audit['candidate_file_sha256']==digest
     index=json.loads((root/'evidence/registry_refreshed.json').read_text())
     total=index['n_unique_grid_rasters']
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
+    # Preserve the separate latest-main 698-row H57-K report as provenance, but
+    # prove that it is not the 695-row public-main index and cannot clear H57-K.
+    mainline_review=json.loads((root/'evidence/uniqueness_current_review.json').read_text())
+    index_hashes={row['sha256'] for row in index['rasters']}
+    review_hashes={row['sha256'] for row in mainline_review['rows']}
+    assert mainline_review['registry_rasters_expected']==mainline_review['registry_rasters_checked']==698
+    assert len(review_hashes)==698 and len(review_hashes-index_hashes)==4
+    assert audit['candidate_file_sha256'] in index_hashes
+    assert audit['candidate_file_sha256'] not in review_hashes
+    assert not mainline_review['unique']
+    card_audit=card['correlation_overlap_vs_registry']
+    audit_count=audit['registry_rasters_expected']
+    assert audit_count==audit['registry_rasters_checked']==len(audit['rows'])
+    assert card_audit['registry_rasters_expected']==card_audit['registry_rasters_checked']==audit_count
     assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert not audit['unique'] and audit['worst_dot_overlap']>0.70
+    audit_literal_flags=sum(bool(row.get('duplicate_by_rho')) or bool(row.get('duplicate_by_overlap')) for row in audit['rows'] if 'error' not in row)
+    assert audit_literal_flags==audit['duplicate_count']
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    # H57-K's candidate-specific receipt is an older 679-raster audit; the latest
+    # public-main index is 695. Preserve the mismatch as an explicit historical
+    # scope boundary, never coerce the old receipt into current clearance.
+    h57k_audit_matches_latest_index=(audit_count==total)
+    if not h57k_audit_matches_latest_index:
+        assert audit_count < total
+        assert card['okay_to_download'] is False and card['okay_to_submit'] is False
+        assert card['verdict']=='negative'
+    relay_audit=json.loads((root/'evidence/relay_bend_surface_uniqueness.json').read_text())
+    held_h57j=json.loads((root/'evidence/history/run_card_session5_relay_bend_held.json').read_text())
+    assert relay_audit['registry_rasters_expected']==relay_audit['registry_rasters_checked']==total
+    assert relay_audit['complete_accessible_scan'] and not relay_audit['unique']
+    relay_literal_flags=sum(bool(row.get('duplicate_by_rho')) or bool(row.get('duplicate_by_overlap')) for row in relay_audit['rows'] if 'error' not in row)
+    assert relay_literal_flags==relay_audit['duplicate_count']
+    assert relay_audit['jaccard_diagnostic_only'] is True
+    assert relay_audit['candidate_file_sha256']==held_h57j['raster_sha256']
+    assert held_h57j['okay_to_download'] is False and held_h57j['okay_to_submit'] is False
+    assert held_h57j['surface_before_placement']['protocol_pass'] is False
+    assert held_h57j['final_dots']['status']=='not_generated'
+    assert held_h57j['permission_withdrawal']['source_card_claimed_okay_to_download'] is True
+    assert held_h57j['permission_withdrawal']['withdrawn'] is True
+    snapshots={row['repo']:row['commit'] for row in index['snapshots']}
+    assert len(snapshots)==57
+    sites=json.loads((root/'evidence/site_inventory.json').read_text())
+    assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
+    classification=json.loads((root/'evidence/registry_classification.json').read_text())
+    assert classification['grid_rasters_checked']==total
+    assert classification['auxiliary_inputs']==4
+    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
+    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
+    assert structure['n_withheld']==11321
+    assert sum(structure['n_visible_reference'])==structure['n_visible_total']==21321
+    assert structure['distance_quantile_probabilities']==[.1,.5,.9,.95,.99]
+    relay_structure=json.loads((root/'evidence/relay_bend_structure.json').read_text())
+    relay_relative=relay_structure['relative_strike']
+    assert relay_structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
+    assert sum(relay_relative['n_withheld'])==relay_relative['n_withheld_total']==10811
+    assert sum(relay_relative['n_visible_reference'])==relay_relative['n_visible_total']==21321
+    assert relay_relative['sample_unit']=='fault raster pixel; not segment-weighted'
+    assert relay_relative['minimum_local_coherence']==.2
+    assert relay_relative['angle_convention']=='unsigned axial difference in degrees, folded to [0,90]'
+    assert relay_structure['model_fit_performed'] is False
+    assert relay_structure['dti_evaluated'] is False and relay_structure['production_dots_generated'] is False
     canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features'])==14
+    assert len(canary['features']) in (14, 22)
     for feature in canary['features'].values():
         assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
     holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
@@ -145,9 +203,19 @@ def check(root=ROOT):
         assert 'ORGANIZER-CONFIRMED numbers as pasted' not in (docs/name).read_text()
     result=dict(pages_checked=len(pages),tiff_sha256=digest,tiff_bytes=raster.stat().st_size,
                 zip_exactly_one_tiff=True,local_format_pass=True,links_pass=True,
+                latest_public_main_registry_rasters=total,
+                h57k_historical_audit_rasters=audit_count,
+                h57k_audit_matches_latest_index=h57k_audit_matches_latest_index,
+                h57j_audit_matches_latest_index=True,
                 current_card_consistent=True,submission_cleared=False)
     print(json.dumps(result,indent=2))
     return result
+
+
+def inspect_site(docs):
+    """Compatibility helper for the repository's separate site-link smoke test."""
+    pages, errors = check_links(Path(docs))
+    return errors
 
 
 def main():

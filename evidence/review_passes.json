@@ -1,5 +1,5 @@
 {
-  "status": "three local implementation/review passes complete",
+  "status": "Session-5 experiment budget exhausted; PR #16 integration verified fail-closed",
   "passes": [
     {
       "pass_number": 1,
@@ -23,17 +23,23 @@
   "completed_utc": "2026-10-09T21:06:57.362073+00:00",
   "production_final_dots": 0,
   "final_local_tests": {
-    "passed": 72,
-    "warnings": 9,
+    "passed": 127,
+    "skipped": 2,
+    "failures": 0,
+    "errors": 0,
+    "warnings": 2,
     "junit": "evidence/tests-final.xml"
   },
   "static_delivery_checks": {
-    "html_pages": 26,
-    "zip_exactly_one_tiff": true,
-    "local_format": true,
-    "root_and_docs_mirrors_identical": true
+    "html_pages_checked": 30,
+    "h57k_zip_exactly_one_tiff": true,
+    "local_format_pass": true,
+    "links_pass": true,
+    "held_tiff_zip_active_links": false,
+    "current_card_consistent": true,
+    "submission_cleared": false
   },
-  "registry_rasters_checked": 679,
+  "registry_rasters_checked": 695,
   "github_ci": {
     "first_run_id": 37989482527,
     "first_run_conclusion": "success",
@@ -65,5 +71,73 @@
     "new_rasters_generated": 0,
     "submission_slots_used": 0,
     "weekly_slot_selected": false
-  }
+  },
+  "session5_source_main_passes": {
+    "source_commit": "9565542c9ab19312c8dcebe97bd446ee43a0bc8a",
+    "passes": [
+      {
+        "pass_number": 1,
+        "scope": "Assemble 19-band training_features.tif into .cache/, refresh 695-raster registry across all 57 sibling repositories, implement multi-scale host-bend (H57-H), exact 12-bitplane two-host relay (H57-I2), and visible-only slip-sense transition (H57-J) features in src/gems57/relay_bend_anatomy.py, and run the 3-experiment buffered whole-component holdout + 695-raster audit",
+        "tests": "91 passed; all 22 feature canaries <= 0.8259 < 0.90; E2 (relay_bend_anatomy) achieves binary HOLDOUT-DTI 0.135204 [0.119140, 0.153036], beating single-host anatomy (+0.0256 [+0.0139, +0.0371]) and distance-only (+0.0225 [+0.0079, +0.0385])"
+      },
+      {
+        "pass_number": 2,
+        "scope": "Review multi-scale bend turning at symmetric vertices (repaired using spin-2 structure-tensor director norm ||T_fine - T_coarse||_2), verify two-host bitplane EDT against brute-force oracle, verify hidden-label invariance, update site generator and check_site.py for 22-feature canary and 695-raster audit",
+        "tests": "92 passed; check_site.py passes all 28 HTML pages, links, GeoTIFF/ZIP round-trip and SHA256 checks"
+      },
+      {
+        "pass_number": 3,
+        "scope": "Re-check against every requirement in the standing prompt (lane compliance, reuse of evaluate_holdout.py & submission_writer.py, HOLDOUT-DTI vs ORGANIZER-CONFIRMED/OWNER-REPORTED labeling, 22-feature leakage canary, 695-raster uniqueness gate, prominent download + HOLD status on site and README, GEMSDOE32 0.2778 analysis, 4 ranked hypotheses, JSON Run Card, and PR merge onto main)",
+        "status": "complete",
+        "tests": "92 passed, 0 failed, 0 skipped"
+      }
+    ],
+    "historical_tests": {
+      "passed": 92,
+      "warnings": 9,
+      "junit": "evidence/tests-final.xml"
+    },
+    "note": "Upstream Session-5 pass counts are historical main-commit receipts; current integration was re-tested below."
+  },
+  "pr16_merge_integration": {
+    "completed_utc": "2026-10-10",
+    "scope": "Preserve H57-B protected card and H57-K historical artifact while integrating H57-J evidence; withdraw contradictory upstream download permission; disclose 679/695/698 audit-scope discrepancy; keep the literal rho/forward-overlap gate; align shared anatomy schema and delivery tests.",
+    "targeted_tests": {
+      "passed": 56,
+      "failures": 0,
+      "junit": "console"
+    },
+    "full_tests": {
+      "collected": 129,
+      "passed": 127,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "warnings": 2,
+      "junit": "evidence/tests-final.xml"
+    },
+    "site_check": {
+      "pages_checked": 30,
+      "latest_public_main_registry_rasters": 695,
+      "h57k_historical_audit_rasters": 679,
+      "h57k_audit_matches_latest_index": false,
+      "h57j_audit_matches_latest_index": true,
+      "local_format_pass": true,
+      "zip_exactly_one_tiff": true,
+      "links_pass": true,
+      "current_card_consistent": true,
+      "submission_cleared": false
+    },
+    "protected_h57b_card_sha256": "27bacbec2620a4a2bb41ca14d68505dc646a9b6a9da8da2b4471bc41358a2923",
+    "new_experiments": 0,
+    "new_candidate_rasters_generated": 0,
+    "data_fetch_performed": false,
+    "submission_slots_used": 0,
+    "weekly_slot_selected": false,
+    "pr16_github_merge": "pending; branch changes not yet pushed"
+  },
+  "h57k_historical_audit_rows": 679,
+  "h57k_mainline_review_report_rows": 698,
+  "h57k_review_scope_reconciled": false,
+  "h57j_registry_rasters_checked": 695
 }

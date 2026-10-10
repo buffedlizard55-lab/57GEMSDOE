@@ -13,6 +13,12 @@ its measured same-lane forward overlap of 0.711325 exceeds the literal 0.70 limi
 reverse-overlap exemption applies. The current project status and single H57-B run card are at
 [`docs/index.html`](../../index.html) and [`evidence/run_card.json`](../../../evidence/run_card.json).
 
+## Session-5 H57-J relay-bend surface — NOT CLEARED
+
+`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif` and its single-TIFF ZIP are archived for audit only. The TIFF is a new pre-placement research surface (not copied from a prior submission) and its historical local format checks passed; that is not permission to download or submit. The source-main uniqueness receipt checked 695 indexed rasters and reported `unique: false`, 81 threshold-triggered comparisons, worst full-footprint Spearman **0.975315** (>0.90), and worst candidate-forward 3 px overlap **1.0** (>0.70). No reverse-overlap or Jaccard exemption applies. No final dots, submission, or weekly-slot selection were made.
+
+The upstream mainline H57-J card had `okay_to_download: true` despite the failed uniqueness receipt. That inconsistent clearance claim is withdrawn in `evidence/history/run_card_session5_relay_bend_held.json` and the archived sidecar receipt; both now explicitly say **NOT CLEARED — DO NOT DOWNLOAD OR SUBMIT**. H57-B's protected `evidence/run_card.json` remains unchanged. The original source commit remains in Git history as provenance; the current site does not link to the TIFF or ZIP.
+
 Files in this archive are retained for provenance only. Their old validation receipts do not
 clear any other artifact. The previous explanation that NaN alone caused a portal rejection was
 not established; see `IR-57-NAN-02` on the current irregularities page.

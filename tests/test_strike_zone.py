@@ -25,7 +25,10 @@ def test_strike_roundtrip():
 
 
 def test_fit_drops_unenriched_bins_and_does_not_use_heldout_y():
-    train = [_geom(seed=1), _geom(seed=2)]
+    # The zone estimator intentionally drops distance bins with fewer than
+    # MIN_BIN_TOTAL=40 training cells; use enough synthetic examples that the
+    # positive inner bins clear that predeclared support threshold reliably.
+    train = [_geom(n=600, seed=1), _geom(n=600, seed=2)]
     test = _geom(seed=99)
     m = fit_zone(train, d_col=FEATURES.index("d_perp"), outer=False, isotropic=True)
     assert m.n_kept_bins > 0

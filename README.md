@@ -63,6 +63,16 @@ All **14 feature-alone leakage canaries** were tested using `max(AUC, 1−AUC)` 
 
 Receipts: [holdout](evidence/orientation_holdout.json), [canaries](evidence/orientation_canary.json), [structure](evidence/orientation_structure.json), [all per-raster checks](evidence/orientation_surface_uniqueness.json), [registry classification](evidence/registry_classification.json), [environment](evidence/environment.json).
 
+## Latest-main Session-5 relay/bend artifact — HOLD, archive only
+
+The latest-main session produced a genuinely new pre-placement research TIFF, not a copy of a prior submission. Its recorded soft-surface **HOLDOUT-DTI** is 0.031160 [95% CI 0.024691, 0.038109], evaluator `gems57-pooled-hide-v2`, with 11,321 withheld positives. This is a local holdout measurement, not a score for final dots, an organizer score, or a projection. No final dots were generated, no submission was made, and no slot was selected.
+
+The H57-J uniqueness receipt checked 695 SHA-verified rasters and reports `unique: false`, 81 threshold-triggered comparisons, worst full-footprint Spearman 0.975315 (>0.90), and worst candidate-forward 3 px overlap 1.0 (>0.70). The literal rule remains unchanged; no reverse-overlap or Jaccard exemption applies. The TIFF and ZIP are therefore in [`docs/downloads/archive`](docs/downloads/archive/README.md), with no active download link. Local format validation did not clear them.
+
+**Irregularity:** the source-main card set `okay_to_download: true` while its own uniqueness receipt failed. That permission has been withdrawn in the sanitized historical card/receipt; both now say NOT CLEARED. The source-main commit is preserved as provenance. H57-B's protected `evidence/run_card.json` is unchanged.
+
+**Audit-scope caveat:** the refreshed public-main index has 695 rows. The retained H57-K audit is a historical 679-row snapshot, while a separate mainline 698-row H57-K review has four row hashes absent from the 695-row manifest and excludes the candidate hash present there. We do not synthesize a current H57-K audit from those inconsistent scopes; H57-K remains NOT CLEARED. See [`IR-57-AUDIT-SCOPE-01`](evidence/irregularities_current.json).
+
 ## The important review finding
 
 **IR-57-STRIKE-01:** a reversed `np.where` fallback reset **every finite primary strike to zero**. Host-relative offsets were global-frame offsets; sin2/cos2 were constant. It is fixed in the shared `anatomy.py`, with east–west-offset and hidden-value-invariance regressions. Empty visible catalogues now fail rather than invent an array-boundary fault.
@@ -109,8 +119,8 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 ## Sources, feed and future work
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
-- [Four pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. Relative magnetic strike tested; multi-scale bends, two-host superposition and sense transitions not run.
-- [57 pinned sibling sites](evidence/site_inventory.json); [679-raster indexed public owner-repository inventory](evidence/registry_refreshed.json). It is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted.
+- [Hypothesis ranking and Session-5 receipts](evidence/hypotheses_current.json): relative magnetic strike and the three predeclared H57-H/H57-I2/H57-J comparisons have been tested; H57-I2 relay+bend anatomy was retained over H57-J because the binary paired CI for H57-J crossed zero. This experiment budget is exhausted; no further run or slot selection is authorized in this review. H57-J remains held by the independent literal surface gate.
+- [57 pinned sibling sites](evidence/site_inventory.json); [695-raster latest public-main inventory](evidence/registry_refreshed.json). It is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. The H57-K 679-row candidate-specific audit is historical and is not refreshed to this scope; the H57-J 695-row receipt is candidate-specific to the archived H57-J surface.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 

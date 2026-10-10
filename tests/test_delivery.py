@@ -109,10 +109,23 @@ def test_report_parser_preserves_unknown_and_deduplicates_without_confirmation()
     assert all(r['submission_receipt'] is None for r in rows)
 
 
-def test_preview_png_and_quantile_labels_are_real():
+def test_preview_png_and_holdout_structure_labels_are_real():
     assert (ROOT/'docs/assets/preview.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
     source=json.loads((ROOT/'evidence/orientation_structure.json').read_text())
     assert source['distance_quantile_probabilities']==[.1,.5,.9,.95,.99]
     page=(ROOT/'docs/method.html').read_text()
     assert '10th / 50th / 90th percentiles' in page
     assert 'distance quartile/median/upper-quartile' not in page
+    relay=json.loads((ROOT/'evidence/relay_bend_structure.json').read_text())
+    relative=relay['relative_strike']
+    assert len(relative['n_withheld'])==len(relative['edges'])-1
+    assert sum(relative['n_withheld'])==relative['n_withheld_total']
+    assert sum(relative['n_visible_reference'])==relative['n_visible_total']
+    assert relay['withheld_positive_pixels']>=relative['n_withheld_total']
+    assert relative['sample_unit']=='fault raster pixel; not segment-weighted'
+    assert relative['minimum_local_coherence']==.2
+    assert relative['angle_convention']=='unsigned axial difference in degrees, folded to [0,90]'
+    archive=(ROOT/'docs/archive.html').read_text()
+    assert 'HOLDOUT-STRUCTURE (descriptive, not a score)' in archive
+    assert 'Withheld angle pixels (count; % of valid sample)' in archive
+    assert 'not segment-weighted' in archive

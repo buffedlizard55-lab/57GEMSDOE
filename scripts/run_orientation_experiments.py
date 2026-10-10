@@ -31,7 +31,8 @@ import numpy as np
 import joblib
 from threadpoolctl import threadpool_limits
 from gems57 import load_grid
-from gems57.anatomy import FEATURES, SENSE_FEATURES, relative_strike_distribution
+from gems57.anatomy import (FEATURES, SENSE_FEATURES, package_holdout_structure,
+                            relative_strike_distribution)
 from gems57.faultzone import trace_sense_raster
 from gems57.fitting import canary, fit_model
 from gems57.holdout import buffered_component_draw, FOLD_NAMES
@@ -119,14 +120,12 @@ def main():
         print(f'[run] STOP: unresolved canary {flagged}',flush=True)
         return 3
     # Diagnostic WITHHELD strand orientations never enter the prediction matrix.
-    structure=relative_strike_distribution(grid,visible,hidden)
+    relative=relative_strike_distribution(grid,visible,hidden)
     pos=full.y==1
-    structure.update(evidence_class='HOLDOUT-STRUCTURE (descriptive, not a score)',
-        distance_quantile_probabilities=[.1,.5,.9,.95,.99], pixel_size_m=100,
+    structure=package_holdout_structure(
+        relative, withheld_positive_pixels=int(pos.sum()),
         distance_positive_quantiles_px=np.quantile(full.X[pos,0],[.1,.5,.9,.95,.99]).tolist(),
-        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist(),
-        n_withheld=int(pos.sum()),
-        null_caveat='Visible-reference nearest-different-component null uses at most 13 neighbors and is censored; no significance is inferred from it.')
+        distance_domain_quantiles_px=np.quantile(full.X[:,0],[.1,.5,.9,.95,.99]).tolist())
     save(ROOT/'evidence/orientation_structure.json',structure)
     terms={n:None for n in ARMS};surface_terms={n:None for n in ARMS}
     details=[];fold_models={}
