@@ -1,0 +1,25 @@
+{
+  "session": "7 (2026-10-10)",
+  "passes": [
+    {
+      "pass": 1,
+      "work": "Restored and hash-verified the 19-band feature stack, ran the pre-registered H6-1 fold-visible proximity-pruning experiment, recorded HOLDOUT-DTI and generated no live candidate after the promotion rule failed.",
+      "verification": "Shared evaluator, retained E2 feature geometry, fixed-seed equal-count control, and clean pre-existing distance canary were used. Zero weekly slots used."
+    },
+    {
+      "pass": 2,
+      "work": "Reviewed the experiment for hidden-label use, unequal budgets, fold-grid mismatch, range errors, and unsupported score language.",
+      "fixes": "Added explicit truth_used_for_pruning=false receipts, equal emitted-count assertions, a fail-closed Session-7 run card, and public evidence copies. Reverted unrelated timestamp-only preparation churn."
+    },
+    {
+      "pass": 3,
+      "work": "Rechecked the original request and the internal conflict between mandatory TIFF generation and mandatory holdout/uniqueness STOP.",
+      "verification": "The site and README state Download NO / Submit NO at the beginning; no TIFF is falsely advertised. Full tests and static-site link/format checks pass. The negative result remains a deliverable under Protocol item 5."
+    }
+  ],
+  "unresolved": [
+    "No candidate can be honestly promoted from H6-1 because its paired 95% lower bound versus random pruning is below zero.",
+    "The literal positive-pixel overlap definition has a universal-support registry witness, so every nonempty candidate fails until the owner explicitly revises soft-raster dot semantics.",
+    "Exact organizer file-to-score attribution and authenticated team submission capacity remain unavailable without a submission-page receipt."
+  ]
+}

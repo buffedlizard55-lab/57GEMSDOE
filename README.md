@@ -68,6 +68,15 @@ No threshold, density, or reverse-overlap exemption was applied, and none was ch
 
 Verification evidence: [literal-gate witness reproduction](evidence/literal_gate_witness_verification_20261010.json) · [script](scripts/verify_literal_gate_witness.py) · [tests](tests/test_literal_gate_witness.py) · [REMAINING_WORK Session 7 addendum](REMAINING_WORK.md).
 
+
+## Session 7B (2026-10-10) — top pre-registered candidate tested; not promoted
+
+**Download: NO. Submit: NO. No new competition TIFF was cleared or generated.** The simultaneous requirements to (a) generate a submission and (b) stop when the top candidate fails holdout/uniqueness cannot both be satisfied. This session followed the explicit evidence-first stop rule rather than fabricating clearance.
+
+H6-1 tested fold-visible-catalogue proximity pruning against equal-count, fixed-seed random pruning using the shared buffered whole-component holdout and retained E2 relay+bend allocator. **HOLDOUT-DTI** (`gems57-pooled-hide-v2`, 11,321 withheld positive pixels, 1,000 paired 20 km spatial-block bootstrap draws): proximity-pruned `0.135258 [0.118493, 0.153099]`; paired difference versus random pruning `+0.000108 [−0.00000076, +0.00023510]`. The lower bound is below zero, so the predeclared promotion rule failed. The result is also **inconclusive for the motivating near-catalogue regime**: the shared 3 px feature-context collar places every withheld truth at least √10 px from visible context. The distance canary's maximum discriminative AUC was `0.793451`, below the `0.90` leakage threshold. No live raster was built, no registry gate was run on nonexistent final dots, and no weekly slot was used.
+
+Evidence: [experiment receipt](evidence/h6_1_proximity_pruning_holdout.json) · [ranked hypotheses](evidence/session7_hypotheses.json) · [Session-7 JSON run card](evidence/run_card_session7_h6_1.json). The next eligible untried geological experiment is H6-2, visible fault-tip termination anatomy; it requires a separately budgeted run.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
