@@ -109,3 +109,13 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+
+---
+
+## Session 5 addendum (2026-10-10, arena/86d27259) — decision needed from the owner
+
+- Independent verification re-run: sparse 40k worst forward overlap 0.7113 vs its own session-1 build (fails literal 0.70); dense surface blocked by sibling `17GEMSDOE` raster (fetched, sha256 matches certificate; overlap 1.0 for any candidate). See `evidence/session5_witness_verification.json` and `evidence/independent_candidate_check.json`.
+- **Owner decision required before any slot:** (a) keep the literal gate → no submission is possible while dense priors are in the comparison set; (b) revise the protocol to exclude dense continuous priors from the dot-overlap screen (explicit, written, applied to all lanes); or (c) accept the sparse 40k file's 0.7113 overlap as a deliberate exception (not recommended without (b)).
+- No new experiment was launched. The three-experiment budget was already used by the prior session; a fourth needs owner approval.
+- Public-board values in this repo are context only; no score is attributed to any file here.
