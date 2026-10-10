@@ -7,6 +7,8 @@
 bridge file, but that historical receipt does not establish present availability or
 independent official-origin authentication.
 
+The independent [preflight](../evidence/preflight_anatomy.json) confirms the literal overlap STOP; restored data do not authorize a new candidate.
+
 ## Competition-grid bridge files
 
 The listed byte counts and hashes describe checked-in bridge copies or an expected historical

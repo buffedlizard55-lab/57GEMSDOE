@@ -132,6 +132,21 @@ def test_dense_prior_is_literal_universal_blocker_not_exempted(tmp_path):
     json.dumps(r,allow_nan=False)
 
 
+def test_saturation_certificate_requires_matching_reference_grid(tmp_path):
+    prior=tmp_path/'prior.tif'
+    _tif(prior,np.ones((20,20),np.float32))
+    fp=np.ones((20,20),bool)
+    good=(fp.shape,rasterio.crs.CRS.from_epsg(32611),Affine(100,0,0,0,-100,2000))
+    assert saturation_certificate(prior,fp,expected_grid=good)['universal_overlap_blocker']
+    wrong=(fp.shape,good[1],Affine(100,0,100,0,-100,2000))
+    with pytest.raises(ValueError,match='CRS/transform'):
+        saturation_certificate(prior,fp,expected_grid=wrong)
+    with pytest.raises(ValueError,match='catalogue / footprint'):
+        saturation_certificate(prior,fp,np.zeros((19,20),bool),expected_grid=good)
+    with pytest.raises(ValueError,match='empty or non-2D'):
+        saturation_certificate(prior,np.zeros((20,20),bool),expected_grid=good)
+
+
 def test_nonfinite_registry_pixels_not_dots_and_radius_is_inclusive():
     a=np.zeros((10,10));b=a.copy();a[5,5]=1;b[5,8]=1
     assert dot_overlap(a,b)==1
