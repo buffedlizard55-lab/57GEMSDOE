@@ -2,9 +2,12 @@
 """Session-5 independent re-check of candidate GeoTIFFs (no new placement).
 
 Re-derives the literal gates from src/gems57/uniqueness.py against the LOCAL
-registry rasters only (registry/rasters, 19 files; the full 679-raster inventory
-is not present in this checkout). Self-matches (identical sha256) are excluded
-and reported separately. Writes evidence/independent_candidate_check.json.
+cache slice only (registry/rasters, 19 files). The separately indexed 679-row
+public owner-repository inventory is not materialized here as rasters; neither
+source establishes complete organizer coverage. Private, unlinked, external,
+and otherwise inaccessible rasters may be absent. Self-matches (identical
+sha256) are excluded and reported separately. Writes
+evidence/independent_candidate_check.json.
 """
 import glob, hashlib, json, sys
 from pathlib import Path
@@ -27,7 +30,7 @@ def sha(p):
 def main():
     out = {"evidence_class": "RASTER-MEASUREMENT (not a score)", "radius_px": RADIUS_PX,
            "limits": dict(overlap=OVERLAP_LIMIT, rho_full_footprint=RHO_LIMIT, jaccard=JACCARD_LIMIT),
-           "registry_scope": "19 local files in registry/rasters; full 679 inventory NOT available here",
+           "registry_scope": "19-file local cache slice; 679-row indexed public owner-repository inventory is not materialized here as rasters and is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent",
            "candidates": []}
     with rasterio.open(REF) as r:
         ref_shape, ref_tr, ref_crs = r.shape, tuple(r.transform)[:6], r.crs.to_string()

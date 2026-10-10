@@ -42,7 +42,7 @@ def test_saturation_exemption_and_partial_old_gate_cannot_clear(tmp_path):
     prior,manifest,p,fp=fixture(tmp_path)
     with pytest.raises(ValueError,match='not authorized'):
         gates.lane_report(p,fp,sample=prior,registry_index=manifest,probe_coverage=.95)
-    with pytest.raises(RuntimeError,match='complete registry'):
+    with pytest.raises(RuntimeError,match='inventory manifest'):
         gates.lane_report(p,fp,[prior],sample=prior)
     with pytest.raises(RuntimeError,match='retired'):
         gates.uniqueness_report(p,[prior],top=1)

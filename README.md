@@ -78,7 +78,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientatio
 .venv/bin/python -m pytest
 ```
 
-These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. All eight pins were verified, including the assembled **19-band** 418,912,844-byte feature stack restored from five immutable public GitHub parts. Hashes prove bridge-byte transport identity, **not independently authenticated official origin**. Data placement is no longer the blocker. CPU execution is sufficient for this lane.
+These are reproduction instructions for the **same declared research experiment**, not permission to add experiments or spend slots. Large data/caches are Git-ignored. The checked-in data-preparation receipt records a prior execution that verified all eight pins after assembling the **19-band**, 418,912,844-byte feature stack from five immutable public GitHub parts. In this checkout the gitignored `data/official/training_features.tif` is absent; the prior receipt does not mean it is present now. Re-verify the exact pin before any future experiment, and do not call geophysical variants locally viable until the file is restored. Hashes establish bridge-byte identity, **not independently authenticated official origin**. This merge did not fetch data or rerun experiments. CPU execution is sufficient for the fault-zone-anatomy code; no GPU is required.
 
 The shared instrument is `evaluate_holdout.py`; packaging uses `submission_writer.py`. Catalogue features are visible-only; exact unhidden known pixels are masked for scoring. Whole raster components are withheld with a 3-pixel context collar and quadrant-boundary erosion. Training-only fitted distance zones and prevalence set allocation limits; test-positive counts never choose placement.
 
@@ -86,7 +86,7 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 
 - [Primary-source claim ledger](evidence/source_checks.json): organizer specifications/staff answers, official rules, USGS GeoDAWN, GDR INGENIOUS and publisher/institutional records; full-paper review is **not** claimed where only an abstract/bibliography was retrieved.
 - [Four pre-implementation hypotheses](evidence/hypotheses_current.json), ranked qualitatively by expected value and CPU cost. Relative magnetic strike tested; multi-scale bends, two-host superposition and sense transitions not run.
-- [57 pinned sibling sites](evidence/site_inventory.json); [679 conservative grid-raster inventory](evidence/registry_refreshed.json). Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted. Private/unlinked/inaccessible artifacts remain outside scope.
+- [57 pinned sibling sites](evidence/site_inventory.json); [679-raster indexed public owner-repository inventory](evidence/registry_refreshed.json). This is not a complete organizer registry: private, unlinked, external, and otherwise inaccessible rasters may be absent. Four grandfathered auxiliary inputs are separately classified; no dense prediction is exempted.
 - Static Pages deployment with tests, read-only public-feed refresh and visible stale/failure status. Public board values remain **ORGANIZER-PUBLISHED**, not submission receipts.
 - [Remaining work](REMAINING_WORK.md): explicit uniqueness-protocol decision, authenticated provenance/receipts, geological-system holdouts and the next separately budgeted hypothesis. **Do not submit this release.**
 

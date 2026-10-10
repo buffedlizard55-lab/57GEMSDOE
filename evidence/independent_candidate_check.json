@@ -6,7 +6,7 @@
     "rho_full_footprint": 0.9,
     "jaccard": 0.5
   },
-  "registry_scope": "19 local files in registry/rasters; full 679 inventory NOT available here",
+  "registry_scope": "19-file local cache slice; the 679-row indexed public owner-repository inventory is not materialized here as rasters and is not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent",
   "candidates": [
     {
       "file": "docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",

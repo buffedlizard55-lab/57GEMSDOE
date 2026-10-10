@@ -1,4 +1,6 @@
-# Session-2 experiment log (2026-10-09)
+# Archived session-2 experiment log (2026-10-09)
+
+**Archive note:** The measurements below belong only to this historical run and its legacy `gems52-pooled-hide-v1` evaluator. They are not current H57 main-line evidence and must not be combined with the current `gems57-pooled-hide-v2` run card. In particular, do not confuse this log with the older H1 `scripts/run_holdout.py` attempt or use its figures as the current H57 result.
 
 Number discipline: every DTI below is **HOLDOUT-DTI**, evaluator
 `gems52-pooled-hide-v1`, hide-and-recover (4 spatial quadrants x draws 20/21,
