@@ -92,6 +92,8 @@ def check(root=ROOT):
     assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
     assert audit['complete_accessible_scan'] and not audit['source_errors']
     assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
+    assert audit['jaccard_diagnostic_only'] is True
+    assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
     extension=json.loads((root/'evidence/registry_live_delta.json').read_text())
     delta=json.loads((root/'evidence/orientation_surface_delta_uniqueness.json').read_text())
@@ -103,8 +105,8 @@ def check(root=ROOT):
     assert not extension['changed_tree_errors'] and not extension['open_pr_head_discovery_errors']
     assert not extension['open_pr_tree_errors'] and not extension['fetch_errors']
     assert extension['current_open_pr_heads']==index['open_pr_heads_checked']
-    assert {row['pr'] for row in extension['current_open_pr_heads']}=={16,17}
-    assert len(extension['new_aliases_for_prior_blobs'])==30
+    assert {row['pr'] for row in extension['current_open_pr_heads']}=={16,19}
+    assert len(extension['new_aliases_for_prior_blobs'])==31
     source_hashes={source:row['sha256'] for row in index['rasters'] for source in row['sources']}
     for blob, sources in extension['new_aliases_for_prior_blobs'].items():
         assert blob in {row['blob'] for row in index['rasters']}
@@ -170,6 +172,12 @@ def check(root=ROOT):
                 current_card_consistent=True,submission_cleared=False)
     print(json.dumps(result,indent=2))
     return result
+
+
+def inspect_site(docs):
+    """Compatibility helper for the repository's separate site-link smoke test."""
+    pages, errors = check_links(Path(docs))
+    return errors
 
 
 def main():

@@ -104,6 +104,12 @@ def pooled_summary(terms_by_arm, draws=1000, seed=520810, candidate='disagreemen
         raise ValueError('aligned per-spatial-block arrays of four terms required')
     if any(not np.isfinite(a).all() or (a < -1e-8).any() for a in arrays.values()):
         raise ValueError('invalid metric terms')
+    truth_counts = [a[:, 3] for a in arrays.values()]
+    reference_counts = truth_counts[0]
+    if not np.allclose(reference_counts, np.rint(reference_counts), rtol=0.0, atol=1e-8):
+        raise ValueError('spatial-block truth counts must be integers')
+    if any(not np.array_equal(counts, reference_counts) for counts in truth_counts[1:]):
+        raise ValueError('all candidate/control arms must use the same integer truth count per spatial block')
     # Include negative-only clusters carrying FP weight for any comparator.
     active = np.any(np.stack([a.sum(axis=1) > 0 for a in arrays.values()]), axis=0)
     arrays = {n: a[active] for n, a in arrays.items()}

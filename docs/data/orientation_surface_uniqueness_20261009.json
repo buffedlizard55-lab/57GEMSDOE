@@ -11574,5 +11574,6 @@
   "phase": "surface",
   "reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
   "submission_slots_used": 0,
-  "aggregation": "Disjoint SHA256-pinned 670-raster full repeat + four concurrent-main files + four open-PR files. All exact shared-gate outputs, no new model/placement. + one later H57-I distinct file; submit aliases share its SHA256."
+  "aggregation": "Disjoint SHA256-pinned 670-raster full repeat + four concurrent-main files + four open-PR files. All exact shared-gate outputs, no new model/placement. + one later H57-I distinct file; submit aliases share its SHA256.",
+  "jaccard_diagnostic_only": true
 }

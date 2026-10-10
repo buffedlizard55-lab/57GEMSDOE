@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
+import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
@@ -87,3 +88,58 @@ def test_shared_evaluator_rejects_invalid_prediction_before_masking():
         assert "finite" in str(exc)
     else:
         raise AssertionError("non-finite predictions must be rejected before masking")
+
+
+def test_visible_catalogue_pixels_are_masked_pixel_exactly():
+    truth = np.zeros((7, 8), dtype=bool)
+    truth[2, 3] = truth[5, 6] = True
+    visible = np.zeros_like(truth)
+    visible[2, 3] = True
+    prediction = np.zeros(truth.shape, dtype=np.float32)
+    prediction[2, 3] = 1.0  # hidden from the score exactly at the visible trace
+    prediction[5, 6] = 0.75
+    fold = {"truth": truth, "visible": visible,
+            "region": np.ones_like(truth)}
+    result, terms = evaluate_holdout.evaluate(
+        prediction, fold, np.ones_like(truth), block_side=3)
+    expected = metric.dti_exact(
+        prediction, truth, valid=np.ones_like(truth), known=visible)
+    assert result["n_truth"] == 1
+    assert result["emitted"] == 1
+    assert result["dti"] == pytest.approx(expected["dti"])
+    np.testing.assert_allclose(terms.sum(axis=0),
+                               [result["tpw"], result["fpw"], result["fnw"], 1.0])
+
+
+def test_evaluate_rejects_mask_shape_mismatch():
+    prediction = np.zeros((5, 6), dtype=np.float32)
+    truth = np.zeros_like(prediction, dtype=bool)
+    truth[2, 2] = True
+    fold = {"truth": truth, "visible": np.zeros((2, 2), dtype=bool),
+            "region": np.ones_like(truth)}
+    with pytest.raises(ValueError, match="grid shape mismatch"):
+        evaluate_holdout.evaluate(prediction, fold, np.ones_like(truth))
+
+
+def test_evaluate_rejects_holdout_without_scored_positives():
+    truth = np.zeros((5, 6), dtype=bool)
+    fold = {"truth": truth, "visible": np.zeros_like(truth),
+            "region": np.ones_like(truth)}
+    with pytest.raises(ValueError, match="must contain positives"):
+        evaluate_holdout.evaluate(np.zeros_like(truth, dtype=float), fold,
+                                  np.ones_like(truth))
+
+
+def test_metric_radius_is_300_metres_at_the_pinned_grid():
+    assert metric.R_M == 300.0
+
+
+def test_pooled_summary_requires_identical_per_block_truth_counts():
+    candidate = np.zeros((3, 4), dtype=np.float64)
+    control = np.zeros_like(candidate)
+    candidate[0, 3] = 2
+    control[0, 3] = 1
+    with pytest.raises(ValueError, match="same integer truth count per spatial block"):
+        evaluate_holdout.pooled_summary(
+            {"candidate": candidate, "control": control}, draws=20,
+            candidate="candidate")

@@ -90,10 +90,11 @@ def test_shared_submission_writer_is_fail_closed_and_emits_single_tif_zip(tmp_pa
         path, pred, gridmod.DATA_DIR / "sample_submission.tif", foot,
         name="gems57-test-candidate", note="gems57-test-candidate | fault-zone anatomy")
 
-    assert receipt["validator"]["ok"]
+    assert receipt["validator"]["all_checks_passed"]
+    assert receipt["template_report"]["ok"]
     assert receipt["promoted"] is False
     assert receipt["approved_for_weekly_slot"] is False
-    assert receipt["status"].startswith("research-only")
+    assert receipt["status"].startswith("locally validated")
     assert json.loads(path.with_suffix(".json").read_text())["sha256"] == receipt["sha256"]
     with zipfile.ZipFile(path.with_suffix(".zip")) as archive:
         assert archive.namelist() == [path.name]

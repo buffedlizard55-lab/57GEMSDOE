@@ -1,150 +1,25 @@
 {
-  "hypothesis": "H57-I: secondary-strand density decays with a strike-dependent damage-zone width fitted from hide-and-recover, not from textbook Riedel angles",
-  "mechanism": "Savage & Brodsky (2011) damage-zone decay, conditioned on local visible strike; bins below 2x base rate dropped",
-  "non_fault_mimic": "Regional drainage and range-front lineaments that share the Walker Lane / Basin-Range strike bins but are not faults",
-  "evidence_class": "HOLDOUT-DTI (not a live score)",
-  "winner_arm": "iso_full",
-  "holdout_DTI": 0.2616988225816302,
-  "holdout_DTI_CI95": [
-    0.21586837295067493,
-    0.3075292722125854
-  ],
-  "holdout_n_withheld": 22619,
-  "baseline_iso_DTI": 0.2616988225816302,
-  "baseline_iso_CI95": [
-    0.21586837295067493,
-    0.3075292722125854
-  ],
-  "beats_baseline": true,
-  "all_arms": {
-    "iso_full": {
-      "pooled_dti": 0.2616988225816302,
-      "ci95": [
-        0.21586837295067493,
-        0.3075292722125854
-      ],
-      "coverage": 0.39330994588828927,
-      "n_dots": 80000
-    },
-    "strike_full": {
-      "pooled_dti": 0.19993163121246646,
-      "ci95": [
-        0.16215516979970981,
-        0.2377080926252231
-      ],
-      "coverage": 0.2959965374838719,
-      "n_dots": 80000
-    },
-    "strike_outer": {
-      "pooled_dti": 0.07161083795857068,
-      "ci95": [
-        0.050911647291100294,
-        0.09231002862604107
-      ],
-      "coverage": 0.10818383240737714,
-      "n_dots": 80000
-    }
-  },
-  "canary_max_disc_auc": {
-    "d": 0.8981422889525794,
-    "d_perp": 0.9352529207920792,
-    "d_par_abs": 0.6585115087347804,
-    "side": 0.5253055216989843,
-    "log_len": 0.5788138415925456,
-    "sin2": 0.5717240704832256,
-    "cos2": 0.5540398125794155,
-    "coherence": 0.6774667852604828,
-    "density": 0.7444468945209105
-  },
-  "canary_any_leakage": true,
-  "surface_uniqueness": {
-    "literal": "PASS",
-    "policy": "PASS",
-    "max_spearman": 0.19174391085102258,
-    "priors_checked": 16
-  },
-  "dots_uniqueness": {
-    "literal": "PASS",
-    "policy": "PASS",
-    "max_spearman": 0.1618898806026728,
-    "max_near_3px": 0.3461252456578318,
-    "max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "policy_max_near_3px": 0.3461252456578318,
-    "policy_max_near_source": "/home/user/57GEMSDOE/docs/downloads/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-    "n_probes": 0,
-    "priors_checked": 16
-  },
-  "raster_sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
-  "raster_path": "docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
-  "validator": {
-    "all_checks_passed": true,
-    "n_nan": 0,
-    "min": 0.0,
-    "max": 1.0,
-    "crs": "EPSG:32611",
-    "shape": [
-      3730,
-      3292
-    ],
-    "transform": [
-      100.0,
-      0.0,
-      243350.0,
-      0.0,
-      -100.0,
-      4508550.0
-    ],
-    "emitted_positive_pixels": 37654,
-    "on_catalogue": 0,
-    "checks": {
-      "single_band": true,
-      "dtype_float32": true,
-      "dimensions_3730x3292": true,
-      "crs_epsg_32611": true,
-      "transform_matches_sample_submission": true,
-      "no_nan_anywhere": true,
-      "no_inf_anywhere": true,
-      "no_sentinel_values": true,
-      "range_0_1_guaranteed": true,
-      "min_ge_0": true,
-      "max_le_1": true,
-      "in_footprint_all_finite": true,
-      "in_footprint_range_0_1": true,
-      "outside_footprint_zero": true,
-      "zero_dots_on_mapped_catalogue": true
-    }
-  },
-  "live_model_kept_bins": 32,
-  "live_model_frac_pos_in_zone": 0.8052964322030152,
-  "verdict": "promote",
-  "banner": "OK TO DOWNLOAD AND SUBMIT",
-  "slot_used": false,
-  "runtime_s": 282.5,
-  "ir_57_strike_01": "fixed: finite strike is no longer zeroed in fold_geometry",
-  "submit_status": "OK_TO_SUBMIT",
-  "ok_to_submit": true,
-  "policy_ok": true,
-  "format_ok": true,
-  "sha256_novel_vs_644": true,
-  "submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
-  "submission_note": "H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat",
-  "n_dots": 37654,
-  "writer_receipt": {
-    "file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
-    "sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
-    "bytes": 134964,
-    "note": "H57-I iso_full strike-binned damage zone; fitted not textbook; 37654 dots 0 on-cat",
-    "submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
-    "zip_file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip"
-  },
-  "exp1": "/home/user/57GEMSDOE/evidence/exp5_structure.json",
-  "exp2": "/home/user/57GEMSDOE/evidence/exp6_holdout_strike.json",
-  "exp3": "/home/user/57GEMSDOE/evidence/exp7_holdout_outer.json",
-  "previous_holdout_best_name": "H57-G detached LOQO (same instrument, 22619 withheld)",
-  "previous_holdout_best_DTI": 0.23742257629534305,
-  "delta_vs_H57G": 0.024276246286287134,
-  "beats_previous_holdout_best": true,
-  "H57I_strike_vs_iso_delta": -0.061767191369163726,
-  "H57I_strike_result": "NEGATIVE",
-  "uniqueness_scope": "16 accessible rasters (15 registry high-scorers + previous H57-A sparse file); 644 sha256 index; covering lattices not in this inventory"
+  "evidence_class": "HISTORICAL-WITHDRAWAL-RECORD",
+  "source_record": "evidence/run_card_session4.json (former session-4 public card)",
+  "original_sha256": "241fd9f7b9c0c01cd63c3732766758ec401658ed9dd2195d440eae95963389b2",
+  "preserved_original": "evidence/run_card_legacy_h57i.json",
+  "historical_submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
+  "historical_raster_sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
+  "withdrawn_historical_banner": "OK TO DOWNLOAD AND SUBMIT",
+  "withdrawn_historical_verdict": "promote",
+  "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
+  "current_download_status": "NOT OK — no file cleared for download",
+  "current_submission_status": "NOT OK — no file cleared for submission",
+  "verdict": "negative",
+  "promote": false,
+  "submission_slots_used": 0,
+  "reason": "The historic H57-I card used a partial 16-prior comparison. Its withdrawal diagnostic reported forward 3-pixel overlap 1.0 with an incomplete inventory; no complete current-cache revalidation is possible at 0/679.",
+  "current_run_card": "evidence/run_card.json",
+  "archived_original_mainline_card": {
+    "path": "evidence/history/run_card_session4_legacy_2026-10-09.json",
+    "sha256": "241fd9f7b9c0c01cd63c3732766758ec401658ed9dd2195d440eae95963389b2",
+    "bytes": 5267,
+    "preserved_verbatim": true,
+    "note": "Historical promoted run card preserved for provenance; its prior promote/status fields are not current authorization."
+  }
 }

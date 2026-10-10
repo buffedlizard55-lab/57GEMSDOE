@@ -370,5 +370,6 @@
   "scope": "Hash-verified newly discovered grid rasters from changed current public-main trees; exact rows added to the previous complete 679-raster audit. Candidate and thresholds unchanged.",
   "phase": "surface",
   "reviewed_utc": "2026-10-10T20:01:44.479937+00:00",
-  "submission_slots_used": 0
+  "submission_slots_used": 0,
+  "jaccard_diagnostic_only": true
 }

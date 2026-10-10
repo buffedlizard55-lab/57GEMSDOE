@@ -13964,5 +13964,6 @@
     "current_candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
     "latest_public_main_commits_checked": 57,
     "changed_public_main_commits": 10
-  }
+  },
+  "jaccard_diagnostic_only": true
 }

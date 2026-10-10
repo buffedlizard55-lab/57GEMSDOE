@@ -51,12 +51,12 @@
       {
         "pass_number": 2,
         "scope": "Line-review and test the incremental registry merge; check all current public-main heads and currently open same-repository main-target PR heads; validate newly discovered grid blobs.",
-        "result": "Checked all 57 current public-main commits and, after finding two newer open same-repository main-target PRs, pinned and scanned PR #16/#17 heads. The first main-tree extension added 17 unique rasters; a subsequent main refresh found 2 more. The current open-PR scan added zero unique grid rasters and recorded 51 additional source paths for 30 already-indexed blobs; old PR #6/#8 rasters remain historical pins. Final accessible inventory remains 698 exact rows with no scan/download errors. The accumulated surface still fails the literal STOP gate."
+        "result": "Checked all 57 current public-main commits and, after PR #17 merged, pinned/scanned then-open same-repository main-target PR heads #16 and #19. Two prior main-tree extensions added 17 and then 2 unique rasters; the latest refresh after #17 merged added zero. It recorded 37 additional source paths for 31 already-indexed blobs; the candidate bytes were excluded. The earlier #6/#8 PR artifacts remain historical pins. Final accessible inventory: 698 exact rows, no scan/download errors. The accumulated surface still fails the literal STOP gate."
       },
       {
         "pass_number": 3,
-        "scope": "Refresh the 57-site inventory, scan pinned open PR heads, publish explicit descriptive histogram and updated registry receipts, review old site-generator risk, then run delivery QA and full tests.",
-        "result": "Merged the latest public main into the fixed session branch, refreshed the 57-site inventory, scanned open PR #16/#17 at immutable commits, restored and hash-verified the 19-band feature stack from the pinned public bridge, published the descriptive structure histogram and dated registry lineage, retired the stale site generator, and fixed the build-time loop-variable regression. No model fit or DTI run followed the data restore. Current static delivery QA and the final test suite are recorded below; no browser is installed.",
+        "scope": "Refresh the 57-site inventory, scan pinned open PR heads before and after PR #17 merged, publish descriptive structure and registry receipts, review site-generator risk, then run delivery QA and full tests.",
+        "result": "Merged the latest public main into the fixed session branch, refreshed all 57 current main trees and then-open PR #16/#19 heads, restored and hash-verified the 19-band feature stack from the pinned public bridge, published the descriptive structure histogram and dated registry lineage, retired the stale site generator, and fixed the build-time loop-variable regression. No model fit or DTI run followed data restoration.",
         "browser_retested": false,
         "browser_retest_limitation": "No browser executable is installed in this environment. A prior browser QA receipt exists for 2026-10-09; current code received static HTML/link/delivery QA only."
       }
@@ -74,16 +74,17 @@
       "tiff_format_pass": true,
       "zip_exactly_one_tiff": true,
       "run_card_consistent": true,
-      "open_pr_heads_16_17_scanned": true,
+      "open_pr_heads_16_19_scanned": true,
+      "jaccard_is_diagnostic_only": true,
       "submission_cleared": false
     },
     "final_test_count": {
-      "collected": 102,
-      "passed": 101,
+      "collected": 113,
+      "passed": 112,
       "skipped": 1,
       "warnings": 2
     },
-    "completed_utc": "2026-10-10T20:35:17+00:00",
+    "completed_utc": "2026-10-10T20:44:19+00:00",
     "cumulative_grid_rasters_added_since_679": 19,
     "data_stack_restored_and_verified": true,
     "data_pins_verified": 8,
@@ -94,25 +95,29 @@
         "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
       },
       {
-        "pr": 17,
-        "commit": "ca569dfaaf85657bb80a5e72ddaa9ceb9829f731"
+        "pr": 19,
+        "commit": "4b826f702216c553068c3c1bf6deb727cf957e8a"
       }
     ],
     "previous_open_pr_heads_replaced": [
       {
-        "pr": 6,
-        "commit": "8d1783d22bcaa74f0fb62c781c89f179c5db279c"
+        "pr": 16,
+        "commit": "720bd93ce5fdeb1976e14263363af49b45fc40df"
       },
       {
-        "pr": 8,
-        "commit": "58840b86ad780b35b2f37fbc70e79c4ed3cab420"
+        "pr": 17,
+        "commit": "ca569dfaaf85657bb80a5e72ddaa9ceb9829f731"
       }
     ],
     "new_grid_rasters_added_latest_main_refresh": 2,
     "new_grid_rasters_added_latest_open_pr_scan": 0,
-    "open_pr_alias_blobs": 30,
-    "open_pr_alias_source_paths": 51,
-    "final_open_pr_head_scan_complete": true
+    "open_pr_alias_blobs": 31,
+    "open_pr_alias_source_paths": 37,
+    "final_open_pr_head_scan_complete": true,
+    "new_grid_rasters_added_latest_public_main_refresh": 0,
+    "current_public_main_commit": "f244d606dcaf3eea26ba6afd6c8a476482bc177c",
+    "current_site_inventory_trees_refreshed": 2,
+    "jaccard_diagnostic_only": true
   },
   "final_registry_rasters_checked": 698,
   "final_current_head_extensions": {

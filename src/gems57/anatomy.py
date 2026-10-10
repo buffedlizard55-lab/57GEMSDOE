@@ -20,8 +20,6 @@ visible fault.  Features that the data does not support are dropped.
 
 Sense of slip
 -------------
-Sense of slip
--------------
 The protocol asks to condition on recorded sense of slip "where the database
 has it".  The raster catalogue (``existing_faults.tif``) carries no sense field:
 its values are ``{-1 (nodata, outside the study area), 0, 1}``.  The INGENIOUS

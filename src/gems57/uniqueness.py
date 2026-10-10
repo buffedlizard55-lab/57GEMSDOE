@@ -62,8 +62,11 @@ def summarize_registry_rows(rows, *, registry_rasters_expected, complete_accessi
     errors = [r for r in rows if 'error' in r]
     complete = bool(complete_accessible_scan and expected == len(rows)
                     and not errors and not source_errors)
+    # The inherited stop gate is literal: only Spearman > 0.90 or forward
+    # 3-pixel overlap > 0.70 (plus byte/pixel identity safeguards) can block.
+    # Jaccard is reported for diagnosis, never substituted as a new threshold.
     flags = [r for r in checked if any(r.get(k, False) for k in (
-        'duplicate_by_rho', 'duplicate_by_overlap', 'duplicate_by_jaccard',
+        'duplicate_by_rho', 'duplicate_by_overlap',
         'identical_bytes', 'identical_decoded_predictions'))]
     rank_rows = [r for r in checked if r.get('spearman_full_footprint') is not None]
     worst_rho = max(rank_rows, key=lambda r: r['spearman_full_footprint'], default=None)
@@ -90,6 +93,7 @@ def summarize_registry_rows(rows, *, registry_rasters_expected, complete_accessi
         byte_unique_among_checked=bool(checked) and not any(r.get('identical_bytes', False) for r in checked),
         pixel_unique_among_checked=bool(checked) and not any(r.get('identical_decoded_predictions', False) for r in checked),
         duplicate_count=len(flags), unique=bool(unique), rows=rows,
+        jaccard_diagnostic_only=True,
         verdict='promote-to-selector-only' if unique else 'negative',
         stop_required=bool(flags or not complete or not my_dot_count or not norm),
         candidate_rank_variation=norm,

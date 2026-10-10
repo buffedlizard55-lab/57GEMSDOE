@@ -53,7 +53,12 @@
     "duplicate_count": 80,
     "byte_unique_among_checked": true,
     "pixel_unique_among_checked": true,
-    "unique": false
+    "unique": false,
+    "worst_jaccard_dot_sets": 0.6366446695387807,
+    "worst_jaccard_submission": "7GEMSDOE:downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif",
+    "stop_required": true,
+    "verdict": "negative",
+    "jaccard_diagnostic_only": true
   },
   "surface_before_placement": {
     "checked": true,
@@ -145,6 +150,6 @@
   "experiments_used": 3,
   "submission_slots_used": 0,
   "generated_utc": "2026-10-09T20:00:19.209388+00:00",
-  "registry_reviewed_utc": "2026-10-10T20:27:04.428632+00:00",
+  "registry_reviewed_utc": "2026-10-10T20:38:44.704659+00:00",
   "registry_scope": "SHA256-pinned indexed public owner-repository inventory extended with current public-main trees for all 57 listed repositories and currently open main-target PR heads in 57GEMSDOE; only newly seen Git blobs were downloaded and compared. This is not a complete organizer registry. The exact current candidate bytes are excluded as the candidate's own output. Private, unlinked, external, inaccessible and later-written files may be absent."
 }
