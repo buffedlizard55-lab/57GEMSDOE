@@ -409,6 +409,80 @@
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
         "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/scripts/check_uniqueness_full.py"
       ]
+    },
+    {
+      "id": "IR-S7B-01",
+      "severity": "critical",
+      "status": "OPEN — corroborates main ledger duplicate-label finding",
+      "finding": "data/official/labels.tif and data/official/existing_faults.tif are byte-identical (sha256 7ba308cc…ae4093; re-verified with sha256sum). Label-based claims cannot treat the bridge labels.tif as the organizer target without an authenticated copy.",
+      "resolution": "Not resolved here. Main's run card records the same identity (duplicate_labels.byte_identical=true).",
+      "remaining": "Authenticate the organizer labels file through an allowed route, then compare sha256.",
+      "evidence": [
+        "data/README.md",
+        "evidence/session7_arena_verification.json",
+        "evidence/session7_verification.json"
+      ],
+      "manual_review": [
+        "https://www.drivendata.org/competitions/306/competition-doe-gems/data/"
+      ]
+    },
+    {
+      "id": "IR-S7B-02",
+      "severity": "high",
+      "status": "VERIFIED at file level (corroborates main); causal score attribution NOT verified",
+      "finding": "0.2778 raster (GEMSDOE32, sha256 c55bafc4…) is binary {0,1}, 37,654 dots. It is an exact subset of the 0.2708 raster: 2,545 dots removed, 0 added, values equal on shared dots. Grids match (EPSG:32611, 3730x3292).",
+      "resolution": "Owner-reported scores only. No organizer receipt ties a file to a score. No holdout result is claimed for the mechanism.",
+      "remaining": "Test H6-1 only through the shared evaluator on the restored feature stack, with a holdout collar that leaves near-trace truth observable (main IR-S7-04).",
+      "evidence": [
+        "evidence/session7_arena_verification.json"
+      ],
+      "manual_review": [
+        "https://buffedlizard55-lab.github.io/GEMSDOE32/docs/index.html"
+      ]
+    },
+    {
+      "id": "IR-S7B-03",
+      "severity": "high",
+      "status": "VERIFIED — dense-prior uniqueness blocker reproduced from an independent clone (corroborates main IR-S7-01)",
+      "finding": "17GEMSDOE docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif (sha256 ab0a0a62…872be) is finite and positive on all 5,167,373 footprint cells, with 0 NaN inside the footprint. Forward overlap of the retained candidate (2,714,823 positive cells) inside its support = 1.0. Spearman on the footprint = 0.5146, below the 0.90 rule.",
+      "resolution": "Unchanged. Owner ruling required (IR-S6-01). No exemption applied.",
+      "remaining": "Reconcile evidence/uniqueness_saturation_certificate.json: it cites 5,106,385 'allowed' cells and a .cache witness path that is not in this checkout, while the sample footprint is 5,167,373 finite cells.",
+      "evidence": [
+        "evidence/session7_arena_verification.json",
+        "evidence/uniqueness_saturation_certificate.json"
+      ],
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.json"
+      ]
+    },
+    {
+      "id": "IR-S7B-04",
+      "severity": "medium",
+      "status": "RESOLVED for verification — public board fetched and matched; bash sandbox still cannot reach drivendata.org",
+      "finding": "A live page fetch of the DrivenData leaderboard showed #1 xiaofanhu 0.3774, #8 DARD 0.3195, #22 extradr19 0.2778 (public best DW-Tversky). This matches the values in the request. The bash sandbox host allow-list excludes drivendata.org, so the page can only be read through the page-fetch tool.",
+      "resolution": "Board values are ORGANIZER-PUBLISHED public-split context. They are not submission-page receipts or file-to-score attribution. The 0.2778 board row does not identify a file.",
+      "remaining": "Owner to supply a submission-page receipt for any figure that must be cited as ORGANIZER-CONFIRMED.",
+      "evidence": [
+        "docs/data/leaderboard_snapshot.json"
+      ],
+      "manual_review": [
+        "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/"
+      ]
+    },
+    {
+      "id": "IR-S7B-05",
+      "severity": "medium",
+      "status": "OPEN — file identity ambiguity for the 0.2708 score",
+      "finding": "Two repos publish a file labelled 0.2708 (GEMSDOE28 gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-nan.tif, sha256 ab023001…; GEMSDOE31 gemsdoe31-h27-4-solo-d28-20261004-8acb75e1-nan.tif, sha256 07b6db44…). They are pixel-identical (same grid, values, 40,199 dots) but differ at byte level.",
+      "resolution": "Pixel-level comparison is the only valid identity test here. Byte-level SHA256 cannot be used to say which file was scored.",
+      "remaining": "Owner to confirm which upload produced the 0.2708 score.",
+      "evidence": [
+        "evidence/session7_arena_verification.json"
+      ],
+      "manual_review": [
+        "https://buffedlizard55-lab.github.io/GEMSDOE28/",
+        "https://buffedlizard55-lab.github.io/GEMSDOE31/docs/"
+      ]
     }
   ]
 }

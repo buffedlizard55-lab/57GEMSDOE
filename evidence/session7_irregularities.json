@@ -1,0 +1,83 @@
+{
+  "evidence_class": "IRREGULARITY LEDGER (review required)",
+  "session": "Session 7 (2026-10-10)",
+  "items": [
+    {
+      "id": "IR-S7-01",
+      "severity": "BLOCKING",
+      "title": "Literal uniqueness gate cannot be passed by any positive-support candidate",
+      "detail": "17GEMSDOE E-proba-multiscale (sha256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be, fetched from github.com/buffedlizard55-lab/17GEMSDOE docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif) has finite>0 on 5,167,373 of 5,167,373 footprint cells and 0 outside. Under the inherited rule (dots = finite>0), every nonempty candidate has 3-px overlap 1.0 > 0.70. The rule must be ruled on by the owner; no exemption was applied.",
+      "source": "evidence/uniqueness_saturation_certificate.json; this session re-fetched the witness and checked coverage"
+    },
+    {
+      "id": "IR-S7-02",
+      "severity": "REVIEW",
+      "title": "Bridged sample_submission.tif is not the all-absence sample described on the official page",
+      "detail": "data/official/sample_submission.tif has 60,988 cells equal to 1 (footprint 5,167,373), exactly the known-fault positives in labels.tif. The official problem page says the sample predicts total fault absence. The bridged file is used only for grid and footprint compatibility.",
+      "source": "evidence/session7_verification.json template"
+    },
+    {
+      "id": "IR-S7-03",
+      "severity": "FIX-BEFORE-ANY-UPLOAD",
+      "title": "Downloadable TIFF fills outside the footprint with 0, not NaN",
+      "detail": "The official rules say data outside the bounds is null or nan; the bridged template uses NaN outside the footprint. docs/downloads TIFF has 0 NaN and 9,564,337 zeros. Zero probability adds nothing to the TP/FP/FN terms, so scoring is unaffected, but the convention differs. Ambiguous whether \"bounds\" means the raster or the study area; the template reading (NaN outside the study area) is the safer one.",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/ (Submission format); evidence/session7_verification.json download"
+    },
+    {
+      "id": "IR-S7-04",
+      "severity": "METHOD-LIMITATION",
+      "title": "Holdout collar makes near-trace truth unobservable",
+      "detail": "In all 20 fold-arm receipts the nearest visible-to-withheld-truth distance is 3.1623 px (sqrt 10). The 3-px collar removes visible catalogue within 3 px of withheld truth (src/gems57/holdout.py lines 301-302). Consequences: the holdout cannot reward dots within about 3 px of a known trace, and it rewards deleting them by construction. This is exactly the regime the competition text says matters (\"splays and parallel strands\", thread 11536). Holdout gains for E1-E3 say nothing about near-trace dots.",
+      "source": "evidence/session7_verification.json holdout"
+    },
+    {
+      "id": "IR-S7-05",
+      "severity": "REVIEW",
+      "title": "labels.tif and existing_faults.tif are byte-identical",
+      "detail": "Both bridged files have sha256 7ba308cc...4093 (425,830 B). That is plausible if the training labels are the known faults, but two official files are listed under different names. Official-origin identity is not verified; a fresh DrivenData download is needed for a receipt.",
+      "source": "evidence/session7_verification.json duplicate_labels"
+    },
+    {
+      "id": "IR-S7-06",
+      "severity": "REVIEW",
+      "title": "Evaluator source hash differs from the Session-5 receipt; numbers identical",
+      "detail": "evidence/relay_bend_holdout.json records evaluate_holdout.py sha256 90ec4a7a...55; HEAD has ad86640b...03. Git history for this file is squashed to one commit, so the difference cannot be diffed. Reproduction with the current file reproduces all 20 fold-arm rows and all 5 pooled binary and soft scores with zero numeric differences (evidence/session7_reproduction_compare.json). The receipt should be regenerated or annotated.",
+      "source": "evidence/session7_reproduction_compare.json"
+    },
+    {
+      "id": "IR-S7-07",
+      "severity": "CORRECTION",
+      "title": "Brief says 0.3195 is the highest score; the public board says otherwise",
+      "detail": "DrivenData public leaderboard (fetched 2026-10-10): #1 xiaofanhu 0.3774, #2 JerryDataWorks 0.3418, #8 DARD 0.3195, #22 extradr19 0.2778. 0.3195 is rank 8 on the public board. Board scores are public-split DW-Tversky, not private-test or final-round scores.",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/"
+    },
+    {
+      "id": "IR-S7-08",
+      "severity": "UNVERIFIED-LINK",
+      "title": "The 0.2778 public row is not linked to the GEMSDOE32 site",
+      "detail": "The DrivenData public board shows 0.2778 for extradr19 (#22). The GEMSDOE32 site owner reports 0.2778 for its raster. The two are not linked by any receipt. Do not attribute the board row to the site.",
+      "source": "leaderboard fetch; registry/registry_index.json owner_reported_score"
+    },
+    {
+      "id": "IR-S7-09",
+      "severity": "STALE-CLAIM-CORRECTED",
+      "title": "Feature stack availability claims were stale",
+      "detail": "Session 6 reported training_features.tif unavailable (IR-S6-05). This session restored it with scripts/prepare_data.py --fetch: SHA256 4371c82e...23bc5 matches the pin; 19 bands. band-12 cache regenerated and matches its pin 739d6373...2de32. evidence/data_preparation.json now reads all_pins_verified true (bridge provenance, not an organizer receipt).",
+      "source": "evidence/data_preparation.json; evidence/feature_cache.json"
+    },
+    {
+      "id": "IR-S7-10",
+      "severity": "OPEN-FROM-S6",
+      "title": "Download-status conflict resolved fail-closed on main",
+      "detail": "Main (PR #23) sets research download to NO pending explicit owner authorization and removes TIFF/ZIP links. Session 7 keeps that status. Any research download needs an explicit owner decision (IR-S6-10).",
+      "source": "IR-S6-10 in evidence/irregularities_current.json"
+    },
+    {
+      "id": "IR-S7-11",
+      "severity": "OPEN",
+      "title": "Range error cause remains unproven",
+      "detail": "The downloadable TIFF satisfies [0,1]: min 0.0, max 0.9014216, no NaN. No organizer receipt shows which file produced the reported \"Predicted values must be in range [0, 1]\" error. The fix is consistent with the official format (float32, [0,1]); it is not confirmed by the portal.",
+      "source": "https://www.drivendata.org/competitions/306/competition-doe-gems/page/967/"
+    }
+  ]
+}

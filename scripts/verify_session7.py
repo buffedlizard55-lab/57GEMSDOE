@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Session 7 (2026-10-10): recompute the measured facts behind the Session-7 status.
 
-Every number written to ``evidence/session7_verification.json`` is measured here from
+Every number written to ``evidence/session7_recompute_arena.json`` is measured here from
 local files. Nothing is a score. Owner-reported leaderboard values are copied as
 labels only. Run from the repository root with the locked environment:
 
@@ -38,7 +38,7 @@ SAMPLE = ROOT / "data/bridge/sample_submission.tif"
 EPROBA = ROOT / ".cache/registry/374c88b1da2b803e2ed160de467fd71ae114010d.tif"
 EPROBA_SHA = "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be"
 FEATURE_CACHE = ROOT / "evidence/feature_cache.json"
-OUT = ROOT / "evidence/session7_verification.json"
+OUT = ROOT / "evidence/session7_recompute_arena.json"
 
 
 def sha256(path: Path) -> str:
