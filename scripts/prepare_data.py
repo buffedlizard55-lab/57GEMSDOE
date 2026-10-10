@@ -81,9 +81,11 @@ def assemble_features(root: Path) -> dict:
         return dict(part=paths[i].name, bytes=size, sha256=digest)
     with ThreadPoolExecutor(max_workers=3) as pool:
         part_receipts = list(pool.map(download, range(5)))
+    cache_target = root / ".cache" / "training_features.tif"
+    cache_target.parent.mkdir(parents=True, exist_ok=True)
     target = root / "data/official/training_features.tif"
     target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_suffix(".tif.partial")
+    temporary = cache_target.with_suffix(".tif.partial")
     try:
         with temporary.open("wb") as out:
             for part in paths:
@@ -91,7 +93,9 @@ def assemble_features(root: Path) -> dict:
                     shutil.copyfileobj(stream, out, length=1 << 20)
         if sha256(temporary) != PIN["data/official/training_features.tif"]:
             raise ValueError("reassembled feature stack does not match its pinned digest")
-        os.replace(temporary, target)
+        os.replace(temporary, cache_target)
+        target.unlink(missing_ok=True)
+        target.symlink_to(os.path.relpath(cache_target, target.parent))
     finally:
         temporary.unlink(missing_ok=True)
     return dict(source_repo=BRIDGE_REPO, source_commit=BRIDGE_COMMIT, parts=part_receipts)

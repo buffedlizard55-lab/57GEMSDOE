@@ -93,9 +93,10 @@ def test_git_blob_sha1_matches_git_object_format(tmp_path):
 
 def test_committed_profile_summary_is_pinned():
     p = json.loads((ROOT / "evidence" / "registry_profile_session6.json").read_text())
+    assert p["registry_index"] == "evidence/registry_refreshed_20261010T2001.json"
     s = p["summary"]
-    assert s["indexed"] == 679
-    assert s["fetched_and_verified"] == 679
+    assert s["indexed"] == 696
+    assert s["fetched_and_verified"] == 696
     assert s["errors"] == 0
     assert s["sha256_pin_mismatches"] == 0
     assert s["git_blob_sha1_mismatches"] == 0
@@ -117,14 +118,20 @@ def test_committed_witness_is_universal_blocker_and_mechanism_is_subset():
     assert c["removed_distance_px_min"] >= 1.0 and c["removed_distance_px_max"] <= 2.0 + 1e-9
 
 
-def test_committed_gate_reproduces_historical_firings_and_stays_held():
-    g = json.loads((ROOT / "evidence" / "uniqueness_session6_full_registry.json").read_text())
-    assert g["registry_rasters_checked"] == 679
+def test_committed_gate_on_696_index_fails_and_card_stays_unsubmittable():
+    g = json.loads((ROOT / "evidence" / "uniqueness_session6_full_registry_696.json").read_text())
+    assert g["registry_rasters_checked"] == 696
     assert g["complete_accessible_scan"] is True
-    assert g["duplicate_count"] == 78
+    assert g["duplicate_count"] == 80
     assert g["unique"] is False
-    card = json.loads((ROOT / "evidence" / "run_card.json").read_text())
-    assert card["okay_to_download"] is False
+    assert g["stop_required"] is True
+    card = json.loads((ROOT / "evidence" / "run_card_current.json").read_text())
+    # Main's owner-merged card may say research download is OK (IR-S6-10). Submission must stay NO.
     assert card["okay_to_submit"] is False
     assert card["verdict"] == "negative"
-    assert card["registry_comparison"]["current_cache_preflight"]["verified_rasters"] == 679
+    s6 = card["session6_verification"]
+    assert s6["literal_gate_on_offered_tif"]["duplicate_count"] == 80
+    assert s6["experiments_run"] == 0 and s6["submission_slots_used"] == 0
+    ids = {i["id"]: i for i in json.loads((ROOT / "evidence" / "irregularities_current.json").read_text())["irregularities"]}
+    assert ids["IR-S6-10"]["status"].startswith("OPEN")
+    assert ids["IR-S6-01"]["status"].startswith("OPEN")

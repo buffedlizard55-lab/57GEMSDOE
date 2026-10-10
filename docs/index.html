@@ -1,64 +1,31 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Submission status · 57GEMSDOE</title><link rel="stylesheet" href="assets/site.css"></head>
-<body><header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize · secondary strands around mapped faults</div></header>
-<nav><a class="on" href="index.html">Status</a><a class="" href="executive-summary.html">Submission guide</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="" href="data-sources.html">Sources</a><a class="" href="run-card.html">Run card</a><a class="" href="irregularities.html">Audit notes</a></nav><main>
-<div class="alert" role="alert">
-<strong>HOLD — NOT OK TO DOWNLOAD OR SUBMIT</strong>
-<p><b>Submit to competition: NO. Download: NOT OK.</b> There is no cleared submission file.
-Historical TIFF/ZIP files remain in the repository for provenance; a direct static URL may still
-resolve. That is not download authorization. No weekly slot was used. The current decision is
-<b>negative / not promoted</b>.</p>
-</div>
-<div class="card"><h3>Session 6 (2026-10-10): what was verified</h3><ul>
-<li>Registry: 679/679 indexed rasters re-fetched and verified (immutable git-blob SHA1, pinned SHA256, competition grid). 0 missing. Evidence: <code>evidence/registry_profile_session6.json</code>.</li>
-<li>Literal overlap gate re-run on the complete cache: 78 firings, reproducing the historical scan. Evidence: <code>evidence/uniqueness_session6_full_registry.json</code>.</li>
-<li>Universal blocker: 17GEMSDOE E-proba-multiscale covers the whole footprint, so every nonempty candidate has forward overlap 1.0 with it. Block persists after removing auxiliary-looking rasters (53 dense rasters in total).</li>
-<li><b>Owner decision required (IR-S6-01):</b> how a soft registry raster's “dots” are defined. No candidate can clear the literal rule until that is decided. Nothing has been built or submitted.</li>
-<li>Holdout not run: <code>training_features.tif</code> is absent and its link is unreachable from the audit environment (IR-S6-05).</li>
-<li>Leaderboard: the saved organizer snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7 (IR-S6-06).</li>
-</ul></div>
-<h2>Executive status</h2>
-<div class="card"><dl class="kv">
-<dt>Download / submission</dt><dd><b>NOT CLEARED</b></dd>
-<dt>Weekly slot</dt><dd>Not promoted; selector decision is separate</dd>
-<dt>Experiments this audit</dt><dd>0 — no holdout run or score-producing experiment</dd>
-<dt>Previous candidate SHA256</dt><dd>f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a</dd>
-<dt>Historical artifact name</dt><dd>gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95</dd>
-<dt>Historical note (not approved)</dt><dd>Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.</dd>
-<dt>Historical local format receipt</dt><dd>historical local on-disk format/range receipt; not current revalidation, uniqueness clearance, organizer acceptance, or authorization to download</dd>
-<dt>Historic HOLDOUT-DTI</dt><dd>0.023203 · 95% CI [0.018777925030160507, 0.02799187291971626]</dd>
-<dt>Withheld positives</dt><dd>11321</dd>
-<dt>Evaluator</dt><dd>gems57-pooled-hide-v2</dd>
-<dt>Registry index size</dt><dd>679</dd>
-<dt>Registry scope</dt><dd>679-entry indexed public owner-repository inventory, now fully re-fetched and SHA/blob-verified in session 6 (0 errors). Not organizer-complete: private, unlinked, closed-branch-only, external, unavailable or later-written rasters may be absent.</dd>
-<dt>Registry cache preflight</dt><dd>VERIFIED — session 6 (2026-10-10) — 679/679 verified; 0 missing</dd>
-<dt>Literal overlap gate</dt><dd>HOLD / STOP; forward-overlap gate fired before placement; max pre-placement positive-support overlap within 3 px 1.000000; 78 firings</dd>
-<dt>Independent universal-overlap witness</dt><dd>17GEMSDOE raster SHA256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be; covers every allowable cell. Any nonempty candidate has measured 3-px forward overlap 1.0 while this witness remains in scope. This is not a score or full-cache revalidation.</dd>
-</dl></div>
-<div class="note"><b>Interpretation:</b> the stored 0.023203 value is a historical
-HOLDOUT-DTI reading whose source hashes do not match the current tree; it is not current-code clearance or a live-score projection. The indexed public-inventory
-report records 78 forward-overlap firings (78 itemized) on the
-soft surface's finite-positive support, not final dots; it therefore does not clear the literal
-stop rule. Current cache verification is VERIFIED — session 6 (2026-10-10). The publisher is retired; any future replacement must verify every indexed raster and disclose that this inventory is not organizer-complete.
-See <a href="run-card.html">the run card</a>.</div>
-<h2>What must happen before a future build</h2>
-<ol>
-<li>Generate a current-code, source/input-hash-pinned spatial holdout result and an independent
-selector receipt. The recorded three-experiment budget is exhausted; this is not authorization to
-run one now.</li>
-<li>Registry cache: done in session 6 (every indexed raster re-fetched and blob/SHA256/grid-verified).
-The remaining gate problem is the owner's dot definition for soft registry rasters (IR-S6-01); a
-fresh registry check is needed for any future candidate.</li>
-<li>Run the continuous-surface comparison, pre-placement dot comparison, and final-dot comparison.
-Stop at the protocol thresholds; do not retune after a firing.</li>
-<li>Only then may the fail-closed writer package one validated GeoTIFF and a one-TIFF ZIP. A weekly
-slot still requires a separate selector decision.</li>
-</ol>
-<p>See the <a href="executive-summary.html">executive submission guide</a> and the
-<a href="hypotheses.html">ranked untried hypotheses</a>.</p>
-</main>
-<footer>Generated 2026-10-10 20:55 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
-No active download or submission is approved.</footer></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overview · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html" aria-current="page">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><section class="download-panel" aria-labelledby="download-title">
+<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 10, 2026 (SESSION 5)</div><h1 id="download-title">Two-host relay &amp; bend anatomy.</h1>
+<p class="hero-sub">Learned two-host stepover relay geometry &amp; multi-scale host-bend damage around visible faults.<br>Fresh Session-5 predictions—not a copy of an earlier submission.</p>
+<div class="permissions"><span class="permission yes">Download for research: OK</span><span class="permission no">Submit to competition: NO</span></div>
+<p class="hold-reason"><strong>HOLD · DO NOT SUBMIT:</strong> positive paired holdout gain (+0.0256 vs single-host anatomy, +0.0225 vs distance-only; 95% CIs exclude zero), and worst Spearman ≤ 0.6580 across all 665 other-repo rasters, but the mandatory literal forward-overlap gate fails against the 17 dense-support prior rasters. No production dots placed; no weekly slot used.</p>
+<div class="actions"><a class="button primary" href="downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif" download>↓ Download GeoTIFF <span>9.96 MB</span></a>
+<a class="button secondary" href="downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide →</a></div>
+<details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif</p><p class="mono">SHA256 cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648</p>
+<p>Suggested note (121 / 140 characters):</p><p class="mono" id="submission-note">Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b</p><button class="copy-button" type="button" data-copy="submission-note">Copy note</button>
+<p class="small">The filename's ID hashes decoded pixels. The SHA256 above hashes the actual downloaded TIFF. <a href="data/run_card.json">Download complete run card</a>.</p></details></section><section class="stat-grid" aria-label="Current research diagnostics">
+<div class="stat"><span>Local format</span><strong>PASS</strong><small>Finite Float32 · one band · [0, 1]</small></div>
+<div class="stat"><span>Registry audit</span><strong>695 / 695</strong><small>All accessible pinned grid rasters</small></div>
+<div class="stat"><span>Worst forward overlap</span><strong>100%</strong><small>Required ≤70% · FAIL (dense17)</small></div>
+<div class="stat"><span>Weekly slots spent</span><strong>0</strong><small>Three predeclared comparisons completed</small></div></section>
+<section class="two-column"><div><div class="eyebrow">THE SCIENTIFIC RESULT (SESSION 5 · OCT 10, 2026)</div><h2>Two-host relay anatomy beats single-host controls on holdout; literal gate still holds submission.</h2>
+<p>The predeclared two-host relay + multi-scale bend candidate (<strong>E2 / H57-I2 + H57-H</strong>) achieves binary-allocation <strong>HOLDOUT-DTI = 0.1352</strong>, 95% CI [0.1191, 0.1530], beating single-host repaired anatomy (0.1096) by <strong>+0.0256</strong>, 95% CI [0.0139, 0.0371], and beating distance-only (0.1127) by <strong>+0.0225</strong>, 95% CI [0.0079, 0.0385]. Adding slip-sense transition heterogeneity (<strong>E3 / H57-J</strong>) raises binary HOLDOUT-DTI to 0.1414, 95% CI [0.1245, 0.1615], though its paired binary difference over E2 ([-0.0017, 0.0157]) slightly straddles zero so E2 is retained.</p>
+<p>The downloadable file is the <strong>soft research surface</strong> for E2 (<code>relay_bend_anatomy</code>), not test-fold dots. Its soft-surface HOLDOUT-DTI is <strong>0.0312</strong>, 95% CI [0.0247, 0.0381] (+0.0083 over single-host anatomy, 95% CI [0.0054, 0.0109]). Do not attach the binary score to this TIFF.</p><p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>gems57-pooled-hide-v2</code> · 11,321 withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>
+<p><a href="results.html">Inspect all comparisons →</a></p></div><figure class="map-preview"><img src="assets/preview.png" alt="North-up display of the new two-host relay and bend research surface on the bridged competition grid" width="600" height="680"><figcaption>Actual Session-5 research surface · north ↑ · EPSG:32611. Downsampled maximum with nonlinear display colors; not ground truth, a vent map or the submitted pixel values.</figcaption></figure></section>
+<section class="card"><div class="eyebrow">REVIEW FOUND A REAL BUG</div><h2>Every valid host strike had been reset to zero.</h2><p>A reversed finite-value fallback corrupted the earlier host-relative geometry. It is fixed, with regressions for east–west offsets and hidden-value invariance. Earlier orientation interpretations and the interrupted run are invalidated, not recycled as evidence.</p><p><a href="irregularities.html">IR-57-STRIKE-01 and other audit findings →</a></p></section>
+<section><h2>Why the overlap rule cannot clear any nonempty candidate</h2><p>One earlier dense soft raster is positive over the entire footprint. Under the inherited literal definition of a dot—<code>finite prediction &gt; 0</code>—every allowable nonempty candidate has forward overlap 1.0 with it. Against all 665 rasters from the other 56 repositories, our new surface has worst Spearman rank correlation <strong>0.6580 ≤ 0.90</strong> (and against the 15 discriminating sibling-lane rasters worst Spearman <strong>0.0288</strong> and worst 3-px overlap <strong>0.2375 ≤ 0.70</strong>), but we honor the literal full-registry gate without inventing exemptions.</p><p><a href="data/uniqueness_saturation_certificate.json">Hash-verified saturation certificate</a> · <a href="data/orientation_surface_uniqueness.json">All per-raster checks</a></p></section>
+<section class="card feed-card"><div class="eyebrow">PUBLIC ORGANIZER FEED · NOT A FILE RECEIPT</div><h2>Leaderboard context</h2><p><strong id="leaderboard-top">0.3774</strong> <span id="leaderboard-context">top public DTI in the last successful organizer snapshot</span></p><p id="feed-status" aria-live="polite">Checked on 2026-10-09. Date-precision snapshot; open the official board for current context.</p><p><a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">Official leaderboard</a> · <a href="data/leaderboard_snapshot.json">Timestamped snapshot</a></p><p class="small">Scheduled Pages builds refresh this public feed. Failures retain the prior snapshot with a visible freshness warning. Neither the team's remaining slots nor its private score is known.</p></section></main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-10 21:14 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

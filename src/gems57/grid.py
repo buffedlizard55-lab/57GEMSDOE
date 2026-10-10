@@ -106,7 +106,7 @@ def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> 
         raise ValueError("values must be numeric")
     if mode == "zeros":
         if not np.isfinite(values).all():
-            raise ValueError("submission values must be finite everywhere; no silent fill")
+            raise ValueError("zeros mode requires all values finite; set outside-footprint cells to 0 explicitly")
         if (values < 0.0).any() or (values > 1.0).any():
             raise ValueError("submission values must already be in [0,1]; no clipping")
         out = values.astype(np.float32, copy=False)
@@ -114,7 +114,7 @@ def write_submission(path: Path, values: np.ndarray, *, mode: str = "zeros") -> 
     elif mode == "nan":
         finite = np.isfinite(values)
         if np.isinf(values).any() or (values[finite] < 0.0).any() or (values[finite] > 1.0).any():
-            raise ValueError("diagnostic values must be finite/[0,1] except for NaN cells")
+            raise ValueError("diagnostic values must remain in [0,1] except for NaN cells; no silent clipping")
         out = values.astype(np.float32, copy=False)
         nodata = float("nan")
     else:

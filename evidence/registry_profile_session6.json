@@ -1,12 +1,12 @@
 {
  "evidence_class": "REGISTRY-MEASUREMENT (verification of the indexed public owner-repository inventory; not a score)",
- "generated_utc": "2026-10-10T20:50:50.894729+00:00",
- "registry_index": "evidence/registry_refreshed.json",
- "registry_index_sha256": "5e35594e5a39d69d006dc74f7796fbc756f19df28b7bcab4e6ec6a9b917c8310",
+ "generated_utc": "2026-10-10T21:02:12.178907+00:00",
+ "registry_index": "evidence/registry_refreshed_20261010T2001.json",
+ "registry_index_sha256": "fee36d0985b01559d557ef0b960d79d82d1a624975426ec2329d7a29045ad7b2",
  "definition": "dot = finite value > 0 (inherited literal gate); footprint = finite cells of data/official/sample_submission.tif",
  "summary": {
-  "indexed": 679,
-  "fetched_and_verified": 679,
+  "indexed": 696,
+  "fetched_and_verified": 696,
   "errors": 0,
   "sha256_pin_mismatches": 0,
   "git_blob_sha1_mismatches": 0,
@@ -14,7 +14,7 @@
   "rasters_with_positive_outside_footprint": 14,
   "rasters_with_values_outside_0_1": 11,
   "dtype_counts": {
-   "float32": 661,
+   "float32": 678,
    "int8": 3,
    "uint8": 15
   },
@@ -25,7 +25,7 @@
   {
    "blob": "2a266668251f1f2f1013972329f484886e3b412a",
    "source": "57GEMSDOE:docs/downloads/SUBMIT-THIS-gems57-h57i-iso-zeros.tif",
-   "n_sources": 2,
+   "n_sources": 3,
    "pinned_sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -1472,6 +1472,29 @@
    "dense": false
   },
   {
+   "blob": "2c22f389110d3f6d49f5435c4f2f269ad8da4a01",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-continuous-1875224px-20261009T202053Z-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "16f3fd048f4aa65e83aafde9b041ed7fd4a84c7b1fd6266d9ba8451f16972b30",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 10567086,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 1875224,
+   "positive_in_footprint": 1875224,
+   "footprint_fraction_positive": 0.36289696911757674,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "449b9282779f7a614c6118e2c83b3511e3e3c3d1",
    "source": "GEMSDOE2:data/evidence/seghold/eval_labels.tif",
    "n_sources": 1,
@@ -1492,6 +1515,29 @@
    "footprint_fraction_positive": 0.06279554427365704,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": false,
+   "dense": false
+  },
+  {
+   "blob": "d345e5567703a6240764742840323238aea8b648",
+   "source": "GEMSDOE52:docs/downloads/gems52-h82-dva2vsa-B-37654px-20261009T215811Z.tif",
+   "n_sources": 3,
+   "pinned_sha256": "17c3f8325ac6f267b1b8cc58bc6fd9495c118c30de64d5f78293d19d7f20c907",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 140555,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 37654,
+   "positive_in_footprint": 37654,
+   "footprint_fraction_positive": 0.007286874781441169,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
    "dense": false
   },
   {
@@ -3268,7 +3314,7 @@
   {
    "blob": "831a4d3deaa6e467192f0363fac2b5ff08dc8b77",
    "source": "57GEMSDOE:docs/downloads/archive/57GEMSDOE-faultzone-anatomy-12000dots-zeros.tif",
-   "n_sources": 1,
+   "n_sources": 2,
    "pinned_sha256": "3bddb4b66750aadf9fb5a9be25a89088844f4235d605f136fc1243893bfe6dbb",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -3841,6 +3887,29 @@
    "dense": false
   },
   {
+   "blob": "4fc90582a78759dba4ee9c473a8a5fcf3d6763fd",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-gradient-gated-168854px-20261009T202306Z-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "46e36695e5227d386dd7acc701aacb6386a9a9c05275d4aec4ae6f0669d4ab4b",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 2389373,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 168854,
+   "positive_in_footprint": 168854,
+   "footprint_fraction_positive": 0.03267695209925817,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "40b35fd2f974402dcf2f80f3c4b1ed78b9c851b9",
    "source": "GEMSDOE4:data/evidence/union_po_loo/drop_nff43/submission.tif",
    "n_sources": 1,
@@ -3951,6 +4020,29 @@
    "positive_cells": 338755,
    "positive_in_footprint": 338755,
    "footprint_fraction_positive": 0.06555652166003886,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "1c4219aa51c531cbffd33dab7461106fe972eda4",
+   "source": "GEMSDOE52:docs/downloads/gems77cond-line-support-B-cotrain-37654px-20261009T193810Z.tif",
+   "n_sources": 3,
+   "pinned_sha256": "49ad60980f8bf768b94a2753581cae9ba572c75564d862089cec8093bcf317ad",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 137255,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 37654,
+   "positive_in_footprint": 37654,
+   "footprint_fraction_positive": 0.007286874781441169,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -4756,6 +4848,29 @@
    "positive_cells": 44090,
    "positive_in_footprint": 44090,
    "footprint_fraction_positive": 0.00853238192791579,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "e0f7bb93c77fa0b0ce6c640c55589ea96803728f",
+   "source": "55GEMSDOE:docs/downloads/h57-tensor-flank-r15-uneroded-registry56-n200-20261009T200831Z-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "57dd4ba81c6fe553166cb193f4ae40e6547f4abe5a8fdabeb9154f648d761326",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 1480411,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 200,
+   "positive_in_footprint": 200,
+   "footprint_fraction_positive": 3.8704386155208843e-05,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -6670,6 +6785,29 @@
    "dense": false
   },
   {
+   "blob": "628f00967b5aac2e800e0fe352984969c3b21598",
+   "source": "57GEMSDOE:docs/downloads/gems57-h57k-damagezone-strandexpr-62872dots-20261009T220159Z-f38e36d82033-zeros.tif",
+   "n_sources": 1,
+   "pinned_sha256": "749fdffc1b9a6d5b610513e9ab8f68576feb102f419f234647180eb04d30f9d6",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 854692,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 62872,
+   "positive_in_footprint": 62872,
+   "footprint_fraction_positive": 0.012167110831751453,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "06f6d50f5f06e10e2ad6dfc43bb48a3baf63d849",
    "source": "GEMSDOE:data/evidence/proxy/proxy_catalogue.tif",
    "n_sources": 6,
@@ -8213,7 +8351,7 @@
   {
    "blob": "b0453464e72b845efe6094a6b65748c732fa2830",
    "source": "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif",
-   "n_sources": 3,
+   "n_sources": 5,
    "pinned_sha256": "8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -8740,6 +8878,29 @@
    "dense": false
   },
   {
+   "blob": "3b4dca15a32f91f85d584f3b56e18ef33f82d9e6",
+   "source": "55GEMSDOE:evidence/historical_artifacts/gems55-tensor_full-n16000-sep3-20261009T211747Z-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "927dc17f7f5d890b2f382e266ade5d775474631ee96674f8ff3cbc1f1b7c7693",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 1516449,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 16000,
+   "positive_in_footprint": 16000,
+   "footprint_fraction_positive": 0.0030963508924167077,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "b1fade8be27b393d1fac2813bb06d6c541980537",
    "source": "16GEMSDOE:docs/downloads/gems16-h18-3a-topo-geophys-x-complexity-prior-20260930-c502dfab-nan.tif",
    "n_sources": 1,
@@ -8901,6 +9062,29 @@
    "dense": false
   },
   {
+   "blob": "ec8d4307658d7a0b8ff912f5e0fb450d50e56a7b",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-gradient-gated-168854px-20261009T202306Z-zeros.tif",
+   "n_sources": 1,
+   "pinned_sha256": "95db328f1c4aec2ab35b9da2c8fd12f88ac864cf8bd03f0c0af6c4d1ddc03c76",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 1599432,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 168854,
+   "positive_in_footprint": 168854,
+   "footprint_fraction_positive": 0.03267695209925817,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "7503b434b6c769d3156d780b15bb432a9c2455c2",
    "source": "GEMSDOE48:docs/downloads/diagnostics/gemsdoe48-h56b-conflict-126ca59c2801.tif",
    "n_sources": 1,
@@ -9041,7 +9225,7 @@
   {
    "blob": "df213d013958aed1878222d076d5113c26652f19",
    "source": "57GEMSDOE-PR6:docs/downloads/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-zeros.tif",
-   "n_sources": 1,
+   "n_sources": 2,
    "pinned_sha256": "9800f0fab26a3120b14c58e3ea6de05c9bccec21892c36d95a0a92c365651bad",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -9172,6 +9356,29 @@
    "positive_cells": 217830,
    "positive_in_footprint": 217830,
    "footprint_fraction_positive": 0.042154882180945714,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "d40a02cc77d2156638ee1e776cbc970182680b86",
+   "source": "57GEMSDOE:docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif",
+   "n_sources": 2,
+   "pinned_sha256": "9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 818144,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 40000,
+   "positive_in_footprint": 40000,
+   "footprint_fraction_positive": 0.007740877231041769,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -9409,7 +9616,7 @@
   {
    "blob": "cdab993cdfe6a7bfbf25af95d72fd4d855819e77",
    "source": "57GEMSDOE:docs/downloads/archive/gems57-faultzone-anatomy-60000px-20261009T054251Z.tif",
-   "n_sources": 1,
+   "n_sources": 2,
    "pinned_sha256": "a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -9867,6 +10074,29 @@
    "dense": false
   },
   {
+   "blob": "afffd19fec029aa11c082f3faf92bc739000cb19",
+   "source": "56GEMSDOE:docs/downloads/gems56-corr-twinfam9-20261009T190155Z-0279ca86-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "a614a594e179fa2af24a3d9c311bbab45f3c39ca868023da23b43ece16a32b75",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 341067,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 2139,
+   "positive_in_footprint": 2139,
+   "footprint_fraction_positive": 0.00041394340992995863,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "d467060d2c5cf84588a3a32a00e9e9082072844c",
    "source": "GEMSDOE50:docs/downloads/gemsdoe50-h60-combined-55000-20261007T212217Z-allfinite.tif",
    "n_sources": 2,
@@ -10299,6 +10529,29 @@
    "positive_cells": 789722,
    "positive_in_footprint": 789722,
    "footprint_fraction_positive": 0.1528285262163192,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "18adc3d2ac930666eaeaccce2a8f377534544a3c",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-continuous-1875224px-20261009T202053Z-zeros.tif",
+   "n_sources": 1,
+   "pinned_sha256": "abd30a9c3aad35c9f24fe6bf21aacae236dc368cc2a1e8972d2be5f33f6f7e66",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 9721662,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 1875224,
+   "positive_in_footprint": 1875224,
+   "footprint_fraction_positive": 0.36289696911757674,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -11017,6 +11270,29 @@
    "dense": false
   },
   {
+   "blob": "441a6ee29d18f323dd57561a733d248bce9b58cd",
+   "source": "55GEMSDOE:docs/downloads/h57-tensor-flank-r15-uneroded-registry56-n200-20261009T200831Z-zeros.tif",
+   "n_sources": 1,
+   "pinned_sha256": "b8dd3f308b4239fafc9e378809c42e89618a7f814de03bce954870a9b1924915",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 720851,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 200,
+   "positive_in_footprint": 200,
+   "footprint_fraction_positive": 3.8704386155208843e-05,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "fa2af4d4521de05d5eb8b2a13ce80168c680988b",
    "source": "GEMSDOE48:docs/downloads/GEMSDOE48-H56B-NF-DS-dotted-x-tip-20261007-5bb2c03c981e-nan-outside.tif",
    "n_sources": 1,
@@ -11035,6 +11311,29 @@
    "positive_cells": 791389,
    "positive_in_footprint": 791389,
    "footprint_fraction_positive": 0.15315112727492286,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "698c98df958caf95b12d70463ef6eccb20f27622",
+   "source": "GEMSDOE52:docs/downloads/h75-candidate.tif",
+   "n_sources": 2,
+   "pinned_sha256": "b97691584d514ab1925d9fff2b61c410be86bdc0bc8c844dfdaa6257a4ea7a16",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 142941,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 37654,
+   "positive_in_footprint": 37654,
+   "footprint_fraction_positive": 0.007286874781441169,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -11111,7 +11410,7 @@
   {
    "blob": "cb9c830503f83dae0fccf0d5ee5fb4d0241cfc40",
    "source": "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-lean-offset-20261009T181740Z-468b837801cb-nan.tif",
-   "n_sources": 1,
+   "n_sources": 2,
    "pinned_sha256": "ba0aab85f966e55477ef283cd1b4c14c481328ee21e564af47ad7043337a5d84",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -11226,7 +11525,7 @@
   {
    "blob": "9b3579fc25391668c27c594f8541dadf515694e5",
    "source": "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-nan.tif",
-   "n_sources": 1,
+   "n_sources": 3,
    "pinned_sha256": "bb9ed068937100e706970ec4c216bc5edaf5c8d0042cd096fb6a3be8cdf4c919",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -11380,6 +11679,29 @@
    "positive_cells": 344041,
    "positive_in_footprint": 344041,
    "footprint_fraction_positive": 0.06657947858612104,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "620049ef417ece7de514322c66568ab7371c67c8",
+   "source": "GEMSDOE52:docs/downloads/h76-candidate.tif",
+   "n_sources": 2,
+   "pinned_sha256": "bd64f0121502488ead1f91cb97530a7e9ae5fce89b9f0afc10a95466e35c98c2",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 60802,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 3000,
+   "positive_in_footprint": 3000,
+   "footprint_fraction_positive": 0.0005805657923281327,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -14168,6 +14490,29 @@
    "dense": false
   },
   {
+   "blob": "39e713f6f5d6b9a1b07c1240215a0da1b96a81aa",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-triscale-poisson-50035dots-20261009T201613Z-nan.tif",
+   "n_sources": 1,
+   "pinned_sha256": "e7533fd89de166702a482db411289f1866614800a69514f00a232d46a8514302",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 1747674,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 50035,
+   "positive_in_footprint": 50035,
+   "footprint_fraction_positive": 0.009682869806379373,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
    "blob": "0bb2fae409553cc7281a848541d65232921a8bdc",
    "source": "13GEMSDOE:docs/downloads/13gems_20261001_r11-greedy-mp_v2_zerofill.tif",
    "n_sources": 2,
@@ -14193,7 +14538,7 @@
   {
    "blob": "fff3348bf3f24c21ff572d273a7d42b69e63bb24",
    "source": "57GEMSDOE-PR6:docs/downloads/archive/gems57-h57-no_side-all-flank0-20261009T180245Z-90e532947353-zeros.tif",
-   "n_sources": 1,
+   "n_sources": 2,
    "pinned_sha256": "e845aa2e10fc47fa7582ca8a0b3c3a05cb5097a2bd922daf54db99169c663144",
    "sha256_matches_pin": true,
    "git_blob_sha1_matches": true,
@@ -14600,6 +14945,29 @@
    "positive_cells": 75308,
    "positive_in_footprint": 75308,
    "footprint_fraction_positive": 0.014573749562882338,
+   "positive_outside_footprint": 0,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "945e46ae99a2dda28f0f6f7ac8935bbbd252013b",
+   "source": "55GEMSDOE:evidence/parallel_session_16/tensor-triscale-poisson-50035dots-20261009T201613Z-zeros.tif",
+   "n_sources": 1,
+   "pinned_sha256": "f0c2f4251c5a60242354742102303ae635442469dc4472f87e414b6bee268586",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 966503,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 12279160,
+   "positive_cells": 50035,
+   "positive_in_footprint": 50035,
+   "footprint_fraction_positive": 0.009682869806379373,
    "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
@@ -15107,6 +15475,29 @@
    "positive_in_footprint": 793357,
    "footprint_fraction_positive": 0.15353197843469013,
    "positive_outside_footprint": 893,
+   "all_finite_values_in_0_1": true,
+   "dense": false
+  },
+  {
+   "blob": "47f301cf7251c876f839aa7cb265eab7f258bbaa",
+   "source": "GEMSDOE52:docs/downloads/h77-candidate.tif",
+   "n_sources": 2,
+   "pinned_sha256": "f7f234af958b5645b0ca65c8969906c6b526ef3da9afa693b0171d1902452f49",
+   "sha256_matches_pin": true,
+   "git_blob_sha1_matches": true,
+   "bytes": 1558626,
+   "dtype": "float32",
+   "bands": 1,
+   "shape": [
+    3730,
+    3292
+   ],
+   "crs_epsg": 32611,
+   "finite_cells": 5167373,
+   "positive_cells": 37654,
+   "positive_in_footprint": 37654,
+   "footprint_fraction_positive": 0.007286874781441169,
+   "positive_outside_footprint": 0,
    "all_finite_values_in_0_1": true,
    "dense": false
   },

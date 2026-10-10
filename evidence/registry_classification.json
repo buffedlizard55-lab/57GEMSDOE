@@ -1,7 +1,7 @@
 {
   "evidence_class": "REGISTRY-CLASSIFICATION",
-  "grid_rasters_checked": 679,
-  "prediction_or_conservative_ambiguous_rasters": 675,
+  "grid_rasters_checked": 695,
+  "prediction_or_conservative_ambiguous_rasters": 691,
   "auxiliary_inputs": 4,
   "auxiliary_records": [
     {

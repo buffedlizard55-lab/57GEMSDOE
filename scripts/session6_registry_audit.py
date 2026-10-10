@@ -6,7 +6,7 @@ no GeoTIFF build, no download from DrivenData, no submission.
 
 What it does
 ------------
-1. Re-verifies every raster in ``evidence/registry_refreshed.json`` (679 entries)
+1. Re-verifies every raster in ``REGISTRY_INDEX`` (the current 696-entry index, 2026-10-10T20:01Z)
    into ``.cache/registry/`` (gitignored, never committed) using the shared
    ``scripts/refresh_registry.fetch_blob``: immutable git-blob SHA1, pinned
    SHA256, single-band / EPSG:32611 / pinned-transform checks. A fetch that
@@ -55,6 +55,8 @@ OWNER_REPORTED_PAIR = {
                    blob="17a76895f68174cc93f3cb1597d25686f6d6bc67"),
 }
 
+
+REGISTRY_INDEX = "evidence/registry_refreshed_20261010T2001.json"  # current index (696 unique grid rasters)
 
 def _load_refresh_module():
     spec = importlib.util.spec_from_file_location("refresh_registry", ROOT / "scripts" / "refresh_registry.py")
@@ -117,7 +119,7 @@ def containment(base: np.ndarray, target: np.ndarray, catalogue: np.ndarray) -> 
 
 
 def run(out_profile: Path, out_mechanism: Path, workers: int = 8) -> dict:
-    index = json.loads((ROOT / "evidence" / "registry_refreshed.json").read_text())
+    index = json.loads((ROOT / REGISTRY_INDEX).read_text())
     records = index["rasters"]
     refresh = _load_refresh_module()
     cache = ROOT / ".cache" / "registry"
@@ -162,8 +164,8 @@ def run(out_profile: Path, out_mechanism: Path, workers: int = 8) -> dict:
     profile = dict(
         evidence_class="REGISTRY-MEASUREMENT (verification of the indexed public owner-repository inventory; not a score)",
         generated_utc=datetime.now(timezone.utc).isoformat(),
-        registry_index="evidence/registry_refreshed.json",
-        registry_index_sha256=sha256_file(ROOT / "evidence" / "registry_refreshed.json"),
+        registry_index=REGISTRY_INDEX,
+        registry_index_sha256=sha256_file(ROOT / REGISTRY_INDEX),
         definition="dot = finite value > 0 (inherited literal gate); footprint = finite cells of data/official/sample_submission.tif",
         summary=summary,
         errors=errors,
