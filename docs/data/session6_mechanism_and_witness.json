@@ -1,0 +1,31 @@
+{
+ "evidence_class": "RASTER-MEASUREMENT + REGISTRY-MEASUREMENT (not scores)",
+ "generated_utc": "2026-10-10T21:02:12.178907+00:00",
+ "witness_saturation": {
+  "evidence_class": "REGISTRY-MEASUREMENT",
+  "witness_file": "/home/user/57GEMSDOE/.cache/registry/374c88b1da2b803e2ed160de467fd71ae114010d.tif",
+  "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+  "positive_pixels": 5167373,
+  "allowed_pixels": 5106385,
+  "uncovered_allowed_pixels": 0,
+  "covered_allowed_fraction": 1.0,
+  "universal_overlap_blocker": true,
+  "overlap_limit": 0.7,
+  "support_definition": "finite prediction > 0 (inherited literal support rule)",
+  "implication": "Every nonempty candidate dot set in the allowed domain has forward overlap 1.0 with this prior; therefore it cannot pass the 0.70 gate."
+ },
+ "owner_reported_pair_containment": {
+  "base_positive": 40199,
+  "target_positive": 37654,
+  "target_subset_of_base": true,
+  "added_vs_base": 0,
+  "removed_vs_base": 2545,
+  "removed_on_catalogue": 0,
+  "removed_distance_px_min": 1.4142135623730951,
+  "removed_distance_px_max": 2.0,
+  "target_distance_px_min": 2.23606797749979,
+  "lower_label": "gems28-h27-4-r1-solo-d2-8 (OWNER-REPORTED 0.2708)",
+  "higher_label": "gemsdoe32-h33-h33-2-b2 zeros (OWNER-REPORTED 0.2778)",
+  "note": "Owner-reported labels only. File containment and distances are measured; the causal link to the score is NOT established (no organizer receipt)."
+ }
+}

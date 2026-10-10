@@ -23,7 +23,7 @@ NAV = [('index.html', 'Overview'), ('executive-summary.html', 'Download & submit
        ('sources.html', 'Sources'), ('irregularities.html', 'Audit')]
 PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orientation_structure',
           'relay_bend_holdout', 'relay_bend_canary', 'relay_bend_structure', 'relay_bend_surface_uniqueness',
-          'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification',
+          'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification', 'uniqueness_session6_full_registry_696', 'session6_mechanism_and_witness',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
           'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
@@ -132,6 +132,58 @@ def download_panel(card):
 def evidence_notice(card):
     score = card['holdout_dti']
     return f'''<p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>{esc(score['evaluator_version'])}</code> · {score['withheld_positive_pixels']:,} withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>'''
+
+
+def session6_page(root) -> str:
+    """Session-6 verification page (2026-10-10). Reads measured evidence only; HOLD is unchanged."""
+    def load(name):
+        path = root / 'evidence' / name
+        return json.loads(path.read_text(encoding='utf-8')) if path.is_file() else {}
+    prof = load('registry_profile_session6.json').get('summary', {})
+    mech = load('session6_mechanism_and_witness.json')
+    ws = mech.get('witness_saturation', {})
+    pc = mech.get('owner_reported_pair_containment', {})
+    gate = load('uniqueness_session6_full_registry_696.json')
+    na = 'NOT AVAILABLE'
+    rows = [
+        ['Indexed rasters (current index, 20:01Z)', esc(prof.get('indexed', na))],
+        ['Fetched and verified (blob SHA1 + pinned SHA256 + grid)', esc(prof.get('fetched_and_verified', na))],
+        ['Errors / SHA256 pin mismatches / git-blob mismatches',
+         f"{esc(prof.get('errors', na))} / {esc(prof.get('sha256_pin_mismatches', na))} / {esc(prof.get('git_blob_sha1_mismatches', na))}"],
+        ['Dense rasters (≥50% of footprint positive)', esc(prof.get('dense_rasters_ge_50pct_footprint', na))],
+        ['Rasters with positives outside footprint / values outside [0,1]',
+         f"{esc(prof.get('rasters_with_positive_outside_footprint', na))} / {esc(prof.get('rasters_with_values_outside_0_1', na))}"],
+    ]
+    gate_rows = [
+        ['Rasters checked', esc(gate.get('registry_rasters_checked', na))],
+        ['Forward-overlap / literal duplicate firings', esc(gate.get('duplicate_count', na))],
+        ['Worst forward 3-px overlap (limit 0.70)', number(gate.get('worst_dot_overlap', na))],
+        ['Worst full-footprint Spearman (limit 0.90)', number(gate.get('worst_spearman_full_footprint', na))],
+        ['Unique under the literal rule?', esc(gate.get('unique', na))],
+    ]
+    return f"""
+<div class="eyebrow">SESSION 6 · 2026-10-10 · VERIFICATION ONLY</div>
+<h1>Session 6: registry re-verification, gate rerun, and the 0.2778 question.</h1>
+<p><b>Status unchanged: HOLD.</b> Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Owner-reported scores are not organizer-confirmed.</p>
+<h2>1 · Registry (current 696-raster index)</h2>
+{table(['Measure', 'Result'], rows)}
+<p>Index: <code>evidence/registry_refreshed_20261010T2001.json</code>. Verification script: <code>scripts/session6_registry_audit.py</code>. Profile: <code>evidence/registry_profile_session6.json</code>.</p>
+<h2>2 · Literal gate on the offered TIFF (696 index)</h2>
+<p>Candidate: <code>gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif</code>, SHA256 <code>cf7b903d…9489648</code>. Measured by <code>scripts/check_uniqueness_full.py --phase surface</code>.</p>
+{table(['Gate measure', 'Result'], gate_rows)}
+<p>The literal rule <b>fails</b>. This page does not treat that as clearance, and it does not reinterpret the rule. The owner must decide the dot definition for soft registry rasters (IR-S6-01).</p>
+<h2>3 · Universal blocker</h2>
+<p>17GEMSDOE <code>E-proba-multiscale</code> (SHA256 <code>{esc(ws.get('witness_sha256', na))}</code>) covers {number(ws.get('covered_allowed_fraction', na))} of the allowed footprint cells. Its overlap with any nonempty candidate is therefore 1.0, so the 0.70 rule cannot be cleared while it is in scope. Universal blocker: {esc(ws.get('universal_overlap_blocker', na))}.</p>
+<h2>4 · What the 0.2778 raster is (and is not)</h2>
+<p>The owner-reported 0.2708 file (GEMSDOE28) and the 0.2778 file (GEMSDOE32) are <b>file-measured</b> as nested: the 0.2778 raster adds nothing and removes {esc(pc.get('removed_vs_base', na))} of the {esc(pc.get('base_positive', na))} base dots. Every removed dot lies within {number(pc.get('removed_distance_px_min', na), 2)}–{number(pc.get('removed_distance_px_max', na), 2)} px of the mapped catalogue, none on it. The nearest kept dot is {number(pc.get('target_distance_px_min', na), 2)} px away.</p>
+<p>That is a plausible mechanism for a precision gain under the DTI cost. It is <b>not</b> a demonstrated causal score gain: the scores are owner-reported, and the organizer board is not a file receipt. Source: <code>evidence/session6_mechanism_and_witness.json</code>.</p>
+<h2>5 · Holdout and leaderboard</h2>
+<ul>
+<li>No holdout was run this session. <code>training_features.tif</code> is absent, and its link was unreachable from the audit environment (IR-S6-05).</li>
+<li>The leaderboard snapshot shows 0.3774 at rank 1 and 0.3195 at rank 7. The brief's “highest” claim conflicts with that snapshot (IR-S6-06). Snapshot: <code>data/leaderboard_snapshot.json</code>.</li>
+</ul>
+<p>{link('irregularities.html', 'Audit ledger, including IR-S6-01 to IR-S6-12 →')} · {link('executive-summary.html', 'Download and submission guide →')}</p>
+"""
 
 
 def build(root=ROOT, make_preview=True):
@@ -278,7 +330,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
 
     irregularity_rows = [[f'<strong>{esc(i["id"])}</strong><p>{esc(i["severity"])}</p>', esc(i['finding']), f"<strong>{esc(i['status'])}</strong><p>{esc(i['resolution'])}</p>", esc(i.get('remaining', ''))] for i in evidence['irregularities_current']['irregularities']]
     irregularities = f'''<div class="eyebrow">OWN THE OUTCOME</div><h1>Fixes without rewriting history.</h1><p>The interrupted first attempt is explicitly invalid. Current results use the corrected strike field and shared buffered evaluator. Old in-sample, unbuffered, oracle-budget and relaxed-gate reports remain historical evidence, not recommendations.</p>{table(['ID / severity', 'Finding', 'Resolution', 'Still limited'], irregularity_rows)}
-<h2>Remaining work—before any promotion</h2><ol><li>Resolve the universal literal overlap obstruction only through an explicit protocol revision. Do not quietly redefine soft support, exempt dense maps, add a reverse-overlap condition or choose another raster after STOP.</li><li>Obtain organizer receipts to authenticate exact file-to-score attribution and the official data/template provenance chain. Do not ask for or store credentials in chat.</li><li>In a new budgeted session, test at most the next predeclared anatomy hypothesis against corrected spatial controls. Require positive paired evidence and both uniqueness phases before a separate selector considers a slot.</li><li>Strengthen geological-system holdouts, record matching and domain-shift diagnostics. Verify actual fault displacement indicators; investigate magnetic contacts/flight-line mimics.</li><li>Keep source/feed timestamps visible. AI-assisted code and analysis must be disclosed according to the official rules if entering finalist materials.</li></ol><p>{link('data/irregularities_current.json', 'Audit JSON')} · {link('data/review_passes.json', 'Three-pass verification record')} · {link('archive.html', 'Archived outputs—invalid/held, never submit')}</p>'''
+<h2>Remaining work—before any promotion</h2><ol><li>Resolve the universal literal overlap obstruction only through an explicit protocol revision. Do not quietly redefine soft support, exempt dense maps, add a reverse-overlap condition or choose another raster after STOP.</li><li>Obtain organizer receipts to authenticate exact file-to-score attribution and the official data/template provenance chain. Do not ask for or store credentials in chat.</li><li>In a new budgeted session, test at most the next predeclared anatomy hypothesis against corrected spatial controls. Require positive paired evidence and both uniqueness phases before a separate selector considers a slot.</li><li>Strengthen geological-system holdouts, record matching and domain-shift diagnostics. Verify actual fault displacement indicators; investigate magnetic contacts/flight-line mimics.</li><li>Keep source/feed timestamps visible. AI-assisted code and analysis must be disclosed according to the official rules if entering finalist materials.</li></ol><p>{link('data/irregularities_current.json', 'Audit JSON')} · {link('data/review_passes.json', 'Three-pass verification record')} · {link('archive.html', 'Archived outputs—invalid/held, never submit')} · {link('session-6-verification.html', 'Session 6 verification')}</p>'''
 
     runcard = '<div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p>' + link('data/run_card.json', 'Download JSON') + '</p><pre>' + esc(json.dumps(card, indent=2, allow_nan=False)) + '</pre>'
     archive = '''<div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p>'''
@@ -330,6 +382,7 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
              'hypotheses.html': ('Hypotheses', hypotheses), 'research.html': ('Research', research),
              'sources.html': ('Sources', sources), 'data-sources.html': ('Data & sources', sources),
              'irregularities.html': ('Audit', irregularities), 'run-card.html': ('Run card', runcard),
+             'session-6-verification.html': ('Session 6 verification', session6_page(root)),
              'archive.html': ('Archive warning', archive), 'session-3.html': ('Archived session', archive), 'session-4.html': ('Archived H57-I', archive),
              'h57k.html': ('H57-K candidate', h57k_page)}
     for filename, (title, body) in pages.items():

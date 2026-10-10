@@ -28,8 +28,8 @@ A session-5 independent uniqueness audit also verified a 17GEMSDOE raster in the
 recorded inventory whose 3-pixel positive support covers every allowable cell.
 Measured forward overlap is 1.0 for dense and sparse test candidates; under the
 unchanged literal >70% rule, any nonempty candidate is blocked while it remains
-in scope. This is not a score, not a current full-cache revalidation (0/679
-local cache files are present), and not authorization to alter the threshold.
+in scope. This is not a score, and not authorization to alter the threshold. Session 6 re-verified all
+696/696 indexed cache files on the current index (679/679 on the earlier index), superseding the earlier 0/679 note.
 The shortlist is scientific future-work context only until an explicit protocol
 decision and renewed experiment budget exist.
 

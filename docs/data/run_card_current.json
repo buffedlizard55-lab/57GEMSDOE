@@ -200,5 +200,72 @@
   "submission_slots_used": 0,
   "generated_utc": "2026-10-10T20:35:00.673249+00:00",
   "registry_reviewed_utc": "2026-10-10T20:35:00.673273+00:00",
-  "registry_scope": "All 695 SHA256-verified competition-grid rasters across all 57 GEMSDOE repositories at their latest public-main commits plus historical pins. Current generated candidate excluded as an output, not a prior."
+  "registry_scope": "All 695 SHA256-verified competition-grid rasters across all 57 GEMSDOE repositories at their latest public-main commits plus historical pins. Current generated candidate excluded as an output, not a prior.",
+  "session6_verification": {
+    "evidence_class": "REPOSITORY-AUDIT — session 6. No experiment, holdout, slot use or submission. Measurements are not scores.",
+    "generated_utc": "2026-10-10T21:10:00+00:00",
+    "experiments_run": 0,
+    "holdout_run": false,
+    "holdout_blocker": "IR-S6-05: training_features.tif absent; Dropbox feature link unreachable from the sandbox.",
+    "registry_index": "evidence/registry_refreshed_20261010T2001.json",
+    "registry": {
+      "indexed": 696,
+      "fetched_and_verified": 696,
+      "errors": 0,
+      "sha256_pin_mismatches": 0,
+      "git_blob_sha1_mismatches": 0,
+      "dense_rasters_ge_50pct_footprint": 53,
+      "rasters_with_positive_outside_footprint": 14,
+      "rasters_with_values_outside_0_1": 11
+    },
+    "literal_gate_on_offered_tif": {
+      "candidate": "downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+      "candidate_file_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+      "registry_rasters_checked": 696,
+      "complete_accessible_scan": true,
+      "duplicate_count": 80,
+      "worst_spearman_full_footprint": 0.8180518194375755,
+      "worst_dot_overlap": 1.0,
+      "unique": false,
+      "verdict": "negative",
+      "stop_required": true,
+      "evidence_file": "evidence/uniqueness_session6_full_registry_696.json"
+    },
+    "witness_universal_blocker": true,
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "covered_allowed_fraction": 1.0,
+    "owner_reported_pair_containment": {
+      "base_positive": 40199,
+      "target_positive": 37654,
+      "target_subset_of_base": true,
+      "added_vs_base": 0,
+      "removed_vs_base": 2545,
+      "removed_on_catalogue": 0,
+      "removed_distance_px_min": 1.4142135623730951,
+      "removed_distance_px_max": 2.0,
+      "target_distance_px_min": 2.23606797749979
+    },
+    "causal_score_gain_verified": false,
+    "leaderboard_snapshot_conflict": "IR-S6-06: brief says 0.3195 highest; snapshot shows 0.3774 rank 1, 0.3195 rank 7 (evidence/leaderboard_snapshot.json).",
+    "download_status_conflict": "IR-S6-10: main shows 'Download for research: OK' with okay_to_download=true while the literal gate fails. Not changed by session 6; owner must confirm.",
+    "ranked_untried_hypotheses": [
+      "H6-1",
+      "H6-2",
+      "H6-3",
+      "H6-4"
+    ],
+    "evidence_files": [
+      "evidence/session6_hypotheses.json",
+      "evidence/session6_mechanism_and_witness.json",
+      "evidence/registry_profile_session6.json",
+      "evidence/uniqueness_session6_full_registry_696.json",
+      "evidence/irregularities_current.json"
+    ],
+    "owner_decisions_required": [
+      "IR-S6-01 dot definition for soft registry rasters (options B or C)",
+      "IR-S6-10 research-download authorization vs stop rule",
+      "IR-S6-05 holdout data access (authorised, hash-pinned copy)"
+    ],
+    "submission_slots_used": 0
+  }
 }
