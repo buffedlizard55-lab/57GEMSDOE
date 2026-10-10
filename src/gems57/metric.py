@@ -69,6 +69,7 @@ ALPHA: float = 0.2
 BETA: float = 0.8
 RADIUS_PX: float = 3.0      # 300 m at the 100 m competition grid
 PIXEL_M: float = 100.0
+R_M: float = RADIUS_PX * PIXEL_M
 EPS: float = 1e-12
 
 
@@ -158,6 +159,30 @@ def dti_binary(pred_bool, truth, valid=None, known=None,
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 
 
+def max_cover(pred, truth):
+    """Shared official-kernel primitives for soft predictions.
+
+    Returns credit per truth pixel (row-major), kernel credit per prediction
+    location, and distance-to-truth. Empty truth has zero kernel credit rather
+    than SciPy EDT's distance to the implicit array boundary.
+    """
+    p = np.asarray(pred, np.float64)
+    g = np.asarray(truth, bool)
+    if p.ndim != 2 or p.shape != g.shape:
+        raise ValueError("grid shape mismatch")
+    if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
+        raise ValueError("predictions must be finite in [0,1]")
+    yy, xx = np.nonzero(g)
+    credit = np.zeros(len(yy), np.float64)
+    h, w = p.shape
+    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
+        ny, nx = yy + j, xx + i
+        ok = (ny >= 0) & (ny < h) & (nx >= 0) & (nx < w)
+        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    dg = distance_transform_edt(~g) if len(yy) else np.full(p.shape, np.inf)
+    return credit, kernel(dg), dg
+
+
 def dti_exact(pred, truth, valid=None, known=None,
               alpha: float = ALPHA, beta: float = BETA) -> dict:
     """Exact DTI for arbitrary soft predictions in [0, 1] (max over the kernel)."""
@@ -176,16 +201,10 @@ def dti_exact(pred, truth, valid=None, known=None,
     if n == 0:
         return dict(tp=0.0, fp=float(p.sum()), fn=0.0, n_truth=0,
                     n_emitted=int((p > 0).sum()), dti=0.0, coverage=0.0)
-    H, W = p.shape
-    credit = np.zeros(n, np.float64)
-    for j, i, k in zip(OFF_DY, OFF_DX, OFF_K):
-        ny, nx = yy + j, xx + i
-        ok = (ny >= 0) & (ny < H) & (nx >= 0) & (nx < W)
-        credit[ok] = np.maximum(credit[ok], p[ny[ok], nx[ok]] * k)
+    credit, q, _ = max_cover(p, g)
     tp = float(credit.sum())
     fn = float(n) - tp
-    dg = distance_transform_edt(~g)
-    fp = float((p * (1.0 - kernel(dg))).sum())
+    fp = float((p * (1.0 - q)).sum())
     return dict(tp=tp, fp=fp, fn=fn, n_truth=n, n_emitted=int((p > 0).sum()),
                 dti=dti_from_components(tp, fp, fn, alpha, beta), coverage=tp / n)
 

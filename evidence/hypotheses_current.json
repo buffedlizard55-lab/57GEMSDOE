@@ -1,0 +1,67 @@
+{
+  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (qualitative expectations, not scores)",
+  "predeclared_in_chat_before_code": true,
+  "novelty_scope": "Compared with the inspected implementations in this repository. No claim of global scientific novelty or exhaustive novelty across every sibling method.",
+  "candidates": [
+    {
+      "rank": 1,
+      "id": "H57-G",
+      "hypothesis": "Candidate-edge relative strike in the fitted damage zone",
+      "layers": ["Cached numerical feature stack, band 14 short name tmi", "Visible existing_faults.tif geometry", "Recorded INGENIOUS sense where matched"],
+      "signature": "Gaussian scalar derivatives supply an axial magnetic-edge tangent and coherence. A fitted interaction uses cos(2*(candidate strike - primary strike)), distance and mapped component length.",
+      "why_missing_faults": "A secondary strand may offset magnetized units even when it has no mapped surface trace. Its candidate strike can be consistent with the locally measured anatomy of visible-host systems.",
+      "difference_from_repo": "Existing phi describes the offset vector from a host, not a candidate strand's orientation. This adds catalogue-independent candidate-to-host strike evidence without copying a prior raster.",
+      "non_fault_mimic": "Magnetized dikes, lithologic contacts and airborne leveling stripes",
+      "expected_improvement": "Highest of these four, but unquantified and uncertain",
+      "implementation_cost": "Medium; CPU only, cached stack restored automatically",
+      "obtainability": "Verified: all five public bridge parts and the assembled stack passed hash checks; official origin remains unauthenticated",
+      "official_source": "https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and",
+      "status": "TESTED; see orientation_holdout.json"
+    },
+    {
+      "rank": 2,
+      "id": "H57-H",
+      "hypothesis": "Multi-scale host-bend damage asymmetry",
+      "layers": ["Visible catalogue strike tensors at two smoothing scales", "Mapped component length", "Matched recorded sense"],
+      "signature": "Axial turning difference and local curvature modify an empirically fitted cross-strike zone; no predetermined stress-lobe angle.",
+      "why_missing_faults": "Bends could concentrate secondary deformation beside a host rather than on its already mapped centerline.",
+      "difference_from_repo": "Current features include one tensor coherence and strike, but no multi-scale turning field. This is not the previously proposed endpoint-lobe test.",
+      "non_fault_mimic": "Cartographic smoothing and contour-following trace generalization",
+      "expected_improvement": "Medium, uncertain",
+      "implementation_cost": "Low; catalogue only",
+      "obtainability": "All required cached data are present",
+      "official_source": "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JB007665",
+      "status": "NOT RUN; three-experiment cap and stop gate honored"
+    },
+    {
+      "rank": 3,
+      "id": "H57-I",
+      "hypothesis": "Two-host damage-zone superposition",
+      "layers": ["Nearest two distinct visible fault components", "Their distance, length and strike"],
+      "signature": "Joint relative distances and host-strike disagreement identify overlap between empirically fitted damage contributions from distinct mapped strands.",
+      "why_missing_faults": "Short linking strands may occupy overlap between neighboring host zones rather than the maximum of a nearest-host-only halo.",
+      "difference_from_repo": "The existing intensity uses a single nearest component. This proposes an explicit two-host interaction, not another isotropic dilation.",
+      "non_fault_mimic": "A mapped lithologic boundary situated between unrelated structural lineaments",
+      "expected_improvement": "Medium, uncertain",
+      "implementation_cost": "Medium; distinct-host neighbor retrieval needs careful tests",
+      "obtainability": "All required cached data are present",
+      "official_source": "https://www.lyellcollection.org/doi/abs/10.1144/GSL.SP.2003.210.01.03",
+      "status": "NOT RUN; three-experiment cap and stop gate honored"
+    },
+    {
+      "rank": 4,
+      "id": "H57-J",
+      "hypothesis": "Along-host slip-sense transition anatomy",
+      "layers": ["Visible matched INGENIOUS RL/LL/N attributes", "Local host orientation and length"],
+      "signature": "An empirical transition/heterogeneity indicator conditions secondary-strand distance and orientation rather than assuming a uniform fault-wide handedness.",
+      "why_missing_faults": "Changes in recorded motion might identify zones where distributed transfer between normal and strike-slip strands occurs.",
+      "difference_from_repo": "Previous work tested a single nearest sense flag; it did not test spatial changes in sense along a host.",
+      "non_fault_mimic": "Inconsistent catalogue attribution and record boundaries",
+      "expected_improvement": "Lower; attribute precision and matching are limiting",
+      "implementation_cost": "Low after a reliable visible-only attribute join",
+      "obtainability": "The supplied bridge CSV is present and hash verified; official v2 metadata and CC BY 4.0 license were retrieved",
+      "official_source": "https://gdr.openei.org/submissions/1391",
+      "status": "NOT RUN; single-sense ablation is E3, not validation of this transition hypothesis"
+    }
+  ]
+}

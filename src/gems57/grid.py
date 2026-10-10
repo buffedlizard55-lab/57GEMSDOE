@@ -1,7 +1,7 @@
 """Study-area grid: CRS, shape, geotransform and the scored footprint.
 
-Every constant here is read from the two competition files committed in
-``data/bridge/`` and re-verified at load time by ``scripts/verify_grid.py``:
+Every constant here is read from the two bridged files committed in
+``data/bridge/`` and re-verified by ``scripts/run_lane.py verify`` (writes ``evidence/verify_grid.json``):
 
 * ``existing_faults.tif``  sha256 ``7ba308ccdc4418b31a178f4f1ef21aaa6e152e4028f2f6f64b01f7eb25ae4093``
   (byte-identical to the ``labels.tif`` recorded in
@@ -16,7 +16,8 @@ CRS ``EPSG:32611`` (UTM zone 11N), shape ``3730 x 3292``, transform
 ``(100, 0, 243350, 0, -100, 4508550)``, 100 m pixels, bounds
 ``(243350, 4135550) - (572550, 4508550)``.  The sample submission carries
 ``nodata = NaN`` with 7,111,787 NaN cells and 5,167,373 finite cells; the finite
-cells define the scored footprint.
+cells define our bridge-relative footprint. Official-origin identity is not
+independently authenticated by the bridge hashes.
 """
 
 from __future__ import annotations

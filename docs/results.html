@@ -1,115 +1,18 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Results · 57GEMSDOE</title>
-<link rel="stylesheet" href="assets/site.css"></head>
-<body>
-<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
-<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
-<main>
-<h2>Holdout results</h2>
-<h3>Session 1 (9-feature set, as first shipped)</h3>
-<h3>Withholding mode <code>all</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
-<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
-<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
-<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>d_only</code></td><td class="n">0.1845</td><td class="n">[0.1630, 0.2059]</td><td class="n">0.5036</td><td class="n">[0.4971, 0.5101]</td><td class="n">220010</td><td class="n">22641</td><td class="n">11402.5</td></tr><tr><td><code>d_perp_par</code></td><td class="n">0.1867</td><td class="n">[0.1605, 0.2128]</td><td class="n">0.5066</td><td class="n">[0.5001, 0.5131]</td><td class="n">220183</td><td class="n">22641</td><td class="n">11469.8</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.2517</td><td class="n">[0.2183, 0.2851]</td><td class="n">0.4874</td><td class="n">[0.4809, 0.4940]</td><td class="n">136467</td><td class="n">22641</td><td class="n">11036.2</td></tr><tr><td><code>no_side</code></td><td class="n">0.2508</td><td class="n">[0.2164, 0.2852]</td><td class="n">0.4852</td><td class="n">[0.4787, 0.4918]</td><td class="n">136293</td><td class="n">22641</td><td class="n">10986.5</td></tr></table>
-<h3>Withholding mode <code>detached</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
-<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
-<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
-<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>d_only</code></td><td class="n">0.1816</td><td class="n">[0.1683, 0.1950]</td><td class="n">0.5044</td><td class="n">[0.4979, 0.5110]</td><td class="n">224992</td><td class="n">22619</td><td class="n">11410.1</td></tr><tr><td><code>d_perp_par</code></td><td class="n">0.1847</td><td class="n">[0.1665, 0.2029]</td><td class="n">0.4949</td><td class="n">[0.4884, 0.5015]</td><td class="n">215859</td><td class="n">22619</td><td class="n">11195.1</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.2538</td><td class="n">[0.2309, 0.2766]</td><td class="n">0.4706</td><td class="n">[0.4641, 0.4771]</td><td class="n">126495</td><td class="n">22619</td><td class="n">10643.9</td></tr><tr><td><code>no_side</code></td><td class="n">0.2556</td><td class="n">[0.2329, 0.2784]</td><td class="n">0.4740</td><td class="n">[0.4675, 0.4806]</td><td class="n">126524</td><td class="n">22619</td><td class="n">10722.4</td></tr></table>
-<h3>Session 2 (11-feature set, corrected strike frame — IR-57-STRIKE-01)</h3>
-<h3>Withholding mode <code>all (session 2, corrected frame)</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
-<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
-<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
-<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>shipped8</code></td><td class="n">0.3270</td><td class="n">[0.2923, 0.3617]</td><td class="n">0.5105</td><td class="n">[0.5040, 0.5171]</td><td class="n">92585</td><td class="n">22641</td><td class="n">11559.2</td></tr><tr><td><code>no_rielder</code></td><td class="n">0.2319</td><td class="n">[0.2126, 0.2513]</td><td class="n">0.4880</td><td class="n">[0.4815, 0.4946]</td><td class="n">156120</td><td class="n">22641</td><td class="n">11049.8</td></tr><tr><td><code>gated</code></td><td class="n">0.3288</td><td class="n">[0.2934, 0.3642]</td><td class="n">0.5146</td><td class="n">[0.5081, 0.5211]</td><td class="n">93030</td><td class="n">22641</td><td class="n">11651.5</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.3265</td><td class="n">[0.2925, 0.3605]</td><td class="n">0.5112</td><td class="n">[0.5047, 0.5177]</td><td class="n">93064</td><td class="n">22641</td><td class="n">11574.6</td></tr></table>
-<h3>Withholding mode <code>detached (session 2, corrected frame)</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
-<table><tr><th>Feature set</th><th class="n">Pooled DTI</th><th class="n">95% CI (quadrant jackknife)</th>
-<th class="n">Coverage</th><th class="n">95% CI (Wilson)</th><th class="n">Dots</th>
-<th class="n">Withheld truth px</th><th class="n">TP</th></tr><tr><td><code>shipped8</code></td><td class="n">0.3262</td><td class="n">[0.3041, 0.3483]</td><td class="n">0.5001</td><td class="n">[0.4935, 0.5066]</td><td class="n">88518</td><td class="n">22619</td><td class="n">11310.9</td></tr><tr><td><code>no_rielder</code></td><td class="n">0.2291</td><td class="n">[0.2150, 0.2433]</td><td class="n">0.4608</td><td class="n">[0.4543, 0.4673]</td><td class="n">144557</td><td class="n">22619</td><td class="n">10422.5</td></tr><tr><td><code>gated</code></td><td class="n">0.3273</td><td class="n">[0.3051, 0.3494]</td><td class="n">0.5017</td><td class="n">[0.4952, 0.5082]</td><td class="n">88591</td><td class="n">22619</td><td class="n">11347.2</td></tr><tr><td><code>anatomy_full</code></td><td class="n">0.3275</td><td class="n">[0.3047, 0.3503]</td><td class="n">0.5006</td><td class="n">[0.4941, 0.5071]</td><td class="n">87964</td><td class="n">22619</td><td class="n">11323.4</td></tr></table>
-<div class="note"><b>Session 2 re-measurement (all), corrected strike frame
-(IR-57-STRIKE-01):</b> the shipped feature set re-scored as <code>shipped8</code> gives
-HOLDOUT-DTI 0.3270 [0.2923,
-0.3617]
-against 0.2508 measured in session 1 with the inverted strike fallback.
-The session-1 geometry features (<code>d_perp</code>, <code>d_par_abs</code>, <code>side</code>,
-<code>sin2</code>, <code>cos2</code>) were all computed in a grid-aligned frame; the comparison
-is therefore a bug-fix re-measurement, not a like-for-like replication.</div>
-<div class="note"><b>Session 2 re-measurement (detached), corrected strike frame
-(IR-57-STRIKE-01):</b> the shipped feature set re-scored as <code>shipped8</code> gives
-HOLDOUT-DTI 0.3262 [0.3041,
-0.3483]
-against 0.2556 measured in session 1 with the inverted strike fallback.
-The session-1 geometry features (<code>d_perp</code>, <code>d_par_abs</code>, <code>side</code>,
-<code>sin2</code>, <code>cos2</code>) were all computed in a grid-aligned frame; the comparison
-is therefore a bug-fix re-measurement, not a like-for-like replication.</div>
-<p class="small">Leave-one-quadrant-out: the model applied to a quadrant is trained only on the
-other three. The quadrant-jackknife CI is the one that respects the spatial blocking; the Wilson
-interval only propagates binomial noise on the coverage and ignores spatial heterogeneity, so it is
-narrower and more optimistic. <b>Report the jackknife one.</b></p>
-
-<h2>Catalogue-flank exclusion, measured</h2>
-<p>Whether to exclude the pixels immediately adjacent to a mapped trace was decided by measurement,
-not by hand. The holdout selected <b>0 px</b>.</p>
-<table><tr><th class="n">Excluded flank</th><th class="n">Pooled DTI</th>
-<th class="n">Coverage</th><th class="n">Dots</th></tr><tr><td class="n">0 px</td><td class="n">0.3747</td><td class="n">0.5787</td><td class="n">93098</td></tr><tr><td class="n">1 px</td><td class="n">0.3727</td><td class="n">0.5693</td><td class="n">90308</td></tr><tr><td class="n">2 px</td><td class="n">0.3658</td><td class="n">0.5455</td><td class="n">84490</td></tr><tr><td class="n">3 px</td><td class="n">0.3379</td><td class="n">0.4891</td><td class="n">77613</td></tr></table>
-
-<h2>The dot budget, and why the holdout's own optimum was overruled</h2>
-<p>The allocator's unconstrained holdout optimum is <b>46603</b>
-dots per draw, about 3.5x the withheld truth count per draw. That was <b>not</b> shipped.</p>
-<p>Across the 15 registry rasters with an organizer-confirmed score,
-<b>Spearman(dot count, live score) = -0.8104</b>
-(p = 0.00025). The relationship is strongly negative, and it is live evidence rather
-than a holdout proxy.</p>
-<table><tr><th>Registry submission</th><th class="n">Dots</th><th class="n">Live score</th></tr><tr><td>h33-h33-2-b2 (best known, 0.2778)</td><td class="n">37,654</td><td class="n">0.2778</td></tr><tr><td>h36-1-rung30-blind-r1</td><td class="n">37,660</td><td class="n">0.2710</td></tr><tr><td>h38-1-hf-euler-r30-r1</td><td class="n">37,860</td><td class="n">0.2707</td></tr><tr><td>anderson-geothermal-pinn-38854</td><td class="n">38,854</td><td class="n">0.2750</td></tr><tr><td>gate_ortho_w0.25-40k</td><td class="n">40,000</td><td class="n">0.2376</td></tr><tr><td>h27-4-r1-solo-d2-8</td><td class="n">40,199</td><td class="n">0.2708</td></tr><tr><td>wormrank-d28</td><td class="n">41,338</td><td class="n">0.2560</td></tr><tr><td>h33d-analog-tip-stepover-r30</td><td class="n">41,865</td><td class="n">0.2632</td></tr><tr><td>h32-1-prethin-tip-euler-d2-8</td><td class="n">42,294</td><td class="n">0.2649</td></tr><tr><td>d28-poisson300m-offcat-44090</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>dotted-h19-5-d2-8</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>h25-1-dotted-h19-5-d1-5</td><td class="n">60,069</td><td class="n">0.2477</td></tr><tr><td>topo-gap-closure-t-v2-on-d1-5</td><td class="n">61,328</td><td class="n">0.2449</td></tr><tr><td>h19-5-powerlaw-budget-multiline</td><td class="n">121,131</td><td class="n">0.1922</td></tr><tr><td>h19-4-multiline-corroborated</td><td class="n">123,779</td><td class="n">0.1894</td></tr></table>
-<table><tr><th>Dot band</th><th class="n">n</th><th class="n">Mean live</th><th class="n">Best</th></tr>
-<tr><td>&lt; 50,000</td><td class="n">11</td><td class="n">0.2643</td><td class="n">0.2778</td></tr>
-<tr><td>35,000&ndash;46,000</td><td class="n">11</td><td class="n">0.2643</td><td class="n">&mdash;</td></tr>
-<tr><td>&ge; 50,000</td><td class="n">4</td><td class="n">0.2186</td><td class="n">0.2477</td></tr></table>
-<p class="small">The two rasters above 120,000 dots hold the two worst live scores in the registry
-(0.1922, 0.1894).</p>
-<p>The cap shipped is <b>40000</b>, inside the band every
-top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
-unconstrained 0.3747 vs
-capped 0.3747. The cap is
-bought with measured holdout DTI because the live evidence says the holdout is wrong here
-(&rho; = +0.14, IR-57-BUDGET-01).</p>
-
-<h2>Why 0.2778 won, and whether higher is achievable</h2>
-<p>Substituting the binary algebra, <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>, where
-<code>T</code> is covered truth credit, <code>n</code> the dot count, <code>M</code> the dots' total
-self-credit and <code>K</code> the number of true new-fault pixels. Two things follow.</p>
-<p><b>1. The ceiling is 1.0, not 0.5556.</b> A perfect prediction has <code>n = M = T = K</code>, so
-<code>D = 0.2K + 0.8K = K</code> and <code>DTI = 1</code>. Verified against the brute-force
-implementation. (0.05556 is a different number: it is the marginal acceptance bar
-<code>alpha * DTI</code> at DTI = 0.2778.)</p>
-<p><b>2. At the real base rate, DTI is close to the covered fraction of the truth — but only while
-the dot budget stays comparable to <code>K</code>.</b> The grid is sparse: with ~5,660 true pixels in
-~2.56 M cells the base rate is 0.00221, and a <i>random</i> pixel lands within 3 px of a true one
-only 0.0207 of the time. Measured with the exact
-metric on synthetic fields at that density:</p>
-<table><tr><th class="n">Coverage of truth</th><th class="n">n/K = 0.5</th><th class="n">n/K = 1</th><th class="n">n/K = 2</th><th class="n">n/K = 4</th><th class="n">n/K = 6</th></tr><tr><td class="n">0.100</td><td class="n">0.1208</td><td class="n">0.1181</td><td class="n">0.1129</td><td class="n">0.1062</td><td class="n">0.1007</td></tr><tr><td class="n">0.200</td><td class="n">0.2311</td><td class="n">0.2160</td><td class="n">0.1933</td><td class="n">0.1636</td><td class="n">0.1451</td></tr><tr><td class="n">0.278</td><td class="n">0.3161</td><td class="n">0.2924</td><td class="n">0.2555</td><td class="n">0.2091</td><td class="n">0.1794</td></tr><tr><td class="n">0.300</td><td class="n">0.3406</td><td class="n">0.3134</td><td class="n">0.2736</td><td class="n">0.2218</td><td class="n">0.1897</td></tr><tr><td class="n">0.400</td><td class="n">0.4503</td><td class="n">0.4119</td><td class="n">0.3538</td><td class="n">0.2797</td><td class="n">0.2346</td></tr><tr><td class="n">0.500</td><td class="n">0.5599</td><td class="n">0.5098</td><td class="n">0.4338</td><td class="n">0.3377</td><td class="n">0.2793</td></tr><tr><td class="n">0.700</td><td class="n">0.5601</td><td class="n">0.7057</td><td class="n">0.5944</td><td class="n">0.4543</td><td class="n">0.3694</td></tr><tr><td class="n">1.000</td><td class="n">0.5601</td><td class="n">1.0000</td><td class="n">0.8362</td><td class="n">0.6298</td><td class="n">0.5051</td></tr></table><p class="small">Exact metric, synthetic fields at the measured base rate 0.0022109375 with sum(k) = 9.380297810508182. A perfect prediction scores 0.9999999999999999.</p>
-<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3161</b>
-at half the truth count in dots and only <b>0.1794</b> at six times
-it. That is the whole story of 0.2778. It is roughly
-<b>28% coverage of the live truth set achieved at a near-matched dot budget</b> — and the reason
-nothing sprayed more dots beat it is that beyond <code>n &asymp; 2K</code> every extra dot costs
-0.2 in the denominator while returning far less than 0.2 in credit.</p>
-<p><b>Is higher achievable?</b> Yes, and the route is arithmetic rather than clever: DTI tracks
-coverage roughly one-for-one while <code>n &lesssim; 2K</code>, so the 0.3774 high-water mark implies
-about 40% coverage at a matched budget. Beating 0.2778 therefore needs roughly ten points more
-coverage at the same budget. This lane's shipped set measures 0.3270
-HOLDOUT-DTI on the corrected frame (mode <code>all</code>; session 1, buggy frame:
-0.2508), and dropping the en-echelon geometry from it costs
-0.0950 — the structure this lane
-set out to find pays for itself. That is the right direction — but it is measured on <i>withheld
-catalogue pixels</i>, which cling to visible traces. Whether it transfers to genuinely
-uncatalogued faults is not knowable from here, and the +0.14 holdout-to-live rank correlation says
-do not assume it
-does. No projected live score is claimed anywhere on this site.</p>
-</main>
-<footer>Generated 2026-10-09 19:35 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
-Every number on this site is read from a measurement file at build time.
-<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
-<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
-</body></html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Results · 57GEMSDOE</title><meta name="description" content="Fault-zone anatomy research. A new, format-valid GeoTIFF is downloadable; its submission is blocked by the literal uniqueness gate.">
+<link rel="stylesheet" href="assets/site.css"><script src="assets/site.js" defer></script></head>
+<body><a class="skip-link" href="#main">Skip to content</a>
+<header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
+<span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html" aria-current="page">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
+<main id="main"><div class="eyebrow">THREE PREDECLARED EXPERIMENTS · ZERO SUBMISSIONS</div><h1>Negative is a deliverable.</h1><p class="evidence-note"><strong>Local evidence only.</strong> Evaluator <code>gems57-pooled-hide-v2</code> · 11,321 withheld positive pixels · pooled terms · 95% spatial-block bootstrap CI. No live submission score or private-label claim.</p>
+<div class="table-scroll"><table><thead><tr><th scope="col">Method</th><th scope="col">Soft-surface HOLDOUT-DTI [95% CI]</th><th scope="col">Binary-allocation HOLDOUT-DTI [95% CI]</th><th scope="col">Withheld positives</th></tr></thead><tbody><tr><td>Distance only</td><td>0.0062 [0.0058, 0.0066]</td><td>0.1127 [0.1006, 0.1236]</td><td>11,321</td></tr><tr><td>Visible-host anatomy</td><td>0.0228 [0.0185, 0.0273]</td><td>0.1098 [0.0947, 0.1244]</td><td>11,321</td></tr><tr><td>Anatomy + relative magnetic tangent</td><td>0.0232 [0.0188, 0.0280]</td><td>0.1092 [0.0945, 0.1242]</td><td>11,321</td></tr><tr><td>Candidate + recorded sense (ablation)</td><td>0.0242 [0.0197, 0.0293]</td><td>0.1127 [0.0980, 0.1283]</td><td>11,321</td></tr></tbody></table></div><p class="small">Each arm uses the same fold masks and nominal 10,000-dot per-quadrant cap, shrunk by its training-only fitted-zone fraction. These are different representations, not interchangeable scores. Conditional CI: 1,000 paired draws from 153 physical 20 km clusters; catalogue labels and fitted models are held fixed.</p>
+<h2>The comparisons that matter</h2><div class="table-scroll"><table><thead><tr><th scope="col">Comparison</th><th scope="col">Paired HOLDOUT-DTI difference</th><th scope="col">95% CI</th><th scope="col">Verdict</th></tr></thead><tbody><tr><td>Candidate minus distance-only (binary)</td><td>-0.0036</td><td>[-0.0178, 0.0110]</td><td>No demonstrated improvement</td></tr><tr><td>Candidate minus anatomy (binary)</td><td>-0.0006</td><td>[-0.0062, 0.0050]</td><td>No demonstrated added orientation value</td></tr><tr><td>Recorded-sense addition (binary)</td><td>0.0036</td><td>[-0.0057, 0.0145]</td><td>Not significant; sense not retained</td></tr></tbody></table></div>
+<p>These comparisons use 11,321 withheld positives and <code>gems57-pooled-hide-v2</code>. The historical 0.2279 reading is not a comparable best: it used the corrupted strike field and a different short-chunk, unbuffered instrument. A static prior generated from the unhidden catalogue is also not a valid hide-and-recover comparator.</p>
+<h2>Soft surfaces do not rescue a negative dot result</h2><p>Relative orientation improves the soft-surface point estimate against distance-only, but its added soft value over anatomy is 0.0005, 95% CI [-0.0005, 0.0014]. That includes zero. No unpredeclared representation switch is used to claim promotion.</p>
+<h2>Leakage canaries</h2><p>Every feature alone was tested before trusting the fit. We use <code>max(AUC, 1−AUC)</code> in every fold, so an inverse distance feature cannot hide leakage. Maximum discriminative AUC: 0.8259; all 14 are below 0.90. Passing this check does not prove all possible leakage absent.</p><div class="table-scroll"><table><thead><tr><th scope="col">Feature</th><th scope="col">Max discriminative fold AUC (diagnostic)</th><th scope="col">Canary</th></tr></thead><tbody><tr><td><code>d</code></td><td>0.7935</td><td>PASS (< 0.90)</td></tr><tr><td><code>d_perp</code></td><td>0.8259</td><td>PASS (< 0.90)</td></tr><tr><td><code>d_par_abs</code></td><td>0.6192</td><td>PASS (< 0.90)</td></tr><tr><td><code>side</code></td><td>0.5359</td><td>PASS (< 0.90)</td></tr><tr><td><code>log_len</code></td><td>0.6573</td><td>PASS (< 0.90)</td></tr><tr><td><code>sin2</code></td><td>0.5200</td><td>PASS (< 0.90)</td></tr><tr><td><code>cos2</code></td><td>0.5417</td><td>PASS (< 0.90)</td></tr><tr><td><code>coherence</code></td><td>0.6373</td><td>PASS (< 0.90)</td></tr><tr><td><code>density</code></td><td>0.5785</td><td>PASS (< 0.90)</td></tr><tr><td><code>sense_sgn</code></td><td>0.5522</td><td>PASS (< 0.90)</td></tr><tr><td><code>sense_side</code></td><td>0.5224</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_relative_cos2</code></td><td>0.5265</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_log_gradient</code></td><td>0.5555</td><td>PASS (< 0.90)</td></tr><tr><td><code>mag_coherence</code></td><td>0.5226</td><td>PASS (< 0.90)</td></tr></tbody></table></div>
+<h2>Full-registry gate</h2><div class="table-scroll"><table><thead><tr><th scope="col">Measurement (not DTI)</th><th scope="col">Result</th></tr></thead><tbody><tr><td>Accessible grid rasters checked</td><td>679</td></tr><tr><td>Worst full-footprint tied-rank Spearman</td><td>0.8213</td></tr><tr><td>Worst candidate-to-prior ≤3 px forward overlap</td><td>1.0000</td></tr><tr><td>Triggered comparisons</td><td>78</td></tr><tr><td>Byte / decoded-pixel identity</td><td>Distinct from all checked entries</td></tr><tr><td>Literal protocol</td><td><strong>FAIL → STOP</strong></td></tr><tr><td>Production final dots</td><td>Not generated: pre-placement gate failed</td></tr></tbody></table></div>
+<p>The 679-raster audit conservatively includes four historical auxiliary input rasters; 675 are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. Private, unlinked or inaccessible artifacts remain outside scope.</p><p><a href="data/orientation_holdout.json">Full HOLDOUT-DTI receipt</a> · <a href="data/orientation_surface_uniqueness.json">Complete registry measurements</a> · <a href="data/registry_classification.json">Input/prediction classification</a></p></main>
+<footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
+<p>Site built 2026-10-09 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

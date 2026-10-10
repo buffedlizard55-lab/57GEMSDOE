@@ -1,7 +1,8 @@
 """Shared pooled hide-and-recover evaluator, not a new/private metric implementation.
 
-Delegates official-formula arithmetic and visible-pixel masking to the template's
-holdout.score / metric.max_cover. Spatial block terms are bookkeeping for a
+Delegates official-formula arithmetic to metric.max_cover / dti_from_components.
+The inherited holdout.score API was replaced elsewhere while this file still
+called it; v2 repairs that shared interface rather than adding a private metric. Spatial block terms are bookkeeping for a
 conditional bootstrap, not a new scoring rule. No translated synthetic truth.
 """
 from __future__ import annotations
@@ -10,7 +11,7 @@ from pathlib import Path
 import numpy as np
 from . import holdout, metric
 
-VERSION = 'gems52-pooled-hide-v1'
+VERSION = 'gems57-pooled-hide-v2'
 
 
 def implementation_hashes():
@@ -25,12 +26,24 @@ def evaluate(prediction, fold, valid, block_side=200):
     p = np.asarray(prediction)
     if not np.isfinite(p).all() or (p < 0).any() or (p > 1).any():
         raise ValueError('predictions must be finite in [0,1] before masking')
-    result = holdout.score(p, fold, valid, restrict_to_region=True, extra=False)
-    p = np.where(valid & fold['region'] & ~fold['visible'], p, 0).astype(np.float32)
-    truth = valid & fold['region'] & fold['truth']
+    valid = np.asarray(valid, bool)
+    region = np.asarray(fold['region'], bool)
+    known = np.asarray(fold.get('masked_known', fold['visible']), bool)
+    truth_all = np.asarray(fold['truth'], bool)
+    if p.ndim != 2 or any(a.shape != p.shape for a in (valid, region, known, truth_all)):
+        raise ValueError('fold/prediction grid shape mismatch')
+    active = valid & region & ~known
+    p = np.where(active, p, 0).astype(np.float64)
+    truth = active & truth_all
     if not truth.any():
         raise ValueError('a holdout fold must contain positives')
     covers, q, _ = metric.max_cover(p, truth)
+    tpw = float(covers.sum())
+    fpw = float((p * (1.0 - q)).sum())
+    fnw = float(truth.sum()) - tpw
+    result = dict(dti=metric.dti_from_components(tpw, fpw, fnw), tpw=tpw, fpw=fpw,
+                  fnw=fnw, n_truth=int(truth.sum()), n_emitted=int((p > 0).sum()),
+                  emitted=int((p > 0).sum()))
     h, w = truth.shape
     ncols = (w + block_side - 1) // block_side
     nrows = (h + block_side - 1) // block_side

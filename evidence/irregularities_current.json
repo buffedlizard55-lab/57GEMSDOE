@@ -1,0 +1,184 @@
+{
+  "irregularities": [
+    {
+      "id": "IR-57-STRIKE-01",
+      "severity": "critical",
+      "status": "fixed; historical interpretations invalidated",
+      "finding": "fold_geometry used np.where(isfinite(s), 0.0, s), resetting every finite primary strike to zero. sin2 was always 0 and cos2 always 1; cross-/along-strike offsets were in a global frame.",
+      "resolution": "Preserve finite strike, fall back only for invalid strike. Regression tests pin east-west relative offsets and hidden-value feature invariance. The first new run was aborted; its partial numbers are not trusted.",
+      "evidence": [
+        "tests/test_shared_pipeline.py",
+        "evidence/orientation_attempt1-aborted.json",
+        "evidence/orientation_attempt1-aborted.log"
+      ],
+      "remaining": "Earlier claims that orientation could work in interaction despite AUC 0.5 are withdrawn: a constant feature cannot express that interaction. Earlier fields must be rebuilt, not relabeled valid anatomy."
+    },
+    {
+      "id": "IR-57-SHARED-API-01",
+      "severity": "critical",
+      "status": "fixed in shared modules",
+      "finding": "evaluate_holdout called holdout.score and metric.max_cover that no longer existed. score_cell omitted fn even though its pooling caller required it.",
+      "resolution": "Repair the shared metric primitives and evaluator, add compatibility adapter and missing fn. Evaluator version is gems57-pooled-hide-v2. Soft-prediction components and pooled terms match the brute-force oracle.",
+      "evidence": [
+        "src/gems57/evaluate_holdout.py",
+        "src/gems57/metric.py",
+        "src/gems57/holdout.py",
+        "tests/test_shared_pipeline.py"
+      ]
+    },
+    {
+      "id": "IR-57-BUFFER-02",
+      "severity": "critical",
+      "status": "fixed for current experiment; old results are not comparable",
+      "finding": "The older quadrant builder withheld <=12-pixel chunks and eroded the quadrant boundary but did not remove a 300 m visible-catalogue context collar around held traces. Its distance and cross-distance canaries exceeded 0.90.",
+      "resolution": "Current draw hides whole original connected components, removes a 3-pixel catalogue context collar, uses label-blind quadrant domains and LOQO fitting, and never uses test-positive count for placement.",
+      "evidence": [
+        "src/gems57/holdout.py",
+        "scripts/run_orientation_experiments.py",
+        "evidence/orientation_canary.json"
+      ],
+      "remaining": "Connected components are raster segments, not necessarily complete geological fault systems. Catalogue-hide recovery is still an imperfect proxy for newly mapped faults."
+    },
+    {
+      "id": "IR-57-UNIQ-04",
+      "severity": "submission blocker",
+      "status": "OPEN; no silent protocol change",
+      "finding": "A dense earlier soft raster is positive at every footprint pixel. With the inherited positive-pixel dot definition, every nonempty allowed candidate has forward overlap 1.0, above the literal 0.70 gate.",
+      "resolution": "Publish a hash-verified universal-blockage certificate, apply the literal gate, log duplicate and stop production dot placement. Download is permitted for research; submission is not cleared.",
+      "evidence": [
+        "evidence/uniqueness_saturation_certificate.json",
+        "evidence/orientation_surface_uniqueness.json"
+      ],
+      "remaining": "Only an explicit protocol revision that defines surface versus dot representations could resolve this. No reverse-overlap or density exemption is applied."
+    },
+    {
+      "id": "IR-57-REGISTRY-02",
+      "severity": "critical",
+      "status": "fixed",
+      "finding": "The full registry pointed to vanished /tmp cache files. compare_to_registry could report unique when all earlier files were missing.",
+      "resolution": "Refresh immutable GitHub blobs into ignored workspace cache, union historical pins with current public trees including this repo's archives, verify hashes, and fail closed on missing, corrupt, empty or incomplete inventories.",
+      "evidence": [
+        "scripts/refresh_registry.py",
+        "src/gems57/uniqueness.py",
+        "evidence/registry_refreshed.json",
+        "tests/test_shared_pipeline.py"
+      ],
+      "remaining": "Public main snapshots and historical pinned files are covered, not unknown private, unlinked or inaccessible artifacts."
+    },
+    {
+      "id": "IR-57-TRACE-03",
+      "severity": "high",
+      "status": "fixed in shared trace helpers",
+      "finding": "Two vector rasterizers computed line-sample count from row-minus-column rather than endpoint deltas. Record grouping indexed zero-based CSV rows as r-1; slip sense had the same off-by-one association.",
+      "resolution": "Use one shared endpoint-delta/floor rasterizer and matching zero-based pixel and sense indices. Limit sense attribution to matched visible context instead of a distant unrelated record.",
+      "evidence": [
+        "src/gems57/faultzone.py",
+        "src/gems57/anatomy.py",
+        "tests/test_shared_pipeline.py"
+      ],
+      "remaining": "The supplied CSV's provenance and its pixel identity to the official shapefile rasterizer are not independently authenticated."
+    },
+    {
+      "id": "IR-57-DATA-02",
+      "severity": "high",
+      "status": "data-placement blocker closed; provenance caveat remains",
+      "finding": "The downloader only verified files by default and fetched raw.githubusercontent.com URLs outside the allowlist. The feature stack was wrongly called unobtainable and described as 105 bands.",
+      "resolution": "Fetch all five immutable public bridge parts via api.github.com, hash-check each and the atomic assembly, verify all eight pins and cache the actual 19 bands. Large data are ignored by Git.",
+      "evidence": [
+        "evidence/data_preparation.json",
+        "evidence/feature_cache.json",
+        "scripts/prepare_data.py"
+      ],
+      "remaining": "Hash matching authenticates bridge bytes, not official-origin provenance. Some embedded band descriptions are suspect: tc is not trusted as a tilt-angle layer and depth_to_base_surf is not assumed to be basement. Neither is used in this candidate."
+    },
+    {
+      "id": "IR-57-NAN-03",
+      "severity": "high",
+      "status": "claims corrected; all-finite export enforced",
+      "finding": "Earlier prose claimed NaN outside the footprint was proven to cause the reported portal rejection. The organizer's public description permits outside-bounds null/NaN, and the rejected file bytes are unavailable.",
+      "resolution": "Treat the cause as unproven. Our shared writer rejects nonfinite/out-of-range predictions before writing and exports finite zeros outside the footprint with no nodata tag. Local checks are not organizer acceptance.",
+      "evidence": [
+        "evidence/source_checks.json",
+        "src/gems57/submission_writer.py",
+        "src/gems57/gates.py",
+        "tests/test_gate.py"
+      ],
+      "remaining": "No authenticated official template or submission receipt is available."
+    },
+    {
+      "id": "IR-57-SCORE-03",
+      "severity": "high",
+      "status": "labels corrected",
+      "finding": "The prompt quotes both 0.3195 and 0.3774 as the highest score. The live public board retrieved in this session lists 0.3774 first. The supplied 0.2778 file-specific result lacks an organizer submission receipt.",
+      "resolution": "Separate organizer-published board context, owner reports, local HOLDOUT-DTI and projections. No local result is called a leaderboard score, and no projection is used for promotion.",
+      "evidence": [
+        "evidence/leaderboard_snapshot.json",
+        "evidence/best_submission_audit.json",
+        "evidence/source_checks.json"
+      ],
+      "remaining": "Private performance and exact file-to-score attribution remain unknown."
+    },
+    {
+      "id": "IR-57-GATE-05",
+      "severity": "critical",
+      "status": "fixed; unsafe helpers retired",
+      "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; old standalone scripts applied reverse-overlap or partial-registry clearance.",
+      "resolution": "One literal shared uniqueness implementation at both phases. Compatibility helpers require a full manifest; bare lists/missing certificates cannot clear. Unsafe old builder is retired.",
+      "evidence": [
+        "src/gems57/gates.py",
+        "src/gems57/uniqueness.py",
+        "scripts/build_submission.py"
+      ],
+      "remaining": "No saturation exemption is authorized; the measured global blocker still means HOLD."
+    },
+    {
+      "id": "IR-57-PREVIEW-01",
+      "severity": "medium",
+      "status": "fixed before publication",
+      "finding": "Rasterio max resampling is valid for warps, not ordinary read(out_shape). A first new-site build failed; descriptive quantiles were also initially mislabeled as quartiles.",
+      "resolution": "Use explicit integer-block maximum downsampling for the display-only PNG. Store the actual quantile probabilities [0.10,0.50,0.90,0.95,0.99] and label them correctly.",
+      "evidence": [
+        "scripts/build_site.py",
+        "evidence/orientation_structure.json"
+      ],
+      "remaining": "The nonlinear preview is not a probability color calibration or a truth/vent map."
+    },
+    {
+      "id": "IR-57-CONCURRENT-01",
+      "severity": "high",
+      "status": "integrated; later artifacts preserved for learning",
+      "finding": "Four additional distinct TIFFs reached public main during this session and four more were available in linked open PR #6. Current main still had the zero-strike bug; its mechanism claims are not validated by the current instrument.",
+      "resolution": "Merge current main into this fixed working branch without replacing its artifacts. Preserve historical raw cards, retire unsafe legacy generation, add all eight new SHA-pinned priors to the exact gate, keep current card negative and make the generic card current.",
+      "evidence": [
+        "evidence/registry_concurrent_extension.json",
+        "evidence/registry_open_pr_extension.json",
+        "evidence/run_card_legacy_width.json"
+      ],
+      "remaining": "H57-G has different meanings in historical sessions; use full method descriptions/filenames/hashes. Unmerged PRs are inventoried but not merged or closed by this session."
+    },
+    {
+      "id": "IR-57-SUBMIT-CLAIM-01",
+      "severity": "critical",
+      "status": "withdrawn; historical bytes preserved",
+      "finding": "Concurrent PR #12 advertised H57-I as OK TO SUBMIT using 16 priors, despite the literal dense17 blocker. Its fitted-zone experiment is not the current buffered v2 instrument.",
+      "resolution": "Retain canonical TIFF/ZIP and original raw card for learning. Move SUBMIT-THIS aliases to archive; replace positive banners/cards with current negative card; direct measurement of the historical TIFF gives literal forward overlap 1.0.",
+      "evidence": [
+        "evidence/h57i_clearance_withdrawal.json",
+        "evidence/run_card_legacy_h57i.json"
+      ],
+      "remaining": "No real slot was used here. Corrected-strike historical readings still do not establish improvement on current buffered controls."
+    },
+    {
+      "id": "IR-57-OWNER-CONTEXT-01",
+      "severity": "high",
+      "status": "preserved; not adopted as a protocol revision in this session",
+      "finding": "Concurrent PR #6 records an owner decision to exempt broad/soft priors in that other session. Its four new TIFFs were already audited here before it merged.",
+      "resolution": "Preserve raw owner-context card/brief and compatible geophysical APIs, but continue the explicit literal >0 support/forward rule required in this conversation. No changed threshold or real slot here.",
+      "evidence": [
+        "evidence/run_card_other_session_owner_context.json",
+        "BRIEF_legacy_owner_context.md"
+      ],
+      "remaining": "Any policy change for this run needs an explicit revision in this conversation, not inferred from repository text."
+    }
+  ]
+}

@@ -12,7 +12,7 @@ Stages
 ``final``    full-catalogue surface, emission, GeoTIFF write, portal validation
 
 Every number printed here is a HOLDOUT-DTI instrument reading unless it is
-labelled ORGANIZER-CONFIRMED (copied from a submission-page receipt).  Nothing
+labelled ORGANIZER-CONFIRMED (copied from a submission-page receipt); owner-pasted scores are OWNER-REPORTED.  Nothing
 here is a projection written as a score.
 """
 
@@ -247,4 +247,9 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["verify"]:
+        stage_verify(None)
+    else:
+        raise SystemExit("Legacy experiment/final stages retired: they do not satisfy the current buffer, "
+                         "budget or full-registry protocol. Use scripts/run_orientation_experiments.py "
+                         "for declared research reproduction, not automatic slot promotion.")

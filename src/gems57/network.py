@@ -158,7 +158,10 @@ def nearest_frame(visible: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarr
     Returns ``(dist_px, idx_row, idx_col)``.  Cells with no visible fault within
     the array carry the far-field value from the EDT.
     """
-    d, (iy, ix) = ndi.distance_transform_edt(~np.asarray(visible, bool), return_indices=True)
+    mask = np.asarray(visible, bool)
+    if mask.ndim != 2 or not mask.any():
+        raise ValueError('nearest visible fault is undefined for an empty/non-2D catalogue')
+    d, (iy, ix) = ndi.distance_transform_edt(~mask, return_indices=True)
     return d, iy, ix
 
 
