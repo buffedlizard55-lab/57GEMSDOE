@@ -163,7 +163,7 @@ A historical prior version is retained separately as <code>evidence/run_card_his
   },
   &quot;experiments_used&quot;: 3,
   &quot;submission_slots_used&quot;: 0,
-  &quot;generated_utc&quot;: &quot;2026-10-10T07:46:18Z&quot;,
+  &quot;generated_utc&quot;: &quot;2026-10-10T20:46:27Z&quot;,
   &quot;registry_reviewed_utc&quot;: &quot;2026-10-09T21:01:12.836328+00:00&quot;,
   &quot;registry_scope&quot;: &quot;679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.&quot;,
   &quot;current_audit_status&quot;: &quot;HOLD \u2014 NOT OK TO DOWNLOAD OR SUBMIT&quot;,
@@ -370,13 +370,35 @@ A historical prior version is retained separately as <code>evidence/run_card_his
     &quot;geotiff_builds&quot;: 0,
     &quot;downloads&quot;: 0,
     &quot;submissions&quot;: 0,
-    &quot;unit_tests_run&quot;: false,
+    &quot;unit_tests_run&quot;: true,
     &quot;full_test_suite&quot;: {
-      &quot;command&quot;: &quot;.venv/bin/pytest -q&quot;,
-      &quot;status&quot;: &quot;PENDING FINAL POST-MERGE RUN&quot;,
-      &quot;historical_pre_merge_result&quot;: &quot;101 collected; 99 passed, 2 skipped; run before merging current main and not final validation&quot;
+      &quot;evidence_class&quot;: &quot;LOCAL-QA \u2014 not a model score&quot;,
+      &quot;command&quot;: &quot;.venv/bin/pytest -q -ra --junitxml=evidence/tests-session6-review.xml&quot;,
+      &quot;status&quot;: &quot;PASS \u2014 106 passed, 2 skipped, 0 failures (108 collected)&quot;,
+      &quot;collected&quot;: 108,
+      &quot;passed&quot;: 106,
+      &quot;skipped&quot;: 2,
+      &quot;failures&quot;: 0,
+      &quot;warnings&quot;: 10,
+      &quot;junit&quot;: &quot;evidence/tests-session6-review.xml&quot;,
+      &quot;completed_utc&quot;: &quot;2026-10-10T20:44:18.517098+00:00&quot;,
+      &quot;skip_reasons&quot;: [
+        &quot;training_features.tif not assembled; requires prepare_data.py --fetch&quot;,
+        &quot;419 MB training_features.tif is gitignored and absent from this checkout&quot;
+      ]
     },
-    &quot;site_build_and_check&quot;: &quot;PENDING FINAL POST-MERGE REBUILD/CHECK&quot;
+    &quot;site_build_and_check&quot;: {
+      &quot;evidence_class&quot;: &quot;LOCAL-QA \u2014 static site integrity, not a model score&quot;,
+      &quot;command&quot;: &quot;python scripts/check_site.py --build&quot;,
+      &quot;status&quot;: &quot;PASS&quot;,
+      &quot;html_pages_checked&quot;: 28,
+      &quot;active_tif_zip_links&quot;: 0,
+      &quot;internal_links_pass&quot;: true,
+      &quot;front_door_hold_status&quot;: true,
+      &quot;run_card_and_public_copies_consistent&quot;: true,
+      &quot;submission_cleared&quot;: false,
+      &quot;completed_utc&quot;: &quot;2026-10-10T20:46:27Z&quot;
+    }
   },
   &quot;historical_artifact_review&quot;: {
     &quot;evidence_class&quot;: &quot;HISTORICAL LOCAL FORMAT REVIEW \u2014 not uniqueness clearance or download authorization&quot;,
@@ -411,8 +433,24 @@ A historical prior version is retained separately as <code>evidence/run_card_his
     &quot;okay_to_download&quot;: false,
     &quot;okay_to_submit&quot;: false,
     &quot;organizer_acceptance&quot;: false
+  },
+  &quot;latest_audit&quot;: {
+    &quot;evidence_class&quot;: &quot;REPOSITORY REVIEW / LOCAL-QA; no geological experiment&quot;,
+    &quot;date_utc&quot;: &quot;2026-10-10&quot;,
+    &quot;scope&quot;: &quot;three-pass review; source-aware hypothesis ranking; README, static site, shared evaluator provenance, data readiness, submission gates&quot;,
+    &quot;experiments_run&quot;: 0,
+    &quot;holdout_runs&quot;: 0,
+    &quot;candidate_geotiffs_created&quot;: 0,
+    &quot;data_downloads&quot;: 0,
+    &quot;competition_submissions&quot;: 0,
+    &quot;weekly_slots_used&quot;: 0,
+    &quot;current_status&quot;: &quot;HOLD \u2014 NOT OK TO DOWNLOAD OR SUBMIT&quot;,
+    &quot;submission_name&quot;: null,
+    &quot;submission_note&quot;: &quot;No new candidate raster; literal uniqueness STOP remains in force.&quot;,
+    &quot;verdict&quot;: &quot;negative&quot;,
+    &quot;completed_utc&quot;: &quot;2026-10-10T20:46:27Z&quot;
   }
 }</pre>
 </main>
-<footer>Generated 2026-10-10 20:27 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
+<footer>Generated 2026-10-10 20:46 UTC. Local checks and historical HOLDOUT-DTI readings are not organizer acceptance.
 No active download or submission is approved.</footer></body></html>

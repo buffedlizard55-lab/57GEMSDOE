@@ -4,6 +4,13 @@
 **Method lane:** secondary fault strands and damage-zone anatomy around mapped faults.<br>
 **Audit date:** 2026-10-10 (UTC).
 
+## Operating values and session-start checklist
+
+- **Maximize P(Win):** choose work by evidence, risk, and expected value—not enthusiasm or leaderboard speculation.
+- **Own the Outcome:** carry findings through implementation, validation, and honest reporting; preserve negative results and surface blockers rather than hiding them.
+- At the start of every project session, read this status-first README, the preserved request/report ledger in [`TASK_PROMPT.md`](TASK_PROMPT.md), the lane/protocol in [`BRIEF.md`](BRIEF.md), [`REMAINING_WORK.md`](REMAINING_WORK.md), and [`evidence/run_card.json`](evidence/run_card.json). The ledger is not a certified word-for-word chat transcript; historical notes are provenance, not current authorization.
+- The controlling lane is fault-zone anatomy. Do not drift into unrelated geothermal-resource prediction, exceed the experiment/time budget, weaken a uniqueness gate, or use a retained raster as a submission without a new, evidence-backed clearance decision.
+
 ## Submission status — **HOLD**
 
 > **NOT OK TO DOWNLOAD OR SUBMIT. There is no cleared submission file.**
@@ -85,9 +92,12 @@ set before fitting or writing any file; none is available here.
 ### Next candidates (not run)
 
 Four source-grounded, untried fault-zone-anatomy hypotheses and their named
-non-fault mimics are ranked in [`docs/research/hypotheses.md`](docs/research/hypotheses.md).
-This is a research shortlist, not an authorization to run experiments. Its
-validation order must still follow the brief's hide-and-recover and canary rules.
+non-fault mimics, tested-method distinctions, physical signatures, qualitative
+relative HOLDOUT-DTI upside priors, and implementation costs are ranked in
+[`docs/research/hypotheses.md`](docs/research/hypotheses.md). The upside labels
+are not scores or quantitative projections, and confidence is low. This is a
+research shortlist, not an authorization to run experiments. Any future
+validation must follow the brief's hide-and-recover and canary rules.
 
 ## Executive submission guide
 
@@ -154,7 +164,11 @@ validation is data-blocked. An official, publicly accessible USGS/DOE GeoDAWN
 catalogue record is documented in the hypotheses page; no GeoDAWN data were
 downloaded, clipped, registered to the contest grid, or used in this audit.
 The INGENIOUS attribute/vector files under `data/external/` are locally pinned;
-record coverage and attribute missingness still require care.
+record coverage and attribute missingness still require care. For GeoDAWN, the
+GDR submission page displays CC-BY 4.0 while its linked USGS/ScienceBase record
+is separately recorded as CC0 1.0; these are source-specific catalogue
+statements, not a proven conflict. The exact binary asset/license, AOI coverage,
+usable bands, and grid alignment are unverified, so that candidate is data-blocked.
 
 ---
 

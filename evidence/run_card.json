@@ -146,7 +146,7 @@
   },
   "experiments_used": 3,
   "submission_slots_used": 0,
-  "generated_utc": "2026-10-10T07:46:18Z",
+  "generated_utc": "2026-10-10T20:46:27Z",
   "registry_reviewed_utc": "2026-10-09T21:01:12.836328+00:00",
   "registry_scope": "679-entry indexed public owner-repository inventory; not organizer-complete. Private, unlinked, closed-branch-only, external, unavailable, or later-written rasters may be absent. A session-5 witness was independently re-fetched and SHA-verified; current local cache preflight remains 0/679.",
   "current_audit_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
@@ -353,13 +353,35 @@
     "geotiff_builds": 0,
     "downloads": 0,
     "submissions": 0,
-    "unit_tests_run": false,
+    "unit_tests_run": true,
     "full_test_suite": {
-      "command": ".venv/bin/pytest -q",
-      "status": "PENDING FINAL POST-MERGE RUN",
-      "historical_pre_merge_result": "101 collected; 99 passed, 2 skipped; run before merging current main and not final validation"
+      "evidence_class": "LOCAL-QA — not a model score",
+      "command": ".venv/bin/pytest -q -ra --junitxml=evidence/tests-session6-review.xml",
+      "status": "PASS — 106 passed, 2 skipped, 0 failures (108 collected)",
+      "collected": 108,
+      "passed": 106,
+      "skipped": 2,
+      "failures": 0,
+      "warnings": 10,
+      "junit": "evidence/tests-session6-review.xml",
+      "completed_utc": "2026-10-10T20:44:18.517098+00:00",
+      "skip_reasons": [
+        "training_features.tif not assembled; requires prepare_data.py --fetch",
+        "419 MB training_features.tif is gitignored and absent from this checkout"
+      ]
     },
-    "site_build_and_check": "PENDING FINAL POST-MERGE REBUILD/CHECK"
+    "site_build_and_check": {
+      "evidence_class": "LOCAL-QA — static site integrity, not a model score",
+      "command": "python scripts/check_site.py --build",
+      "status": "PASS",
+      "html_pages_checked": 28,
+      "active_tif_zip_links": 0,
+      "internal_links_pass": true,
+      "front_door_hold_status": true,
+      "run_card_and_public_copies_consistent": true,
+      "submission_cleared": false,
+      "completed_utc": "2026-10-10T20:46:27Z"
+    }
   },
   "historical_artifact_review": {
     "evidence_class": "HISTORICAL LOCAL FORMAT REVIEW — not uniqueness clearance or download authorization",
@@ -394,5 +416,21 @@
     "okay_to_download": false,
     "okay_to_submit": false,
     "organizer_acceptance": false
+  },
+  "latest_audit": {
+    "evidence_class": "REPOSITORY REVIEW / LOCAL-QA; no geological experiment",
+    "date_utc": "2026-10-10",
+    "scope": "three-pass review; source-aware hypothesis ranking; README, static site, shared evaluator provenance, data readiness, submission gates",
+    "experiments_run": 0,
+    "holdout_runs": 0,
+    "candidate_geotiffs_created": 0,
+    "data_downloads": 0,
+    "competition_submissions": 0,
+    "weekly_slots_used": 0,
+    "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
+    "submission_name": null,
+    "submission_note": "No new candidate raster; literal uniqueness STOP remains in force.",
+    "verdict": "negative",
+    "completed_utc": "2026-10-10T20:46:27Z"
   }
 }

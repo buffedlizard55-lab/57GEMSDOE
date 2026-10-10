@@ -31,7 +31,9 @@
       "url": "https://community.drivendata.org/t/where-do-you-draw-the-line/11536/2",
       "authority": "DrivenData staff response",
       "status": "retrieved",
-      "claims_verified": ["Any fault pixel not already captured by USGS/INGENIOUS can count as new, including newly mapped geometry of an existing fault system."]
+      "claims_verified": [
+        "Any fault pixel not already captured by USGS/INGENIOUS can count as new, including newly mapped geometry of an existing fault system."
+      ]
     },
     {
       "id": "DD-ABOUT",
@@ -65,6 +67,17 @@
         "Area 2 flight lines were spaced 400 m apart at an azimuth of 90 degrees; leveling residuals are a plausible non-fault magnetic-lineament mimic.",
         "Variable terrain clearance should be considered when interpreting the survey.",
         "The release is marked CC0 1.0."
+      ]
+    },
+    {
+      "id": "GDR-GEODAWN",
+      "url": "https://gdr.openei.org/submissions/1591",
+      "authority": "Geothermal Data Repository record for the USGS/DOE GeoDAWN survey",
+      "status": "catalogue metadata retrieved; exact binary asset and asset-specific license not retrieved",
+      "claims_verified": [
+        "The GDR page displays public access and CC BY 4.0 and links to the USGS ScienceBase record DOI 10.5066/P93LGLVQ.",
+        "The linked USGS/ScienceBase record is separately recorded as CC0 1.0 in the USGS source check; the repository does not establish which license statement governs a particular future binary asset.",
+        "Exact asset availability, AOI coverage, usable-band definitions, CRS, and competition-grid alignment remain unverified."
       ]
     },
     {
@@ -104,28 +117,36 @@
       "url": "https://pubs.geoscienceworld.org/gsa/gsabulletin/article-abstract/81/6/1625/6891/Similarities-between-Shear-Zones-of-Different",
       "authority": "GSA publisher bibliographic record and indexed abstract",
       "status": "title and bibliographic record verified; full article not retrieved",
-      "claims_verified": ["Similarities between Shear Zones of Different Magnitudes, GSA Bulletin 81, 1625-1640, is the classical shear-zone framework cited by the brief; no numerical angle is copied into the model."]
+      "claims_verified": [
+        "Similarities between Shear Zones of Different Magnitudes, GSA Bulletin 81, 1625-1640, is the classical shear-zone framework cited by the brief; no numerical angle is copied into the model."
+      ]
     },
     {
       "id": "FAULDS-HENRY-HINZ-2005",
       "url": "https://nbmg.unr.edu/staff/faulds.html",
       "authority": "Nevada Bureau of Mines and Geology institutional publication list",
       "status": "bibliography verified; no claim of a full-paper review",
-      "claims_verified": ["The institution lists Kinematics of the northern Walker Lane: An incipient transform fault along the Pacific-North American plate boundary, Geology 33, 505-508, by Faulds, Henry and Hinz."]
+      "claims_verified": [
+        "The institution lists Kinematics of the northern Walker Lane: An incipient transform fault along the Pacific-North American plate boundary, Geology 33, 505-508, by Faulds, Henry and Hinz."
+      ]
     },
     {
       "id": "REFERENCE-SOLUTION",
       "url": "https://github.com/drivendataorg/gems-prize-reference-solution",
       "authority": "DrivenData official reference repository",
       "status": "README and tree retrieved",
-      "claims_verified": ["The reference solution supports CPU execution; a GPU is recommended for faster neural-network training, not required for this CPU fault-zone lane."]
+      "claims_verified": [
+        "The reference solution supports CPU execution; a GPU is recommended for faster neural-network training, not required for this CPU fault-zone lane."
+      ]
     },
     {
       "id": "BRIDGE-PROVENANCE",
       "url": "https://github.com/buffedlizard55-lab/6GEMSDOE/blob/e2fe3f41c6f5dd2dcb2fc91958ee67698f114ada/data/bridge/manifest.json",
       "authority": "Third-party transport manifest, NOT an official data receipt",
       "status": "retrieved; five part hashes and final feature-raster hash verified",
-      "claims_verified": ["The supplied feature stack is 418912844 bytes and has 19 bands on the pinned grid. Hash agreement proves bridge-byte identity, not independent official-origin authentication."]
+      "claims_verified": [
+        "The supplied feature stack is 418912844 bytes and has 19 bands on the pinned grid. Hash agreement proves bridge-byte identity, not independent official-origin authentication."
+      ]
     },
     {
       "id": "GEMS32-CONSTRUCTION",

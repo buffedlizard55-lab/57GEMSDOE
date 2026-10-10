@@ -2,7 +2,7 @@
   "evidence_class": "RANKED UNTRIED FAULT-ZONE-ANATOMY HYPOTHESES — qualitative priorities, not scores",
   "status": "RESEARCH SHORTLIST ONLY; NOT IMPLEMENTED OR RUN; three-experiment/two-hour budget spent",
   "novelty_scope": "Compared with the inspected fault-zone-anatomy implementations and experiments recorded in this repository; no claim of global novelty.",
-  "ranking_basis": "Mechanistic relevance to missed secondary strands, plausible incremental value, data readiness, and implementation cost. No numerical DTI gain is estimated.",
+  "ranking_basis": "Risk-adjusted, qualitative prior on relative incremental DTI potential, implementation cost, and data readiness. These are not numeric scores or forecasts; confidence is low. The latest stored holdout is not reproducible under the current evaluator hash and the literal registry gate blocks any nonempty candidate, so no idea is actionable now.",
   "current_blocker": "A separately SHA-verified raster in the 679-entry inventory covers every allowable candidate cell under the 3-pixel overlap test. Under the unchanged literal >70% rule, the gate is unsatisfiable for any nonempty candidate while the witness remains in scope; do not change the threshold or test these ideas without renewed owner authorization.",
   "candidates": [
     {
@@ -33,7 +33,12 @@
           "checked_takeaway": "Structures vary with angle, displacement, stress regime, and analogue/numerical setup; no universal bend rule is assumed."
         }
       ],
-      "future_test_gate": "Only after renewed authorization: preregister visible-only pair rules, then whole-segment hide-and-recover, pixel-exact masking, pooled DTI, canary, and registry checks."
+      "future_test_gate": "Only after renewed authorization: preregister visible-only pair rules, then whole-segment hide-and-recover, pixel-exact masking, pooled DTI, canary, and registry checks.",
+      "relative_expected_dti_upside": {
+        "tier": "moderate; highest relative prior",
+        "confidence": "very low; unmeasured",
+        "reason": "Directly targets connectors and tip/subparallel strands that a radial halo may miss; effect on the competition DTI is unknown."
+      }
     },
     {
       "rank": 2,
@@ -62,7 +67,12 @@
           "checked_takeaway": "Wider stepovers can localize strain near segment tips in the modeled settings; this motivates a bidirectional test, not a gain prediction."
         }
       ],
-      "future_test_gate": "Hide whole components and compare tip versus matched mid-wall held-out positives without truth-informed endpoint definitions; reject leakage or unstable tip-class results."
+      "future_test_gate": "Hide whole components and compare tip versus matched mid-wall held-out positives without truth-informed endpoint definitions; reject leakage or unstable tip-class results.",
+      "relative_expected_dti_upside": {
+        "tier": "low to moderate relative prior",
+        "confidence": "very low; unmeasured",
+        "reason": "Tip-localized secondary strands are plausible but may cover few withheld pixels and are sensitive to mapped endpoint quality."
+      }
     },
     {
       "rank": 3,
@@ -86,7 +96,12 @@
           "checked_takeaway": "Observed fracture/secondary-strand patterns relate to displacement; this does not justify replacing cumulative displacement with fault length or present-day slip rate."
         }
       ],
-      "future_test_gate": "First inspect joins and missingness without holdout outcomes; only a prespecified independently supported covariate may enter a later spatial holdout."
+      "future_test_gate": "First inspect joins and missingness without holdout outcomes; only a prespecified independently supported covariate may enter a later spatial holdout.",
+      "relative_expected_dti_upside": {
+        "tier": "low / uncertain relative prior",
+        "confidence": "very low; unmeasured",
+        "reason": "An independent maturity covariate could refine the existing length proxy, but available attributes may be redundant, missing, or biased."
+      }
     },
     {
       "rank": 4,
@@ -102,7 +117,7 @@
       "named_non_fault_mimic": "Magnetic lithologic contacts, surficial drainage, cultural metal, and flight-line leveling artifacts.",
       "qualitative_priority": "Fourth; expected DTI effect unknown.",
       "implementation_cost": "High because exact file coverage, CRS, band meaning, and registration must be verified first.",
-      "data_readiness": "The competition feature stack is absent from this checkout. Official GeoDAWN metadata identifies public access and CC BY 4.0, but actual AOI coverage and competition-grid alignment have not been checked; no external raster was downloaded.",
+      "data_readiness": "Data-blocked. The competition feature stack is absent. GDR submission 1591 displays public access and CC BY 4.0, while the linked USGS/ScienceBase record is separately recorded as CC0 1.0 in the source audit. No exact binary asset/license receipt, usable file, AOI coverage, band definitions, CRS or grid alignment has been verified; do not treat this source as an obtainable usable feature yet.",
       "sources": [
         {
           "citation": "Grauch (2002), High-resolution aeromagnetic survey to image shallow faults, Dixie Valley geothermal field, Nevada, USGS Open-File Report 2002-384.",
@@ -112,10 +127,15 @@
         {
           "citation": "Glen & Earney (2024), GeoDAWN airborne magnetic and radiometric surveys of the northwestern Great Basin, GDR submission 1591 / USGS ScienceBase DOI 10.5066/P93LGLVQ.",
           "url": "https://gdr.openei.org/submissions/1591",
-          "checked_takeaway": "Public catalog record and CC BY 4.0 availability were checked; spatial overlap, usable files, CRS, and grid compatibility remain unverified."
+          "checked_takeaway": "GDR submission 1591 displays public access and CC BY 4.0 and links to USGS ScienceBase, whose separate record is marked CC0 1.0 in the source audit. Exact binary asset/license, spatial overlap, usable files, CRS and grid compatibility remain unverified."
         }
       ],
-      "future_test_gate": "Only after an authorized official file is obtained and coverage/grid provenance verified: preregister the fixed halo and transforms, recompute with whole-segment hiding, then apply canary and registry gates."
+      "future_test_gate": "Not viable until an exact official asset is obtained with a receipt and its license, coverage, bands, CRS and grid registration are verified. Only then, under renewed authorization, preregister the fixed halo and transforms, recompute with whole-segment hiding, and apply the canary and registry gates.",
+      "relative_expected_dti_upside": {
+        "tier": "indeterminate; not currently rankable as a viable feature",
+        "confidence": "very low; exact raster and coverage absent",
+        "reason": "Geophysical confirmation could be informative only if the official asset covers and registers to the AOI; that has not been established."
+      }
     }
   ]
 }

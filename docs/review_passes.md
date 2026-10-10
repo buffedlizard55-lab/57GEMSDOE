@@ -39,3 +39,31 @@ Date: 2026-10-09 (UTC)
 - Kept main's newer `metric.max_cover` return contract (distance grid) and routed active `fitting.run_cell` scoring through the shared evaluator. Targeted evaluator/pipeline tests: **16 passed**; after the final Session 5 merge, the full suite again passed: **89 passed, 2 skipped**.
 - Repaired the inventory wording across README, site, run cards, and gate tooling. The evidence is an indexed public owner-repository inventory, not a complete organizer registry; private, unlinked, external, and otherwise inaccessible rasters may be absent. Session 5's 19 local raster re-check is an even narrower cache slice, not a replacement for that index.
 - The Session 5 witness is a raster measurement, not a score; it corroborates the existing STOP and is not a new registry scan performed during this integration. No new experiment or organizer submission was run.
+
+
+## Current prompt execution audit — 2026-10-10 UTC
+
+**Scope:** Review of the current fault-zone-anatomy request and repository state. The recorded three-experiment / two-hour budget is spent. This audit performed documentation, code-provenance, test, and static-site checks only; it did not perform a geological experiment, holdout run, data download, candidate TIFF build, or competition submission.
+
+### Pass 1 — requirements and evidence
+
+- Re-read the status-first README, preserved request ledger, `BRIEF.md`, `REMAINING_WORK.md`, current JSON card, holdout/witness records, H33-2-B2 raster audit, hypothesis evidence, source checks, and publisher/site code.
+- Confirmed that the current governing request is the single fault-zone-anatomy lane and the literal pre-placement/final-dot uniqueness rule; no broad geothermal-resource or vent-prediction method was added.
+- Retained four untried hypotheses and made their relative DTI upside explicitly qualitative, low-confidence research priors, with implementation cost and data readiness. No numerical DTI gain was inferred.
+- The independent 17GEMSDOE witness covers every allowable cell. Under the unchanged >70% 3-pixel forward-overlap rule, any nonempty candidate is blocked. Consequently no new TIFF was made; this is required by the protocol STOP, despite the standing desire for a downloadable submission.
+
+### Pass 2 — code, data, and tests
+
+- Verified current code hashes against the stored holdout receipt: `evaluate_holdout.py` differs; `holdout.py`, `metric.py`, and `spatial.py` match. Thus the stored `HOLDOUT-DTI` results remain historical and no current-code holdout claim is made.
+- Confirmed `data/official/training_features.tif` is absent and the full local registry cache remains 0/679. `scripts/build_submission.py` is a retired no-output stub. No data downloads or raster generation were attempted.
+- Added regression coverage that the hypothesis page renders every evidence-backed candidate, physical signature, mimic, qualitative upside, and implementation cost.
+- **LOCAL-QA (not a model score):** `.venv/bin/pytest -q -ra --junitxml=evidence/tests-session6-review.xml` — 108 collected; 106 passed; 2 skipped; 0 failures; 10 warnings. Both skips require the absent, gitignored feature raster. JUnit evidence is saved in `evidence/tests-session6-review.xml`.
+
+### Pass 3 — source, site, and status
+
+- Rebuilt the GitHub Pages content from the current run card and checked all 28 HTML pages. Internal links resolve; no active TIFF/ZIP download links remain; HOLD is prominent; run-card/hypothesis/irregularity JSON copies agree.
+- Flagged the GeoDAWN metadata nuance: GDR submission 1591 displays CC-BY 4.0, while the linked USGS/ScienceBase record is separately recorded as CC0 1.0. This is not established as a legal conflict; the exact binary asset/license, coverage, bands, CRS, and alignment remain unverified. Candidate FZA-U4 is therefore not currently viable.
+- The H33-2-B2 figure `0.2778` remains owner-reported/public-board context without a submission-page receipt tying the exact bytes to it. Raster measurements show a two-pixel prune of its base, but do not prove why the reported score occurred. No higher score is claimed or projected.
+- **Final status: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.** No new TIFF, holdout result, external data, or submission was produced.
+
+The machine-readable results are in `evidence/run_card.json` and `evidence/review_passes.json`.

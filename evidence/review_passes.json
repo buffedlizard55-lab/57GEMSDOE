@@ -39,5 +39,58 @@
     "first_run_conclusion": "success",
     "final_head_verification": "pending on push"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
+  "latest_audit": {
+    "date_utc": "2026-10-10",
+    "scope": "current user request; fault-zone-anatomy lane only; no experiments because the recorded three-experiment budget is spent and the universal-overlap stop remains active",
+    "status": "complete; negative / HOLD",
+    "passes": [
+      {
+        "pass_number": 1,
+        "status": "complete",
+        "findings": [
+          "Read README, TASK_PROMPT, BRIEF, REMAINING_WORK, current run card, current hypothesis/irregularity evidence, prior H33 raster audit, and shared site/writer/evaluator code.",
+          "Existing four untried fault-zone hypotheses were retained; qualitative DTI-upside priors and implementation/data costs were made explicit without inventing numerical gains.",
+          "No TIFF was generated because the independently verified registry witness covers every allowable cell and any nonempty candidate triggers the literal >70% overlap stop."
+        ]
+      },
+      {
+        "pass_number": 2,
+        "status": "complete",
+        "findings": [
+          "Added candidate rendering regression coverage; complete local suite passed 106 tests with 2 data-dependent skips and 0 failures.",
+          "Verified the stored holdout evaluator hash is stale specifically for evaluate_holdout.py; the other three stored implementation hashes match. No current holdout result was claimed.",
+          "Confirmed training_features.tif and all 679 indexed registry cache rasters are absent; retained TIFFs remain non-cleared."
+        ]
+      },
+      {
+        "pass_number": 3,
+        "status": "complete",
+        "findings": [
+          "Rebuilt and checked the HOLD-first site; all 28 HTML pages and internal links pass, with no active TIFF/ZIP links.",
+          "Recorded the source-specific GeoDAWN GDR/USGS license-label difference as unresolved at the binary-asset level; candidate 4 remains data-blocked.",
+          "Checked current submission state and run card: no new experiment, holdout, TIFF, download, or organizer upload; verdict remains negative."
+        ]
+      }
+    ],
+    "test_result": {
+      "evidence_class": "LOCAL-QA — not a model score",
+      "collected": 108,
+      "passed": 106,
+      "skipped": 2,
+      "failures": 0,
+      "warnings": 10,
+      "junit": "evidence/tests-session6-review.xml",
+      "completed_utc": "2026-10-10T20:44:18.517098+00:00"
+    },
+    "site_result": {
+      "html_pages_checked": 28,
+      "internal_links_pass": true,
+      "active_download_links": 0,
+      "status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT"
+    },
+    "experiment_count_this_audit": 0,
+    "submission_slots_used_this_audit": 0,
+    "completed_utc": "2026-10-10T20:46:27Z"
+  }
 }

@@ -242,35 +242,51 @@ make an old score or candidate retroactively valid.</p>
 
 
 def build_hypotheses() -> str:
-    hypotheses = [
-        ("1", "Segment-pair stepover/bend geometry", "Existing fault raster + INGENIOUS trace vectors",
-         "Gap width, overlap, connecting faults, and tip/subparallel localization",
-         "Alluvial-fan risers, drainage lineaments, lithologic contacts", "High priority; medium cost"),
-        ("2", "Fault-tip relay/termination anatomy", "Existing fault raster + vector endpoints",
-         "Signed along-strike tip distance and neighboring-segment linkage",
-         "Dry washes, roads, and alluvial-fan margins", "Second; low-to-medium cost"),
-        ("3", "Host maturity/scale-conditioned strand density", "Pinned QFault/INGENIOUS attributes + trace vectors",
-         "Secondary-strand density/decay conditioned on a defensible host covariate",
-         "Inherited joints and lithologic contacts", "Third; attribute-join audit first"),
-        ("4", "Halo-restricted geophysical corroboration", "Official GeoDAWN data only after grid check; competition feature stack absent",
-         "Magnetic-gradient or terrain-edge support within a fixed visible-only halo",
-         "Magnetic lithologic contacts, drainage, and anthropogenic metal", "Fourth; high data/registration cost"),
-    ]
-    rows = "".join(
-        f"<tr><td>{n}</td><td><b>{esc(name)}</b></td><td>{esc(layers)}</td>"
-        f"<td>{esc(signature)}</td><td>{esc(mimic)}</td><td>{esc(priority)}</td></tr>"
-        for n, name, layers, signature, mimic, priority in hypotheses
-    )
+    source = json.loads((EVIDENCE / "hypotheses_current.json").read_text(encoding="utf-8"))
+    rows = []
+    for candidate in source.get("candidates", []):
+        upside = candidate.get("relative_expected_dti_upside", {})
+        layers = "; ".join(candidate.get("layers", []))
+        distinction = (
+            candidate.get("why_it_may_find_missing_faults", "")
+            + " Distinct from inspected work: "
+            + candidate.get("difference_from_inspected_work", "")
+        )
+        priority_cost = (
+            upside.get("tier", "Not assessed")
+            + " ("
+            + upside.get("confidence", "confidence not recorded")
+            + "). Cost: "
+            + candidate.get("implementation_cost", "not estimated")
+        )
+        rows.append(
+            f"<tr><td>{esc(candidate.get('rank', '—'))}</td>"
+            f"<td><b>{esc(candidate.get('hypothesis', 'Not specified'))}</b></td>"
+            f"<td>{esc(layers)}</td>"
+            f"<td>{esc(candidate.get('physical_signature', 'Not specified'))}</td>"
+            f"<td>{esc(distinction)}</td>"
+            f"<td>{esc(candidate.get('named_non_fault_mimic', 'Not specified'))}</td>"
+            f"<td>{esc(priority_cost)}</td></tr>"
+        )
+    row_html = "".join(rows)
+    n_candidates = len(source.get("candidates", []))
     return f"""
 {hold_banner()}
-<h2>Four ranked, untried fault-zone-anatomy hypotheses</h2>
-<p>Rank is a future test priority based on mechanistic relevance, cost, and data readiness—not a
-numerical expected DTI gain. No candidate below was run in this audit. Full evidence, cautions,
-future tests, and source links are in <a href="research/hypotheses.md">docs/research/hypotheses.md</a>.</p>
-<table><tr><th>Rank</th><th>Hypothesis</th><th>Layers</th><th>Physical signature</th><th>Named non-fault mimic</th><th>Priority/cost</th></tr>{rows}</table>
-<p>Recorded-sense-only features and the previous distance/offset/length baseline are excluded from
-the “untried” list because they were already tested. The recorded three-experiment budget is
-spent. No implementation, new data download, or holdout result is authorized by this shortlist.</p>
+<h2>{n_candidates} ranked, untried fault-zone-anatomy hypotheses</h2>
+<p>The relative expected DTI upside is a qualitative research prior only, not a measured
+<span class="tag">HOLDOUT-DTI</span> value or numeric score projection. Confidence is low; no candidate
+below was implemented or run. Rank balances mechanistic specificity, data readiness and cost.
+Each hypothesis names its layers, physical signature, reason to target uncatalogued strands, tested
+methods it differs from, and a named non-fault mimic. Full controls and source links are in
+<a href="research/hypotheses.md">docs/research/hypotheses.md</a>.</p>
+<div class="note"><b>Data gate:</b> for geophysical corroboration, only official GeoDAWN records are identified
+as potential sources. The GDR and linked USGS/ScienceBase records have different displayed license
+labels; no exact raster asset/license, area coverage, band definitions or grid registration has been
+verified. Candidate 4 is not currently viable and must not be substituted with an unaudited file.</div>
+<table><tr><th>Rank</th><th>Hypothesis</th><th>Layers</th><th>Physical signature</th><th>Why it may catch an uncatalogued strand / difference from tested work</th><th>Named non-fault mimic</th><th>Relative DTI upside / cost (prior only)</th></tr>{row_html}</table>
+<p>The recorded-sense-only feature and previous distance/offset/length baseline are excluded from the
+“untried” list because they were already tested. The three-experiment budget is spent. No new
+implementation, data download, holdout, candidate build, or submission is authorized by this shortlist.</p>
 <div class="note"><b>Not actionable under current uniqueness protocol:</b> the session-5 verified witness covers every allowable candidate cell under the 3-px test, making the literal &gt;70% rule unsatisfiable for any nonempty candidate. This ranking is future research context only; no threshold exception is proposed.</div>
 """
 
@@ -348,11 +364,14 @@ checked before a future feature is used.</li>
 Valley geothermal field, Nevada</i>, Open-File Report 2002-384.
 <a href="https://doi.org/10.3133/ofr02384">Official report record / DOI</a>. The report record was
 reviewed; no data were downloaded.</li>
-<li>Glen &amp; Earney (2024), official USGS/DOE GeoDAWN airborne magnetic/radiometric survey record,
-Geothermal Data Repository <a href="https://gdr.openei.org/submissions/1591">submission 1591</a>.
-The page states public access and CC-BY 4.0 and links to
-<a href="https://doi.org/10.5066/P93LGLVQ">USGS ScienceBase</a>. Catalog/license availability was
-checked; spatial coverage and contest-grid compatibility were not.</li>
+<li>Glen &amp; Earney (2024), GeoDAWN airborne magnetic/radiometric survey, Geothermal Data
+Repository <a href="https://gdr.openei.org/submissions/1591">submission 1591</a>; it links to the
+<a href="https://www.usgs.gov/data/geodawn-airborne-magnetic-and-radiometric-surveys-northwestern-great-basin-nevada-and">USGS record</a>
+and <a href="https://doi.org/10.5066/P93LGLVQ">ScienceBase DOI</a>. The GDR page displays public
+access and CC-BY 4.0, while the USGS/ScienceBase record is separately recorded as CC0 1.0 in the
+source audit. These are source-specific catalog statements, not an established conflict; the exact
+license and availability of any binary asset were not checked. No raster was downloaded, and AOI
+coverage, bands and contest-grid compatibility remain unverified.</li>
 </ul>
 <h2>Mechanistic literature reviewed</h2>
 <ul>
@@ -390,6 +409,7 @@ def build_irregularities(card: dict) -> str:
 <tr><td>The public owner-repository inventory lists {esc(indexed)} rasters; it is not organizer-complete. Current cache preflight is {esc(cache_status)} ({esc(verified)} verified, {esc(missing)} missing).</td><td>The submission publisher is retired and writes no candidate. Any future replacement must verify every indexed file and disclose this scope limit; the current cache cannot clear anything.</td></tr>
 <tr><td>Old score comparisons and standalone research/source pages contained unsupported or unversioned claims.</td><td>Replaced with HOLD-first pages; only version-pinned current evidence can be used for future clearance.</td></tr>
 <tr><td>Earlier notes mislabeled the absent feature stack as 105-band/unobtainable; a historic bridge receipt reports 19 bands, but the file is absent now.</td><td>Corrected the count and retained-file status; no current data download/preparation was performed, and the bridge does not independently authenticate official origin.</td></tr>
+<tr><td>GeoDAWN GDR submission 1591 displays CC-BY 4.0 while the linked USGS/ScienceBase source audit records CC0 1.0; no exact binary asset/license was retrieved.</td><td>Keep license statements source-specific; this is not a proven legal conflict. No external raster was used. Before any use, verify the exact asset’s official terms, availability, AOI coverage, bands and grid registration.</td></tr>
 <tr><td>Prior “NaN caused the range error” explanation was stronger than the evidence.</td><td>Cause remains unknown (`IR-57-NAN-02`). Writer uses all-finite [0,1] policy without claiming that NaN caused rejection.</td></tr>
 <tr><td>The legacy session-4 publisher could overwrite the run card with a positive banner and active download links from a partial registry.</td><td>Its entry point is retired; exact source is preserved in <code>evidence/history/</code>. Only the current HOLD-first site generator may publish pages.</td></tr>
 <tr><td>The session-2 publisher wrote candidate TIFFs before its uniqueness check and excluded same-lane prior rasters from its drift verdict.</td><td>That publisher is now a no-output stub; its exact source is archived for provenance. The literal all-indexed-raster rule has no same-lane exception.</td></tr>

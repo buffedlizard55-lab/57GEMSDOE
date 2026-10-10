@@ -33,7 +33,18 @@ local cache files are present), and not authorization to alter the threshold.
 The shortlist is scientific future-work context only until an explicit protocol
 decision and renewed experiment budget exist.
 
-## Ranked shortlist
+## Ranked shortlist: relative DTI potential and implementation cost
+
+The requested ranking is necessarily qualitative: the hidden competition truth is unavailable, the latest stored holdout is not reproducible under the current `evaluate_holdout.py` hash, and the literal registry-overlap gate blocks any nonempty candidate. These labels are **research priors, not HOLDOUT-DTI results, score projections, or promotion recommendations**. “Expected upside” means only relative plausibility of an incremental holdout benefit if the mechanism transfers; confidence is low throughout. No numerical gain is estimable from this evidence.
+
+| Rank | Hypothesis | Relative expected DTI upside (qualitative prior only) | Implementation cost / data readiness |
+|---:|---|---|---|
+| 1 | Segment-pair stepover/bend geometry | **Moderate; highest relative prior, very low confidence.** Directly targets connectors and tip/subparallel strands that a radial halo can miss. | **Medium.** Existing raster/vector geometry is present; freeze visible-only pair rules and audit sense joins. |
+| 2 | Fault-tip relay/termination anatomy | **Low to moderate; very low confidence.** A spatially focused tip signal could help, but may cover few withheld pixels and endpoints are mapping-sensitive. | **Low to medium.** Existing trace endpoints; matched controls and leakage-safe endpoint handling required. |
+| 3 | Host maturity/scale covariate | **Low / uncertain.** A genuinely independent maturity measure might refine decay beyond length; present-day slip rate or mapping completeness may add little or bias it. | **Low to medium if the attribute join is reliable; otherwise data-blocked.** Audit coverage and missingness before any fit. |
+| 4 | Fixed-halo geophysical corroboration | **Indeterminate, potentially useful but not presently viable.** The exact training-feature raster is absent, and coverage/alignment are unverified; a numeric or relative gain claim would be unjustified. | **High.** Official GeoDAWN metadata/license were checked, but the actual raster file, AOI coverage, band definitions, and grid registration were not verified. Do not treat this as an obtainable usable feature yet. |
+
+The ordering is a risk-adjusted research priority, not a measured ranking of DTI scores. It balances mechanistic specificity against cost and data readiness; a future authorized holdout, not this table, must determine whether any candidate helps.
 
 ### 1. Segment-pair stepover/bend geometry → connector and subparallel-strand zones
 
@@ -141,12 +152,15 @@ relative-strike feature. It is a within-lane corroborator, not an unconstrained
 geophysical classifier over the whole survey; incremental value is unknown.
 
 **Lane data.** `training_features.tif` is declared in `data/README.md` but is
-absent from this checkout. An official, publicly accessible USGS/DOE GeoDAWN
-survey record for northwestern Great Basin Nevada/California is available via
-the Geothermal Data Repository and links to USGS ScienceBase. The catalogue
-record is marked CC-BY 4.0; the exact data coverage, grid compatibility, and
-usable bands have **not** been checked against the competition footprint. No
-GeoDAWN data were downloaded or used.
+absent from this checkout. Public catalogue metadata for the USGS/DOE GeoDAWN
+northwestern Great Basin Nevada/California survey is available through the
+Geothermal Data Repository and links to USGS ScienceBase. GDR submission 1591
+displays public access and CC-BY 4.0; the linked USGS/ScienceBase record is
+separately recorded as CC0 1.0 in the source audit. Those are source-specific
+statements, not a proven conflict. No exact binary asset/license receipt was
+retrieved; the data file, coverage, usable bands, CRS, and contest-grid
+alignment have **not** been verified. Therefore this candidate is data-blocked
+and is not currently viable. No GeoDAWN data were downloaded or used.
 
 **Mechanism/source.** USGS Open-File Report 2002-384 documents a
 high-resolution aeromagnetic survey used to image shallow faults in Dixie
@@ -205,7 +219,9 @@ slot. No hypothesis here is cleared, submitted, or claimed to improve a score.
    Official USGS report record reviewed; no data download performed.
 6. Glen, J. & Earney, T. (2024). “GeoDAWN: Airborne magnetic and radiometric
    surveys of the northwestern Great Basin, Nevada and California.” Geothermal
-   Data Repository, USGS. Public record and CC-BY 4.0 license checked;
-   [record 1591](https://gdr.openei.org/submissions/1591), with a link to the
-   [USGS ScienceBase data record](https://doi.org/10.5066/P93LGLVQ). Coverage
-   and grid alignment remain unverified.
+   Data Repository, USGS. The [GDR record 1591](https://gdr.openei.org/submissions/1591)
+   displays public access and CC-BY 4.0; the linked [USGS ScienceBase record](https://doi.org/10.5066/P93LGLVQ)
+   is separately recorded as CC0 1.0 in the official source audit. The exact
+   binary asset/license was not retrieved, so these source-specific statements
+   do not establish the applicable terms for a future file. Coverage, bands,
+   CRS, and grid alignment remain unverified.

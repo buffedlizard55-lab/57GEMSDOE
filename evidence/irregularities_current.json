@@ -224,6 +224,19 @@
         "scripts/check_site.py"
       ],
       "remaining": "Historical TIFF/ZIP bytes remain in docs/downloads for provenance and tests and have no active page links or authorization. A direct static asset URL may still resolve; the HOLD is an authorization decision, not access control."
+    },
+    {
+      "id": "IR-57-LICENSE-01",
+      "severity": "medium",
+      "status": "OPEN — exact asset terms and availability not verified",
+      "finding": "The GDR GeoDAWN submission 1591 displays public access and CC-BY 4.0, while the linked USGS/ScienceBase record is separately recorded as CC0 1.0 in the official source audit. These are source-specific catalogue statements; the repository has no exact binary asset/license receipt, so the applicable terms for a future file are unresolved.",
+      "resolution": "Keep the two license claims source-specific; do not assume a legal conflict or select one label for an uninspected binary. No GeoDAWN raster was downloaded or used. Before any future use, verify exact asset availability and license, then record a file hash, coverage, band semantics, CRS, and contest-grid registration.",
+      "evidence": [
+        "evidence/source_checks.json",
+        "data/README.md",
+        "docs/research/hypotheses.md"
+      ],
+      "remaining": "Actual binary availability, file-specific license, AOI overlap, CRS, and usable-band interpretation remain unverified; candidate FZA-U4 is data-blocked and not currently viable."
     }
   ]
 }
