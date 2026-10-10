@@ -203,31 +203,80 @@
     "browser_qa": "Not run in this continuation; static HTML/link and local-delivery checks only."
   },
   "latest_audit": {
-    "evidence_class": "REPOSITORY REVIEW / LOCAL-QA; no geological experiment",
+    "evidence_class": "REPOSITORY-MERGE / LOCAL-QA; no geological experiment or score",
     "date_utc": "2026-10-10",
-    "scope": "Three-pass post-merge integration review for PR #20: adopt latest 698-raster evidence, reconcile download status fail-closed, remove active TIFF/ZIP paths, carry four ranked untried hypotheses and source caveats, run local tests and static delivery QA.",
+    "scope": "Three-pass reconciliation after origin/main advanced to PR #22 (fab26573). Main supplied a separate Session-5 relay/bend research TIFF and Session-6 696-raster verification. This branch preserves the more recent PR #20 H57-I 698-raster audit as the canonical current card; the candidates and registry snapshots are distinct.",
+    "base_main_commit": "fab26573b804978727fcbe73a90237cf55ce198f",
+    "pr_number": 20,
+    "current_candidate_audit": {
+      "candidate_sha256": "f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a",
+      "registry_rasters_checked": 698,
+      "literal_overlap_triggers": 80,
+      "worst_forward_3px_overlap": 1.0,
+      "unique": false,
+      "production_final_dots": "not_generated",
+      "status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT"
+    },
+    "upstream_session5_candidate_archival": {
+      "candidate": "gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+      "candidate_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+      "registry_snapshot_rasters_checked": 696,
+      "literal_overlap_triggers": 80,
+      "worst_forward_3px_overlap": 1.0,
+      "tiff_archive": "evidence/history/public-downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+      "tiff_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+      "zip_sha256": "f98989a2122298ccebde4a27a06ddcb51a350084765ed8f69df10a712c36aa98",
+      "sidecar_sha256": "c2d127e0aa017d9c313e14998ddcdae455ee64a3f883d2c69997cc831b477926",
+      "upstream_card_original": "evidence/history/upstream-session5-run-card-original.json",
+      "withdrawn_upstream_download_flag": true,
+      "current_download_and_submit_authorization": false,
+      "note": "Separate historical candidate/index; not the current 698-raster H57-I comparison.",
+      "session5_original_audit": {
+        "registry_rasters_expected": 695,
+        "registry_rasters_checked": 695,
+        "literal_overlap_triggers": 81,
+        "worst_forward_3px_overlap": 1.0,
+        "report": "evidence/relay_bend_surface_uniqueness.json"
+      },
+      "session6_reverification": {
+        "registry_rasters_expected": 696,
+        "registry_rasters_checked": 696,
+        "literal_overlap_triggers": 80,
+        "worst_forward_3px_overlap": 1.0,
+        "report": "evidence/uniqueness_session6_full_registry_696.json"
+      }
+    },
     "experiments_run": 0,
     "holdout_runs": 0,
     "candidate_geotiffs_created": 0,
     "data_downloads": 0,
     "competition_submissions": 0,
     "weekly_slots_used": 0,
-    "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
-    "verdict": "negative",
     "local_tests": {
-      "collected": 117,
-      "passed": 115,
+      "collected": 132,
+      "passed": 130,
       "skipped": 2,
       "failures": 0,
-      "warnings": 2
+      "warnings": 2,
+      "junit": "evidence/tests-session6-review.xml"
     },
     "site_qa": {
-      "pages_checked": 28,
-      "active_tif_zip_links": 0,
+      "pages_checked": 30,
       "links_pass": true,
+      "active_tif_zip_links": 0,
+      "public_tiff_zip_files": 0,
+      "historical_format_pass": true,
+      "historical_zip_exactly_one_tiff": true,
+      "download_authorized": false,
       "submission_cleared": false
     },
-    "completed_utc": "2026-10-10T21:31:47Z"
+    "code_qa": {
+      "py_compile": true,
+      "git_diff_check": true,
+      "relay_bend_budget_guard_tested": true
+    },
+    "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
+    "completed_utc": "2026-10-10T21:58:21Z"
   },
-  "audit_completed_utc": "2026-10-10T21:31:47Z"
+  "audit_completed_utc": "2026-10-10T21:58:21Z"
 }

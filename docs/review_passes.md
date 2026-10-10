@@ -125,3 +125,62 @@ source, code, and delivery review; the experiment budget remains spent.
 - Exercised the orientation budget guard, H57-K model guard, and retired H57-I/H57-K emitters;
   they exited before plan/model work or file creation. No new experiment, holdout run, TIFF build,
   data download, submission, production dots, or weekly slot occurred. **Final status: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.**
+
+## PR #20 latest-main reconciliation — 2026-10-10 UTC
+
+**Current decision: HOLD — NOT OK TO DOWNLOAD OR SUBMIT.** The three-experiment / two-hour
+budget remains spent. This follow-up integrated `origin/main` at `fab26573` (PR #22) after it
+advanced again while PR #20 was open. It performed repository, source, code, and static-delivery
+review only: no geological experiment, holdout, external-data download, candidate generation,
+production-dot placement, submission, or weekly-slot selection.
+
+### Pass 1 — separate the audits; preserve the current run card
+
+- Re-read the standing request, branch run card, latest stored registry evidence, holdout reports,
+  archive policy, and upstream Session-6 records.
+- Kept the current PR #20 H57-I audit as canonical: **698 indexed public owner-repository rasters,
+  80 literal overlap triggers, worst forward 3-pixel overlap 1.0**. These are
+  REGISTRY-MEASUREMENTS, not scores; final dots were not generated. The index is not
+  organizer-complete.
+- Treated the upstream Session-5 relay/bend TIFF and its Session-6 **696-raster** re-verification as
+  a separate candidate/hash/snapshot, not as an extension of the 698-raster H57-I comparison.
+  Its literal gate also failed (80 triggers; worst overlap 1.0).
+- Resolved the upstream `Download for research: OK` contradiction by withdrawing that permission;
+  both research download and competition submission are false in the current card and site.
+
+### Pass 2 — archive artifacts and close execution paths
+
+- Preserved the upstream relay/bend TIFF, one-TIFF ZIP, and sidecar byte-for-byte under
+  `evidence/history/public-downloads/`; independently checked TIFF/ZIP/sidecar SHA256 and the ZIP
+  round trip. Preserved the unmodified upstream card separately as historical evidence, clearly
+  superseded by the current HOLD. Removed all TIFF/ZIP files from public `docs/` and root
+  `downloads/`; the archive page lists names as text only.
+- Kept the 698-entry H57-I card and its matching 698-row registry, site inventory, classification,
+  and per-raster uniqueness receipt together. Added an irregularity resolution distinguishing that
+  snapshot from the historical 696-raster Session-6 relay/bend audit.
+- Added a pre-import, fail-closed spent-budget guard to
+  `scripts/run_relay_bend_experiments.py`; it stops at the current 3/3 budget before argument
+  parsing/model imports. Any future permitted output path is archive-only, never public, and its
+  generated card keeps research-download and submission authorization false. Added a regression
+  that proves a CLI invocation with `--help` exits before writing a plan or artifact.
+
+### Pass 3 — full delivery and regression verification
+
+- `.venv/bin/python scripts/check_site.py --build` — **PASS**; 30 HTML pages, all internal links
+  valid, zero active TIFF/ZIP links, zero TIFF/ZIP files under public `docs/` or root `downloads/`,
+  historical local-format checks pass, and the archived ZIP contains exactly its one TIFF.
+- `.venv/bin/python -m pytest -q -ra --junitxml=evidence/tests-session6-review.xml` —
+  **130 passed, 2 skipped, 0 failed** (132 collected; 2 warnings). Both skips require the absent,
+  gitignored 419 MB `training_features.tif`. Report: `evidence/tests-session6-review.xml`.
+- Python compilation and `git diff --check` passed. The static site and current cards both state
+  **HOLD — NOT OK TO DOWNLOAD OR SUBMIT**; no experiment, data download, candidate, final dots,
+  submission, or slot was used in this continuation. Browser QA was not run; the current check was
+  static HTML/link/delivery QA.
+
+The machine-readable record is `evidence/review_passes.json`; the canonical current card remains
+`evidence/run_card_current.json`.
+
+Snapshot distinction for the archived Session-5 relay/bend TIFF: its original 695/695 scan had 81 literal overlap
+triggers; the separate Session-6 696/696 re-verification had 80. Both had worst forward overlap 1.0. These are not the
+current H57-I candidate: its distinct 698/698 scan has 80 triggers and worst overlap 1.0. Each count remains attached
+to its own candidate hash and index snapshot.

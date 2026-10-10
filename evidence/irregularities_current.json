@@ -276,7 +276,243 @@
         "data/README.md",
         "evidence/run_card.json"
       ]
+    },
+    {
+      "id": "IR-57-RELAY-01",
+      "severity": "info",
+      "status": "HISTORICAL HOLDOUT-DTI evidence only; literal uniqueness STOP; download and submission unauthorized",
+      "finding": "The predeclared Session-5 E2 two-host relay + multi-scale bend hypothesis (H57-I2 + H57-H) and E3 slip-sense transition extension (H57-J) were evaluated on repaired buffered whole-component LOQO. For every metric below, evidence class is HOLDOUT-DTI, evaluator is gems57-pooled-hide-v2, withheld-positive count is 11,321, and intervals are paired/bootstrap 95% CIs. Binary E2 relay_bend_anatomy DTI = 0.135204 [0.119140, 0.153036]; single-host anatomy control DTI = 0.109647 [0.095958, 0.125068]; distance_only control DTI = 0.112725 [0.101428, 0.124446]. Paired binary E2-minus-anatomy delta = +0.025556 [0.013943, 0.037109], and E2-minus-distance_only delta = +0.022479 [0.007867, 0.038463]. E3 binary DTI = 0.141391 [0.124513, 0.161457]; paired E3-minus-E2 binary delta = +0.006188 [-0.001694, 0.015702]. Soft-surface paired E3-minus-E2 HOLDOUT-DTI delta = +0.002738 [+0.000307, +0.005994]. The holdout contains 153 physical 20 km clusters; E2 won all four spatial folds. These are local holdout instruments, not organizer-confirmed scores.",
+      "resolution": "The E2 TIFF, exact one-TIFF ZIP, sidecar and original card are preserved under evidence/history/public-downloads/ and evidence/history/ as audit-only material. Its original Session-5 695/695 scan had 81 literal overlap triggers (worst forward 3-px overlap 1.0); the separate Session-6 re-verification of the same TIFF on a 696/696 index had 80 triggers (worst overlap 1.0). Both fail the literal gate. No final dots were generated and all active public download links/files were removed.",
+      "evidence": [
+        "evidence/relay_bend_holdout.json",
+        "evidence/relay_bend_surface_uniqueness.json",
+        "evidence/uniqueness_session6_full_registry_696.json",
+        "evidence/history/public-downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif",
+        "evidence/history/public-downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip",
+        "evidence/history/public-downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json",
+        "evidence/history/upstream-session5-run-card-original.json",
+        "evidence/run_card_current.json"
+      ],
+      "remaining": "Current download_authorization.research_download and competition_submission are both false; do not restore either permission without owner authorization and a reconciled uniqueness gate. The separate canonical PR #20 H57-I card is a 698/698 audit with 80 triggers and worst forward overlap 1.0; it also remains HOLD. No weekly slot was used."
+    },
+    {
+      "id": "IR-57-UNIQ-05",
+      "severity": "critical",
+      "status": "OPEN — literal uniqueness gate is unsatisfiable while the verified witness remains in scope",
+      "finding": "Session-5 independently re-fetched and SHA256-verified 17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif (25,065,181 bytes; SHA256 ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be), which is present in the 679-raster manifest. Its 3-pixel positive support covers every allowable cell; measured forward overlap is 1.0 for dense and sparse test candidates.",
+      "resolution": "Do not change the user-mandated >70% threshold or apply a density/reverse-overlap exception. Keep download/submission HOLD and make the blocker explicit. The witness is a uniqueness measurement, not a score and not a full revalidation of all 679 local cache files.",
+      "evidence": [
+        "evidence/session5_witness_verification.json",
+        "evidence/independent_candidate_check.json",
+        "evidence/registry_refreshed.json"
+      ],
+      "remaining": "Current local cache preflight is 0/679. A specific witness was fetched and hash-verified, but no current complete-inventory scan or candidate clearance exists. Any policy change requires explicit owner authorization."
+    },
+    {
+      "id": "IR-57-REGISTRY-03",
+      "severity": "critical",
+      "status": "OPEN — public owner-repository inventory is not organizer-complete; submission clearance remains impossible",
+      "finding": "The earlier 679-entry index was a public owner-repository inventory, not a complete organizer submission registry. The current PR #20 H57-I audit has 698 indexed rasters; it is still limited to accessible public owner-repository material. Private, unlinked, closed-branch-only, external, unavailable and later-written rasters may remain outside scope, so this index cannot establish organizer-wide uniqueness.",
+      "resolution": "Keep each index count and candidate hash tied to its own dated report. Treat 679 as historical and 698 as the current H57-I audit scope, not as organizer completeness. The latest audit did not refresh or download external data; the absent feature-stack cache remains separately recorded under IR-57-DATA-03.",
+      "evidence": [
+        "registry/audit_scope.json",
+        "registry/audit_index.json",
+        "evidence/registry_refreshed.json",
+        "evidence/run_card_current.json",
+        "evidence/irregularities_current.json"
+      ],
+      "remaining": "No independently reviewed organizer-complete raster source is available. The current 698-entry H57-I comparison also fails the literal overlap gate (80 triggers; worst overlap 1.0); regardless, incomplete registry scope prohibits clearance."
+    },
+    {
+      "id": "IR-57-SITE-01",
+      "severity": "critical",
+      "status": "unsafe publisher retired; original source preserved",
+      "finding": "The legacy session-4 site generator could overwrite the current run card with an OK-to-submit banner, create a SUBMIT-THIS alias, and publish active downloads based on an incomplete 16-raster comparison.",
+      "resolution": "Replace the entry point with a fail-closed retired notice; preserve its exact former source under evidence/history/build_site_session4_legacy_2026-10-09.py. The current generator emits HOLD-first pages, safe aliases, and synchronized public cards/ledgers.",
+      "evidence": [
+        "scripts/build_site_session4.py",
+        "evidence/history/build_site_session4_legacy_2026-10-09.py",
+        "scripts/build_site.py",
+        "scripts/check_site.py"
+      ],
+      "remaining": "Historical TIFF/ZIP bytes remain in docs/downloads for provenance and tests and have no active page links or authorization. A direct static asset URL may still resolve; the HOLD is an authorization decision, not access control."
+    },
+    {
+      "id": "IR-S6-01",
+      "severity": "critical",
+      "status": "OPEN — owner protocol decision required; no candidate can clear the literal gate",
+      "finding": "The literal uniqueness rule defines a 'dot' as any finite value > 0. Dense soft rasters therefore saturate it: 53 of 696 indexed rasters cover at least 50% of the 5,167,373-cell footprint, and 17GEMSDOE E-proba-multiscale covers 100%. The gate rerun on the current 696-raster index (session 6, on the TIF main offers) gives 80 literal duplicate firings, worst forward overlap 1.0, unique=false.",
+      "resolution": "No change to the rule (owner-only authority). The saturation certificate proves every nonempty in-footprint candidate has forward overlap 1.0 with the E-proba witness. Options for the owner, to be pre-registered before any candidate is built: (B) binarise each registry raster to its declared dot budget, or (C) exclude dense soft surfaces from the overlap test while keeping the rank test. Candidate B is a suggestion only; it has NOT been tested against owner-scored rasters.",
+      "evidence": [
+        "evidence/session6_mechanism_and_witness.json",
+        "evidence/uniqueness_session6_full_registry.json",
+        "evidence/registry_profile_session6.json",
+        "scripts/session6_registry_audit.py",
+        "scripts/check_uniqueness_full.py"
+      ],
+      "remaining": "A decision by the owner is required. Until then the verdict is HOLD.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/uniqueness_session6_full_registry_696.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/session6_mechanism_and_witness.json"
+      ]
+    },
+    {
+      "id": "IR-S6-02",
+      "severity": "high",
+      "status": "OPEN — flagged for review",
+      "finding": "The owner's own rule would also reject real scored submissions. In the repository's uniqueness_decision analysis, the owner-reported 0.2708 (h27-4-r1-solo-d2-8) and 0.2750 (anderson-geothermal-pinn-38854) rasters each have forward overlap 1.0 against the owner-reported 0.2778 raster (live_02778_b2prune.tif). The analysis measures the literal rule against owner-scored files.",
+      "resolution": "Recorded, not altered. Any future rule revision must be tested against owner-scored rasters before adoption.",
+      "evidence": [
+        "evidence/uniqueness_decision.json",
+        "scripts/uniqueness_decision.py"
+      ],
+      "remaining": "Owner decision (see IR-S6-01).",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/uniqueness_decision.json"
+      ]
+    },
+    {
+      "id": "IR-S6-03",
+      "severity": "high",
+      "status": "OPEN — flagged for review",
+      "finding": "The official reference solution writes continuous sigmoid probabilities over the grid and notes that thresholding may help ('it may be advantageous to threshold this map'). Sigmoid values are positive almost everywhere, so under the literal finite > 0 definition a reference-style submission counts as nearly fully dense.",
+      "resolution": "Verified from the official DrivenData repository (github.com/drivendataorg/gems-prize-reference-solution, unet-mc-cv-reference-solution.ipynb, cells 16-20). Documented; no rule change.",
+      "evidence": [
+        "https://github.com/drivendataorg/gems-prize-reference-solution/blob/main/unet-mc-cv-reference-solution.ipynb"
+      ],
+      "remaining": "Owner decision; tie to IR-S6-01.",
+      "manual_review": [
+        "https://github.com/drivendataorg/gems-prize-reference-solution"
+      ]
+    },
+    {
+      "id": "IR-S6-04",
+      "severity": "high",
+      "status": "OPEN — registry hygiene",
+      "finding": "The uniqueness corpus includes non-prediction rasters. Of the 53 dense rasters (>= 50% footprint positive): 32 are auxiliary by path (30 float32 diagnostics, mostly GEMSDOE48 Dempster-Shafer 'diagnostics'/'mtheta'/'plausibility'/'unassigned' files; 2 uint8 ID/mask rasters); 4 are uint8 derived context/mask rasters; 17 are float32 non-auxiliary soft fields. Path classification is a heuristic. Also 14 rasters have positive cells outside the footprint and 11 contain values outside [0,1].",
+      "resolution": "Recorded in evidence/registry_profile_session6.json; the gate was not changed to exclude them. Removing all 36 auxiliary or uint8 derived rasters would still leave 17 dense float32 soft fields, so the block would persist (the witness is among the 17).",
+      "evidence": [
+        "evidence/registry_profile_session6.json"
+      ],
+      "remaining": "Owner review of the corpus definition.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/registry_profile_session6.json"
+      ]
+    },
+    {
+      "id": "IR-S6-05",
+      "severity": "critical",
+      "status": "OPEN — data access limitation",
+      "finding": "Holdout validation cannot run. data/official/training_features.tif is absent. The feature stack link (Dropbox, gems-geodawn-numerical-features.tif) returns HTTP 000 from this sandbox, and the DrivenData data tab is login-gated (HTTP 000 from this sandbox). docs.nlr.gov, gdr.openei.org and the github.io pages are also unreachable from here.",
+      "resolution": "No holdout result was produced in this session. The stored HOLDOUT-DTI figures remain historical, and their evaluator hashes are unchanged.",
+      "evidence": [
+        "data/README.md",
+        "evidence/session6_mechanism_and_witness.json"
+      ],
+      "remaining": "Requires an authorised, hash-pinned copy of the competition features obtained through an allowed route.",
+      "manual_review": [
+        "https://www.drivendata.org/competitions/306/competition-doe-gems/",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/session6_hypotheses.json"
+      ]
+    },
+    {
+      "id": "IR-S6-06",
+      "severity": "high",
+      "status": "OPEN — leaderboard claim conflict",
+      "finding": "The brief says 0.3195 is the highest score right now. The saved organizer snapshot (evidence/leaderboard_snapshot.json, retrieved 2026-10-09) lists 0.3774 at rank 1 and 0.3195 at rank 7. The live DrivenData leaderboard could not be re-fetched from this sandbox.",
+      "resolution": "Recorded: 0.3774 is the top public DTI in the snapshot; 0.3195 is rank 7. The snapshot is not a submission receipt.",
+      "evidence": [
+        "evidence/leaderboard_snapshot.json"
+      ],
+      "remaining": "Re-check the live leaderboard from an unrestricted machine.",
+      "manual_review": [
+        "https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/leaderboard_snapshot.json"
+      ]
+    },
+    {
+      "id": "IR-S6-07",
+      "severity": "medium",
+      "status": "verified at file level; causal link NOT established",
+      "finding": "Owner-reported 0.2708 to 0.2778 pair: the 37,654-dot 0.2778 raster is an exact subset of the 40,199-dot 0.2708 raster (added 0). The 2,545 removed dots all lie 1.41 to 2.00 px from the mapped catalogue, and no removed dot is on it. Kept dots are at least 2.24 px away.",
+      "resolution": "Measured with gems57 grid conventions. Explains what changed in the file, not why the score changed; no organizer receipt ties the score to these bytes.",
+      "evidence": [
+        "evidence/session6_mechanism_and_witness.json"
+      ],
+      "remaining": "Organizer receipt needed for ORGANIZER-CONFIRMED status.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/session6_mechanism_and_witness.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/best_submission_audit.json"
+      ]
+    },
+    {
+      "id": "IR-S6-08",
+      "severity": "medium",
+      "status": "verified during Session 6; current checkout cache not revalidated",
+      "finding": "The previous cache preflight recorded 0/679 rasters present. Session 6 re-fetched every raster in the current 696-entry index (evidence/registry_refreshed_20261010T2001.json) with immutable git-blob SHA1, pinned SHA256, single-band, EPSG:32611 and pinned-transform checks. All 696 passed; 0 errors.",
+      "resolution": "Session 6 recorded 696/696 byte/grid verification. This later PR #20 review did not restore or re-fetch the cache; treat the receipt as historical and do not infer current local availability.",
+      "evidence": [
+        "evidence/registry_profile_session6.json",
+        "scripts/session6_registry_audit.py"
+      ],
+      "remaining": "The current checkout has no local registry cache; no new download was attempted.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/registry_profile_session6.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/scripts/session6_registry_audit.py"
+      ]
+    },
+    {
+      "id": "IR-S6-09",
+      "severity": "high",
+      "status": "resolved as distinct audit scopes; no candidate is cleared",
+      "finding": "The Session-5 candidate card (695), Session-6 gate/index (696), and later PR #20 H57-I audit (698) report different candidate hashes, timestamps, and registry snapshots. They must not be collapsed into one scan.",
+      "resolution": "The canonical current audit is the 2026-10-10 PR #20 record for the archived H57-I surface: 698 rasters, 80 literal overlap triggers, worst overlap 1.0. The Session-6 696/696 verification remains a separate historical audit for the relay-bend surface. Neither passes the literal overlap gate.",
+      "remaining": "A future audit requires an explicitly current index and an exact candidate hash; private/unlinked organizer artifacts remain outside public-repository scope.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/registry_refreshed_20261010T2001.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/scripts/check_site.py"
+      ]
+    },
+    {
+      "id": "IR-S6-10",
+      "severity": "critical",
+      "status": "RESOLVED FAIL-CLOSED in PR #20 follow-up",
+      "finding": "The upstream main card marked research download OK although its literal uniqueness gate failed. This review rejected that permission and withdrew all active TIFF/ZIP artifacts from public download paths.",
+      "resolution": "Both research download and competition submission are false in the current run card; the overview and executive summary say NOT OK. Historical bytes are preserved only under evidence/history. Site and tests enforce zero active TIFF/ZIP links and no public TIFF/ZIP files.",
+      "remaining": "Do not restore research-download permission unless the owner explicitly authorizes it and the public status is reconciled with all blocking gates.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/README.md",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/BRIEF.md",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/history/public-downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.json"
+      ]
+    },
+    {
+      "id": "IR-S6-11",
+      "severity": "medium",
+      "status": "FIXED this session — restored from session-5 ledger",
+      "finding": "The merge of main dropped IR-57-UNIQ-05, IR-57-REGISTRY-03 and IR-57-SITE-01 from evidence/irregularities_current.json with no supersession note. IR-57-UNIQ-05 still documents the witness blocker; IR-57-REGISTRY-03 documents that the inventory is not organizer-complete; IR-57-SITE-01 documents a retired unsafe generator.",
+      "resolution": "Restored verbatim from f244d60 (session-5 ledger). No text was edited.",
+      "remaining": "None for the ledger. Owner may mark any entry as superseded in a separate, explicit change.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/irregularities_current.json"
+      ]
+    },
+    {
+      "id": "IR-S6-12",
+      "severity": "high",
+      "status": "OPEN — historical registry snapshots differ; every candidate remains blocked by the literal overlap STOP",
+      "finding": "The same historical Session-5 E2 TIFF (SHA256 cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648) had 81 literal overlap triggers on its original 695/695 scan (evidence/relay_bend_surface_uniqueness.json) and 80 on the separate 696/696 Session-6 re-verification (evidence/uniqueness_session6_full_registry_696.json). The distinct current PR #20 H57-I TIFF (SHA256 f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a) has 80 triggers on its 698/698 scan. Worst candidate-to-prior forward overlap is 1.0 in all three records. Candidate, index snapshot and exclusion conventions differ; these counts must not be added, substituted or treated as one corpus.",
+      "resolution": "Preserved each candidate hash and report separately. The current canonical run card is H57-I at 698/698 and remains HOLD; the Session-5 relay/bend TIFF and original card are audit-only under evidence/history. Both current download and competition-submission permissions are false. The literal gate is unchanged.",
+      "remaining": "Reconcile full-footprint/all-prior implementations and obtain an organizer-complete registry before any future authorized candidate. Current STOP is independently sufficient to block release; no slot or final dots were used.",
+      "manual_review": [
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/relay_bend_surface_uniqueness.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/uniqueness_session6_full_registry_696.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/orientation_surface_uniqueness.json",
+        "https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/run_card_current.json"
+      ]
     }
   ],
-  "generated_utc": "2026-10-10T21:31:47Z"
+  "generated_utc": "2026-10-10T21:58:21Z"
 }

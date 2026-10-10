@@ -1,5 +1,5 @@
 {
-  "status": "Three-pass audit complete; latest post-merge session recorded under pr20_post_merge_review. HOLD — NOT OK TO DOWNLOAD OR SUBMIT.",
+  "status": "Three-pass PR #20 integration review complete after latest main merge; HOLD — NOT OK TO DOWNLOAD OR SUBMIT.",
   "passes": [
     {
       "pass_number": 1,
@@ -20,24 +20,31 @@
   ],
   "experiments": 3,
   "slots_used": 0,
-  "completed_utc": "2026-10-10T21:31:47Z",
+  "completed_utc": "2026-10-10T21:58:21Z",
   "production_final_dots": 0,
   "final_local_tests": {
-    "passed": 72,
-    "warnings": 9,
-    "junit": "evidence/tests-final.xml"
+    "collected": 132,
+    "passed": 130,
+    "skipped": 2,
+    "failures": 0,
+    "warnings": 2,
+    "junit": "evidence/tests-session6-review.xml"
   },
   "static_delivery_checks": {
-    "html_pages": 26,
-    "zip_exactly_one_tiff": true,
-    "local_format": true,
-    "root_and_docs_mirrors_identical": true
+    "html_pages": 30,
+    "links_pass": true,
+    "public_tiff_zip_files": 0,
+    "active_tif_zip_links": 0,
+    "historical_local_format": true,
+    "historical_zip_exactly_one_tiff": true,
+    "download_authorized": false,
+    "submission_cleared": false
   },
-  "registry_rasters_checked": 679,
+  "registry_rasters_checked": 698,
   "github_ci": {
     "first_run_id": 37989482527,
     "first_run_conclusion": "success",
-    "final_head_verification": "pending on push"
+    "final_head_verification": "pending after merge-resolution commit push; previous PR head had no checks reported"
   },
   "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors",
   "current_session_20261010": {
@@ -126,24 +133,24 @@
     "cumulative_added_since_679": 19,
     "latest_extension_has_no_new_duplicate_trigger": true
   },
-  "latest_main_merge": "bf6d9260e96e581766095ea3cafecd661a854bbc",
+  "latest_main_merge": "fab26573b804978727fcbe73a90237cf55ce198f",
   "pr20_post_merge_review": {
-    "status": "three implementation/review passes complete",
+    "status": "three implementation/review passes complete after reconciling latest origin/main",
     "passes": [
       {
         "pass_number": 1,
-        "scope": "Re-read current user protocol, repository brief, 698-entry latest registry receipt, witness blocker, run cards, download/archive pages, source ledger and branch state after main advanced.",
-        "result": "PR #20 was conflicting because main advanced to e936f71. The merged research-download-OK UI contradicted BRIEF.md and the literal gate. No download permission was inferred; the latest 698-entry scan and universal 17GEMSDOE witness still require STOP."
+        "scope": "Re-read the standing task, current 698-raster H57-I run card, current branch state, and newly advanced origin/main after PR #22 merged.",
+        "result": "PR #20 was DIRTY because main advanced from e936f71 to fab26573. Identified a distinct upstream Session-5 relay/bend TIFF: its original 695/695 scan recorded 81 literal overlap triggers, while the separate Session-6 696/696 re-verification recorded 80; both have worst overlap 1.0. Main also supplied a separate Session-6 registry audit. Kept the current PR #20 H57-I 698-raster card as canonical (80 triggers, worst overlap 1.0); candidates, hashes and registry snapshots remain separate."
       },
       {
         "pass_number": 2,
-        "scope": "Resolve merge on the fixed session branch; make front-door download/submission status fail closed; align cards and inventory counts; remove current TIFF/ZIP from public/root download paths; preserve the historical artifact under evidence/history; rank four candidates with qualitative priors and correct the GeoDAWN/feature-stack availability caveat.",
-        "result": "No candidate TIFF, holdout, data download, or submission was created. Every historical TIFF/ZIP/sidecar formerly served from docs/downloads/root downloads is preserved under evidence/history and no longer publicly served. The current site has no active artifact files/links and no numeric public leaderboard snapshot. The four hypotheses render from evidence JSON. Orientation and H57-K runners are guarded by the spent budget; H57-I/H57-K emitters are fail-closed against partial-registry/Jaccard/saturation approval. Added irregularities for conflicting authorization, source-specific GeoDAWN license statements, and absent local data/cache."
+        "scope": "Resolve merge conflicts; audit artifact status, generator paths, run-card consistency, shared site output and spent experiment budget.",
+        "result": "Archived the upstream relay/bend TIFF, exact one-TIFF ZIP and sidecar under evidence/history/public-downloads/ after hash/round-trip verification; preserved the upstream card as an explicitly withdrawn historical record. Removed all TIFF/ZIP files from docs/downloads and root downloads. Both permissions remain false. Added a pre-import budget guard to the Session-5 relay/bend runner and made its future artifacts archive-only and fail-closed; expanded regression tests for this behavior."
       },
       {
         "pass_number": 3,
-        "scope": "Rebuild and independently check static site; exercise spent-budget and retired-emitter guards without model work; run full tests; recheck artifact hashes, public paths, links and static pages.",
-        "result": "Site QA PASS: 28 HTML pages, all internal links valid, zero TIFF/ZIP files or links under docs/root downloads, zero public numeric leaderboard snapshots, historical local-format/ZIP checks pass while both permissions remain false. Full suite PASS: 115 passed, 2 skipped, 0 failed from 117 collected; skips require the absent gitignored 419 MB feature file. Orientation, H57-K, H57-I and H57-K emitter guards exited before fitting, evaluation or file creation.",
+        "scope": "Rebuild and check all static pages, run the complete test suite, compile changed Python, validate JSON/run cards, artifact hashes, archive ZIPs, and public paths.",
+        "result": "Site QA PASS: 30 HTML pages, internal links valid, zero active TIFF/ZIP links, zero TIFF/ZIP files in public paths, historical format and one-TIFF ZIP checks pass. Full suite PASS: 130 passed, 2 skipped, 0 failed (132 collected); the two skips require the absent gitignored feature raster. Python compilation and git diff whitespace checks pass. No experiment, holdout, data download, candidate generation, submission, final-dot placement or slot use occurred.",
         "browser_qa": "Not run; static HTML/link QA only."
       }
     ],
@@ -159,21 +166,24 @@
     "literal_overlap_triggers": 80,
     "current_status": "HOLD — NOT OK TO DOWNLOAD OR SUBMIT",
     "local_test_count": {
-      "collected": 114,
-      "passed": 112,
+      "collected": 132,
+      "passed": 130,
       "skipped": 2,
+      "failures": 0,
       "warnings": 2
     },
     "static_qa": {
-      "pages_checked": 28,
+      "pages_checked": 30,
       "links_pass": true,
       "active_tif_zip_links": 0,
+      "public_tiff_zip_files": 0,
       "historical_format_pass": true,
       "historical_zip_exactly_one_tiff": true,
       "download_authorized": false,
       "submission_cleared": false
     },
-    "completed_utc": "2026-10-10T21:31:47Z"
+    "base_main_commit": "fab26573b804978727fcbe73a90237cf55ce198f",
+    "completed_utc": "2026-10-10T21:58:21Z"
   },
-  "generated_utc": "2026-10-10T21:31:47Z"
+  "generated_utc": "2026-10-10T21:58:21Z"
 }
