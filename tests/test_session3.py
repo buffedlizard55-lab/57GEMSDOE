@@ -40,9 +40,13 @@ def test_new_research_raster_is_distinct_and_fail_closed():
     assert path.name in (ROOT/'docs'/'index.html').read_text()
     assert 'DO NOT SUBMIT' in (ROOT/'index.html').read_text()
     assert 'gems57-faultzone-anatomy-60000px' not in (ROOT/'index.html').read_text()
+    # The current run card belongs to Session 4; Session 3's old research TIFF
+    # is historical evidence, not the latest candidate and must not appear as a
+    # cleared/downloadable submission.
     card = json.loads((ROOT/'evidence'/'run_card.json').read_text())
-    assert card['raster_sha256'] == ras['sha256']
-    assert card['slot_used'] is False
+    assert card['raster_sha256'] is None
+    assert card['download_submission_status'] == 'NO FILE — NOT SAFE TO DOWNLOAD OR SUBMIT'
+    assert card['weekly_slot_used'] is False
 
 
 def test_witnesses_are_exact_indexed_files_and_why_literal_gate_is_blocked():

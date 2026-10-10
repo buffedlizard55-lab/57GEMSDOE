@@ -6,7 +6,7 @@
 <body>
 <header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
 <div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
-<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="session-3.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="on" href="results.html">Results</a><a class="" href="session-4.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
 <main>
 <h2>Holdout results</h2>
 <h3>Withholding mode <code>all</code> <span class="tag hold">HOLDOUT-DTI</span></h3>
@@ -31,54 +31,51 @@ not by hand. The holdout selected <b>0 px</b>.</p>
 <h2>The dot budget, and why the holdout's own optimum was overruled</h2>
 <p>The allocator's unconstrained holdout optimum is <b>69133</b>
 dots per draw, about 3.5x the withheld truth count per draw. That was <b>not</b> shipped.</p>
-<p>Across the 15 registry rasters with an owner-reported score (not a receipt),
-<b>Spearman(dot count, live score) = -0.8104</b>
-(p = 0.00025). The relationship is strongly negative, and it is live evidence rather
-than a holdout proxy.</p>
-<table><tr><th>Registry submission</th><th class="n">Dots</th><th class="n">Live score</th></tr><tr><td>h33-h33-2-b2 (best known, 0.2778)</td><td class="n">37,654</td><td class="n">0.2778</td></tr><tr><td>h36-1-rung30-blind-r1</td><td class="n">37,660</td><td class="n">0.2710</td></tr><tr><td>h38-1-hf-euler-r30-r1</td><td class="n">37,860</td><td class="n">0.2707</td></tr><tr><td>anderson-geothermal-pinn-38854</td><td class="n">38,854</td><td class="n">0.2750</td></tr><tr><td>gate_ortho_w0.25-40k</td><td class="n">40,000</td><td class="n">0.2376</td></tr><tr><td>h27-4-r1-solo-d2-8</td><td class="n">40,199</td><td class="n">0.2708</td></tr><tr><td>wormrank-d28</td><td class="n">41,338</td><td class="n">0.2560</td></tr><tr><td>h33d-analog-tip-stepover-r30</td><td class="n">41,865</td><td class="n">0.2632</td></tr><tr><td>h32-1-prethin-tip-euler-d2-8</td><td class="n">42,294</td><td class="n">0.2649</td></tr><tr><td>d28-poisson300m-offcat-44090</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>dotted-h19-5-d2-8</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>h25-1-dotted-h19-5-d1-5</td><td class="n">60,069</td><td class="n">0.2477</td></tr><tr><td>topo-gap-closure-t-v2-on-d1-5</td><td class="n">61,328</td><td class="n">0.2449</td></tr><tr><td>h19-5-powerlaw-budget-multiline</td><td class="n">121,131</td><td class="n">0.1922</td></tr><tr><td>h19-4-multiline-corroborated</td><td class="n">123,779</td><td class="n">0.1894</td></tr></table>
-<table><tr><th>Dot band</th><th class="n">n</th><th class="n">Mean live</th><th class="n">Best</th></tr>
-<tr><td>&lt; 50,000</td><td class="n">11</td><td class="n">0.2643</td><td class="n">0.2778</td></tr>
-<tr><td>35,000&ndash;46,000</td><td class="n">11</td><td class="n">0.2643</td><td class="n">&mdash;</td></tr>
+<p>Across 13 selected registry artifacts with numeric OWNER-REPORTED values (no submission-page receipts),
+<b>Spearman(dot count, reported value) = -0.7686</b>
+(p = 0.00214). This is descriptive, confounded owner-reported evidence; it is not an organizer
+receipt, cannot authenticate any live score, and is not causal proof.</p>
+<p><b>Excluded disputed attributions:</b> the GEMSDOE32 H33-2-B2 artifact is marked UNSCORED by its inspected
+owner repository; its 0.2747 is a projection. The H27-4/0.2708 attribution is contradicted in the owner audit.
+Neither disputed value is included in this 13-artifact association. See <a href="session-4.html">the Session 4 reconciliation</a>.</p>
+<table><tr><th>Registry artifact</th><th class="n">Dots</th><th class="n">OWNER-REPORTED value (unverified)</th></tr><tr><td>h36-1-rung30-blind-r1</td><td class="n">37,660</td><td class="n">0.2710</td></tr><tr><td>h38-1-hf-euler-r30-r1</td><td class="n">37,860</td><td class="n">0.2707</td></tr><tr><td>anderson-geothermal-pinn-38854</td><td class="n">38,854</td><td class="n">0.2750</td></tr><tr><td>gate_ortho_w0.25-40k</td><td class="n">40,000</td><td class="n">0.2376</td></tr><tr><td>wormrank-d28</td><td class="n">41,338</td><td class="n">0.2560</td></tr><tr><td>h33d-analog-tip-stepover-r30</td><td class="n">41,865</td><td class="n">0.2632</td></tr><tr><td>h32-1-prethin-tip-euler-d2-8</td><td class="n">42,294</td><td class="n">0.2649</td></tr><tr><td>d28-poisson300m-offcat-44090</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>dotted-h19-5-d2-8</td><td class="n">44,090</td><td class="n">0.2600</td></tr><tr><td>h25-1-dotted-h19-5-d1-5</td><td class="n">60,069</td><td class="n">0.2477</td></tr><tr><td>topo-gap-closure-t-v2-on-d1-5</td><td class="n">61,328</td><td class="n">0.2449</td></tr><tr><td>h19-5-powerlaw-budget-multiline</td><td class="n">121,131</td><td class="n">0.1922</td></tr><tr><td>h19-4-multiline-corroborated</td><td class="n">123,779</td><td class="n">0.1894</td></tr></table>
+<table><tr><th>Dot band</th><th class="n">n</th><th class="n">Mean reported value</th><th class="n">Best reported value</th></tr>
+<tr><td>&lt; 50,000</td><td class="n">9</td><td class="n">0.2620</td><td class="n">0.2750</td></tr>
+<tr><td>35,000&ndash;46,000</td><td class="n">9</td><td class="n">0.2620</td><td class="n">&mdash;</td></tr>
 <tr><td>&ge; 50,000</td><td class="n">4</td><td class="n">0.2186</td><td class="n">0.2477</td></tr></table>
-<p class="small">The two rasters above 120,000 dots hold the two worst live scores in the registry
-(0.1922, 0.1894).</p>
-<p>The cap shipped is <b>40000</b>, inside the band every
-top performer occupies. The cost of the cap in holdout DTI is shown below rather than hidden:
+<p class="small">The two &gt;120,000-dot entries carry the lowest owner-reported values (0.1922, 0.1894);
+this pattern is confounded and does not establish that lowering the budget improves a candidate.</p>
+<p>The cap shipped is <b>40000</b>, a conservative local policy rather than a proven live optimum. The cost of the cap in holdout DTI is shown below rather than hidden:
 IN-SAMPLE (IR-57-INSAMPLE-01; trained on the same holdout cells) unconstrained
 0.2808 vs
 capped 0.2793.
-The leave-one-quadrant-out reading of the shipped configuration is the number to quote (see the results page). The cap is
-bought with measured holdout DTI because the live evidence says the holdout is wrong here
-(&rho; = +0.14, IR-57-BUDGET-01).</p>
+The leave-one-quadrant-out reading of the shipped configuration is the number to quote (see the results page). The historical +0.14 holdout-to-reported-score relation (IR-57-BUDGET-01) is owner-reported, based on a small sample, and not an organizer receipt; it does not show that the holdout is wrong or establish a live optimum.</p>
 
-<h2>Why 0.2778 won, and whether higher is achievable</h2>
-<p>Substituting the binary algebra, <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>, where
-<code>T</code> is covered truth credit, <code>n</code> the dot count, <code>M</code> the dots' total
-self-credit and <code>K</code> the number of true new-fault pixels. Two things follow.</p>
-<p><b>1. The ceiling is 1.0, not 0.5556.</b> A perfect prediction has <code>n = M = T = K</code>, so
-<code>D = 0.2K + 0.8K = K</code> and <code>DTI = 1</code>. Verified against the brute-force
-implementation. (0.05556 is a different number: it is the marginal acceptance bar
-<code>alpha * DTI</code> at DTI = 0.2778.)</p>
-<p><b>2. At the real base rate, DTI is close to the covered fraction of the truth — but only while
-the dot budget stays comparable to <code>K</code>.</b> The grid is sparse: with ~5,660 true pixels in
-~2.56 M cells the base rate is 0.00221, and a <i>random</i> pixel lands within 3 px of a true one
-only 0.0207 of the time. Measured with the exact
-metric on synthetic fields at that density:</p>
-<table><tr><th class="n">Coverage of truth</th><th class="n">n/K = 0.5</th><th class="n">n/K = 1</th><th class="n">n/K = 2</th><th class="n">n/K = 4</th><th class="n">n/K = 6</th></tr><tr><td class="n">0.100</td><td class="n">0.1215</td><td class="n">0.1196</td><td class="n">0.1132</td><td class="n">0.1068</td><td class="n">0.1016</td></tr><tr><td class="n">0.200</td><td class="n">0.2300</td><td class="n">0.2163</td><td class="n">0.1937</td><td class="n">0.1672</td><td class="n">0.1462</td></tr><tr><td class="n">0.278</td><td class="n">0.3162</td><td class="n">0.2909</td><td class="n">0.2558</td><td class="n">0.2114</td><td class="n">0.1809</td></tr><tr><td class="n">0.300</td><td class="n">0.3413</td><td class="n">0.3132</td><td class="n">0.2729</td><td class="n">0.2221</td><td class="n">0.1887</td></tr><tr><td class="n">0.400</td><td class="n">0.4494</td><td class="n">0.4102</td><td class="n">0.3525</td><td class="n">0.2808</td><td class="n">0.2362</td></tr><tr><td class="n">0.500</td><td class="n">0.5603</td><td class="n">0.5101</td><td class="n">0.4334</td><td class="n">0.3384</td><td class="n">0.2825</td></tr><tr><td class="n">0.700</td><td class="n">0.5602</td><td class="n">0.7048</td><td class="n">0.5940</td><td class="n">0.4542</td><td class="n">0.3689</td></tr><tr><td class="n">1.000</td><td class="n">0.5597</td><td class="n">1.0000</td><td class="n">0.8365</td><td class="n">0.6301</td><td class="n">0.5063</td></tr></table><p class="small">Exact metric, synthetic fields at the measured base rate 0.002211 with sum(k) = 9.380298. A perfect prediction scores 1.0.</p>
-<p>Read the row at coverage 0.2778: the same coverage is worth <b>0.3162</b> at half the truth count
-in dots and only <b>0.1809</b> at six times it. That is the whole story of 0.2778. It is roughly
-<b>28% coverage of the live truth set achieved at a near-matched dot budget</b> — and the reason
-nothing sprayed more dots beat it is that beyond <code>n &asymp; 2K</code> every extra dot costs
-0.2 in the denominator while returning far less than 0.2 in credit.</p>
-<p><b>Is higher achievable?</b> Yes, and the route is arithmetic rather than clever: DTI tracks
-coverage roughly one-for-one while <code>n &lesssim; 2K</code>, so the 0.3774 high-water mark implies
-about 40% coverage at a matched budget. Beating 0.2778 therefore needs roughly ten points more
-coverage at the same budget. This lane measured a real coverage gain over distance-only
-(0.0673 DTI, mode <code>all</code>; 0.0721 mode <code>detached</code>, with
-disjoint confidence intervals), which is the right direction — but on <i>withheld catalogue
-pixels</i>, which cling to visible traces. Whether that transfers to genuinely uncatalogued faults
-is not knowable from here, and the +0.14 holdout-to-live rank correlation says do not assume it
-does. No projected live score is claimed anywhere on this site.</p>
+<h2>The owner-reported 0.2778: plausible mechanism, unresolved provenance</h2>
+<p><b>0.2778 is not ORGANIZER-CONFIRMED.</b> The inspected <a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">GEMSDOE32 owner README</a>
+labels H33-2-B2 <b>UNSCORED</b>; it reports local-mirror 0.267921 and +0.004870 in 4/4 folds, and
+calls 0.2747 a <b>projection</b>. The `0.2708` base attribution is contradicted in the owner audit:
+GEMSDOE28 said it had no score; the public-board 0.2708 row belongs to `smashi34` at rank 13. The
+official <a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">leaderboard</a>
+was not reachable in this sandbox, so neither public row nor owner-reported value was independently
+verified here.</p>
+<p>What the local TIFF comparison does establish: H33-2-B2 has 37,654 positive pixels and is exactly
+the H27-4 40,199-pixel raster with 2,545 pixels within 2 px of mapped faults removed (no additions).
+Removing predictions close to the known-catalogue mask could plausibly improve precision / reduce
+false-positive cost while retaining farther-field coverage. That mechanism fits the local mirror
+change but does <b>not</b> establish why an organizer score was high; the artifact is documented as
+unscored and no live score is inferred.</p>
+<p>The metric is <code>DTI = T / (0.2(T + n - M) + 0.8K)</code>: fewer low-credit predictions can
+help, while excessive dots cost 0.2 each in the denominator. The mathematical ceiling is 1.0, but
+this algebra cannot authenticate a score-to-file link. Owner-reported budget correlations are
+confounded and are labelled OWNER-REPORTED, not causal measurements.</p>
+<p><b>Can this lane beat 0.2778?</b> Unknown. H57-K is a local HOLDOUT-DTI of 0.242353
+[0.205591, 0.279115] on 22,619 withheld positives, with a paired gain +0.004930
+[0.001497, 0.008364] vs H57-G under the same detached holdout. Those are not comparable to a
+reported live result; its upper CI is not evidence of a win. The H57-K surface also failed the
+literal 3-px registry-overlap gate before placement. No final raster, live projection or slot was
+created. See <a href="session-4.html">Session 4 evidence</a> and
+<a href="irregularities.html">IR-57-SCORE-02</a>.</p>
 
 <h2>Session 2 — measured, not projected</h2>
 <p>This block was added on 2026-10-09 after a line-by-line review of the repository. Earlier
@@ -106,7 +103,7 @@ the pre-existing IR-57-CANARY-02 and is not a sense result. Not promoted; no sub
 
 <h3>Uniqueness against every accessible GEMSDOE raster</h3>
 <p>Candidate <code>gems57-h57-anatomy-enechelon-20261009T070415Z-e9d8d59a4357-zeros.tif</code> (sha256 <code>8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482</code>,
-35341 dots) against <b>644</b> unique grid-shaped
+35341 dots) against <b>667</b> unique grid-shaped
 rasters from <b>56</b> GEMSDOE repositories (scan of
 <code>evidence/registry_full_index.json</code>).</p>
 <table>
@@ -120,8 +117,59 @@ rasters from <b>56</b> GEMSDOE repositories (scan of
 below 0.5: 0. Literal verdict: <b>DRIFT-FLAGGED by the literal forward-overlap gate (114 registry rasters &gt; 0.70): log and stop; NOT cleared for submission</b>.
 The file is <b>not cleared</b> (see IR-57-UNIQ-03).</p>
 
-</main>
-<footer>Generated 2026-10-09 19:29 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+<h2>H57-K — visible-network junction distance</h2>
+<div class="bad-box" style="border-width:4px"><b>NO SAFE DOWNLOAD. No H57-K TIFF was written.</b>
+The holdout passed the research gate, but the literal directed 3-px overlap rule failed on the
+pre-placement surface. The protocol requires stopping before allocation. Final-dot comparison and
+GeoTIFF validation did not run. Do not submit this candidate or any older research artifact.</div>
+<p>Before implementation, four new geological hypotheses were ranked in
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/docs/research/session4-hypotheses.md">the prospective Session 4 screen</a>.
+H57-K was selected because network junctions are not a current prediction feature; the new distance
+field is recomputed from each fold's visible faults only. Node influence is fit, not given a hard-coded
+halo or angle. A non-fault mimic is cartographic line conflation / snapping at mapped intersections.</p>
+<table><tr><th>Arm (detached whole-component holdout, LOQO)</th><th>HOLDOUT-DTI</th>
+<th>95% spatial quadrant-jackknife CI</th><th>Withheld positives</th><th>Dots</th></tr>
+<tr><td>H57-G width control</td><td>0.2374</td>
+<td>[0.2015, 0.2734]</td>
+<td>22,619</td><td>80,000</td></tr>
+<tr><td>H57-K junction distance</td><td>0.2424</td>
+<td>[0.2056, 0.2791]</td><td>22,619</td><td>80,000</td></tr></table>
+<p><b>Paired HOLDOUT-DTI change:</b> +0.004930, 95% quadrant-jackknife CI
+[+0.001497, +0.008364]. Evaluator: <code>gems52-pooled-hide-v1; leave-one-quadrant-out pooled; detached whole-component holdout; shared evaluator checked against binary EDT</code>;
+α = 0.2, β = 0.8, triangular radius 300 m; features visible-only; exact visible-fault mask; shared
+<code>evaluate_holdout.evaluate</code> checked against independent binary-EDT scoring. The canary
+threshold is max(AUC, 1−AUC) &gt; 0.90.</p>
+<table><tr><th>Individual feature canary</th><th class="n">Max discriminative AUC</th><th>Result</th></tr><tr><td><code>d</code></td><td class="n">0.8981</td><td>clear</td></tr><tr><td><code>d_perp</code></td><td class="n">0.8965</td><td>clear</td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.7710</td><td>clear</td></tr><tr><td><code>side</code></td><td class="n">0.5352</td><td>clear</td></tr><tr><td><code>log_len</code></td><td class="n">0.5788</td><td>clear</td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td>clear</td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td>clear</td></tr><tr><td><code>coherence</code></td><td class="n">0.6775</td><td>clear</td></tr><tr><td><code>density</code></td><td class="n">0.7444</td><td>clear</td></tr><tr><td><code>width_scaled_stepover</code></td><td class="n">0.8813</td><td>clear</td></tr><tr><td><code>log_junction_distance</code></td><td class="n">0.7309</td><td>clear</td></tr></table>
+<h2>Literal registry gate — stop before placement</h2>
+<p>The decoded candidate surface has 5,106,385 positive cells and SHA-256
+<code>5130d8656d64fb7fb2938d96a1dcfcd518f1bfbc12789ea52fac9978e16f0e5d</code> (decoded float surface, <b>not a TIFF hash</b>).
+The rank gate passed these two SHA-pinned witnesses (max Spearman 0.558503),
+but directed positive-support overlap failed: 1.000000
+vs the 0.70 limit.</p>
+<table><tr><th>Registry witness</th><th>File SHA-256</th><th>Candidate-surface Spearman</th>
+<th>Candidate-positive support within 3 px</th><th>Gate result</th></tr><tr><td>13gems_20261001_r13-lattice-s5_v2_zerofill.tif</td><td><code>c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f</code></td><td class="n">-0.000063</td><td class="n">0.998724</td><td>PASS rank / FAIL overlap</td></tr><tr><td>17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif</td><td><code>ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be</code></td><td class="n">0.558503</td><td class="n">1.000000</td><td>PASS rank / FAIL overlap</td></tr></table>
+<p>The refreshed public-owner index has 667 rasters, with
+667 cached. Both pinned witnesses were checked; the first already
+fails. The other 665 index entries were not evaluated; no full-scan clearance is claimed.
+Final dots: <b>NOT RUN</b>. TIFF SHA-256: <b>none</b>; validator: <b>NOT RUN (no file emitted)</b>;
+weekly slot: <b>not used</b>.</p>
+<h2>Reconciling the owner-reported 0.2778</h2>
+<p>The <b>0.2778</b> number is not organizer-confirmed. The inspected
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">GEMSDOE32 owner README</a>
+labels H33-2-B2 <b>UNSCORED</b>, reports a local-mirror proxy of 0.267921 / +0.004870 in 4/4 folds, and labels
+0.2747 a <b>projection</b>. Local raster comparison found its 37,654 positive pixels equal the H27-4
+40,199-pixel base after deleting 2,545 pixels within 2 px of known catalogue traces, with no additions.
+That precision/false-positive trade-off is a plausible mechanism, but does not show that 0.2778 was awarded to this raster or explain any organizer score. The
+`0.2708` attribution is contradicted by the owner audit: the GEMSDOE28 source says no score, while its
+archived public-board row is rank 13 participant <code>smashi34</code>. See
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">the official leaderboard</a>
+(manual verification unavailable here) and <a href="irregularities.html">the irregularity log</a>.</p>
+<p><b>Can this lane beat 0.2778? Unknown.</b> H57-K's HOLDOUT-DTI point estimate is lower; the CI's
+upper end is not a cross-method live comparison. There is no live score, no organizer receipt, and
+no cleared TIFF. No projection is made.</p>
+<p>Machine-readable measurement: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/exp5_junction.json"><code>evidence/exp5_junction.json</code></a> ·
+<a href="run-card.html">latest run card</a> · <a href="research/session4-review.md">three-pass review log</a>.</p></main>
+<footer>Generated 2026-10-10 22:00 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
 Every number on this site is read from a measurement file at build time.
 <span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
 <span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>

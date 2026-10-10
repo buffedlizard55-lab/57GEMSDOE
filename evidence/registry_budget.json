@@ -1,112 +1,99 @@
 {
-  "n_rasters": 15,
-  "spearman_dots_vs_live": -0.8104,
-  "p_value": 0.0002486657034971754,
+  "n_rasters": 13,
+  "p_value": 0.0021415872926236422,
   "rows": [
-    {
-      "submission": "h33-h33-2-b2 (best known, 0.2778)",
-      "n_dots": 37654,
-      "live_score": 0.2778,
-      "repo": "GEMSDOE32"
-    },
     {
       "submission": "h36-1-rung30-blind-r1",
       "n_dots": 37660,
-      "live_score": 0.271,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "owner_reported_value": 0.271
     },
     {
       "submission": "h38-1-hf-euler-r30-r1",
       "n_dots": 37860,
-      "live_score": 0.2707,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "owner_reported_value": 0.2707
     },
     {
       "submission": "anderson-geothermal-pinn-38854",
       "n_dots": 38854,
-      "live_score": 0.275,
-      "repo": "GEMSDOE36"
+      "repo": "GEMSDOE36",
+      "owner_reported_value": 0.275
     },
     {
       "submission": "gate_ortho_w0.25-40k",
       "n_dots": 40000,
-      "live_score": 0.2376,
-      "repo": "GEMSDOE49"
-    },
-    {
-      "submission": "h27-4-r1-solo-d2-8",
-      "n_dots": 40199,
-      "live_score": 0.2708,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE49",
+      "owner_reported_value": 0.2376
     },
     {
       "submission": "wormrank-d28",
       "n_dots": 41338,
-      "live_score": 0.256,
-      "repo": "GEMSDOE29"
+      "repo": "GEMSDOE29",
+      "owner_reported_value": 0.256
     },
     {
       "submission": "h33d-analog-tip-stepover-r30",
       "n_dots": 41865,
-      "live_score": 0.2632,
-      "repo": "GEMSDOE33"
+      "repo": "GEMSDOE33",
+      "owner_reported_value": 0.2632
     },
     {
       "submission": "h32-1-prethin-tip-euler-d2-8",
       "n_dots": 42294,
-      "live_score": 0.2649,
-      "repo": "GEMSDOE28"
+      "repo": "GEMSDOE28",
+      "owner_reported_value": 0.2649
     },
     {
       "submission": "d28-poisson300m-offcat-44090",
       "n_dots": 44090,
-      "live_score": 0.26,
-      "repo": "GEMSDOE30"
+      "repo": "GEMSDOE30",
+      "owner_reported_value": 0.26
     },
     {
       "submission": "dotted-h19-5-d2-8",
       "n_dots": 44090,
-      "live_score": 0.26,
-      "repo": "GEMSDOE25"
+      "repo": "GEMSDOE25",
+      "owner_reported_value": 0.26
     },
     {
       "submission": "h25-1-dotted-h19-5-d1-5",
       "n_dots": 60069,
-      "live_score": 0.2477,
-      "repo": "GEMSDOE24"
+      "repo": "GEMSDOE24",
+      "owner_reported_value": 0.2477
     },
     {
       "submission": "topo-gap-closure-t-v2-on-d1-5",
       "n_dots": 61328,
-      "live_score": 0.2449,
-      "repo": "GEMSDOE27"
+      "repo": "GEMSDOE27",
+      "owner_reported_value": 0.2449
     },
     {
       "submission": "h19-5-powerlaw-budget-multiline",
       "n_dots": 121131,
-      "live_score": 0.1922,
-      "repo": "19GEMSDOE"
+      "repo": "19GEMSDOE",
+      "owner_reported_value": 0.1922
     },
     {
       "submission": "h19-4-multiline-corroborated",
       "n_dots": 123779,
-      "live_score": 0.1894,
-      "repo": "19GEMSDOE"
+      "repo": "19GEMSDOE",
+      "owner_reported_value": 0.1894
     }
   ],
   "band_lt_50k": {
-    "n": 11,
-    "mean_live": 0.2643,
-    "best": 0.2778
+    "n": 9,
+    "mean_owner_reported_value": 0.262,
+    "best_owner_reported_value": 0.275
   },
   "band_ge_50k": {
     "n": 4,
-    "mean_live": 0.2186,
-    "best": 0.2477
+    "mean_owner_reported_value": 0.2186,
+    "best_owner_reported_value": 0.2477
   },
   "band_35k_46k": {
-    "n": 11,
-    "mean_live": 0.2643
+    "n": 9,
+    "mean_owner_reported_value": 0.262
   },
   "grid_px": 2560000,
   "n_truth_cells": 5660,
@@ -315,5 +302,6 @@
       "dti": 0.5063
     }
   ],
-  "perfect_prediction_dti": 1.0
+  "perfect_prediction_dti": 1.0,
+  "spearman_dots_vs_owner_reported_value": -0.7686
 }

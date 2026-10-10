@@ -10,7 +10,16 @@
 </div></header>
 <main class="wrap">
 
-<h2 style="margin-top:0">Research — hypothesis, evidence, run card</h2>
+<div class="card" style="border:3px solid #a3341f;background:#fdf1ee"><h2 style="margin-top:0">ARCHIVED SNAPSHOT — NOT CURRENT CLEARANCE</h2>
+<p>This page predates the Session 4 review. <b>Do not treat any linked TIFF here as safe to submit.</b>
+The quoted GEMSDOE32 <code>0.2778</code> is OWNER-REPORTED and unverified; the inspected owner repository
+marks H33-2-B2 <b>UNSCORED</b>, with 0.2747 only a projection. The 0.2708 attribution is contradicted.
+The latest H57-K run has a positive local holdout comparison but fails the strict pre-placement registry-overlap gate;
+<b>no H57-K TIFF exists and no file in this repository is cleared for submission.</b>
+See <a href="session-4.html">current H57-K evidence</a>, the <a href="run-card.html">latest run card</a>, and
+<a href="irregularities.html">the score/source log</a>.</p></div>
+
+<h2 style="margin-top:0">Research — archived hypothesis, evidence, run card</h2>
 
 <div class="card">
   <h3 style="margin-top:0">Hypothesis (this lane)</h3>
@@ -38,7 +47,7 @@
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0">Live proxy — SGMC-truth DTI <span class="tag prox">PROXY-DTI</span></h3>
+  <h3 style="margin-top:0">Historical proxy evaluation — SGMC-truth DTI <span class="tag prox">PROXY-DTI</span></h3>
   <p>Truth: 79,025 SGMC pixels captured by neither USGS nor INGENIOUS — real off-catalogue
   faults, the closest legal proxy for the hidden test set (not a holdout, not an organizer
   score).</p>
@@ -46,30 +55,27 @@
     <tr><th>Raster</th><th class="num">SGMC-truth DTI</th></tr>
     <tr><td><b>this lane @ 60k dots</b></td><td class="num"><b>0.0457</b></td></tr>
     <tr><td>this lane @ 120k dots (sweep still rising)</td><td class="num">0.0650</td></tr>
-    <tr><td>h19-5 (LIVE 0.1922)</td><td class='num'>0.1450</td></tr><tr><td>d15 (LIVE 0.2477)</td><td class='num'>0.1410</td></tr><tr><td>tip-h32-1 (LIVE 0.2649)</td><td class='num'>0.1213</td></tr><tr><td>h27-4 (LIVE 0.2708)</td><td class='num'>0.1093</td></tr><tr><td>anderson (LIVE 0.2750)</td><td class='num'>0.0944</td></tr><tr><td>h33-2-b2 (LIVE 0.2778)</td><td class='num'>0.0931</td></tr>
+    <tr><td>h19-5 (owner-reported 0.1922)</td><td class='num'>0.1450</td></tr><tr><td>d15 (owner-reported 0.2477)</td><td class='num'>0.1410</td></tr><tr><td>tip-h32-1 (owner-reported 0.2649)</td><td class='num'>0.1213</td></tr><tr><td>H27-4 (0.2708 attribution contradicted)</td><td class='num'>0.1093</td></tr><tr><td>anderson (owner-reported 0.2750)</td><td class='num'>0.0944</td></tr><tr><td>H33-2-B2 (UNSCORED per owner repo; 0.2778 claim unverified)</td><td class='num'>0.0931</td></tr>
   </table>
+  <p>Every right-column value is this repository's local <b>PROXY-DTI</b> measurement; parentheses are separate owner reports, not verified live scores. The 0.0931 H33-2-B2 value is not an organizer result and does not validate a score-to-file mapping.</p>
   <p>The lane's fitted halo covers real off-catalogue faults 2-3x less efficiently than the geophysics-ML incumbents; the SGMC sweep is still rising at 120k while the holdout peaks at 60k - the two instruments disagree on budget, flagged for the selector.</p>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0">Registry drift check (663 rasters) — MEASUREMENT</h3>
+  <h3 style="margin-top:0">Historical registry check (663 rasters) — SUPERSEDED, NOT CLEARANCE</h3>
   <dl class="kv">
     <dt>Max |Spearman|</dt><dd>0.6271 (limit 0.90) —
         <code>siblings/7GEMSDOE/downloads/gems7-halo15-gbt-v1-90fb7dc0fc1f.tif</code></dd>
     <dt>Duplicates by correlation</dt><dd>0</dd>
     <dt>Duplicates by overlap (bidirectional)</dt><dd>0</dd>
     <dt>sha256 duplicates</dt><dd>0</dd>
-    <dt>Verdict</dt><dd><b>UNIQUE - no registry raster within the drift limits (mechanical one-directional overlap firings logged as coverage-saturation artifacts, see saturation_firings)</b></dd>
+    <dt>Verdict</dt><dd><b>HISTORICAL ONLY — no current candidate is cleared by this check</b></dd>
   </dl>
-  <p style="font-size:13px;color:var(--mut)">duplicate iff forward dot overlap within 3 px &gt; 0.70 AND reverse &gt; 0.50 vs a dot-scale registry raster (&lt;= 500k positive px); mechanical one-directional firings are saturation artifacts and are logged for review.
-  Mechanical one-directional firings (61) are
-  coverage-saturation artifacts: dense registry emissions (206k–452k dots) whose 3-px-dilated
-  coverage saturates the halo, with reverse overlap 0.07–0.10 and rank correlation ≈ 0.
-  Flagged for review; full list in <code>evidence/uniqueness.json</code>.</p>
+  <p style="font-size:13px;color:var(--mut)">This earlier H1 check used a 663-raster snapshot and bidirectional/dot-scale logic, so its historical UNIQUE label is superseded. The archived 35,341-dot H57-G file has since been re-audited against the refreshed 667-raster index: 114 directed-overlap firings; NOT CLEARED. H57-K is a separate candidate and fails its required pre-placement 3-px overlap gate against two pinned witnesses; no H57-K TIFF exists. No current submission clearance is established.</p>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0">Parallel-session drift check (PR #1, same lane) — MEASUREMENT</h3>
+  <h3 style="margin-top:0">Historical parallel-session comparison (prior artifact only)</h3>
   <p>A parallel session ran this same lane and merged first (12k-dot synthetic-strand
   emission). The registry scan predates that merge, so the two rasters are checked
   directly in <code>evidence/uniqueness_parallel.json</code>:</p>
@@ -80,21 +86,19 @@
     <tr><td>Reverse overlap (their dots within 3 px of mine)</td><td class="num">0.2273</td><td class="num">—</td></tr>
     <tr><td>sha256 identical</td><td class="num">no</td><td class="num">—</td></tr>
   </table>
-  <p><b>Verdict: UNIQUE</b> — the two emissions occupy different parts of the damage zone
-  (this session: fitted 60-px halo, median 5.7 px from known faults; parallel session:
-  &lt;15 px synthetic strands, median 2.8 px). Both are valid, distinct artifacts.</p>
+  <p><b>Historical comparison only.</b> This prior pair differed in placement under its then-current method; it does not clear any current candidate against the refreshed registry or standing directed-overlap limit.</p>
 </div>
 
 <div class="card">
-  <h3 style="margin-top:0">Run card</h3>
+  <h3 style="margin-top:0">Historical H1 run card — ARCHIVE ONLY, NOT A CURRENT SUBMISSION</h3>
   <dl class="kv">
-    <dt>Submission</dt><dd><code>GEMSDOE57-FZA-60000px</code> — <code>gems57-faultzone-anatomy-60000px-20261009T054251Z.tif</code></dd>
-    <dt>Note (≤140 ch)</dt><dd><code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code></dd>
-    <dt>Raster sha256</dt><dd><code>a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</code></dd>
-    <dt>Validator</dt><dd><b>PASS</b> — single band float32; EPSG:32611; 3730x3292; transform/bounds match sample_submission.tif; 100 m resolution; 0 NaN/inf pixels inside the footprint (all-finite export); values in [0,1] (min 0.0, max 1.0); 0 emitted pixels outside the footprint; no nodata tag</dd>
-    <dt>Verdict</dt><dd><b>NEGATIVE</b></dd>
+    <dt>Historical artifact</dt><dd><code>GEMSDOE57-FZA-60000px</code> — the named TIFF is <b>absent from the current workspace</b>; no download is offered and this record does not clear it for submission.</dd>
+    <dt>Historical note</dt><dd><code>fault-zone anatomy: fitted damage-zone halo around USGS+INGENIOUS faults; 60000 dots, 0 on known faults; HOLDOUT-DTI 0.0580 [0.0507,0.0663]</code></dd>
+    <dt>Recorded hash (not reverified)</dt><dd><code>a08650cadb9a1baf36f00a87bbbd80e789ba01f45c9d57936865a94174cc9cd8</code></dd>
+    <dt>Historical validator record</dt><dd>PASS was recorded for the earlier artifact; no current TIFF is present to revalidate.</dd>
+    <dt>Historical verdict</dt><dd><b>NEGATIVE</b> — this was a prior lane result, not current uniqueness or submission approval.</dd>
   </dl>
-  <p>The lane is VALIDATED as a real, non-leaking, unique signal: it beats its own controls on the brief's holdout instrument (0.0580 vs random 0.0492 and uniform-halo 0.0117 at 60k dots), the leakage canary is far below threshold (max AUC 0.6538 &lt; 0.90), and the drift check is clean (max |Spearman| 0.6271 &lt; 0.90, no bidirectional duplicates, sha256 unique across 663 registry rasters). But it does NOT beat the current holdout best on the template instrument (d15 scores 0.0844 as-is on the same folds; comparison is conservative for this lane, whose 0.0580 is per-fold-rebuilt while d15 is a frozen artifact scored as-is), and on the SGMC-truth instrument (the better proxy for the live target) it trails the incumbents 2-3x (0.0457 vs 0.0931-0.1450). As a standalone submission it is therefore not expected to beat the incumbent LIVE 0.2778. Promotion to a real slot is a separate selector step; per the session rule, no slot should be spent on this artifact. The submission file is generated, validated and downloadable (the session's highest-urgency deliverable), and the negative result is the deliverable: the fitted damage zone is real structure, but pure catalogue geometry is not enough - the next step is zone-gated geophysical corroboration (hypothesis H2 in docs/research/hypotheses.md).</p>
+  <p><b>Current Session 4 status:</b> H57-K measured detached-mode <b>HOLDOUT-DTI 0.242353</b> (95% quadrant-jackknife CI 0.205591–0.279115), versus same-run H57-G control 0.237423; paired gain +0.004930 (95% CI 0.001497–0.008364). This is a local holdout measurement, not a live score and not evidence that the lane beats the owner-reported, unverified 0.2778. H57-K's surface passes the Spearman limit (max 0.558503 &lt; 0.90) but fails the literal pre-placement directed overlap gate: 99.8724% against the 13GEMSDOE lattice and 100% against the 17GEMSDOE raster, both above the 0.70 limit. The process stopped before placement: no H57-K TIFF, final-dot result, TIFF hash, validator result, safe download, or submission exists. No slot was used. See <a href="session-4.html">current Session 4 evidence</a> and <a href="run-card.html">the current run card</a>. The earlier H1 material above is archival research only.</p>
   <p>Full run card: <code>evidence/run_card.json</code> · ranked hypotheses:
   <a href="research/hypotheses.md">docs/research/hypotheses.md</a>.</p>
 </div>
@@ -118,7 +122,7 @@
 
 </main>
 <footer><div class="wrap" style="padding:0">
-GEMSDOE57 · branch <code>arena/af16d287-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
+GEMSDOE57 · branch <code>arena/779294eb-57gemsdoe</code> · generated 2026-10-09 (UTC) ·
 local template validation only — not organizer upload acceptance.
 </div></footer>
 </body></html>

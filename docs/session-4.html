@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Latest run · 57GEMSDOE</title>
+<link rel="stylesheet" href="assets/site.css"></head>
+<body>
+<header><h1>57GEMSDOE — fault-zone-anatomy lane</h1>
+<div class="sub">DOE GEMS Prize Challenge · DrivenData #306 · secondary strands around known faults</div></header>
+<nav><a class="" href="index.html">Home</a><a class="" href="executive-summary.html">How to submit</a><a class="" href="method.html">Method</a><a class="" href="hypotheses.html">Hypotheses</a><a class="" href="results.html">Results</a><a class="on" href="session-4.html">Latest run</a><a class="" href="irregularities.html">Irregularities</a><a class="" href="data-sources.html">Data sources</a><a class="" href="run-card.html">Run card</a></nav>
+<main><h2>H57-K — visible-network junction distance</h2>
+<div class="bad-box" style="border-width:4px"><b>NO SAFE DOWNLOAD. No H57-K TIFF was written.</b>
+The holdout passed the research gate, but the literal directed 3-px overlap rule failed on the
+pre-placement surface. The protocol requires stopping before allocation. Final-dot comparison and
+GeoTIFF validation did not run. Do not submit this candidate or any older research artifact.</div>
+<p>Before implementation, four new geological hypotheses were ranked in
+<a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/docs/research/session4-hypotheses.md">the prospective Session 4 screen</a>.
+H57-K was selected because network junctions are not a current prediction feature; the new distance
+field is recomputed from each fold's visible faults only. Node influence is fit, not given a hard-coded
+halo or angle. A non-fault mimic is cartographic line conflation / snapping at mapped intersections.</p>
+<table><tr><th>Arm (detached whole-component holdout, LOQO)</th><th>HOLDOUT-DTI</th>
+<th>95% spatial quadrant-jackknife CI</th><th>Withheld positives</th><th>Dots</th></tr>
+<tr><td>H57-G width control</td><td>0.2374</td>
+<td>[0.2015, 0.2734]</td>
+<td>22,619</td><td>80,000</td></tr>
+<tr><td>H57-K junction distance</td><td>0.2424</td>
+<td>[0.2056, 0.2791]</td><td>22,619</td><td>80,000</td></tr></table>
+<p><b>Paired HOLDOUT-DTI change:</b> +0.004930, 95% quadrant-jackknife CI
+[+0.001497, +0.008364]. Evaluator: <code>gems52-pooled-hide-v1; leave-one-quadrant-out pooled; detached whole-component holdout; shared evaluator checked against binary EDT</code>;
+α = 0.2, β = 0.8, triangular radius 300 m; features visible-only; exact visible-fault mask; shared
+<code>evaluate_holdout.evaluate</code> checked against independent binary-EDT scoring. The canary
+threshold is max(AUC, 1−AUC) &gt; 0.90.</p>
+<table><tr><th>Individual feature canary</th><th class="n">Max discriminative AUC</th><th>Result</th></tr><tr><td><code>d</code></td><td class="n">0.8981</td><td>clear</td></tr><tr><td><code>d_perp</code></td><td class="n">0.8965</td><td>clear</td></tr><tr><td><code>d_par_abs</code></td><td class="n">0.7710</td><td>clear</td></tr><tr><td><code>side</code></td><td class="n">0.5352</td><td>clear</td></tr><tr><td><code>log_len</code></td><td class="n">0.5788</td><td>clear</td></tr><tr><td><code>sin2</code></td><td class="n">0.5000</td><td>clear</td></tr><tr><td><code>cos2</code></td><td class="n">0.5000</td><td>clear</td></tr><tr><td><code>coherence</code></td><td class="n">0.6775</td><td>clear</td></tr><tr><td><code>density</code></td><td class="n">0.7444</td><td>clear</td></tr><tr><td><code>width_scaled_stepover</code></td><td class="n">0.8813</td><td>clear</td></tr><tr><td><code>log_junction_distance</code></td><td class="n">0.7309</td><td>clear</td></tr></table>
+<h2>Literal registry gate — stop before placement</h2>
+<p>The decoded candidate surface has 5,106,385 positive cells and SHA-256
+<code>5130d8656d64fb7fb2938d96a1dcfcd518f1bfbc12789ea52fac9978e16f0e5d</code> (decoded float surface, <b>not a TIFF hash</b>).
+The rank gate passed these two SHA-pinned witnesses (max Spearman 0.558503),
+but directed positive-support overlap failed: 1.000000
+vs the 0.70 limit.</p>
+<table><tr><th>Registry witness</th><th>File SHA-256</th><th>Candidate-surface Spearman</th>
+<th>Candidate-positive support within 3 px</th><th>Gate result</th></tr><tr><td>13gems_20261001_r13-lattice-s5_v2_zerofill.tif</td><td><code>c12533bb980234c3a706af641d4f1d514bbbe482714b2ebcac3b10f3e72a7a3f</code></td><td class="n">-0.000063</td><td class="n">0.998724</td><td>PASS rank / FAIL overlap</td></tr><tr><td>17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif</td><td><code>ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be</code></td><td class="n">0.558503</td><td class="n">1.000000</td><td>PASS rank / FAIL overlap</td></tr></table>
+<p>The refreshed public-owner index has 667 rasters, with
+667 cached. Both pinned witnesses were checked; the first already
+fails. The other 665 index entries were not evaluated; no full-scan clearance is claimed.
+Final dots: <b>NOT RUN</b>. TIFF SHA-256: <b>none</b>; validator: <b>NOT RUN (no file emitted)</b>;
+weekly slot: <b>not used</b>.</p>
+<h2>Reconciling the owner-reported 0.2778</h2>
+<p>The <b>0.2778</b> number is not organizer-confirmed. The inspected
+<a href="https://github.com/buffedlizard55-lab/GEMSDOE32/blob/main/README.md">GEMSDOE32 owner README</a>
+labels H33-2-B2 <b>UNSCORED</b>, reports a local-mirror proxy of 0.267921 / +0.004870 in 4/4 folds, and labels
+0.2747 a <b>projection</b>. Local raster comparison found its 37,654 positive pixels equal the H27-4
+40,199-pixel base after deleting 2,545 pixels within 2 px of known catalogue traces, with no additions.
+That precision/false-positive trade-off is a plausible mechanism, but does not show that 0.2778 was awarded to this raster or explain any organizer score. The
+`0.2708` attribution is contradicted by the owner audit: the GEMSDOE28 source says no score, while its
+archived public-board row is rank 13 participant <code>smashi34</code>. See
+<a href="https://www.drivendata.org/competitions/306/competition-doe-gems/leaderboard/">the official leaderboard</a>
+(manual verification unavailable here) and <a href="irregularities.html">the irregularity log</a>.</p>
+<p><b>Can this lane beat 0.2778? Unknown.</b> H57-K's HOLDOUT-DTI point estimate is lower; the CI's
+upper end is not a cross-method live comparison. There is no live score, no organizer receipt, and
+no cleared TIFF. No projection is made.</p>
+<p>Machine-readable measurement: <a href="https://github.com/buffedlizard55-lab/57GEMSDOE/blob/main/evidence/exp5_junction.json"><code>evidence/exp5_junction.json</code></a> ·
+<a href="run-card.html">latest run card</a> · <a href="research/session4-review.md">three-pass review log</a>.</p></main>
+<footer>Generated 2026-10-10 22:00 UTC by <code>scripts/build_site.py</code> from <code>evidence/*.json</code>.
+Every number on this site is read from a measurement file at build time.
+<span class="tag hold">HOLDOUT-DTI</span> = local instrument reading, never a live score.
+<span class="tag org">ORGANIZER-CONFIRMED</span> = copied from a submission-page receipt.</footer>
+</body></html>

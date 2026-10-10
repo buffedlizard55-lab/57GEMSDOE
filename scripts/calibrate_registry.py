@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Calibration: score the registry's top rasters (and controls) on THIS lane's
-holdout instrument, so the lane's HOLDOUT-DTI is comparable to the live scores
-those rasters carry.  Also score every raster on the SGMC-truth instrument
-(real off-catalogue faults = the closest legal proxy for the hidden truth).
+"""Calibration: measure selected registry rasters (and controls) on THIS lane's
+local holdout instrument and the SGMC-truth proxy (off-catalogue faults). This
+lets us compare raster behavior on shared local instruments; it does not validate
+owner-reported values or connect a TIFF hash to an organizer score.
 
-Both instruments use the template metric (alpha 0.2, beta 0.8, 300 m).  All
-numbers are HOLDOUT-DTI / PROXY-DTI, never organizer scores.
+Both instruments use the template metric (alpha 0.2, beta 0.8, 300 m). All
+numbers emitted here are HOLDOUT-DTI / PROXY-DTI, never live or organizer scores.
 """
 from __future__ import annotations
 
@@ -36,18 +36,20 @@ N_FOLDS = 4
 PREVALENCE = 0.002
 SEED = 20261009
 
-# registry rasters that carry owner-reported live scores (top of the family)
+# Rasters historically associated with reported values. These labels are not scores:
+# GEMSDOE32 marks H33-2-B2 UNSCORED, and the H27-4/0.2708 attribution is contradicted.
+# Results emitted below are local HOLDOUT-DTI/PROXY-DTI only.
 REGISTRY = [
-    ("h33-2-b2 LIVE 0.2778", "GEMSDOE48-main/data/raw/dotted_h33_2_b2_zeros.tif"),
-    ("h27-4-solo LIVE 0.2708", "GEMSDOE48-main/data/raw/ref_h27_4_solo.tif"),
-    ("h36-1-rung30 LIVE 0.2710", "GEMSDOE48-main/data/raw/ref_h36_1_rung30.tif"),
-    ("tip-h33d LIVE 0.2632", "GEMSDOE48-main/data/raw/tip_h33d_stepover.tif"),
-    ("tip-h32-1 LIVE 0.2649", "GEMSDOE48-main/data/raw/tip_h32_1_prethin_tip_euler.tif"),
-    ("h19-5 LIVE 0.1922", "GEMSDOE48-main/data/raw/scored/h19_5_01922.tif"),
-    ("d15 LIVE 0.2477", "GEMSDOE48-main/data/raw/scored/d15_02477.tif"),
-    ("h32 LIVE 0.2649", "GEMSDOE48-main/data/raw/scored/h32_prethin_tip_02649.tif"),
-    ("h36 LIVE 0.2710", "GEMSDOE48-main/data/raw/scored/h36_rung30_02710.tif"),
-    ("anderson LIVE 0.2750", "GEMSDOE36-main/docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif"),
+    ("H33-2-B2 raster (reported 0.2778 claim unverified; owner repo says UNSCORED)", "GEMSDOE48-main/data/raw/dotted_h33_2_b2_zeros.tif"),
+    ("H27-4 raster (0.2708 attribution contradicted; not organizer-confirmed)", "GEMSDOE48-main/data/raw/ref_h27_4_solo.tif"),
+    ("h36-1-rung30 raster", "GEMSDOE48-main/data/raw/ref_h36_1_rung30.tif"),
+    ("tip-h33d raster", "GEMSDOE48-main/data/raw/tip_h33d_stepover.tif"),
+    ("tip-h32-1 raster", "GEMSDOE48-main/data/raw/tip_h32_1_prethin_tip_euler.tif"),
+    ("h19-5 raster", "GEMSDOE48-main/data/raw/scored/h19_5_01922.tif"),
+    ("d15 raster", "GEMSDOE48-main/data/raw/scored/d15_02477.tif"),
+    ("h32 raster", "GEMSDOE48-main/data/raw/scored/h32_prethin_tip_02649.tif"),
+    ("h36 raster", "GEMSDOE48-main/data/raw/scored/h36_rung30_02710.tif"),
+    ("anderson raster", "GEMSDOE36-main/docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif"),
     ("catalogue (sample_submission)", "official/sample_submission.tif"),
 ]
 

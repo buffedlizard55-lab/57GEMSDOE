@@ -9,53 +9,70 @@
 
 ---
 
-## 2026-10-09 latest run — independent H57-G raster, NOT SUBMITTABLE
+## 2026-10-09 latest run — H57-K HOLDOUT-DTI gain, uniqueness NEGATIVE
 
-**DO NOT UPLOAD ANY FILE FROM THIS REPOSITORY YET.** A freshly fitted length-normalized
-cross-strike model produced a distinct [research GeoTIFF](docs/downloads/gems57-h57g-width-normalized-b1329dc0f248-RESEARCH-DO-NOT-SUBMIT.tif),
-not copied from a previous submission. Its file SHA-256 differs from all 644
-indexed raster file hashes; only two prior surfaces were rank-tested before the
-literal gate stopped the run. The local GeoTIFF format validator passes all checks. **But the
-literal directed-overlap rule fails against public registry witnesses on the
-surface before dot placement, so no final-dot submission was generated.**
-The earlier candidate below also failed that rule. The new model's spatial-blocked,
-detached-segment HOLDOUT-DTI is 0.2374 [0.2015, 0.2734] on 22,619 withheld positives
-vs its same-density baseline 0.2359 [0.2003, 0.2714]; the very small gain does not
-establish a live benefit. Evidence: [`evidence/exp4_width.json`](evidence/exp4_width.json),
-[`docs/session-3.html`](docs/session-3.html). No weekly slot was used.
+**STATUS: NO SAFE TIFF TO DOWNLOAD OR SUBMIT.** H57-K adds distance to a junction
+computed from the *visible* fault network. It beat the same-mode H57-G width control
+on the detached, leave-one-quadrant-out holdout: **HOLDOUT-DTI 0.242353**, 95% spatial
+quadrant-jackknife CI **[0.205591, 0.279115]**, on **22,619 withheld positives**.
+The control was 0.237423 [0.201476, 0.273369]; the paired gain was +0.004930
+[+0.001497, +0.008364]. These are local holdout measurements, **not live scores or
+projections**. The max discriminative AUC for the new junction-distance feature was
+0.7309 (leakage threshold 0.90); no canary fired. See
+[`evidence/exp5_junction.json`](evidence/exp5_junction.json) ·
+[three-pass review log](docs/research/session4-review.md).
 
-**Measured blocker:** the binary 13GEMSDOE lattice's 3-px halo covers 99.8724% of
-eligible cells. The continuous 17GEMSDOE E-proba raster is positive on 100% of
-eligible cells, so *if* `>0` is interpreted literally as a dot in a continuous
-prior (the existing checker does), no nonempty candidate can pass. That interpretation
-is not equivalent to thresholding a probability surface at 0.5. Do not quietly
-change the gate; seek a protocol interpretation before future promotion. Registry
-scope is public accessible files, not private entries.
+The in-memory candidate surface passed the rank limit against two pinned witnesses
+(max Spearman 0.558503), but **failed the literal directed 3-px overlap limit before
+placement**: 99.8724% against the 13GEMSDOE spacing-5 lattice and 100% against the
+17GEMSDOE continuous E-proba raster. Following the standing prompt, dot placement
+stopped; no final-dot check ran and **no H57-K GeoTIFF was written**. The pre-placement
+decoded-surface SHA-256 is `5130d8656d64fb7fb2938d96a1dcfcd518f1bfbc12789ea52fac9978e16f0e5d`;
+it is not a TIFF file hash. The owner registry index/cache was restored and refreshed:
+667 unique grid-shaped rasters from 56 accessible sibling repositories (23 more than the
+previous 644-entry index; all 667 cached). Both pinned witnesses were checked; the
+first already failed, so the other 665 registry rasters were not needed for the
+negative verdict. No full-registry clearance is claimed.
+No weekly slot was used; no organizer receipt exists.
+
+### The reported 0.2778 GEMSDOE32 result: not reconciled as a score
+
+`0.2778` remains **OWNER-REPORTED, unverified**. The inspected
+[GEMSDOE32 owner repository](https://github.com/buffedlizard55-lab/GEMSDOE32) marks
+H33-2-B2 **UNSCORED**. Its local mirror record reports 0.267921 and +0.004870 in
+4/4 folds; its **0.2747 is explicitly a projection**, not a live measurement. The
+H33-2-B2 TIFF (37,654 positive pixels) was byte-compared here with H27-4: it is exactly
+the 40,199-pixel H27-4 raster after removing the 2,545 dots within 2 px of the mapped
+catalogue, with no additions. That trimming could plausibly reduce false-positive
+cost while preserving farther-field coverage; it is a *mechanism hypothesis*, not proof
+of why any organizer score was high. The claimed `0.2708` attribution is contradicted:
+the owner audit says the GEMSDOE28 page had no score, and the public-board `0.2708`
+row is rank 13 for participant `smashi34`, not a hash/receipt for this TIFF. See
+[`IR-57-SCORE-02`](docs/irregularities.html).
+
+**Can this lane beat 0.2778? Unknown.** H57-K's holdout point estimate (0.242353)
+is numerically lower, and its upper CI happens to overlap 0.2778, but those values are
+not like-for-like: one is a local withheld-catalogue measurement and the other is an
+unverified live-score claim. There is no authorized live test, no submission receipt,
+and no cleared unique TIFF, so neither a win nor a projected live score is supportable.
 
 ---
 
-## ⬇ ONE-CLICK SUBMISSION FILE
+## ⬇ SUBMISSION STATUS — NO CLEARED DOWNLOAD
 
-> **STATUS: HOLD — do not submit yet.** The file is format-valid, but the literal
-> uniqueness gate fired (forward dot overlap > 0.70 against one registry raster) for
-> **114 of 644** registry rasters, so the protocol says log and stop. It is not cleared.
-> Two owner decisions are needed (see `IR-57-UNIQ-03` and the banner on
-> [`docs/index.html`](docs/index.html)). Nothing has been submitted.
+> **NO H57-K SUBMISSION FILE EXISTS. DO NOT DOWNLOAD OR SUBMIT A raster from `docs/downloads/` as a competition entry.**
+> The strict overlap gate failed before dot placement; the final-dot uniqueness and
+> portal-validator stages were intentionally not run. The older H57-G research surface
+> still in the folder is also labelled `RESEARCH-DO-NOT-SUBMIT` and is not cleared.
+> Nothing has been submitted.
 
-**The candidate file (held) is the `-zeros.tif` variant in [`docs/downloads/`](docs/downloads/).**
-It is portal-legal by construction: single band, `float32`, `EPSG:32611`,
-`3730 × 3292`, transform `(100, 0, 243350, 0, -100, 4508550)`, every one of the
-12,279,160 cells finite and in `[0, 1]`, zero dots on the mapped catalogue.
-
-> **Do not submit the `-nan.tif` variant.** It is a diagnostic. It carries
-> 7,111,787 `NaN` cells outside the study-area footprint and the portal rejects
-> it with *"Predicted values must be in range [0, 1]"*, because `NaN` satisfies
-> neither `v >= 0` nor `v <= 1`. See [the executive summary](docs/executive-summary.html)
-> and irregularity `IR-57-NAN-01`.
-
-The exact filename, sha256, check receipt and the suggested submission note are
-printed at the top of [`docs/index.html`](docs/index.html) and in
-[`evidence/submission_build_all.json`](evidence/submission_build_all.json).
+The standing format requirement remains: if a future candidate clears holdout and
+registry uniqueness, it must be a single-band `float32` GeoTIFF on the pinned
+`EPSG:32611`, `3730 × 3292` grid, transform `(100, 0, 243350, 0, -100, 4508550)`,
+finite and in `[0,1]` everywhere. Do not bypass the literal uniqueness gate merely
+to create a download button. See [`BRIEF.md`](BRIEF.md),
+[`docs/executive-summary.html`](docs/executive-summary.html), and
+[`evidence/run_card.json`](evidence/run_card.json).
 
 ---
 
@@ -124,19 +141,21 @@ Its operative constraints for this lane:
 * **Shipped file re-validated against its receipt**: sha256 `8ba5a9822d87eb7b1e159ae2bfee8ced429ecb9752761041309fe5629df0e482`,
   808,408 B, 15/15 checks, 0 on-catalogue dots, 35,341 dots. Identical to
   `docs/downloads/checks-…-zeros.tif.json`.
-* **Full-registry uniqueness gate — NOT CLEARED (HOLD).** 644 rasters, both directions
-  ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json)):
-  * Spearman max **0.180** (gate 0.90): pass. Jaccard max **0.083** (gate 0.50): pass.
-  * Forward dot overlap (gate 0.70): **fires for 114 rasters**, max **1.00**. The
-    literal rule treats this as drift. The current evidence file lists all 114 firings.
-  * The reverse-overlap reading (below 0.5 for every firing) is informational only;
-    it cannot clear the literal gate. A change to that gate would require an explicit
-    protocol revision, not an inference from this diagnostic.
-  * An earlier version of the script called the file UNIQUE using that exemption.
-    The verdict has been corrected (`IR-57-UNIQ-02`).
+* **Archived H57-G file re-audited — NOT CLEARED.** The refreshed literal full-registry
+  check covers 667 rasters and finds 114 directed-overlap firings (max 1.0) for the
+  old 35,341-dot file. It remains blocked and is not the H57-K surface result.
+  ([`evidence/uniqueness_full_shipped-h57-zeros.json`](evidence/uniqueness_full_shipped-h57-zeros.json));
+  see `IR-57-REG-02` and `IR-57-UNIQ-03`.
+* **Current H57-K surface — NOT CLEARED.** The two SHA-pinned witnesses already fail
+  the literal pre-placement overlap gate (0.998724 and 1.000000; limit 0.70), so
+  protocol-compliant work stopped before placement. No final-dot scan or TIFF exists.
+  A reverse-overlap exemption would change the protocol and is not applied
+  (`IR-57-UNIQ-02`, `IR-57-H57K-01`).
 * **No submission slot was spent.** Nothing has been submitted or promoted to a slot.
-* **Labels corrected:** the 15-raster budget correlation uses *owner-reported*
-  scores, not organizer receipts (`IR-57-LABEL-01`). The build's holdout numbers are
+* **Labels corrected:** the descriptive budget analysis now excludes the disputed
+  H33-2-B2/0.2778 and H27-4/0.2708 score-to-file attributions. Its remaining 13
+  numeric entries are *owner-reported*, not organizer receipts (`IR-57-LABEL-01`).
+  The build's holdout numbers are
   *in-sample* (`IR-57-INSAMPLE-01`).
 
 ## Headline result
@@ -176,37 +195,48 @@ and it **does not pay for itself on this instrument**. That is recorded as a
 negative result in [`REMAINING_WORK.md`](REMAINING_WORK.md) rather than smoothed
 over.
 
-### Why 0.2778 scored highest, and whether higher is achievable
+### Why 0.2778 may have looked strong — and what we can actually establish
 
-`DTI = T / (0.2(T + n - M) + 0.8K)`. Two consequences, both verified against the
-brute-force implementation:
+The posted **0.2778** is still an **OWNER-REPORTED claim of a live score**, not
+`ORGANIZER-CONFIRMED`: no submission-page receipt or file-hash crosswalk was found.
+The inspected [GEMSDOE32 owner repository](https://github.com/buffedlizard55-lab/GEMSDOE32)
+labels its H33-2-B2 artifact **UNSCORED**. It records a local mirror value of
+0.267921 and a +0.004870 change in 4/4 folds; **0.2747 is the owner's projection**,
+not an observed live score. The often-repeated `0.2708` base attribution is also
+contradicted: the owner's audit says the GEMSDOE28 page had no score, while the
+public-board 0.2708 row belongs to rank-13 participant `smashi34`.
 
-1. **The ceiling is 1.0, not 0.5556.** A perfect prediction has `n = M = T = K`,
-   so `D = 0.2K + 0.8K = K`. (0.05556 is a different number entirely: the
-   marginal acceptance bar `alpha * DTI` at DTI = 0.2778.)
-2. **At the real base rate DTI tracks coverage — but only while the dot budget
-   stays near `K`.** At the measured base rate 0.00221, a *random* pixel lands
-   within 3 px of a true one only 2.1% of the time. Measured with the exact
-   metric, coverage 0.2778 is worth **0.3162** at `n/K = 0.5` and only
-   **0.1809** at `n/K = 6`.
+A plausible *mechanism*, not an established explanation of a live score, is that
+H33-2-B2 removes low-value predictions very close to known catalogue faults. The
+raster comparison shows 37,654 positives versus 40,199 in H27-4: exactly 2,545
+pixels within 2 px of the mapped catalogue were deleted, with no additions. If
+those near-catalogue dots had little weighted true-positive credit, pruning them
+could reduce false-positive cost while retaining most useful far-field coverage.
+The owner repo's local mirror improvement is consistent with that story, but does
+not prove an organizer-scored gain; the file is explicitly unscored in the audited
+owner evidence.
 
-What the repos document for the 0.2778 file (`GEMSDOE32`, H33-2-B2, 37,654 dots,
-verified in its `README.md`): a **local** holdout gain of **+0.004870** over a 0.2708
-base (4/4 quadrants), and a **projected** live score of 0.2747 (the repo's own
-projection, not a measurement). The live 0.2778 was owner-reported after that.
-So the 0.2778 score comes from a small holdout-validated tweak on a base near
-0.27, with a dot count in the 37–42k band.
+The metric explains why such a prune *could* matter:
+`DTI = T / (0.2(T + n - M) + 0.8K)`. The ceiling is 1.0 (`n = M = T = K` for a
+perfect prediction), and at fixed coverage extra dots can reduce DTI. At the
+measured sparse base rate (~0.00221), a random pixel is within 3 px of truth only
+about 2.1% of the time. These are metric facts, not evidence that the particular
+0.2778 attribution is genuine.
 
-*Inference, not a measurement:* the 0.3774 high would need roughly 40% coverage
-at a matched budget by the same arithmetic. That is a projection, not a score.
-The repo does not demonstrate a higher score. The budget half of the argument is
-supported by **owner-reported** scores (`IR-57-LABEL-01`): Spearman(dot count,
-owner-reported live score) = **−0.8104** (p = 0.00025, n = 15, re-derived in this
-session from `registry/registry_index.json`), and the two rasters above 120,000 dots
-hold the two worst scores (0.1922, 0.1894). The correlation is confounded with
-other differences between submissions, so it is evidence, not proof. That is why this lane's
-holdout-optimal budget of 69,133 dots was **overruled** and capped at 40,000,
-costing only 0.0015 holdout DTI. See `IR-57-BUDGET-01`.
+**Can this lane beat 0.2778? Not established.** H57-K scored 0.242353 [0.205591,
+0.279115] in a detached spatial holdout and gained +0.004930 [0.001497, 0.008364]
+over H57-G under the same local setup. Its point estimate is below 0.2778; the CI
+is not a cross-task/live-score comparison. There is no defensible live projection.
+The pre-placement registry overlap gate also failed, so no H57-K submission was
+created or tested. The right answer is “unknown”, not “yes”.
+
+A registry budget analysis remains explicitly conditional: after excluding the
+H33-2-B2/0.2778 and H27-4/0.2708 disputed attributions, the 13 remaining numeric
+**OWNER-REPORTED** entries have Spearman(dot count, reported value) = −0.7686
+(p = 0.00214). The two >120k-dot entries carry the lowest reported values (0.1922,
+0.1894). This is confounded evidence, not causation and not an organizer-verified
+score set (`IR-57-LABEL-01`). Keep the holdout-selected 40,000-dot cap as a
+conservative local policy, but do not treat it as a proven live optimum.
 
 **Remaining work and every known limitation:** [`REMAINING_WORK.md`](REMAINING_WORK.md).
 
@@ -440,3 +470,16 @@ Ranked *prospectively*, before code or validation; improvement is an expectation
 | 4 / medium | H57-J bend-dependent strand width; local mapped-trace direction and finite-difference along-trace curvature | fitted widening of damage zone at mapped fault bends, controlling for segment length | Under-mapped splays can branch at bends; unlike the current linearity/coherence feature this uses signed change *along a trace* (without DEM). Road and wash bends are geological false-positive mimics. |
 
 **Falsification gate:** test each new feature alone for leakage AUC; compare the top arm against the existing eight-feature arm with visible-only, whole-segment, buffered spatial-block holdout and pooled DTI. Do not spend a weekly slot. Independently, the strict directed-overlap gate may be **mathematically unsatisfiable** for a near-universal 5-pixel lattice already in the registry; report that as a blocker, not as a waiver.
+
+## Session 4 pre-implementation hypotheses and outcome (2026-10-09)
+
+The following four new ideas were ranked **before H57-K implementation**. These are geological hypotheses, not score estimates. All use existing layers; no new external-data-dependent idea was introduced. Full layer signatures, geological reasoning, mimics, and tests are preserved in [`docs/research/session4-hypotheses.md`](docs/research/session4-hypotheses.md).
+
+| Rank / expected value / cost | Hypothesis and layer(s) | New physical signature / difference from existing features |
+|---|---|---|
+| 1 — moderate / low-medium | H57-K visible-network junction distance; `existing_faults.tif`, fold-visible network nodes | Fit response to distance from multi-branch nodes; current model has nearest-trace distance and local density but no topology-distance feature. |
+| 2 — moderate / medium | H57-L superposed damage halos; two distinct visible component labels and local strike | Fit a two-anchor relay-gap field; current `d_perp`/`d_par` use one nearest anchor and density cannot distinguish two host faults. |
+| 3 — low-moderate / medium | H57-M sense-conditioned response; existing INGENIOUS `sense` attribute plus visible catalogue geometry | Test a hierarchical distance/side interaction by recorded slip sense; previous H57-F tested only marginal sense features and was negative. |
+| 4 — low-moderate / low-medium | H57-N fold-fitted strand-directional kernel; visible local strike and withheld-segment offsets | Fit a joint empirical angle-distance kernel; current GBM receives marginal offsets and `sin2/cos2`, not a fitted joint kernel. |
+
+**H57-K result:** HOLDOUT-DTI 0.242353 [0.205591, 0.279115] on 22,619 positives; paired gain +0.004930 [0.001497, 0.008364] over the same-mode H57-G control. All individual-feature leakage canaries stayed below 0.90. The pre-placement surface passed rank correlation (max 0.558503 on the two checksum-pinned witnesses) but failed directed 3-px support overlap (0.998724 and 1.000000; limit 0.70). We stopped before dot placement and wrote **no TIFF**. The holdout result is positive; the submission verdict is negative. See [`evidence/run_card.json`](evidence/run_card.json).

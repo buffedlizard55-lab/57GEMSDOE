@@ -315,8 +315,7 @@
     "rows": [
       {
         "repo": "GEMSDOE32",
-        "submission": "h33-h33-2-b2 (best known, 0.2778)",
-        "owner_reported_score": 0.2778,
+        "submission": "h33-h33-2-b2 (UNSCORED per owner repo; 0.2778 claim unverified)",
         "their_dots": 37654,
         "my_dots_within_3px_of_theirs": 0.2021165218867604,
         "their_dots_within_3px_of_mine": 0.04623678759228767,
@@ -326,12 +325,13 @@
         "spearman_full_footprint": 0.00144871234823916,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
-        "duplicate_by_overlap": false
+        "duplicate_by_overlap": false,
+        "reported_claim_value": 0.2778,
+        "score_status": "Owner repo marks H33-2-B2 UNSCORED; 0.2778 claim is not tied to this raster by receipt"
       },
       {
         "repo": "GEMSDOE28",
         "submission": "h27-4-r1-solo-d2-8",
-        "owner_reported_score": 0.2708,
         "their_dots": 40199,
         "my_dots_within_3px_of_theirs": 0.23621289720155061,
         "their_dots_within_3px_of_mine": 0.052712754048608174,
@@ -341,7 +341,9 @@
         "spearman_full_footprint": 0.004037508025876037,
         "duplicate_by_rho": false,
         "duplicate_by_jaccard": false,
-        "duplicate_by_overlap": false
+        "duplicate_by_overlap": false,
+        "reported_claim_value": 0.2708,
+        "score_status": "0.2708 attribution contradicted by owner audit; public-board row belongs to smashi34, rank 13"
       },
       {
         "repo": "GEMSDOE28",

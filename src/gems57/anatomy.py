@@ -43,7 +43,7 @@ import numpy as np
 from scipy import ndimage as ndi
 
 from .grid import Grid
-from .network import (STRUCT3, SegmentTable, local_strike, nearest_frame,
+from .network import (STRUCT3, SegmentTable, junctions, local_strike, nearest_frame,
                       offset_components, segment_table, segments)
 
 # Opt-in recorded-sense features (lane brief: "conditioned on recorded sense of
@@ -94,6 +94,23 @@ def _density(visible: np.ndarray, radius_px: int = 5) -> np.ndarray:
     yy, xx = np.mgrid[-radius_px:radius_px + 1, -radius_px:radius_px + 1]
     k = (yy * yy + xx * xx) <= radius_px * radius_px
     return ndi.convolve(visible.astype(np.float32), k.astype(np.float32), mode="constant")
+
+
+def junction_distance_px(visible: np.ndarray) -> np.ndarray:
+    """Euclidean distance in pixels to the nearest *visible* fault-network node.
+
+    Nodes use the shared ``network.junctions`` definition (a mapped-fault pixel
+    with at least three eight-connected visible neighbours). The entire input
+    must be the fold's visible mask; callers must not pass the full catalogue
+    when computing a holdout feature. If no node is present, return a finite
+    constant larger than the grid diagonal so that the absence is explicit and
+    safe for model fitting.
+    """
+    visible = np.asarray(visible, bool)
+    nodes = junctions(visible)
+    if not nodes.any():
+        return np.full(visible.shape, np.hypot(*visible.shape), dtype=np.float32)
+    return ndi.distance_transform_edt(~nodes).astype(np.float32)
 
 
 def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,

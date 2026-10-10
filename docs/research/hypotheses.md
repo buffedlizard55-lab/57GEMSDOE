@@ -1,5 +1,12 @@
 # Candidate geological hypotheses — ranked by expected DTI improvement and cost
 
+> **Archived backlog snapshot.** Its H1 metrics and 663-raster count refer to the earlier
+> experiment, not the current Session 4 run. Current H57-K measured detached-mode
+> **HOLDOUT-DTI 0.242353** (95% quadrant-jackknife CI 0.205591–0.279115), but failed the
+> strict pre-placement 3-px registry-overlap gate. No H57-K TIFF exists and no artifact is
+> cleared for download/submission. See [`session4-hypotheses.md`](session4-hypotheses.md),
+> the [`README`](../../README.md), and [`IR-57-SCORE-02`](../irregularities.html).
+
 Scope: the hidden truth is **new expert-mapped faults NOT in USGS/INGENIOUS** — including
 splays and parallel strands of existing systems (organizer thread 11536) — and pixels of
 known USGS/INGENIOUS faults are masked out of the evaluation (thread 11516). The metric is
@@ -10,9 +17,11 @@ instruments before any slot is touched:
 - **HOLDOUT-DTI** (brief's instrument): `gems52-pooled-hide-v1`, 4 random whole-segment
   folds, 300 m truth buffer, features from visible faults only, 38,339 withheld
   positives, paired spatial-block bootstrap 95% CI. Measures catalogue-segment recovery.
-- **SGMC-truth DTI** (live proxy): the 79,025 SGMC pixels captured by neither USGS nor
-  INGENIOUS — real off-catalogue faults. Measures off-catalogue discovery; the live-best
-  incumbent h33-2-b2 scores 0.0931 here while carrying LIVE 0.2778.
+- **PROXY-DTI (SGMC-truth)**: the 79,025 SGMC pixels captured by neither USGS nor
+  INGENIOUS — a local off-catalogue proxy, not an organizer score. The H33-2-B2 raster's
+  local proxy DTI is 0.0931; that measurement does not validate a live score or attribute
+  0.2778 to the raster. The inspected GEMSDOE32 owner repository marks H33-2-B2 UNSCORED;
+  0.2747 is a projection. See [`IR-57-SCORE-02`](../irregularities.html).
 
 Lane protocol: 3 experiments, 2 hours. **All 3 are used** (Exp 1b measurement, Exp 2
 holdout arms × budget, Exp 3 submission build). H1 below is the lane that was run;
@@ -45,8 +54,8 @@ off-catalogue pixels lie within 1 km of a known fault; the radial density peaks 
 **How it differs from what the family already does.** Every top registry lane ranks
 pixels by *geophysical evidence* (TMI gradients, RTP, elevation slope, density — h16–h63,
 d28, anderson) and then prunes dots off the catalogue (the incumbents keep 0 dots within
-200 m of it). The previous fault-zone attempt (GEMSDOE45 `h51-km-faultzone`, LIVE 0.0106)
-placed a *fixed* kernel around the catalogue. H1 instead **fits** the radial, azimuth and
+200 m of it). The previous fault-zone attempt (GEMSDOE45 `h51-km-faultzone`, owner-reported
+0.0106) placed a *fixed* kernel around the catalogue. H1 instead **fits** the radial, azimuth and
 length distributions on the holdout and emits a sparse binary top-k inside the fitted
 halo at 400–1000 m from known faults — the region the incumbents deliberately avoid.
 

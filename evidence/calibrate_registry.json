@@ -5,7 +5,7 @@
  "withheld_positive_pixels": 38339,
  "sgmc_truth_pixels": 79025,
  "results": {
-  "h33-2-b2 LIVE 0.2778": {
+  "H33-2-B2 raster (owner-reported 0.2778 claim; owner repo marks UNSCORED)": {
    "file": "GEMSDOE48-main/data/raw/dotted_h33_2_b2_zeros.tif",
    "holdout_dti": 0.003940714206054799,
    "holdout_ci95": [
@@ -57,7 +57,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 37654
   },
-  "h27-4-solo LIVE 0.2708": {
+  "H27-4 raster (0.2708 attribution contradicted; not organizer-confirmed)": {
    "file": "GEMSDOE48-main/data/raw/ref_h27_4_solo.tif",
    "holdout_dti": 0.028196456253166885,
    "holdout_ci95": [
@@ -109,7 +109,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 40199
   },
-  "h36-1-rung30 LIVE 0.2710": {
+  "h36-1-rung30 raster": {
    "file": "GEMSDOE48-main/data/raw/ref_h36_1_rung30.tif",
    "holdout_dti": 0.02736197714347854,
    "holdout_ci95": [
@@ -161,7 +161,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 37660
   },
-  "tip-h33d LIVE 0.2632": {
+  "tip-h33d raster": {
    "file": "GEMSDOE48-main/data/raw/tip_h33d_stepover.tif",
    "holdout_dti": 0.04777200833390903,
    "holdout_ci95": [
@@ -213,7 +213,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 41865
   },
-  "tip-h32-1 LIVE 0.2649": {
+  "tip-h32-1 raster": {
    "file": "GEMSDOE48-main/data/raw/tip_h32_1_prethin_tip_euler.tif",
    "holdout_dti": 0.05647150760186376,
    "holdout_ci95": [
@@ -265,7 +265,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 42294
   },
-  "h19-5 LIVE 0.1922": {
+  "h19-5 raster": {
    "file": "GEMSDOE48-main/data/raw/scored/h19_5_01922.tif",
    "holdout_dti": 0.06015696220873591,
    "holdout_ci95": [
@@ -317,7 +317,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 121131
   },
-  "d15 LIVE 0.2477": {
+  "d15 raster": {
    "file": "GEMSDOE48-main/data/raw/scored/d15_02477.tif",
    "holdout_dti": 0.0843900999016473,
    "holdout_ci95": [
@@ -369,7 +369,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 60069
   },
-  "h32 LIVE 0.2649": {
+  "h32 raster": {
    "file": "GEMSDOE48-main/data/raw/scored/h32_prethin_tip_02649.tif",
    "holdout_dti": 0.05647150760186376,
    "holdout_ci95": [
@@ -421,7 +421,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 42294
   },
-  "h36 LIVE 0.2710": {
+  "h36 raster": {
    "file": "GEMSDOE48-main/data/raw/scored/h36_rung30_02710.tif",
    "holdout_dti": 0.02736197714347854,
    "holdout_ci95": [
@@ -473,7 +473,7 @@
    "sgmc_n_truth": 79025,
    "emitted_px": 37660
   },
-  "anderson LIVE 0.2750": {
+  "anderson raster": {
    "file": "GEMSDOE36-main/docs/downloads/gemsdoe36-anderson-geothermal-pinn-38854-20261004T230000Z-9b9ea4e6-zeros.tif",
    "holdout_dti": 0.004027630903553305,
    "holdout_ci95": [
@@ -578,5 +578,6 @@
    "emitted_px": 60988
   }
  },
- "runtime_s": 127.15861964225769
+ "runtime_s": 127.15861964225769,
+ "score_attribution_note": "Owner-reported score labels are not receipts. H33-2-B2 is marked UNSCORED by GEMSDOE32; H27-4/0.2708 attribution is contradicted. Values in this file are local HOLDOUT-DTI/PROXY-DTI measurements only."
 }

@@ -1,25 +1,27 @@
 [
   {
     "repo": "GEMSDOE32",
-    "submission": "h33-h33-2-b2 (best known, 0.2778)",
-    "owner_reported_score": 0.2778,
+    "submission": "h33-h33-2-b2 (owner repository status: UNSCORED)",
     "mode": "zeros",
     "blob_sha": "(from local clone of GEMSDOE32)",
     "path": "docs/downloads/gemsdoe32-h33-h33-2-b2-20261004T220000Z-e5eb6e7e-zeros.tif",
     "file": "registry/rasters/GEMSDOE32__h33-2-b2-zeros.tif",
     "bytes": 219065,
-    "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9"
+    "sha256": "c55bafc470054e8271dcb89347a17e07fefe50de6af6e6ba6c4b169ef7ab6fa9",
+    "score_status": "OWNER-REPORTED 0.2778 claim; no receipt; inspected H33-2-B2 artifact marked UNSCORED",
+    "reported_claim_value": 0.2778
   },
   {
     "repo": "GEMSDOE28",
     "submission": "h27-4-r1-solo-d2-8",
-    "owner_reported_score": 0.2708,
     "mode": "allfinite",
     "blob_sha": "7e422e07d5d3aac9ceb187a154bacc0f72a79f5c",
     "path": "docs/downloads/gems28-h27-4-r1-solo-d2-8-20261003-8acb75e1f2cc-allfinite.tif",
     "file": "registry/rasters/GEMSDOE28__h27-4-r1-solo-d2-8.tif",
     "bytes": 830036,
-    "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8"
+    "sha256": "2fc94a38d77f74d4f4ed1a97a83e7bb71a1ceea090515ec641e6681cc47c44c8",
+    "reported_claim_value": 0.2708,
+    "score_status": "0.2708 file attribution contradicted by owner audit; public-board row belongs to smashi34, rank 13"
   },
   {
     "repo": "GEMSDOE28",
