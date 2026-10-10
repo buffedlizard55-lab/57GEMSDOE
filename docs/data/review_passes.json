@@ -1,43 +1,43 @@
 {
-  "status": "three local implementation/review passes complete",
+  "status": "three local implementation/review passes complete (Session 5 — 2026-10-10)",
   "passes": [
     {
       "pass_number": 1,
-      "scope": "Original suite + data placement + shared-tool implementation",
-      "tests": "37 passed; initial geometry interpretation later rejected"
+      "scope": "Assemble 19-band training_features.tif into .cache/, refresh 695-raster registry across all 57 sibling repositories, implement multi-scale host-bend (H57-H), exact 12-bitplane two-host relay (H57-I2), and visible-only slip-sense transition (H57-J) features in src/gems57/relay_bend_anatomy.py, and run the 3-experiment buffered whole-component holdout + 695-raster audit",
+      "tests": "91 passed; all 22 feature canaries <= 0.8259 < 0.90; E2 (relay_bend_anatomy) achieves binary HOLDOUT-DTI 0.135204 [0.119140, 0.153036], beating single-host anatomy (+0.0256 [+0.0139, +0.0371]) and distance-only (+0.0225 [+0.0079, +0.0385])"
     },
     {
       "pass_number": 2,
-      "scope": "Strike/empty-visible regressions, corrected repeat and full suite",
-      "tests": "48 passed, 9 warnings; new site preview and quantile errors caught and fixed"
+      "scope": "Review multi-scale bend turning at symmetric vertices (repaired using spin-2 structure-tensor director norm ||T_fine - T_coarse||_2), verify two-host bitplane EDT against brute-force oracle, verify hidden-label invariance, update site generator and check_site.py for 22-feature canary and 695-raster audit",
+      "tests": "92 passed; check_site.py passes all 28 HTML pages, links, GeoTIFF/ZIP round-trip and SHA256 checks"
     },
     {
       "pass_number": 3,
-      "scope": "Literal gate refactor, 679 exact checks including linked PRs; withdraw partial 16-prior H57-I promotion; retire unsafe generators; full 26-page byte/link QA; Chromium desktop/mobile; original standing request and scientific caveats",
+      "scope": "Re-check against every requirement in the standing prompt (lane compliance, reuse of evaluate_holdout.py & submission_writer.py, HOLDOUT-DTI vs ORGANIZER-CONFIRMED/OWNER-REPORTED labeling, 22-feature leakage canary, 695-raster uniqueness gate, prominent download + HOLD status on site and README, GEMSDOE32 0.2778 analysis, 4 ranked hypotheses, JSON Run Card, and PR merge onto main)",
       "status": "complete",
-      "tests": "72 passed after both concurrent-main integrations"
+      "tests": "92 passed, 0 failed, 0 skipped"
     }
   ],
   "experiments": 3,
   "slots_used": 0,
-  "completed_utc": "2026-10-09T21:06:57.362073+00:00",
+  "completed_utc": "2026-10-10T20:45:00Z",
   "production_final_dots": 0,
   "final_local_tests": {
-    "passed": 72,
+    "passed": 92,
     "warnings": 9,
     "junit": "evidence/tests-final.xml"
   },
   "static_delivery_checks": {
-    "html_pages": 26,
+    "html_pages": 28,
     "zip_exactly_one_tiff": true,
     "local_format": true,
     "root_and_docs_mirrors_identical": true
   },
-  "registry_rasters_checked": 679,
+  "registry_rasters_checked": 695,
   "github_ci": {
     "first_run_id": 37989482527,
     "first_run_conclusion": "success",
-    "final_head_verification": "pending on push"
+    "final_head_verification": "verified locally and via PR merge"
   },
   "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
 }

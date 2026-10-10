@@ -6,61 +6,104 @@
 <header><div class="header-inner"><a class="brand" href="index.html"><span class="brand-number">57</span><span>GEMS<span class="brand-sub">FAULT-ZONE ANATOMY</span></span></a>
 <span class="status-pill">RESEARCH · HOLD</span></div><nav aria-label="Primary"><a href="index.html">Overview</a><a href="executive-summary.html">Download & submit</a><a href="results.html">Results</a><a href="h57k.html">H57-K candidate</a><a href="method.html">Method</a><a href="research.html">Research</a><a href="sources.html">Sources</a><a href="irregularities.html">Audit</a></nav></header>
 <main id="main"><div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p><a href="data/run_card.json">Download JSON</a></p><pre>{
-  &quot;hypothesis&quot;: &quot;A candidate magnetic edge\u2019s strike relative to its nearest visible fault, conditioned on distance and host length, predicts missing secondary strands better than a catalogue-only halo.&quot;,
-  &quot;mechanism&quot;: &quot;Label-independent TMI derivatives supply an axial candidate tangent. Visible-only host geometry and an empirical training-distance zone drive a fitted intensity; textbook shear angles are not imposed.&quot;,
-  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Magnetized dikes, lithologic contacts and east-west flight-line leveling residuals may form magnetic edges without fault displacement.&quot;,
+  &quot;hypothesis&quot;: &quot;Secondary strands concentrate at multi-scale host bends (H57-H) and inside two-host en echelon stepover relay zones between distinct fault systems (H57-I2), corroborated by detrended-elevation scarp relative strike and conditioned on slip-sense transitions (H57-J).&quot;,
+  &quot;mechanism&quot;: &quot;Multi-scale structure-tensor turning (300 m vs 900 m) and exact 12-bitplane two-host Euclidean distance transforms identify relay corridors and bend-wall damage zones strictly from visible faults, coupled with label-free detrended-elevation scarp tangents. No textbook Riedel angle is imposed.&quot;,
+  &quot;named_non_fault_process_that_could_mimic_it&quot;: &quot;Erosional range-front scarps, fluvial terrace margins, lithologic contacts situated between unrelated fault systems, and cartographic digitization vertices can mimic multi-scale trace bends and relay stepover geometry without secondary fault slip.&quot;,
   &quot;holdout_dti&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;dti&quot;: 0.023203075374027337,
+    &quot;dti&quot;: 0.031159854641644204,
     &quot;ci95&quot;: [
-      0.018777925030160507,
-      0.02799187291971626
+      0.024691006152132863,
+      0.03810944921363519
     ],
     &quot;withheld_positive_pixels&quot;: 11321,
-    &quot;tpw&quot;: 259.16790716440863,
-    &quot;fpw&quot;: 10304.58136457905,
-    &quot;fnw&quot;: 11061.832092835584,
+    &quot;tpw&quot;: 346.3834801632157,
+    &quot;fpw&quot;: 9951.307151391367,
+    &quot;fnw&quot;: 10974.616519836785,
     &quot;representation&quot;: &quot;soft pre-placement surface (matches downloaded TIFF method)&quot;,
     &quot;split_version&quot;: &quot;buffered-whole-components-loqo-v2&quot;,
-    &quot;canary_clean&quot;: true
+    &quot;canary_clean&quot;: true,
+    &quot;selected_arm&quot;: &quot;relay_bend_anatomy&quot;
   },
   &quot;holdout_dot_dti&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;dti&quot;: 0.10916787041142981,
+    &quot;dti&quot;: 0.13520371677763354,
     &quot;ci95&quot;: [
-      0.09450251109316313,
-      0.12419365163463253
+      0.11913983230552322,
+      0.15303605496339084
     ],
     &quot;withheld_positive_pixels&quot;: 11321,
-    &quot;tpw&quot;: 1746.1900101871004,
-    &quot;fpw&quot;: 32947.09651221608,
-    &quot;fnw&quot;: 9574.809989812898,
-    &quot;representation&quot;: &quot;holdout binary allocation ONLY; production dots were not generated&quot;
+    &quot;tpw&quot;: 2153.6318045580256,
+    &quot;fpw&quot;: 32206.325324965805,
+    &quot;fnw&quot;: 9167.368195441974,
+    &quot;representation&quot;: &quot;holdout binary allocation ONLY; production dots were not generated&quot;,
+    &quot;selected_arm&quot;: &quot;relay_bend_anatomy&quot;
   },
   &quot;paired_orientation_minus_anatomy&quot;: {
     &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
     &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-    &quot;delta&quot;: -0.0005852603984091292,
+    &quot;delta&quot;: 0.02555640893870513,
     &quot;ci95&quot;: [
-      -0.006179380950003338,
-      0.004966084594639524
+      0.013943366750616887,
+      0.03710882091013755
+    ],
+    &quot;withheld_positive_pixels&quot;: 11321
+  },
+  &quot;paired_bend_minus_anatomy&quot;: {
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;delta&quot;: 0.0026839256064493944,
+    &quot;ci95&quot;: [
+      -0.004963871413615349,
+      0.01040613643964517
+    ],
+    &quot;withheld_positive_pixels&quot;: 11321
+  },
+  &quot;paired_relay_minus_bend&quot;: {
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;delta&quot;: 0.022872483332255736,
+    &quot;ci95&quot;: [
+      0.01305049452795725,
+      0.03210233238554293
+    ],
+    &quot;withheld_positive_pixels&quot;: 11321
+  },
+  &quot;paired_soft_relay_minus_anatomy&quot;: {
+    &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+    &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+    &quot;delta&quot;: 0.008284214231133156,
+    &quot;ci95&quot;: [
+      0.005420358009747388,
+      0.010947349984586187
     ],
     &quot;withheld_positive_pixels&quot;: 11321
   },
   &quot;correlation_overlap_vs_registry&quot;: {
-    &quot;registry_rasters_expected&quot;: 679,
-    &quot;registry_rasters_checked&quot;: 679,
+    &quot;registry_rasters_expected&quot;: 695,
+    &quot;registry_rasters_checked&quot;: 695,
     &quot;complete_accessible_scan&quot;: true,
-    &quot;worst_spearman_full_footprint&quot;: 0.8212578086422125,
-    &quot;worst_rho_submission&quot;: &quot;57GEMSDOE:docs/downloads/h57-continuous-anatomy-20261009T201252Z-f44b207a70f0.tif&quot;,
+    &quot;worst_spearman_full_footprint&quot;: 0.9753151923476495,
+    &quot;worst_rho_submission&quot;: &quot;57GEMSDOE:docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
     &quot;worst_dot_overlap&quot;: 1.0,
     &quot;worst_overlap_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
-    &quot;duplicate_count&quot;: 78,
+    &quot;duplicate_count&quot;: 81,
     &quot;byte_unique_among_checked&quot;: true,
     &quot;pixel_unique_among_checked&quot;: true,
-    &quot;unique&quot;: false
+    &quot;unique&quot;: false,
+    &quot;discriminating_other_lanes&quot;: {
+      &quot;n_other_lane_rasters&quot;: 15,
+      &quot;worst_spearman_other_lanes&quot;: 0.028841495318253536,
+      &quot;worst_overlap_other_lanes&quot;: 0.23746962509158057,
+      &quot;worst_jaccard_other_lanes&quot;: 0.029241220672120947
+    },
+    &quot;n_other_repo_rasters&quot;: 665,
+    &quot;worst_spearman_other_repos&quot;: 0.6580295804692531,
+    &quot;worst_rho_other_repo_submission&quot;: &quot;GEMSDOE2:data/evidence/runs/turbo-simple-20260925T042003Z/submission.tif&quot;,
+    &quot;worst_spearman_sibling_lanes&quot;: 0.028841495318253536,
+    &quot;worst_dot_overlap_sibling_lanes&quot;: 0.23746962509158057
   },
   &quot;surface_before_placement&quot;: {
     &quot;checked&quot;: true,
@@ -71,11 +114,11 @@
     &quot;reason&quot;: &quot;literal surface gate requires stop&quot;,
     &quot;emitted_pixels&quot;: 0
   },
-  &quot;raster_sha256&quot;: &quot;f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a&quot;,
+  &quot;raster_sha256&quot;: &quot;cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648&quot;,
   &quot;validator_output&quot;: {
-    &quot;file&quot;: &quot;/home/user/57GEMSDOE/docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
-    &quot;bytes&quot;: 10010096,
-    &quot;sha256&quot;: &quot;f273e778341ff726edc5d36bda61c45f53cb0c8f3361f1c55817bc87ddb1012a&quot;,
+    &quot;file&quot;: &quot;/home/user/57GEMSDOE/docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif&quot;,
+    &quot;bytes&quot;: 9960624,
+    &quot;sha256&quot;: &quot;cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648&quot;,
     &quot;meta&quot;: {
       &quot;crs&quot;: &quot;EPSG:32611&quot;,
       &quot;shape&quot;: [
@@ -101,8 +144,8 @@
     &quot;n_finite&quot;: 12279160,
     &quot;n_nan&quot;: 0,
     &quot;min&quot;: 0.0,
-    &quot;max&quot;: 0.7537760734558105,
-    &quot;mean&quot;: 0.0007940529612824321,
+    &quot;max&quot;: 0.9014216065406799,
+    &quot;mean&quot;: 0.0007488319533877075,
     &quot;emitted_positive_pixels&quot;: 2714823,
     &quot;checks&quot;: {
       &quot;single_band&quot;: true,
@@ -126,35 +169,45 @@
     &quot;in_footprint_positive_pixels&quot;: 2714823,
     &quot;footprint_fraction&quot;: 0.5253777886752127
   },
-  &quot;submission_name&quot;: &quot;gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95&quot;,
-  &quot;submission_note&quot;: &quot;Fault-zone anatomy: learned magnetic-edge relative strike and host length; buffered LOQO. Research surface; HOLD, not slot-cleared.&quot;,
-  &quot;submission_note_chars&quot;: 131,
-  &quot;file&quot;: &quot;docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.tif&quot;,
-  &quot;zip_file&quot;: &quot;docs/downloads/gems57-relative-strand-surface-20261009T195324Z-88e3bcb35a95.zip&quot;,
+  &quot;submission_name&quot;: &quot;gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec&quot;,
+  &quot;submission_note&quot;: &quot;Fault-zone anatomy: two-host relay + multi-scale bend + scarp strike; buffered LOQO. Research surface; HOLD, sha 47ccc38b&quot;,
+  &quot;submission_note_chars&quot;: 121,
+  &quot;file&quot;: &quot;docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif&quot;,
+  &quot;zip_file&quot;: &quot;docs/downloads/gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.zip&quot;,
   &quot;verdict&quot;: &quot;negative&quot;,
   &quot;okay_to_download&quot;: true,
   &quot;okay_to_submit&quot;: false,
-  &quot;verdict_reason&quot;: &quot;Fresh, pixel-distinct format-valid research raster; literal overlap gate not cleared. No weekly slot used.&quot;,
+  &quot;verdict_reason&quot;: &quot;Fresh, byte- and pixel-distinct format-valid Session-5 two-host relay + bend research GeoTIFF (HOLDOUT-DTI binary +0.0256 [95% CI +0.0139, +0.0371] vs single-host anatomy); literal 695-raster forward-overlap gate fails due to the universal dense-prior blocker (dense17 certificate). Zero weekly slots used.&quot;,
   &quot;recorded_sense&quot;: {
     &quot;tested&quot;: true,
     &quot;retained&quot;: false,
     &quot;paired_difference&quot;: {
       &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
       &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
-      &quot;delta&quot;: 0.003580783591493636,
+      &quot;delta&quot;: 0.006187676916750318,
       &quot;ci95&quot;: [
-        -0.005722027160876473,
-        0.014532120997528746
+        -0.0016937951896787019,
+        0.015701673226549834
+      ],
+      &quot;withheld_positive_pixels&quot;: 11321
+    },
+    &quot;soft_paired_difference&quot;: {
+      &quot;evidence_class&quot;: &quot;HOLDOUT-DTI&quot;,
+      &quot;evaluator_version&quot;: &quot;gems57-pooled-hide-v2&quot;,
+      &quot;delta&quot;: 0.0027379403745161623,
+      &quot;ci95&quot;: [
+        0.0003069096496624412,
+        0.005994069506400139
       ],
       &quot;withheld_positive_pixels&quot;: 11321
     }
   },
   &quot;experiments_used&quot;: 3,
   &quot;submission_slots_used&quot;: 0,
-  &quot;generated_utc&quot;: &quot;2026-10-09T20:00:19.209388+00:00&quot;,
-  &quot;registry_reviewed_utc&quot;: &quot;2026-10-09T21:01:12.836328+00:00&quot;,
-  &quot;registry_scope&quot;: &quot;Historical pinned inventory union recorded public-main trees, including current 57GEMSDOE main and linked open PR heads #6/#8 at their pinned commits. Current generated candidate excluded as an output, not a prior. Private, unlinked, closed-branch-only or later-written rasters cannot be certified.&quot;
+  &quot;generated_utc&quot;: &quot;2026-10-10T20:35:00.673249+00:00&quot;,
+  &quot;registry_reviewed_utc&quot;: &quot;2026-10-10T20:35:00.673273+00:00&quot;,
+  &quot;registry_scope&quot;: &quot;All 695 SHA256-verified competition-grid rasters across all 57 GEMSDOE repositories at their latest public-main commits plus historical pins. Current generated candidate excluded as an output, not a prior.&quot;
 }</pre></main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-09 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<p>Site built 2026-10-10 20:48 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 <a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

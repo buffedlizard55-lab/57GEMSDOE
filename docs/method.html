@@ -12,12 +12,11 @@
 <section><h2>Why sparse placement and precision matter</h2><p>For binary predictions, let <em>T</em> be maximum triangular-kernel coverage of truth pixels, <em>M</em> prediction self-credit, <em>N</em> prediction count, and <em>K</em> truth count. The official-formula arithmetic becomes:</p><pre>DTI = T / (0.2 T + 0.2 N − 0.2 M + 0.8 K)</pre><p>Max-cover means overlapping dots cannot repeatedly buy the same coverage. A dot far from every new-fault pixel adds false-positive cost without coverage. A dot near a known trace gets no credit merely for that proximity. This is why geometry, calibration and the emitted dot budget must all be tested—large probabilities and an impressive-looking lineament image are not scores.</p></section>
 <section><h2>Reproduce locally</h2><pre>python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt
-PYTHON=.venv/bin/python bash scripts/download_competition_data.sh --cache-bands
-.venv/bin/python scripts/prepare_data.py
-.venv/bin/python scripts/refresh_registry.py
-OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_orientation_experiments.py --build-research-surface --minutes 65
+.venv/bin/python scripts/prepare_data.py --fetch --cache-bands
+.venv/bin/python scripts/refresh_registry.py --workers 8
+OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend_experiments.py --build-research-surface --minutes 65
 .venv/bin/python scripts/build_site.py
 .venv/bin/python scripts/check_site.py</pre><p>CPU only. These commands reproduce the same declared experiments, not permission to add trials or spend slots. Restore the ignored feature stack and registry cache after a new checkout. Historical in-sample/oracle-budget builders are disabled.</p></section></main>
 <footer><div><strong>Maximize P(Win). Own the Outcome.</strong> Publish negative evidence; don't spend a slot to hide uncertainty.</div>
-<p>Site built 2026-10-09 22:28 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
+<p>Site built 2026-10-10 20:48 UTC. Results are local <strong>HOLDOUT-DTI</strong>, not leaderboard scores. No submission-page receipt is available.
 <a href="data/run_card.json">JSON run card</a> · <a href="run-card.html">Readable card</a> · <a href="https://github.com/buffedlizard55-lab/57GEMSDOE">Repository</a></p></footer></body></html>

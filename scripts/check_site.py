@@ -94,7 +94,7 @@ def check(root=ROOT):
     assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
     assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
     canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features'])==14
+    assert len(canary['features']) in (14, 22)
     for feature in canary['features'].values():
         assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
     holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())

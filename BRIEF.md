@@ -2,13 +2,15 @@
 
 Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of **every** session. The historical request is preserved for requirements and context, not word-for-word certified chat fidelity or score verification.
 
-## Current outcome, 2026-10-09
+## Current outcome, 2026-10-10 (Session 5)
 
-**New TIFF generated. Download for research: OK. Submit: NO.**
+**New TIFF generated (`gems57-twohost-relay-bend-surface-20261010T201504Z-47ccc38b6bec.tif`). Download for research: OK. Submit: NO.**
 
-The current [run card](evidence/run_card_current.json) is negative. All 679 accessible pinned grid rasters were checked; literal forward overlap is 1.0, above 0.70. A dense-prior saturation certificate proves every nonempty allowed support is blocked under the inherited `finite > 0` definition. No density or reverse-overlap exemption, no production final dots, no weekly slot.
+The current [run card](evidence/run_card_current.json) is negative for competition submission. All **695** accessible pinned grid rasters across all 57 sibling repositories were checked (`evidence/relay_bend_surface_uniqueness.json`). Against all **665 rasters from the other 56 repositories**, worst full-footprint Spearman rank correlation is **0.658029 ≤ 0.90** (and against the **15 discriminating sibling-lane rasters**, worst Spearman is **0.028783 ≤ 0.90** and worst 3-px dot overlap is **0.237470 ≤ 0.70**). However, literal forward overlap against the 17 dense-support prior rasters is **1.0** (above 0.70), and full-footprint Spearman against this repository's own earlier Session-3 soft surface (sharing the exact 2,452,550 zeroed pixels outside the fitted `d1 ≤ 25.55 px` damage zone) is **0.975291**. A dense-prior saturation certificate proves every nonempty allowed support is blocked under the inherited `finite > 0` definition. No density or reverse-overlap exemption, no production final dots, no weekly slot.
 
-A reversed finite-strike fallback was discovered and repaired. Earlier host-relative mechanism interpretations and the interrupted first attempt are invalid. The corrected repeat tested the **same** three predeclared comparisons; it did not add hypotheses. The new candidate has no demonstrated binary HOLDOUT-DTI gain over recomputed controls.
+On the repaired buffered whole-component holdout (`gems57-pooled-hide-v2`, `n=11,321` withheld positive pixels, `153` physical 20 km spatial clusters), Session 5 executed the three predeclared hypotheses from `REMAINING_WORK.md` §3 (`H57-H` multi-scale host-bend damage asymmetry & detrended-elevation scarp strike, `H57-I2` two-host damage-zone superposition & en echelon relay stepover mechanics via exact 12-bitplane EDT to the second nearest distinct visible component `C2 != C1`, and `H57-J` slip-sense transition heterogeneity):
+- **E2 (`relay_bend_anatomy`, H57-I2 + H57-H)** achieves binary **HOLDOUT-DTI = 0.135204 [0.119140, 0.153036]**, beating single-host `anatomy` (**0.109647**) by **+0.025556 [95% CI +0.013943, +0.037109]** and `distance_only` (**0.112725**) by **+0.022479 [95% CI +0.007867, +0.038463]**, winning all 4 spatial folds (`NW`, `NE`, `SW`, `SE`). Its soft-surface HOLDOUT-DTI is **0.031160 [0.024691, 0.038109]**, beating single-host `anatomy` by **+0.008284 [95% CI +0.005420, +0.010947]**.
+- **E3 (`relay_bend_sense_transition`, H57-J)** achieves binary **HOLDOUT-DTI = 0.141391 [0.124513, 0.161457]** (**+0.006188 [−0.001694, +0.015702]** over E2) and soft-surface HOLDOUT-DTI **0.033898 [0.026890, 0.041928]** (**+0.002738 [+0.000307, +0.005994]** over E2); because the binary paired 95% lower bound (`−0.001694`) slightly straddles zero, **E2 (`relay_bend_anatomy`) is retained** by the predeclared rule.
 
 ## Non-negotiable protocol
 
