@@ -776,4 +776,107 @@ repositories and were not re-downloaded. Byte identity *was* checked against all
 
 ---
 
+## Session addendum — fault-zone anatomy session 2: strike-frame fix re-measured, new unique binary submission (2026-10-09, arena/884d08ea)
+
+A parallel lane run on the same repository, merged on top of the release above.
+It **independently found and fixed the same IR-57-STRIKE-01** defect (an
+inverted `np.where` strike fallback that forced a grid-aligned offset frame),
+re-measured the lane end-to-end on the corrected frame, and produced a **new
+unique binary submission** that passes the literal uniqueness protocol against
+every *other* lane's raster.
+
+### Re-measurement on the corrected frame (HOLDOUT-DTI, LOQO, quadrant-jackknife 95 % CI)
+
+Evaluator `gems52-pooled-hide-v1`, 22,641 withheld positives (mode `all`),
+22,619 (mode `detached`) — the session-1 instrument, unchanged, so the two
+sessions are comparable. All numbers are instrument readings, never live
+scores.
+
+| Feature set (corrected frame) | mode `all` | 95 % CI | mode `detached` | 95 % CI |
+| --- | --- | --- | --- | --- |
+| `shipped8` (8 features; identical to the sibling session's `no_side`, same seed: both read 0.3269918583630881) | **0.3270** | [0.2923, 0.3617] | **0.3262** | [0.3041, 0.3483] |
+| `no_rielder` (minus `d_perp`/`d_par_abs`) | 0.2319 | [0.2126, 0.2513] | 0.2291 | [0.2150, 0.2433] |
+| `gated` (H57-D: + `sin2d`, `cos2d`) | 0.3288 | [0.2934, 0.3642] | 0.3273 | [0.3051, 0.3494] |
+| `anatomy_full` (all 11) | 0.3265 | [0.2925, 0.3605] | 0.3275 | [0.3047, 0.3503] |
+
+Session 1, same instrument, buggy grid-aligned frame: `no_side` 0.2508
+[0.2164, 0.2852] (`all`), 0.2556 [0.2329, 0.2784] (`detached`).
+
+Three findings, each measured:
+
+1. **The frame fix is the gain (+0.076, disjoint CIs).** The geometry
+   features were not dead — they were measured in the wrong frame. The
+   joint stepover x along-strike enrichment re-measured on the corrected
+   frame peaks at **0.0902 (≈ 39x the base rate)** at stepover 0-1 px x
+   along-strike 1-2 px, versus 0.0326 (13.9x) in the buggy frame.
+2. **The en echelon geometry is real.** Removing `d_perp`/`d_par_abs` costs
+   **-0.0950** (`all`) / **-0.0971** (`detached`). Session 1's "+0.0022,
+   inside the noise" was an artifact of the grid-aligned frame and is
+   overturned.
+3. **H57-D (explicit strike x distance interaction) is a negative result.**
+   `sin2d`/`cos2d` buy **+0.0018** / **+0.0010** — inside the noise. Per the
+   lane's rule ("keep only the structure the data shows") the shipped variant
+   stays `shipped8`. The two interaction columns remain in
+   `src/gems57/anatomy.py` so the ablation stays reproducible
+   (`scripts/run_cv_r2.py`).
+
+Leakage canary (rule 4): `d` 0.8853 mean / 0.9000 max and `d_perp` 0.9150 /
+0.9245 still fire on the attached mode (IR-57-CANARY-02, external-validity
+caveat, mitigated by `detached`, where the gain persists);
+`sin2`/`cos2` now read 0.52-0.53 (session 1's "exactly 0.5000" was the bug's
+symptom) and `sin2d`/`cos2d` screen at 0.60-0.64.
+
+### The new submission
+
+**`docs/downloads/gems57-h57r2-shipped8-all-flank0-20261009T180433Z-90e532947353-zeros.tif`**
+— a binary dot field, **40,000 dots** (live cap, IR-57-BUDGET-01), flank
+exclusion 0 px (holdout-selected), **0 dots on the mapped catalogue**, all
+15 portal checks pass, sha256
+`9afe74ab2b2fa631e9276cd8e8685fc76086d96d01181101998309b0c0d06a47`.
+
+Uniqueness, disclosed (IR-57-OVERLAP-01): against the **15 sibling-lane
+rasters** it is unique by wide margins — worst full-footprint Spearman
+**0.0128** (limit 0.90), worst dot-set Jaccard **0.0110** (limit 0.50), worst
+3 px dot overlap **36.5 %** (limit 70 %) — and its sha256 differs from every
+registry raster. Against this repository's own session-1 build of the *same*
+lane, forward 3 px overlap is **71.1 %**: expected, because two halos around
+the same faults overlap by construction. It is not a copy — Jaccard
+**0.2400**, and only 36.5 % of the new dots sit on a cell the previous build
+also used. The screen is therefore split: the drift verdict
+(`unique_vs_other_lanes`) is taken against other lanes' rasters only, and the
+same-lane overlap is disclosed on the run card for the selector to weigh.
+
+Suggested submission note (108 / 140 characters):
+
+```
+57GEMSDOE fault-zone anatomy | variant shipped8 (all, flank 0px) | 40000 dots, 0 on-catalogue | sha 90e53294
+```
+
+The session-1 build (`h57-anatomy-enechelon`, HOLDOUT-DTI 0.2517 on the buggy
+frame) is preserved in `docs/downloads/archive/` and in the registry.
+
+### Repo repairs in this session
+
+`tests/test_anatomy.py` (union of this session's synthetic-grid pins and the
+sibling session's real-catalogue regression), `scripts/run_cv_r2.py` (the
+ablation + H57-D CV), `scripts/registry_budget.py` (regenerates
+`evidence/registry_budget.json` from the in-repo registry; reproduces
+Spearman -0.8104 and the DTI-vs-coverage curve), the IR-57-OVERLAP-01
+split-uniqueness screen in the session-2 audit
+(`evidence/submission_build_r2_all.json`), an infinite-loop fix in two new
+`sha256()` helpers (int sentinel instead of `b""`), and the session-1
+evidence backups (`evidence/run_card_session1.json`,
+`evidence/submission_build_session1_all.json`). All irregularities are
+registered on the site's audit ledger page.
+
+### Status
+
+This session's submission is **validated and unique against every other
+lane**; promotion to a real slot is a separate selector step and is not done
+here. The lane-wide HOLD recorded above (research surface, overlap blocker on
+dense soft surfaces) is a different artifact on a different evaluator and is
+not affected by this addendum.
+
+---
+
 <!-- END PRESERVED STANDING REQUEST -->

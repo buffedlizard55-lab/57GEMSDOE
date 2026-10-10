@@ -65,6 +65,18 @@ FEATURES = (
     "cos2",         # cyclic strike encoding, cos(2*strike)
     "coherence",    # structure-tensor linearity at the anchor
     "density",      # visible fault pixels within a 5 px (500 m) radius
+    # Explicit orientation x distance interactions (H57-D, session 2,
+    # 2026-10-09).  sin2/cos2 alone are weak marginals, so the orientation
+    # selectivity of the halo is only usable in interaction.  These two
+    # products let the model express "the distance decay depends on the
+    # parent trace's strike" without any hard-coded angle: the fitted
+    # coefficients define the preferred orientations.  Both are computable
+    # from the visible catalogue alone, so the holdout protocol is unchanged.
+    # Measured in scripts/run_cv_r2.py: +0.0018 HOLDOUT-DTI vs the 8-feature
+    # shipped set (inside the noise) -- a negative result, kept addressable
+    # so the ablation stays reproducible.
+    "sin2d",        # sin(2*strike) * d  -- orientation-modulated distance decay
+    "cos2d",        # cos(2*strike) * d  -- orientation-modulated distance decay
 )
 
 # NOTE (bug fixed 2026-10-09): ``log_len`` was originally the length of the
@@ -169,6 +181,8 @@ def fold_geometry(grid: Grid, visible: np.ndarray, hidden: np.ndarray,
         np.cos(th2),
         coh[ay, ax],
         dens[ys, xs],
+        np.sin(th2) * d[ys, xs],
+        np.cos(th2) * d[ys, xs],
     ]
     if sense_src is not None:
         # nearest VISIBLE pixel carrying a recorded sense (visible-only, leakage-safe)
