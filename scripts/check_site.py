@@ -58,7 +58,10 @@ def check(root=ROOT):
     assert card==public,'public card is stale'
     assert card['okay_to_download'] is True and card['okay_to_submit'] is False
     assert card['verdict']=='negative' and card['submission_slots_used']==0
-    assert card['final_dots']['status']=='not_generated' and not card['surface_before_placement']['protocol_pass']
+    # fail-closed consistency: a fired gate must be recorded, never cleared here
+    registry=card['correlation_overlap_vs_registry']
+    assert registry['duplicate_count']>0 and registry['complete_accessible_scan'] is False
+    assert registry['worst_dot_overlap']>0.70
     assert 0<len(card['submission_name'])<=140 and 0<len(card['submission_note'])<=140
     assert card['submission_note_chars']==len(card['submission_note'])
     raster=root/card['file'];archive=root/card['zip_file']
@@ -68,7 +71,7 @@ def check(root=ROOT):
     assert digest==card['raster_sha256'],'TIFF changed after its audit'
     receipt=json.loads(raster.with_suffix('.json').read_text())
     assert digest==receipt['sha256'] and receipt['approved_for_weekly_slot'] is False
-    assert receipt['note']==card['submission_note']
+    assert receipt['note']==card['submission_note'] and receipt['submission_name']==card['submission_name']
     assert receipt['bytes']==raster.stat().st_size==card['validator_output']['bytes']
     assert hashlib.sha256(archive.read_bytes()).hexdigest()==receipt['zip_sha256']
     with zipfile.ZipFile(archive) as zipped:
@@ -84,48 +87,49 @@ def check(root=ROOT):
     with rasterio.open(root/'data/official/labels.tif') as ds:
         known=ds.read(1)>0
     assert not (values[known]>0).any(),'positive predictions on known mask'
-    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']
-    audit=json.loads((root/'evidence/orientation_surface_uniqueness.json').read_text())
-    assert audit['candidate_file_sha256']==digest
+    assert int((values>0).sum())==card['validator_output']['emitted_positive_pixels']==card['final_dots']
+    # the current-candidate registry measurement, pinned to the shipped bytes
+    cert=json.loads((root/'evidence/h57m_uniqueness_certificate.json').read_text())
+    assert cert['candidate_sha256']==digest,'certificate is for different bytes'
+    assert cert['candidate_dots']==card['final_dots']
+    assert cert['rasters_measured_this_run']<=cert['registry_rasters_pinned']
+    assert cert['literal_reading']['duplicate'] is True and cert['like_for_like_reading']['duplicate'] is True
+    assert card['correlation_overlap_vs_registry']['registry_rasters_checked']==cert['rasters_measured_this_run']
+    univ=json.loads((root/'evidence/gate_universality.json').read_text())
+    assert univ['candidate']==cert['candidate'] and univ['blanket_rasters']>0
+    assert univ['forward_firings_blanket']+univ['forward_firings_localised']==univ['forward_firings_total']
+    assert univ['rasters_firing_in_both_directions']==0
+    assert univ['best_known_control']['forward_overlap_firings']>0
+    # local format preflight receipt matches the card
+    validation=json.loads((root/'evidence/h57m_validation.json').read_text())
+    assert validation['sha256']==digest and validation['all_checks_passed'] is True
+    assert card['validator_output']['all_checks_passed'] is True
+    # the shipped budget's holdout reading is the nearest measured point, not an interpolation
+    emission=json.loads((root/'evidence/h57m_emission.json').read_text())
+    assert emission['file']==card['file'] and emission['sha256']==digest
+    at={int(p['budget']):p for p in emission['holdout_curve']}
+    near=min(at,key=lambda b:abs(b-card['holdout_dti']['budget']))
+    assert near==card['holdout_dti']['nearest_measured_budget']
+    assert math.isclose(at[near]['holdout_dti'],card['holdout_dti']['dti'],abs_tol=1e-12)
+    for point in emission['holdout_curve']:
+        assert point['withheld_positive_pixels']==11321
+        lo,hi=point['holdout_ci95'];assert 0<=lo<=hi<=1
+    assert card['holdout_dot_dti']['budget_curve']==[[int(p['budget']),p['holdout_dti']] for p in emission['holdout_curve']]
+    holdout=json.loads((root/'evidence/h57m_holdout.json').read_text())
+    for value in holdout['scores'].values():
+        assert value['evidence_class']=='HOLDOUT-DTI'
+        assert value['withheld_positive_pixels']==11321
+    canary=json.loads((root/'evidence/h57m_canary.json').read_text())
+    for feature in canary['features'].values():
+        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
     index=json.loads((root/'evidence/registry_refreshed.json').read_text())
-    total=index['n_unique_grid_rasters']
-    assert audit['registry_rasters_expected']==audit['registry_rasters_checked']==total
-    assert audit['complete_accessible_scan'] and not audit['source_errors']
-    assert len(audit['rows'])==total and not audit['unique'] and audit['worst_dot_overlap']>0.70
-    assert audit['jaccard_diagnostic_only'] is True
-    assert card['correlation_overlap_vs_registry']['jaccard_diagnostic_only'] is True
-    assert audit['byte_unique_among_checked'] and audit['pixel_unique_among_checked']
+    assert index['n_unique_grid_rasters']==695
     snapshots={row['repo']:row['commit'] for row in index['snapshots']}
     assert len(snapshots)==57
     sites=json.loads((root/'evidence/site_inventory.json').read_text())
     assert {row['repo']:row['commit'] for row in sites['repos']}==snapshots
     classification=json.loads((root/'evidence/registry_classification.json').read_text())
-    assert classification['grid_rasters_checked']==total
     assert classification['auxiliary_inputs']==4
-    structure=json.loads((root/'evidence/orientation_structure.json').read_text())
-    relative=structure['relative_strike']
-    assert structure['evidence_class']=='HOLDOUT-STRUCTURE (descriptive, not a score)'
-    assert sum(relative['n_withheld'])==relative['n_withheld_total']==10811
-    assert sum(relative['n_visible_reference'])==relative['n_visible_total']==21321
-    assert structure['withheld_positive_pixels']==11321
-    assert structure['model_fit_performed'] is False
-    assert structure['dti_evaluated'] is False and structure['production_dots_generated'] is False
-    canary=json.loads((root/'evidence/orientation_canary.json').read_text())
-    assert len(canary['features']) in (14, 22)
-    for feature in canary['features'].values():
-        assert not feature['leakage_flag'] and feature['discriminative_auc_max']<=.90
-    holdout=json.loads((root/'evidence/orientation_holdout.json').read_text())
-    for scores in (holdout['scores'],holdout['raw_surface_holdout']['scores']):
-        for value in scores.values():
-            assert value['evidence_class']=='HOLDOUT-DTI'
-            assert value['evaluator_version']=='gems57-pooled-hide-v2'
-            assert value['withheld_positive_pixels']==11321
-            lo,hi=value['ci95'];assert 0<=lo<=hi<=1
-            assert math.isclose(value['tpw']+value['fnw'],11321,abs_tol=1e-7)
-            calculated=value['tpw']/(value['tpw']+.2*value['fpw']+.8*value['fnw'])
-            assert math.isclose(calculated,value['dti'],abs_tol=1e-12)
-    assert card['holdout_dti']['dti']==holdout['raw_surface_holdout']['scores']['orientation']['dti']
-    assert card['holdout_dot_dti']['dti']==holdout['scores']['orientation']['dti']
     pages,errors=check_links(docs)
     assert not errors,'\n'.join(errors)
     for name in ('index.html','executive-summary.html'):

@@ -1,0 +1,99 @@
+{
+  "generated_utc": "2026-10-10T22:10:13.071074+00:00",
+  "session": "session-7-2026-10-10",
+  "declared_in_chat_before_code": true,
+  "evidence_class": "PRE-IMPLEMENTATION HYPOTHESES (qualitative expectations, not scores)",
+  "novelty_scope": "Compared with the inspected implementations in this repository and the 57 public sibling repositories inventoried on 2026-10-10. No claim of global novelty.",
+  "ranking_rule": "expected HOLDOUT-DTI gain per experiment-hour, then per new-data dependency. A hypothesis is only promoted if its paired holdout CI is strictly positive under the exact evaluator; no submission slot is spent before the uniqueness ruling (IR-S7-02).",
+  "budget": {
+    "maximum_experiments": 3,
+    "spent_this_session": 0,
+    "note": "Session 7 ran zero new hypothesis experiments: it finalised the H57-M emission and ran two measurement passes."
+  },
+  "candidates": [
+    {
+      "rank": 1,
+      "id": "H57-M2",
+      "hypothesis": "Localised budget allocation beats the uniform density transfer at the same 43,950-dot budget",
+      "layers": [
+        "Retained H57-M posterior from visible faults only",
+        "Withheld-positive distance distribution (median 13.44 px; p90 25.55 px)",
+        "Per-cell marginal bar dT > c(1-k), c = alpha*DTI/(1-alpha*DTI)"
+      ],
+      "signature": "Spend the budget where the fitted strand intensity is high instead of thinning it uniformly: the shipped H57-M emission is the exact-curve optimum rescaled by area, which is a uniform dot rate along the band; a marginal-bar allocation would concentrate the same number of dots on the top-decile cells of the same posterior.",
+      "why_missing_faults": "Same mechanism as H57-M (relay/bend damage zones); the change is only how the fixed budget is distributed along the fitted intensity.",
+      "difference_from_repo": "All previous emissions used emit_decimated/emit_prefix with a uniform per-cell cap; the surrogate-argmax selector is retracted (IR-S7-01), so the marginal rule has never been evaluated under the exact evaluator at a fixed budget.",
+      "expected_improvement": "Unknown magnitude; must exceed the paired 95% CI floor to be promoted. Upper bound: the exact curve moves +0.056 between the 40k and 10k points, so allocation shape is worth more than density.",
+      "implementation_cost": "1 experiment (~40 min CPU): reuse the cached posterior, re-run the exact evaluator on the four folds.",
+      "non_fault_mimic": "Concentrating on high posterior cells can also concentrate on a single mapped system; per-fold CI and the distance-only control must both be reported.",
+      "status": "not started; next session's rank-1 experiment"
+    },
+    {
+      "rank": 2,
+      "id": "H57-T",
+      "hypothesis": "Segment-tip and along-strike termination anatomy: strands concentrate near visible-segment tips and stepovers rather than uniformly along traces",
+      "layers": [
+        "Visible component tips and endpoint curvature at 3 px and 9 px scales",
+        "Distance to nearest tip vs distance to trace interior",
+        "H57-M relay geometry as the conditioning frame"
+      ],
+      "signature": "Fit per-fault secondary-strand intensity as a function of along-strike position s/L (tip vs middle) with tip distance as a covariate; no textbook angle imposed.",
+      "why_missing_faults": "Tip damage and linkage zones are where new short strands are most often mapped; compilations truncate them.",
+      "difference_from_repo": "H57-H/I2/J used bend and relay geometry, never along-trace position s/L or tip proximity.",
+      "expected_improvement": "Modest but cheap; a strictly positive paired CI over the H57-M arm is the promotion bar.",
+      "implementation_cost": "1 experiment (~30-40 min); geometry already cached.",
+      "non_fault_mimic": "Digitisation vertices create artificial tips; a tip must be a component endpoint, not a digitising node.",
+      "status": "not started"
+    },
+    {
+      "rank": 3,
+      "id": "H57-G",
+      "hypothesis": "Geophysical edge corroboration (magnetic horizontal gradient, tilt derivative, detrended elevation and its slope) raises precision of the strand posterior at the same budget",
+      "layers": [
+        "Official 19-band training_features.tif planes 3/6/12/19 (tmi_hg, tc, det_elev, det_elev_slope)",
+        "H57-M posterior as the prior (likelihood only, never catalogue-derived)",
+        "Per-fold leakage canary on every added column"
+      ],
+      "signature": "GBM conditioned on anatomy + geo edge planes; identical emission rule to H57-M so the comparison isolates the likelihood.",
+      "why_missing_faults": "Secondary strands with little topographic expression may still have magnetic/conductivity edges.",
+      "difference_from_repo": "Session-5 geo work was blocked because the 419 MB stack was not present; geo planes were never evaluated on the corrected strike frame.",
+      "expected_improvement": "Potentially the largest of the four; unknown sign on the holdout (geo edges also fire on non-fault contacts).",
+      "implementation_cost": "2 experiments (~90 min) plus ~420 MB feature restore through the pinned five-part bridge (free, public, SHA256-verified).",
+      "non_fault_mimic": "Dikes, lithologic contacts, flight-line leveling residuals and variable survey clearance mimic strands; area-2 line spacing (400 m) is coarser than the 300 m kernel.",
+      "status": "not started; needs the feature stack restored in a new session"
+    },
+    {
+      "rank": 4,
+      "id": "H57-D2",
+      "hypothesis": "Second independent whole-component holdout draw confirms or breaks the +0.0287 relay-band gain",
+      "layers": [
+        "Same posterior and emission rule",
+        "A second predeclared buffered whole-component LOQO draw (different seed and cluster order)"
+      ],
+      "signature": "Re-run the exact evaluator on a new spatial blocking; the promotion bar is the same strictly positive paired CI.",
+      "why_missing_faults": "Not a discovery hypothesis: it is the stability test the current single draw cannot provide.",
+      "difference_from_repo": "All H57-M readings so far condition on one buffered split (seed 20, 153 physical 20 km clusters).",
+      "expected_improvement": "No expected score gain; it converts a single-draw result into a distributional statement.",
+      "implementation_cost": "1 experiment (~35 min).",
+      "non_fault_mimic": "Not applicable; this is an instrument-stability test.",
+      "status": "not started"
+    },
+    {
+      "rank": 5,
+      "id": "H57-A",
+      "hypothesis": "Airborne-magnetic flight-line mimic suppression before any geo-edge feature is trusted",
+      "layers": [
+        "Survey flight-line geometry (spacing/heading) for the GeoDAWN blocks",
+        "Directional filtering of the magnetic planes along line azimuth",
+        "Mimic ledger per suppressed feature"
+      ],
+      "signature": "Measure the fraction of fitted strand intensity explained by survey-parallel linear features and remove it; only then use the magnetic planes as likelihood.",
+      "why_missing_faults": "Suppresses false positives rather than finding new strands: it protects H57-G from the known leveling-residual mimic.",
+      "difference_from_repo": "Never attempted in this repository; requires external survey-geometry metadata.",
+      "expected_improvement": "Indirect (precision guard for rank 3).",
+      "implementation_cost": "1-2 experiments, but first requires bridging USGS ScienceBase/national-map survey metadata, which sandbox binary egress blocks today.",
+      "non_fault_mimic": "This hypothesis is about a mimic.",
+      "status": "blocked on external data placement; last by cost"
+    }
+  ]
+}

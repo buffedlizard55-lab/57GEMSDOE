@@ -1,71 +1,39 @@
 {
-  "status": "three local implementation/review passes complete (Session 5 — 2026-10-10)",
-  "passes": [
-    {
-      "pass_number": 1,
-      "scope": "Assemble 19-band training_features.tif into .cache/, refresh 695-raster registry across all 57 sibling repositories, implement multi-scale host-bend (H57-H), exact 12-bitplane two-host relay (H57-I2), and visible-only slip-sense transition (H57-J) features in src/gems57/relay_bend_anatomy.py, and run the 3-experiment buffered whole-component holdout + 695-raster audit",
-      "tests": "91 passed; all 22 feature canaries <= 0.8259 < 0.90; E2 (relay_bend_anatomy) achieves binary HOLDOUT-DTI 0.135204 [0.119140, 0.153036], beating single-host anatomy (+0.0256 [+0.0139, +0.0371]) and distance-only (+0.0225 [+0.0079, +0.0385])"
-    },
-    {
-      "pass_number": 2,
-      "scope": "Review multi-scale bend turning at symmetric vertices (repaired using spin-2 structure-tensor director norm ||T_fine - T_coarse||_2), verify two-host bitplane EDT against brute-force oracle, verify hidden-label invariance, update site generator and check_site.py for 22-feature canary and 695-raster audit",
-      "tests": "92 passed; check_site.py passes all 28 HTML pages, links, GeoTIFF/ZIP round-trip and SHA256 checks"
-    },
-    {
-      "pass_number": 3,
-      "scope": "Re-check against every requirement in the standing prompt (lane compliance, reuse of evaluate_holdout.py & submission_writer.py, HOLDOUT-DTI vs ORGANIZER-CONFIRMED/OWNER-REPORTED labeling, 22-feature leakage canary, 695-raster uniqueness gate, prominent download + HOLD status on site and README, GEMSDOE32 0.2778 analysis, 4 ranked hypotheses, JSON Run Card, and PR merge onto main)",
-      "status": "complete",
-      "tests": "92 passed, 0 failed, 0 skipped"
-    },
-    {
-      "pass_number": "session-6-1",
-      "scope": "Session 6 (2026-10-10): full 679-raster registry re-verification; literal gate rerun on the complete cache; top-score file mechanism; leaderboard and reference-solution checks; HOLD status",
-      "status": "complete",
-      "tests": "pass 1: implement and verify (audit script, evidence, card, site)"
-    },
-    {
-      "pass_number": "session-6-2",
-      "scope": "Review for bugs, edge cases and wrong assumptions",
-      "status": "complete",
-      "findings_fixed": [
-        "check_site.py hard-coded the stale 0/679 state and would have failed the verified cache; now accepts either the recorded 0/679 HOLD state or a verified state that matches evidence/registry_profile_session6.json.",
-        "Dense-threshold test had a boundary arithmetic error in the test itself (4 of 8 cells is exactly 0.5, which is dense by the >= 0.5 rule); rewritten with explicit counts.",
-        "IR-S6-04 partition was loosely stated; corrected to 32 path-auxiliary (30 float32 + 2 uint8), 4 uint8 derived, 17 float32 non-auxiliary soft fields.",
-        "IR-S6-03 said 'dense'; the sigmoid output is positive almost everywhere, not literally every cell. Corrected.",
-        "IR-S6-02 gave a 0.94-1.0 overlap range; the saved file shows 1.0 against the 0.2778 raster for 0.2708 and 0.2750. Corrected.",
-        "IR-S6-01 recommendation labelled as untested, not as a finding.",
-        "Stale 0/679 cache statements in README, BRIEF, REMAINING_WORK and research hypotheses replaced with the session-6 state.",
-        "A garbled sentence introduced during a text replacement in docs/research/hypotheses.md was repaired."
-      ],
-      "tests": "pytest: all tests passed after fixes (exit 0); tests/test_session6_audit.py 8 tests"
-    },
-    {
-      "pass_number": "session-6-3",
-      "scope": "Re-check against the original request after the merge with main: unique TIF status, obvious download/submit status, 0.2778 analysis, leaderboard conflict, holdout/hypotheses, official-source verification, PR",
-      "status": "complete",
-      "result": "No new candidate was built or offered in session 6. The Session-5 relay/bend TIFF on main is shown as a research download (submit: NO); its literal gate fails on the 696 index (IR-S6-10). Status is HOLD for submission. The holdout did not run (IR-S6-05). Owner protocol decision requested (IR-S6-01, IR-S6-10)."
+  "status": "three local review passes (Session 7 \u2014 2026-10-10)",
+  "candidate": "docs/downloads/gems57-h57m-relay-band-20261010T215522Z-gems57-h57m.tif",
+  "candidate_sha256": "bb1f328dbf12395254305bd74094a22e1582cd5110576c01ddb02daca45bffa0",
+  "pass1_numbers": {
+    "checks": {
+      "tif_sha_matches_card_receipts": true,
+      "card_dots_is_43950": true,
+      "validator_all_pass": true,
+      "certificate_is_same_bytes": true,
+      "literal_firings_43_of_213": true,
+      "literal_worst_forward_1": true,
+      "worst_spearman_0_12678": true,
+      "like_for_like_20_firings_worst_0_9992": true,
+      "blanket_40_total_43": true,
+      "zero_two_direction_firings": true,
+      "worst_reverse_0_698725": true,
+      "best_known_control_116_of_213": true,
+      "lattice_dilated_coverage_0_9987": true,
+      "certificate_pins_696": true,
+      "curve_peak_10k_0_16441": true,
+      "card_nearest_budget_40000": true,
+      "readme_sha_present": true,
+      "readme_dots_present": true,
+      "readme_213_of_696_present": true,
+      "readme_states_zero_slots": true
     }
-  ],
-  "experiments": 3,
-  "slots_used": 0,
-  "completed_utc": "2026-10-10T20:45:00Z",
-  "production_final_dots": 0,
-  "final_local_tests": {
-    "passed": 92,
-    "warnings": 9,
-    "junit": "evidence/tests-final.xml"
   },
-  "static_delivery_checks": {
-    "html_pages": 28,
-    "zip_exactly_one_tiff": true,
-    "local_format": true,
-    "root_and_docs_mirrors_identical": true
+  "pass2_claims": {
+    "forbidden_claims_found": [],
+    "stale_top_card_links": []
   },
-  "registry_rasters_checked": 695,
-  "github_ci": {
-    "first_run_id": 37989482527,
-    "first_run_conclusion": "success",
-    "final_head_verification": "verified locally and via PR merge"
+  "pass3_behaviour": {
+    "pytest_tail": "-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html",
+    "check_site_tail": "submission_cleared=false"
   },
-  "pages_admin_change": "HTTP 403; no administrative permission; legacy main-root preserved with identical root delivery mirrors"
+  "failures": [],
+  "slots_used": 0
 }
