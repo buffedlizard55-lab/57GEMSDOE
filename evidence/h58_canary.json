@@ -1,0 +1,179 @@
+{
+  "evidence_class": "LEAKAGE-CANARY (AUC, not DTI)",
+  "generated_utc": "2026-10-10T21:50:34.650153+00:00",
+  "split_version": "buffered-whole-components-loqo-v2",
+  "draw_seed": 2026,
+  "features": {
+    "d": {
+      "auc_per_fold": [
+        0.26310796104753525
+      ],
+      "auc_mean": 0.26310796104753525,
+      "auc_min": 0.26310796104753525,
+      "auc_max": 0.26310796104753525,
+      "discriminative_auc_mean": 0.7368920389524647,
+      "discriminative_auc_max": 0.7368920389524647,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "d_perp": {
+      "auc_per_fold": [
+        0.23862283054577466
+      ],
+      "auc_mean": 0.23862283054577466,
+      "auc_min": 0.23862283054577466,
+      "auc_max": 0.23862283054577466,
+      "discriminative_auc_mean": 0.7613771694542253,
+      "discriminative_auc_max": 0.7613771694542253,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "d_par_abs": {
+      "auc_per_fold": [
+        0.4407652271126761
+      ],
+      "auc_mean": 0.4407652271126761,
+      "auc_min": 0.4407652271126761,
+      "auc_max": 0.4407652271126761,
+      "discriminative_auc_mean": 0.5592347728873239,
+      "discriminative_auc_max": 0.5592347728873239,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "side": {
+      "auc_per_fold": [
+        0.47533914524647886
+      ],
+      "auc_mean": 0.47533914524647886,
+      "auc_min": 0.47533914524647886,
+      "auc_max": 0.47533914524647886,
+      "discriminative_auc_mean": 0.5246608547535212,
+      "discriminative_auc_max": 0.5246608547535212,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "log_len": {
+      "auc_per_fold": [
+        0.40041760541373234
+      ],
+      "auc_mean": 0.40041760541373234,
+      "auc_min": 0.40041760541373234,
+      "auc_max": 0.40041760541373234,
+      "discriminative_auc_mean": 0.5995823945862677,
+      "discriminative_auc_max": 0.5995823945862677,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sin2": {
+      "auc_per_fold": [
+        0.503500163512324
+      ],
+      "auc_mean": 0.503500163512324,
+      "auc_min": 0.503500163512324,
+      "auc_max": 0.503500163512324,
+      "discriminative_auc_mean": 0.503500163512324,
+      "discriminative_auc_max": 0.503500163512324,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "cos2": {
+      "auc_per_fold": [
+        0.5299854326584508
+      ],
+      "auc_mean": 0.5299854326584508,
+      "auc_min": 0.5299854326584508,
+      "auc_max": 0.5299854326584508,
+      "discriminative_auc_mean": 0.5299854326584508,
+      "discriminative_auc_max": 0.5299854326584508,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "coherence": {
+      "auc_per_fold": [
+        0.39047282548415496
+      ],
+      "auc_mean": 0.39047282548415496,
+      "auc_min": 0.39047282548415496,
+      "auc_max": 0.39047282548415496,
+      "discriminative_auc_mean": 0.609527174515845,
+      "discriminative_auc_max": 0.609527174515845,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "density": {
+      "auc_per_fold": [
+        0.5464988257042254
+      ],
+      "auc_mean": 0.5464988257042254,
+      "auc_min": 0.5464988257042254,
+      "auc_max": 0.5464988257042254,
+      "discriminative_auc_mean": 0.5464988257042254,
+      "discriminative_auc_max": 0.5464988257042254,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sin2d": {
+      "auc_per_fold": [
+        0.44204288072183107
+      ],
+      "auc_mean": 0.44204288072183107,
+      "auc_min": 0.44204288072183107,
+      "auc_max": 0.44204288072183107,
+      "discriminative_auc_mean": 0.5579571192781689,
+      "discriminative_auc_max": 0.5579571192781689,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "cos2d": {
+      "auc_per_fold": [
+        0.442606355193662
+      ],
+      "auc_mean": 0.442606355193662,
+      "auc_min": 0.442606355193662,
+      "auc_max": 0.442606355193662,
+      "discriminative_auc_mean": 0.557393644806338,
+      "discriminative_auc_max": 0.557393644806338,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_sgn": {
+      "auc_per_fold": [
+        0.5083770875880281
+      ],
+      "auc_mean": 0.5083770875880281,
+      "auc_min": 0.5083770875880281,
+      "auc_max": 0.5083770875880281,
+      "discriminative_auc_mean": 0.5083770875880281,
+      "discriminative_auc_max": 0.5083770875880281,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "sense_side": {
+      "auc_per_fold": [
+        0.49480164634683105
+      ],
+      "auc_mean": 0.49480164634683105,
+      "auc_min": 0.49480164634683105,
+      "auc_max": 0.49480164634683105,
+      "discriminative_auc_mean": 0.505198353653169,
+      "discriminative_auc_max": 0.505198353653169,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    },
+    "obliq_signed_base": {
+      "auc_per_fold": [
+        0.49485653147007047
+      ],
+      "auc_mean": 0.49485653147007047,
+      "auc_min": 0.49485653147007047,
+      "auc_max": 0.49485653147007047,
+      "discriminative_auc_mean": 0.5051434685299295,
+      "discriminative_auc_max": 0.5051434685299295,
+      "leakage_threshold": 0.9,
+      "leakage_flag": false
+    }
+  },
+  "flagged": [],
+  "withheld_positive_pixels": 11360,
+  "note": "Every column is a deterministic function of the visible mask (plus the visible-restricted INGENIOUS sense raster), so no channel runs from the withheld set into a feature. Near-field distance AUC is the lane's signal, not a leak."
+}

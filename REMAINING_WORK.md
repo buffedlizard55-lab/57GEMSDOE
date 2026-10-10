@@ -151,3 +151,26 @@ Work merged from a parallel lane run. Its headline items:
    is still the cheapest untried anatomy hypothesis; the GeoDAWN feature
    stack is now local and sha256-verified (sibling session) but unused by
    this session's variant.
+
+## Session addendum — H58 fault-zone anatomy (2026-10-10, arena/4fa187dd)
+
+Three predeclared experiments, zero slots, one new TIFF (`gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif`, SHA256 `705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7`, 21,748 binary dots). Download OK, submit NO.
+
+**Closed by measurement (do not re-run unchanged):**
+- `W(L) ∝ L^γ` with **γ = 0.1544 [0.0732, 0.2882]** — sub-linear, and the interval also excludes √L (§4's "axial cos2 unsigned/sense unseparated" caveat is now resolved *by rejection*: see below).
+- **Signed sense-conditioned radial obliquity: rejected.** No enriched bin (max 0.0065 vs base 0.00235); L/R log-ratio +0.096 / −0.153. Do not ship a handed Riedel claim or a textbook ±15°/±30° band; the data supports only *unsigned* obliquity (withheld median 13.64° vs 6.39° visible null).
+- **Catalogue-flank suppression is unmeasurable on the current collar** (flank0 ≡ flank2, Δ = 0.0000 for every arm) — §1's and IR-58-02's instrument limit, not a free policy.
+- **The anatomy arm set did not beat `distance_only` after binary allocation** on this draw (0.09456 vs 0.11004) while beating it 3× on the soft surface. Any future claim must state which representation it is about.
+
+**Step 0 — integration, before any science.** PR #36 is open and `CONFLICTING`: a concurrent session merged the Session-7 H57-M release onto main, and both sessions wrote `evidence/run_card_current.json`, the generated `docs/` tree, `scripts/build_site.py`, `scripts/check_site.py`, `README.md`, `BRIEF.md`, `REMAINING_WORK.md` and two shared tests (28 conflicted files). Nothing was force-merged; the full procedure is IR-58-07. Both releases are negative, both spent zero slots, and both independently measured the same universal-blocker obstruction in the drift gate — so the merge is an editorial decision about which release is "current", not a fight over results.
+
+**Priority queue for the next session (each is one experiment; the 3-experiment / 2-hour cap still applies):**
+1. **Budget alignment (IR-58-01), do this first.** Re-measure the shipped arm with the writer's cap basis (or emit at the holdout basis, 29,889 dots) so the published HOLDOUT-DTI describes the delivered bytes. No geology risk, pure integrity, ~35 min.
+2. **Predeclare a paired test against `distance_only` for whatever arm ships.** This session's rule paired the candidate only against the reference, which is why the most interesting gap (−0.0155) has no CI.
+3. **H59-A density-decay allocation** (replace the `W(L)` clip with the fitted annulus hazard; tests whether the 46% of withheld mass beyond the kept zone is worth budget). Cheapest geological next step.
+4. **H59-B fault-tip lobes + facing-tip relay overlap** — the still-untried H57-B; Session 5's relay arm produced the largest gain this repo has measured, so tips are the obvious sibling singularity.
+4b. **Method fix first, at zero budget cost:** `h58_finalize.py` must emit `holdout_dti` (the soft-surface alias that `scripts/check_site.py --site-only`, `session7_verify.py` and `review_session7.py` read) and `run_card_current.json` must use the `sha256` key alias plus the explicit `content_distinct_from_all_audited_rasters` boolean. Both were verified true for H58 (21,748 dots in-file; byte- and pixel-distinct against all 695) but were not published under those key names, which made the merged site QA fail closed with 5 missing keys. Fixed in `scripts/h58_finalize.py` and mirrored into the H58 card on this branch.
+5. **Owner decisions that gate everything else:** the soft-raster "dot" definition for the overlap clause (IR-S6-01 / IR-58-03) and one ORGANIZER-CONFIRMED receipt tying any reported score to a file hash (§2). Until the first is ruled on, no candidate in this family can ever clear the literal gate, and until the second exists every leaderboard number stays OWNER-REPORTED.
+6. **Blocked, do not fake:** H59-C needs external slip-rate / seismogenic-thickness rasters this sandbox cannot reach; H59-E needs the 19-band GeoDAWN cache restored (`scripts/prepare_data.py --cache-bands`) — H58 ran catalogue-only by design and said so.
+
+**Tooling fixed this session (shared, not forked):** `scripts/build_site.py` and `scripts/check_site.py` are now receipt-driven (the download panel renders its permission labels from the run card; QA re-derives hashes, dot counts, both gate phases and the DTI from TPw/FPw/FNw and fails closed on drift); three historical tests were re-pinned to their own receipts instead of the moving current card; `scripts/h58_relabel.py` proves an array before relabelling metadata; `damagezone_envelope.signed_obliquity` documents the on-trace `az = 0` convention; the emitted note is validated against the 140-character field instead of truncated. New regression tests: `tests/test_damagezone_envelope.py` (8 tests). `python -m pytest` → 133 passed, 2 skipped; `scripts/check_site.py` → 30 pages, links pass, all invariants pass.

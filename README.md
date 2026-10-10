@@ -46,6 +46,30 @@ While this branch was open, PR #34 merged a parallel "S7-1" run (candidate **H57
 
 For future sessions: `git fetch origin main` **before** starting work — several sessions merge to `main` concurrently — and always re-run `scripts/build_site.py` followed by `scripts/check_site.py` after resolving any merge.
 
+## Session 7 · H58 fault-zone anatomy — a second release the same date (`arena/4fa187dd`)
+
+The block at the top of this file belongs to the **H57-R joint strata** release. This section documents the **H58 damage-zone envelope** release, which was built in parallel from the same corrected instrument and reached a **different verdict**. Its download links are live and its receipts are committed; it is **not** the site's advertised current release, and it is **not** cleared for a slot.
+
+### **H58 download for research: OK. H58 submit to competition: NO.**
+
+**[↓ Download the H58 GeoTIFF (87 KB)](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif)** · **[Single-TIFF ZIP](https://buffedlizard55-lab.github.io/57GEMSDOE/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.zip)** · [H58 run card](evidence/run_card_h58.json) · [results receipts](evidence/h58_holdout.json)
+
+Built from scratch with no prior raster as input (`metadata.no_prior_raster_used_to_build_predictions: true` in the writer receipt): 21,748 binary dots, values exactly {0, 1}, zero NaN/Inf, 15/15 local format checks, EPSG:32611, 3730 × 3292, transform `(100, 0, 243350, 0, -100, 4508550)`, zero positive mass on the mapped catalogue. TIFF SHA256 `705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7`; note (129/140): *H58 damage-zone envelope: W(L)=w0\*L^gamma fitted; handed obliquity tested and rejected; dots kept >2 px off the mapped catalogue.*
+
+**What it measured (HOLDOUT-DTI, evaluator `gems57-pooled-hide-v2`, buffered whole-component draw seed 2026, 11,360 withheld positives):**
+
+- **Fitted damage-zone law `W(L) = w0·(L/40 px)^γ`: γ = 0.1544, 95% CI [0.0732, 0.2882]** over 6 populated length bins with a bin bootstrap — strongly sub-linear widening, and the interval excludes √L as well. Half-widths 24.8 px at L = 2 px to 53.4 px at L = 119 px.
+- **Signed, sense-conditioned radial obliquity: REJECTED.** No enriched bin (max 0.0065 vs base 0.00235); left/right log-ratio +0.096 for recorded strike-slip hosts and −0.153 where the record is empty. The candidate arm that adds those columns beat the reference by only **+0.00171 [−0.00367, +0.00780]**, so the predeclared rule dropped it. No Riedel handedness or textbook angle ships.
+- **Unsigned axial obliquity is real:** withheld median 13.64° to the nearest visible host against a 6.39° visible-reference null.
+- **The anatomy arms did not beat plain distance after binary allocation** on this draw: shipped `anatomy10__flank2` **0.09456 [0.07990, 0.11072]** versus `distance_only` **0.11004 [0.09600, 0.12287]**, while the soft surface ranked the other way (0.01675 versus 0.00566). No paired test of that pairing was predeclared, so it is reported unpaired and not promoted into an arm switch.
+- **Catalogue-flank suppression is unmeasurable on this instrument:** `flank0` and `flank2` produced byte-identical allocations for all four arms (Δ exactly 0.0000) because the 3 px context collar already emptied the near-flank bins; the rule stands on organiser thread 11516 and on the registry measurement, not on a holdout cost/benefit.
+- **Leakage canary:** 14 features, maximum discriminative AUC 0.7614 (`d_perp`), no flags.
+- **Budget:** cap = 4 × 10,000 × 0.5437 (fitted fraction of withheld positives inside the kept distance × strike zone) = 21,748 dots; support `footprint ∧ ¬catalogue ∧ d > 2 px ∧ d ≤ W(L)`. Disclosed limitation (IR-58-01): the holdout arms were measured at 29,889 pooled dots under a per-quadrant cap, so the DTI above is the arm's, not these exact bytes'; aligning them is the first queued task and was not done in-session because it would have been a fourth experiment.
+
+**Uniqueness, both required phases, 695 hash-pinned registry rasters (0 missing, 0 hash mismatch):** worst full-footprint Spearman **0.2172 ≤ 0.90 PASS**; worst 3-px forward overlap **1.0 > 0.70 TRIP** with 95 triggered comparisons → `unique = false`, so **STOP was honoured and no slot was spent**. Measured cause, disclosed rather than exempted: **45 of the 695 priors put positive support on every one of the 5,106,385 allowed cells**, which makes the inherited `finite > 0` rule unsatisfiable for *any* non-empty candidate; byte identity and decoded-pixel identity are distinct from all 695, worst Jaccard 0.1184. The same audit on the pre-placement surface trips identically (worst Spearman 0.7249). Note that the H57-R release above cleared a *representation-aware* variant of this gate (comparison restricted to same-representation peers plus a support-matched leg); the two regimes now coexist and the owner must pick one — recorded as IR-58-08.
+
+**Why the published 0.2778 looked smart, measured from bytes this time** ([evidence/live_submission_patterns.json](evidence/live_submission_patterns.json)): across the 15 owner-reported registry entries, ρ(dots, reported score) = **−0.8104** (p = 0.00025) and ρ(median dot-to-catalogue distance, reported score) = **+0.7663**; the 0.2778 raster is the 0.2708 raster minus exactly 2,545 dots, every removed dot ≤ 2.00 px from the mapped catalogue and every kept dot ≥ 2.236 px away (`equals_base_pruned_at_2px: true`). Confounded by construction, so it sets a prior about density and support shape and is not a causal estimate or a forecast.
+
 ## Session 6 (2026-10-10) — verification and direct answers
 
 **Status: HOLD for submission.** Session 6 ran no experiment, used no submission slot, built no new candidate and made no holdout claim. Full page: [Session 6 verification](https://buffedlizard55-lab.github.io/57GEMSDOE/session-6-verification.html) · ledger: [IR-S6-01 to IR-S6-12](evidence/irregularities_current.json).
@@ -136,6 +160,23 @@ The shared instrument is `evaluate_holdout.py`; packaging uses `submission_write
 - [Remaining work](REMAINING_WORK.md): the unresolved catalogue-holdout vs live-evidence conflict, the owner ruling on the uniqueness-protocol revision (IR-57-REPR-01), authenticated provenance/receipts, and the next three pre-registered hypotheses (H57-S slip-sense conditioning, H57-T fault-tip anatomy, H57-U flight-line mimic suppression).
 
 AI assistance was used for code and analysis. The official rules require generative-AI disclosure in finalist narrative materials; entrants remain responsible for authorship, accuracy and licenses.
+
+## Standing operating checklist — re-read at the start of every session
+
+The durable form of the owner's request. Instructions, not status; the dated sections above win on facts.
+
+1. Produce a genuinely **unique, format-valid single-band GeoTIFF** for the assigned lane and never copy a previous submission except to learn from it. For fault-zone anatomy that means secondary strands from damage-zone and en-echelon mechanics (Savage & Brodsky 2011; Tchalenko 1970; Schreurs 2003; Faulds/Henry/Hinz left-stepping dextral Walker Lane), intensity from distance, mapped length as a displacement proxy and orientation relative to host strike, conditioned on recorded slip sense only where the catalogue has it. **No hard-coded textbook angles**: fit allocation from hide-and-recover and shrink the budget when few withheld positives fall inside the fitted zone.
+2. **One-click TIF and ZIP download, prominently**, with two unmistakable permissions — OK to **download** and OK to **submit** — both rendered from the run card, never from prose.
+3. Guard the live error class: finite values in [0, 1] everywhere inside the footprint, null/NaN only outside the bounds, CRS/shape/geotransform identical to `sample_submission.tif`; the writer re-reads and re-validates its own output and refuses to overwrite a release.
+4. **Parallel-run protocol:** the drift gate (Spearman > 0.90 or > 70 % of candidate support within 3 px of a registry raster) runs on the **surface before placement** and again on the **final dots**; on drift, log the duplicate and stop. Never claim a pass that was not measured.
+5. Reuse the shared instrument (`evaluate_holdout.py`, `submission_writer.py`, the cached feature stack). Fix a shared tool once, in the template, and report it; no private forks.
+6. Label every number `HOLDOUT-DTI` (evaluator, withheld positive count, 95 % CI) or `ORGANIZER-CONFIRMED` (a submission-page receipt). Owner-pasted leaderboard values stay `OWNER-REPORTED`. **A projection is never a score.**
+7. Leakage canary per feature: `max(AUC, 1−AUC) > 0.90` means treat it as leakage until disproven; a clean screen is not proof of zero leakage.
+8. End with **one JSON run card**: hypothesis, mechanism, named non-fault mimic, holdout DTI + CI, registry correlation/overlap, TIFF SHA256, validator output, submission name and ≤ 140-character note, promote/negative verdict. **Negative results are deliverables.**
+9. **Three experiments or two hours per session; never spend a submission slot** — promotion is a separate selector step.
+10. Keep answering the standing comparative question (can the reported 0.2778 be beaten, against 0.3195 / 0.3774) and keep 3–5 untried geological hypotheses pre-registered with layer, physical signature, why it reaches uncatalogued faults, and how it differs from repo code — validated on a spatially blocked holdout before any slot.
+11. Site quality: clean GitHub Pages UI, every number in an auditable table, official links for manual review, irregularities flagged rather than buried, and no claim without a line-by-line source check.
+12. Three passes (implement → review → re-check), run the repository's own checks and report what returned, then open a pull request and merge it. Guiding values: **Maximize P(Win)**, **Own the Outcome**.
 
 ## Standing request — re-read at every session
 

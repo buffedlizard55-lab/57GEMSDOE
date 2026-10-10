@@ -1,0 +1,195 @@
+{
+  "file": "gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif",
+  "sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+  "bytes": 87169,
+  "submission_name": "gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros",
+  "note": "H58 damage-zone envelope: W(L)=w0*L^gamma fitted; handed obliquity tested and rejected; dots kept >2 px off the mapped catalogue.",
+  "note_chars": 129,
+  "validator": {
+    "file": "/home/user/57GEMSDOE/docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif",
+    "bytes": 87169,
+    "sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+    "meta": {
+      "crs": "EPSG:32611",
+      "shape": [
+        3730,
+        3292
+      ],
+      "dtype": "float32",
+      "count": 1,
+      "nodata": null,
+      "transform": [
+        100.0,
+        0.0,
+        243350.0,
+        0.0,
+        -100.0,
+        4508550.0
+      ],
+      "profile_compress": "deflate"
+    },
+    "band_description": [
+      null
+    ],
+    "n_finite": 12279160,
+    "n_nan": 0,
+    "n_infinite": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0017711309483274817,
+    "emitted_positive_pixels": 21748,
+    "checks": {
+      "single_band": true,
+      "dtype_float32": true,
+      "dimensions_3730x3292": true,
+      "crs_epsg_32611": true,
+      "transform_matches_sample_submission": true,
+      "no_nan_anywhere": true,
+      "no_inf_anywhere": true,
+      "no_sentinel_values": true,
+      "range_0_1_guaranteed": true,
+      "min_ge_0": true,
+      "max_le_1": true,
+      "in_footprint_all_finite": true,
+      "in_footprint_range_0_1": true,
+      "outside_footprint_zero": true,
+      "zero_dots_on_mapped_catalogue": true
+    },
+    "all_checks_passed": true,
+    "validation_class": "local format/range preflight; not organizer acceptance or uniqueness clearance",
+    "on_catalogue_positive_pixels": 0,
+    "in_footprint_positive_pixels": 21748,
+    "footprint_fraction": 0.00420871495051741
+  },
+  "template_report": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.tif",
+    "bytes": 87169,
+    "sha256": "705bdbb7a873238debd2119421ca374a0dcce1350b99670885e08a9112a2d7d7",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0017711309483274817,
+    "n_nonzero": 21748,
+    "mass": 21748.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-h58-damagezone-envelope-21748dots-20261010T221137Z-673354bceb7d-zeros.zip",
+  "zip_sha256": "80cfb74f0938e1321f9b9a1c30d842b4eac13639f97010374409e8714e021f0f",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "locally validated within separately recorded inventory scope; not organizer acceptance or slot approval",
+  "metadata": {
+    "arm": "anatomy10__flank2",
+    "retained": false,
+    "dot_cap": 21748,
+    "fraction_pos_in_kept_zone": 0.5437059859154929,
+    "width_law": {
+      "model": "W(L) = exp(log_w0) * (L/l0)**gamma, clipped to [W_MIN_PX, W_MAX_PX]",
+      "evidence_class": "HOLDOUT-STRUCTURE (fitted on visible-only folds, not a score)",
+      "gamma": 0.15444110308687087,
+      "gamma_ci95": [
+        0.0732012918922162,
+        0.2882427283043857
+      ],
+      "log_w0": 3.007091927933223,
+      "w0_px": 20.22848840520104,
+      "l0_px": 40.0,
+      "quantile": 0.9,
+      "n_positives": 11360,
+      "n_bins": 6,
+      "sublinear": true,
+      "bins": [
+        {
+          "len_lo": 0.0,
+          "len_hi": 5.0,
+          "n_positives": 1843,
+          "length_median_px": 2.000000059502263,
+          "width_px": 24.823355484008786
+        },
+        {
+          "len_lo": 5.0,
+          "len_hi": 10.0,
+          "n_positives": 2075,
+          "length_median_px": 7.000000045711704,
+          "width_px": 27.257989120483412
+        },
+        {
+          "len_lo": 10.0,
+          "len_hi": 20.0,
+          "n_positives": 3235,
+          "length_median_px": 14.000000748573068,
+          "width_px": 26.2182876586914
+        },
+        {
+          "len_lo": 20.0,
+          "len_hi": 40.0,
+          "n_positives": 2240,
+          "length_median_px": 27.00000196369055,
+          "width_px": 35.77988204956055
+        },
+        {
+          "len_lo": 40.0,
+          "len_hi": 80.0,
+          "n_positives": 1255,
+          "length_median_px": 54.99999068260195,
+          "width_px": 33.541019439697266
+        },
+        {
+          "len_lo": 80.0,
+          "len_hi": 160.0,
+          "n_positives": 553,
+          "length_median_px": 119.00000667426013,
+          "width_px": 53.35884704589845
+        }
+      ],
+      "w_min_px": 2.0,
+      "w_max_px": 60.0,
+      "min_bin_positives": 200,
+      "interpretation": "gamma<1 with an interval excluding 1 supports sub-linear (Savage-Brodsky-like) widening; gamma>=1 means the mapped component length does not narrow the halo in this instrument"
+    },
+    "live_censored_anchor_strikes": 0,
+    "evaluator": "gems57-pooled-hide-v2",
+    "draw_seed": 2026,
+    "relabel_of": "gems57-h58-damagezone-envelope-21748dots-20261010T220856Z-673354bceb7d-zeros.tif",
+    "predictions_recomputed": false,
+    "no_prior_raster_used_to_build_predictions": true
+  }
+}

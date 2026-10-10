@@ -32,7 +32,11 @@ PUBLIC = ['run_card_current',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
           'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
           'h57r_build', 'run_card_h57r', 'offcat_structure',
-          'offcat_instrument_check', 'uniqueness_h57r', 'portfolio_live_evidence']
+          'offcat_instrument_check', 'uniqueness_h57r', 'portfolio_live_evidence',
+          # H58 (fault-zone anatomy, same date, separate release): receipts kept auditable
+          'h58_experiment_plan', 'h58_structure', 'h58_canary', 'h58_holdout', 'h58_build',
+          'h58_relabel', 'h58_registry_profile', 'h58_uniqueness_final_dots',
+          'h58_uniqueness_surface_before_placement', 'live_submission_patterns', 'run_card_h58']
 
 
 def esc(value):
@@ -124,11 +128,26 @@ def download_panel(card):
     zipname = Path(card['zip_file']).name
     validator = card['validator_output']
     reg = card.get('correlation_overlap_vs_registry', {})
+    # The two permissions are rendered FROM the card, never from a literal, so a page
+    # can never keep advertising a decision the receipt has since withdrawn.
+    sub_ok = bool(card.get('okay_to_submit'))
+    # A release published with a download link plainly permits downloading; when the card
+    # omits the field outright we keep that reading but say so, instead of silently
+    # inventing a recorded decision.
+    dl_field = card.get('okay_to_download')
+    dl_ok = True if dl_field is None else bool(dl_field)
+    dl_note = '' if dl_field is not None else ' <span class="small">(no explicit okay_to_download field in the card)</span>'
+    permits = (f'<span class="permission {"yes" if dl_ok else "no"}">Download: {"OK" if dl_ok else "NOT OK"}</span>{dl_note}'
+               f'<span class="permission {"yes" if sub_ok else "no"}">Submit to competition: '
+               f'{"OK" if sub_ok else "NO"}</span>')
+    banner = ('<strong>This file is cleared for submission.</strong>' if sub_ok else
+              '<strong>Do not submit this release.</strong> Read the exact reason in the run card; '
+              'a local format PASS is never organiser acceptance.')
     return f'''<section class="download-panel" aria-labelledby="download-title">
-<div class="eyebrow">NEW GEOTIFF · GENERATED OCT 10, 2026 (SESSION 7)</div><h1 id="download-title">Joint distance × relative-strike strata.</h1>
+<div class="eyebrow">NEW GEOTIFF · GENERATED {esc(str(card.get('generated_utc', ''))[:10])} (SESSION 7)</div><h1 id="download-title">Joint distance × relative-strike strata.</h1>
 <p class="hero-sub">38,000 dots placed where genuinely <em>new</em> faults sit around known traces, not where the mapped catalogue already is.<br>Fresh Session-7 construction &mdash; not a copy or modification of any earlier submission.</p>
-<div class="permissions"><span class="permission yes">Download: OK</span><span class="permission yes">Submit to competition: OK</span></div>
-<p class="hold-reason"><strong>This file is cleared for submission.</strong> Single-band Float32 GeoTIFF, EPSG:32611, 3730 &times; 3292, transform <code>(100, 0, 243350, 0, -100, 4508550)</code>, every cell finite, every value in [0, 1], 0 dots on the mapped catalogue and 0 dots outside the footprint. Unique against {reg.get('registry_rasters_checked', 'the')} audited prior rasters: worst full-footprint Spearman {number(reg.get('worst_spearman', 0.0))} &le; 0.90, worst 3-px dot overlap {number(reg.get('worst_dot_overlap_dot_peers', 0.0), 3)} &le; 0.70 against same-representation peers.</p>
+<div class="permissions">{permits}</div>
+<p class="hold-reason">{banner} Single-band Float32 GeoTIFF, EPSG:32611, 3730 &times; 3292, transform <code>(100, 0, 243350, 0, -100, 4508550)</code>, every cell finite, every value in [0, 1], 0 dots on the mapped catalogue and 0 dots outside the footprint. Unique against {reg.get('registry_rasters_checked', 'the')} audited prior rasters: worst full-footprint Spearman {number(reg.get('worst_spearman', 0.0))} &le; 0.90, worst 3-px dot overlap {number(reg.get('worst_dot_overlap_dot_peers', 0.0), 3)} &le; 0.70 against same-representation peers.</p>
 <div class="actions"><a class="button primary" href="downloads/{esc(filename)}" download>&darr; Download GeoTIFF <span>{validator['bytes']/1_000_000:.2f} MB</span></a>
 <a class="button secondary" href="downloads/{esc(zipname)}" download>Single-TIFF ZIP</a><a class="text-link" href="executive-summary.html">Submission guide &rarr;</a></div>
 <details class="file-details"><summary>Exact filename, SHA256 and note</summary><p class="mono">{esc(filename)}</p><p class="mono">SHA256 {esc(card['raster_sha256'])}</p>
@@ -506,7 +525,16 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
     irregularities = f'''<div class="eyebrow">OWN THE OUTCOME</div><h1>Fixes without rewriting history.</h1><p>The interrupted first attempt is explicitly invalid. Current results use the corrected strike field and shared buffered evaluator. Old in-sample, unbuffered, oracle-budget and relaxed-gate reports remain historical evidence, not recommendations.</p>{table(['ID / severity', 'Finding', 'Resolution', 'Still limited'], irregularity_rows)}
 <h2>Remaining work—before any promotion</h2><ol><li>Resolve the universal literal overlap obstruction only through an explicit protocol revision. Do not quietly redefine soft support, exempt dense maps, add a reverse-overlap condition or choose another raster after STOP.</li><li>Obtain organizer receipts to authenticate exact file-to-score attribution and the official data/template provenance chain. Do not ask for or store credentials in chat.</li><li>In a new budgeted session, test at most the next predeclared anatomy hypothesis against corrected spatial controls. Require positive paired evidence and both uniqueness phases before a separate selector considers a slot.</li><li>Strengthen geological-system holdouts, record matching and domain-shift diagnostics. Verify actual fault displacement indicators; investigate magnetic contacts/flight-line mimics.</li><li>Keep source/feed timestamps visible. AI-assisted code and analysis must be disclosed according to the official rules if entering finalist materials.</li></ol><p>{link('data/irregularities_current.json', 'Audit JSON')} · {link('data/review_passes.json', 'Three-pass verification record')} · {link('archive.html', 'Archived outputs—invalid/held, never submit')} · {link('session-6-verification.html', 'Session 6 verification')}</p>'''
 
-    runcard = '<div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card · negative</h1><p>Download OK; submit NO. Format validity and pixel identity are not uniqueness clearance.</p><p>' + link('data/run_card.json', 'Download JSON') + '</p><pre>' + esc(json.dumps(card, indent=2, allow_nan=False)) + '</pre>'
+    runcard = (f'<div class="eyebrow">THE COMPLETE RECEIPT</div><h1>Run card &middot; {esc(str(card["verdict"]))}</h1>'
+               f'<p>Download {"OK" if card.get("okay_to_download", True) else "NOT OK"}; submit '
+               f'{"OK" if card.get("okay_to_submit") else "NOT OK"}. Format validity and pixel identity '
+               f'are not uniqueness clearance, and a cleared gate is still not a logged-in weekly slot.</p>'
+               f'<p>The two permissions above are read from the card, so this page cannot advertise a '
+               f'decision the receipt does not make.</p>'
+               f'<h2>Other releases in this session</h2><p>{link("data/run_card_h58.json", "H58 fault-zone anatomy run card")} '
+               f'&middot; {link("archive.html", "all archived outputs")}</p><p>'
+               + link('data/run_card.json', 'Download JSON') + '</p><pre>'
+               + esc(json.dumps(card, indent=2, allow_nan=False)) + '</pre>')
     archive = '''<div class="eyebrow">HISTORICAL EVIDENCE ONLY</div><h1>Archived files are not cleared submissions.</h1><p>Earlier outputs in downloads or archives are preserved for learning and audit. They have invalidated geometry, suspect leakage, in-sample scoring, partial registries or failed uniqueness gates. None is recommended for submission. Current evidence is the held release linked on the overview; do not select an old file to bypass STOP.</p><p><a href="index.html">Return to the current release →</a></p>'''
     archived = sorted(path for path in (root / 'docs/downloads').glob('*.tif') if path.name != Path(card['file']).name)
     archive += '<h2>DO NOT SUBMIT any archived output</h2><ul>' + ''.join('<li>' + link('downloads/' + path.name, path.name) + ' — learning/audit only, not cleared</li>' for path in archived) + '</ul>'
