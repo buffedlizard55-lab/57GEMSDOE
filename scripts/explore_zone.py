@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""EXPERIMENT 1 (fault-zone anatomy lane): where do withheld fault segments
+"""ARCHIVED H1/H52 exploration prototype; not the active H57 workflow.
+
+Do not run as-is: this script calls ``faultzone.assign_sense_from_tracemap``,
+which is not defined in the checked-out module. Its measurements and outputs
+are historical and are not a current H57 score or validation.
+
+EXPERIMENT 1 (fault-zone anatomy lane): where do withheld fault segments
 sit relative to the nearest VISIBLE fault, and does the same hold for the real
 off-catalogue population we can measure (SGMC faults that are captured by
 neither USGS nor INGENIOUS)?

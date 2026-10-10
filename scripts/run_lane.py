@@ -251,5 +251,5 @@ if __name__ == "__main__":
         stage_verify(None)
     else:
         raise SystemExit("Legacy experiment/final stages retired: they do not satisfy the current buffer, "
-                         "budget or full-registry protocol. Use scripts/run_orientation_experiments.py "
+                         "budget or indexed public-inventory protocol. Use scripts/run_orientation_experiments.py "
                          "for declared research reproduction, not automatic slot promotion.")

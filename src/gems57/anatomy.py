@@ -20,8 +20,6 @@ visible fault.  Features that the data does not support are dropped.
 
 Sense of slip
 -------------
-Sense of slip
--------------
 The protocol asks to condition on recorded sense of slip "where the database
 has it".  The raster catalogue (``existing_faults.tif``) carries no sense field:
 its values are ``{-1 (nodata, outside the study area), 0, 1}``.  The INGENIOUS
@@ -334,6 +332,9 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
     h_h, _ = np.histogram(hid, bins=edges) if hid.size else (np.zeros(bins), edges)
     h_v, _ = np.histogram(vis, bins=edges) if vis.size else (np.zeros(bins), edges)
     return {"edges": edges.tolist(),
+            "angle_convention": "unsigned axial difference in degrees, folded to [0,90]",
+            "sample_unit": "fault raster pixel; not segment-weighted",
+            "minimum_local_coherence": 0.2,
             "n_withheld": h_h.astype(float).tolist(),
             "n_visible_reference": h_v.astype(float).tolist(),
             "n_withheld_total": int(hid.size),
@@ -341,4 +342,53 @@ def relative_strike_distribution(grid: Grid, visible: np.ndarray, hidden: np.nda
             "median_withheld": float(np.median(hid)) if hid.size else None,
             "median_visible": float(np.median(vis)) if vis.size else None,
             "p25_withheld": float(np.percentile(hid, 25)) if hid.size else None,
-            "p75_withheld": float(np.percentile(hid, 75)) if hid.size else None}
+            "p75_withheld": float(np.percentile(hid, 75)) if hid.size else None,
+            "null_caveat": "Visible-reference comparison selects the nearest different-component trace among the 13 nearest queried visible pixels (including self); locations without one and low-coherence pixels are omitted. Pixel-weighted and censored; descriptive only, no significance inferred."}
+
+
+def package_holdout_structure(relative_strike: dict, *, withheld_positive_pixels: int,
+                              distance_positive_quantiles_px: list[float],
+                              distance_domain_quantiles_px: list[float],
+                              pixel_size_m: int = 100) -> dict:
+    """Keep angular histograms nested so counts cannot overwrite bin arrays.
+
+    ``relative_strike_distribution`` uses ``n_withheld`` for the per-bin
+    histogram. The scalar count of all withheld positive pixels has a distinct
+    key here; separating them prevents a reporting collision from erasing the
+    very distribution the experiment is meant to measure.
+    """
+    edges = np.asarray(relative_strike.get("edges"), dtype=np.float64)
+    withheld_bins = np.asarray(relative_strike.get("n_withheld"), dtype=np.float64)
+    visible_bins = np.asarray(relative_strike.get("n_visible_reference"), dtype=np.float64)
+    if edges.ndim != 1 or withheld_bins.shape != (len(edges) - 1,):
+        raise ValueError("relative-strike histogram does not match its bin edges")
+    if visible_bins.shape != withheld_bins.shape:
+        raise ValueError("withheld and visible-reference histograms differ in length")
+    if (not np.isfinite(edges).all() or not np.isfinite(withheld_bins).all()
+            or not np.isfinite(visible_bins).all() or (withheld_bins < 0).any()
+            or (visible_bins < 0).any()):
+        raise ValueError("relative-strike histogram contains invalid values")
+    if int(withheld_bins.sum()) != int(relative_strike.get("n_withheld_total", -1)):
+        raise ValueError("relative-strike withheld histogram total is inconsistent")
+    if int(visible_bins.sum()) != int(relative_strike.get("n_visible_total", -1)):
+        raise ValueError("relative-strike reference histogram total is inconsistent")
+    q_pos = np.asarray(distance_positive_quantiles_px, dtype=np.float64)
+    q_domain = np.asarray(distance_domain_quantiles_px, dtype=np.float64)
+    if q_pos.shape != (5,) or q_domain.shape != (5,):
+        raise ValueError("distance summary must contain the five declared quantiles")
+    if (not np.isfinite(q_pos).all() or not np.isfinite(q_domain).all()
+            or (np.diff(q_pos) < 0).any() or (np.diff(q_domain) < 0).any()):
+        raise ValueError("distance quantiles must be finite and sorted")
+    if int(withheld_positive_pixels) < 0 or int(pixel_size_m) <= 0:
+        raise ValueError("invalid positive count or pixel size")
+    return {
+        "evidence_class": "HOLDOUT-STRUCTURE (descriptive, not a score)",
+        "withheld_positive_pixels": int(withheld_positive_pixels),
+        "relative_strike": relative_strike,
+        "distance_quantile_probabilities": [0.1, 0.5, 0.9, 0.95, 0.99],
+        "distance_positive_quantiles_px": q_pos.tolist(),
+        "distance_domain_quantiles_px": q_domain.tolist(),
+        "null_caveat": relative_strike.get("null_caveat",
+            "Visible-reference comparison is descriptive; no significance is inferred."),
+        "pixel_size_m": int(pixel_size_m),
+    }

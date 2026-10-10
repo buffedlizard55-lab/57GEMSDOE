@@ -42,7 +42,7 @@ def test_saturation_exemption_and_partial_old_gate_cannot_clear(tmp_path):
     prior,manifest,p,fp=fixture(tmp_path)
     with pytest.raises(ValueError,match='not authorized'):
         gates.lane_report(p,fp,sample=prior,registry_index=manifest,probe_coverage=.95)
-    with pytest.raises(RuntimeError,match='complete registry'):
+    with pytest.raises(RuntimeError,match='inventory manifest'):
         gates.lane_report(p,fp,[prior],sample=prior)
     with pytest.raises(RuntimeError,match='retired'):
         gates.uniqueness_report(p,[prior],top=1)
@@ -97,10 +97,21 @@ def test_report_parser_preserves_unknown_and_deduplicates_without_confirmation()
     assert all(r['submission_receipt'] is None for r in rows)
 
 
-def test_preview_png_and_quantile_labels_are_real():
+def test_preview_png_and_holdout_structure_labels_are_real():
     assert (ROOT/'docs/assets/preview.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
     source=json.loads((ROOT/'evidence/orientation_structure.json').read_text())
     assert source['distance_quantile_probabilities']==[.1,.5,.9,.95,.99]
+    relative=source['relative_strike']
+    assert len(relative['n_withheld'])==len(relative['edges'])-1
+    assert sum(relative['n_withheld'])==relative['n_withheld_total']
+    assert sum(relative['n_visible_reference'])==relative['n_visible_total']
+    assert source['withheld_positive_pixels']>=relative['n_withheld_total']
+    assert relative['sample_unit']=='fault raster pixel; not segment-weighted'
+    assert relative['minimum_local_coherence']==.2
+    assert relative['angle_convention']=='unsigned axial difference in degrees, folded to [0,90]'
     page=(ROOT/'docs/method.html').read_text()
     assert '10th / 50th / 90th percentiles' in page
+    assert 'HOLDOUT-STRUCTURE (descriptive, not a score)' in page
+    assert 'Withheld angle pixels (count; % of valid sample)' in page
+    assert 'not segment-weighted' in page
     assert 'distance quartile/median/upper-quartile' not in page

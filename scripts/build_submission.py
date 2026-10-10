@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Retired unsafe builder: do not revive oracle budgets or place before a gate.
+"""Retired submission publisher; it creates no files and performs no model work.
 
-The former implementation trained/scored in-sample, used test truth count for
-allocation and consulted only 15 priors after placing/writing production dots.
-It cannot produce a cleared submission under the current standing protocol.
-The replacement reuses shared evaluate_holdout/submission_writer:
-
-  python scripts/run_orientation_experiments.py --build-research-surface --minutes 65
-
-That command repeats the declared research experiments; it never selects or
-spends a real slot. Current release: download OK, submission HOLD.
+Current status is HOLD — NOT OK TO DOWNLOAD OR SUBMIT. The indexed local
+registry cache is 0/679, and the SHA-verified universal-overlap witness blocks
+every nonempty candidate under the unchanged literal 3-pixel / 70% rule. The
+public owner-repository inventory is not organizer-complete. No current
+clearance receipt or selector decision exists. Do not re-enable this publisher,
+fit a model, download registry rasters, or write a candidate GeoTIFF without
+renewed authorization and a complete, independently reviewed clearance process.
 """
 import sys
 

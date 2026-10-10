@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import datetime, timezone
+import hashlib
 import html
 import json
 from pathlib import Path
@@ -26,7 +27,11 @@ PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orie
           'hypotheses_current', 'irregularities_current', 'source_checks', 'registry_classification',
           'registry_refreshed', 'site_inventory', 'best_submission_audit',
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'environment',
-          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness']
+          'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
+          'orientation_surface_uniqueness_20261009', 'orientation_surface_uniqueness_20261010T2001',
+          'orientation_surface_delta_uniqueness', 'orientation_surface_delta_uniqueness_20261010T2001',
+          'registry_refreshed_20261010T2001', 'registry_live_delta_20261010T2001',
+          'registry_live_delta']
 
 
 def esc(value):
@@ -140,6 +145,22 @@ def build(root=ROOT, make_preview=True):
     data.mkdir(parents=True, exist_ok=True)
     evidence = {name: json.loads((root / 'evidence' / f'{name}.json').read_text()) for name in PUBLIC}
     card = evidence['run_card_current']
+    feature_pin = next((row for row in evidence['data_preparation']['files']
+                        if row.get('path') == 'data/official/training_features.tif'), None)
+    feature_path = root / 'data/official/training_features.tif'
+    feature_sha = None
+    if feature_path.is_file():
+        digest = hashlib.sha256()
+        with feature_path.open('rb') as stream:
+            for chunk in iter(lambda: stream.read(1 << 20), b''):
+                digest.update(chunk)
+        feature_sha = digest.hexdigest()
+    feature_currently_verified = bool(
+        feature_pin and feature_sha and feature_sha == feature_pin.get('expected_sha256')
+    )
+    feature_status = 'present and SHA256-verified' if feature_currently_verified else 'missing or not currently verified'
+    feature_bytes = feature_path.stat().st_size if feature_currently_verified else None
+    feature_band_count = evidence['feature_cache'].get('count') if feature_currently_verified else None
     h57k = None
     h57k_files = ['h57k_run_card', 'h57k_submission', 'h57k_model_compare',
                   'h57k_proximal_sweep', 'h57k_exact_duplicate_check']
@@ -224,10 +245,26 @@ def build(root=ROOT, make_preview=True):
 <p>The {registry['registry_rasters_checked']}-raster audit conservatively includes four historical auxiliary input rasters; {registry['registry_rasters_checked'] - 4} are predictions or retained ambiguous grid rasters. Classification is disclosed, not used to clear the gate. All 57 listed repositories were scanned at pinned public-main commits, unioned with historical pins. Private, unlinked or inaccessible artifacts remain outside scope.</p><p>{link('data/orientation_holdout.json', 'Full HOLDOUT-DTI receipt')} · {link('data/orientation_surface_uniqueness.json', 'Complete registry measurements')} · {link('data/registry_classification.json', 'Input/prediction classification')}</p>'''
 
     structure = evidence['orientation_structure']
+    relative = structure['relative_strike']
+    angle_rows = []
+    for bin_idx, (hidden_count, reference_count) in enumerate(zip(
+            relative['n_withheld'], relative['n_visible_reference'])):
+        lo, hi = relative['edges'][bin_idx:bin_idx + 2]
+        hi_label = f"<{hi:g}" if bin_idx < len(relative['n_withheld']) - 1 else f"≤{hi:g}"
+        hidden_pct = 100.0 * hidden_count / max(relative['n_withheld_total'], 1)
+        reference_pct = 100.0 * reference_count / max(relative['n_visible_total'], 1)
+        angle_rows.append([
+            esc(f"{lo:g}–{hi_label}°"),
+            f"{int(hidden_count):,} ({hidden_pct:.1f}%)",
+            f"{int(reference_count):,} ({reference_pct:.1f}%)",
+        ])
+    angle_table = table(
+        ['Unsigned axial relative-strike bin', 'Withheld angle pixels (count; % of valid sample)',
+         'Visible-reference angle pixels (count; % of valid sample)'], angle_rows)
     method = f'''<div class="eyebrow">SHARED INSTRUMENT · NO PRIVATE FORKS</div><h1>Measure the anatomy. Don’t assume it.</h1>
 <section><h2>Catalogue-blind candidate evidence, visible-only hosts</h2><p>Band 14 (<code>tmi</code>) is a scalar magnetic field. Gaussian derivatives provide an axial edge tangent, log-gradient magnitude and structure coherence. The angle feature is <code>cos(2 × (candidate strike − primary strike))</code>. It is not the angle of a pixel’s offset from the host.</p><p>The visible catalogue supplies nearest-host distance, cross-/along-strike offsets, axial strike, coherence, density and log component pixel count. Component count is a <strong>noisy mapped-length proxy</strong>, not measured displacement. A histogram-gradient-boosted intensity learns interactions; no textbook Riedel angle, damage-width exponent or assumed dextral sense is inserted.</p><p>Recorded slip sense is used only where a record matches visible context, and its incremental value is explicitly ablated. The final research surface omits it because the paired lower confidence bound is not positive.</p></section>
 <section><h2>Whole-component, buffered hide-and-recover</h2><ol><li>Withhold whole original 8-connected raster fault components, rather than ≤12-pixel chunks. Components may still be fragments of geological systems.</li><li>Remove a 3-pixel (300 m) visible-catalogue context collar around held traces. Apply a 12-pixel quadrant-boundary erosion. Derive all catalogue features only from the globally visible context.</li><li>Leave one quadrant out when fitting each model. Evaluation domains are label-blind. Mask the exact unhidden known catalogue, not its 300 m dilation; the buffer is feature-context removal, not a new scoring mask.</li><li>Fit zone radius from the training withheld-distance 90th percentile and shrink the nominal dot cap by training-positive occupancy in that zone. Estimate positive count from training prevalence only—never oracle test-positive count.</li><li>Pool TPw/FPw/FNw before computing DTI. Resample paired, aligned physical 20 km block terms. Never average quadrant DTI as if it were pooled DTI.</li></ol>{disclaimer}</section>
-<section><h2>Descriptive geometry is not a universal shear angle</h2><p>On this draw the 10th / 50th / 90th percentiles of withheld-positive nearest-visible-host distance are {number(structure['distance_positive_quantiles_px'][0], 1)}, {number(structure['distance_positive_quantiles_px'][1], 2)}, and {number(structure['distance_positive_quantiles_px'][2], 2)} pixels (100 m per pixel). The saved array uses probabilities [0.10, 0.50, 0.90, 0.95, 0.99], not quartiles. Relative-strike summaries are censored nearest-component diagnostics, not a significance test and not a validated stress inversion.</p><p>{link('data/orientation_structure.json', 'Descriptive distributions and null caveat')} · {link('data/experiment_plan.json', 'Predeclared comparisons')}</p></section>
+<section><h2>Descriptive geometry is not a universal shear angle</h2><p>On this fixed buffered holdout, the 10th / 50th / 90th percentiles of withheld-positive nearest-visible-host distance are {number(structure['distance_positive_quantiles_px'][0], 1)}, {number(structure['distance_positive_quantiles_px'][1], 2)}, and {number(structure['distance_positive_quantiles_px'][2], 2)} pixels (100 m per pixel). The saved distance quantiles use probabilities [0.10, 0.50, 0.90, 0.95, 0.99], not quartiles.</p><p>The distribution below is <strong>HOLDOUT-STRUCTURE (descriptive, not a score)</strong>: unsigned axial difference between local raster strikes, folded to 0–90°. It is pixel-weighted, not segment-weighted. Of {structure['withheld_positive_pixels']:,} withheld-positive pixels, {relative['n_withheld_total']:,} have finite local strike with coherence &gt; {relative['minimum_local_coherence']:.1f}; the remaining {structure['withheld_positive_pixels'] - relative['n_withheld_total']:,} do not enter the angle histogram. The visible-reference column contains {relative['n_visible_total']:,} valid pixel-pair samples; each pair uses the nearest different-component visible trace among the 13 nearest queried visible pixels (including the query pixel). Unavailable and low-coherence comparisons are omitted. Percentages in both columns are conditional on each column’s valid angle samples. This censored convenience null is not significance testing, a validated stress inversion, or evidence of a DTI gain.</p>{angle_table}<p>HOLDOUT-STRUCTURE medians are {relative['median_withheld']:.2f}° (withheld) and {relative['median_visible']:.2f}° (visible reference). No inferential test was run. These summaries do not change any fitted model, HOLDOUT-DTI result, production-dot placement or promotion decision.</p><p>{link('data/orientation_structure.json', 'Descriptive distributions and null caveat')} · {link('data/experiment_plan.json', 'Predeclared comparisons')}</p></section>
 <section><h2>Why sparse placement and precision matter</h2><p>For binary predictions, let <em>T</em> be maximum triangular-kernel coverage of truth pixels, <em>M</em> prediction self-credit, <em>N</em> prediction count, and <em>K</em> truth count. The official-formula arithmetic becomes:</p><pre>DTI = T / (0.2 T + 0.2 N − 0.2 M + 0.8 K)</pre><p>Max-cover means overlapping dots cannot repeatedly buy the same coverage. A dot far from every new-fault pixel adds false-positive cost without coverage. A dot near a known trace gets no credit merely for that proximity. This is why geometry, calibration and the emitted dot budget must all be tested—large probabilities and an impressive-looking lineament image are not scores.</p></section>
 <section><h2>Reproduce locally</h2><pre>python3 -m venv .venv
 .venv/bin/pip install -r requirements-lock.txt
@@ -256,9 +293,9 @@ OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2 .venv/bin/python scripts/run_relay_bend
     source_rows = [[f"<strong>{esc(s['id'])}</strong><p>{esc(s['authority'])}</p>", '<ul>' + ''.join(f'<li>{esc(c)}</li>' for c in s['claims_verified']) + '</ul>', esc(s['status']), link(s['url'], 'Review source ↗')] for s in evidence['source_checks']['sources']]
     site_rows = [[link(s['website'], s['repo']), f'<code>{esc(s["commit"][:12])}</code>', esc(', '.join(s['index_files']) or 'No index in pinned tree'), link(f'https://github.com/buffedlizard55-lab/{s["repo"]}/tree/{s["commit"]}', 'Pinned tree')] for s in evidence['site_inventory']['repos']]
     sources = f'''<div class="eyebrow">AUDITABLE · BOUNDED VERIFICATION</div><h1>Claims, bytes and primary sources.</h1><p>Checked 2026-10-09. This is a source ledger, not a guarantee of zero error or a claim that every full paper was read. Verification scope is stated per row.</p>{table(['Authority', 'Supported claims', 'Review scope', 'Link'], source_rows)}
-<h2>Data provenance and availability</h2><p>All eight input pins passed; the restored feature stack has 19 bands. GitHub bridge hashes authenticate transport identity, <strong>not independently authenticated official origin</strong>. The DrivenData data page redirected to login. Header/footprint validation therefore remains bridge-relative. Questionable embedded <code>tc</code> and conductive-base descriptions are not used as geological facts or current model inputs.</p><p>Official USGS GeoDAWN metadata is CC0; the GDR Quaternary Faults v2 metadata is CC BY 4.0. Direct source binary hosts are outside sandbox egress. No paid/private input was introduced; no GPU is required. No data-placement blocker remains for the current CPU model.</p><p>{link('data/data_preparation.json', 'Eight-pin transport report')} · {link('data/feature_cache.json', '19-band cache metadata')} · {link('data/environment.json', 'Reproduction environment')}</p>
-<h2>Every listed sibling repository</h2><p>All 57 public-main trees were pinned and inventoried, including this repo’s old archives. Trees and file hashes establish availability and construction scope, not scientific validity or organizer scores. The complete raw audit retained dense soft predictions and ambiguous grid rasters, not just 15 curated priors.</p>{table(['Site', 'Pinned commit', 'Homepage files found', 'Manual review'], site_rows)}
-<p>{link('data/site_inventory.json', 'Complete site inventory')} · {link('data/registry_refreshed.json', 'Complete immutable raster inventory')}</p>'''
+<h2>Data provenance and availability</h2><p>The competition feature raster is currently <strong>{esc(feature_status)}</strong>{f" ({feature_bytes:,} bytes)" if feature_bytes else ''}{f" with {feature_band_count} bands" if feature_band_count else ''}. Current presence/hash status is computed from this workspace at build time; a historical cache receipt alone is not proof the ignored file is still present. When available, GitHub bridge hashes authenticate transport identity, <strong>not independently authenticated official origin</strong>. The DrivenData data page redirected to login. Header/footprint validation therefore remains bridge-relative. Questionable embedded <code>tc</code> and conductive-base descriptions are not used as geological facts or current model inputs.</p><p>Official USGS GeoDAWN metadata is CC0; the GDR Quaternary Faults v2 metadata is CC BY 4.0. Direct source binary hosts are outside sandbox egress. No paid/private input was introduced; no GPU is required. Restore/verify the pinned feature stack before any future model experiment.</p><p>{link('data/data_preparation.json', 'Eight-pin transport report')} · {link('data/feature_cache.json', '19-band cache metadata')} · {link('data/environment.json', 'Reproduction environment')}</p>
+<h2>Every listed sibling repository</h2><p>All 57 public-main trees were pinned and inventoried, including this repo’s old archives; after PR #17 merged, the then-open same-repository main-target PR heads #16 and #19 were separately pinned and scanned. The 698-row raster set is an indexed public owner-repository inventory, <strong>not a complete organizer registry</strong>. Trees and file hashes establish public availability and construction scope, not scientific validity or organizer scores; private, unlinked, external and otherwise inaccessible rasters may be absent. The raw audit retains dense soft predictions and conservative ambiguous grid rasters rather than only curated priors.</p>{table(['Site', 'Pinned commit', 'Homepage files found', 'Manual review'], site_rows)}
+<p>{link('data/site_inventory.json', 'Current site inventory')} · {link('data/registry_refreshed.json', '698-raster indexed inventory—not organizer-complete')}</p>'''
 
     irregularity_rows = [[f'<strong>{esc(i["id"])}</strong><p>{esc(i["severity"])}</p>', esc(i['finding']), f"<strong>{esc(i['status'])}</strong><p>{esc(i['resolution'])}</p>", esc(i.get('remaining', ''))] for i in evidence['irregularities_current']['irregularities']]
     irregularities = f'''<div class="eyebrow">OWN THE OUTCOME</div><h1>Fixes without rewriting history.</h1><p>The interrupted first attempt is explicitly invalid. Current results use the corrected strike field and shared buffered evaluator. Old in-sample, unbuffered, oracle-budget and relaxed-gate reports remain historical evidence, not recommendations.</p>{table(['ID / severity', 'Finding', 'Resolution', 'Still limited'], irregularity_rows)}

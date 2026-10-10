@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""One shared literal full-registry audit; no partial-cache or reverse exception.
+"""One literal audit against the indexed public owner-repository inventory.
+
+This scoped inventory is not a complete organizer registry; private, unlinked,
+external, and otherwise inaccessible rasters may be absent. No partial-cache
+or reverse-overlap exception is applied.
 
 Default candidate is the current held research TIFF. Running this check does
 not fit a model, place dots, promote a file or spend a competition slot.

@@ -1,0 +1,67 @@
+{
+  "file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
+  "sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
+  "bytes": 134964,
+  "submission_name": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a",
+  "note": "H57-I fitted d_perp damage zone; strike-bin arm negative; 37654 dots 0 on-cat",
+  "note_chars": 77,
+  "validator": {
+    "path": "/home/user/57GEMSDOE/docs/downloads/gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.tif",
+    "bytes": 134964,
+    "sha256": "0025ec29647e3778043b81f5bf998e0e652ea25a8ead03339f40e9939de78b22",
+    "bands": 1,
+    "dtype": "float32",
+    "crs": "EPSG:32611",
+    "width": 3292,
+    "height": 3730,
+    "bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "ref_bounds": [
+      243350.0,
+      4135550.0,
+      572550.0,
+      4508550.0
+    ],
+    "transform": [
+      100.0,
+      0.0,
+      243350.0,
+      0.0,
+      -100.0,
+      4508550.0
+    ],
+    "nodata": null,
+    "blocksize": [
+      256,
+      256
+    ],
+    "fixture_grid": false,
+    "has_validity_mask": false,
+    "nan_pixels": 0,
+    "infinity_pixels": 0,
+    "n_nan": 0,
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.0030664964579045773,
+    "n_nonzero": 37654,
+    "mass": 37654.0,
+    "mass_outside_footprint": 0,
+    "problems": [],
+    "ok": true,
+    "validation_class": "local on-disk template/range check; not organizer upload acceptance"
+  },
+  "zip_file": "gems57-h57i-iso_full-20261009T202310Z-5e393d50e59a-zeros.zip",
+  "zip_sha256": "782af9a346eb439424a6aac49989b9f39a8db1aed58dac80fe4d9c696afe3035",
+  "approved_for_weekly_slot": false,
+  "promoted": false,
+  "submission_slots_used": 0,
+  "status": "OK TO DOWNLOAD AND SUBMIT; local format validation is not organizer acceptance; no weekly slot spent by this repo",
+  "metadata": {
+    "arm": "iso_full",
+    "n_dots": 37654
+  }
+}

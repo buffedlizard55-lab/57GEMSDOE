@@ -1,30 +1,19 @@
-"""Fault-zone anatomy lane: secondary-strand intensity around known faults.
+"""Legacy H1/H52 fault-zone geometry and INGENIOUS record metadata helpers.
 
-Mechanics (no hard-coded textbook angles anywhere in this module):
+This is not the active H57 feature stack; H57 uses ``anatomy.fold_geometry``.
+The functions here link raster fragments and can retain INGENIOUS sense at the
+record/segment level, but neither ``pixel_features`` nor
+``nearest_segment_features`` currently returns a per-pixel sense feature. Any
+future use in a holdout must rebuild the geometry and sense assignment from
+visible support only; the full-vector record table is not itself a leak-safe
+feature map.
 
-* The public catalogue raster is a set of short dashed fragments, not whole
-  traces, so fragments are first linked into fault *segments* (traces) by
-  endpoint proximity + strike compatibility (union-find).  Segment length is
-  the displacement proxy of Savage & Brodsky (JGR 2011): damage-zone width
-  grows with displacement, which grows with fault length.
-* For every pixel we compute, from the VISIBLE faults only:
-    d(p)   Euclidean distance to the nearest visible fault pixel (EDT),
-    phi(p) azimuth of the offset from the nearest visible pixel to p
-           (0 deg = along strike, 90 deg = perpendicular offset),
-    u(p)   along-strike position of p relative to the nearest visible
-           segment, normalised by that segment's length (<0 or >1 = beyond
-           a tip, i.e. along-strike extension rather than parallel strand),
-    L*(p)  length of the nearest visible segment (displacement proxy),
-    sense  recorded sense of slip of the nearest visible segment where the
-           INGENIOUS database has it (RL / LL / N), else "unk".
-* The intensity  I(p) = w(L*) * f(d) * g(phi) * h(u)  is FITTED on the
-  hide-and-recover holdout: f, g, h, w are empirical distributions of the
-  withheld segments measured against their nearest VISIBLE fault.  Nothing
-  is set to a Riedel/Tchalenko angle by hand; whatever the withheld data
-  shows is what is kept (ablation-tested factor by factor).
-
-All functions take an explicit ``visible`` mask so the holdout can recompute
-every feature from visible faults only.
+The geometry helpers compute distance, relative strike, along-strike position,
+and segment length from their supplied visible mask. They do not fit or emit a
+submission. In particular, ``ingenious_record_segments`` aggregates recorded
+sense (RL / LL / N / unknown) by record; it does not attach that attribute to
+the pixel-level arrays returned by the feature helpers. No textbook angle or
+score claim is implemented in this module.
 """
 from __future__ import annotations
 
@@ -253,8 +242,8 @@ def _csv_pixels(csv_path, shape, transform):
     tr = pd.read_csv(csv_path)
     inv = ~transform
     h, w = shape
-    c0, r0 = inv * (tr.x0.values, tr.y0.values)
-    c1, r1 = inv * (tr.x1.values, tr.y1.values)
+    c0, r0 = inv @ (tr.x0.values, tr.y0.values)
+    c1, r1 = inv @ (tr.x1.values, tr.y1.values)
     points = []
     for a, b, c, d in zip(c0, r0, c1, r1):
         if not np.isfinite([a, b, c, d]).all():
@@ -311,9 +300,11 @@ def ingenious_record_segments(csv_path, shape, transform):
 
     Each record is one named fault (zone): real vector geometry, so length,
     strike and recorded sense of slip (RL/LL/N) come straight from the
-    database -- no raster fragmentation, no join needed.  Returns
-    (seg_lab, seg_stats, trace_id_map, trace_sense) where seg_lab holds
-    record-segment ids offset by ``base_id``.
+    database -- no raster fragmentation, no join needed. Returns
+    (seg_stats, seg_pix, trace_id_map, trace_sense): segment IDs are keys in
+    ``seg_stats`` and ``seg_pix``; ``seg_stats[sid]['sense']`` is the modal
+    record-level class. This function does not assign sense to pixels or
+    filter records to a holdout's visible support.
     """
     import pandas as pd
     tr, pix_rows = _csv_pixels(csv_path, shape, transform)
@@ -381,6 +372,9 @@ def nearest_segment_features(visible: np.ndarray, seg_lab: np.ndarray,
            (0 = along strike, 90 = across strike), NaN where no segment
     u      along-strike position vs that segment (0..1 inside, <0/>1 beyond tip)
     L      length (px) of that segment (displacement proxy)
+
+    This geometry-only return does not propagate ``seg_stats[sid]['sense']``;
+    callers must not infer a slip-sense feature from this result.
     """
     d, (iy, ix) = ndimage.distance_transform_edt(~visible, return_indices=True)
     seg_near = seg_lab[iy, ix].astype(np.int64)

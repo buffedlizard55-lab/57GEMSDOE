@@ -55,7 +55,7 @@
       "id": "IR-57-REGISTRY-02",
       "severity": "critical",
       "status": "fixed",
-      "finding": "The full registry pointed to vanished /tmp cache files. compare_to_registry could report unique when all earlier files were missing.",
+      "finding": "The prior public owner-repository inventory pointed to vanished /tmp cache files. compare_to_registry could report unique when all indexed rasters were missing.",
       "resolution": "Refresh immutable GitHub blobs into ignored workspace cache, union historical pins with current public trees including this repo's archives, verify hashes, and fail closed on missing, corrupt, empty or incomplete inventories.",
       "evidence": [
         "scripts/refresh_registry.py",
@@ -63,7 +63,7 @@
         "evidence/registry_refreshed.json",
         "tests/test_shared_pipeline.py"
       ],
-      "remaining": "Public main snapshots and historical pinned files are covered, not unknown private, unlinked or inaccessible artifacts."
+      "remaining": "This is an indexed public owner-repository inventory, not a complete organizer registry. Private, unlinked, external, and otherwise inaccessible rasters may be absent."
     },
     {
       "id": "IR-57-TRACE-03",
@@ -123,7 +123,7 @@
       "severity": "critical",
       "status": "fixed; unsafe helpers retired",
       "finding": "Inherited gates.py used >=0.5 continuous support, skipped surface support and offered a saturation-probe exemption; old standalone scripts applied reverse-overlap or partial-registry clearance.",
-      "resolution": "One literal shared uniqueness implementation at both phases. Compatibility helpers require a full manifest; bare lists/missing certificates cannot clear. Unsafe old builder is retired.",
+      "resolution": "One literal shared uniqueness implementation at both phases. Compatibility helpers require a pinned public-inventory manifest; bare lists/missing certificates cannot clear. Unsafe old builder is retired.",
       "evidence": [
         "src/gems57/gates.py",
         "src/gems57/uniqueness.py",
@@ -194,5 +194,6 @@
       ],
       "remaining": "Against all 665 rasters from the other 56 repositories, worst Spearman is 0.6580 <= 0.90 (and against the 15 discriminating sibling-lane rasters worst Spearman is 0.0288, worst 3-px overlap is 0.2375 <= 0.70), but the literal pre-placement gate still fires against the 17 dense-support prior rasters (forward overlap 1.0) and against this repository's own Session-3 soft surface sharing the exact 2,452,550 zeroed pixels outside d1 <= 25.55 px (Spearman 0.9753). Therefore submission remains HOLD (okay_to_download: true, okay_to_submit: false, submission_slots_used: 0)."
     }
-  ]
+  ],
+  "generated_utc": "2026-10-10T20:14:30+00:00"
 }

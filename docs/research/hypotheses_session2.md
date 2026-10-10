@@ -1,4 +1,6 @@
-# Session-2 candidate geological hypotheses — 5 new candidates, ranked
+# Archived session-2 candidate geological hypotheses — 5 candidates, ranked
+
+**ARCHIVED (2026-10-10):** This is a historical session record, not the current H57 slate or release evidence. Its statements about data availability, baselines, and prior-session status describe that earlier execution only. This checkout currently lacks the gitignored `data/official/training_features.tif`; see the current README, data-pin tests, and `evidence/run_card_current.json` before relying on availability or score claims.
 
 Date: 2026-10-09. Scope: candidates **not tried in any previous session** of this
 repository (H57-A shipped; H57-B..E specified but unvalidated). Each candidate names

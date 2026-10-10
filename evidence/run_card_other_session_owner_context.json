@@ -1,6 +1,6 @@
 {
   "hypothesis": "Secondary strands around mapped faults are not isotropic: they sit at a fitted cross-strike stepover and along-strike offset from the nearest visible trace (en echelon Riedel geometry), so a per-fault intensity built from distance and the offset frame locates fault pixels the catalogue lacks. Measured (fixed strike frame): withheld-strand enrichment peaks at ~55x base rate for cross-strike stepover 0-1 px x along-strike 2-4 px.",
-  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the offset-frame features (d, d_perp, d_par_abs) -- the lean model, chosen because it is statistically tied with the 8-feature set on both instruments and is uniqueness-clean against every earlier raster -- calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar, capped at 40,000 dots by live budget evidence (IR-57-BUDGET-01).",
+  "mechanism": "Distributed shear produces en echelon Riedel shears and synthetic splays; damage-zone width grows with displacement (Savage & Brodsky 2011). Operationally: a gradient-boosted intensity over the offset-frame features (d, d_perp, d_par_abs) -- the lean model, chosen because it is statistically tied with the 8-feature set on both instruments and is reported as uniqueness-clean against the scoped indexed public owner-repository inventory then checked; complete organizer-registry coverage was not established -- calibrated to the withheld base rate, then lazy-greedy max-coverage allocation at the exact DTI marginal bar, capped at 40,000 dots by live budget evidence (IR-57-BUDGET-01).",
   "named_non_fault_process_that_could_mimic_it": "Withheld catalogue pixels are parts of mapped systems, so part of the measured near-field enrichment is mapping continuity (a mapper stopping mid-system), not mechanics. The detached withholding mode (>= 400 m from any other component) is the control; a second mimic is geomorphic linearity (dry washes, roads, ridge crests) aligning with the regional strike sets, which this lane cannot test without the DEM.",
   "holdout_dti": {
     "instrument": "hide-and-recover, 4 quadrants x draws 20/21, whole-segment withholding, 12 px domain erosion, visible-only features, pooled DTI alpha=0.2 beta=0.8 R=3 px, leave-one-quadrant-out",
@@ -119,7 +119,7 @@
       "clear": true
     }
   },
-  "owner_decision_2026_10_09": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the full-registry scan evidence",
+  "owner_decision_2026_10_09": "owner accepted the two-sided clearance rule (IR-57-UNIQ-03); duplicate means a real copy; the literal one-directional firings are logged as saturation in the indexed public owner-repository inventory scan evidence",
   "verdict": "promote",
   "verdict_scope": "eligible for the separate selector step only; not a slot choice, not a live score. The holdout number is the shipped-density reading above."
 }
