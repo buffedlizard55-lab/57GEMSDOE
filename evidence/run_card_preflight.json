@@ -1,0 +1,51 @@
+{
+  "schema": "gems57.run-card.v1",
+  "session": "2026-10-10 pre-placement verification; no experiment or slot",
+  "hypothesis": "Off-catalogue secondary strands concentrate in fitted visible-host relay and bend damage zones, with orientation and sense retained only when holdout evidence supports them (historical Session-5 hypothesis, not retested here).",
+  "mechanism": "Distance, visible-fault length proxy, relative strike, two distinct visible hosts and measured scarp strike; no textbook shear angle. This session checks whether any new candidate can legally pass the literal uniqueness rule before placement.",
+  "named_non_fault_process_that_could_mimic_it": "Erosional range-front scarps and lithologic contacts can imitate off-trace strand lineaments without fault slip.",
+  "holdout_dti": {
+    "evidence_class": "HOLDOUT-DTI; historical Session-5 result; NOT rerun in this session",
+    "evaluator_version": "gems57-pooled-hide-v2",
+    "withheld_positive_pixels": 11321,
+    "representation": "soft surface; no production dots",
+    "dti": 0.031159854641644204,
+    "ci95": [0.024691006152132863, 0.03810944921363519],
+    "evidence": "evidence/relay_bend_holdout.json"
+  },
+  "new_holdout_experiments": 0,
+  "surface_preplacement": {
+    "evidence_class": "REGISTRY-MEASUREMENT (not a score)",
+    "registry_index": "evidence/registry_refreshed_20261010T2001.json",
+    "indexed_rasters": 696,
+    "witness_source": "https://github.com/buffedlizard55-lab/17GEMSDOE/blob/main/docs/downloads/17GEMSDOE_E-proba-multiscale_20260930T044527Z.tif",
+    "witness_sha256": "ab0a0a62eecf066a82713b09dd49f0f638a91fa3dd81f54cc34ae89afa3872be",
+    "witness_halo_coverage_allowed": 1.0,
+    "implied_minimum_forward_overlap_any_nonempty_candidate": 1.0,
+    "forward_overlap_limit": 0.7,
+    "worst_rank_correlation_for_retained_archived_tif_on_696_index": 0.8180518194375755,
+    "retained_archived_tif_literal_duplicate_firings_on_696_index": 80,
+    "stop": true,
+    "evidence": ["evidence/preflight_anatomy.json", "evidence/uniqueness_session6_full_registry_696.json"]
+  },
+  "final_dots": "NOT GENERATED — stop before placement; final-dot check inapplicable",
+  "raster_sha256": null,
+  "raster_note": "No new raster was generated; an old validated GeoTIFF is archived for audit only, not offered for download or submission.",
+  "validator_output": {
+    "new_tif": "not run: no candidate was generated",
+    "historical_retained_sha256": "cf7b903dd9e669fb6ef71241e6e5e3e840acd2f39df7d599f8472b2d9a489648",
+    "historical_validation": "All 15 recorded local checks passed: one Float32 band, no NaN inside footprint, [0,1], EPSG:32611, shape 3730x3292, transform (100,0,243350,0,-100,4508550); not official acceptance",
+    "current_site_check": "scripts/check_site.py: local_format_pass=true, links_pass=true"
+  },
+  "submission_name": null,
+  "submission_note": null,
+  "verdict": "negative",
+  "okay_to_download": false,
+  "okay_to_submit": false,
+  "submission_slots_used": 0,
+  "limitations": [
+    "The witness blocks all allowable dots under the inherited positive-finite support definition; only an explicit protocol revision can resolve it.",
+    "Hash-pinned feature-stack assembly authenticates a third-party public bridge, not an independent official DrivenData receipt.",
+    "No new model can claim holdout improvement or beat an owner-reported/organizer score from this preflight."
+  ]
+}

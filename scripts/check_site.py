@@ -64,8 +64,8 @@ def check(root=ROOT):
     assert preflight['literal_preplacement_gate']=='STOP'
     assert preflight['certificate']['universal_overlap_blocker']
     assert preflight['certificate']['uncovered_allowed_pixels']==0
-    latest=json.loads((root/'evidence/run_card_session7.json').read_text())
-    assert latest==json.loads((docs/'data/run_card_session7.json').read_text()),'latest site card is stale'
+    latest=json.loads((root/'evidence/run_card_preflight.json').read_text())
+    assert latest==json.loads((docs/'data/run_card_preflight.json').read_text()),'latest site card is stale'
     assert latest['raster_sha256'] is None and latest['okay_to_download'] is False
     assert latest['okay_to_submit'] is False and latest['submission_slots_used']==0
     assert card['okay_to_download'] is False and card['okay_to_submit'] is False

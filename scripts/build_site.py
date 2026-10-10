@@ -28,7 +28,7 @@ PUBLIC = ['run_card_current', 'orientation_holdout', 'orientation_canary', 'orie
           'uniqueness_saturation_certificate', 'leaderboard_snapshot', 'feed_refresh_status',
           'attribute_audit_20261010', 'holdout_scope_reconciliation_20261010', 'session6_hypotheses',
           'environment', 'feature_cache', 'data_preparation', 'experiment_plan', 'orientation_surface_uniqueness',
-          'preflight_anatomy', 'run_card_session7']
+          'preflight_anatomy', 'run_card_preflight', 'run_card_session7']
 
 
 def esc(value):
@@ -264,11 +264,11 @@ def build(root=ROOT, make_preview=True):
     preflight = evidence['preflight_anatomy']
     if (preflight['literal_preplacement_gate'] != 'STOP'
             or not preflight['certificate']['universal_overlap_blocker']
-            or evidence['run_card_session7']['okay_to_submit'] is not False):
+            or evidence['run_card_preflight']['okay_to_submit'] is not False):
         raise ValueError('new pre-placement gate evidence is missing or unexpectedly cleared')
     fresh_notice = f'''<section class="card"><div class="eyebrow">LATEST PRE-PLACEMENT CHECK · 2026-10-10</div>
 <h2>STOP before production placement. No new submission TIFF.</h2>
-<p>A SHA/grid-verified earlier raster on public main covers all {preflight['certificate']['allowed_pixels']:,} allowable cells as finite-positive support. Under the unchanged literal gate, every nonempty candidate overlaps its 3-px halo by 100% (limit 70%). No new holdout or weekly slot was used. Do not download or submit retained TIFFs. {link('data/preflight_anatomy.json', 'Reproducible witness certificate')} · {link('data/run_card_session7.json', 'Negative run card')}.</p>
+<p>A SHA/grid-verified earlier raster on public main covers all {preflight['certificate']['allowed_pixels']:,} allowable cells as finite-positive support. Under the unchanged literal gate, every nonempty candidate overlaps its 3-px halo by 100% (limit 70%). No new holdout or weekly slot was used. Do not download or submit retained TIFFs. {link('data/preflight_anatomy.json', 'Reproducible witness certificate')} · {link('data/run_card_preflight.json', 'Negative preflight run card')}.</p>
 <p>The 19-band bridge feature stack has now been restored from hash-pinned public GitHub parts. All eight pins verified; official DrivenData origin has not been independently authenticated. {link('data/data_preparation.json', 'Input receipt')} · {link('research/hypotheses.md', 'Ranked untried geology hypotheses')}.</p></section>'''
     disclaimer = evidence_notice(card)
     names = {'distance_only': 'Distance only (control)',

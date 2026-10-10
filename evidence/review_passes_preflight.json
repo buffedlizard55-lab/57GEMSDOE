@@ -11,7 +11,7 @@
     "regression": "tests/test_shared_pipeline.py::test_saturation_certificate_requires_matching_reference_grid"
   },
   "pass_3_recheck": {
-    "tests": "pytest -q: 135 passed, 1 skipped (missing-features test skips because features were restored)",
+    "tests": "pre-merge pytest -q: 135 passed, 1 skipped; concurrent-main merge added tests and a band-12 cache requirement, restored with prepare_data.py --cache-bands; post-merge pytest -q: 143 passed, 1 skipped",
     "site": "scripts/check_site.py: 30 pages checked, links_pass=true, local_format_pass=true, research_download_cleared=false, submission_cleared=false",
     "input_sha256": "4371c82e3b8339b807bdffcf4ef59a225520fe2988d521be208ae33743123bc5",
     "gate": "preflight exits 2; all 5,106,385 allowed cells covered; STOP",

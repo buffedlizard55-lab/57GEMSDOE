@@ -4,7 +4,10 @@ Read [README.md](README.md) and [TASK_PROMPT.md](TASK_PROMPT.md) at the start of
 
 ## Latest preflight (2026-10-10; supersedes the data-access paragraph below)
 
-STOP before production placement: `scripts/preflight_anatomy.py` checked the pinned 17GEMSDOE witness against public main, validated SHA/grid, and proved all 5,106,385 allowed cells covered under the unchanged finite-positive-dot rule. See `evidence/preflight_anatomy.json` and `evidence/run_card_session7.json`. No new TIFF, holdout or slot; research download NO and submit NO. `scripts/prepare_data.py --fetch` also restored the 19-band bridge stack via the permitted GitHub API (eight pins verified; third-party bridge, not independently authenticated official-origin data). Older Session-6 references to an unavailable feature TIFF describe that session only.
+STOP before production placement: `scripts/preflight_anatomy.py` checked the pinned 17GEMSDOE witness against public main, validated SHA/grid, and proved all 5,106,385 allowed cells covered under the unchanged finite-positive-dot rule. See `evidence/preflight_anatomy.json` and `evidence/run_card_preflight.json`. No new TIFF, holdout or slot; research download NO and submit NO. `scripts/prepare_data.py --fetch` also restored the 19-band bridge stack via the permitted GitHub API (eight pins verified; third-party bridge, not independently authenticated official-origin data). Older Session-6 references to an unavailable feature TIFF describe that session only.
+## Current outcome, 2026-10-10 (Session 7 — read first)
+
+Status unchanged from main (PR #23): **Research download: NO pending explicit owner authorization. Submit: NO.** Session 7 restored and hash-verified the feature stack, reproduced the Session-5 holdout (0 numeric differences), and found that the holdout collar makes near-trace dots unobservable (IR-S7-04). The uniqueness gate is still blocked by a dense prior (IR-S7-01), which needs an owner ruling. See [README Session 7](README.md) and [REMAINING_WORK.md](REMAINING_WORK.md).
 
 ## Current outcome, 2026-10-10 (Session-6 follow-up)
 
