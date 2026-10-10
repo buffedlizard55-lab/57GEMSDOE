@@ -242,9 +242,14 @@
       }
     }
   ],
+  "holdout_scope_limitation": {
+    "nearest_visible_to_any_withheld_truth_px": 3.1622776601683795,
+    "feature_context_buffer_px": 3,
+    "implication": "The buffered holdout contains no withheld truth within 3 px of visible catalogue context. It can evaluate the allocator after <=2 px pruning, but it cannot identify the live near-catalogue new-fault regime that motivated H6-1. Treat failure to promote as inconclusive for that regime, not proof that proximity pruning never helps live labels."
+  },
   "promotion_rule": "paired 95% CI lower bound for proximity_prune minus random_prune > 0 and canary AUC <= 0.90",
   "promotion_rule_passed": false,
   "verdict": "negative",
   "submission_slots_used": 0,
-  "runtime_seconds": 165.960687527
+  "runtime_seconds": 135.23544476199993
 }

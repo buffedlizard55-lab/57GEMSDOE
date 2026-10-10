@@ -143,6 +143,11 @@ def main() -> int:
         "random_seed_by_fold": [20261010 + q for q in range(4)],
         "distance_feature_canary": distance_canary,
         "per_fold": per_fold,
+        "holdout_scope_limitation": {
+            "nearest_visible_to_any_withheld_truth_px": float(folds[0]["receipt"]["nearest_visible_to_truth_px"]),
+            "feature_context_buffer_px": int(folds[0]["receipt"]["feature_buffer_px"]),
+            "implication": "The buffered holdout contains no withheld truth within 3 px of visible catalogue context. It can evaluate the allocator after <=2 px pruning, but it cannot identify the live near-catalogue new-fault regime that motivated H6-1. Treat failure to promote as inconclusive for that regime, not proof that proximity pruning never helps live labels."
+        },
         "promotion_rule": "paired 95% CI lower bound for proximity_prune minus random_prune > 0 and canary AUC <= 0.90",
         "promotion_rule_passed": promoted,
         "verdict": "promote-to-uniqueness-gate" if promoted else "negative",

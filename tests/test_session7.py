@@ -17,6 +17,9 @@ def test_h6_1_negative_receipt_is_fail_closed_and_public_copy_matches():
     assert report["scores"]["proximity_prune"]["withheld_positive_pixels"] == 11321
     assert report["paired_differences"]["random_prune"]["ci95"][0] <= 0
     assert report["distance_feature_canary"]["discriminative_auc_max"] <= 0.90
+    limitation = report["holdout_scope_limitation"]
+    assert limitation["nearest_visible_to_any_withheld_truth_px"] > 3.0
+    assert "inconclusive" in limitation["implication"].lower()
     for fold in report["per_fold"]:
         assert fold["truth_used_for_pruning"] is False
         assert fold["removed"] >= 0
@@ -25,8 +28,8 @@ def test_h6_1_negative_receipt_is_fail_closed_and_public_copy_matches():
 
 
 def test_session7_run_card_has_no_fabricated_submission_clearance():
-    source = ROOT / "evidence/run_card_session7.json"
-    public = ROOT / "docs/data/run_card_session7.json"
+    source = ROOT / "evidence/run_card_session7_h6_1.json"
+    public = ROOT / "docs/data/run_card_session7_h6_1.json"
     assert source.read_bytes() == public.read_bytes()
     card = json.loads(source.read_text())
     assert card["verdict"] == "negative"
